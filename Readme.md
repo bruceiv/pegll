@@ -2,8 +2,11 @@
 ![](https://travis-ci.org/goccmack/gogll.svg?branch=master)
 
 Copyright 2019 Marius Ackerman. 
+Copyright 2021 Aaron Moss.
 
-# GoGLL
+# PEGLL
+PEGLL is a fork of Marius Ackerman's GoGLL built as part of a research project to extend the GLL algorithm to handle the lookahead and ordered choice operators of Parsing Expression Grammars (PEGs).
+
 Gogll generates a GLL or LR(1) parser and FSA-based lexer for any context-free grammar. 
 The generated code is Go or Rust.
 
