@@ -1,6 +1,7 @@
 # Gogll v3
 
-[Copyright 2019 Marius Ackerman](License.txt)
+[Copyright 2021 Aaron Moss](LICENCE)
+[Copyright 2019 Marius Ackerman](LICENCE)
 
 This document contains a documented BNF specification for gogll 3. The formal
 specification is contained the markdown code blocks, which are delimited by triple
@@ -137,16 +138,27 @@ nt : upcase <letter|number|'_'> ;
 from a `tokid` by its first character, which is upper case. `SyntaxRule` is 
 an example of itself. The `nt` of the rule is `SyntaxRule`.
 
-`SyntaxAlternates` is the `|`-separated list of valid alternates of a syntax rule.
+`SyntaxAlternates` is the list of valid alternates of a syntax rule. Alternates can be either _unordered_ (`|`) alternates or _ordered_ (`/`) alternates. Unordered alternates may form an ambiguous parse, ordered alternates are disambiguated by choosing the first matching alternate in the order provided.
 ```
 SyntaxAlternates
     :   SyntaxAlternate                   
-    |   SyntaxAlternate "|" SyntaxAlternates    
+    |   UnorderedAlternates
+    |   OrderedAlternates
+    ;
+
+UnorderedAlternates
+    : SyntaxAlternate
+    | SyntaxAlternate "|" UnorderedAlternates
+    ;
+
+OrderedAlternates
+    : SyntaxAlternate
+    | SyntaxAlternate "/" OrderedAlternates
     ;
 ```
 
 Each `SyntaxAlternate` is a sequence of `SyntaxSymbol`. An optional syntax rule may
-have an altenate `empty`.
+have an alternate `empty`.
 ```
 SyntaxAlternate
     :   SyntaxSymbols                     

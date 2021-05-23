@@ -23,6 +23,7 @@ const(
 	NT_LexRule 
 	NT_LexSymbol 
 	NT_LexZeroOrMore 
+	NT_OrderedAlternates 
 	NT_Package 
 	NT_RegExp 
 	NT_Rule 
@@ -33,6 +34,7 @@ const(
 	NT_SyntaxSymbol 
 	NT_SyntaxSymbols 
 	NT_UnicodeClass 
+	NT_UnorderedAlternates 
 )
 
 // T is the type of terminals symbols
@@ -42,27 +44,28 @@ const(
 	T_1  // ( 
 	T_2  // ) 
 	T_3  // . 
-	T_4  // : 
-	T_5  // ; 
-	T_6  // < 
-	T_7  // > 
-	T_8  // [ 
-	T_9  // ] 
-	T_10  // any 
-	T_11  // char_lit 
-	T_12  // empty 
-	T_13  // letter 
-	T_14  // lowcase 
-	T_15  // not 
-	T_16  // nt 
-	T_17  // number 
-	T_18  // package 
-	T_19  // string_lit 
-	T_20  // tokid 
-	T_21  // upcase 
-	T_22  // { 
-	T_23  // | 
-	T_24  // } 
+	T_4  // / 
+	T_5  // : 
+	T_6  // ; 
+	T_7  // < 
+	T_8  // > 
+	T_9  // [ 
+	T_10  // ] 
+	T_11  // any 
+	T_12  // char_lit 
+	T_13  // empty 
+	T_14  // letter 
+	T_15  // lowcase 
+	T_16  // not 
+	T_17  // nt 
+	T_18  // number 
+	T_19  // package 
+	T_20  // string_lit 
+	T_21  // tokid 
+	T_22  // upcase 
+	T_23  // { 
+	T_24  // | 
+	T_25  // } 
 )
 
 type Symbols []Symbol
@@ -101,6 +104,7 @@ var ntToString = []string {
 	"LexRule", /* NT_LexRule */
 	"LexSymbol", /* NT_LexSymbol */
 	"LexZeroOrMore", /* NT_LexZeroOrMore */
+	"OrderedAlternates", /* NT_OrderedAlternates */
 	"Package", /* NT_Package */
 	"RegExp", /* NT_RegExp */
 	"Rule", /* NT_Rule */
@@ -110,7 +114,8 @@ var ntToString = []string {
 	"SyntaxRule", /* NT_SyntaxRule */
 	"SyntaxSymbol", /* NT_SyntaxSymbol */
 	"SyntaxSymbols", /* NT_SyntaxSymbols */
-	"UnicodeClass", /* NT_UnicodeClass */ 
+	"UnicodeClass", /* NT_UnicodeClass */
+	"UnorderedAlternates", /* NT_UnorderedAlternates */ 
 }
 
 var tToString = []string { 
@@ -118,27 +123,28 @@ var tToString = []string {
 	"(", /* T_1 */
 	")", /* T_2 */
 	".", /* T_3 */
-	":", /* T_4 */
-	";", /* T_5 */
-	"<", /* T_6 */
-	">", /* T_7 */
-	"[", /* T_8 */
-	"]", /* T_9 */
-	"any", /* T_10 */
-	"char_lit", /* T_11 */
-	"empty", /* T_12 */
-	"letter", /* T_13 */
-	"lowcase", /* T_14 */
-	"not", /* T_15 */
-	"nt", /* T_16 */
-	"number", /* T_17 */
-	"package", /* T_18 */
-	"string_lit", /* T_19 */
-	"tokid", /* T_20 */
-	"upcase", /* T_21 */
-	"{", /* T_22 */
-	"|", /* T_23 */
-	"}", /* T_24 */ 
+	"/", /* T_4 */
+	":", /* T_5 */
+	";", /* T_6 */
+	"<", /* T_7 */
+	">", /* T_8 */
+	"[", /* T_9 */
+	"]", /* T_10 */
+	"any", /* T_11 */
+	"char_lit", /* T_12 */
+	"empty", /* T_13 */
+	"letter", /* T_14 */
+	"lowcase", /* T_15 */
+	"not", /* T_16 */
+	"nt", /* T_17 */
+	"number", /* T_18 */
+	"package", /* T_19 */
+	"string_lit", /* T_20 */
+	"tokid", /* T_21 */
+	"upcase", /* T_22 */
+	"{", /* T_23 */
+	"|", /* T_24 */
+	"}", /* T_25 */ 
 }
 
 var stringNT = map[string]NT{ 
@@ -151,6 +157,7 @@ var stringNT = map[string]NT{
 	"LexRule":NT_LexRule,
 	"LexSymbol":NT_LexSymbol,
 	"LexZeroOrMore":NT_LexZeroOrMore,
+	"OrderedAlternates":NT_OrderedAlternates,
 	"Package":NT_Package,
 	"RegExp":NT_RegExp,
 	"Rule":NT_Rule,
@@ -161,4 +168,5 @@ var stringNT = map[string]NT{
 	"SyntaxSymbol":NT_SyntaxSymbol,
 	"SyntaxSymbols":NT_SyntaxSymbols,
 	"UnicodeClass":NT_UnicodeClass,
+	"UnorderedAlternates":NT_UnorderedAlternates,
 }

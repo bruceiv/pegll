@@ -1,5 +1,8 @@
 # Change Log
 
+# 2021-02-05 v3.3.0
+Add initial support for PEG expressions
+
 # 2020-08-12 v3.2.0
 Suppressed tokens added to lexer. See [gogll.md](gogll.md)
 

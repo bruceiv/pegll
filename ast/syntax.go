@@ -25,6 +25,7 @@ type SyntaxAlternate struct {
 type SyntaxRule struct {
 	Head       *NT
 	Alternates []*SyntaxAlternate
+	IsOrdered  bool
 }
 
 type SyntaxSymbol interface {

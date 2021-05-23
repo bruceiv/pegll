@@ -1,4 +1,5 @@
 /*
+Copyright 2021 Aaron Moss
 Copyright 2020 Marius Ackerman
 
 Licensed under the Apache License, Version 2.0 (the "License");
@@ -332,23 +333,59 @@ func (bld *builder) syntaxAlternate(b bsr.BSR) *SyntaxAlternate {
 
 // SyntaxAlternates
 //     :   SyntaxAlternate
-//     |   SyntaxAlternate "|" SyntaxAlternates
+//     |   UnorderedAlternates
+//     |   OrderedAlternates
 //     ;
-func (bld *builder) syntaxAlternates(b bsr.BSR) []*SyntaxAlternate {
+// (boolean is true if an ordered alternate list)
+func (bld *builder) syntaxAlternates(b bsr.BSR) ([]*SyntaxAlternate, bool) {
+	switch b.Alternate() {
+	case 0:
+		return []*SyntaxAlternate{
+			bld.syntaxAlternate(b.GetNTChild(symbols.NT_SyntaxAlternate, 0)),
+		}, false
+	case 1:
+		return bld.unorderedAlternates(b.GetNTChild(symbols.NT_UnorderedAlternates, 0)), false
+	case 2:
+		return bld.orderedAlternates(b.GetNTChild(symbols.NT_OrderedAlternates, 0)), true
+	}
+	panic("invalid SyntaxAlternates")
+}
+
+// UnorderedAlternates
+// 		: SyntaxAlternate
+// 		| SyntaxAlternate "|" UnorderedAlternates
+// 		;
+func (bld *builder) unorderedAlternates(b bsr.BSR) []*SyntaxAlternate {
 	alts := []*SyntaxAlternate{
 		bld.syntaxAlternate(b.GetNTChild(symbols.NT_SyntaxAlternate, 0)),
 	}
 	if b.Alternate() == 1 {
-		alts = append(alts, bld.syntaxAlternates(b.GetNTChild(symbols.NT_SyntaxAlternates, 0))...)
+		alts = append(alts, bld.unorderedAlternates(b.GetNTChild(symbols.NT_UnorderedAlternates, 0))...)
+	}
+	return alts
+}
+
+// OrderedAlternates
+// 		: SyntaxAlternate
+// 		| SyntaxAlternate "/" OrderedAlternates
+// 		;
+func (bld *builder) orderedAlternates(b bsr.BSR) []*SyntaxAlternate {
+	alts := []*SyntaxAlternate{
+		bld.syntaxAlternate(b.GetNTChild(symbols.NT_SyntaxAlternate, 0)),
+	}
+	if b.Alternate() == 1 {
+		alts = append(alts, bld.orderedAlternates(b.GetNTChild(symbols.NT_OrderedAlternates, 0))...)
 	}
 	return alts
 }
 
 // SyntaxRule : nt ":" SyntaxAlternates ";"  ;
 func (bld *builder) syntaxRule(b bsr.BSR) brule {
+	alts, ord := bld.syntaxAlternates(b.GetNTChild(symbols.NT_SyntaxAlternates, 0))
 	return &SyntaxRule{
 		Head:       bld.nt(b.GetTChildI(0)),
-		Alternates: bld.syntaxAlternates(b.GetNTChild(symbols.NT_SyntaxAlternates, 0)),
+		Alternates: alts,
+		IsOrdered:  ord,
 	}
 }
 
