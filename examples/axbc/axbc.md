@@ -4,7 +4,9 @@ Modification of `abc` grammar from [Egg](https://github.com/bruceiv/egg/blob/der
 ```
 package "axbc"
 
-AxBC : as "c" / "ab" "c" ;
+AxBC : AorB "c" ;
+
+AorB : as / "ab"
 
 as : { 'a' } ;
 ```
