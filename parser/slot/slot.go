@@ -101,8 +101,12 @@ const(
 	SyntaxAlternates0R1
 	SyntaxAlternates1R0
 	SyntaxAlternates1R1
+	SyntaxAlternates1R2
+	SyntaxAlternates1R3
 	SyntaxAlternates2R0
 	SyntaxAlternates2R1
+	SyntaxAlternates2R2
+	SyntaxAlternates2R3
 	SyntaxRule0R0
 	SyntaxRule0R1
 	SyntaxRule0R2
@@ -939,6 +943,8 @@ var slots = map[Label]*Slot{
 	SyntaxAlternates1R0: {
 		symbols.NT_SyntaxAlternates, 1, 0, 
 		symbols.Symbols{  
+			symbols.NT_SyntaxAlternate, 
+			symbols.T_24, 
 			symbols.NT_UnorderedAlternates,
 		}, 
 		SyntaxAlternates1R0, 
@@ -946,13 +952,35 @@ var slots = map[Label]*Slot{
 	SyntaxAlternates1R1: {
 		symbols.NT_SyntaxAlternates, 1, 1, 
 		symbols.Symbols{  
+			symbols.NT_SyntaxAlternate, 
+			symbols.T_24, 
 			symbols.NT_UnorderedAlternates,
 		}, 
 		SyntaxAlternates1R1, 
 	},
+	SyntaxAlternates1R2: {
+		symbols.NT_SyntaxAlternates, 1, 2, 
+		symbols.Symbols{  
+			symbols.NT_SyntaxAlternate, 
+			symbols.T_24, 
+			symbols.NT_UnorderedAlternates,
+		}, 
+		SyntaxAlternates1R2, 
+	},
+	SyntaxAlternates1R3: {
+		symbols.NT_SyntaxAlternates, 1, 3, 
+		symbols.Symbols{  
+			symbols.NT_SyntaxAlternate, 
+			symbols.T_24, 
+			symbols.NT_UnorderedAlternates,
+		}, 
+		SyntaxAlternates1R3, 
+	},
 	SyntaxAlternates2R0: {
 		symbols.NT_SyntaxAlternates, 2, 0, 
 		symbols.Symbols{  
+			symbols.NT_SyntaxAlternate, 
+			symbols.T_4, 
 			symbols.NT_OrderedAlternates,
 		}, 
 		SyntaxAlternates2R0, 
@@ -960,9 +988,29 @@ var slots = map[Label]*Slot{
 	SyntaxAlternates2R1: {
 		symbols.NT_SyntaxAlternates, 2, 1, 
 		symbols.Symbols{  
+			symbols.NT_SyntaxAlternate, 
+			symbols.T_4, 
 			symbols.NT_OrderedAlternates,
 		}, 
 		SyntaxAlternates2R1, 
+	},
+	SyntaxAlternates2R2: {
+		symbols.NT_SyntaxAlternates, 2, 2, 
+		symbols.Symbols{  
+			symbols.NT_SyntaxAlternate, 
+			symbols.T_4, 
+			symbols.NT_OrderedAlternates,
+		}, 
+		SyntaxAlternates2R2, 
+	},
+	SyntaxAlternates2R3: {
+		symbols.NT_SyntaxAlternates, 2, 3, 
+		symbols.Symbols{  
+			symbols.NT_SyntaxAlternate, 
+			symbols.T_4, 
+			symbols.NT_OrderedAlternates,
+		}, 
+		SyntaxAlternates2R3, 
 	},
 	SyntaxRule0R0: {
 		symbols.NT_SyntaxRule, 0, 0, 
@@ -1292,8 +1340,12 @@ var slotIndex = map[Index]Label {
 	Index{ symbols.NT_SyntaxAlternates,0,1 }: SyntaxAlternates0R1,
 	Index{ symbols.NT_SyntaxAlternates,1,0 }: SyntaxAlternates1R0,
 	Index{ symbols.NT_SyntaxAlternates,1,1 }: SyntaxAlternates1R1,
+	Index{ symbols.NT_SyntaxAlternates,1,2 }: SyntaxAlternates1R2,
+	Index{ symbols.NT_SyntaxAlternates,1,3 }: SyntaxAlternates1R3,
 	Index{ symbols.NT_SyntaxAlternates,2,0 }: SyntaxAlternates2R0,
 	Index{ symbols.NT_SyntaxAlternates,2,1 }: SyntaxAlternates2R1,
+	Index{ symbols.NT_SyntaxAlternates,2,2 }: SyntaxAlternates2R2,
+	Index{ symbols.NT_SyntaxAlternates,2,3 }: SyntaxAlternates2R3,
 	Index{ symbols.NT_SyntaxRule,0,0 }: SyntaxRule0R0,
 	Index{ symbols.NT_SyntaxRule,0,1 }: SyntaxRule0R1,
 	Index{ symbols.NT_SyntaxRule,0,2 }: SyntaxRule0R2,

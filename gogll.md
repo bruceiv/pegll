@@ -142,8 +142,8 @@ an example of itself. The `nt` of the rule is `SyntaxRule`.
 ```
 SyntaxAlternates
     :   SyntaxAlternate                   
-    |   UnorderedAlternates
-    |   OrderedAlternates
+    |   SyntaxAlternate "|" UnorderedAlternates
+    |   SyntaxAlternate "/" OrderedAlternates
     ;
 
 UnorderedAlternates

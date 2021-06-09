@@ -549,20 +549,50 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			} else {
 				p.parseError(slot.SyntaxAlternates0R0, p.cI, followSets[symbols.NT_SyntaxAlternates])
 			}
-		case slot.SyntaxAlternates1R0: // SyntaxAlternates : ∙UnorderedAlternates
+		case slot.SyntaxAlternates1R0: // SyntaxAlternates : ∙SyntaxAlternate | UnorderedAlternates
 
 			p.call(slot.SyntaxAlternates1R1, cU, p.cI)
-		case slot.SyntaxAlternates1R1: // SyntaxAlternates : UnorderedAlternates ∙
+		case slot.SyntaxAlternates1R1: // SyntaxAlternates : SyntaxAlternate ∙| UnorderedAlternates
+
+			if !p.testSelect(slot.SyntaxAlternates1R1) {
+				p.parseError(slot.SyntaxAlternates1R1, p.cI, first[slot.SyntaxAlternates1R1])
+				break
+			}
+
+			p.bsrSet.Add(slot.SyntaxAlternates1R2, cU, p.cI, p.cI+1)
+			p.cI++
+			if !p.testSelect(slot.SyntaxAlternates1R2) {
+				p.parseError(slot.SyntaxAlternates1R2, p.cI, first[slot.SyntaxAlternates1R2])
+				break
+			}
+
+			p.call(slot.SyntaxAlternates1R3, cU, p.cI)
+		case slot.SyntaxAlternates1R3: // SyntaxAlternates : SyntaxAlternate | UnorderedAlternates ∙
 
 			if p.follow(symbols.NT_SyntaxAlternates) {
 				p.rtn(symbols.NT_SyntaxAlternates, cU, p.cI)
 			} else {
 				p.parseError(slot.SyntaxAlternates1R0, p.cI, followSets[symbols.NT_SyntaxAlternates])
 			}
-		case slot.SyntaxAlternates2R0: // SyntaxAlternates : ∙OrderedAlternates
+		case slot.SyntaxAlternates2R0: // SyntaxAlternates : ∙SyntaxAlternate / OrderedAlternates
 
 			p.call(slot.SyntaxAlternates2R1, cU, p.cI)
-		case slot.SyntaxAlternates2R1: // SyntaxAlternates : OrderedAlternates ∙
+		case slot.SyntaxAlternates2R1: // SyntaxAlternates : SyntaxAlternate ∙/ OrderedAlternates
+
+			if !p.testSelect(slot.SyntaxAlternates2R1) {
+				p.parseError(slot.SyntaxAlternates2R1, p.cI, first[slot.SyntaxAlternates2R1])
+				break
+			}
+
+			p.bsrSet.Add(slot.SyntaxAlternates2R2, cU, p.cI, p.cI+1)
+			p.cI++
+			if !p.testSelect(slot.SyntaxAlternates2R2) {
+				p.parseError(slot.SyntaxAlternates2R2, p.cI, first[slot.SyntaxAlternates2R2])
+				break
+			}
+
+			p.call(slot.SyntaxAlternates2R3, cU, p.cI)
+		case slot.SyntaxAlternates2R3: // SyntaxAlternates : SyntaxAlternate / OrderedAlternates ∙
 
 			if p.follow(symbols.NT_SyntaxAlternates) {
 				p.rtn(symbols.NT_SyntaxAlternates, cU, p.cI)
@@ -1749,25 +1779,47 @@ var first = []map[token.Type]string{
 	{
 		token.T_6: ";",
 	},
-	// SyntaxAlternates : ∙UnorderedAlternates
+	// SyntaxAlternates : ∙SyntaxAlternate | UnorderedAlternates
 	{
 		token.T_13: "empty",
 		token.T_17: "nt",
 		token.T_20: "string_lit",
 		token.T_21: "tokid",
 	},
-	// SyntaxAlternates : UnorderedAlternates ∙
+	// SyntaxAlternates : SyntaxAlternate ∙| UnorderedAlternates
+	{
+		token.T_24: "|",
+	},
+	// SyntaxAlternates : SyntaxAlternate | ∙UnorderedAlternates
+	{
+		token.T_13: "empty",
+		token.T_17: "nt",
+		token.T_20: "string_lit",
+		token.T_21: "tokid",
+	},
+	// SyntaxAlternates : SyntaxAlternate | UnorderedAlternates ∙
 	{
 		token.T_6: ";",
 	},
-	// SyntaxAlternates : ∙OrderedAlternates
+	// SyntaxAlternates : ∙SyntaxAlternate / OrderedAlternates
 	{
 		token.T_13: "empty",
 		token.T_17: "nt",
 		token.T_20: "string_lit",
 		token.T_21: "tokid",
 	},
-	// SyntaxAlternates : OrderedAlternates ∙
+	// SyntaxAlternates : SyntaxAlternate ∙/ OrderedAlternates
+	{
+		token.T_4: "/",
+	},
+	// SyntaxAlternates : SyntaxAlternate / ∙OrderedAlternates
+	{
+		token.T_13: "empty",
+		token.T_17: "nt",
+		token.T_20: "string_lit",
+		token.T_21: "tokid",
+	},
+	// SyntaxAlternates : SyntaxAlternate / OrderedAlternates ∙
 	{
 		token.T_6: ";",
 	},

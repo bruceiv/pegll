@@ -333,20 +333,21 @@ func (bld *builder) syntaxAlternate(b bsr.BSR) *SyntaxAlternate {
 
 // SyntaxAlternates
 //     :   SyntaxAlternate
-//     |   UnorderedAlternates
-//     |   OrderedAlternates
+//     |   SyntaxAlternate "|" UnorderedAlternates
+//     |   SyntaxAlternate "/" OrderedAlternates
 //     ;
 // (boolean is true if an ordered alternate list)
 func (bld *builder) syntaxAlternates(b bsr.BSR) ([]*SyntaxAlternate, bool) {
+	alts := []*SyntaxAlternate{
+		bld.syntaxAlternate(b.GetNTChild(symbols.NT_SyntaxAlternate, 0)),
+	}
 	switch b.Alternate() {
 	case 0:
-		return []*SyntaxAlternate{
-			bld.syntaxAlternate(b.GetNTChild(symbols.NT_SyntaxAlternate, 0)),
-		}, false
+		return alts, false
 	case 1:
-		return bld.unorderedAlternates(b.GetNTChild(symbols.NT_UnorderedAlternates, 0)), false
+		return append(alts, bld.unorderedAlternates(b.GetNTChild(symbols.NT_UnorderedAlternates, 0))...), false
 	case 2:
-		return bld.orderedAlternates(b.GetNTChild(symbols.NT_OrderedAlternates, 0)), true
+		return append(alts, bld.orderedAlternates(b.GetNTChild(symbols.NT_OrderedAlternates, 0))...), true
 	}
 	panic("invalid SyntaxAlternates")
 }

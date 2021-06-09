@@ -99,10 +99,13 @@ func New(input []rune) *Lexer {
 }
 
 func (l *Lexer) scan(i int) *token.Token {
-	// fmt.Printf("lexer.scan\n")
-	s, typ, rext := state(0), token.Error, i
+	// fmt.Printf("lexer.scan(%d)\n", i)
+	s, typ, rext := nullState, token.Error, i+1
+	if i < len(l.I) {
+		// fmt.Printf("  rext %d, i %d\n", rext, i)
+		s = nextState[0](l.I[i])
+	}
 	for s != nullState {
-		// fmt.Printf("S%d '%c' @ %d\n", s, l.I[rext], rext)
 		if rext >= len(l.I) {
 			typ = accept[s]
 			s = nullState
@@ -114,7 +117,9 @@ func (l *Lexer) scan(i int) *token.Token {
 			}
 		}
 	}
-	return token.New(typ, i, rext, l.I)
+	tok := token.New(typ, i, rext, l.I)
+	// fmt.Printf("  %s\n", tok)
+	return tok
 }
 
 func escape(r rune) string {
@@ -306,9 +311,9 @@ var nextState = []func(r rune) state{
 			return 21 
 		case r == '}':
 			return 22 
-		case unicode.IsLower(r):
-			return 23 
 		case unicode.IsUpper(r):
+			return 23 
+		case unicode.IsLower(r):
 			return 24 
 		}
 		return nullState
@@ -511,11 +516,11 @@ var nextState = []func(r rune) state{
 	func(r rune) state {
 		switch { 
 		case r == '_':
-			return 29 
+			return 38 
 		case unicode.IsLetter(r):
-			return 29 
+			return 38 
 		case unicode.IsNumber(r):
-			return 29 
+			return 38 
 		}
 		return nullState
 	}, 
@@ -523,11 +528,11 @@ var nextState = []func(r rune) state{
 	func(r rune) state {
 		switch { 
 		case r == '_':
-			return 38 
+			return 29 
 		case unicode.IsLetter(r):
-			return 38 
+			return 29 
 		case unicode.IsNumber(r):
-			return 38 
+			return 29 
 		}
 		return nullState
 	}, 
