@@ -6,7 +6,7 @@ package "axbc"
 
 AxBC : AorB "c" ;
 
-AorB : as / "ab"
+AorB : as / "ab" ;
 
 as : { 'a' } ;
 ```
