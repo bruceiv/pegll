@@ -65,10 +65,29 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 		// p.DumpDescriptors()
 
 		switch L {
-		case slot.AxBC0R0: // AxBC : ∙as c
+		case slot.AorB0R0: // AorB : ∙as
 
-			p.bsrSet.Add(slot.AxBC0R1, cU, p.cI, p.cI+1)
+			p.bsrSet.Add(slot.AorB0R1, cU, p.cI, p.cI+1)
 			p.cI++
+			if p.follow(symbols.NT_AorB) {
+				p.rtn(symbols.NT_AorB, cU, p.cI)
+			} else {
+				p.parseError(slot.AorB0R0, p.cI, followSets[symbols.NT_AorB])
+			}
+		case slot.AorB1R0: // AorB : ∙ab
+
+			p.bsrSet.Add(slot.AorB1R1, cU, p.cI, p.cI+1)
+			p.cI++
+			if p.follow(symbols.NT_AorB) {
+				p.rtn(symbols.NT_AorB, cU, p.cI)
+			} else {
+				p.parseError(slot.AorB1R0, p.cI, followSets[symbols.NT_AorB])
+			}
+		case slot.AxBC0R0: // AxBC : ∙AorB c
+
+			p.call(slot.AxBC0R1, cU, p.cI)
+		case slot.AxBC0R1: // AxBC : AorB ∙c
+
 			if !p.testSelect(slot.AxBC0R1) {
 				p.parseError(slot.AxBC0R1, p.cI, first[slot.AxBC0R1])
 				break
@@ -80,22 +99,6 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 				p.rtn(symbols.NT_AxBC, cU, p.cI)
 			} else {
 				p.parseError(slot.AxBC0R0, p.cI, followSets[symbols.NT_AxBC])
-			}
-		case slot.AxBC1R0: // AxBC : ∙ab c
-
-			p.bsrSet.Add(slot.AxBC1R1, cU, p.cI, p.cI+1)
-			p.cI++
-			if !p.testSelect(slot.AxBC1R1) {
-				p.parseError(slot.AxBC1R1, p.cI, first[slot.AxBC1R1])
-				break
-			}
-
-			p.bsrSet.Add(slot.AxBC1R2, cU, p.cI, p.cI+1)
-			p.cI++
-			if p.follow(symbols.NT_AxBC) {
-				p.rtn(symbols.NT_AxBC, cU, p.cI)
-			} else {
-				p.parseError(slot.AxBC1R0, p.cI, followSets[symbols.NT_AxBC])
 			}
 
 		default:
@@ -339,33 +342,42 @@ func (p *parser) testSelect(l slot.Label) bool {
 }
 
 var first = []map[token.Type]string{
-	// AxBC : ∙as c
+	// AorB : ∙as
 	{
 		token.T_1: "as",
 	},
-	// AxBC : as ∙c
+	// AorB : as ∙
 	{
 		token.T_2: "c",
 	},
-	// AxBC : as c ∙
-	{
-		token.EOF: "$",
-	},
-	// AxBC : ∙ab c
+	// AorB : ∙ab
 	{
 		token.T_0: "ab",
 	},
-	// AxBC : ab ∙c
+	// AorB : ab ∙
 	{
 		token.T_2: "c",
 	},
-	// AxBC : ab c ∙
+	// AxBC : ∙AorB c
+	{
+		token.T_0: "ab",
+		token.T_1: "as",
+	},
+	// AxBC : AorB ∙c
+	{
+		token.T_2: "c",
+	},
+	// AxBC : AorB c ∙
 	{
 		token.EOF: "$",
 	},
 }
 
 var followSets = []map[token.Type]string{
+	// AorB
+	{
+		token.T_2: "c",
+	},
 	// AxBC
 	{
 		token.EOF: "$",

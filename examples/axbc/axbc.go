@@ -9,6 +9,7 @@ import (
 
 const aac = `aac`
 const abc = `abc`
+const aabc = `aabc`
 
 func parse(s []rune) bool {
 	// run GLL parser
@@ -17,9 +18,23 @@ func parse(s []rune) bool {
 	if bsrSet == nil {
 		return false
 	}
-	// check that root covers whole input
-	root := bsrSet.GetOrderedRoot()
-	return root.RightExtent() == bsrSet.GetRightExtent();
+	// Filter out results that violate ordered choice
+	bsrSet.Dump()
+	// bsrSet.FilterByOrderedChoice()
+	// fmt.Println("=====")
+	// bsrSet.Dump()
+	// check that single root covers whole input
+	roots := bsrSet.GetRoots()
+	switch len(roots) {
+	case 0:
+		fmt.Println("No solutions")
+		return false
+	case 1:
+		return true
+	default:
+		fmt.Println("Ambiguous")
+		return false
+	}
 }
 
 func parseAndPrint(s string) {
@@ -33,4 +48,6 @@ func parseAndPrint(s string) {
 func main() {
 	parseAndPrint(aac)
 	parseAndPrint(abc)
+	// TODO investigate lexer (?) infinite-loop
+	// parseAndPrint(aabc)
 }
