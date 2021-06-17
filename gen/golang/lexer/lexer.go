@@ -286,8 +286,11 @@ func (l *Lexer) GetLineColumnOfToken(i int) (line, col int) {
 }
 
 // GetString returns the input string from the left extent of Token[lext] to
-// the right extent of Token[rext]
+// the right extent of Token[rext], or empty string if range empty
 func (l *Lexer) GetString(lext, rext int) string {
+	if rext < lext {
+		return ""
+	}
 	return string(l.I[l.Tokens[lext].Lext():l.Tokens[rext].Rext()])
 }
 
