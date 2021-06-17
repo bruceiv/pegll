@@ -7,17 +7,19 @@ package "Calc"
 expr :  _ sum ;
 
 sum  : prod { PLUS prod | MINUS } ;
+
 prod : elem { TIMES elem | DIVIDE elem } ;
+
 elem : OPEN sum CLOSE | num ;
 
-num :  < number > _ ;
+num  :  < number > _ ;
 
-PLUS : '+' _ ;
-MINUS : '-' _ ;
-TIMES : '*' _ ; 
+PLUS   : '+' _ ;
+MINUS  : '-' _ ;
+TIMES  : '*' _ ; 
 DIVIDE : '/' _ ;
-OPEN : '(' _ ; 
-CLOSE : ')' _ ;
+OPEN   : '(' _ ; 
+CLOSE  : ')' _ ;
 
 _ : { ' ' | '\t' } ;
 
