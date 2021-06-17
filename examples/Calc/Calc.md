@@ -4,18 +4,13 @@ Modification of `Calc` grammar from [Egg](https://github.com/bruceiv/egg/blob/de
 ```
 package "Calc"
 
-expr : int = _ sum : psVal !.
+expr :  _ sum ;
 
-sum : int = prod : psVal (
-            PLUS prod : i { psVal += i; }
-            | MINUS prod : i { psVal -= i; } )*
-prod : int = elem : psVal (
-             TIMES elem : i { psVal *= i; }
-             | DIVIDE elem : i { psVal /= i; } )*
-elem : int = OPEN sum : psVal CLOSE
-             | num : psVal
+sum  : prod { PLUS prod | MINUS } ;
+prod : elem { TIMES elem | DIVIDE elem } ;
+elem : OPEN sum CLOSE | num ;
 
-num : int = < [0-9]+ > : s { psVal = atoi(s.c_str()); } _
+num :  < number > _ ;
 
 PLUS : '+' _ ;
 MINUS : '-' _ ;
