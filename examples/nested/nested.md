@@ -25,7 +25,7 @@ See the [grammar for details.](../../gogll.md)
 ```
 package "nested"
 
-String      : Content ;
+String      : Content ; 
 Content     : parens / char ;
 parens      : '(' ')' ;
 char        : < letter > ;
