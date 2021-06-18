@@ -1,4 +1,4 @@
-## Java grammar
+// // Java grammar
 Modification of `Java` grammar from [Egg](https://github.com/bruceiv/egg/blob/deriv/grammars/Java-u.egg) to test Java grammar.
 
 ```
@@ -555,7 +555,7 @@ StringLiteral     : '\"' StrClose                     ;
       StrClose    : '\"' 
                   / OptEsc StrClose                   ;
       OptEsc      : ( Escape 
-                  | any "^\\" )                           ;
+                  | [^\\] )                           ;
 
 Escape            : "\\" Escs                         ;
       Escs        : ( EsChars 
@@ -647,7 +647,7 @@ Digit             : number                            ;
 //-------------------------------------------------------------
 
 AT                :  '@'            _                 ;
-AND               :  '&' not ('=' | '&') _            ;
+AND               :  '&'![=&]       _                 ;
 AND_AND           :  "&&"           _                 ;
 AND_EQU           :  "&="           _                 ;
 BANG              :  '!' !'='       _                 ;
@@ -662,7 +662,7 @@ DOT               :  '.'            _                 ;
 EQU               :  '=' !'='       _                 ;
 EQUAL             :  "=="           _                 ;
 GE                :  ">="           _                 ;
-GT                :  '>' not ('=' | '>')  _           ;
+GT                :  '>'![=>]       _                 ;
 HAT               :  '^'!'='        _                 ;
 HAT_EQU           :  "^="           _                 ;
 INC               :  "++"           _                 ;
@@ -670,17 +670,17 @@ LBRK              :  '['            _                 ;
 LE                :  "<="           _                 ;
 LPAR              :  '('            _                 ;
 LPOINT            :  '<'            _                 ;
-LT                :  '<' not ('=' | '>')       _      ;
+LT                :  '<'![=<]       _                 ;
 LWING             :  '{'            _                 ;
-MINUS             :  '-'not ('=' | '\' | '-')      _  ;
+MINUS             :  '-'![=\-]      _                 ;
 MINUS_EQU         :  "-="           _                 ;
 MOD               :  '%'!'='        _                 ;
 MOD_EQU           :  "%="           _                 ;
 NOT_EQUAL         :  "!="           _                 ;   
-OR                :  '|'not ('=' | '|')       _       ;
+OR                :  '|'![=|]       _                 ;
 OR_EQU            :  "|="           _                 ;
 OR_OR             :  "||"           _                 ;
-PLUS              :  '+'not ('=' | '+')       _       ;
+PLUS              :  '+'![=+]       _                 ;
 PLUS_EQU          :  "+="           _                 ;
 QUERY             :  '?'            _                 ;
 RBRK              :  ']'            _                 ;
@@ -690,7 +690,7 @@ RWING             :  '}'            _                 ;
 SEMI              :  ';'            _                 ;
 SL                :  "<<"!'='       _                 ;
 SL_EQU            :  "<<="          _                 ;
-SR                :  ">>"not ('=' | '>')      _       ;
+SR                :  ">>"![=>]      _                 ;
 SR_EQU            :  ">>="          _                 ;
 STAR              :  '*'!'='        _                 ;
 STAR_EQU          :  "*="           _                 ;
@@ -704,19 +704,18 @@ TILDA             :  '~'            _                 ;
 //    (GoGLL): XtoY : Y / X XtoY;
 //-------------------------------------------------------------
 _                 : { EscCharSp     
-                  | "/*" BlockComment 
-                  | "//" Comment }                         ;
+                  | BlockComment 
+                  | Comment }                         ;
       EscCharSp   : < ' ' 
                   | EscChar >                         ;
       EscChar     : '\t' 
                   | NewLine                           ;      
      BlockComment : "*/" 
-                  / . BlockComment                 ;
+                  / "/*" BlockComment                 ;
       Comment     : NewLine 
-                  / . Comment                      ; 
+                  / "//" Comment                      ; 
       NewLine     : '\r' 
                   | '\n'                              ;
-
 
 
 ```
