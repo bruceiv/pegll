@@ -9,7 +9,11 @@
 An originally Egg Parsing grammar created by Aaron Moss ported into the GoGLL grammar to test ordered choice through the elimination of the `"ab"` branch. Modification of `abc` grammar from [Egg](https://github.com/bruceiv/egg/blob/deriv/grammars/abc.egg) to meaningfully exercise ordered choice by eliminating `"ab"` branch.
 ### **`A~BC` Grammar Guide**
 The `/` after`"ab"` and in front of `as` instructs the lexer to recognize the ordered choice of these tokens. See the [grammar for details.](../../gogll.md)
-
+### **STATUS ON GRAMMAR**
+#### *Markdown File Creation:* Complete
+#### *Parser Generated :* Complete
+#### *Test File Creation:* Complete
+#### *Testing Results:* Passed
 ```
 package "axbc"
 

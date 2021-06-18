@@ -12,7 +12,13 @@ An originally Egg Parsing grammar created by Aaron Moss ported into the GoGLL gr
 ### **`miniegg` Grammar Guide**
 NEED TO FINISH ONE GRAMMAR IS WORKING 
 
- See the [grammar for details.](../../gogll.md)
+See the [grammar for details.](../../gogll.md)
+
+### **STATUS ON GRAMMAR**
+#### *Markdown File Creation:* Not working 
+#### *Parser Generated :* Incomplete
+#### *Test File Creation:* Incomplete
+#### *Testing Results:* Unknown
 ```
 package "miniegg"
 

@@ -12,6 +12,11 @@ An originally Egg Parsing grammar created by Aaron Moss ported into the GoGLL gr
 
 ### **`ax` GRAMMAR GUIDE**
 In this grammar, `S1` represents the start rule while `ax` consists of the repeated token of `a` zero or more times. The use of `{}` within this grammar is to indicate a set of tokens or identifiers repeated zero or more times. See the [grammar for details.](../../gogll.md)
+### **STATUS ON GRAMMAR**
+#### *Markdown File Creation:* Complete
+#### *Parser Generated :* Complete
+#### *Test File Creation:* Incomplete
+#### *Testing Results:* Unknown
 ```
 package "ax"
 

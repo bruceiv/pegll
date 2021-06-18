@@ -14,7 +14,13 @@ Modification of `exp` grammar from [Egg](https://github.com/bruceiv/egg/blob/der
 ### **`exp` Grammar Guide**
 NEED TO FINISH ONE GRAMMAR IS WORKING 
 
- See the [grammar for details.](../../gogll.md)
+See the [grammar for details.](../../gogll.md)
+
+### **STATUS ON GRAMMAR**
+#### *Markdown File Creation:* Not working 
+#### *Parser Generated :* Incomplete
+#### *Test File Creation:* Incomplete
+#### *Testing Results:* Unknown
 ```
 package "exp"
 

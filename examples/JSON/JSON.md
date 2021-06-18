@@ -10,6 +10,13 @@
 An originally Egg Parsing grammar created by Aaron Moss ported into the GoGLL grammar for the `JSON` language tests. Modification of `JSON` grammar from [Egg](https://github.com/bruceiv/egg/blob/deriv/grammars/JSON-u.egg) to test `JSON` input files under the parser generated.
 ### **`JSON` Grammar Guide**
 NEED TO FINISH ONE GRAMMAR IS WORKING 
+
+### **STATUS ON GRAMMAR**
+#### *Markdown File Creation:* Not working 
+#### *Parser Generated :* Incomplete
+#### *Test File Creation:* Incomplete
+#### *Testing Results:* Unknown
+
 #### ***Object Creation***
 ```
 package "JSON"                          ;
