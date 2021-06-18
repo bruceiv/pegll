@@ -99,13 +99,10 @@ func New(input []rune) *Lexer {
 }
 
 func (l *Lexer) scan(i int) *token.Token {
-	// fmt.Printf("lexer.scan(%d)\n", i)
-	s, typ, rext := nullState, token.Error, i+1
-	if i < len(l.I) {
-		// fmt.Printf("  rext %d, i %d\n", rext, i)
-		s = nextState[0](l.I[i])
-	}
+	// fmt.Printf("lexer.scan\n")
+	s, typ, rext := state(0), token.Error, i
 	for s != nullState {
+		// fmt.Printf("S%d '%c' @ %d\n", s, l.I[rext], rext)
 		if rext >= len(l.I) {
 			typ = accept[s]
 			s = nullState
@@ -117,9 +114,7 @@ func (l *Lexer) scan(i int) *token.Token {
 			}
 		}
 	}
-	tok := token.New(typ, i, rext, l.I)
-	// fmt.Printf("  %s\n", tok)
-	return tok
+	return token.New(typ, i, rext, l.I)
 }
 
 func escape(r rune) string {

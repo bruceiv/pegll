@@ -12,12 +12,13 @@ import(
 type Label int
 
 const(
-	AxBC0R0 Label = iota
+	AorB0R0 Label = iota
+	AorB0R1
+	AorB1R0
+	AorB1R1
+	AxBC0R0
 	AxBC0R1
 	AxBC0R2
-	AxBC1R0
-	AxBC1R1
-	AxBC1R2
 )
 
 type Slot struct {
@@ -107,10 +108,38 @@ func (s *Slot) String() string {
 }
 
 var slots = map[Label]*Slot{ 
+	AorB0R0: {
+		symbols.NT_AorB, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_1,
+		}, 
+		AorB0R0, 
+	},
+	AorB0R1: {
+		symbols.NT_AorB, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_1,
+		}, 
+		AorB0R1, 
+	},
+	AorB1R0: {
+		symbols.NT_AorB, 1, 0, 
+		symbols.Symbols{  
+			symbols.T_0,
+		}, 
+		AorB1R0, 
+	},
+	AorB1R1: {
+		symbols.NT_AorB, 1, 1, 
+		symbols.Symbols{  
+			symbols.T_0,
+		}, 
+		AorB1R1, 
+	},
 	AxBC0R0: {
 		symbols.NT_AxBC, 0, 0, 
 		symbols.Symbols{  
-			symbols.T_1, 
+			symbols.NT_AorB, 
 			symbols.T_2,
 		}, 
 		AxBC0R0, 
@@ -118,7 +147,7 @@ var slots = map[Label]*Slot{
 	AxBC0R1: {
 		symbols.NT_AxBC, 0, 1, 
 		symbols.Symbols{  
-			symbols.T_1, 
+			symbols.NT_AorB, 
 			symbols.T_2,
 		}, 
 		AxBC0R1, 
@@ -126,47 +155,25 @@ var slots = map[Label]*Slot{
 	AxBC0R2: {
 		symbols.NT_AxBC, 0, 2, 
 		symbols.Symbols{  
-			symbols.T_1, 
+			symbols.NT_AorB, 
 			symbols.T_2,
 		}, 
 		AxBC0R2, 
 	},
-	AxBC1R0: {
-		symbols.NT_AxBC, 1, 0, 
-		symbols.Symbols{  
-			symbols.T_0, 
-			symbols.T_2,
-		}, 
-		AxBC1R0, 
-	},
-	AxBC1R1: {
-		symbols.NT_AxBC, 1, 1, 
-		symbols.Symbols{  
-			symbols.T_0, 
-			symbols.T_2,
-		}, 
-		AxBC1R1, 
-	},
-	AxBC1R2: {
-		symbols.NT_AxBC, 1, 2, 
-		symbols.Symbols{  
-			symbols.T_0, 
-			symbols.T_2,
-		}, 
-		AxBC1R2, 
-	},
 }
 
 var slotIndex = map[Index]Label { 
+	Index{ symbols.NT_AorB,0,0 }: AorB0R0,
+	Index{ symbols.NT_AorB,0,1 }: AorB0R1,
+	Index{ symbols.NT_AorB,1,0 }: AorB1R0,
+	Index{ symbols.NT_AorB,1,1 }: AorB1R1,
 	Index{ symbols.NT_AxBC,0,0 }: AxBC0R0,
 	Index{ symbols.NT_AxBC,0,1 }: AxBC0R1,
 	Index{ symbols.NT_AxBC,0,2 }: AxBC0R2,
-	Index{ symbols.NT_AxBC,1,0 }: AxBC1R0,
-	Index{ symbols.NT_AxBC,1,1 }: AxBC1R1,
-	Index{ symbols.NT_AxBC,1,2 }: AxBC1R2,
 }
 
 var alternates = map[symbols.NT][]Label{ 
-	symbols.NT_AxBC:[]Label{ AxBC0R0,AxBC1R0 },
+	symbols.NT_AxBC:[]Label{ AxBC0R0 },
+	symbols.NT_AorB:[]Label{ AorB0R0,AorB1R0 },
 }
 

@@ -1,33 +1,21 @@
-// // Java grammar
-Modification of `Java` grammar from [Egg](https://github.com/bruceiv/egg/blob/deriv/grammars/Java-u.egg) to test Java grammar.
+# **`Java` Grammar**
+### **AUTHORSHIP INFORMATION**
+#### *Authors :* Brynn Harrington and Emily Hoppe Copyright (C) 2021
+#### *Creation Date :* June 11, 2021 
+#### *Last Modified :* June 18, 2021
+#### *Copyright and Licensing Information :* See end of file.
+
+###  **GENERAL DESCRIPTION**
+An originally Egg Parsing grammar created by Dr. Aaron Moss ported into the GoGLL grammar for the `Java` language tests. Modification of `Java` grammar from [Egg](https:github.com/bruceiv/egg/blob/deriv/grammars/Java-u.egg) to test `Java` input files under the parser generated.
+
+### **`Java` Grammar Guide**
+NEED TO FINISH ONE GRAMMAR IS WORKING 
 
 ```
 package "Java"
-
-//-------------------------------------------------------------
-//  @ Author : Roman R Redziejowski Copyright (C) 2006
-//  (http://home.swipnet.se/redz/roman).
-//
-//  This is free software; you can redistribute and/or modify
-//  it under the terms of the GNU Library General Public License
-//  as published by the Free Software Foundation; either version 2
-//  of the License or (at your option) any later version.
-//
-//  This file is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-//
-//  For more details, see the GNU Library General Public License
-//  at http://www.fsf.org/copyleft/gpl.html.
-//
-//  @ Modified to GoGLL Grammar : Brynn Harrington and Emily Hoppe
-//  Date : June 10, 2021 
-//  Last Updated: June 12, 2021
-
-//-------------------------------------------------------------
-//  COMPILATION Unit
-//-------------------------------------------------------------
-
+```
+#### ***Compilation Unit***
+```
 CompUnit          : _ OptPackDecl RepImpDecl0x RepSemiModDecl0x ;
       OptPackDecl : [ PackDecl ]                      ;
      RepImpDecl0x : { ImportDecl }                    ; 
@@ -40,24 +28,22 @@ PackDecl          : PACKAGE QualifiedID SEMI          ;
 
 ImportDecl        : IMPORT OptStatic QualifiedID OptDotStar SEMI ;
       OptDotStar  : [ DOT STAR ]                      ;
-
-//-------------------------------------------------------------
-//  CLASS DECLARATIONS
-//    - Note: The following are the representations of the 
-//    MemDecl (Member Decl): 
-//          Type ID FormalParams RepDim0x OptThrowClsTypLst MemAlts = Method
-//          VOID ID FormalParams OptThrowClsTypLst MemAlts = Void Method
-//          ID FormalParams OptThrowClsTypLst Block = Constructor
-//          IntfDecl = Interface
-//          ClsDecl = Class
-//          Type VarDecl RepComVDecl0x = Field
-//    - Note: The following are the representations of the 
-//     ClsBdyDecl(ClassBodyDeclaration): 
-//          SEMI = Semicolon
-//          OptStatic Block  = Static or Instance Initializer
-//          RepModif0 MemDecl = Class Member Declaration  
-//-------------------------------------------------------------
-
+```
+#### ***Class Declarations***
+- Note: The following are the representations of the 
+    MemDecl (Member Decl): 
+    - Type ID FormalParams RepDim0x OptThrowClsTypLst MemAlts = Method
+    - VOID ID FormalParams OptThrowClsTypLst MemAlts = Void Method
+    - ID FormalParams OptThrowClsTypLst Block = Constructor
+    - IntfDecl = Interface
+    - ClsDecl = Class
+    - Type VarDecl RepComVDecl0x = Field
+- Note: The following are the representations of the 
+     ClsBdyDecl (ClassBodyDeclaration): 
+    - SEMI = Semicolon
+    - OptStatic Block  = Static or Instance Initializer
+    - RepModif0 MemDecl = Class Member Declaration  
+```
 ClsDecl           : Cls ID OptExtClsType OptImpClsLst ClsBdy ;
     OptExtClsType : [ EXTENDS ClsType ]               ;
      OptImpClsLst : [ IMPLEMENTS ClsTypeList ]        ;
@@ -78,10 +64,9 @@ MemDecl           : Type ID FormalParams RepDim0x OptThrowClsTypLst MemAlts
                   | Type VarDecl RepComVDecl0x        ; 
       MemAlts     : SEMI 
                   | Block                             ;
-
-//-------------------------------------------------------------
-//  INTERFACE DECLARATION
-//-------------------------------------------------------------
+```
+#### ***Interface Declarations***
+```
 IntfDecl   : Intf ID OptExtendsClsLis IntfBdy         ;
       OptExtendsClsLis : [ EXTENDS ClsTypeList ]      ;
 
@@ -111,21 +96,17 @@ ConstDeclsRest    : ConstDeclRest RepComCnstDecl0x    ;
 
 ConstDecl         : ID ConstDeclRest                  ;
 
-ConstDeclRest     : RepDim0x EQU VarInitial           ;
-    
-//-------------------------------------------------------------
-//  VARIABLE DECLARATIONS
-//-------------------------------------------------------------
-
+ConstDeclRest     : RepDim0x EQU VarInitial           ; 
+```
+#### ***Variable Declarations***
+```
 LocalVarDeclStmt  : OptFinType VarDecl RepComVDecl0x SEMI ;
 
 VarDecl           :  ID RepDim0x OptEqVarInit         ;
      OptEqVarInit : [ EQU  VarInitial ]               ;
-
-//-------------------------------------------------------------
-//  FORMAL PARAMETERS
-//-------------------------------------------------------------
-
+```
+#### ***Formal Parameters***
+```
 FormalParams      : LPAR OptFormPDecl RPAR            ;
      OptFormPDecl : [ FormalParamDecls ]              ;
 
@@ -137,11 +118,9 @@ FormalParamDeclsRest :  VarDelID OptComFormPDecl      ;
   OptComFormPDecl : [ COMMA FormalParamDecls ]        ;
 
 VarDelID          : ID RepDim0x                       ;
-
-//-------------------------------------------------------------
-//  STATEMENTS
-//-------------------------------------------------------------
-
+```
+#### ***Statements***
+```
 Block             : LWING RepBlkSt0x RWING            ;
      RepBlkSt0x   : { BlockStmt }                     ;
 
@@ -197,26 +176,19 @@ ForInit           : OptFinType Type VarDeclInit       ;
 
 ForUpdate         : StmtExpr RepComSExpr0x            ;
     RepComSExpr0x : { COMMA StmtExpr }                ;
-
-//-------------------------------------------------------------
-//  EXPRESSIONS
-//    - Note: Some of the shorthand names are:
-//          Cond = Conditional
-//          IOR = Inclusive-Or 
-//          XOR = Exclusive-Or
-//    - Note: StmtExpr is more generous than definition in 14.8,
-//    which allows only specific forms of Expr.
-//    - Note: The definition of Expr is part of the modification
-//    in JLS Ch. 18 to minimize look ahead. In JLS Ch. 15.27, Expr
-//    is defined as AssignmentExpr, which is effectively defined as
-//    (LeftHandSide AssignOp)* CondExpr. The above is obtained by 
-//    allowing ANY CondExpr as LeftHandSide, which results in 
-//    accepting Stmts like 5 : a.
-//    - Note: ArrayCreator is more generous than JLS 15.10.
-//    According to that definition, BasicType must be followed 
-//    by at least one DimExpr or by ArrayInitializer.
-//-------------------------------------------------------------
-
+```
+#### ***Expressions***
+- Note: Some of the shorthand names are:
+    - Cond = Conditional
+    - IOR = Inclusive-Or 
+    - XOR = Exclusive-Or
+- Note: The definition of Expr is part of the modification in 
+JLS Ch. 18 to minimize look ahead. In JLS Ch. 15.27, Expr
+is defined as AssignmentExpr, which is effectively defined as
+(LeftHandSide AssignOp) * CondExpr. The above is obtained by 
+allowing ANY CondExpr as LeftHandSide, which results in 
+accepting Stmts like 5 : a.
+```
 StmtExpr          : Expr                              ;
    
 ConstExpr         : Expr                              ;
@@ -372,17 +344,9 @@ QualifiedID       : ID RepDotID0x                     ;
 
 Dim               : LBRK RBRK                         ;
 DimExpr           : LBRK Expr RBRK                    ; 
-////////////////////////////////////////Dim is used MANY times before this??? NEED TO MOVE FURTHER DOWN!!
-///// but also uses expression in the definition so like????
-
-//-------------------------------------------------------------
-//  TYPES AND MODIFIERS
-//    - Note: This common definition of Modifier is part of the 
-//    modification in JLS Chapter 18 to minimize look ahead. 
-//    The main Bdy of JLS has different lists of modifiers 
-//    for different language elements.
-//-------------------------------------------------------------
-
+```
+#### ***TYPES AND MODIFIERS***
+```
 Type              : TypeAlts RepDim0x                 ; 
       TypeAlts    : BasicType 
                   | ClsType                         ;
@@ -411,18 +375,18 @@ Modifier          : Modifs NotLorD                    ;
                   | "volatile"
                   | "strictfp"                        ;
    
-//-------------------------------------------------------------
-//  IDENFITIFERS
-//    - Note: ID is used to represent identifiers.
-//-------------------------------------------------------------
+```
+#### ***Identifiers***
+- Note: ID is used to represent identifiers.
+```
 
 ID                : not Keyword LetterLorD            ;   
       LetterLorD   : Letter RepLorD0x _               ;
       RepLorD0x   :  { LorD }                         ; 
 
-//-------------------------------------------------------------
-//  KEYWORDS
-//-------------------------------------------------------------
+```
+#### ***Keywords***
+```
 Keyword           : Words NotLorD                     ;
       Words       : "abstract" 
                   | "assert"   
@@ -509,9 +473,9 @@ TRY               : "try"          NotLorD            ;
 VOID              : "void"         NotLorD            ;
 WHILE             : "while"        NotLorD            ; 
 
-//-------------------------------------------------------------
-//  GENERAL LITERAL DEFINITION 
-//-------------------------------------------------------------
+```
+### ***General Literal Definition***
+```
 
 Literal           : LitAlts _                         ;
       LitAlts     : FloatLiteral
@@ -522,28 +486,22 @@ Literal           : LitAlts _                         ;
                   | "false" NotLorD
                   | "null"  NotLorD                   ;
 
-//-------------------------------------------------------------
-//  BASIC IDENTIFIER DEFINITIONS
-//    - Note: These are traditional definitions of letters and
-//    digits. JLS defines letters and digits as Unicode  
-//    characters recognized as such by special Java procedures,
-//    which is difficult to express in terms of Parsing 
-//    Expressions.
-//-------------------------------------------------------------
-
+```
+### ***Basic Identifiers*** 
+- Note: These are traditional definitions of letters and
+digits. JLS defines letters and digits as Unicode characters recognized as such by special Java procedures, which is difficult to express in terms of Parsing Expressions.
+```
 NotLorD           : not LorD                          ;        
 LorD              : Letter 
                   | Digit 
-                  | _                                 ; ///////////////////// do we need this since the '_' is already inside the letter definition/rule??
+                  | _                                 ; / do we need this since the '_' is already inside the letter definition/rule??
 Letter            : letter 
                   | _                                 ;
-
-//-------------------------------------------------------------
-//  CHARACTER AND STRING LITERALS
-//    - Note: Unicode escape is not defined in JLS syntax because 
-//    unicode characters are processed very early.
-//-------------------------------------------------------------
-
+```
+### ***Character and String Literals***
+- Note: Unicode escape is not defined in JLS syntax because 
+unicode characters are processed very early.
+```
 CharLiteral       : '\'' EscSlash '\''                ;
       EscSlash    : ( Escape 
                   | EscUp )                           ;
@@ -572,11 +530,11 @@ Escape            : "\\" Escs                         ;
    
 UnicodeEscape : "u" HexDigit HexDigit HexDigit HexDigit ;
  
-//-------------------------------------------------------------
-//  GENERAL NUMBERIC LITERALS
-//    - Note: In IntegerLiteral, OctalNumeral may prefix 
-//    HexNumeral and DecimalNumeral may prefix OctalNumeral
-//-------------------------------------------------------------
+```
+#### ***General Numeric Literals***
+- Note: In IntegerLiteral, OctalNumeral may prefix 
+HexNumeral and DecimalNumeral may prefix OctalNumeral
+```
 
 FloatLiteral      : HexFloat 
                   | DecimalFloat                      ;
@@ -595,9 +553,9 @@ DecimalFloat      :  RepDig1x "." RepDig0x OptExpo fF_dD
       RepDig1xExp : RepDig1x Exponent                 ;
       OptExpo     : [ Exponent ]                      ;
             
-//-------------------------------------------------------------
-//  BASE-SIXTEEN AND BASE-EIGHT LITERALS
-//-------------------------------------------------------------
+```
+#### ***BASE-SIXTEEN AND BASE-EIGHT LITERALS***
+```
 
 HexFloat          : HexSignificand BinaryExponent fF_dD ;
       fF_dD       : [ any "fFdD" ]                    ; 
@@ -627,9 +585,9 @@ OctalEscape       : Int0-3 Two0-7
                   | any "4567"                        ;
       Int0-3      : any "0123"                        ;
 
-//-------------------------------------------------------------
-//  EXPONENT AND DIGIT LITERALS
-//-------------------------------------------------------------
+```
+#### ***Exponent and Digital Literals***
+```
 
 Exponent          : eE OptPSM RepDig0x                ;
       eE          : any "eE"                          ;
@@ -642,10 +600,9 @@ BinaryExponent    : pP PSM RepDig1x                   ;
 
 Digit             : number                            ;   
 
-//-------------------------------------------------------------
-//  SEPERATORS AND OPERATORS
-//-------------------------------------------------------------
-
+```
+#### ***Separators and Operators***
+```
 AT                :  '@'            _                 ;
 AND               :  '&'![=&]       _                 ;
 AND_AND           :  "&&"           _                 ;
@@ -696,13 +653,14 @@ STAR              :  '*'!'='        _                 ;
 STAR_EQU          :  "*="           _                 ;
 TILDA             :  '~'            _                 ;
 
-//-------------------------------------------------------------
-//  ESCAPES, COMMENTING, AND SPACING
-//    Note: To match the -> operator in GoGLL, the following
-//    syntax is used:
-//    (Egg): XtoY : X -> Y
-//    (GoGLL): XtoY : Y / X XtoY;
-//-------------------------------------------------------------
+```
+### ***Escape Characters/Sequences, Comments, and Spacing***
+- Note: To match the -> operator in GoGLL, the following syntax is used:
+    
+    (Egg): XtoY : X -> Y
+    
+    (GoGLL): XtoY : Y / X XtoY;
+```
 _                 : { EscCharSp     
                   | BlockComment 
                   | Comment }                         ;
@@ -713,9 +671,18 @@ _                 : { EscCharSp
      BlockComment : "*/" 
                   / "/*" BlockComment                 ;
       Comment     : NewLine 
-                  / "//" Comment                      ; 
+                  / "" Comment                      ; 
       NewLine     : '\r' 
                   | '\n'                              ;
-
-
 ```
+#
+### **COPYRIGHT AND LICENSING INFORMATION**
+**Copyright 2021 Brynn Harrington and Emily Hoppe**
+
+Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
+
+You may obtain a copy of the License [here](http://www.apache.org/licenses/LICENSE-2.0) or at:
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.

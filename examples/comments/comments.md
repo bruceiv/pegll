@@ -6,8 +6,7 @@ unwanted in the syntax, for example: code comments.
 This grammar specifies a list of names that can be written with any number of c-style line and 
 block comments anywhere between the names.
 
-The `!` in front of `!line_comment` and `!block_comment` instructs the lexer to 
-suppress those tokens. See the [grammar for details.](../../gogll.md)
+The `!` in front of `!line_comment` and `!block_comment` instructs the lexer to suppress those tokens. See the [grammar for details.](../../gogll.md)
 
 ```
 package "comments"
