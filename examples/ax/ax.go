@@ -13,7 +13,7 @@ import (
 const a = `a`
 const aa = `aa`
 const aaa = `aaa`
-//SHould fail to match
+//Should fail to match
 const ab = `ab`
 
 func parse(s []rune) bool {
