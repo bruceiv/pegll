@@ -2,11 +2,12 @@ package main
 
 import (
 	"fmt"
-	
+
 	"ax/lexer"
 	"ax/parser"
 )
 
+// testing repetition
 const a = `a`
 const aa = `aa`
 const aaa = `aaa`
@@ -20,7 +21,7 @@ func parse(s []rune) bool {
 	}
 	// check that root covers whole input
 	root := bsrSet.GetOrderedRoot()
-	return root.RightExtent() == bsrSet.GetRightExtent();
+	return root.RightExtent() == bsrSet.GetRightExtent()
 }
 
 func parseAndPrint(s string) {

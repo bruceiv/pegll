@@ -4,7 +4,7 @@ Modification of `astar` grammar from [Egg](https://github.com/bruceiv/egg/blob/d
 ```
 package "ax"
 
-AX : { 'a' } ;
+ax : { 'a' } letter ;
 
 ```
 
