@@ -10,7 +10,8 @@
 An originally Egg Parsing grammar created by Aaron Moss ported into the GoGLL grammar to determine test a given structure. Modification of `miniegg` grammar from [Egg](https://github.com/bruceiv/egg/blob/deriv/grammars/miniegg.egg) to test an example structure.
 
 ### **`miniegg` Grammar Guide**
-NEED TO FINISH ONE GRAMMAR IS WORKING 
+Errors:
+- not sure if id is functioning the way it should - going based on how basic IDs work
 
 See the [grammar for details.](../../gogll.md)
 
@@ -22,17 +23,29 @@ See the [grammar for details.](../../gogll.md)
 ```
 package "miniegg"
 
-gram    : _ ruler ;
-    ruler   : < rule > ;
-rule    : id '=' _ exprr ;
-id      : upcase _ ;
-    exprr   : < expr > ;
-expr    : id not '=' ;
-_       : [ ' ' ] ;
+expr    : id not "=" ;
+id      : upcase <letter | ' '> ;    
+space   : [ ' ' ] ;
 
 ```
+<<<<<<< HEAD
 
 
+=======
+### **IN PROGRESS GRAMMARS**
+**Original / Not working**
+    gram    : _ ruler ;
+    ruler   : < rule > ;
+    rule    : id '=' _ exprr ;
+    id      : upcase _ ;
+        exprr   : < expr > ;
+    expr    : id not '=' ;
+    _       : [ ' ' ] ;
+**Partially Working**
+There is a definite difference between how the parser recognizes uppercase and lowercase.
+    
+    space       : [ ' ' ] ;
+>>>>>>> 9f444bb223c484f895731b6b36e772363a6693b7
 #
 ### **COPYRIGHT AND LICENSING INFORMATION**
 **Copyright 2021 Brynn Harrington and Emily Hoppe**
