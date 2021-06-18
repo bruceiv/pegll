@@ -11,7 +11,11 @@
 An originally Egg Parsing grammar created by Aaron Moss ported into the GoGLL grammar to test a simple calculator. Modification of `calc` grammar from [Egg](https://github.com/bruceiv/egg/blob/deriv/grammars/Calc.egg) to calculate based on given inputs.
 
 ### **`Calc` Grammar Guide**
-NEED TO FINISH ONE GRAMMAR IS WORKING 
+ERRORS:
+- cannot figure out how to use a whitespace token ID 
+- cannot get past element - asking for EOF token in rule
+- cannot figure out repetitions for PROD and SUM
+       - may need to have an ordered choice to use the '{}' grouping 
 
 See the [grammar for details.](../../gogll.md)
 
@@ -23,6 +27,26 @@ See the [grammar for details.](../../gogll.md)
 ```
 package "calc"
 
+EXPR   : SUM ;
+
+SUM    : PROD
+              { plus PROD | minus } ;
+PROD   : ELEM 
+              { times ELEM | divide ELEM } ;
+ELEM   : open SUM close | num ;
+
+num    : < number > { ' ' | '\t' } ;
+
+plus   : '+' { ' ' | '\t' } ;
+minus  : '-' { ' ' | '\t' } ;
+times  : '*' { ' ' | '\t' } ;
+divide : '/' { ' ' | '\t' } ;
+open   : '(' { ' ' | '\t' } ;        
+close  : ')' { ' ' | '\t' } ;
+
+```
+### **IN PROGRESS GRAMMARS**
+**Original / Not working**
 expr :  _ sum ;
 
 sum  : prod { PLUS prod | MINUS } ;
@@ -36,14 +60,24 @@ num  :  < number > _ ;
 PLUS   : '+' _ ;
 MINUS  : '-' _ ;
 TIMES  : '*' _ ; 
-DIVIDE : '/' _ ;
+DIVIDE : '/' - ;
 OPEN   : '(' _ ; 
 CLOSE  : ')' _ ;
 
-_      : { ' ' 
-       |   '\t' } ;
+_      : { ' ' | '\t' } ;
+**Partially Working**
+SUM    : PROD { plus PROD | minus } ;
+PROD   : ELEM { times ELEM | divide ELEM } ;
+ELEM   : open SUM close | num ;
 
-```
+num    : < number > { ' ' | '\t' } ;
+
+plus   : '+' { ' ' | '\t' } ;
+minus  : '-' { ' ' | '\t' } ;
+times  : '*' { ' ' | '\t' } ;
+divide : '/' { ' ' | '\t' } ;
+open   : '(' { ' ' | '\t' } ;        
+close  : ')' { ' ' | '\t' } ;
 #
 ### **COPYRIGHT AND LICENSING INFORMATION**
 **Copyright 2021 Brynn Harrington and Emily Hoppe**
