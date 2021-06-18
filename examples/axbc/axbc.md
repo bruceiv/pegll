@@ -6,8 +6,16 @@ package "axbc"
 
 AxBC : AorB "c" ;
 
-AorB : as / "ab" ;
+AorB : As / "a" "b" ;
 
-as : { 'a' } ;
+As : "a" As / empty ;
 ```
+
+### Previous versions
+Version of the grammar using lexer (lexer's insistence on making everything a valid sequence of tokens defeats PEG-level ordered choice)
+
+`AxBC : AorB "c" ;`
+`AorB : as / "ab" ;`
+`as : { 'a' } ;`
+
 

@@ -3,6 +3,8 @@
 package bsr
 
 import (
+	"fmt"
+
 	"axbc/parser/slot"
 	sym "axbc/parser/symbols"
 )
@@ -20,6 +22,13 @@ type ntKey struct {
 	left int
 }
 
+// The information necessary to check if a BSR node's dependencies are still valid
+type bsrDepend = struct {
+	b     BSR    // the BSR node with the dependency
+	nt    sym.NT // the nonterminal to look for
+	right int    // the right extent of that match (left given by map key)
+}
+
 // index key for successor lookup
 type succKey struct {
 	label slot.Label
@@ -29,13 +38,13 @@ type succKey struct {
 
 // BSR set augmented with additional indices necessary for PEG filtering.
 // Fields map keys to lists of BSRs in s that match
-// TODO maybe more efficient to store s as []BSR, build indices as []int 
+// TODO maybe more efficient to store s as []BSR, build indices as []int
 type pegBsr struct {
-	nSlots     map[slotKey]int
-	nts        map[ntKey][]BSR
-	pivots     map[int][]BSR
-	successors map[succKey][]BSR
-	s *Set
+	nSlots       map[slotKey]int
+	nts          map[ntKey][]BSR
+	dependencies map[int][]bsrDepend
+	successors   map[succKey][]BSR
+	s            *Set
 }
 
 // System-dependent maximum int value
@@ -45,11 +54,11 @@ const noAlt = int(^uint(0) >> 1)
 // Sets up indices used in PEG construction
 func (s *Set) buildPeg() *pegBsr {
 	p := &pegBsr{
-		nSlots: make(map[slotKey]int),
-		nts: make(map[ntKey][]BSR),
-		pivots: make(map[int][]BSR),
-		successors: make(map[succKey][]BSR),
-		s: s,
+		nSlots:       make(map[slotKey]int),
+		nts:          make(map[ntKey][]BSR),
+		dependencies: make(map[int][]bsrDepend),
+		successors:   make(map[succKey][]BSR),
+		s:            s,
 	}
 
 	for b := range s.slotEntries {
@@ -60,24 +69,34 @@ func (s *Set) buildPeg() *pegBsr {
 			// nonterminal match at end-of-rule
 			nKey := ntKey{x.NT, b.leftExtent}
 			p.nts[nKey] = append(p.nts[nKey], b)
-		} else {
-			// internal nodes with the given pivot
-			p.pivots[b.pivot] = append(p.pivots[b.pivot], b)
+		}
+		if x.Pos != 0 {
+			// nodes with a nonterminal after the given pivot
+			if nt, ok := x.Symbols[x.Pos-1].(sym.NT); ok {
+				p.dependencies[b.pivot] = append(p.dependencies[b.pivot], bsrDepend{b, nt, b.rightExtent})
+			} else if x.Pos > 1 {
+				// only check nonterminals before the pivot if they exist and the symbol
+				// afterward is a terminal (if both symbols are nonterminals, there will
+				// be another BSR node with pivot before the first nonterminal)
+				if nt, ok := x.Symbols[x.Pos-2].(sym.NT); ok {
+					p.dependencies[b.leftExtent] = append(p.dependencies[b.leftExtent], bsrDepend{b, nt, b.pivot})
+				}
+			}
 		}
 		// slot successors
 		sKey := succKey{b.Label, b.leftExtent, b.pivot}
 		p.successors[sKey] = append(p.successors[sKey], b)
 	}
 
-	return p;
+	return p
 }
 
-// Deletes a BSR from its set, returning false if it is the last copy of 
+// Deletes a BSR from its set, returning false if it is the last copy of
 // that slot with that extent.
 // Does not remove from nts, pivots, or successors indices
 func (p *pegBsr) deleteNode(b BSR) bool {
 	delete(p.s.slotEntries, b)
-	sKey := slotKey{b.Label,b.leftExtent,b.rightExtent}
+	sKey := slotKey{b.Label, b.leftExtent, b.rightExtent}
 	p.nSlots[sKey] -= 1
 	return p.nSlots[sKey] <= 0
 }
@@ -85,68 +104,61 @@ func (p *pegBsr) deleteNode(b BSR) bool {
 // Deletes a BSR from its set, as well as all its successors
 // clears successor indices when finished deleting
 func (p *pegBsr) deleteNodeAndSuccessors(b BSR) {
-	// remove node itself, leaving successors alone if more copies of 
+	// remove node itself, leaving successors alone if more copies of
 	// this slot with the same left & right extents
 	if p.deleteNode(b) {
 		return
 	}
-	
+
 	x := b.Label.Slot()
 	// end early if no successor
 	if x.EoR() {
 		return
 	}
-	// otherwise look up successor nodes with continuation label, 
+	// otherwise look up successor nodes with continuation label,
 	// same left extent, pivoting on right extent, and delete
 	// TODO try succcessor label := b.Label + 1
-	succK := succKey{ slot.GetLabel(x.NT, x.Alt, x.Pos + 1), b.leftExtent, b.rightExtent }
+	succK := succKey{slot.GetLabel(x.NT, x.Alt, x.Pos+1), b.leftExtent, b.rightExtent}
 	for _, b := range p.successors[succK] {
 		p.deleteNodeAndSuccessors(b)
 	}
 	delete(p.successors, succK)
 }
 
-// Filters slots out of a BSR set that have had their nonterminal at 
-// position i deleted, as well as any successors. 
+// Filters slots out of a BSR set that have had their nonterminal at
+// position i deleted, as well as any successors.
 func (p *pegBsr) filterMissingSlots(i int) {
 	// loop over all nodes with the given pivot
-	for _, b := range p.pivots[i] {
+	for _, d := range p.dependencies[i] {
 		// skip deleted nodes
-		if ! p.s.slotEntries[b] {
-			continue
-		}
-		x := b.Label.Slot()
-
-		// get nonterminal after slot, skipping otherwise
-		nt, ok := x.Symbols[x.Pos].(sym.NT)
-		if ! ok {
+		if !p.s.slotEntries[d.b] {
 			continue
 		}
 
 		// check there is still a match for this nonterminal with the same
 		// right extent, deleting slot if none found
 		found := false
-		for _, nb := range p.nts[ntKey{nt, i}] {
-			if p.s.slotEntries[nb] && nb.rightExtent == b.rightExtent {
+		for _, nb := range p.nts[ntKey{d.nt, i}] {
+			if p.s.slotEntries[nb] && nb.rightExtent == d.right {
 				found = true
 				break
 			}
 		}
-		if ! found {
-			p.deleteNodeAndSuccessors(b)
+		if !found {
+			p.deleteNodeAndSuccessors(d.b)
 		}
 	}
-	// TODO could reset pivots[i] here, but I don't think it's used again
+	// TODO could reset dependencies[i] here, but I don't think it's used again
 }
 
-// Removes all the BSR nodes that don't match the PEG ordered choice 
+// Removes all the BSR nodes that don't match the PEG ordered choice
 // property
 func (s *Set) FilterByOrderedChoice() {
 	// construct necessary indices
 	p := s.buildPeg()
 	// for each input index, in reverse order
 	for i := s.GetRightExtent(); i >= 0; i-- {
-		// keep going over the list of nonterminals until all of them are 
+		// keep going over the list of nonterminals until all of them are
 		// finished for this input index
 		// TODO should pre-generate a topologically-sorted slice
 		// TODO don't filter unordered nonterminals
@@ -155,7 +167,7 @@ func (s *Set) FilterByOrderedChoice() {
 			for ni := 0; ni < sym.NumNTs; ni++ {
 				nt := sym.NT(ni)
 				// skip nonterminals that are not ready yet
-				if ! allFinished(nt, finished) {
+				if !allFinished(nt, finished) {
 					continue
 				}
 
@@ -166,7 +178,7 @@ func (s *Set) FilterByOrderedChoice() {
 				minAlt := noAlt
 				for _, b := range p.nts[nKey] {
 					// skip deleted nodes
-					if ! p.s.slotEntries[b] {
+					if !p.s.slotEntries[b] {
 						continue
 					}
 
@@ -178,7 +190,7 @@ func (s *Set) FilterByOrderedChoice() {
 						}
 
 						// set new
-						mins = []BSR{ b }
+						mins = []BSR{b}
 						minAlt = bAlt
 					} else if bAlt == minAlt {
 						// add equal-priority node to minimums
@@ -191,7 +203,7 @@ func (s *Set) FilterByOrderedChoice() {
 				// reset list of available matches for nt
 				p.nts[nKey] = mins
 
-				finished[nt] = true;
+				finished[nt] = true
 			}
 		}
 
@@ -200,13 +212,20 @@ func (s *Set) FilterByOrderedChoice() {
 	}
 }
 
-// checks that all the nonterminals in the first list of nt are in the 
+// checks that all the nonterminals in the first list of nt are in the
 // finished map
 func allFinished(nt sym.NT, finished map[sym.NT]bool) bool {
 	for _, f := range nt.StartsWith() {
-		if ! finished[f] {
+		if !finished[f] {
 			return false
 		}
 	}
 	return true
+}
+
+// Dumps all BSR nodes in a set, not just those reachable from roots.
+func (s *Set) FlatDump() {
+	for b := range s.slotEntries {
+		fmt.Println(b)
+	}
 }

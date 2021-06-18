@@ -16,6 +16,11 @@ const(
 	AorB0R1
 	AorB1R0
 	AorB1R1
+	AorB1R2
+	As0R0
+	As0R1
+	As0R2
+	As1R0
 	AxBC0R0
 	AxBC0R1
 	AxBC0R2
@@ -111,30 +116,70 @@ var slots = map[Label]*Slot{
 	AorB0R0: {
 		symbols.NT_AorB, 0, 0, 
 		symbols.Symbols{  
-			symbols.T_1,
+			symbols.NT_As,
 		}, 
 		AorB0R0, 
 	},
 	AorB0R1: {
 		symbols.NT_AorB, 0, 1, 
 		symbols.Symbols{  
-			symbols.T_1,
+			symbols.NT_As,
 		}, 
 		AorB0R1, 
 	},
 	AorB1R0: {
 		symbols.NT_AorB, 1, 0, 
 		symbols.Symbols{  
-			symbols.T_0,
+			symbols.T_0, 
+			symbols.T_1,
 		}, 
 		AorB1R0, 
 	},
 	AorB1R1: {
 		symbols.NT_AorB, 1, 1, 
 		symbols.Symbols{  
-			symbols.T_0,
+			symbols.T_0, 
+			symbols.T_1,
 		}, 
 		AorB1R1, 
+	},
+	AorB1R2: {
+		symbols.NT_AorB, 1, 2, 
+		symbols.Symbols{  
+			symbols.T_0, 
+			symbols.T_1,
+		}, 
+		AorB1R2, 
+	},
+	As0R0: {
+		symbols.NT_As, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_0, 
+			symbols.NT_As,
+		}, 
+		As0R0, 
+	},
+	As0R1: {
+		symbols.NT_As, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_0, 
+			symbols.NT_As,
+		}, 
+		As0R1, 
+	},
+	As0R2: {
+		symbols.NT_As, 0, 2, 
+		symbols.Symbols{  
+			symbols.T_0, 
+			symbols.NT_As,
+		}, 
+		As0R2, 
+	},
+	As1R0: {
+		symbols.NT_As, 1, 0, 
+		symbols.Symbols{ 
+		}, 
+		As1R0, 
 	},
 	AxBC0R0: {
 		symbols.NT_AxBC, 0, 0, 
@@ -167,6 +212,11 @@ var slotIndex = map[Index]Label {
 	Index{ symbols.NT_AorB,0,1 }: AorB0R1,
 	Index{ symbols.NT_AorB,1,0 }: AorB1R0,
 	Index{ symbols.NT_AorB,1,1 }: AorB1R1,
+	Index{ symbols.NT_AorB,1,2 }: AorB1R2,
+	Index{ symbols.NT_As,0,0 }: As0R0,
+	Index{ symbols.NT_As,0,1 }: As0R1,
+	Index{ symbols.NT_As,0,2 }: As0R2,
+	Index{ symbols.NT_As,1,0 }: As1R0,
 	Index{ symbols.NT_AxBC,0,0 }: AxBC0R0,
 	Index{ symbols.NT_AxBC,0,1 }: AxBC0R1,
 	Index{ symbols.NT_AxBC,0,2 }: AxBC0R2,
@@ -175,5 +225,6 @@ var slotIndex = map[Index]Label {
 var alternates = map[symbols.NT][]Label{ 
 	symbols.NT_AxBC:[]Label{ AxBC0R0 },
 	symbols.NT_AorB:[]Label{ AorB0R0,AorB1R0 },
+	symbols.NT_As:[]Label{ As0R0,As1R0 },
 }
 
