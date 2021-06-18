@@ -2,6 +2,7 @@
 
 ### **AUTHORSHIP INFORMATION**
 #### *Authors :* Emily Hoppe Copyright (C) 2021
+#### *Adapted from :* Aaron Moss's [`Calc` Egg Grammar](https://github.com/bruceiv/egg/blob/deriv/grammars/Calc.egg)
 #### *Creation Date :* June 17, 2021 
 #### *Last Modified :* June 18, 2021
 #### *Copyright and Licensing Information :* See end of file.

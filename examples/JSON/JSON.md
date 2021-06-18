@@ -1,6 +1,7 @@
 # **`JSON` Grammar**
 ### **AUTHORSHIP INFORMATION**
 #### *Authors :* Brynn Harrington and Emily Hoppe Copyright (C) 2021
+#### *Adapted from :* Aaron Moss's [`JSON` Egg Grammar](https://github.com/bruceiv/egg/blob/deriv/grammars/JSON-u.egg)
 #### *Creation Date :* June 11, 2021 
 #### *Last Modified :* June 18, 2021
 #### *Copyright and Licensing Information :* See end of file.

@@ -1,6 +1,7 @@
 # `A~BC` Grammar
 ### **AUTHORSHIP INFORMATION**
 #### *Author :* Aaron Moss Copyright (C) 2021
+#### *Adapted from :* Aaron Moss's [`abc` Egg Grammar](https://github.com/bruceiv/egg/blob/deriv/grammars/abc.egg)
 #### *Creation Date :* June 11, 2021 
 #### *Last Modified :* June 18, 2021
 #### *Copyright and Licensing Information :* See end of file.
