@@ -8,9 +8,13 @@ import (
 )
 
 // test the repeatability of the grammar
+
+//Should match
 const a = `a`
 const aa = `aa`
 const aaa = `aaa`
+//SHould fail to match
+const ab = `ab`
 
 func parse(s []rune) bool {
 	// run GLL parser
@@ -36,4 +40,5 @@ func main() {
 	parseAndPrint(a)
 	parseAndPrint(aa)
 	parseAndPrint(aaa)
+	parseAndPrint(ab)
 }
