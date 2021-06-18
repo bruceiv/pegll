@@ -1,4 +1,4 @@
-# **`Ax` Grammar**
+# **`ax` Grammar**
 
 ### **AUTHORSHIP INFORMATION**
 #### *Authors :* Brynn Harrington and Emily Hoppe Copyright (C) 2021
@@ -10,14 +10,14 @@
 ### **GENERAL DESCRIPTION**
 An originally Egg Parsing grammar created by Aaron Moss ported into the GoGLL grammar to test repeatability within the grammar. Modification of `astar` grammar from [Egg](https://github.com/bruceiv/egg/blob/deriv/grammars/astar.egg) to test repetition of a character.
 
-### **`Ax` GRAMMAR GUIDE**
-In this grammar, `S1` represents the start rule while `Ax` consists of the repeated token of `a` zero or more times. The use of `{}` within this grammar is to indicate a set of tokens or identifiers repeated zero or more times. See the [grammar for details.](../../gogll.md)
+### **`ax` GRAMMAR GUIDE**
+In this grammar, `S1` represents the start rule while `ax` consists of the repeated token of `a` zero or more times. The use of `{}` within this grammar is to indicate a set of tokens or identifiers repeated zero or more times. See the [grammar for details.](../../gogll.md)
 ```
 package "ax"
 
-S1 : Ax ;
+S1 : ax ;
 
-Ax : { 'a' } ;
+ax : { 'a' } ;
 ```
 #
 ### **COPYRIGHT AND LICENSING INFORMATION**
