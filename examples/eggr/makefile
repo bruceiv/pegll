@@ -1,4 +1,4 @@
 .PHONY: go
 
 go:
-	gogll calc.md
+	gogll eggr.md

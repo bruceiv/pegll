@@ -1,4 +1,4 @@
-# **`Calc` Grammar**
+# **`calc` Grammar**
 
 ### **AUTHORSHIP INFORMATION**
 #### *Authors :* Emily Hoppe Copyright (C) 2021
@@ -8,14 +8,14 @@
 #### *Copyright and Licensing Information :* See end of file.
 
 ###  **GENERAL DESCRIPTION**
-An originally Egg Parsing grammar created by Dr. Aaron Moss ported into the GoGLL grammar to test a simple calculator. Modification of `Calc` grammar from [Egg](https://github.com/bruceiv/egg/blob/deriv/grammars/Calc.egg) to calculate based on given inputs.
+An originally Egg Parsing grammar created by Aaron Moss ported into the GoGLL grammar to test a simple calculator. Modification of `calc` grammar from [Egg](https://github.com/bruceiv/egg/blob/deriv/grammars/Calc.egg) to calculate based on given inputs.
 
 ### **`Calc` Grammar Guide**
 NEED TO FINISH ONE GRAMMAR IS WORKING 
 
  See the [grammar for details.](../../gogll.md)
 ```
-package "Calc"
+package "calc"
 
 expr :  _ sum ;
 

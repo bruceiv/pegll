@@ -4,6 +4,6 @@ package main
 import (
 	"fmt"
 
-	"calc/lexer"
-	"calc/parser"
+	"miniegg/lexer"
+	"miniegg/parser"
 )

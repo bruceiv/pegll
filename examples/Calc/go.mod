@@ -1,3 +1,3 @@
-module Calc
+module calc
 
 go 1.14
