@@ -24,14 +24,12 @@ See the [grammar for details.](../../gogll.md)
 package "miniegg"
 
 expr    : id not "=" ;
-id      : upcase <letter | ' '> ;    
+id      : upcase space ;    
 space   : [ ' ' ] ;
 
 ```
-<<<<<<< HEAD
 
 
-=======
 ### **IN PROGRESS GRAMMARS**
 **Original / Not working**
     gram    : _ ruler ;
@@ -45,7 +43,6 @@ space   : [ ' ' ] ;
 There is a definite difference between how the parser recognizes uppercase and lowercase.
     
     space       : [ ' ' ] ;
->>>>>>> 9f444bb223c484f895731b6b36e772363a6693b7
 #
 ### **COPYRIGHT AND LICENSING INFORMATION**
 **Copyright 2021 Brynn Harrington and Emily Hoppe**

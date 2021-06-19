@@ -8,11 +8,12 @@ import (
 	"miniegg/parser"
 )
 
+
 // Should match
-const ab = "AAA = BBB"
-const eg = "EE = EE GG GGG"
+const ab = "A=B C=D"
+const ri = "R = I O E E = I N"
 //Should fail to match
-const ff = "FF = FFF ="
+const ff = "F=F F="
 
 func parse(s []rune) bool {
 	// run GLL parser
@@ -36,6 +37,6 @@ func parseAndPrint(s string) {
 
 func main() {
 	parseAndPrint(ab)
-	parseAndPrint(eg)
+	parseAndPrint(ri)
 	parseAndPrint(ff)
 }
