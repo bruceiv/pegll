@@ -17,32 +17,44 @@ See the [grammar for details.](../../gogll.md)
 
 ### **STATUS ON GRAMMAR**
 #### *Markdown File Creation:* Not working 
-#### *Parser Generated :* Incomplete
+#### *Parser Generated :* Incomplete - parser generated from partially complete md
 #### *Test File Creation:* Incomplete
 #### *Testing Results:* Unknown
 ```
 package "miniegg"
 
-expr    : id not "=" ;
-id      : upcase space ;    
-space   : [ ' ' ] ;
+Expr    : Id neq ; 
+Id      : upC Space ; 
+
+upC     : upcase ;
+Space   :  " "  
+        | empty 
+        ; 
+    eq      : '=' ; 
+    neq     : not "=" ;
 
 ```
 
 
 ### **IN PROGRESS GRAMMARS**
 **Original / Not working**
-    gram    : _ ruler ;
+    gram    : _ ruler ; 
     ruler   : < rule > ;
-    rule    : id '=' _ exprr ;
-    id      : upcase _ ;
-        exprr   : < expr > ;
-    expr    : id not '=' ;
-    _       : [ ' ' ] ;
+    rule    : id '=' _ exprr ; L
+    id      : upcase _ ; L
+        exprr   : < expr > ; L
+    expr    : id not '=' ; S
+    _       : [ ' ' ] ; L
 **Partially Working**
-There is a definite difference between how the parser recognizes uppercase and lowercase.
-    
-    space       : [ ' ' ] ;
+Expr    : Id neq ; 
+Id      : upC Space ; 
+
+upC     : upcase ;
+Space   :  " "  
+        | empty 
+        ; 
+eq      : '=' ; 
+neq     : not "=" ;
 #
 ### **COPYRIGHT AND LICENSING INFORMATION**
 **Copyright 2021 Brynn Harrington and Emily Hoppe**

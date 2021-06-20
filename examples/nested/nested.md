@@ -26,12 +26,14 @@ See the [grammar for details.](../../gogll.md)
 package "nested"
 
 String      : Content ; 
-Content     : parens / char ;
-parens      : '(' ')' ;
+Content     : Parens / char ;
+Parens      : open Content close ;
+
+open        : '(' ;
+close       : ')' ;
 char        : < letter > ;
 
 ```
-
 ### **IN PROGRESS GRAMMARS**
 **Original / Not working**
     String      : Content ;
@@ -39,11 +41,14 @@ char        : < letter > ;
     Parens      : '(' Content ')' ;
     Char        : < letter > ;
 **Partially Working**
-There is a definite difference between how the parser recognizes uppercase and lowercase.
-    String      : Content ;
-    Content     : parens / char ;
-    parens      : '(' ')' ;
-    char        : < letter > ;
+String      : content ; 
+content     : AltParensChar ;
+Parens      :  open content close ;
+AltParensChar : Parens / char ;
+
+open        : '(' ;
+close       : ')' ;
+char        : < letter > ;
 #
 ### **COPYRIGHT AND LICENSING INFORMATION**
 **Copyright 2021 Brynn Harrington and Emily Hoppe**

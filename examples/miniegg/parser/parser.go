@@ -7,11 +7,11 @@ import (
 	"sort"
 	"strings"
 
-	"nested/lexer"
-	"nested/parser/bsr"
-	"nested/parser/slot"
-	"nested/parser/symbols"
-	"nested/token"
+	"miniegg/lexer"
+	"miniegg/parser/bsr"
+	"miniegg/parser/slot"
+	"miniegg/parser/symbols"
+	"miniegg/token"
 )
 
 type parser struct {
@@ -38,10 +38,10 @@ func newParser(l *lexer.Lexer) *parser {
 		U:      &descriptors{},
 		popped: make(map[poppedNode]bool),
 		crf: map[clusterNode][]*crfNode{
-			{symbols.NT_String, 0}: {},
+			{symbols.NT_Expr, 0}: {},
 		},
 		crfNodes:    map[crfNode]*crfNode{},
-		bsrSet:      bsr.New(symbols.NT_String, l),
+		bsrSet:      bsr.New(symbols.NT_Expr, l),
 		parseErrors: nil,
 	}
 }
@@ -55,7 +55,7 @@ func Parse(l *lexer.Lexer) (*bsr.Set, []*Error) {
 func (p *parser) parse() (*bsr.Set, []*Error) {
 	var L slot.Label
 	m, cU := len(p.lex.Tokens)-1, 0
-	p.ntAdd(symbols.NT_String, 0)
+	p.ntAdd(symbols.NT_Expr, 0)
 	// p.DumpDescriptors()
 	for !p.R.empty() {
 		L, cU, p.cI = p.R.remove()
@@ -65,65 +65,63 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 		// p.DumpDescriptors()
 
 		switch L {
-		case slot.Content0R0: // Content : ∙Parens
+		case slot.Expr0R0: // Expr : ∙Id neq
 
-			p.call(slot.Content0R1, cU, p.cI)
-		case slot.Content0R1: // Content : Parens ∙
+			p.call(slot.Expr0R1, cU, p.cI)
+		case slot.Expr0R1: // Expr : Id ∙neq
 
-			if p.follow(symbols.NT_Content) {
-				p.rtn(symbols.NT_Content, cU, p.cI)
-			} else {
-				p.parseError(slot.Content0R0, p.cI, followSets[symbols.NT_Content])
-			}
-		case slot.Content1R0: // Content : ∙char
-
-			p.bsrSet.Add(slot.Content1R1, cU, p.cI, p.cI+1)
-			p.cI++
-			if p.follow(symbols.NT_Content) {
-				p.rtn(symbols.NT_Content, cU, p.cI)
-			} else {
-				p.parseError(slot.Content1R0, p.cI, followSets[symbols.NT_Content])
-			}
-		case slot.Parens0R0: // Parens : ∙open Content close
-
-			p.bsrSet.Add(slot.Parens0R1, cU, p.cI, p.cI+1)
-			p.cI++
-			if !p.testSelect(slot.Parens0R1) {
-				p.parseError(slot.Parens0R1, p.cI, first[slot.Parens0R1])
+			if !p.testSelect(slot.Expr0R1) {
+				p.parseError(slot.Expr0R1, p.cI, first[slot.Expr0R1])
 				break
 			}
 
-			p.call(slot.Parens0R2, cU, p.cI)
-		case slot.Parens0R2: // Parens : open Content ∙close
+			p.bsrSet.Add(slot.Expr0R2, cU, p.cI, p.cI+1)
+			p.cI++
+			if p.follow(symbols.NT_Expr) {
+				p.rtn(symbols.NT_Expr, cU, p.cI)
+			} else {
+				p.parseError(slot.Expr0R0, p.cI, followSets[symbols.NT_Expr])
+			}
+		case slot.Id0R0: // Id : ∙upC Space
 
-			if !p.testSelect(slot.Parens0R2) {
-				p.parseError(slot.Parens0R2, p.cI, first[slot.Parens0R2])
+			p.bsrSet.Add(slot.Id0R1, cU, p.cI, p.cI+1)
+			p.cI++
+			if !p.testSelect(slot.Id0R1) {
+				p.parseError(slot.Id0R1, p.cI, first[slot.Id0R1])
 				break
 			}
 
-			p.bsrSet.Add(slot.Parens0R3, cU, p.cI, p.cI+1)
-			p.cI++
-			if p.follow(symbols.NT_Parens) {
-				p.rtn(symbols.NT_Parens, cU, p.cI)
+			p.call(slot.Id0R2, cU, p.cI)
+		case slot.Id0R2: // Id : upC Space ∙
+
+			if p.follow(symbols.NT_Id) {
+				p.rtn(symbols.NT_Id, cU, p.cI)
 			} else {
-				p.parseError(slot.Parens0R0, p.cI, followSets[symbols.NT_Parens])
+				p.parseError(slot.Id0R0, p.cI, followSets[symbols.NT_Id])
 			}
-		case slot.String0R0: // String : ∙Content
+		case slot.Space0R0: // Space : ∙
 
-			p.call(slot.String0R1, cU, p.cI)
-		case slot.String0R1: // String : Content ∙
-
-			if p.follow(symbols.NT_String) {
-				p.rtn(symbols.NT_String, cU, p.cI)
+			p.bsrSet.Add(slot.Space0R1, cU, p.cI, p.cI+1)
+			p.cI++
+			if p.follow(symbols.NT_Space) {
+				p.rtn(symbols.NT_Space, cU, p.cI)
 			} else {
-				p.parseError(slot.String0R0, p.cI, followSets[symbols.NT_String])
+				p.parseError(slot.Space0R0, p.cI, followSets[symbols.NT_Space])
+			}
+		case slot.Space1R0: // Space : ∙
+			p.bsrSet.AddEmpty(slot.Space1R0, p.cI)
+
+			if p.follow(symbols.NT_Space) {
+				p.rtn(symbols.NT_Space, cU, p.cI)
+			} else {
+				p.parseError(slot.Space1R0, p.cI, followSets[symbols.NT_Space])
 			}
 
 		default:
 			panic("This must not happen")
 		}
 	}
-	if !p.bsrSet.Contain(symbols.NT_String, 0, m) {
+	if !p.bsrSet.Contain(symbols.NT_Expr, 0, m) {
 		p.sortParseErrors()
 		return nil, p.parseErrors
 	}
@@ -360,67 +358,57 @@ func (p *parser) testSelect(l slot.Label) bool {
 }
 
 var first = []map[token.Type]string{
-	// Content : ∙Parens
+	// Expr : ∙Id neq
 	{
-		token.T_2: "open",
+		token.T_3: "upC",
 	},
-	// Content : Parens ∙
+	// Expr : Id ∙neq
+	{
+		token.T_2: "neq",
+	},
+	// Expr : Id neq ∙
 	{
 		token.EOF: "$",
-		token.T_1: "close",
 	},
-	// Content : ∙char
+	// Id : ∙upC Space
 	{
-		token.T_0: "char",
+		token.T_3: "upC",
 	},
-	// Content : char ∙
+	// Id : upC ∙Space
 	{
-		token.EOF: "$",
-		token.T_1: "close",
+		token.T_0: " ",
+		token.T_2: "neq",
 	},
-	// Parens : ∙open Content close
+	// Id : upC Space ∙
 	{
-		token.T_2: "open",
+		token.T_2: "neq",
 	},
-	// Parens : open ∙Content close
+	// Space : ∙
 	{
-		token.T_0: "char",
-		token.T_2: "open",
+		token.T_0: " ",
 	},
-	// Parens : open Content ∙close
+	// Space :   ∙
 	{
-		token.T_1: "close",
+		token.T_2: "neq",
 	},
-	// Parens : open Content close ∙
+	// Space : ∙
 	{
-		token.EOF: "$",
-		token.T_1: "close",
-	},
-	// String : ∙Content
-	{
-		token.T_0: "char",
-		token.T_2: "open",
-	},
-	// String : Content ∙
-	{
-		token.EOF: "$",
+		token.T_2: "neq",
 	},
 }
 
 var followSets = []map[token.Type]string{
-	// Content
+	// Expr
 	{
 		token.EOF: "$",
-		token.T_1: "close",
 	},
-	// Parens
+	// Id
 	{
-		token.EOF: "$",
-		token.T_1: "close",
+		token.T_2: "neq",
 	},
-	// String
+	// Space
 	{
-		token.EOF: "$",
+		token.T_2: "neq",
 	},
 }
 

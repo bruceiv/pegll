@@ -6,22 +6,21 @@ import(
 	"bytes"
 	"fmt"
 	
-	"nested/parser/symbols"
+	"miniegg/parser/symbols"
 )
 
 type Label int
 
 const(
-	Content0R0 Label = iota
-	Content0R1
-	Content1R0
-	Content1R1
-	Parens0R0
-	Parens0R1
-	Parens0R2
-	Parens0R3
-	String0R0
-	String0R1
+	Expr0R0 Label = iota
+	Expr0R1
+	Expr0R2
+	Id0R0
+	Id0R1
+	Id0R2
+	Space0R0
+	Space0R1
+	Space1R0
 )
 
 type Slot struct {
@@ -111,102 +110,91 @@ func (s *Slot) String() string {
 }
 
 var slots = map[Label]*Slot{ 
-	Content0R0: {
-		symbols.NT_Content, 0, 0, 
+	Expr0R0: {
+		symbols.NT_Expr, 0, 0, 
 		symbols.Symbols{  
-			symbols.NT_Parens,
+			symbols.NT_Id, 
+			symbols.T_2,
 		}, 
-		Content0R0, 
+		Expr0R0, 
 	},
-	Content0R1: {
-		symbols.NT_Content, 0, 1, 
+	Expr0R1: {
+		symbols.NT_Expr, 0, 1, 
 		symbols.Symbols{  
-			symbols.NT_Parens,
+			symbols.NT_Id, 
+			symbols.T_2,
 		}, 
-		Content0R1, 
+		Expr0R1, 
 	},
-	Content1R0: {
-		symbols.NT_Content, 1, 0, 
+	Expr0R2: {
+		symbols.NT_Expr, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_Id, 
+			symbols.T_2,
+		}, 
+		Expr0R2, 
+	},
+	Id0R0: {
+		symbols.NT_Id, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_3, 
+			symbols.NT_Space,
+		}, 
+		Id0R0, 
+	},
+	Id0R1: {
+		symbols.NT_Id, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_3, 
+			symbols.NT_Space,
+		}, 
+		Id0R1, 
+	},
+	Id0R2: {
+		symbols.NT_Id, 0, 2, 
+		symbols.Symbols{  
+			symbols.T_3, 
+			symbols.NT_Space,
+		}, 
+		Id0R2, 
+	},
+	Space0R0: {
+		symbols.NT_Space, 0, 0, 
 		symbols.Symbols{  
 			symbols.T_0,
 		}, 
-		Content1R0, 
+		Space0R0, 
 	},
-	Content1R1: {
-		symbols.NT_Content, 1, 1, 
+	Space0R1: {
+		symbols.NT_Space, 0, 1, 
 		symbols.Symbols{  
 			symbols.T_0,
 		}, 
-		Content1R1, 
+		Space0R1, 
 	},
-	Parens0R0: {
-		symbols.NT_Parens, 0, 0, 
-		symbols.Symbols{  
-			symbols.T_2, 
-			symbols.NT_Content, 
-			symbols.T_1,
+	Space1R0: {
+		symbols.NT_Space, 1, 0, 
+		symbols.Symbols{ 
 		}, 
-		Parens0R0, 
-	},
-	Parens0R1: {
-		symbols.NT_Parens, 0, 1, 
-		symbols.Symbols{  
-			symbols.T_2, 
-			symbols.NT_Content, 
-			symbols.T_1,
-		}, 
-		Parens0R1, 
-	},
-	Parens0R2: {
-		symbols.NT_Parens, 0, 2, 
-		symbols.Symbols{  
-			symbols.T_2, 
-			symbols.NT_Content, 
-			symbols.T_1,
-		}, 
-		Parens0R2, 
-	},
-	Parens0R3: {
-		symbols.NT_Parens, 0, 3, 
-		symbols.Symbols{  
-			symbols.T_2, 
-			symbols.NT_Content, 
-			symbols.T_1,
-		}, 
-		Parens0R3, 
-	},
-	String0R0: {
-		symbols.NT_String, 0, 0, 
-		symbols.Symbols{  
-			symbols.NT_Content,
-		}, 
-		String0R0, 
-	},
-	String0R1: {
-		symbols.NT_String, 0, 1, 
-		symbols.Symbols{  
-			symbols.NT_Content,
-		}, 
-		String0R1, 
+		Space1R0, 
 	},
 }
 
 var slotIndex = map[Index]Label { 
-	Index{ symbols.NT_Content,0,0 }: Content0R0,
-	Index{ symbols.NT_Content,0,1 }: Content0R1,
-	Index{ symbols.NT_Content,1,0 }: Content1R0,
-	Index{ symbols.NT_Content,1,1 }: Content1R1,
-	Index{ symbols.NT_Parens,0,0 }: Parens0R0,
-	Index{ symbols.NT_Parens,0,1 }: Parens0R1,
-	Index{ symbols.NT_Parens,0,2 }: Parens0R2,
-	Index{ symbols.NT_Parens,0,3 }: Parens0R3,
-	Index{ symbols.NT_String,0,0 }: String0R0,
-	Index{ symbols.NT_String,0,1 }: String0R1,
+	Index{ symbols.NT_Expr,0,0 }: Expr0R0,
+	Index{ symbols.NT_Expr,0,1 }: Expr0R1,
+	Index{ symbols.NT_Expr,0,2 }: Expr0R2,
+	Index{ symbols.NT_Id,0,0 }: Id0R0,
+	Index{ symbols.NT_Id,0,1 }: Id0R1,
+	Index{ symbols.NT_Id,0,2 }: Id0R2,
+	Index{ symbols.NT_Space,0,0 }: Space0R0,
+	Index{ symbols.NT_Space,0,1 }: Space0R1,
+	Index{ symbols.NT_Space,1,0 }: Space1R0,
 }
 
 var alternates = map[symbols.NT][]Label{ 
-	symbols.NT_String:[]Label{ String0R0 },
-	symbols.NT_Content:[]Label{ Content0R0,Content1R0 },
-	symbols.NT_Parens:[]Label{ Parens0R0 },
+	symbols.NT_Expr:[]Label{ Expr0R0 },
+	symbols.NT_Id:[]Label{ Id0R0 },
+	symbols.NT_Space:[]Label{ Space0R0,Space1R0 },
 }
 
