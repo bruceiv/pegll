@@ -8,30 +8,30 @@
 #### *Copyright and Licensing Information :* See end of file.
 
 ###  **GENERAL DESCRIPTION**
-An originally Egg Parsing grammar created by Aaron Moss ported into the GoGLL grammar to determine if a grammar, under recursive descent, will have exponential runtime.
-Modification of `exp` grammar from [Egg](https://github.com/bruceiv/egg/blob/deriv/grammars/exp.egg) to test an example grammar with possible exponential runtime under recursive descent.
+An originally Egg Parsing grammar created by Aaron Moss ported into the GoGLL grammar to determine if a grammar, under recursive descent, will have exponential runtime. Modification of `exp` grammar from [Egg](https://github.com/bruceiv/egg/blob/deriv/grammars/exp.egg) to test an example grammar with possible exponential runtime under recursive descent.
 
 ### **`exp` Grammar Guide**
-NEED TO FINISH ONE GRAMMAR IS WORKING 
-
+NEED TO FINISH ONCE GRAMMAR IS WORKING 
+- removed newline escape since handled by GoGLL
+- can only have non-terminals in semantic rules
 See the [grammar for details.](../../gogll.md)
 
 ### **STATUS ON GRAMMAR**
-#### *Markdown File Creation:* Not working 
-#### *Parser Generated :* Incomplete
+#### *Markdown File Creation:* Working
+#### *Parser Generated :* Complete
 #### *Test File Creation:* Incomplete
 #### *Testing Results:* Unknown
 ```
 package "exp"
-
-S : A '\n' ;
-
-A : 'a' A 'b' 
-  | 'a' A 'c' 
+S1 : aa S1 bb 
+  | aa S1 cc 
   | empty ;
 
+aa : 'a' ;
+bb : 'b' ;
+cc : 'c' ;
+
 ```
-#
 ### **COPYRIGHT AND LICENSING INFORMATION**
 **Copyright 2021 Brynn Harrington and Emily Hoppe**
 
