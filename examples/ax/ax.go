@@ -24,8 +24,8 @@ func parse(s []rune) bool {
 		return false
 	}
 	// check that root covers whole input
-	//root := bsrSet.GetOrderedRoot()
-	//return root.RightExtent() == bsrSet.GetRightExtent();
+	root := bsrSet.GetOrderedRoot()
+	return root.RightExtent() == bsrSet.GetRightExtent();
 }
 
 func parseAndPrint(s string) {
