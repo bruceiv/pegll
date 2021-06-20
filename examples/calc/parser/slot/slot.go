@@ -18,8 +18,8 @@ const(
 	ELEM0R3
 	ELEM1R0
 	ELEM1R1
-	Expr0R0
-	Expr0R1
+	EXPR0R0
+	EXPR0R1
 	PROD0R0
 	PROD0R1
 	PROD0R2
@@ -172,19 +172,19 @@ var slots = map[Label]*Slot{
 		}, 
 		ELEM1R1, 
 	},
-	Expr0R0: {
-		symbols.NT_Expr, 0, 0, 
+	EXPR0R0: {
+		symbols.NT_EXPR, 0, 0, 
 		symbols.Symbols{  
 			symbols.NT_SUM,
 		}, 
-		Expr0R0, 
+		EXPR0R0, 
 	},
-	Expr0R1: {
-		symbols.NT_Expr, 0, 1, 
+	EXPR0R1: {
+		symbols.NT_EXPR, 0, 1, 
 		symbols.Symbols{  
 			symbols.NT_SUM,
 		}, 
-		Expr0R1, 
+		EXPR0R1, 
 	},
 	PROD0R0: {
 		symbols.NT_PROD, 0, 0, 
@@ -305,8 +305,8 @@ var slotIndex = map[Index]Label {
 	Index{ symbols.NT_ELEM,0,3 }: ELEM0R3,
 	Index{ symbols.NT_ELEM,1,0 }: ELEM1R0,
 	Index{ symbols.NT_ELEM,1,1 }: ELEM1R1,
-	Index{ symbols.NT_Expr,0,0 }: Expr0R0,
-	Index{ symbols.NT_Expr,0,1 }: Expr0R1,
+	Index{ symbols.NT_EXPR,0,0 }: EXPR0R0,
+	Index{ symbols.NT_EXPR,0,1 }: EXPR0R1,
 	Index{ symbols.NT_PROD,0,0 }: PROD0R0,
 	Index{ symbols.NT_PROD,0,1 }: PROD0R1,
 	Index{ symbols.NT_PROD,0,2 }: PROD0R2,
@@ -323,7 +323,7 @@ var slotIndex = map[Index]Label {
 }
 
 var alternates = map[symbols.NT][]Label{ 
-	symbols.NT_Expr:[]Label{ Expr0R0 },
+	symbols.NT_EXPR:[]Label{ EXPR0R0 },
 	symbols.NT_SUM:[]Label{ SUM0R0,SUM1R0 },
 	symbols.NT_PROD:[]Label{ PROD0R0,PROD1R0 },
 	symbols.NT_ELEM:[]Label{ ELEM0R0,ELEM1R0 },

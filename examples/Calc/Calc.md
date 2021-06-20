@@ -29,10 +29,8 @@ package "calc"
 
 EXPR   : SUM ;
 
-SUM    : PROD
-              { plus PROD | minus } ;
-PROD   : ELEM 
-              { times ELEM | divide ELEM } ;
+SUM    : PROD plus PROD | minus  ;
+PROD   : ELEM times ELEM | divide ELEM  ;
 ELEM   : open SUM close | num ;
 
 num    : < number > { ' ' | '\t' } ;
@@ -66,8 +64,10 @@ CLOSE  : ')' _ ;
 
 _      : { ' ' | '\t' } ;
 **Partially Working**
-SUM    : PROD { plus PROD | minus } ;
-PROD   : ELEM { times ELEM | divide ELEM } ;
+EXPR   : SUM ;
+
+SUM    : PROD plus PROD | minus  ;
+PROD   : ELEM times ELEM | divide ELEM  ;
 ELEM   : open SUM close | num ;
 
 num    : < number > { ' ' | '\t' } ;

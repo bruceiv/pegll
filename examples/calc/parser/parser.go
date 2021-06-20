@@ -38,10 +38,10 @@ func newParser(l *lexer.Lexer) *parser {
 		U:      &descriptors{},
 		popped: make(map[poppedNode]bool),
 		crf: map[clusterNode][]*crfNode{
-			{symbols.NT_Expr, 0}: {},
+			{symbols.NT_EXPR, 0}: {},
 		},
 		crfNodes:    map[crfNode]*crfNode{},
-		bsrSet:      bsr.New(symbols.NT_Expr, l),
+		bsrSet:      bsr.New(symbols.NT_EXPR, l),
 		parseErrors: nil,
 	}
 }
@@ -55,7 +55,7 @@ func Parse(l *lexer.Lexer) (*bsr.Set, []*Error) {
 func (p *parser) parse() (*bsr.Set, []*Error) {
 	var L slot.Label
 	m, cU := len(p.lex.Tokens)-1, 0
-	p.ntAdd(symbols.NT_Expr, 0)
+	p.ntAdd(symbols.NT_EXPR, 0)
 	// p.DumpDescriptors()
 	for !p.R.empty() {
 		L, cU, p.cI = p.R.remove()
@@ -98,15 +98,15 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			} else {
 				p.parseError(slot.ELEM1R0, p.cI, followSets[symbols.NT_ELEM])
 			}
-		case slot.Expr0R0: // Expr : ∙SUM
+		case slot.EXPR0R0: // EXPR : ∙SUM
 
-			p.call(slot.Expr0R1, cU, p.cI)
-		case slot.Expr0R1: // Expr : SUM ∙
+			p.call(slot.EXPR0R1, cU, p.cI)
+		case slot.EXPR0R1: // EXPR : SUM ∙
 
-			if p.follow(symbols.NT_Expr) {
-				p.rtn(symbols.NT_Expr, cU, p.cI)
+			if p.follow(symbols.NT_EXPR) {
+				p.rtn(symbols.NT_EXPR, cU, p.cI)
 			} else {
-				p.parseError(slot.Expr0R0, p.cI, followSets[symbols.NT_Expr])
+				p.parseError(slot.EXPR0R0, p.cI, followSets[symbols.NT_EXPR])
 			}
 		case slot.PROD0R0: // PROD : ∙ELEM times ELEM
 
@@ -189,7 +189,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			panic("This must not happen")
 		}
 	}
-	if !p.bsrSet.Contain(symbols.NT_Expr, 0, m) {
+	if !p.bsrSet.Contain(symbols.NT_EXPR, 0, m) {
 		p.sortParseErrors()
 		return nil, p.parseErrors
 	}
@@ -459,14 +459,14 @@ var first = []map[token.Type]string{
 		token.T_5: "plus",
 		token.T_6: "times",
 	},
-	// Expr : ∙SUM
+	// EXPR : ∙SUM
 	{
 		token.T_1: "divide",
 		token.T_2: "minus",
 		token.T_3: "num",
 		token.T_4: "open",
 	},
-	// Expr : SUM ∙
+	// EXPR : SUM ∙
 	{
 		token.EOF: "$",
 	},
@@ -545,7 +545,7 @@ var followSets = []map[token.Type]string{
 		token.T_5: "plus",
 		token.T_6: "times",
 	},
-	// Expr
+	// EXPR
 	{
 		token.EOF: "$",
 	},

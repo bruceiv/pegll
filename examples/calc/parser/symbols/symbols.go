@@ -15,7 +15,7 @@ func (T) isSymbol() {}
 type NT int
 const( 
 	NT_ELEM NT = iota
-	NT_Expr 
+	NT_EXPR 
 	NT_PROD 
 	NT_SUM 
 )
@@ -60,7 +60,7 @@ func (t T) String() string {
 
 var ntToString = []string { 
 	"ELEM", /* NT_ELEM */
-	"Expr", /* NT_Expr */
+	"EXPR", /* NT_EXPR */
 	"PROD", /* NT_PROD */
 	"SUM", /* NT_SUM */ 
 }
@@ -77,7 +77,7 @@ var tToString = []string {
 
 var stringNT = map[string]NT{ 
 	"ELEM":NT_ELEM,
-	"Expr":NT_Expr,
+	"EXPR":NT_EXPR,
 	"PROD":NT_PROD,
 	"SUM":NT_SUM,
 }
