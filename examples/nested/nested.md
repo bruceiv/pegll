@@ -29,7 +29,9 @@ String      : Content ;
 Content     : parens / char ;
 parens      : '(' ')' ;
 char        : < letter > ;
+
 ```
+
 ### **IN PROGRESS GRAMMARS**
 **Original / Not working**
     String      : Content ;

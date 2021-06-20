@@ -24,10 +24,12 @@ See the [grammar for details.](../../gogll.md)
 package "miniegg"
 
 expr    : id not "=" ;
-id      : upcase <letter | ' '> ;    
+id      : upcase space ;    
 space   : [ ' ' ] ;
 
 ```
+
+
 ### **IN PROGRESS GRAMMARS**
 **Original / Not working**
     gram    : _ ruler ;
