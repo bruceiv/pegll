@@ -9,24 +9,25 @@
 
 ###  **GENERAL DESCRIPTION**
 An originally Egg Parsing grammar created by Aaron Moss ported into the GoGLL grammar to determine if a grammar, under recursive descent, will have exponential runtime. Modification of `exp` grammar from [Egg](https://github.com/bruceiv/egg/blob/deriv/grammars/exp.egg) to test an example grammar with possible exponential runtime under recursive descent.
-
-### **`exp` Grammar Guide**
-NEED TO FINISH ONCE GRAMMAR IS WORKING 
-- removed newline escape since handled by GoGLL
-- can only have non-terminals in semantic rules
-See the [grammar for details.](../../gogll.md)
-
 ### **STATUS ON GRAMMAR**
 #### *Markdown File Creation:* Working
 #### *Parser Generated :* Complete
 #### *Test File Creation:* Incomplete
 #### *Testing Results:* Unknown
+### **`exp` Grammar Guide**
+The following grammar will have exponential runtime under recursive descent. It utilizes three lexical rules to act ask token identifiers with one starting rule exercising the recursive descent. 
+See the [grammar for details.](../../gogll.md)
 ```
 package "exp"
-S1 : aa S1 bb 
-  | aa S1 cc 
-  | empty ;
-
+```
+`S1` represents the starting semantic rule exercising recursive descent through calling itself within a set of lexical rules, or empty, choice based on the input grammar. Here, the `|` operator represents unordered choice.
+```
+S1  : aa S1 bb 
+    | aa S1 cc 
+    | empty ;
+```
+The following rules are the lexical rules representing a single character: `aa` represents `'a'`, `bb` represents `'b'`, and `cc` represents `'c'`. As rules must be named using more than one character, they are named by the character repeated twice. This additionally satisfies that `S1` must utilize non-terminal token identifiers. 
+```
 aa : 'a' ;
 bb : 'b' ;
 cc : 'c' ;
