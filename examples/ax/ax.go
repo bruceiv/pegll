@@ -16,6 +16,7 @@ const aaa = `aaa`
 //Should fail to match
 const ab = `ab`
 
+// use the GetRoot(s) function from bsr.go
 func parse(s []rune) bool {
 	// run GLL parser
 	bsrSet, _ := parser.Parse(lexer.New(s))
