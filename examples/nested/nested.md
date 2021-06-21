@@ -9,46 +9,41 @@
 
 ###  **GENERAL DESCRIPTION**
 An originally Egg Parsing grammar created by Aaron Moss ported into the GoGLL grammar to determine test a given structure. Modification of `nested` grammar from [Egg](https://github.com/bruceiv/egg/blob/deriv/grammars/nested.egg) to test an example structure similar to XML.
-
-### **`miniegg` Grammar Guide**
-CURRENT ERRORS: 
-- only works for single parentheses 
-- need to implement a zero+ number of possible nesting 
-
-See the [grammar for details.](../../gogll.md)
-
 ### **STATUS ON GRAMMAR**
-#### *Markdown File Creation:* Not working 
-#### *Parser Generated :* Incomplete - files generated from partially correct grammar 
+#### *Markdown File Creation:* Working
+#### *Parser Generated :* Complete
 #### *Test File Creation:* Incomplete
 #### *Testing Results:* Unknown
+### **`nested` Grammar Guide**
+The following grammar utilizes recursion through semantic rules to test matching nested parentheses. 
 ```
 package "nested"
-
+```
+The semantic rule `String` represents the starting rule for testing the nested parenthesis through simply calling on `Content`.
+```
 String      : Content ; 
-Content     : Parens / char ;
+```
+`Content` is a semantic, recursive rule calling on `ParensOrChar` and `Content` allowing for matching the nested parenthesis in the grammar passed unless the string is `empty` as defined by the [grammar rules.](../../gogll.md) This is an ordered choice signified by the `/` operator. 
+```
+Content     : ParensOrChar Content 
+            / empty ;
+```
+`Parens` is a semantic rule that calls on `Content` to match the content within the nested parenthesis. 
+```
 Parens      : open Content close ;
-
+```
+`ParensOrChar` is a semantic rule that represents an ordered choice between `Parens` and `char`.
+```
+ParensOrChar: Parens 
+            / char ;
+```
+`open`, `close`, and `letter` represent lexical rules for the open parentheses '(', the close parentheses')', and one or more characters from the unicode letter class through the `<>` operator, respectively. 
+```
 open        : '(' ;
 close       : ')' ;
 char        : < letter > ;
 
 ```
-### **IN PROGRESS GRAMMARS**
-**Original / Not working**
-    String      : Content ;
-    Content     : { Parens / Char } ;
-    Parens      : '(' Content ')' ;
-    Char        : < letter > ;
-**Partially Working**
-String      : content ; 
-content     : AltParensChar ;
-Parens      :  open content close ;
-AltParensChar : Parens / char ;
-
-open        : '(' ;
-close       : ')' ;
-char        : < letter > ;
 #
 ### **COPYRIGHT AND LICENSING INFORMATION**
 **Copyright 2021 Brynn Harrington and Emily Hoppe**

@@ -16,6 +16,7 @@ type NT int
 const( 
 	NT_Content NT = iota
 	NT_Parens 
+	NT_ParensOrChar 
 	NT_String 
 )
 
@@ -56,6 +57,7 @@ func (t T) String() string {
 var ntToString = []string { 
 	"Content", /* NT_Content */
 	"Parens", /* NT_Parens */
+	"ParensOrChar", /* NT_ParensOrChar */
 	"String", /* NT_String */ 
 }
 
@@ -68,5 +70,6 @@ var tToString = []string {
 var stringNT = map[string]NT{ 
 	"Content":NT_Content,
 	"Parens":NT_Parens,
+	"ParensOrChar":NT_ParensOrChar,
 	"String":NT_String,
 }

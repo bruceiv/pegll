@@ -14,12 +14,16 @@ type Label int
 const(
 	Content0R0 Label = iota
 	Content0R1
+	Content0R2
 	Content1R0
-	Content1R1
 	Parens0R0
 	Parens0R1
 	Parens0R2
 	Parens0R3
+	ParensOrChar0R0
+	ParensOrChar0R1
+	ParensOrChar1R0
+	ParensOrChar1R1
 	String0R0
 	String0R1
 )
@@ -114,30 +118,32 @@ var slots = map[Label]*Slot{
 	Content0R0: {
 		symbols.NT_Content, 0, 0, 
 		symbols.Symbols{  
-			symbols.NT_Parens,
+			symbols.NT_ParensOrChar, 
+			symbols.NT_Content,
 		}, 
 		Content0R0, 
 	},
 	Content0R1: {
 		symbols.NT_Content, 0, 1, 
 		symbols.Symbols{  
-			symbols.NT_Parens,
+			symbols.NT_ParensOrChar, 
+			symbols.NT_Content,
 		}, 
 		Content0R1, 
 	},
+	Content0R2: {
+		symbols.NT_Content, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_ParensOrChar, 
+			symbols.NT_Content,
+		}, 
+		Content0R2, 
+	},
 	Content1R0: {
 		symbols.NT_Content, 1, 0, 
-		symbols.Symbols{  
-			symbols.T_0,
+		symbols.Symbols{ 
 		}, 
 		Content1R0, 
-	},
-	Content1R1: {
-		symbols.NT_Content, 1, 1, 
-		symbols.Symbols{  
-			symbols.T_0,
-		}, 
-		Content1R1, 
 	},
 	Parens0R0: {
 		symbols.NT_Parens, 0, 0, 
@@ -175,6 +181,34 @@ var slots = map[Label]*Slot{
 		}, 
 		Parens0R3, 
 	},
+	ParensOrChar0R0: {
+		symbols.NT_ParensOrChar, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_Parens,
+		}, 
+		ParensOrChar0R0, 
+	},
+	ParensOrChar0R1: {
+		symbols.NT_ParensOrChar, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_Parens,
+		}, 
+		ParensOrChar0R1, 
+	},
+	ParensOrChar1R0: {
+		symbols.NT_ParensOrChar, 1, 0, 
+		symbols.Symbols{  
+			symbols.T_0,
+		}, 
+		ParensOrChar1R0, 
+	},
+	ParensOrChar1R1: {
+		symbols.NT_ParensOrChar, 1, 1, 
+		symbols.Symbols{  
+			symbols.T_0,
+		}, 
+		ParensOrChar1R1, 
+	},
 	String0R0: {
 		symbols.NT_String, 0, 0, 
 		symbols.Symbols{  
@@ -194,18 +228,23 @@ var slots = map[Label]*Slot{
 var slotIndex = map[Index]Label { 
 	Index{ symbols.NT_Content,0,0 }: Content0R0,
 	Index{ symbols.NT_Content,0,1 }: Content0R1,
+	Index{ symbols.NT_Content,0,2 }: Content0R2,
 	Index{ symbols.NT_Content,1,0 }: Content1R0,
-	Index{ symbols.NT_Content,1,1 }: Content1R1,
 	Index{ symbols.NT_Parens,0,0 }: Parens0R0,
 	Index{ symbols.NT_Parens,0,1 }: Parens0R1,
 	Index{ symbols.NT_Parens,0,2 }: Parens0R2,
 	Index{ symbols.NT_Parens,0,3 }: Parens0R3,
+	Index{ symbols.NT_ParensOrChar,0,0 }: ParensOrChar0R0,
+	Index{ symbols.NT_ParensOrChar,0,1 }: ParensOrChar0R1,
+	Index{ symbols.NT_ParensOrChar,1,0 }: ParensOrChar1R0,
+	Index{ symbols.NT_ParensOrChar,1,1 }: ParensOrChar1R1,
 	Index{ symbols.NT_String,0,0 }: String0R0,
 	Index{ symbols.NT_String,0,1 }: String0R1,
 }
 
 var alternates = map[symbols.NT][]Label{ 
 	symbols.NT_String:[]Label{ String0R0 },
+	symbols.NT_ParensOrChar:[]Label{ ParensOrChar0R0,ParensOrChar1R0 },
 	symbols.NT_Content:[]Label{ Content0R0,Content1R0 },
 	symbols.NT_Parens:[]Label{ Parens0R0 },
 }

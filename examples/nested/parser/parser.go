@@ -65,20 +65,27 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 		// p.DumpDescriptors()
 
 		switch L {
-		case slot.Content0R0: // Content : ∙Parens
+		case slot.Content0R0: // Content : ∙ParensOrChar Content
 
 			p.call(slot.Content0R1, cU, p.cI)
-		case slot.Content0R1: // Content : Parens ∙
+		case slot.Content0R1: // Content : ParensOrChar ∙Content
+
+			if !p.testSelect(slot.Content0R1) {
+				p.parseError(slot.Content0R1, p.cI, first[slot.Content0R1])
+				break
+			}
+
+			p.call(slot.Content0R2, cU, p.cI)
+		case slot.Content0R2: // Content : ParensOrChar Content ∙
 
 			if p.follow(symbols.NT_Content) {
 				p.rtn(symbols.NT_Content, cU, p.cI)
 			} else {
 				p.parseError(slot.Content0R0, p.cI, followSets[symbols.NT_Content])
 			}
-		case slot.Content1R0: // Content : ∙char
+		case slot.Content1R0: // Content : ∙
+			p.bsrSet.AddEmpty(slot.Content1R0, p.cI)
 
-			p.bsrSet.Add(slot.Content1R1, cU, p.cI, p.cI+1)
-			p.cI++
 			if p.follow(symbols.NT_Content) {
 				p.rtn(symbols.NT_Content, cU, p.cI)
 			} else {
@@ -107,6 +114,25 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 				p.rtn(symbols.NT_Parens, cU, p.cI)
 			} else {
 				p.parseError(slot.Parens0R0, p.cI, followSets[symbols.NT_Parens])
+			}
+		case slot.ParensOrChar0R0: // ParensOrChar : ∙Parens
+
+			p.call(slot.ParensOrChar0R1, cU, p.cI)
+		case slot.ParensOrChar0R1: // ParensOrChar : Parens ∙
+
+			if p.follow(symbols.NT_ParensOrChar) {
+				p.rtn(symbols.NT_ParensOrChar, cU, p.cI)
+			} else {
+				p.parseError(slot.ParensOrChar0R0, p.cI, followSets[symbols.NT_ParensOrChar])
+			}
+		case slot.ParensOrChar1R0: // ParensOrChar : ∙char
+
+			p.bsrSet.Add(slot.ParensOrChar1R1, cU, p.cI, p.cI+1)
+			p.cI++
+			if p.follow(symbols.NT_ParensOrChar) {
+				p.rtn(symbols.NT_ParensOrChar, cU, p.cI)
+			} else {
+				p.parseError(slot.ParensOrChar1R0, p.cI, followSets[symbols.NT_ParensOrChar])
 			}
 		case slot.String0R0: // String : ∙Content
 
@@ -360,20 +386,24 @@ func (p *parser) testSelect(l slot.Label) bool {
 }
 
 var first = []map[token.Type]string{
-	// Content : ∙Parens
+	// Content : ∙ParensOrChar Content
 	{
+		token.T_0: "char",
 		token.T_2: "open",
 	},
-	// Content : Parens ∙
+	// Content : ParensOrChar ∙Content
+	{
+		token.T_0: "char",
+		token.T_2: "open",
+		token.EOF: "$",
+		token.T_1: "close",
+	},
+	// Content : ParensOrChar Content ∙
 	{
 		token.EOF: "$",
 		token.T_1: "close",
 	},
-	// Content : ∙char
-	{
-		token.T_0: "char",
-	},
-	// Content : char ∙
+	// Content : ∙
 	{
 		token.EOF: "$",
 		token.T_1: "close",
@@ -385,6 +415,7 @@ var first = []map[token.Type]string{
 	// Parens : open ∙Content close
 	{
 		token.T_0: "char",
+		token.T_1: "close",
 		token.T_2: "open",
 	},
 	// Parens : open Content ∙close
@@ -394,12 +425,37 @@ var first = []map[token.Type]string{
 	// Parens : open Content close ∙
 	{
 		token.EOF: "$",
+		token.T_0: "char",
 		token.T_1: "close",
+		token.T_2: "open",
+	},
+	// ParensOrChar : ∙Parens
+	{
+		token.T_2: "open",
+	},
+	// ParensOrChar : Parens ∙
+	{
+		token.EOF: "$",
+		token.T_0: "char",
+		token.T_1: "close",
+		token.T_2: "open",
+	},
+	// ParensOrChar : ∙char
+	{
+		token.T_0: "char",
+	},
+	// ParensOrChar : char ∙
+	{
+		token.EOF: "$",
+		token.T_0: "char",
+		token.T_1: "close",
+		token.T_2: "open",
 	},
 	// String : ∙Content
 	{
 		token.T_0: "char",
 		token.T_2: "open",
+		token.EOF: "$",
 	},
 	// String : Content ∙
 	{
@@ -416,7 +472,16 @@ var followSets = []map[token.Type]string{
 	// Parens
 	{
 		token.EOF: "$",
+		token.T_0: "char",
 		token.T_1: "close",
+		token.T_2: "open",
+	},
+	// ParensOrChar
+	{
+		token.EOF: "$",
+		token.T_0: "char",
+		token.T_1: "close",
+		token.T_2: "open",
 	},
 	// String
 	{
