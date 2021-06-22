@@ -12,10 +12,10 @@ import(
 type Label int
 
 const(
-	LineBlock_Comment0R0 Label = iota
-	LineBlock_Comment0R1
-	LineBlock_Comment1R0
-	LineBlock_Comment1R1
+	LineOrBlock0R0 Label = iota
+	LineOrBlock0R1
+	LineOrBlock1R0
+	LineOrBlock1R1
 )
 
 type Slot struct {
@@ -105,44 +105,44 @@ func (s *Slot) String() string {
 }
 
 var slots = map[Label]*Slot{ 
-	LineBlock_Comment0R0: {
-		symbols.NT_LineBlock_Comment, 0, 0, 
+	LineOrBlock0R0: {
+		symbols.NT_LineOrBlock, 0, 0, 
 		symbols.Symbols{  
 			symbols.T_2,
 		}, 
-		LineBlock_Comment0R0, 
+		LineOrBlock0R0, 
 	},
-	LineBlock_Comment0R1: {
-		symbols.NT_LineBlock_Comment, 0, 1, 
+	LineOrBlock0R1: {
+		symbols.NT_LineOrBlock, 0, 1, 
 		symbols.Symbols{  
 			symbols.T_2,
 		}, 
-		LineBlock_Comment0R1, 
+		LineOrBlock0R1, 
 	},
-	LineBlock_Comment1R0: {
-		symbols.NT_LineBlock_Comment, 1, 0, 
+	LineOrBlock1R0: {
+		symbols.NT_LineOrBlock, 1, 0, 
 		symbols.Symbols{  
 			symbols.T_0,
 		}, 
-		LineBlock_Comment1R0, 
+		LineOrBlock1R0, 
 	},
-	LineBlock_Comment1R1: {
-		symbols.NT_LineBlock_Comment, 1, 1, 
+	LineOrBlock1R1: {
+		symbols.NT_LineOrBlock, 1, 1, 
 		symbols.Symbols{  
 			symbols.T_0,
 		}, 
-		LineBlock_Comment1R1, 
+		LineOrBlock1R1, 
 	},
 }
 
 var slotIndex = map[Index]Label { 
-	Index{ symbols.NT_LineBlock_Comment,0,0 }: LineBlock_Comment0R0,
-	Index{ symbols.NT_LineBlock_Comment,0,1 }: LineBlock_Comment0R1,
-	Index{ symbols.NT_LineBlock_Comment,1,0 }: LineBlock_Comment1R0,
-	Index{ symbols.NT_LineBlock_Comment,1,1 }: LineBlock_Comment1R1,
+	Index{ symbols.NT_LineOrBlock,0,0 }: LineOrBlock0R0,
+	Index{ symbols.NT_LineOrBlock,0,1 }: LineOrBlock0R1,
+	Index{ symbols.NT_LineOrBlock,1,0 }: LineOrBlock1R0,
+	Index{ symbols.NT_LineOrBlock,1,1 }: LineOrBlock1R1,
 }
 
 var alternates = map[symbols.NT][]Label{ 
-	symbols.NT_LineBlock_Comment:[]Label{ LineBlock_Comment0R0,LineBlock_Comment1R0 },
+	symbols.NT_LineOrBlock:[]Label{ LineOrBlock0R0,LineOrBlock1R0 },
 }
 

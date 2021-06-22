@@ -38,10 +38,10 @@ func newParser(l *lexer.Lexer) *parser {
 		U:      &descriptors{},
 		popped: make(map[poppedNode]bool),
 		crf: map[clusterNode][]*crfNode{
-			{symbols.NT_LineBlock_Comment, 0}: {},
+			{symbols.NT_LineOrBlock, 0}: {},
 		},
 		crfNodes:    map[crfNode]*crfNode{},
-		bsrSet:      bsr.New(symbols.NT_LineBlock_Comment, l),
+		bsrSet:      bsr.New(symbols.NT_LineOrBlock, l),
 		parseErrors: nil,
 	}
 }
@@ -55,7 +55,7 @@ func Parse(l *lexer.Lexer) (*bsr.Set, []*Error) {
 func (p *parser) parse() (*bsr.Set, []*Error) {
 	var L slot.Label
 	m, cU := len(p.lex.Tokens)-1, 0
-	p.ntAdd(symbols.NT_LineBlock_Comment, 0)
+	p.ntAdd(symbols.NT_LineOrBlock, 0)
 	// p.DumpDescriptors()
 	for !p.R.empty() {
 		L, cU, p.cI = p.R.remove()
@@ -65,30 +65,30 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 		// p.DumpDescriptors()
 
 		switch L {
-		case slot.LineBlock_Comment0R0: // LineBlock_Comment : ∙line_comment
+		case slot.LineOrBlock0R0: // LineOrBlock : ∙line_comment
 
-			p.bsrSet.Add(slot.LineBlock_Comment0R1, cU, p.cI, p.cI+1)
+			p.bsrSet.Add(slot.LineOrBlock0R1, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_LineBlock_Comment) {
-				p.rtn(symbols.NT_LineBlock_Comment, cU, p.cI)
+			if p.follow(symbols.NT_LineOrBlock) {
+				p.rtn(symbols.NT_LineOrBlock, cU, p.cI)
 			} else {
-				p.parseError(slot.LineBlock_Comment0R0, p.cI, followSets[symbols.NT_LineBlock_Comment])
+				p.parseError(slot.LineOrBlock0R0, p.cI, followSets[symbols.NT_LineOrBlock])
 			}
-		case slot.LineBlock_Comment1R0: // LineBlock_Comment : ∙block_comment
+		case slot.LineOrBlock1R0: // LineOrBlock : ∙block_comment
 
-			p.bsrSet.Add(slot.LineBlock_Comment1R1, cU, p.cI, p.cI+1)
+			p.bsrSet.Add(slot.LineOrBlock1R1, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_LineBlock_Comment) {
-				p.rtn(symbols.NT_LineBlock_Comment, cU, p.cI)
+			if p.follow(symbols.NT_LineOrBlock) {
+				p.rtn(symbols.NT_LineOrBlock, cU, p.cI)
 			} else {
-				p.parseError(slot.LineBlock_Comment1R0, p.cI, followSets[symbols.NT_LineBlock_Comment])
+				p.parseError(slot.LineOrBlock1R0, p.cI, followSets[symbols.NT_LineOrBlock])
 			}
 
 		default:
 			panic("This must not happen")
 		}
 	}
-	if !p.bsrSet.Contain(symbols.NT_LineBlock_Comment, 0, m) {
+	if !p.bsrSet.Contain(symbols.NT_LineOrBlock, 0, m) {
 		p.sortParseErrors()
 		return nil, p.parseErrors
 	}
@@ -325,26 +325,26 @@ func (p *parser) testSelect(l slot.Label) bool {
 }
 
 var first = []map[token.Type]string{
-	// LineBlock_Comment : ∙line_comment
+	// LineOrBlock : ∙line_comment
 	{
 		token.T_2: "line_comment",
 	},
-	// LineBlock_Comment : line_comment ∙
+	// LineOrBlock : line_comment ∙
 	{
 		token.EOF: "$",
 	},
-	// LineBlock_Comment : ∙block_comment
+	// LineOrBlock : ∙block_comment
 	{
 		token.T_0: "block_comment",
 	},
-	// LineBlock_Comment : block_comment ∙
+	// LineOrBlock : block_comment ∙
 	{
 		token.EOF: "$",
 	},
 }
 
 var followSets = []map[token.Type]string{
-	// LineBlock_Comment
+	// LineOrBlock
 	{
 		token.EOF: "$",
 	},

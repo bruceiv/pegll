@@ -22,6 +22,7 @@ NEED TO FIX:
 ```
 package "eggr"
 
+space           : any " \t\r\n" ;  
 ```
 `LineOrBlock` represents the semantic rule for either a line or a block comment. 
 `!line_comment` is a lexical rule representing a C-style line comment. Everything from the first slash to the end of line is a comment. 
@@ -36,7 +37,12 @@ LineOrBlock     : line_comment
                 { not "*" 
                 | '*' not "/" 
                 } '*''/' ;
-end_of_line     : any "\r\n" ;
+```
+`end_of_line` is a lexical rule for the escape characters that signify the end of the line. Any of these characters will indicate the end of line has been reached in `eggr`. 
+```
+Carriage_return : "\r\n" ;
+
+
 
 ```
 #### ORIGINAL GRAMMAR
@@ -99,7 +105,7 @@ end_of_line     : any "\r\n" ;
                         | end_of_line ;
 
 
-
+------------------------------------ MAY NEED TO FIX end of line
         end_of_line     : "\r\n" 
                         / '\n' 
                         / '\r' ;
