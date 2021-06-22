@@ -4,7 +4,7 @@
 #### *Authors :* Emily Hoppe Copyright (C) 2021
 #### *Adapted from :* Aaron Moss's [`Calc` Egg Grammar](https://github.com/bruceiv/egg/blob/deriv/grammars/Calc.egg)
 #### *Creation Date :* June 17, 2021 
-#### *Last Modified :* June 18, 2021
+#### *Last Modified :* June 22, 2021
 #### *Copyright and Licensing Information :* See end of file.
 
 ###  **GENERAL DESCRIPTION**
@@ -20,33 +20,38 @@ ERRORS:
 See the [grammar for details.](../../gogll.md)
 
 ### **STATUS ON GRAMMAR**
-#### *Markdown File Creation:* Not working 
-#### *Parser Generated :* Incomplete
+#### *Markdown File Creation:* Working 
+#### *Parser Generated :* Complete
 #### *Test File Creation:* Incomplete
 #### *Testing Results:* Unknown
 ```
 package "calc"
 
-EXPR   : SUM ;
+EXPR   : space SUM ;
 
-SUM    : PROD 
+SUM    : PROD PoMRep ;
 
-       PlusPRODorMinus : plus PROD 
-              | minus  ;
+PoMRep      : PLUSorMINUS PoMRep / empty ;
+PLUSorMINUS : PLUS PROD 
+              | MINUS  ;
 
-PROD   : ELEM 
-       TimeOrDivideELEM : times ELEM 
-                     | divide ELEM  ;
-ELEM   : open SUM close | num ;
+PROD   : ELEM ToDRep ;
 
-num    : < number > space ;
+ToDRep        : TIMESorDIVIDE ToDRep / empty ;
+TIMESorDIVIDE : TIMES ELEM 
+              | DIVIDE ELEM  ;
+              
+ELEM   : OPEN SUM CLOSE 
+       | num ;
 
-plus   : '+' space ;
-minus  : '-' space ;
-times  : '*' space ;
-divide : '/' space ;
-open   : '(' space ;        
-close  : ')' space ;
+num    : < number > { ' ' | '\t' } ;
+
+PLUS   : "+" space ;
+MINUS  : "-" space ;
+TIMES  : "*" space ;
+DIVIDE : "/" space ;
+OPEN   : "(" space ;        
+CLOSE  : ")" space ;
 
 space  : { ' ' | '\t' } ;
 ```

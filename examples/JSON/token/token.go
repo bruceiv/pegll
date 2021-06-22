@@ -127,10 +127,9 @@ const(
     T_18  // optFrac 
     T_19  // plusMinus 
     T_20  // true 
-    T_21  // upSlash 
-    T_22  // zero 
-    T_23  // { 
-    T_24  // } 
+    T_21  // zero 
+    T_22  // { 
+    T_23  // } 
 )
 
 var TypeToString = []string{ 
@@ -160,7 +159,6 @@ var TypeToString = []string{
     "T_21",
     "T_22",
     "T_23",
-    "T_24",
 }
 
 var StringToType = map[string] Type { 
@@ -190,7 +188,6 @@ var StringToType = map[string] Type {
     "T_21" : T_21, 
     "T_22" : T_22, 
     "T_23" : T_23, 
-    "T_24" : T_24, 
 }
 
 var TypeToID = []string { 
@@ -217,7 +214,6 @@ var TypeToID = []string {
     "optFrac", 
     "plusMinus", 
     "true", 
-    "upSlash", 
     "zero", 
     "{", 
     "}", 
@@ -239,7 +235,6 @@ var Suppress = []bool {
     false, 
     false, 
     true, 
-    false, 
     false, 
     false, 
     false, 

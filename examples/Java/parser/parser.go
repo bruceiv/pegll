@@ -38,10 +38,10 @@ func newParser(l *lexer.Lexer) *parser {
 		U:      &descriptors{},
 		popped: make(map[poppedNode]bool),
 		crf: map[clusterNode][]*crfNode{
-			{symbols.NT_WS, 0}: {},
+			{symbols.NT_DoubleLArrow, 0}: {},
 		},
 		crfNodes:    map[crfNode]*crfNode{},
-		bsrSet:      bsr.New(symbols.NT_WS, l),
+		bsrSet:      bsr.New(symbols.NT_DoubleLArrow, l),
 		parseErrors: nil,
 	}
 }
@@ -55,7 +55,7 @@ func Parse(l *lexer.Lexer) (*bsr.Set, []*Error) {
 func (p *parser) parse() (*bsr.Set, []*Error) {
 	var L slot.Label
 	m, cU := len(p.lex.Tokens)-1, 0
-	p.ntAdd(symbols.NT_WS, 0)
+	p.ntAdd(symbols.NT_DoubleLArrow, 0)
 	// p.DumpDescriptors()
 	for !p.R.empty() {
 		L, cU, p.cI = p.R.remove()
@@ -65,57 +65,28 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 		// p.DumpDescriptors()
 
 		switch L {
-		case slot.EscOrLineOrBlock0R0: // EscOrLineOrBlock : ∙line_comment
+		case slot.DoubleLArrow0R0: // DoubleLArrow : ∙>> notAnyTest
 
-			p.bsrSet.Add(slot.EscOrLineOrBlock0R1, cU, p.cI, p.cI+1)
+			p.bsrSet.Add(slot.DoubleLArrow0R1, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_EscOrLineOrBlock) {
-				p.rtn(symbols.NT_EscOrLineOrBlock, cU, p.cI)
-			} else {
-				p.parseError(slot.EscOrLineOrBlock0R0, p.cI, followSets[symbols.NT_EscOrLineOrBlock])
+			if !p.testSelect(slot.DoubleLArrow0R1) {
+				p.parseError(slot.DoubleLArrow0R1, p.cI, first[slot.DoubleLArrow0R1])
+				break
 			}
-		case slot.EscOrLineOrBlock1R0: // EscOrLineOrBlock : ∙block_comment
 
-			p.bsrSet.Add(slot.EscOrLineOrBlock1R1, cU, p.cI, p.cI+1)
+			p.bsrSet.Add(slot.DoubleLArrow0R2, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_EscOrLineOrBlock) {
-				p.rtn(symbols.NT_EscOrLineOrBlock, cU, p.cI)
+			if p.follow(symbols.NT_DoubleLArrow) {
+				p.rtn(symbols.NT_DoubleLArrow, cU, p.cI)
 			} else {
-				p.parseError(slot.EscOrLineOrBlock1R0, p.cI, followSets[symbols.NT_EscOrLineOrBlock])
-			}
-		case slot.EscOrLineOrBlock2R0: // EscOrLineOrBlock : ∙escCharSp
-
-			p.bsrSet.Add(slot.EscOrLineOrBlock2R1, cU, p.cI, p.cI+1)
-			p.cI++
-			if p.follow(symbols.NT_EscOrLineOrBlock) {
-				p.rtn(symbols.NT_EscOrLineOrBlock, cU, p.cI)
-			} else {
-				p.parseError(slot.EscOrLineOrBlock2R0, p.cI, followSets[symbols.NT_EscOrLineOrBlock])
-			}
-		case slot.WS0R0: // WS : ∙EscOrLineOrBlock
-
-			p.call(slot.WS0R1, cU, p.cI)
-		case slot.WS0R1: // WS : EscOrLineOrBlock ∙
-
-			if p.follow(symbols.NT_WS) {
-				p.rtn(symbols.NT_WS, cU, p.cI)
-			} else {
-				p.parseError(slot.WS0R0, p.cI, followSets[symbols.NT_WS])
-			}
-		case slot.WS1R0: // WS : ∙
-			p.bsrSet.AddEmpty(slot.WS1R0, p.cI)
-
-			if p.follow(symbols.NT_WS) {
-				p.rtn(symbols.NT_WS, cU, p.cI)
-			} else {
-				p.parseError(slot.WS1R0, p.cI, followSets[symbols.NT_WS])
+				p.parseError(slot.DoubleLArrow0R0, p.cI, followSets[symbols.NT_DoubleLArrow])
 			}
 
 		default:
 			panic("This must not happen")
 		}
 	}
-	if !p.bsrSet.Contain(symbols.NT_WS, 0, m) {
+	if !p.bsrSet.Contain(symbols.NT_DoubleLArrow, 0, m) {
 		p.sortParseErrors()
 		return nil, p.parseErrors
 	}
@@ -352,52 +323,22 @@ func (p *parser) testSelect(l slot.Label) bool {
 }
 
 var first = []map[token.Type]string{
-	// EscOrLineOrBlock : ∙line_comment
+	// DoubleLArrow : ∙>> notAnyTest
 	{
-		token.T_2: "line_comment",
+		token.T_0: ">>",
 	},
-	// EscOrLineOrBlock : line_comment ∙
+	// DoubleLArrow : >> ∙notAnyTest
 	{
-		token.EOF: "$",
+		token.T_4: "notAnyTest",
 	},
-	// EscOrLineOrBlock : ∙block_comment
-	{
-		token.T_0: "block_comment",
-	},
-	// EscOrLineOrBlock : block_comment ∙
-	{
-		token.EOF: "$",
-	},
-	// EscOrLineOrBlock : ∙escCharSp
-	{
-		token.T_1: "escCharSp",
-	},
-	// EscOrLineOrBlock : escCharSp ∙
-	{
-		token.EOF: "$",
-	},
-	// WS : ∙EscOrLineOrBlock
-	{
-		token.T_0: "block_comment",
-		token.T_1: "escCharSp",
-		token.T_2: "line_comment",
-	},
-	// WS : EscOrLineOrBlock ∙
-	{
-		token.EOF: "$",
-	},
-	// WS : ∙
+	// DoubleLArrow : >> notAnyTest ∙
 	{
 		token.EOF: "$",
 	},
 }
 
 var followSets = []map[token.Type]string{
-	// EscOrLineOrBlock
-	{
-		token.EOF: "$",
-	},
-	// WS
+	// DoubleLArrow
 	{
 		token.EOF: "$",
 	},

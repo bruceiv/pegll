@@ -12,15 +12,9 @@ import(
 type Label int
 
 const(
-	EscOrLineOrBlock0R0 Label = iota
-	EscOrLineOrBlock0R1
-	EscOrLineOrBlock1R0
-	EscOrLineOrBlock1R1
-	EscOrLineOrBlock2R0
-	EscOrLineOrBlock2R1
-	WS0R0
-	WS0R1
-	WS1R0
+	DoubleLArrow0R0 Label = iota
+	DoubleLArrow0R1
+	DoubleLArrow0R2
 )
 
 type Slot struct {
@@ -110,84 +104,39 @@ func (s *Slot) String() string {
 }
 
 var slots = map[Label]*Slot{ 
-	EscOrLineOrBlock0R0: {
-		symbols.NT_EscOrLineOrBlock, 0, 0, 
+	DoubleLArrow0R0: {
+		symbols.NT_DoubleLArrow, 0, 0, 
 		symbols.Symbols{  
-			symbols.T_2,
+			symbols.T_0, 
+			symbols.T_4,
 		}, 
-		EscOrLineOrBlock0R0, 
+		DoubleLArrow0R0, 
 	},
-	EscOrLineOrBlock0R1: {
-		symbols.NT_EscOrLineOrBlock, 0, 1, 
+	DoubleLArrow0R1: {
+		symbols.NT_DoubleLArrow, 0, 1, 
 		symbols.Symbols{  
-			symbols.T_2,
+			symbols.T_0, 
+			symbols.T_4,
 		}, 
-		EscOrLineOrBlock0R1, 
+		DoubleLArrow0R1, 
 	},
-	EscOrLineOrBlock1R0: {
-		symbols.NT_EscOrLineOrBlock, 1, 0, 
+	DoubleLArrow0R2: {
+		symbols.NT_DoubleLArrow, 0, 2, 
 		symbols.Symbols{  
-			symbols.T_0,
+			symbols.T_0, 
+			symbols.T_4,
 		}, 
-		EscOrLineOrBlock1R0, 
-	},
-	EscOrLineOrBlock1R1: {
-		symbols.NT_EscOrLineOrBlock, 1, 1, 
-		symbols.Symbols{  
-			symbols.T_0,
-		}, 
-		EscOrLineOrBlock1R1, 
-	},
-	EscOrLineOrBlock2R0: {
-		symbols.NT_EscOrLineOrBlock, 2, 0, 
-		symbols.Symbols{  
-			symbols.T_1,
-		}, 
-		EscOrLineOrBlock2R0, 
-	},
-	EscOrLineOrBlock2R1: {
-		symbols.NT_EscOrLineOrBlock, 2, 1, 
-		symbols.Symbols{  
-			symbols.T_1,
-		}, 
-		EscOrLineOrBlock2R1, 
-	},
-	WS0R0: {
-		symbols.NT_WS, 0, 0, 
-		symbols.Symbols{  
-			symbols.NT_EscOrLineOrBlock,
-		}, 
-		WS0R0, 
-	},
-	WS0R1: {
-		symbols.NT_WS, 0, 1, 
-		symbols.Symbols{  
-			symbols.NT_EscOrLineOrBlock,
-		}, 
-		WS0R1, 
-	},
-	WS1R0: {
-		symbols.NT_WS, 1, 0, 
-		symbols.Symbols{ 
-		}, 
-		WS1R0, 
+		DoubleLArrow0R2, 
 	},
 }
 
 var slotIndex = map[Index]Label { 
-	Index{ symbols.NT_EscOrLineOrBlock,0,0 }: EscOrLineOrBlock0R0,
-	Index{ symbols.NT_EscOrLineOrBlock,0,1 }: EscOrLineOrBlock0R1,
-	Index{ symbols.NT_EscOrLineOrBlock,1,0 }: EscOrLineOrBlock1R0,
-	Index{ symbols.NT_EscOrLineOrBlock,1,1 }: EscOrLineOrBlock1R1,
-	Index{ symbols.NT_EscOrLineOrBlock,2,0 }: EscOrLineOrBlock2R0,
-	Index{ symbols.NT_EscOrLineOrBlock,2,1 }: EscOrLineOrBlock2R1,
-	Index{ symbols.NT_WS,0,0 }: WS0R0,
-	Index{ symbols.NT_WS,0,1 }: WS0R1,
-	Index{ symbols.NT_WS,1,0 }: WS1R0,
+	Index{ symbols.NT_DoubleLArrow,0,0 }: DoubleLArrow0R0,
+	Index{ symbols.NT_DoubleLArrow,0,1 }: DoubleLArrow0R1,
+	Index{ symbols.NT_DoubleLArrow,0,2 }: DoubleLArrow0R2,
 }
 
 var alternates = map[symbols.NT][]Label{ 
-	symbols.NT_WS:[]Label{ WS0R0,WS1R0 },
-	symbols.NT_EscOrLineOrBlock:[]Label{ EscOrLineOrBlock0R0,EscOrLineOrBlock1R0,EscOrLineOrBlock2R0 },
+	symbols.NT_DoubleLArrow:[]Label{ DoubleLArrow0R0 },
 }
 

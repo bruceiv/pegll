@@ -106,13 +106,14 @@ func (t Type) ID() string {
 const(
     Error  Type = iota  // Error 
     EOF  // $ 
-    T_0  // close 
-    T_1  // divide 
-    T_2  // minus 
-    T_3  // num 
-    T_4  // open 
-    T_5  // plus 
-    T_6  // times 
+    T_0  // ( 
+    T_1  // ) 
+    T_2  // * 
+    T_3  // + 
+    T_4  // - 
+    T_5  // / 
+    T_6  // num 
+    T_7  // space 
 )
 
 var TypeToString = []string{ 
@@ -125,6 +126,7 @@ var TypeToString = []string{
     "T_4",
     "T_5",
     "T_6",
+    "T_7",
 }
 
 var StringToType = map[string] Type { 
@@ -137,21 +139,24 @@ var StringToType = map[string] Type {
     "T_4" : T_4, 
     "T_5" : T_5, 
     "T_6" : T_6, 
+    "T_7" : T_7, 
 }
 
 var TypeToID = []string { 
     "Error", 
     "$", 
-    "close", 
-    "divide", 
-    "minus", 
+    "(", 
+    ")", 
+    "*", 
+    "+", 
+    "-", 
+    "/", 
     "num", 
-    "open", 
-    "plus", 
-    "times", 
+    "space", 
 }
 
 var Suppress = []bool { 
+    false, 
     false, 
     false, 
     false, 

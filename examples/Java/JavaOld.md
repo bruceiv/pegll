@@ -1,52 +1,3 @@
-# **`Java` Grammar**
-### **AUTHORSHIP INFORMATION**
-#### *Authors :* Brynn Harrington and Emily Hoppe Copyright (C) 2021
-#### *Adapted from :* Aaron Moss's [`Java` Egg Grammar](https:github.com/bruceiv/egg/blob/deriv/grammars/Java-u.egg) and Roman Reziejowski's [`Java` Mouse Parser-Generator](http://home.swipnet.se/redz/roman)
-#### *Creation Date :* June 11, 2021 
-#### *Last Modified :* June 18, 2021
-#### *Copyright and Licensing Information :* See end of file.
-
-###  **GENERAL DESCRIPTION**
-An originally Egg Parsing grammar created by Aaron Moss ported into the GoGLL grammar for the `Java` language tests. Modification of `Java` grammar from [Egg](https:github.com/bruceiv/egg/blob/deriv/grammars/Java-u.egg) to test `Java` input files under the parser generated.
-
-### **`Java` Grammar Guide**
-NEED TO FINISH ONE GRAMMAR IS WORKING 
-
-See the [grammar for details.](../../gogll.md)
-
-### **STATUS ON GRAMMAR**
-#### *Markdown File Creation:* Not working 
-#### *Parser Generated :* Incomplete
-#### *Test File Creation:* Incomplete
-#### *Testing Results:* Unknown
-
-```
-package "Java"
-
-```
-### ***Escape Characters/Sequences, Comments, and Spacing***
-- Note: To match the -> operator in GoGLL, the following syntax is used:
-    
-    (Egg): XtoY : X -> Y
-    
-    (GoGLL): XtoY : Y / X XtoY;
-```
-WS                : EscOrLineOrBlock     
-                  | empty                             ;
-EscOrLineOrBlock  : line_comment 
-                  | block_comment                     
-                  | escCharSp                         ;
-      escCharSp   : < any " \t\r\n" >                 ;
-
-
-      !line_comment   : '/' '/' { not "\n" }          ;
-      !block_comment  : '/''*' 
-                { not "*" 
-                | '*' not "/" 
-                } '*''/'                              ;
-      newline     : any "\r\n"                        ;
-
-```
 #### ORIGINAL GRAMMAR
 #### ***Compilation Unit***
 
@@ -631,72 +582,57 @@ BinaryExponent    : pP PSM RepDig1x                   ;
 
 Digit             : number                            ;   
 #### ***Separators and Operators***
-AT                :  '@'            _                 ;
-AND               :  '&'![=&]       _                 ;
+AT                :  "@"           _                 ;
+AND               :  "&"![=&]       _                 ;
 AND_AND           :  "&&"           _                 ;
 AND_EQU           :  "&="           _                 ;
-BANG              :  '!' !'='       _                 ;
-BSR               :  ">>>"!'='      _                 ;
+BANG              :  "!" !"="       _                 ;
+BSR               :  ">>>"!"="      _                 ;
 BSR_EQU           :  ">>>="         _                 ;
-COLON             :  ':'            _                 ;
-COMMA             :  ','            _                 ;
+COLON             :  ":"            _                 ;
+COMMA             :  ","            _                 ;
 DEC               :  "--"           _                 ;
-DIV               :  '/' !'='       _                 ;
+DIV               :  "/" !"="       _                 ;
 DIV_EQU           :  "/="           _                 ;
-DOT               :  '.'            _                 ;
-EQU               :  '=' !'='       _                 ;
+DOT               :  "."            _                 ;
+EQU               :  "=" !"="       _                 ;
 EQUAL             :  "=="           _                 ;
 GE                :  ">="           _                 ;
-GT                :  '>'![=>]       _                 ;
-HAT               :  '^'!'='        _                 ;
+GT                :  ">"![=>]       _                 ;
+HAT               :  "^"!"="        _                 ;
 HAT_EQU           :  "^="           _                 ;
 INC               :  "++"           _                 ;
-LBRK              :  '['            _                 ;
+LBRK              :  "["            _                 ;
 LE                :  "<="           _                 ;
-LPAR              :  '('            _                 ;
-LPOINT            :  '<'            _                 ;
-LT                :  '<'![=<]       _                 ;
-LWING             :  '{'            _                 ;
-MINUS             :  '-'![=\-]      _                 ;
+LPAR              :  "("            _                 ;
+LPOINT            :  "<"            _                 ;
+LT                :  "<"![=<]       _                 ;
+LWING             :  "{"            _                 ;
+MINUS             :  "-"![=\-]      _                 ;
 MINUS_EQU         :  "-="           _                 ;
-MOD               :  '%'!'='        _                 ;
+MOD               :  "%"!"="        _                 ;
 MOD_EQU           :  "%="           _                 ;
 NOT_EQUAL         :  "!="           _                 ;   
-OR                :  '|'![=|]       _                 ;
+OR                :  "|"![=|]       _                 ;
 OR_EQU            :  "|="           _                 ;
 OR_OR             :  "||"           _                 ;
-PLUS              :  '+'![=+]       _                 ;
+PLUS              :  "+"![=+]       _                 ;
 PLUS_EQU          :  "+="           _                 ;
-QUERY             :  '?'            _                 ;
-RBRK              :  ']'            _                 ;
-RPAR              :  ')'            _                 ;
-RPOINT            :  '>'            _                 ;
-RWING             :  '}'            _                 ;
-SEMI              :  ';'            _                 ;
-SL                :  "<<"!'='       _                 ;
+QUERY             :  "?"            _                 ;
+RBRK              :  "]"            _                 ;
+RPAR              :  ")"            _                 ;
+RPOINT            :  ">"            _                 ;
+RWING             :  "}"            _                 ;
+SEMI              :  ";"            _                 ;
+SL                :  "<<"!"="       _                 ;
 SL_EQU            :  "<<="          _                 ;
 SR                :  ">>"![=>]      _                 ;
 SR_EQU            :  ">>="          _                 ;
-STAR              :  '*'!'='        _                 ;
+STAR              :  "*"!"="        _                 ;
 STAR_EQU          :  "*="           _                 ;
-TILDA             :  '~'            _                 ;
-
-#### PARTIALLY WORKING GRAMMAR
-WS                 : EscOrLineOrBlock     
-                  | empty                             ;
-EscOrLineOrBlock  : line_comment 
-                  | block_comment                     
-                  | escCharSp                         ;
-      escCharSp   : < any " \t\r\n" >                 ;
+TILDA             :  "~"            _                 ;
 
 
-      !line_comment   : '/' '/' { not "\n" }          ;
-      !block_comment  : '/''*' 
-                { not "*" 
-                | '*' not "/" 
-                } '*''/'                              ;
-      newline     : any "\r\n"                        ;
-#
 ### **COPYRIGHT AND LICENSING INFORMATION**
 **Copyright 2021 Brynn Harrington and Emily Hoppe**
 

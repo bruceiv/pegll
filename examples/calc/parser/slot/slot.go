@@ -12,7 +12,13 @@ import(
 type Label int
 
 const(
-	ELEM0R0 Label = iota
+	CLOSE0R0 Label = iota
+	CLOSE0R1
+	CLOSE0R2
+	DIVIDE0R0
+	DIVIDE0R1
+	DIVIDE0R2
+	ELEM0R0
 	ELEM0R1
 	ELEM0R2
 	ELEM0R3
@@ -20,19 +26,44 @@ const(
 	ELEM1R1
 	EXPR0R0
 	EXPR0R1
+	EXPR0R2
+	MINUS0R0
+	MINUS0R1
+	MINUS0R2
+	OPEN0R0
+	OPEN0R1
+	OPEN0R2
+	PLUS0R0
+	PLUS0R1
+	PLUS0R2
+	PLUSorMINUS0R0
+	PLUSorMINUS0R1
+	PLUSorMINUS0R2
+	PLUSorMINUS1R0
+	PLUSorMINUS1R1
 	PROD0R0
 	PROD0R1
 	PROD0R2
-	PROD0R3
-	PROD1R0
-	PROD1R1
-	PROD1R2
+	PoMRep0R0
+	PoMRep0R1
+	PoMRep0R2
+	PoMRep1R0
 	SUM0R0
 	SUM0R1
 	SUM0R2
-	SUM0R3
-	SUM1R0
-	SUM1R1
+	TIMES0R0
+	TIMES0R1
+	TIMES0R2
+	TIMESorDIVIDE0R0
+	TIMESorDIVIDE0R1
+	TIMESorDIVIDE0R2
+	TIMESorDIVIDE1R0
+	TIMESorDIVIDE1R1
+	TIMESorDIVIDE1R2
+	ToDRep0R0
+	ToDRep0R1
+	ToDRep0R2
+	ToDRep1R0
 )
 
 type Slot struct {
@@ -122,59 +153,108 @@ func (s *Slot) String() string {
 }
 
 var slots = map[Label]*Slot{ 
+	CLOSE0R0: {
+		symbols.NT_CLOSE, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_1, 
+			symbols.T_7,
+		}, 
+		CLOSE0R0, 
+	},
+	CLOSE0R1: {
+		symbols.NT_CLOSE, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_1, 
+			symbols.T_7,
+		}, 
+		CLOSE0R1, 
+	},
+	CLOSE0R2: {
+		symbols.NT_CLOSE, 0, 2, 
+		symbols.Symbols{  
+			symbols.T_1, 
+			symbols.T_7,
+		}, 
+		CLOSE0R2, 
+	},
+	DIVIDE0R0: {
+		symbols.NT_DIVIDE, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_5, 
+			symbols.T_7,
+		}, 
+		DIVIDE0R0, 
+	},
+	DIVIDE0R1: {
+		symbols.NT_DIVIDE, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_5, 
+			symbols.T_7,
+		}, 
+		DIVIDE0R1, 
+	},
+	DIVIDE0R2: {
+		symbols.NT_DIVIDE, 0, 2, 
+		symbols.Symbols{  
+			symbols.T_5, 
+			symbols.T_7,
+		}, 
+		DIVIDE0R2, 
+	},
 	ELEM0R0: {
 		symbols.NT_ELEM, 0, 0, 
 		symbols.Symbols{  
-			symbols.T_4, 
+			symbols.NT_OPEN, 
 			symbols.NT_SUM, 
-			symbols.T_0,
+			symbols.NT_CLOSE,
 		}, 
 		ELEM0R0, 
 	},
 	ELEM0R1: {
 		symbols.NT_ELEM, 0, 1, 
 		symbols.Symbols{  
-			symbols.T_4, 
+			symbols.NT_OPEN, 
 			symbols.NT_SUM, 
-			symbols.T_0,
+			symbols.NT_CLOSE,
 		}, 
 		ELEM0R1, 
 	},
 	ELEM0R2: {
 		symbols.NT_ELEM, 0, 2, 
 		symbols.Symbols{  
-			symbols.T_4, 
+			symbols.NT_OPEN, 
 			symbols.NT_SUM, 
-			symbols.T_0,
+			symbols.NT_CLOSE,
 		}, 
 		ELEM0R2, 
 	},
 	ELEM0R3: {
 		symbols.NT_ELEM, 0, 3, 
 		symbols.Symbols{  
-			symbols.T_4, 
+			symbols.NT_OPEN, 
 			symbols.NT_SUM, 
-			symbols.T_0,
+			symbols.NT_CLOSE,
 		}, 
 		ELEM0R3, 
 	},
 	ELEM1R0: {
 		symbols.NT_ELEM, 1, 0, 
 		symbols.Symbols{  
-			symbols.T_3,
+			symbols.T_6,
 		}, 
 		ELEM1R0, 
 	},
 	ELEM1R1: {
 		symbols.NT_ELEM, 1, 1, 
 		symbols.Symbols{  
-			symbols.T_3,
+			symbols.T_6,
 		}, 
 		ELEM1R1, 
 	},
 	EXPR0R0: {
 		symbols.NT_EXPR, 0, 0, 
 		symbols.Symbols{  
+			symbols.T_7, 
 			symbols.NT_SUM,
 		}, 
 		EXPR0R0, 
@@ -182,16 +262,134 @@ var slots = map[Label]*Slot{
 	EXPR0R1: {
 		symbols.NT_EXPR, 0, 1, 
 		symbols.Symbols{  
+			symbols.T_7, 
 			symbols.NT_SUM,
 		}, 
 		EXPR0R1, 
+	},
+	EXPR0R2: {
+		symbols.NT_EXPR, 0, 2, 
+		symbols.Symbols{  
+			symbols.T_7, 
+			symbols.NT_SUM,
+		}, 
+		EXPR0R2, 
+	},
+	MINUS0R0: {
+		symbols.NT_MINUS, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_4, 
+			symbols.T_7,
+		}, 
+		MINUS0R0, 
+	},
+	MINUS0R1: {
+		symbols.NT_MINUS, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_4, 
+			symbols.T_7,
+		}, 
+		MINUS0R1, 
+	},
+	MINUS0R2: {
+		symbols.NT_MINUS, 0, 2, 
+		symbols.Symbols{  
+			symbols.T_4, 
+			symbols.T_7,
+		}, 
+		MINUS0R2, 
+	},
+	OPEN0R0: {
+		symbols.NT_OPEN, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_0, 
+			symbols.T_7,
+		}, 
+		OPEN0R0, 
+	},
+	OPEN0R1: {
+		symbols.NT_OPEN, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_0, 
+			symbols.T_7,
+		}, 
+		OPEN0R1, 
+	},
+	OPEN0R2: {
+		symbols.NT_OPEN, 0, 2, 
+		symbols.Symbols{  
+			symbols.T_0, 
+			symbols.T_7,
+		}, 
+		OPEN0R2, 
+	},
+	PLUS0R0: {
+		symbols.NT_PLUS, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_3, 
+			symbols.T_7,
+		}, 
+		PLUS0R0, 
+	},
+	PLUS0R1: {
+		symbols.NT_PLUS, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_3, 
+			symbols.T_7,
+		}, 
+		PLUS0R1, 
+	},
+	PLUS0R2: {
+		symbols.NT_PLUS, 0, 2, 
+		symbols.Symbols{  
+			symbols.T_3, 
+			symbols.T_7,
+		}, 
+		PLUS0R2, 
+	},
+	PLUSorMINUS0R0: {
+		symbols.NT_PLUSorMINUS, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_PLUS, 
+			symbols.NT_PROD,
+		}, 
+		PLUSorMINUS0R0, 
+	},
+	PLUSorMINUS0R1: {
+		symbols.NT_PLUSorMINUS, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_PLUS, 
+			symbols.NT_PROD,
+		}, 
+		PLUSorMINUS0R1, 
+	},
+	PLUSorMINUS0R2: {
+		symbols.NT_PLUSorMINUS, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_PLUS, 
+			symbols.NT_PROD,
+		}, 
+		PLUSorMINUS0R2, 
+	},
+	PLUSorMINUS1R0: {
+		symbols.NT_PLUSorMINUS, 1, 0, 
+		symbols.Symbols{  
+			symbols.NT_MINUS,
+		}, 
+		PLUSorMINUS1R0, 
+	},
+	PLUSorMINUS1R1: {
+		symbols.NT_PLUSorMINUS, 1, 1, 
+		symbols.Symbols{  
+			symbols.NT_MINUS,
+		}, 
+		PLUSorMINUS1R1, 
 	},
 	PROD0R0: {
 		symbols.NT_PROD, 0, 0, 
 		symbols.Symbols{  
 			symbols.NT_ELEM, 
-			symbols.T_6, 
-			symbols.NT_ELEM,
+			symbols.NT_ToDRep,
 		}, 
 		PROD0R0, 
 	},
@@ -199,8 +397,7 @@ var slots = map[Label]*Slot{
 		symbols.NT_PROD, 0, 1, 
 		symbols.Symbols{  
 			symbols.NT_ELEM, 
-			symbols.T_6, 
-			symbols.NT_ELEM,
+			symbols.NT_ToDRep,
 		}, 
 		PROD0R1, 
 	},
@@ -208,50 +405,45 @@ var slots = map[Label]*Slot{
 		symbols.NT_PROD, 0, 2, 
 		symbols.Symbols{  
 			symbols.NT_ELEM, 
-			symbols.T_6, 
-			symbols.NT_ELEM,
+			symbols.NT_ToDRep,
 		}, 
 		PROD0R2, 
 	},
-	PROD0R3: {
-		symbols.NT_PROD, 0, 3, 
+	PoMRep0R0: {
+		symbols.NT_PoMRep, 0, 0, 
 		symbols.Symbols{  
-			symbols.NT_ELEM, 
-			symbols.T_6, 
-			symbols.NT_ELEM,
+			symbols.NT_PLUSorMINUS, 
+			symbols.NT_PoMRep,
 		}, 
-		PROD0R3, 
+		PoMRep0R0, 
 	},
-	PROD1R0: {
-		symbols.NT_PROD, 1, 0, 
+	PoMRep0R1: {
+		symbols.NT_PoMRep, 0, 1, 
 		symbols.Symbols{  
-			symbols.T_1, 
-			symbols.NT_ELEM,
+			symbols.NT_PLUSorMINUS, 
+			symbols.NT_PoMRep,
 		}, 
-		PROD1R0, 
+		PoMRep0R1, 
 	},
-	PROD1R1: {
-		symbols.NT_PROD, 1, 1, 
+	PoMRep0R2: {
+		symbols.NT_PoMRep, 0, 2, 
 		symbols.Symbols{  
-			symbols.T_1, 
-			symbols.NT_ELEM,
+			symbols.NT_PLUSorMINUS, 
+			symbols.NT_PoMRep,
 		}, 
-		PROD1R1, 
+		PoMRep0R2, 
 	},
-	PROD1R2: {
-		symbols.NT_PROD, 1, 2, 
-		symbols.Symbols{  
-			symbols.T_1, 
-			symbols.NT_ELEM,
+	PoMRep1R0: {
+		symbols.NT_PoMRep, 1, 0, 
+		symbols.Symbols{ 
 		}, 
-		PROD1R2, 
+		PoMRep1R0, 
 	},
 	SUM0R0: {
 		symbols.NT_SUM, 0, 0, 
 		symbols.Symbols{  
 			symbols.NT_PROD, 
-			symbols.T_5, 
-			symbols.NT_PROD,
+			symbols.NT_PoMRep,
 		}, 
 		SUM0R0, 
 	},
@@ -259,8 +451,7 @@ var slots = map[Label]*Slot{
 		symbols.NT_SUM, 0, 1, 
 		symbols.Symbols{  
 			symbols.NT_PROD, 
-			symbols.T_5, 
-			symbols.NT_PROD,
+			symbols.NT_PoMRep,
 		}, 
 		SUM0R1, 
 	},
@@ -268,37 +459,121 @@ var slots = map[Label]*Slot{
 		symbols.NT_SUM, 0, 2, 
 		symbols.Symbols{  
 			symbols.NT_PROD, 
-			symbols.T_5, 
-			symbols.NT_PROD,
+			symbols.NT_PoMRep,
 		}, 
 		SUM0R2, 
 	},
-	SUM0R3: {
-		symbols.NT_SUM, 0, 3, 
+	TIMES0R0: {
+		symbols.NT_TIMES, 0, 0, 
 		symbols.Symbols{  
-			symbols.NT_PROD, 
-			symbols.T_5, 
-			symbols.NT_PROD,
+			symbols.T_2, 
+			symbols.T_7,
 		}, 
-		SUM0R3, 
+		TIMES0R0, 
 	},
-	SUM1R0: {
-		symbols.NT_SUM, 1, 0, 
+	TIMES0R1: {
+		symbols.NT_TIMES, 0, 1, 
 		symbols.Symbols{  
-			symbols.T_2,
+			symbols.T_2, 
+			symbols.T_7,
 		}, 
-		SUM1R0, 
+		TIMES0R1, 
 	},
-	SUM1R1: {
-		symbols.NT_SUM, 1, 1, 
+	TIMES0R2: {
+		symbols.NT_TIMES, 0, 2, 
 		symbols.Symbols{  
-			symbols.T_2,
+			symbols.T_2, 
+			symbols.T_7,
 		}, 
-		SUM1R1, 
+		TIMES0R2, 
+	},
+	TIMESorDIVIDE0R0: {
+		symbols.NT_TIMESorDIVIDE, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_TIMES, 
+			symbols.NT_ELEM,
+		}, 
+		TIMESorDIVIDE0R0, 
+	},
+	TIMESorDIVIDE0R1: {
+		symbols.NT_TIMESorDIVIDE, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_TIMES, 
+			symbols.NT_ELEM,
+		}, 
+		TIMESorDIVIDE0R1, 
+	},
+	TIMESorDIVIDE0R2: {
+		symbols.NT_TIMESorDIVIDE, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_TIMES, 
+			symbols.NT_ELEM,
+		}, 
+		TIMESorDIVIDE0R2, 
+	},
+	TIMESorDIVIDE1R0: {
+		symbols.NT_TIMESorDIVIDE, 1, 0, 
+		symbols.Symbols{  
+			symbols.NT_DIVIDE, 
+			symbols.NT_ELEM,
+		}, 
+		TIMESorDIVIDE1R0, 
+	},
+	TIMESorDIVIDE1R1: {
+		symbols.NT_TIMESorDIVIDE, 1, 1, 
+		symbols.Symbols{  
+			symbols.NT_DIVIDE, 
+			symbols.NT_ELEM,
+		}, 
+		TIMESorDIVIDE1R1, 
+	},
+	TIMESorDIVIDE1R2: {
+		symbols.NT_TIMESorDIVIDE, 1, 2, 
+		symbols.Symbols{  
+			symbols.NT_DIVIDE, 
+			symbols.NT_ELEM,
+		}, 
+		TIMESorDIVIDE1R2, 
+	},
+	ToDRep0R0: {
+		symbols.NT_ToDRep, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_TIMESorDIVIDE, 
+			symbols.NT_ToDRep,
+		}, 
+		ToDRep0R0, 
+	},
+	ToDRep0R1: {
+		symbols.NT_ToDRep, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_TIMESorDIVIDE, 
+			symbols.NT_ToDRep,
+		}, 
+		ToDRep0R1, 
+	},
+	ToDRep0R2: {
+		symbols.NT_ToDRep, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_TIMESorDIVIDE, 
+			symbols.NT_ToDRep,
+		}, 
+		ToDRep0R2, 
+	},
+	ToDRep1R0: {
+		symbols.NT_ToDRep, 1, 0, 
+		symbols.Symbols{ 
+		}, 
+		ToDRep1R0, 
 	},
 }
 
 var slotIndex = map[Index]Label { 
+	Index{ symbols.NT_CLOSE,0,0 }: CLOSE0R0,
+	Index{ symbols.NT_CLOSE,0,1 }: CLOSE0R1,
+	Index{ symbols.NT_CLOSE,0,2 }: CLOSE0R2,
+	Index{ symbols.NT_DIVIDE,0,0 }: DIVIDE0R0,
+	Index{ symbols.NT_DIVIDE,0,1 }: DIVIDE0R1,
+	Index{ symbols.NT_DIVIDE,0,2 }: DIVIDE0R2,
 	Index{ symbols.NT_ELEM,0,0 }: ELEM0R0,
 	Index{ symbols.NT_ELEM,0,1 }: ELEM0R1,
 	Index{ symbols.NT_ELEM,0,2 }: ELEM0R2,
@@ -307,25 +582,60 @@ var slotIndex = map[Index]Label {
 	Index{ symbols.NT_ELEM,1,1 }: ELEM1R1,
 	Index{ symbols.NT_EXPR,0,0 }: EXPR0R0,
 	Index{ symbols.NT_EXPR,0,1 }: EXPR0R1,
+	Index{ symbols.NT_EXPR,0,2 }: EXPR0R2,
+	Index{ symbols.NT_MINUS,0,0 }: MINUS0R0,
+	Index{ symbols.NT_MINUS,0,1 }: MINUS0R1,
+	Index{ symbols.NT_MINUS,0,2 }: MINUS0R2,
+	Index{ symbols.NT_OPEN,0,0 }: OPEN0R0,
+	Index{ symbols.NT_OPEN,0,1 }: OPEN0R1,
+	Index{ symbols.NT_OPEN,0,2 }: OPEN0R2,
+	Index{ symbols.NT_PLUS,0,0 }: PLUS0R0,
+	Index{ symbols.NT_PLUS,0,1 }: PLUS0R1,
+	Index{ symbols.NT_PLUS,0,2 }: PLUS0R2,
+	Index{ symbols.NT_PLUSorMINUS,0,0 }: PLUSorMINUS0R0,
+	Index{ symbols.NT_PLUSorMINUS,0,1 }: PLUSorMINUS0R1,
+	Index{ symbols.NT_PLUSorMINUS,0,2 }: PLUSorMINUS0R2,
+	Index{ symbols.NT_PLUSorMINUS,1,0 }: PLUSorMINUS1R0,
+	Index{ symbols.NT_PLUSorMINUS,1,1 }: PLUSorMINUS1R1,
 	Index{ symbols.NT_PROD,0,0 }: PROD0R0,
 	Index{ symbols.NT_PROD,0,1 }: PROD0R1,
 	Index{ symbols.NT_PROD,0,2 }: PROD0R2,
-	Index{ symbols.NT_PROD,0,3 }: PROD0R3,
-	Index{ symbols.NT_PROD,1,0 }: PROD1R0,
-	Index{ symbols.NT_PROD,1,1 }: PROD1R1,
-	Index{ symbols.NT_PROD,1,2 }: PROD1R2,
+	Index{ symbols.NT_PoMRep,0,0 }: PoMRep0R0,
+	Index{ symbols.NT_PoMRep,0,1 }: PoMRep0R1,
+	Index{ symbols.NT_PoMRep,0,2 }: PoMRep0R2,
+	Index{ symbols.NT_PoMRep,1,0 }: PoMRep1R0,
 	Index{ symbols.NT_SUM,0,0 }: SUM0R0,
 	Index{ symbols.NT_SUM,0,1 }: SUM0R1,
 	Index{ symbols.NT_SUM,0,2 }: SUM0R2,
-	Index{ symbols.NT_SUM,0,3 }: SUM0R3,
-	Index{ symbols.NT_SUM,1,0 }: SUM1R0,
-	Index{ symbols.NT_SUM,1,1 }: SUM1R1,
+	Index{ symbols.NT_TIMES,0,0 }: TIMES0R0,
+	Index{ symbols.NT_TIMES,0,1 }: TIMES0R1,
+	Index{ symbols.NT_TIMES,0,2 }: TIMES0R2,
+	Index{ symbols.NT_TIMESorDIVIDE,0,0 }: TIMESorDIVIDE0R0,
+	Index{ symbols.NT_TIMESorDIVIDE,0,1 }: TIMESorDIVIDE0R1,
+	Index{ symbols.NT_TIMESorDIVIDE,0,2 }: TIMESorDIVIDE0R2,
+	Index{ symbols.NT_TIMESorDIVIDE,1,0 }: TIMESorDIVIDE1R0,
+	Index{ symbols.NT_TIMESorDIVIDE,1,1 }: TIMESorDIVIDE1R1,
+	Index{ symbols.NT_TIMESorDIVIDE,1,2 }: TIMESorDIVIDE1R2,
+	Index{ symbols.NT_ToDRep,0,0 }: ToDRep0R0,
+	Index{ symbols.NT_ToDRep,0,1 }: ToDRep0R1,
+	Index{ symbols.NT_ToDRep,0,2 }: ToDRep0R2,
+	Index{ symbols.NT_ToDRep,1,0 }: ToDRep1R0,
 }
 
 var alternates = map[symbols.NT][]Label{ 
 	symbols.NT_EXPR:[]Label{ EXPR0R0 },
-	symbols.NT_SUM:[]Label{ SUM0R0,SUM1R0 },
-	symbols.NT_PROD:[]Label{ PROD0R0,PROD1R0 },
+	symbols.NT_SUM:[]Label{ SUM0R0 },
+	symbols.NT_PoMRep:[]Label{ PoMRep0R0,PoMRep1R0 },
+	symbols.NT_PLUSorMINUS:[]Label{ PLUSorMINUS0R0,PLUSorMINUS1R0 },
+	symbols.NT_PROD:[]Label{ PROD0R0 },
+	symbols.NT_ToDRep:[]Label{ ToDRep0R0,ToDRep1R0 },
+	symbols.NT_TIMESorDIVIDE:[]Label{ TIMESorDIVIDE0R0,TIMESorDIVIDE1R0 },
 	symbols.NT_ELEM:[]Label{ ELEM0R0,ELEM1R0 },
+	symbols.NT_PLUS:[]Label{ PLUS0R0 },
+	symbols.NT_MINUS:[]Label{ MINUS0R0 },
+	symbols.NT_TIMES:[]Label{ TIMES0R0 },
+	symbols.NT_DIVIDE:[]Label{ DIVIDE0R0 },
+	symbols.NT_OPEN:[]Label{ OPEN0R0 },
+	symbols.NT_CLOSE:[]Label{ CLOSE0R0 },
 }
 

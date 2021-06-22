@@ -14,22 +14,33 @@ func (T) isSymbol() {}
 // NT is the type of non-terminals symbols
 type NT int
 const( 
-	NT_ELEM NT = iota
+	NT_CLOSE NT = iota
+	NT_DIVIDE 
+	NT_ELEM 
 	NT_EXPR 
+	NT_MINUS 
+	NT_OPEN 
+	NT_PLUS 
+	NT_PLUSorMINUS 
 	NT_PROD 
+	NT_PoMRep 
 	NT_SUM 
+	NT_TIMES 
+	NT_TIMESorDIVIDE 
+	NT_ToDRep 
 )
 
 // T is the type of terminals symbols
 type T int
 const( 
-	T_0 T = iota // close 
-	T_1  // divide 
-	T_2  // minus 
-	T_3  // num 
-	T_4  // open 
-	T_5  // plus 
-	T_6  // times 
+	T_0 T = iota // ( 
+	T_1  // ) 
+	T_2  // * 
+	T_3  // + 
+	T_4  // - 
+	T_5  // / 
+	T_6  // num 
+	T_7  // space 
 )
 
 type Symbols []Symbol
@@ -59,25 +70,46 @@ func (t T) String() string {
 }
 
 var ntToString = []string { 
+	"CLOSE", /* NT_CLOSE */
+	"DIVIDE", /* NT_DIVIDE */
 	"ELEM", /* NT_ELEM */
 	"EXPR", /* NT_EXPR */
+	"MINUS", /* NT_MINUS */
+	"OPEN", /* NT_OPEN */
+	"PLUS", /* NT_PLUS */
+	"PLUSorMINUS", /* NT_PLUSorMINUS */
 	"PROD", /* NT_PROD */
-	"SUM", /* NT_SUM */ 
+	"PoMRep", /* NT_PoMRep */
+	"SUM", /* NT_SUM */
+	"TIMES", /* NT_TIMES */
+	"TIMESorDIVIDE", /* NT_TIMESorDIVIDE */
+	"ToDRep", /* NT_ToDRep */ 
 }
 
 var tToString = []string { 
-	"close", /* T_0 */
-	"divide", /* T_1 */
-	"minus", /* T_2 */
-	"num", /* T_3 */
-	"open", /* T_4 */
-	"plus", /* T_5 */
-	"times", /* T_6 */ 
+	"(", /* T_0 */
+	")", /* T_1 */
+	"*", /* T_2 */
+	"+", /* T_3 */
+	"-", /* T_4 */
+	"/", /* T_5 */
+	"num", /* T_6 */
+	"space", /* T_7 */ 
 }
 
 var stringNT = map[string]NT{ 
+	"CLOSE":NT_CLOSE,
+	"DIVIDE":NT_DIVIDE,
 	"ELEM":NT_ELEM,
 	"EXPR":NT_EXPR,
+	"MINUS":NT_MINUS,
+	"OPEN":NT_OPEN,
+	"PLUS":NT_PLUS,
+	"PLUSorMINUS":NT_PLUSorMINUS,
 	"PROD":NT_PROD,
+	"PoMRep":NT_PoMRep,
 	"SUM":NT_SUM,
+	"TIMES":NT_TIMES,
+	"TIMESorDIVIDE":NT_TIMESorDIVIDE,
+	"ToDRep":NT_ToDRep,
 }

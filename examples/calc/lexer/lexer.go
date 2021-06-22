@@ -188,35 +188,40 @@ func not(r rune, set []rune) bool {
 }
 
 var accept = []token.Type{ 
-	token.Error, 
-	token.T_4, 
+	token.T_7, 
+	token.T_7, 
 	token.T_0, 
-	token.T_6, 
-	token.T_5, 
-	token.T_2, 
 	token.T_1, 
+	token.T_2, 
 	token.T_3, 
-	token.T_3, 
+	token.T_4, 
+	token.T_5, 
+	token.T_6, 
+	token.T_6, 
 }
 
 var nextState = []func(r rune) state{ 
 	// Set0
 	func(r rune) state {
 		switch { 
-		case r == '(':
+		case r == '\t':
 			return 1 
-		case r == ')':
+		case r == ' ':
+			return 1 
+		case r == '(':
 			return 2 
-		case r == '*':
+		case r == ')':
 			return 3 
-		case r == '+':
+		case r == '*':
 			return 4 
-		case r == '-':
+		case r == '+':
 			return 5 
-		case r == '/':
+		case r == '-':
 			return 6 
-		case unicode.IsNumber(r):
+		case r == '/':
 			return 7 
+		case unicode.IsNumber(r):
+			return 8 
 		}
 		return nullState
 	}, 
@@ -233,62 +238,36 @@ var nextState = []func(r rune) state{
 	// Set2
 	func(r rune) state {
 		switch { 
-		case r == '\t':
-			return 2 
-		case r == ' ':
-			return 2 
 		}
 		return nullState
 	}, 
 	// Set3
 	func(r rune) state {
 		switch { 
-		case r == '\t':
-			return 3 
-		case r == ' ':
-			return 3 
 		}
 		return nullState
 	}, 
 	// Set4
 	func(r rune) state {
 		switch { 
-		case r == '\t':
-			return 4 
-		case r == ' ':
-			return 4 
 		}
 		return nullState
 	}, 
 	// Set5
 	func(r rune) state {
 		switch { 
-		case r == '\t':
-			return 5 
-		case r == ' ':
-			return 5 
 		}
 		return nullState
 	}, 
 	// Set6
 	func(r rune) state {
 		switch { 
-		case r == '\t':
-			return 6 
-		case r == ' ':
-			return 6 
 		}
 		return nullState
 	}, 
 	// Set7
 	func(r rune) state {
 		switch { 
-		case r == '\t':
-			return 8 
-		case r == ' ':
-			return 8 
-		case unicode.IsNumber(r):
-			return 7 
 		}
 		return nullState
 	}, 
@@ -296,9 +275,21 @@ var nextState = []func(r rune) state{
 	func(r rune) state {
 		switch { 
 		case r == '\t':
-			return 8 
+			return 9 
 		case r == ' ':
+			return 9 
+		case unicode.IsNumber(r):
 			return 8 
+		}
+		return nullState
+	}, 
+	// Set9
+	func(r rune) state {
+		switch { 
+		case r == '\t':
+			return 9 
+		case r == ' ':
+			return 9 
 		}
 		return nullState
 	}, 
