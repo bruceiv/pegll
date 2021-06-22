@@ -23,26 +23,23 @@ See the [grammar for details.](../../gogll.md)
 ```
 package "eggr"
 
-        _               : { space 
-                        | comment }
-
-        space           : ' ' 
-                        | '\t' 
-                        | end_of_line ;
-
-        comment         : line_comment 
-                        | block_comment ;
-
-        line_comment    : '/' '/' notNLn0 ;
-                notNLn0         : {not "\n"} ;
 ```
-`!block_comment` is a C-style block comment where the `!` in front of `!block_comment` instructs the lexer to suppress those tokens. See the [grammar for details.](../../gogll.md). Everything between and including `/*` and `*/` is a comment. *Note:* `block_comment` was taken from [comments.md.](https://github.com/bruceiv/pegll/tree/main/examples/comments) 
-```
-!block_comment : '/''*' {not "*" | '*' not "/"} '*''/' ;
+`LineOrBlock` represents the semantic rule for either a line or a block comment. 
 
-        end_of_line     : "\r\n" 
-                        / '\n' 
-                        / '\r' ;
+`!line_comment` is a C-style line comment. Everything from the first slash to the end of line is a comment. 
+
+`!block_comment` is a C-style block comment. Everything between and including `/*` and `*/` is a comment. 
+
+The `!` in front of `!line_comment` and `!block_comment` instructs the lexer to suppress those tokens. See the [grammar for details.](../../gogll.md) 
+*Note:* `!line_comment` and `!block_comment` were taken from [comments.md.](https://github.com/bruceiv/pegll/tree/main/examples/comments) 
+```
+LineOrBlock     : line_comment 
+                | block_comment ;
+!line_comment   : '/' '/' {not "\n"} ;
+!block_comment  : '/''*' 
+                { not "*" 
+                | '*' not "/" 
+                } '*''/' ;
 
 ```
 #### ORIGINAL GRAMMAR
@@ -118,7 +115,8 @@ package "eggr"
                         / '\r' ;
 
 #### PARTIALLY WORKING GRAMMAR
-
+!line_comment : '/' '/' {not "\n"} ;
+!block_comment : '/''*' {not "*" | '*' not "/"} '*''/' ;
 #
 ### **COPYRIGHT AND LICENSING INFORMATION**
 **Copyright 2021 Brynn Harrington and Emily Hoppe**
