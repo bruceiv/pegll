@@ -9,27 +9,23 @@
 
 ###  **GENERAL DESCRIPTION**
 An originally Egg Parsing grammar created by Aaron Moss ported into the GoGLL grammar to test a given structure.Modification of `eggr` grammar from [Egg](https://github.com/bruceiv/egg/blob/deriv/grammars/eggr.egg) to test an example structure.
-
-### **`eggr` Grammar Guide**
-NEED TO FINISH ONE GRAMMAR IS WORKING 
-
-See the [grammar for details.](../../gogll.md)
-
 ### **STATUS ON GRAMMAR**
 #### *Markdown File Creation:* Not working 
 #### *Parser Generated :* Incomplete
 #### *Test File Creation:* Incomplete
 #### *Testing Results:* Unknown
+### **`eggr` Grammar Guide**
+NEED TO FIX:
+- end of line MAY NOT WORK PROPERLY
+- space 
+
 ```
 package "eggr"
 
 ```
 `LineOrBlock` represents the semantic rule for either a line or a block comment. 
-
-`!line_comment` is a C-style line comment. Everything from the first slash to the end of line is a comment. 
-
-`!block_comment` is a C-style block comment. Everything between and including `/*` and `*/` is a comment. 
-
+`!line_comment` is a lexical rule representing a C-style line comment. Everything from the first slash to the end of line is a comment. 
+`!block_comment` is a lexical rule representing a C-style block comment. Everything between and including `/*` and `*/` is a comment. 
 The `!` in front of `!line_comment` and `!block_comment` instructs the lexer to suppress those tokens. See the [grammar for details.](../../gogll.md) 
 *Note:* `!line_comment` and `!block_comment` were taken from [comments.md.](https://github.com/bruceiv/pegll/tree/main/examples/comments) 
 ```
@@ -40,6 +36,7 @@ LineOrBlock     : line_comment
                 { not "*" 
                 | '*' not "/" 
                 } '*''/' ;
+end_of_line     : any "\r\n" ;
 
 ```
 #### ORIGINAL GRAMMAR
@@ -95,20 +92,13 @@ LineOrBlock     : line_comment
         EMPTY : ';' _ ;
 
         _               : { space 
-                        | comment }
+                        | LineOrBlock }
 
         space           : ' ' 
                         | '\t' 
                         | end_of_line ;
 
-        comment         : line_comment 
-                        | block_comment ;
 
-        line_comment    : '/' '/' notNLn0 ;
-                notNLn0         : {not "\n"} ;
-
-        block_comment   : '/''*' notStarAlts0 '*''/' ;
-                notStarAlts0    : {not "*" | '*' not "/"} ;
 
         end_of_line     : "\r\n" 
                         / '\n' 
