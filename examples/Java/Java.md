@@ -23,8 +23,32 @@ See the [grammar for details.](../../gogll.md)
 ```
 package "Java"
 ```
-#### ***Compilation Unit***
+### ***Escape Characters/Sequences, Comments, and Spacing***
+- Note: To match the -> operator in GoGLL, the following syntax is used:
+    
+    (Egg): XtoY : X -> Y
+    
+    (GoGLL): XtoY : Y / X XtoY;
 ```
+WS                 : EscOrLineOrBlock     
+                  | empty                             ;
+EscOrLineOrBlock  : line_comment 
+                  | block_comment                     
+                  | escCharSp                         ;
+      escCharSp   : < any " \t\r\n" >                 ;
+
+
+      !line_comment   : '/' '/' { not "\n" }          ;
+      !block_comment  : '/''*' 
+                { not "*" 
+                | '*' not "/" 
+                } '*''/'                              ;
+      newline     : any "\r\n"                        ;
+
+```
+#### ORIGINAL GRAMMAR
+#### ***Compilation Unit***
+
 CompUnit          : _ OptPackDecl RepImpDecl0x RepSemiModDecl0x ;
       OptPackDecl : [ PackDecl ]                      ;
      RepImpDecl0x : { ImportDecl }                    ; 
@@ -37,7 +61,7 @@ PackDecl          : PACKAGE QualifiedID SEMI          ;
 
 ImportDecl        : IMPORT OptStatic QualifiedID OptDotStar SEMI ;
       OptDotStar  : [ DOT STAR ]                      ;
-```
+
 #### ***Class Declarations***
 - Note: The following are the representations of the 
     MemDecl (Member Decl): 
@@ -52,7 +76,7 @@ ImportDecl        : IMPORT OptStatic QualifiedID OptDotStar SEMI ;
     - SEMI = Semicolon
     - OptStatic Block  = Static or Instance Initializer
     - RepModif0 MemDecl = Class Member Declaration  
-```
+
 ClsDecl           : Cls ID OptExtClsType OptImpClsLst ClsBdy ;
     OptExtClsType : [ EXTENDS ClsType ]               ;
      OptImpClsLst : [ IMPLEMENTS ClsTypeList ]        ;
@@ -73,9 +97,9 @@ MemDecl           : Type ID FormalParams RepDim0x OptThrowClsTypLst MemAlts
                   | Type VarDecl RepComVDecl0x        ; 
       MemAlts     : SEMI 
                   | Block                             ;
-```
+
 #### ***Interface Declarations***
-```
+
 IntfDecl   : Intf ID OptExtendsClsLis IntfBdy         ;
       OptExtendsClsLis : [ EXTENDS ClsTypeList ]      ;
 
@@ -106,16 +130,16 @@ ConstDeclsRest    : ConstDeclRest RepComCnstDecl0x    ;
 ConstDecl         : ID ConstDeclRest                  ;
 
 ConstDeclRest     : RepDim0x EQU VarInitial           ; 
-```
+
 #### ***Variable Declarations***
-```
+
 LocalVarDeclStmt  : OptFinType VarDecl RepComVDecl0x SEMI ;
 
 VarDecl           :  ID RepDim0x OptEqVarInit         ;
      OptEqVarInit : [ EQU  VarInitial ]               ;
-```
+
 #### ***Formal Parameters***
-```
+
 FormalParams      : LPAR OptFormPDecl RPAR            ;
      OptFormPDecl : [ FormalParamDecls ]              ;
 
@@ -127,9 +151,9 @@ FormalParamDeclsRest :  VarDelID OptComFormPDecl      ;
   OptComFormPDecl : [ COMMA FormalParamDecls ]        ;
 
 VarDelID          : ID RepDim0x                       ;
-```
+
 #### ***Statements***
-```
+
 Block             : LWING RepBlkSt0x RWING            ;
      RepBlkSt0x   : { BlockStmt }                     ;
 
@@ -185,7 +209,7 @@ ForInit           : OptFinType Type VarDeclInit       ;
 
 ForUpdate         : StmtExpr RepComSExpr0x            ;
     RepComSExpr0x : { COMMA StmtExpr }                ;
-```
+
 #### ***Expressions***
 - Note: Some of the shorthand names are:
     - Cond = Conditional
@@ -197,7 +221,7 @@ is defined as AssignmentExpr, which is effectively defined as
 (LeftHandSide AssignOp) * CondExpr. The above is obtained by 
 allowing ANY CondExpr as LeftHandSide, which results in 
 accepting Stmts like 5 : a.
-```
+
 StmtExpr          : Expr                              ;
    
 ConstExpr         : Expr                              ;
@@ -353,9 +377,9 @@ QualifiedID       : ID RepDotID0x                     ;
 
 Dim               : LBRK RBRK                         ;
 DimExpr           : LBRK Expr RBRK                    ; 
-```
+
 #### ***TYPES AND MODIFIERS***
-```
+
 Type              : TypeAlts RepDim0x                 ; 
       TypeAlts    : BasicType 
                   | ClsType                         ;
@@ -384,18 +408,18 @@ Modifier          : Modifs NotLorD                    ;
                   | "volatile"
                   | "strictfp"                        ;
    
-```
+
 #### ***Identifiers***
 - Note: ID is used to represent identifiers.
-```
+
 
 ID                : not Keyword LetterLorD            ;   
       LetterLorD   : Letter RepLorD0x _               ;
       RepLorD0x   :  { LorD }                         ; 
 
-```
+
 #### ***Keywords***
-```
+
 Keyword           : Words NotLorD                     ;
       Words       : "abstract" 
                   | "assert"   
@@ -482,9 +506,9 @@ TRY               : "try"          NotLorD            ;
 VOID              : "void"         NotLorD            ;
 WHILE             : "while"        NotLorD            ; 
 
-```
+
 ### ***General Literal Definition***
-```
+
 
 Literal           : LitAlts _                         ;
       LitAlts     : FloatLiteral
@@ -495,22 +519,22 @@ Literal           : LitAlts _                         ;
                   | "false" NotLorD
                   | "null"  NotLorD                   ;
 
-```
+
 ### ***Basic Identifiers*** 
 - Note: These are traditional definitions of letters and
 digits. JLS defines letters and digits as Unicode characters recognized as such by special Java procedures, which is difficult to express in terms of Parsing Expressions.
-```
+
 NotLorD           : not LorD                          ;        
 LorD              : Letter 
                   | Digit 
                   | _                                 ; / do we need this since the '_' is already inside the letter definition/rule??
 Letter            : letter 
                   | _                                 ;
-```
+
 ### ***Character and String Literals***
 - Note: Unicode escape is not defined in JLS syntax because 
 unicode characters are processed very early.
-```
+
 CharLiteral       : '\'' EscSlash '\''                ;
       EscSlash    : ( Escape 
                   | EscUp )                           ;
@@ -539,11 +563,11 @@ Escape            : "\\" Escs                         ;
    
 UnicodeEscape : "u" HexDigit HexDigit HexDigit HexDigit ;
  
-```
+
 #### ***General Numeric Literals***
 - Note: In IntegerLiteral, OctalNumeral may prefix 
 HexNumeral and DecimalNumeral may prefix OctalNumeral
-```
+
 
 FloatLiteral      : HexFloat 
                   | DecimalFloat                      ;
@@ -562,9 +586,8 @@ DecimalFloat      :  RepDig1x "." RepDig0x OptExpo fF_dD
       RepDig1xExp : RepDig1x Exponent                 ;
       OptExpo     : [ Exponent ]                      ;
             
-```
+
 #### ***BASE-SIXTEEN AND BASE-EIGHT LITERALS***
-```
 
 HexFloat          : HexSignificand BinaryExponent fF_dD ;
       fF_dD       : [ any "fFdD" ]                    ; 
@@ -594,9 +617,7 @@ OctalEscape       : Int0-3 Two0-7
                   | any "4567"                        ;
       Int0-3      : any "0123"                        ;
 
-```
 #### ***Exponent and Digital Literals***
-```
 
 Exponent          : eE OptPSM RepDig0x                ;
       eE          : any "eE"                          ;
@@ -608,10 +629,7 @@ BinaryExponent    : pP PSM RepDig1x                   ;
       RepDig1x :  < Digit >                           ;        
 
 Digit             : number                            ;   
-
-```
 #### ***Separators and Operators***
-```
 AT                :  '@'            _                 ;
 AND               :  '&'![=&]       _                 ;
 AND_AND           :  "&&"           _                 ;
@@ -662,28 +680,21 @@ STAR              :  '*'!'='        _                 ;
 STAR_EQU          :  "*="           _                 ;
 TILDA             :  '~'            _                 ;
 
-```
-### ***Escape Characters/Sequences, Comments, and Spacing***
-- Note: To match the -> operator in GoGLL, the following syntax is used:
-    
-    (Egg): XtoY : X -> Y
-    
-    (GoGLL): XtoY : Y / X XtoY;
-```
-_                 : { EscCharSp     
-                  | BlockComment 
-                  | Comment }                         ;
-      EscCharSp   : < ' ' 
-                  | EscChar >                         ;
-      EscChar     : '\t' 
-                  | NewLine                           ;      
-     BlockComment : "*/" 
-                  / "/*" BlockComment                 ;
-      Comment     : NewLine 
-                  / "" Comment                      ; 
-      NewLine     : '\r' 
-                  | '\n'                              ;
-```
+#### PARTIALLY WORKING GRAMMAR
+WS                 : EscOrLineOrBlock     
+                  | empty                             ;
+EscOrLineOrBlock  : line_comment 
+                  | block_comment                     
+                  | escCharSp                         ;
+      escCharSp   : < any " \t\r\n" >                 ;
+
+
+      !line_comment   : '/' '/' { not "\n" }          ;
+      !block_comment  : '/''*' 
+                { not "*" 
+                | '*' not "/" 
+                } '*''/'                              ;
+      newline     : any "\r\n"                        ;
 #
 ### **COPYRIGHT AND LICENSING INFORMATION**
 **Copyright 2021 Brynn Harrington and Emily Hoppe**
