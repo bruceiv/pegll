@@ -8,18 +8,81 @@
 
 ###  **GENERAL DESCRIPTION**
 An originally Egg Parsing grammar created by Aaron Moss ported into the GoGLL grammar for the `JSON` language tests. Modification of `JSON` grammar from [Egg](https://github.com/bruceiv/egg/blob/deriv/grammars/JSON-u.egg) to test `JSON` input files under the parser generated.
-### **`JSON` Grammar Guide**
-NEED TO FINISH ONE GRAMMAR IS WORKING 
-
 ### **STATUS ON GRAMMAR**
 #### *Markdown File Creation:* Not working 
 #### *Parser Generated :* Incomplete
 #### *Test File Creation:* Incomplete
 #### *Testing Results:* Unknown
-
-#### ***Object Creation***
+### **`JSON` Grammar Guide**
+ERRORS
+- COME BACK TO FINISH OPTIONAL PORTION OF HEX
+- FIX ESCAPES UNDER STRING/CHAR LITS
 ```
-package "JSON"                          ;
+package "JSON" 
+```  
+#### ***String and Character Literals***
+```
+
+
+```
+#### ***Numeric Literals***
+```
+ HEX:   NumberHEX;
+        NumberHEX : Number aA_fF 
+                | empty ;
+        aA_fF   : any "abcdefABCDEF"    ; 
+        
+Number          : INT optFrac optExp WS ;
+        optFrac : [ any "." < any "0123456789" >  ] ;
+        optExp  : [ any "eE" 
+                [ any "+-" ] 
+                < any "0123456789" > ] ;
+INT     : neg Integers ;
+        Integers: integer
+                | zero ;
+        zero    : any "0";
+        integer    : any "123456789" { < any "0123456789" > } ;
+        neg     : [ '-' ]               ;
+FRAC    : "." numbers1x         ;
+EXP     : eE plusMinus numbers1x;  
+        numbers1x : < any "0123456789" > ;
+        plusMinus : [ any "+-" ] ;
+        eE      : any "eE" ;
+```
+#### ***Operators and Special Characters***
+```
+TRUE            : "true" WS ;
+FALSE           : "false" WS ;
+NUL             : "null" WS ;
+COMMA           : "," WS ;
+COLON           : ":" WS ;
+LBRACE          : "{" WS ;
+RBRACE          : "}" WS ;
+LBRACKET        : "[" WS ;
+RBRACKET        : "]" WS ;
+```
+#### ***Whitespace and Escape Sequences***
+```
+WS              : EscOrComment WS
+                | empty ;
+
+EscOrComment    : escChar 
+                | LineOrBlock ;
+escCharSpace    : < any " \t\r\n" > ;
+escChar         : any "\t\r\n" ; 
+
+LineOrBlock     : line_comment 
+                | block_comment ;
+!line_comment   : '/' '/' { not "\n" } ;
+!block_comment  : '/''*' 
+                { not "*" 
+                | '*' not "/" 
+                } '*''/' ;
+
+newLine         : any "\r\n" ;                 
+```
+#### ORIGINAL GRAMMAR
+#### ***Object Creation***
 JSON            : _ Object              ;
 Object          : LBRACE OptMem RBRACE  ;
         OptMem  : < Members >           ;
@@ -37,9 +100,7 @@ Value           : String
                 | TRUE 
                 | FALSE 
                 | NUL                   ;
-```
 #### ***String and Character Literals***
-```
 String          : '\"' Close _          ;
         Close   : '\"' 
                 / CHAR Close            ;
@@ -56,9 +117,7 @@ CHAR            : UpSlash | '\\' ChCode ;
                 | 't'                   ;
         UpSlash : '^' 
                 | '\\'                  ;
-```
 #### ***Numeric Literals***
-```
 HEX             : < Number aA-fF >      ;
         aA-fF   : any "abcdefABCDEF"    ;  
 Number          : INT OptFrac OptExp _  ;
@@ -75,9 +134,7 @@ EXP             : eE PlusMinus Numbers1x;
       Numbers1x : < number >            ;
       PlusMinus : [ '+' | '-' ]         ;
         eE      : 'e' | 'E'             ;
-```
 #### ***Operators and Special Characters***
-```
 TRUE            : "true" _              ;
 FALSE           : "false" _             ;
 NUL             : "null" _              ;
@@ -87,9 +144,7 @@ LBRACE          : '{' _                 ;
 RBRACE          : '}' _                 ;
 LBRACKET        : '[' _                 ;
 RBRACKET        : ']' _                 ;
-```
 #### ***Whitespace and Escape Sequences***
-```
 _               : { EscChar 
                 | BlockComment 
                 | Comment }             ;
@@ -104,7 +159,54 @@ Comment         : newLine
 
 newLine         : '\r' 
                 | '\n'                  ;
-```
+#### PARTIALLY WORKING GRAMMAR
+ HEX:   NumberHEX;
+        NumberHEX : Number aA_fF 
+                | empty ;
+        aA_fF   : any "abcdefABCDEF"    ; 
+Number          : INT optFrac optExp WS ;
+        optFrac : [ any "." < any "0123456789" >  ] ;
+        optExp  : [ any "eE" [ any "+-" ] < any "0123456789" > ] ;
+INT     : neg Integers ;
+        Integers: integer
+                | zero ;
+        zero    : any "0";
+        integer    : any "123456789" { < any "0123456789" > } ;
+        neg     : [ '-' ]               ;
+FRAC    : "." numbers1x         ;
+EXP     : eE plusMinus numbers1x;  
+        optNumbers : { < any "0123456789" > } ;
+        numbers1x : < any "0123456789" > ;
+        plusMinus : [ any "+-" ] ;
+        eE      : any "eE" ;
+
+TRUE            : "true" WS ;
+FALSE           : "false" WS ;
+NUL             : "null" WS ;
+COMMA           : "," WS ;
+COLON           : ":" WS ;
+LBRACE          : "{" WS ;
+RBRACE          : "}" WS ;
+LBRACKET        : "[" WS ;
+RBRACKET        : "]" WS ;
+
+WS              : EscOrComment WS
+                | empty ;
+
+EscOrComment    : escChar 
+                | LineOrBlock ;
+escCharSpace    : < any " \t\r\n" > ;
+escChar         : any "\t\r\n" ; 
+
+LineOrBlock     : line_comment 
+                | block_comment ;
+!line_comment   : '/' '/' { not "\n" } ;
+!block_comment  : '/''*' 
+                { not "*" 
+                | '*' not "/" 
+                } '*''/' ;
+
+newLine         : any "\r\n" ;  
 #
 ### **COPYRIGHT AND LICENSING INFORMATION**
 **Copyright 2021 Brynn Harrington and Emily Hoppe**
