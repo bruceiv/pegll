@@ -38,10 +38,10 @@ func newParser(l *lexer.Lexer) *parser {
 		U:      &descriptors{},
 		popped: make(map[poppedNode]bool),
 		crf: map[clusterNode][]*crfNode{
-			{symbols.NT_Expr, 0}: {},
+			{symbols.NT_Grammar, 0}: {},
 		},
 		crfNodes:    map[crfNode]*crfNode{},
-		bsrSet:      bsr.New(symbols.NT_Expr, l),
+		bsrSet:      bsr.New(symbols.NT_Grammar, l),
 		parseErrors: nil,
 	}
 }
@@ -55,7 +55,7 @@ func Parse(l *lexer.Lexer) (*bsr.Set, []*Error) {
 func (p *parser) parse() (*bsr.Set, []*Error) {
 	var L slot.Label
 	m, cU := len(p.lex.Tokens)-1, 0
-	p.ntAdd(symbols.NT_Expr, 0)
+	p.ntAdd(symbols.NT_Grammar, 0)
 	// p.DumpDescriptors()
 	for !p.R.empty() {
 		L, cU, p.cI = p.R.remove()
@@ -65,11 +65,10 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 		// p.DumpDescriptors()
 
 		switch L {
-		case slot.Expr0R0: // Expr : ∙Id neq
+		case slot.Expr0R0: // Expr : ∙id neq
 
-			p.call(slot.Expr0R1, cU, p.cI)
-		case slot.Expr0R1: // Expr : Id ∙neq
-
+			p.bsrSet.Add(slot.Expr0R1, cU, p.cI, p.cI+1)
+			p.cI++
 			if !p.testSelect(slot.Expr0R1) {
 				p.parseError(slot.Expr0R1, p.cI, first[slot.Expr0R1])
 				break
@@ -82,46 +81,112 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			} else {
 				p.parseError(slot.Expr0R0, p.cI, followSets[symbols.NT_Expr])
 			}
-		case slot.Id0R0: // Id : ∙upC Space
+		case slot.ExprRep0R0: // ExprRep : ∙Expr ExprRep
 
-			p.bsrSet.Add(slot.Id0R1, cU, p.cI, p.cI+1)
-			p.cI++
-			if !p.testSelect(slot.Id0R1) {
-				p.parseError(slot.Id0R1, p.cI, first[slot.Id0R1])
+			p.call(slot.ExprRep0R1, cU, p.cI)
+		case slot.ExprRep0R1: // ExprRep : Expr ∙ExprRep
+
+			if !p.testSelect(slot.ExprRep0R1) {
+				p.parseError(slot.ExprRep0R1, p.cI, first[slot.ExprRep0R1])
 				break
 			}
 
-			p.call(slot.Id0R2, cU, p.cI)
-		case slot.Id0R2: // Id : upC Space ∙
+			p.call(slot.ExprRep0R2, cU, p.cI)
+		case slot.ExprRep0R2: // ExprRep : Expr ExprRep ∙
 
-			if p.follow(symbols.NT_Id) {
-				p.rtn(symbols.NT_Id, cU, p.cI)
+			if p.follow(symbols.NT_ExprRep) {
+				p.rtn(symbols.NT_ExprRep, cU, p.cI)
 			} else {
-				p.parseError(slot.Id0R0, p.cI, followSets[symbols.NT_Id])
+				p.parseError(slot.ExprRep0R0, p.cI, followSets[symbols.NT_ExprRep])
 			}
-		case slot.Space0R0: // Space : ∙
+		case slot.ExprRep1R0: // ExprRep : ∙
+			p.bsrSet.AddEmpty(slot.ExprRep1R0, p.cI)
 
-			p.bsrSet.Add(slot.Space0R1, cU, p.cI, p.cI+1)
+			if p.follow(symbols.NT_ExprRep) {
+				p.rtn(symbols.NT_ExprRep, cU, p.cI)
+			} else {
+				p.parseError(slot.ExprRep1R0, p.cI, followSets[symbols.NT_ExprRep])
+			}
+		case slot.Grammar0R0: // Grammar : ∙  RuleRep
+
+			p.bsrSet.Add(slot.Grammar0R1, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_Space) {
-				p.rtn(symbols.NT_Space, cU, p.cI)
-			} else {
-				p.parseError(slot.Space0R0, p.cI, followSets[symbols.NT_Space])
+			if !p.testSelect(slot.Grammar0R1) {
+				p.parseError(slot.Grammar0R1, p.cI, first[slot.Grammar0R1])
+				break
 			}
-		case slot.Space1R0: // Space : ∙
-			p.bsrSet.AddEmpty(slot.Space1R0, p.cI)
 
-			if p.follow(symbols.NT_Space) {
-				p.rtn(symbols.NT_Space, cU, p.cI)
+			p.call(slot.Grammar0R2, cU, p.cI)
+		case slot.Grammar0R2: // Grammar :   RuleRep ∙
+
+			if p.follow(symbols.NT_Grammar) {
+				p.rtn(symbols.NT_Grammar, cU, p.cI)
 			} else {
-				p.parseError(slot.Space1R0, p.cI, followSets[symbols.NT_Space])
+				p.parseError(slot.Grammar0R0, p.cI, followSets[symbols.NT_Grammar])
+			}
+		case slot.Rule0R0: // Rule : ∙id eq   ExprRep
+
+			p.bsrSet.Add(slot.Rule0R1, cU, p.cI, p.cI+1)
+			p.cI++
+			if !p.testSelect(slot.Rule0R1) {
+				p.parseError(slot.Rule0R1, p.cI, first[slot.Rule0R1])
+				break
+			}
+
+			p.bsrSet.Add(slot.Rule0R2, cU, p.cI, p.cI+1)
+			p.cI++
+			if !p.testSelect(slot.Rule0R2) {
+				p.parseError(slot.Rule0R2, p.cI, first[slot.Rule0R2])
+				break
+			}
+
+			p.bsrSet.Add(slot.Rule0R3, cU, p.cI, p.cI+1)
+			p.cI++
+			if !p.testSelect(slot.Rule0R3) {
+				p.parseError(slot.Rule0R3, p.cI, first[slot.Rule0R3])
+				break
+			}
+
+			p.call(slot.Rule0R4, cU, p.cI)
+		case slot.Rule0R4: // Rule : id eq   ExprRep ∙
+
+			if p.follow(symbols.NT_Rule) {
+				p.rtn(symbols.NT_Rule, cU, p.cI)
+			} else {
+				p.parseError(slot.Rule0R0, p.cI, followSets[symbols.NT_Rule])
+			}
+		case slot.RuleRep0R0: // RuleRep : ∙Rule RuleRep
+
+			p.call(slot.RuleRep0R1, cU, p.cI)
+		case slot.RuleRep0R1: // RuleRep : Rule ∙RuleRep
+
+			if !p.testSelect(slot.RuleRep0R1) {
+				p.parseError(slot.RuleRep0R1, p.cI, first[slot.RuleRep0R1])
+				break
+			}
+
+			p.call(slot.RuleRep0R2, cU, p.cI)
+		case slot.RuleRep0R2: // RuleRep : Rule RuleRep ∙
+
+			if p.follow(symbols.NT_RuleRep) {
+				p.rtn(symbols.NT_RuleRep, cU, p.cI)
+			} else {
+				p.parseError(slot.RuleRep0R0, p.cI, followSets[symbols.NT_RuleRep])
+			}
+		case slot.RuleRep1R0: // RuleRep : ∙
+			p.bsrSet.AddEmpty(slot.RuleRep1R0, p.cI)
+
+			if p.follow(symbols.NT_RuleRep) {
+				p.rtn(symbols.NT_RuleRep, cU, p.cI)
+			} else {
+				p.parseError(slot.RuleRep1R0, p.cI, followSets[symbols.NT_RuleRep])
 			}
 
 		default:
 			panic("This must not happen")
 		}
 	}
-	if !p.bsrSet.Contain(symbols.NT_Expr, 0, m) {
+	if !p.bsrSet.Contain(symbols.NT_Grammar, 0, m) {
 		p.sortParseErrors()
 		return nil, p.parseErrors
 	}
@@ -358,42 +423,91 @@ func (p *parser) testSelect(l slot.Label) bool {
 }
 
 var first = []map[token.Type]string{
-	// Expr : ∙Id neq
+	// Expr : ∙id neq
 	{
-		token.T_3: "upC",
+		token.T_2: "id",
 	},
-	// Expr : Id ∙neq
+	// Expr : id ∙neq
 	{
-		token.T_2: "neq",
+		token.T_3: "neq",
 	},
-	// Expr : Id neq ∙
+	// Expr : id neq ∙
+	{
+		token.EOF: "$",
+		token.T_2: "id",
+	},
+	// ExprRep : ∙Expr ExprRep
+	{
+		token.T_2: "id",
+	},
+	// ExprRep : Expr ∙ExprRep
+	{
+		token.T_2: "id",
+		token.EOF: "$",
+		token.T_2: "id",
+	},
+	// ExprRep : Expr ExprRep ∙
+	{
+		token.EOF: "$",
+		token.T_2: "id",
+	},
+	// ExprRep : ∙
+	{
+		token.EOF: "$",
+		token.T_2: "id",
+	},
+	// Grammar : ∙  RuleRep
+	{
+		token.T_0: " ",
+	},
+	// Grammar :   ∙RuleRep
+	{
+		token.T_2: "id",
+		token.EOF: "$",
+	},
+	// Grammar :   RuleRep ∙
 	{
 		token.EOF: "$",
 	},
-	// Id : ∙upC Space
+	// Rule : ∙id eq   ExprRep
 	{
-		token.T_3: "upC",
+		token.T_2: "id",
 	},
-	// Id : upC ∙Space
+	// Rule : id ∙eq   ExprRep
 	{
-		token.T_0: " ",
-		token.T_2: "neq",
+		token.T_1: "eq",
 	},
-	// Id : upC Space ∙
-	{
-		token.T_2: "neq",
-	},
-	// Space : ∙
+	// Rule : id eq ∙  ExprRep
 	{
 		token.T_0: " ",
 	},
-	// Space :   ∙
+	// Rule : id eq   ∙ExprRep
 	{
-		token.T_2: "neq",
+		token.T_2: "id",
+		token.EOF: "$",
+		token.T_2: "id",
 	},
-	// Space : ∙
+	// Rule : id eq   ExprRep ∙
 	{
-		token.T_2: "neq",
+		token.EOF: "$",
+		token.T_2: "id",
+	},
+	// RuleRep : ∙Rule RuleRep
+	{
+		token.T_2: "id",
+	},
+	// RuleRep : Rule ∙RuleRep
+	{
+		token.T_2: "id",
+		token.EOF: "$",
+	},
+	// RuleRep : Rule RuleRep ∙
+	{
+		token.EOF: "$",
+	},
+	// RuleRep : ∙
+	{
+		token.EOF: "$",
 	},
 }
 
@@ -401,14 +515,25 @@ var followSets = []map[token.Type]string{
 	// Expr
 	{
 		token.EOF: "$",
+		token.T_2: "id",
 	},
-	// Id
+	// ExprRep
 	{
-		token.T_2: "neq",
+		token.EOF: "$",
+		token.T_2: "id",
 	},
-	// Space
+	// Grammar
 	{
-		token.T_2: "neq",
+		token.EOF: "$",
+	},
+	// Rule
+	{
+		token.EOF: "$",
+		token.T_2: "id",
+	},
+	// RuleRep
+	{
+		token.EOF: "$",
 	},
 }
 

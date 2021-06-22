@@ -15,12 +15,22 @@ const(
 	Expr0R0 Label = iota
 	Expr0R1
 	Expr0R2
-	Id0R0
-	Id0R1
-	Id0R2
-	Space0R0
-	Space0R1
-	Space1R0
+	ExprRep0R0
+	ExprRep0R1
+	ExprRep0R2
+	ExprRep1R0
+	Grammar0R0
+	Grammar0R1
+	Grammar0R2
+	Rule0R0
+	Rule0R1
+	Rule0R2
+	Rule0R3
+	Rule0R4
+	RuleRep0R0
+	RuleRep0R1
+	RuleRep0R2
+	RuleRep1R0
 )
 
 type Slot struct {
@@ -113,70 +123,160 @@ var slots = map[Label]*Slot{
 	Expr0R0: {
 		symbols.NT_Expr, 0, 0, 
 		symbols.Symbols{  
-			symbols.NT_Id, 
-			symbols.T_2,
+			symbols.T_2, 
+			symbols.T_3,
 		}, 
 		Expr0R0, 
 	},
 	Expr0R1: {
 		symbols.NT_Expr, 0, 1, 
 		symbols.Symbols{  
-			symbols.NT_Id, 
-			symbols.T_2,
+			symbols.T_2, 
+			symbols.T_3,
 		}, 
 		Expr0R1, 
 	},
 	Expr0R2: {
 		symbols.NT_Expr, 0, 2, 
 		symbols.Symbols{  
-			symbols.NT_Id, 
-			symbols.T_2,
+			symbols.T_2, 
+			symbols.T_3,
 		}, 
 		Expr0R2, 
 	},
-	Id0R0: {
-		symbols.NT_Id, 0, 0, 
+	ExprRep0R0: {
+		symbols.NT_ExprRep, 0, 0, 
 		symbols.Symbols{  
-			symbols.T_3, 
-			symbols.NT_Space,
+			symbols.NT_Expr, 
+			symbols.NT_ExprRep,
 		}, 
-		Id0R0, 
+		ExprRep0R0, 
 	},
-	Id0R1: {
-		symbols.NT_Id, 0, 1, 
+	ExprRep0R1: {
+		symbols.NT_ExprRep, 0, 1, 
 		symbols.Symbols{  
-			symbols.T_3, 
-			symbols.NT_Space,
+			symbols.NT_Expr, 
+			symbols.NT_ExprRep,
 		}, 
-		Id0R1, 
+		ExprRep0R1, 
 	},
-	Id0R2: {
-		symbols.NT_Id, 0, 2, 
+	ExprRep0R2: {
+		symbols.NT_ExprRep, 0, 2, 
 		symbols.Symbols{  
-			symbols.T_3, 
-			symbols.NT_Space,
+			symbols.NT_Expr, 
+			symbols.NT_ExprRep,
 		}, 
-		Id0R2, 
+		ExprRep0R2, 
 	},
-	Space0R0: {
-		symbols.NT_Space, 0, 0, 
-		symbols.Symbols{  
-			symbols.T_0,
-		}, 
-		Space0R0, 
-	},
-	Space0R1: {
-		symbols.NT_Space, 0, 1, 
-		symbols.Symbols{  
-			symbols.T_0,
-		}, 
-		Space0R1, 
-	},
-	Space1R0: {
-		symbols.NT_Space, 1, 0, 
+	ExprRep1R0: {
+		symbols.NT_ExprRep, 1, 0, 
 		symbols.Symbols{ 
 		}, 
-		Space1R0, 
+		ExprRep1R0, 
+	},
+	Grammar0R0: {
+		symbols.NT_Grammar, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_0, 
+			symbols.NT_RuleRep,
+		}, 
+		Grammar0R0, 
+	},
+	Grammar0R1: {
+		symbols.NT_Grammar, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_0, 
+			symbols.NT_RuleRep,
+		}, 
+		Grammar0R1, 
+	},
+	Grammar0R2: {
+		symbols.NT_Grammar, 0, 2, 
+		symbols.Symbols{  
+			symbols.T_0, 
+			symbols.NT_RuleRep,
+		}, 
+		Grammar0R2, 
+	},
+	Rule0R0: {
+		symbols.NT_Rule, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_2, 
+			symbols.T_1, 
+			symbols.T_0, 
+			symbols.NT_ExprRep,
+		}, 
+		Rule0R0, 
+	},
+	Rule0R1: {
+		symbols.NT_Rule, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_2, 
+			symbols.T_1, 
+			symbols.T_0, 
+			symbols.NT_ExprRep,
+		}, 
+		Rule0R1, 
+	},
+	Rule0R2: {
+		symbols.NT_Rule, 0, 2, 
+		symbols.Symbols{  
+			symbols.T_2, 
+			symbols.T_1, 
+			symbols.T_0, 
+			symbols.NT_ExprRep,
+		}, 
+		Rule0R2, 
+	},
+	Rule0R3: {
+		symbols.NT_Rule, 0, 3, 
+		symbols.Symbols{  
+			symbols.T_2, 
+			symbols.T_1, 
+			symbols.T_0, 
+			symbols.NT_ExprRep,
+		}, 
+		Rule0R3, 
+	},
+	Rule0R4: {
+		symbols.NT_Rule, 0, 4, 
+		symbols.Symbols{  
+			symbols.T_2, 
+			symbols.T_1, 
+			symbols.T_0, 
+			symbols.NT_ExprRep,
+		}, 
+		Rule0R4, 
+	},
+	RuleRep0R0: {
+		symbols.NT_RuleRep, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_Rule, 
+			symbols.NT_RuleRep,
+		}, 
+		RuleRep0R0, 
+	},
+	RuleRep0R1: {
+		symbols.NT_RuleRep, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_Rule, 
+			symbols.NT_RuleRep,
+		}, 
+		RuleRep0R1, 
+	},
+	RuleRep0R2: {
+		symbols.NT_RuleRep, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_Rule, 
+			symbols.NT_RuleRep,
+		}, 
+		RuleRep0R2, 
+	},
+	RuleRep1R0: {
+		symbols.NT_RuleRep, 1, 0, 
+		symbols.Symbols{ 
+		}, 
+		RuleRep1R0, 
 	},
 }
 
@@ -184,17 +284,29 @@ var slotIndex = map[Index]Label {
 	Index{ symbols.NT_Expr,0,0 }: Expr0R0,
 	Index{ symbols.NT_Expr,0,1 }: Expr0R1,
 	Index{ symbols.NT_Expr,0,2 }: Expr0R2,
-	Index{ symbols.NT_Id,0,0 }: Id0R0,
-	Index{ symbols.NT_Id,0,1 }: Id0R1,
-	Index{ symbols.NT_Id,0,2 }: Id0R2,
-	Index{ symbols.NT_Space,0,0 }: Space0R0,
-	Index{ symbols.NT_Space,0,1 }: Space0R1,
-	Index{ symbols.NT_Space,1,0 }: Space1R0,
+	Index{ symbols.NT_ExprRep,0,0 }: ExprRep0R0,
+	Index{ symbols.NT_ExprRep,0,1 }: ExprRep0R1,
+	Index{ symbols.NT_ExprRep,0,2 }: ExprRep0R2,
+	Index{ symbols.NT_ExprRep,1,0 }: ExprRep1R0,
+	Index{ symbols.NT_Grammar,0,0 }: Grammar0R0,
+	Index{ symbols.NT_Grammar,0,1 }: Grammar0R1,
+	Index{ symbols.NT_Grammar,0,2 }: Grammar0R2,
+	Index{ symbols.NT_Rule,0,0 }: Rule0R0,
+	Index{ symbols.NT_Rule,0,1 }: Rule0R1,
+	Index{ symbols.NT_Rule,0,2 }: Rule0R2,
+	Index{ symbols.NT_Rule,0,3 }: Rule0R3,
+	Index{ symbols.NT_Rule,0,4 }: Rule0R4,
+	Index{ symbols.NT_RuleRep,0,0 }: RuleRep0R0,
+	Index{ symbols.NT_RuleRep,0,1 }: RuleRep0R1,
+	Index{ symbols.NT_RuleRep,0,2 }: RuleRep0R2,
+	Index{ symbols.NT_RuleRep,1,0 }: RuleRep1R0,
 }
 
 var alternates = map[symbols.NT][]Label{ 
+	symbols.NT_Grammar:[]Label{ Grammar0R0 },
+	symbols.NT_RuleRep:[]Label{ RuleRep0R0,RuleRep1R0 },
+	symbols.NT_Rule:[]Label{ Rule0R0 },
+	symbols.NT_ExprRep:[]Label{ ExprRep0R0,ExprRep1R0 },
 	symbols.NT_Expr:[]Label{ Expr0R0 },
-	symbols.NT_Id:[]Label{ Id0R0 },
-	symbols.NT_Space:[]Label{ Space0R0,Space1R0 },
 }
 

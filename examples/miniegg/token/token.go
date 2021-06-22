@@ -108,8 +108,8 @@ const(
     EOF  // $ 
     T_0  //   
     T_1  // eq 
-    T_2  // neq 
-    T_3  // upC 
+    T_2  // id 
+    T_3  // neq 
 )
 
 var TypeToString = []string{ 
@@ -135,8 +135,8 @@ var TypeToID = []string {
     "$", 
     " ", 
     "eq", 
+    "id", 
     "neq", 
-    "upC", 
 }
 
 var Suppress = []bool { 

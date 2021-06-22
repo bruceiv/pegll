@@ -15,8 +15,10 @@ func (T) isSymbol() {}
 type NT int
 const( 
 	NT_Expr NT = iota
-	NT_Id 
-	NT_Space 
+	NT_ExprRep 
+	NT_Grammar 
+	NT_Rule 
+	NT_RuleRep 
 )
 
 // T is the type of terminals symbols
@@ -24,8 +26,8 @@ type T int
 const( 
 	T_0 T = iota //   
 	T_1  // eq 
-	T_2  // neq 
-	T_3  // upC 
+	T_2  // id 
+	T_3  // neq 
 )
 
 type Symbols []Symbol
@@ -56,19 +58,23 @@ func (t T) String() string {
 
 var ntToString = []string { 
 	"Expr", /* NT_Expr */
-	"Id", /* NT_Id */
-	"Space", /* NT_Space */ 
+	"ExprRep", /* NT_ExprRep */
+	"Grammar", /* NT_Grammar */
+	"Rule", /* NT_Rule */
+	"RuleRep", /* NT_RuleRep */ 
 }
 
 var tToString = []string { 
 	" ", /* T_0 */
 	"eq", /* T_1 */
-	"neq", /* T_2 */
-	"upC", /* T_3 */ 
+	"id", /* T_2 */
+	"neq", /* T_3 */ 
 }
 
 var stringNT = map[string]NT{ 
 	"Expr":NT_Expr,
-	"Id":NT_Id,
-	"Space":NT_Space,
+	"ExprRep":NT_ExprRep,
+	"Grammar":NT_Grammar,
+	"Rule":NT_Rule,
+	"RuleRep":NT_RuleRep,
 }
