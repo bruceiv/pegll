@@ -23,78 +23,102 @@ See the [grammar for details.](../../gogll.md)
 ```
 package "eggr"
 
-grammar         : _ rule_rep ; 
-        rule_rep        : < rule > ;
-rule            : identifier EQUAL choice ;
+        _               : { space 
+                        | comment }
 
-choice          : sequence pipe_seq ;
-        pipe_seq        : { PIPE sequence } ;
+        space           : ' ' 
+                        | '\t' 
+                        | end_of_line ;
 
-sequence        : < expression > ;
+        comment         : line_comment 
+                        | block_comment ;
 
-expression      : AND primary 
-                | NOT primary 
-                | primary optStarPlus_rep ;
-        optStarPlus_rep : [ OPT 
-                        | STAR 
-                        | PLUS ] ;
+        line_comment    : '/' '/' notNLn0 ;
+                notNLn0         : {not "\n"} ;
+```
+`!block_comment` is a C-style block comment where the `!` in front of `!block_comment` instructs the lexer to suppress those tokens. See the [grammar for details.](../../gogll.md). Everything between and including `/*` and `*/` is a comment. *Note:* `block_comment` was taken from [comments.md.](https://github.com/bruceiv/pegll/tree/main/examples/comments) 
+```
+!block_comment : '/''*' {not "*" | '*' not "/"} '*''/' ;
 
-primary         : identifier not EQUAL 
-                | OPEN choice CLOSE
-                | char_literal
-                | str_literal
-                | char_class
-                | ANY
-                | EMPTY ;
-
-identifier      : let_ let_num _ ;
-        let_            : letter 
-                        | _ ;
-        let_num         : { letter 
-                        | _ 
-                        | number } ;
-
-char_literal    : '\'' character '\'' _ ;
-str_literal     : '\"' str '\"' _ ;
-        str             :  { character } ;
-char_class      : '[' unclosed_chars ']' _ ;
-        unclosed_chars  : { not ']' character } ;
-character       : not "\'\"\\" 
-                | '\\' any "nrt\'\"\\" ;
-
-EQUAL : '=' _ ;
-PIPE  : '|' _ ;
-AND   : '&' _ ;
-NOT   : '!' _ ;
-OPT   : '?' _ ;
-STAR  : '*' _ ;
-PLUS  : '+' _ ;
-OPEN  : '(' _ ;
-CLOSE : ')' _ ;
-ANY   : '.' _ ;
-EMPTY : ';' _ ;
-
-_               : { space 
-                | comment }
-
-space           : ' ' 
-                | '\t' 
-                | end_of_line ;
-
-comment         : line_comment 
-                | block_comment ;
-
-line_comment    : '/' '/' notNLn0 ;
-        notNLn0         : {not "\n"} ;
-
-block_comment   : '/''*' notStarAlts0 '*''/' ;
-        notStarAlts0    : {not "*" | '*' not "/"} ;
-
-end_of_line     : "\r\n" 
-                / '\n' 
-                / '\r' ;
+        end_of_line     : "\r\n" 
+                        / '\n' 
+                        / '\r' ;
 
 ```
+#### ORIGINAL GRAMMAR
+        grammar         : _ rule_rep ; 
+                rule_rep        : < rule > ;
+        rule            : identifier EQUAL choice ;
+
+        choice          : sequence pipe_seq ;
+                pipe_seq        : { PIPE sequence } ;
+
+        sequence        : < expression > ;
+
+        expression      : AND primary 
+                        | NOT primary 
+                        | primary optStarPlus_rep ;
+                optStarPlus_rep : [ OPT 
+                                | STAR 
+                                | PLUS ] ;
+
+        primary         : identifier not EQUAL 
+                        | OPEN choice CLOSE
+                        | char_literal
+                        | str_literal
+                        | char_class
+                        | ANY
+                        | EMPTY ;
+
+        identifier      : let_ let_num _ ;
+                let_            : letter 
+                                | _ ;
+                let_num         : { letter 
+                                | _ 
+                                | number } ;
+
+        char_literal    : '\'' character '\'' _ ;
+        str_literal     : '\"' str '\"' _ ;
+                str             :  { character } ;
+        char_class      : '[' unclosed_chars ']' _ ;
+                unclosed_chars  : { not ']' character } ;
+        character       : not "\'\"\\" 
+                        | '\\' any "nrt\'\"\\" ;
+
+        EQUAL : '=' _ ;
+        PIPE  : '|' _ ;
+        AND   : '&' _ ;
+        NOT   : '!' _ ;
+        OPT   : '?' _ ;
+        STAR  : '*' _ ;
+        PLUS  : '+' _ ;
+        OPEN  : '(' _ ;
+        CLOSE : ')' _ ;
+        ANY   : '.' _ ;
+        EMPTY : ';' _ ;
+
+        _               : { space 
+                        | comment }
+
+        space           : ' ' 
+                        | '\t' 
+                        | end_of_line ;
+
+        comment         : line_comment 
+                        | block_comment ;
+
+        line_comment    : '/' '/' notNLn0 ;
+                notNLn0         : {not "\n"} ;
+
+        block_comment   : '/''*' notStarAlts0 '*''/' ;
+                notStarAlts0    : {not "*" | '*' not "/"} ;
+
+        end_of_line     : "\r\n" 
+                        / '\n' 
+                        / '\r' ;
+
+#### PARTIALLY WORKING GRAMMAR
+
 #
 ### **COPYRIGHT AND LICENSING INFORMATION**
 **Copyright 2021 Brynn Harrington and Emily Hoppe**
