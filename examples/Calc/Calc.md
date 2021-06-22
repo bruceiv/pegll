@@ -29,19 +29,26 @@ package "calc"
 
 EXPR   : SUM ;
 
-SUM    : PROD plus PROD | minus  ;
-PROD   : ELEM times ELEM | divide ELEM  ;
+SUM    : PROD 
+
+       PlusPRODorMinus : plus PROD 
+              | minus  ;
+
+PROD   : ELEM 
+       TimeOrDivideELEM : times ELEM 
+                     | divide ELEM  ;
 ELEM   : open SUM close | num ;
 
-num    : < number > { ' ' | '\t' } ;
+num    : < number > space ;
 
-plus   : '+' { ' ' | '\t' } ;
-minus  : '-' { ' ' | '\t' } ;
-times  : '*' { ' ' | '\t' } ;
-divide : '/' { ' ' | '\t' } ;
-open   : '(' { ' ' | '\t' } ;        
-close  : ')' { ' ' | '\t' } ;
+plus   : '+' space ;
+minus  : '-' space ;
+times  : '*' space ;
+divide : '/' space ;
+open   : '(' space ;        
+close  : ')' space ;
 
+space  : { ' ' | '\t' } ;
 ```
 ### **IN PROGRESS GRAMMARS**
 **Original / Not working**
