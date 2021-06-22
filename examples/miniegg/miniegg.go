@@ -8,10 +8,10 @@ import (
 	"miniegg/parser"
 )
 
-
 // Should match
 const ab = "A=B C=D"
 const ri = "R = I O E E = I N"
+
 //Should fail to match
 const ff = "F=F F="
 
@@ -23,8 +23,8 @@ func parse(s []rune) bool {
 		return false
 	}
 	// check that root covers whole input
-	//root := bsrSet.GetOrderedRoot()
-	//return root.RightExtent() == bsrSet.GetRightExtent();
+	root := bsrSet.GetRoots()
+	return root.RightExtent() == bsrSet.GetRightExtent()
 }
 
 func parseAndPrint(s string) {
