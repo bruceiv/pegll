@@ -8,20 +8,14 @@
 
 ###  **GENERAL DESCRIPTION**
 An originally Egg Parsing grammar created by Aaron Moss ported into the GoGLL grammar to determine test a given structure. Modification of `miniegg` grammar from [Egg](https://github.com/bruceiv/egg/blob/deriv/grammars/miniegg.egg) to test an example structure.
-
-### **`miniegg` Grammar Guide**
-Errors:
-- not sure if id is functioning the way it should - going based on how basic IDs work
-
-
-
-
-
 ### **STATUS ON GRAMMAR**
 #### *Markdown File Creation:* Working
 #### *Parser Generated :* Complete
 #### *Test File Creation:* Incomplete
 #### *Testing Results:* Unknown
+### **`miniegg` Grammar Guide**
+Errors:
+- not sure if id is functioning the way it should - going based on how basic IDs work
 ```
 package "miniegg"
 ```
@@ -48,25 +42,6 @@ eq      : '=' ;
 neq     : not "=" ;
 
 ```
-### **IN PROGRESS GRAMMARS**
-**Original / Not working**
-    gram    : _ ruler ; 
-    ruler   : < rule > ;
-    rule    : id '=' _ exprr ; L
-    id      : upcase _ ; L
-        exprr   : < expr > ; L
-    expr    : id not '=' ; S
-    _       : [ ' ' ] ; L
-**Partially Working**
-Expr    : Id neq ; 
-Id      : upC Space ; 
-
-upC     : upcase ;
-Space   :  " "  
-        | empty 
-        ; 
-eq      : '=' ; 
-neq     : not "=" ;
 #
 ### **COPYRIGHT AND LICENSING INFORMATION**
 **Copyright 2021 Brynn Harrington and Emily Hoppe**
