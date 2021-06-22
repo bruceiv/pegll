@@ -11,6 +11,7 @@ import (
 //Should match
 const abcd = `abcd`
 const parens = `()`
+
 //Should fail to match
 const unclosed = `((`
 const nums = `123`
@@ -23,8 +24,8 @@ func parse(s []rune) bool {
 		return false
 	}
 	// check that root covers whole input
-	//root := bsrSet.GetOrderedRoot()
-	//return root.RightExtent() == bsrSet.GetRightExtent();
+	root := bsrSet.GetRoots()
+	return root.RightExtent() == bsrSet.GetRightExtent()
 }
 
 func parseAndPrint(s string) {

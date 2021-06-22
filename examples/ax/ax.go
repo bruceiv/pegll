@@ -13,6 +13,7 @@ import (
 const a = `a`
 const aa = `aa`
 const aaa = `aaa`
+
 //Should fail to match
 const ab = `ab`
 
@@ -25,8 +26,8 @@ func parse(s []rune) bool {
 		return false
 	}
 	// check that root covers whole input
-	root := bsrSet.GetOrderedRoot()
-	return root.RightExtent() == bsrSet.GetRightExtent();
+	root := bsrSet.GetRoots()
+	return root.RightExtent() == bsrSet.GetRightExtent()
 }
 
 func parseAndPrint(s string) {
