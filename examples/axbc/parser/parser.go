@@ -70,11 +70,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.AorB0R1, cU, p.cI)
 		case slot.AorB0R1: // AorB : As ∙
 
-			// if p.follow(symbols.NT_AorB) {
-				p.rtn(symbols.NT_AorB, cU, p.cI)
-			// } else {
-			// 	p.parseError(slot.AorB0R0, p.cI, followSets[symbols.NT_AorB])
-			// }
+			p.rtn(symbols.NT_AorB, cU, p.cI)
 		case slot.AorB1R0: // AorB : ∙a b
 
 			p.bsrSet.Add(slot.AorB1R1, cU, p.cI, p.cI+1)
@@ -86,11 +82,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 
 			p.bsrSet.Add(slot.AorB1R2, cU, p.cI, p.cI+1)
 			p.cI++
-			// if p.follow(symbols.NT_AorB) {
-				p.rtn(symbols.NT_AorB, cU, p.cI)
-			// } else {
-			// 	p.parseError(slot.AorB1R0, p.cI, followSets[symbols.NT_AorB])
-			// }
+			p.rtn(symbols.NT_AorB, cU, p.cI)
 		case slot.As0R0: // As : ∙a As
 
 			p.bsrSet.Add(slot.As0R1, cU, p.cI, p.cI+1)
@@ -103,19 +95,11 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.As0R2, cU, p.cI)
 		case slot.As0R2: // As : a As ∙
 
-			// if p.follow(symbols.NT_As) {
-				p.rtn(symbols.NT_As, cU, p.cI)
-			// } else {
-			// 	p.parseError(slot.As0R0, p.cI, followSets[symbols.NT_As])
-			// }
+			p.rtn(symbols.NT_As, cU, p.cI)
 		case slot.As1R0: // As : ∙
 			p.bsrSet.AddEmpty(slot.As1R0, p.cI)
 
-			// if p.follow(symbols.NT_As) {
-				p.rtn(symbols.NT_As, cU, p.cI)
-			// } else {
-			// 	p.parseError(slot.As1R0, p.cI, followSets[symbols.NT_As])
-			// }
+			p.rtn(symbols.NT_As, cU, p.cI)
 		case slot.AxBC0R0: // AxBC : ∙AorB c
 
 			p.call(slot.AxBC0R1, cU, p.cI)
@@ -128,11 +112,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 
 			p.bsrSet.Add(slot.AxBC0R2, cU, p.cI, p.cI+1)
 			p.cI++
-			// if p.follow(symbols.NT_AxBC) {
-				p.rtn(symbols.NT_AxBC, cU, p.cI)
-			// } else {
-			// 	p.parseError(slot.AxBC0R0, p.cI, followSets[symbols.NT_AxBC])
-			// }
+			p.rtn(symbols.NT_AxBC, cU, p.cI)
 
 		default:
 			panic("This must not happen")
@@ -371,7 +351,6 @@ func (p *parser) follow(nt symbols.NT) bool {
 func (p *parser) testSelect(l slot.Label) bool {
 	return l.IsNullable() || l.FirstContains(p.lex.Tokens[p.cI].Type())
 	// _, exist := first[l][p.lex.Tokens[p.cI].Type()]
-	// // fmt.Printf("testSelect(%s) = %t\n", l, exist)
 	// return exist
 }
 

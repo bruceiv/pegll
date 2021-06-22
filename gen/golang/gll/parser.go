@@ -1,3 +1,4 @@
+//  Copyright 2021 Aaron Moss
 //  Copyright 2019 Marius Ackerman
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
@@ -48,7 +49,7 @@ func Gen(g *ast.GoGLL, gs *gslot.GSlot, ff *frstflw.FF) {
 	gn.genParser(parserDir)
 	bsr.Gen(filepath.Join(parserDir, "bsr", "bsr.go"), g.Package.GetString())
 	slots.Gen(filepath.Join(parserDir, "slot", "slot.go"), g, gs, ff)
-	symbols.Gen(filepath.Join(parserDir, "symbols", "symbols.go"), g)
+	symbols.Gen(filepath.Join(parserDir, "symbols", "symbols.go"), g, ff)
 }
 
 func (g *gen) genParser(parserDir string) {
@@ -401,9 +402,9 @@ func (p *parser) follow(nt symbols.NT) bool {
 }
 
 func (p *parser) testSelect(l slot.Label) bool {
-	_, exist := first[l][p.lex.Tokens[p.cI].Type()]
-	// fmt.Printf("testSelect(%s) = %t\n", l, exist)
-	return exist
+	return l.IsNullable() || l.FirstContains(p.lex.Tokens[p.cI].Type())
+	// _, exist := first[l][p.lex.Tokens[p.cI].Type()]
+	// return exist
 }
 
 {{.TestSelect}}

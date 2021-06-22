@@ -215,7 +215,7 @@ func (s *Set) FilterByOrderedChoice() {
 // checks that all the nonterminals in the first list of nt are in the
 // finished map
 func allFinished(nt sym.NT, finished map[sym.NT]bool) bool {
-	for _, f := range nt.StartsWith() {
+	for _, f := range nt.LeftRec() {
 		if !finished[f] {
 			return false
 		}
