@@ -11,12 +11,14 @@ An originally Egg Parsing grammar created by Aaron Moss ported into the GoGLL gr
 ### **`XML` Grammar Guide**
 NEED TO FINISH ONE GRAMMAR IS WORKING 
 
-- ASK IF SPACE IS CALLED DIFFERENT FOR ANY
+- ASK IF SPACE IS CALLED DIFFERENT FOR ANY (do you need to escape the space?)
 
 ```
 package "XML"
 
-space           : < any " \t\r\n" > ;
+
+optSpaceEsc     : [ < any " \t\r\n" > ] ;
+spaceEsc        : < any " \t\r\n" > ;
 charData        :  < any "^<&" > ; 
 ```
 #### ORIGINAL GRAMMAR
@@ -32,11 +34,11 @@ charData        :  < any "^<&" > ;
         XMLDecl        : "<?xml" VersionInfo optEncodDecl optS "?>" ;
                 optXMLDecl : [ XMLDecl ] ;
 
-        VersionInfo    : S "version" Eq quoVerNum ;
+        VersionInfo    : SP "version" Eq quoVerNum ;
                 quoVerNum    : '\'' VersionNum '\''  
                         | '\"' VersionNum '\"' ;
         VersionNum     : < NAME_ CHAR > ;
-        EncodingDecl   : S "encoding" Eq quoEncNam ;
+        EncodingDecl   : SP "encoding" Eq quoEncNam ;
                 quoEncNam    : '\'' EncName '\''  
                         | '\"' EncName '\"' ;
                 optEncodDecl : [ EncodingDecl ] ;
@@ -60,7 +62,7 @@ charData        :  < any "^<&" > ;
                 repNum1         : < number > ;
 #### ***Commenting, Elements, and Attributes***
         Misc 	         : COMMENT 
-                        | S ;
+                        | SP ;
                 repMisc0 : { Misc } ;
 
         COMMENT        : "<!--" comEnterior '>' ;
@@ -68,7 +70,7 @@ charData        :  < any "^<&" > ;
                                 / letter comEnterior ;
 
         Element        : '<' NAME RepSAtt0 optS elemCloseAlts ;
-                RepSAtt0      : { S Attribute } ;
+                RepSAtt0      : { SP Attribute } ;
                 elemCloseAlts : '>' Content  "</" NAME optS '>' 
                         | "/>" ;
 
@@ -88,11 +90,12 @@ charData        :  < any "^<&" > ;
                                 | number 
                                 | any "._\-" } ;
 
-        SP             : < any " \t\r\n" > ;
-                optS              : [ S ] ;
-        CHAR_DATA      :  < any "^<&" > ; 
 #### PARTIALLY WORKING GRAMMAR
+`optSpaceEsc`, `spaceEsc`, and `charData` are all lexical rules representing an optional space or escape sequence, one or more 
+        optSpaceEsc     : [ < any " \t\r\n" > ] ;
+        spaceEsc        : < any " \t\r\n" > ;
         charData        :  < any "^<&" > ; 
+
 #
 ### **COPYRIGHT AND LICENSING INFORMATION**
 **Copyright 2021 Brynn Harrington and Emily Hoppe**

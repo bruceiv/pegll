@@ -188,7 +188,7 @@ func not(r rune, set []rune) bool {
 }
 
 var accept = []token.Type{ 
-	token.Error, 
+	token.T_1, 
 	token.T_1, 
 	token.T_0, 
 }
