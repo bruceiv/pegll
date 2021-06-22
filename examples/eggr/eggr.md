@@ -18,18 +18,29 @@ An originally Egg Parsing grammar created by Aaron Moss ported into the GoGLL gr
 NEED TO FIX:
 - end of line MAY NOT WORK PROPERLY
 - space 
+- operators won't work until called somewhere
+- need to figure out how to escape the `Character` parameters
 
-```
-package "eggr"
 
-space           : any " \t\r\n" ;  
-```
 `LineOrBlock` represents the semantic rule for either a line or a block comment. 
 `!line_comment` is a lexical rule representing a C-style line comment. Everything from the first slash to the end of line is a comment. 
 `!block_comment` is a lexical rule representing a C-style block comment. Everything between and including `/*` and `*/` is a comment. 
 The `!` in front of `!line_comment` and `!block_comment` instructs the lexer to suppress those tokens. See the [grammar for details.](../../gogll.md) 
 *Note:* `!line_comment` and `!block_comment` were taken from [comments.md.](https://github.com/bruceiv/pegll/tree/main/examples/comments) 
+
+
 ```
+package "eggr"
+
+
+EMPTY : ";" WS ;
+
+WS              : SpaceOrComment WS
+                | empty ;
+SpaceOrComment  : space
+                | LineOrBlock ;
+space           : any " \t\r\n" ;  
+
 LineOrBlock     : line_comment 
                 | block_comment ;
 !line_comment   : '/' '/' {not "\n"} ;
@@ -40,13 +51,15 @@ LineOrBlock     : line_comment
 ```
 `end_of_line` is a lexical rule for the escape characters that signify the end of the line. Any of these characters will indicate the end of line has been reached in `eggr`. 
 ```
-Carriage_return : "\r\n" ;
+end_of_line     : any "\n\r" ;
+newline         : '\n' ;
+carriage_ret    : '\r' ;
 
 
 
 ```
 #### ORIGINAL GRAMMAR
-        grammar         : _ rule_rep ; 
+        grammar         : WS rule_rep ; 
                 rule_rep        : < rule > ;
         rule            : identifier EQUAL choice ;
 
@@ -70,49 +83,68 @@ Carriage_return : "\r\n" ;
                         | ANY
                         | EMPTY ;
 
-        identifier      : let_ let_num _ ;
+        identifier      : let_ let_num WS ;
                 let_            : letter 
-                                | _ ;
+                                | WS ;
                 let_num         : { letter 
-                                | _ 
+                                | WS 
                                 | number } ;
 
-        char_literal    : '\'' character '\'' _ ;
-        str_literal     : '\"' str '\"' _ ;
+        char_literal    : '\'' character '\'' WS ;
+        str_literal     : '\"' str '\"' WS ;
                 str             :  { character } ;
-        char_class      : '[' unclosed_chars ']' _ ;
+        char_class      : '[' unclosed_chars ']' WS ;
                 unclosed_chars  : { not ']' character } ;
         character       : not "\'\"\\" 
                         | '\\' any "nrt\'\"\\" ;
+                        
+------------------------------------ MAY NEED TO FIX all below
+        EQUAL : '=' WS ;
+        PIPE  : '|' WS ;
+        AND   : '&' WS ;
+        NOT   : '!' WS ;
+        OPT   : '?' WS ;
+        STAR  : '*' WS ;
+        PLUS  : '+' WS ;
+        OPEN  : '(' WS ;
+        CLOSE : ')' WS ;
+        ANY   : '.' WS ;
+        EMPTY : ';' WS ;
 
-        EQUAL : '=' _ ;
-        PIPE  : '|' _ ;
-        AND   : '&' _ ;
-        NOT   : '!' _ ;
-        OPT   : '?' _ ;
-        STAR  : '*' _ ;
-        PLUS  : '+' _ ;
-        OPEN  : '(' _ ;
-        CLOSE : ')' _ ;
-        ANY   : '.' _ ;
-        EMPTY : ';' _ ;
-
-        _               : { space 
-                        | LineOrBlock }
 
         space           : ' ' 
                         | '\t' 
                         | end_of_line ;
 
-
------------------------------------- MAY NEED TO FIX end of line
         end_of_line     : "\r\n" 
                         / '\n' 
                         / '\r' ;
 
 #### PARTIALLY WORKING GRAMMAR
-!line_comment : '/' '/' {not "\n"} ;
-!block_comment : '/''*' {not "*" | '*' not "/"} '*''/' ;
+EQUAL : "=" WS ;
+PIPE  : "|" WS ;
+AND   : "&" WS ;
+NOT   : "!" WS ;
+OPT   : "?" WS ;
+STAR  : "*" WS ;
+PLUS  : "+" WS ;
+OPEN  : "(" WS ;
+CLOSE : "(" WS ;
+ANY   : "." WS ;
+EMPTY : ";" WS ;
+WS              : SpaceOrComment WS
+                | empty ;
+SpaceOrComment  : space
+                | LineOrBlock ;
+space           : any " \t\r\n" ;  
+
+LineOrBlock     : line_comment 
+                | block_comment ;
+!line_comment   : '/' '/' {not "\n"} ;
+!block_comment  : '/''*' 
+                { not "*" 
+                | '*' not "/" 
+                } '*''/' ;
 #
 ### **COPYRIGHT AND LICENSING INFORMATION**
 **Copyright 2021 Brynn Harrington and Emily Hoppe**

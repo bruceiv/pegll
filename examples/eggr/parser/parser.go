@@ -38,10 +38,10 @@ func newParser(l *lexer.Lexer) *parser {
 		U:      &descriptors{},
 		popped: make(map[poppedNode]bool),
 		crf: map[clusterNode][]*crfNode{
-			{symbols.NT_LineOrBlock, 0}: {},
+			{symbols.NT_EMPTY, 0}: {},
 		},
 		crfNodes:    map[crfNode]*crfNode{},
-		bsrSet:      bsr.New(symbols.NT_LineOrBlock, l),
+		bsrSet:      bsr.New(symbols.NT_EMPTY, l),
 		parseErrors: nil,
 	}
 }
@@ -55,7 +55,7 @@ func Parse(l *lexer.Lexer) (*bsr.Set, []*Error) {
 func (p *parser) parse() (*bsr.Set, []*Error) {
 	var L slot.Label
 	m, cU := len(p.lex.Tokens)-1, 0
-	p.ntAdd(symbols.NT_LineOrBlock, 0)
+	p.ntAdd(symbols.NT_EMPTY, 0)
 	// p.DumpDescriptors()
 	for !p.R.empty() {
 		L, cU, p.cI = p.R.remove()
@@ -65,6 +65,23 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 		// p.DumpDescriptors()
 
 		switch L {
+		case slot.EMPTY0R0: // EMPTY : ∙; WS
+
+			p.bsrSet.Add(slot.EMPTY0R1, cU, p.cI, p.cI+1)
+			p.cI++
+			if !p.testSelect(slot.EMPTY0R1) {
+				p.parseError(slot.EMPTY0R1, p.cI, first[slot.EMPTY0R1])
+				break
+			}
+
+			p.call(slot.EMPTY0R2, cU, p.cI)
+		case slot.EMPTY0R2: // EMPTY : ; WS ∙
+
+			if p.follow(symbols.NT_EMPTY) {
+				p.rtn(symbols.NT_EMPTY, cU, p.cI)
+			} else {
+				p.parseError(slot.EMPTY0R0, p.cI, followSets[symbols.NT_EMPTY])
+			}
 		case slot.LineOrBlock0R0: // LineOrBlock : ∙line_comment
 
 			p.bsrSet.Add(slot.LineOrBlock0R1, cU, p.cI, p.cI+1)
@@ -83,12 +100,57 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			} else {
 				p.parseError(slot.LineOrBlock1R0, p.cI, followSets[symbols.NT_LineOrBlock])
 			}
+		case slot.SpaceOrComment0R0: // SpaceOrComment : ∙space
+
+			p.bsrSet.Add(slot.SpaceOrComment0R1, cU, p.cI, p.cI+1)
+			p.cI++
+			if p.follow(symbols.NT_SpaceOrComment) {
+				p.rtn(symbols.NT_SpaceOrComment, cU, p.cI)
+			} else {
+				p.parseError(slot.SpaceOrComment0R0, p.cI, followSets[symbols.NT_SpaceOrComment])
+			}
+		case slot.SpaceOrComment1R0: // SpaceOrComment : ∙LineOrBlock
+
+			p.call(slot.SpaceOrComment1R1, cU, p.cI)
+		case slot.SpaceOrComment1R1: // SpaceOrComment : LineOrBlock ∙
+
+			if p.follow(symbols.NT_SpaceOrComment) {
+				p.rtn(symbols.NT_SpaceOrComment, cU, p.cI)
+			} else {
+				p.parseError(slot.SpaceOrComment1R0, p.cI, followSets[symbols.NT_SpaceOrComment])
+			}
+		case slot.WS0R0: // WS : ∙SpaceOrComment WS
+
+			p.call(slot.WS0R1, cU, p.cI)
+		case slot.WS0R1: // WS : SpaceOrComment ∙WS
+
+			if !p.testSelect(slot.WS0R1) {
+				p.parseError(slot.WS0R1, p.cI, first[slot.WS0R1])
+				break
+			}
+
+			p.call(slot.WS0R2, cU, p.cI)
+		case slot.WS0R2: // WS : SpaceOrComment WS ∙
+
+			if p.follow(symbols.NT_WS) {
+				p.rtn(symbols.NT_WS, cU, p.cI)
+			} else {
+				p.parseError(slot.WS0R0, p.cI, followSets[symbols.NT_WS])
+			}
+		case slot.WS1R0: // WS : ∙
+			p.bsrSet.AddEmpty(slot.WS1R0, p.cI)
+
+			if p.follow(symbols.NT_WS) {
+				p.rtn(symbols.NT_WS, cU, p.cI)
+			} else {
+				p.parseError(slot.WS1R0, p.cI, followSets[symbols.NT_WS])
+			}
 
 		default:
 			panic("This must not happen")
 		}
 	}
-	if !p.bsrSet.Contain(symbols.NT_LineOrBlock, 0, m) {
+	if !p.bsrSet.Contain(symbols.NT_EMPTY, 0, m) {
 		p.sortParseErrors()
 		return nil, p.parseErrors
 	}
@@ -325,26 +387,109 @@ func (p *parser) testSelect(l slot.Label) bool {
 }
 
 var first = []map[token.Type]string{
+	// EMPTY : ∙; WS
+	{
+		token.T_0: ";",
+	},
+	// EMPTY : ; ∙WS
+	{
+		token.T_1: "block_comment",
+		token.T_4: "line_comment",
+		token.T_6: "space",
+		token.EOF: "$",
+	},
+	// EMPTY : ; WS ∙
+	{
+		token.EOF: "$",
+	},
 	// LineOrBlock : ∙line_comment
 	{
-		token.T_2: "line_comment",
+		token.T_4: "line_comment",
 	},
 	// LineOrBlock : line_comment ∙
 	{
 		token.EOF: "$",
+		token.T_1: "block_comment",
+		token.T_4: "line_comment",
+		token.T_6: "space",
 	},
 	// LineOrBlock : ∙block_comment
 	{
-		token.T_0: "block_comment",
+		token.T_1: "block_comment",
 	},
 	// LineOrBlock : block_comment ∙
+	{
+		token.EOF: "$",
+		token.T_1: "block_comment",
+		token.T_4: "line_comment",
+		token.T_6: "space",
+	},
+	// SpaceOrComment : ∙space
+	{
+		token.T_6: "space",
+	},
+	// SpaceOrComment : space ∙
+	{
+		token.EOF: "$",
+		token.T_1: "block_comment",
+		token.T_4: "line_comment",
+		token.T_6: "space",
+	},
+	// SpaceOrComment : ∙LineOrBlock
+	{
+		token.T_1: "block_comment",
+		token.T_4: "line_comment",
+	},
+	// SpaceOrComment : LineOrBlock ∙
+	{
+		token.EOF: "$",
+		token.T_1: "block_comment",
+		token.T_4: "line_comment",
+		token.T_6: "space",
+	},
+	// WS : ∙SpaceOrComment WS
+	{
+		token.T_1: "block_comment",
+		token.T_4: "line_comment",
+		token.T_6: "space",
+	},
+	// WS : SpaceOrComment ∙WS
+	{
+		token.T_1: "block_comment",
+		token.T_4: "line_comment",
+		token.T_6: "space",
+		token.EOF: "$",
+	},
+	// WS : SpaceOrComment WS ∙
+	{
+		token.EOF: "$",
+	},
+	// WS : ∙
 	{
 		token.EOF: "$",
 	},
 }
 
 var followSets = []map[token.Type]string{
+	// EMPTY
+	{
+		token.EOF: "$",
+	},
 	// LineOrBlock
+	{
+		token.EOF: "$",
+		token.T_1: "block_comment",
+		token.T_4: "line_comment",
+		token.T_6: "space",
+	},
+	// SpaceOrComment
+	{
+		token.EOF: "$",
+		token.T_1: "block_comment",
+		token.T_4: "line_comment",
+		token.T_6: "space",
+	},
+	// WS
 	{
 		token.EOF: "$",
 	},

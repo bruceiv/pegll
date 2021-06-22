@@ -14,16 +14,22 @@ func (T) isSymbol() {}
 // NT is the type of non-terminals symbols
 type NT int
 const( 
-	NT_LineOrBlock NT = iota
+	NT_EMPTY NT = iota
+	NT_LineOrBlock 
+	NT_SpaceOrComment 
+	NT_WS 
 )
 
 // T is the type of terminals symbols
 type T int
 const( 
-	T_0 T = iota // block_comment 
-	T_1  // carriage_return 
-	T_2  // line_comment 
-	T_3  // space 
+	T_0 T = iota // ; 
+	T_1  // block_comment 
+	T_2  // carriage_ret 
+	T_3  // end_of_line 
+	T_4  // line_comment 
+	T_5  // newline 
+	T_6  // space 
 )
 
 type Symbols []Symbol
@@ -53,16 +59,25 @@ func (t T) String() string {
 }
 
 var ntToString = []string { 
-	"LineOrBlock", /* NT_LineOrBlock */ 
+	"EMPTY", /* NT_EMPTY */
+	"LineOrBlock", /* NT_LineOrBlock */
+	"SpaceOrComment", /* NT_SpaceOrComment */
+	"WS", /* NT_WS */ 
 }
 
 var tToString = []string { 
-	"block_comment", /* T_0 */
-	"carriage_return", /* T_1 */
-	"line_comment", /* T_2 */
-	"space", /* T_3 */ 
+	";", /* T_0 */
+	"block_comment", /* T_1 */
+	"carriage_ret", /* T_2 */
+	"end_of_line", /* T_3 */
+	"line_comment", /* T_4 */
+	"newline", /* T_5 */
+	"space", /* T_6 */ 
 }
 
 var stringNT = map[string]NT{ 
+	"EMPTY":NT_EMPTY,
 	"LineOrBlock":NT_LineOrBlock,
+	"SpaceOrComment":NT_SpaceOrComment,
+	"WS":NT_WS,
 }

@@ -12,10 +12,21 @@ import(
 type Label int
 
 const(
-	LineOrBlock0R0 Label = iota
+	EMPTY0R0 Label = iota
+	EMPTY0R1
+	EMPTY0R2
+	LineOrBlock0R0
 	LineOrBlock0R1
 	LineOrBlock1R0
 	LineOrBlock1R1
+	SpaceOrComment0R0
+	SpaceOrComment0R1
+	SpaceOrComment1R0
+	SpaceOrComment1R1
+	WS0R0
+	WS0R1
+	WS0R2
+	WS1R0
 )
 
 type Slot struct {
@@ -105,44 +116,140 @@ func (s *Slot) String() string {
 }
 
 var slots = map[Label]*Slot{ 
+	EMPTY0R0: {
+		symbols.NT_EMPTY, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_0, 
+			symbols.NT_WS,
+		}, 
+		EMPTY0R0, 
+	},
+	EMPTY0R1: {
+		symbols.NT_EMPTY, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_0, 
+			symbols.NT_WS,
+		}, 
+		EMPTY0R1, 
+	},
+	EMPTY0R2: {
+		symbols.NT_EMPTY, 0, 2, 
+		symbols.Symbols{  
+			symbols.T_0, 
+			symbols.NT_WS,
+		}, 
+		EMPTY0R2, 
+	},
 	LineOrBlock0R0: {
 		symbols.NT_LineOrBlock, 0, 0, 
 		symbols.Symbols{  
-			symbols.T_2,
+			symbols.T_4,
 		}, 
 		LineOrBlock0R0, 
 	},
 	LineOrBlock0R1: {
 		symbols.NT_LineOrBlock, 0, 1, 
 		symbols.Symbols{  
-			symbols.T_2,
+			symbols.T_4,
 		}, 
 		LineOrBlock0R1, 
 	},
 	LineOrBlock1R0: {
 		symbols.NT_LineOrBlock, 1, 0, 
 		symbols.Symbols{  
-			symbols.T_0,
+			symbols.T_1,
 		}, 
 		LineOrBlock1R0, 
 	},
 	LineOrBlock1R1: {
 		symbols.NT_LineOrBlock, 1, 1, 
 		symbols.Symbols{  
-			symbols.T_0,
+			symbols.T_1,
 		}, 
 		LineOrBlock1R1, 
+	},
+	SpaceOrComment0R0: {
+		symbols.NT_SpaceOrComment, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_6,
+		}, 
+		SpaceOrComment0R0, 
+	},
+	SpaceOrComment0R1: {
+		symbols.NT_SpaceOrComment, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_6,
+		}, 
+		SpaceOrComment0R1, 
+	},
+	SpaceOrComment1R0: {
+		symbols.NT_SpaceOrComment, 1, 0, 
+		symbols.Symbols{  
+			symbols.NT_LineOrBlock,
+		}, 
+		SpaceOrComment1R0, 
+	},
+	SpaceOrComment1R1: {
+		symbols.NT_SpaceOrComment, 1, 1, 
+		symbols.Symbols{  
+			symbols.NT_LineOrBlock,
+		}, 
+		SpaceOrComment1R1, 
+	},
+	WS0R0: {
+		symbols.NT_WS, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_SpaceOrComment, 
+			symbols.NT_WS,
+		}, 
+		WS0R0, 
+	},
+	WS0R1: {
+		symbols.NT_WS, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_SpaceOrComment, 
+			symbols.NT_WS,
+		}, 
+		WS0R1, 
+	},
+	WS0R2: {
+		symbols.NT_WS, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_SpaceOrComment, 
+			symbols.NT_WS,
+		}, 
+		WS0R2, 
+	},
+	WS1R0: {
+		symbols.NT_WS, 1, 0, 
+		symbols.Symbols{ 
+		}, 
+		WS1R0, 
 	},
 }
 
 var slotIndex = map[Index]Label { 
+	Index{ symbols.NT_EMPTY,0,0 }: EMPTY0R0,
+	Index{ symbols.NT_EMPTY,0,1 }: EMPTY0R1,
+	Index{ symbols.NT_EMPTY,0,2 }: EMPTY0R2,
 	Index{ symbols.NT_LineOrBlock,0,0 }: LineOrBlock0R0,
 	Index{ symbols.NT_LineOrBlock,0,1 }: LineOrBlock0R1,
 	Index{ symbols.NT_LineOrBlock,1,0 }: LineOrBlock1R0,
 	Index{ symbols.NT_LineOrBlock,1,1 }: LineOrBlock1R1,
+	Index{ symbols.NT_SpaceOrComment,0,0 }: SpaceOrComment0R0,
+	Index{ symbols.NT_SpaceOrComment,0,1 }: SpaceOrComment0R1,
+	Index{ symbols.NT_SpaceOrComment,1,0 }: SpaceOrComment1R0,
+	Index{ symbols.NT_SpaceOrComment,1,1 }: SpaceOrComment1R1,
+	Index{ symbols.NT_WS,0,0 }: WS0R0,
+	Index{ symbols.NT_WS,0,1 }: WS0R1,
+	Index{ symbols.NT_WS,0,2 }: WS0R2,
+	Index{ symbols.NT_WS,1,0 }: WS1R0,
 }
 
 var alternates = map[symbols.NT][]Label{ 
+	symbols.NT_EMPTY:[]Label{ EMPTY0R0 },
+	symbols.NT_WS:[]Label{ WS0R0,WS1R0 },
+	symbols.NT_SpaceOrComment:[]Label{ SpaceOrComment0R0,SpaceOrComment1R0 },
 	symbols.NT_LineOrBlock:[]Label{ LineOrBlock0R0,LineOrBlock1R0 },
 }
 
