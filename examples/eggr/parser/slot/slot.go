@@ -12,17 +12,130 @@ import(
 type Label int
 
 const(
-	EMPTY0R0 Label = iota
-	EMPTY0R1
-	EMPTY0R2
+	CharClass0R0 Label = iota
+	CharClass0R1
+	CharClass0R2
+	CharClass0R3
+	CharClass0R4
+	CharLiteral0R0
+	CharLiteral0R1
+	CharLiteral0R2
+	CharLiteral0R3
+	Character0R0
+	Character0R1
+	Character1R0
+	Character1R1
+	Choice0R0
+	Choice0R1
+	Choice0R2
+	Expr1x0R0
+	Expr1x0R1
+	Expr1x0R2
+	Expr1x1R0
+	Expression0R0
+	Expression0R1
+	Expression0R2
+	Expression0R3
+	Expression1R0
+	Expression1R1
+	Expression1R2
+	Expression1R3
+	Expression2R0
+	Expression2R1
+	Expression2R2
+	Grammar0R0
+	Grammar0R1
+	Grammar0R2
+	Grammar0R3
+	Identifier0R0
+	Identifier0R1
+	Identifier0R2
+	Identifier0R3
+	LetOrNum0R0
+	LetOrNum0R1
+	LetOrNum1R0
+	LetOrNum1R1
+	LetOrNum2R0
+	LetOrNum2R1
+	LetOrNum0x0R0
+	LetOrNum0x0R1
+	LetOrNum0x0R2
+	LetOrNum0x1R0
+	LetWS0R0
+	LetWS0R1
+	LetWS1R0
+	LetWS1R1
 	LineOrBlock0R0
 	LineOrBlock0R1
 	LineOrBlock1R0
 	LineOrBlock1R1
+	OptStarPlus0R0
+	OptStarPlus0R1
+	OptStarPlus0R2
+	OptStarPlus1R0
+	OptStarPlus1R1
+	OptStarPlus1R2
+	OptStarPlus2R0
+	OptStarPlus2R1
+	OptStarPlus2R2
+	OptStarPlus3R0
+	PipedSeq0R0
+	PipedSeq0R1
+	PipedSeq0R2
+	PipedSeq0x0R0
+	PipedSeq0x0R1
+	PipedSeq0x0R2
+	PipedSeq0x1R0
+	Primary0R0
+	Primary0R1
+	Primary0R2
+	Primary1R0
+	Primary1R1
+	Primary1R2
+	Primary1R3
+	Primary2R0
+	Primary2R1
+	Primary3R0
+	Primary3R1
+	Primary4R0
+	Primary4R1
+	Primary5R0
+	Primary5R1
+	Primary5R2
+	Primary6R0
+	Primary6R1
+	Primary6R2
+	Rule0R0
+	Rule0R1
+	Rule0R2
+	Rule0R3
+	Rules0R0
+	Rules0R1
+	Rules0R2
+	Rules1R0
+	Sequence0R0
+	Sequence0R1
+	Sequence0R2
 	SpaceOrComment0R0
 	SpaceOrComment0R1
 	SpaceOrComment1R0
 	SpaceOrComment1R1
+	String0R0
+	String0R1
+	String0R2
+	String1R0
+	StringLiteral0R0
+	StringLiteral0R1
+	StringLiteral0R2
+	StringLiteral0R3
+	StringLiteral0R4
+	UnChar0R0
+	UnChar0R1
+	UnChar0R2
+	UnChars0R0
+	UnChars0R1
+	UnChars0R2
+	UnChars1R0
 	WS0R0
 	WS0R1
 	WS0R2
@@ -116,69 +229,853 @@ func (s *Slot) String() string {
 }
 
 var slots = map[Label]*Slot{ 
-	EMPTY0R0: {
-		symbols.NT_EMPTY, 0, 0, 
+	CharClass0R0: {
+		symbols.NT_CharClass, 0, 0, 
 		symbols.Symbols{  
-			symbols.T_0, 
+			symbols.T_11, 
+			symbols.NT_UnChars, 
+			symbols.T_12, 
 			symbols.NT_WS,
 		}, 
-		EMPTY0R0, 
+		CharClass0R0, 
 	},
-	EMPTY0R1: {
-		symbols.NT_EMPTY, 0, 1, 
+	CharClass0R1: {
+		symbols.NT_CharClass, 0, 1, 
 		symbols.Symbols{  
-			symbols.T_0, 
+			symbols.T_11, 
+			symbols.NT_UnChars, 
+			symbols.T_12, 
 			symbols.NT_WS,
 		}, 
-		EMPTY0R1, 
+		CharClass0R1, 
 	},
-	EMPTY0R2: {
-		symbols.NT_EMPTY, 0, 2, 
+	CharClass0R2: {
+		symbols.NT_CharClass, 0, 2, 
 		symbols.Symbols{  
-			symbols.T_0, 
+			symbols.T_11, 
+			symbols.NT_UnChars, 
+			symbols.T_12, 
 			symbols.NT_WS,
 		}, 
-		EMPTY0R2, 
+		CharClass0R2, 
+	},
+	CharClass0R3: {
+		symbols.NT_CharClass, 0, 3, 
+		symbols.Symbols{  
+			symbols.T_11, 
+			symbols.NT_UnChars, 
+			symbols.T_12, 
+			symbols.NT_WS,
+		}, 
+		CharClass0R3, 
+	},
+	CharClass0R4: {
+		symbols.NT_CharClass, 0, 4, 
+		symbols.Symbols{  
+			symbols.T_11, 
+			symbols.NT_UnChars, 
+			symbols.T_12, 
+			symbols.NT_WS,
+		}, 
+		CharClass0R4, 
+	},
+	CharLiteral0R0: {
+		symbols.NT_CharLiteral, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_2, 
+			symbols.NT_Character, 
+			symbols.T_2,
+		}, 
+		CharLiteral0R0, 
+	},
+	CharLiteral0R1: {
+		symbols.NT_CharLiteral, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_2, 
+			symbols.NT_Character, 
+			symbols.T_2,
+		}, 
+		CharLiteral0R1, 
+	},
+	CharLiteral0R2: {
+		symbols.NT_CharLiteral, 0, 2, 
+		symbols.Symbols{  
+			symbols.T_2, 
+			symbols.NT_Character, 
+			symbols.T_2,
+		}, 
+		CharLiteral0R2, 
+	},
+	CharLiteral0R3: {
+		symbols.NT_CharLiteral, 0, 3, 
+		symbols.Symbols{  
+			symbols.T_2, 
+			symbols.NT_Character, 
+			symbols.T_2,
+		}, 
+		CharLiteral0R3, 
+	},
+	Character0R0: {
+		symbols.NT_Character, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_20,
+		}, 
+		Character0R0, 
+	},
+	Character0R1: {
+		symbols.NT_Character, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_20,
+		}, 
+		Character0R1, 
+	},
+	Character1R0: {
+		symbols.NT_Character, 1, 0, 
+		symbols.Symbols{  
+			symbols.T_16,
+		}, 
+		Character1R0, 
+	},
+	Character1R1: {
+		symbols.NT_Character, 1, 1, 
+		symbols.Symbols{  
+			symbols.T_16,
+		}, 
+		Character1R1, 
+	},
+	Choice0R0: {
+		symbols.NT_Choice, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_Sequence, 
+			symbols.NT_PipedSeq0x,
+		}, 
+		Choice0R0, 
+	},
+	Choice0R1: {
+		symbols.NT_Choice, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_Sequence, 
+			symbols.NT_PipedSeq0x,
+		}, 
+		Choice0R1, 
+	},
+	Choice0R2: {
+		symbols.NT_Choice, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_Sequence, 
+			symbols.NT_PipedSeq0x,
+		}, 
+		Choice0R2, 
+	},
+	Expr1x0R0: {
+		symbols.NT_Expr1x, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_Expression, 
+			symbols.NT_Expr1x,
+		}, 
+		Expr1x0R0, 
+	},
+	Expr1x0R1: {
+		symbols.NT_Expr1x, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_Expression, 
+			symbols.NT_Expr1x,
+		}, 
+		Expr1x0R1, 
+	},
+	Expr1x0R2: {
+		symbols.NT_Expr1x, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_Expression, 
+			symbols.NT_Expr1x,
+		}, 
+		Expr1x0R2, 
+	},
+	Expr1x1R0: {
+		symbols.NT_Expr1x, 1, 0, 
+		symbols.Symbols{ 
+		}, 
+		Expr1x1R0, 
+	},
+	Expression0R0: {
+		symbols.NT_Expression, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_1, 
+			symbols.NT_WS, 
+			symbols.NT_Primary,
+		}, 
+		Expression0R0, 
+	},
+	Expression0R1: {
+		symbols.NT_Expression, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_1, 
+			symbols.NT_WS, 
+			symbols.NT_Primary,
+		}, 
+		Expression0R1, 
+	},
+	Expression0R2: {
+		symbols.NT_Expression, 0, 2, 
+		symbols.Symbols{  
+			symbols.T_1, 
+			symbols.NT_WS, 
+			symbols.NT_Primary,
+		}, 
+		Expression0R2, 
+	},
+	Expression0R3: {
+		symbols.NT_Expression, 0, 3, 
+		symbols.Symbols{  
+			symbols.T_1, 
+			symbols.NT_WS, 
+			symbols.NT_Primary,
+		}, 
+		Expression0R3, 
+	},
+	Expression1R0: {
+		symbols.NT_Expression, 1, 0, 
+		symbols.Symbols{  
+			symbols.T_0, 
+			symbols.NT_WS, 
+			symbols.NT_Primary,
+		}, 
+		Expression1R0, 
+	},
+	Expression1R1: {
+		symbols.NT_Expression, 1, 1, 
+		symbols.Symbols{  
+			symbols.T_0, 
+			symbols.NT_WS, 
+			symbols.NT_Primary,
+		}, 
+		Expression1R1, 
+	},
+	Expression1R2: {
+		symbols.NT_Expression, 1, 2, 
+		symbols.Symbols{  
+			symbols.T_0, 
+			symbols.NT_WS, 
+			symbols.NT_Primary,
+		}, 
+		Expression1R2, 
+	},
+	Expression1R3: {
+		symbols.NT_Expression, 1, 3, 
+		symbols.Symbols{  
+			symbols.T_0, 
+			symbols.NT_WS, 
+			symbols.NT_Primary,
+		}, 
+		Expression1R3, 
+	},
+	Expression2R0: {
+		symbols.NT_Expression, 2, 0, 
+		symbols.Symbols{  
+			symbols.NT_Primary, 
+			symbols.NT_OptStarPlus,
+		}, 
+		Expression2R0, 
+	},
+	Expression2R1: {
+		symbols.NT_Expression, 2, 1, 
+		symbols.Symbols{  
+			symbols.NT_Primary, 
+			symbols.NT_OptStarPlus,
+		}, 
+		Expression2R1, 
+	},
+	Expression2R2: {
+		symbols.NT_Expression, 2, 2, 
+		symbols.Symbols{  
+			symbols.NT_Primary, 
+			symbols.NT_OptStarPlus,
+		}, 
+		Expression2R2, 
+	},
+	Grammar0R0: {
+		symbols.NT_Grammar, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_WS, 
+			symbols.NT_Rule, 
+			symbols.NT_Rules,
+		}, 
+		Grammar0R0, 
+	},
+	Grammar0R1: {
+		symbols.NT_Grammar, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_WS, 
+			symbols.NT_Rule, 
+			symbols.NT_Rules,
+		}, 
+		Grammar0R1, 
+	},
+	Grammar0R2: {
+		symbols.NT_Grammar, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_WS, 
+			symbols.NT_Rule, 
+			symbols.NT_Rules,
+		}, 
+		Grammar0R2, 
+	},
+	Grammar0R3: {
+		symbols.NT_Grammar, 0, 3, 
+		symbols.Symbols{  
+			symbols.NT_WS, 
+			symbols.NT_Rule, 
+			symbols.NT_Rules,
+		}, 
+		Grammar0R3, 
+	},
+	Identifier0R0: {
+		symbols.NT_Identifier, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_LetWS, 
+			symbols.NT_LetOrNum0x, 
+			symbols.NT_WS,
+		}, 
+		Identifier0R0, 
+	},
+	Identifier0R1: {
+		symbols.NT_Identifier, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_LetWS, 
+			symbols.NT_LetOrNum0x, 
+			symbols.NT_WS,
+		}, 
+		Identifier0R1, 
+	},
+	Identifier0R2: {
+		symbols.NT_Identifier, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_LetWS, 
+			symbols.NT_LetOrNum0x, 
+			symbols.NT_WS,
+		}, 
+		Identifier0R2, 
+	},
+	Identifier0R3: {
+		symbols.NT_Identifier, 0, 3, 
+		symbols.Symbols{  
+			symbols.NT_LetWS, 
+			symbols.NT_LetOrNum0x, 
+			symbols.NT_WS,
+		}, 
+		Identifier0R3, 
+	},
+	LetOrNum0R0: {
+		symbols.NT_LetOrNum, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_17,
+		}, 
+		LetOrNum0R0, 
+	},
+	LetOrNum0R1: {
+		symbols.NT_LetOrNum, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_17,
+		}, 
+		LetOrNum0R1, 
+	},
+	LetOrNum1R0: {
+		symbols.NT_LetOrNum, 1, 0, 
+		symbols.Symbols{  
+			symbols.T_22,
+		}, 
+		LetOrNum1R0, 
+	},
+	LetOrNum1R1: {
+		symbols.NT_LetOrNum, 1, 1, 
+		symbols.Symbols{  
+			symbols.T_22,
+		}, 
+		LetOrNum1R1, 
+	},
+	LetOrNum2R0: {
+		symbols.NT_LetOrNum, 2, 0, 
+		symbols.Symbols{  
+			symbols.NT_WS,
+		}, 
+		LetOrNum2R0, 
+	},
+	LetOrNum2R1: {
+		symbols.NT_LetOrNum, 2, 1, 
+		symbols.Symbols{  
+			symbols.NT_WS,
+		}, 
+		LetOrNum2R1, 
+	},
+	LetOrNum0x0R0: {
+		symbols.NT_LetOrNum0x, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_LetOrNum, 
+			symbols.NT_LetOrNum0x,
+		}, 
+		LetOrNum0x0R0, 
+	},
+	LetOrNum0x0R1: {
+		symbols.NT_LetOrNum0x, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_LetOrNum, 
+			symbols.NT_LetOrNum0x,
+		}, 
+		LetOrNum0x0R1, 
+	},
+	LetOrNum0x0R2: {
+		symbols.NT_LetOrNum0x, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_LetOrNum, 
+			symbols.NT_LetOrNum0x,
+		}, 
+		LetOrNum0x0R2, 
+	},
+	LetOrNum0x1R0: {
+		symbols.NT_LetOrNum0x, 1, 0, 
+		symbols.Symbols{ 
+		}, 
+		LetOrNum0x1R0, 
+	},
+	LetWS0R0: {
+		symbols.NT_LetWS, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_17,
+		}, 
+		LetWS0R0, 
+	},
+	LetWS0R1: {
+		symbols.NT_LetWS, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_17,
+		}, 
+		LetWS0R1, 
+	},
+	LetWS1R0: {
+		symbols.NT_LetWS, 1, 0, 
+		symbols.Symbols{  
+			symbols.NT_WS,
+		}, 
+		LetWS1R0, 
+	},
+	LetWS1R1: {
+		symbols.NT_LetWS, 1, 1, 
+		symbols.Symbols{  
+			symbols.NT_WS,
+		}, 
+		LetWS1R1, 
 	},
 	LineOrBlock0R0: {
 		symbols.NT_LineOrBlock, 0, 0, 
 		symbols.Symbols{  
-			symbols.T_4,
+			symbols.T_18,
 		}, 
 		LineOrBlock0R0, 
 	},
 	LineOrBlock0R1: {
 		symbols.NT_LineOrBlock, 0, 1, 
 		symbols.Symbols{  
-			symbols.T_4,
+			symbols.T_18,
 		}, 
 		LineOrBlock0R1, 
 	},
 	LineOrBlock1R0: {
 		symbols.NT_LineOrBlock, 1, 0, 
 		symbols.Symbols{  
-			symbols.T_1,
+			symbols.T_13,
 		}, 
 		LineOrBlock1R0, 
 	},
 	LineOrBlock1R1: {
 		symbols.NT_LineOrBlock, 1, 1, 
 		symbols.Symbols{  
-			symbols.T_1,
+			symbols.T_13,
 		}, 
 		LineOrBlock1R1, 
+	},
+	OptStarPlus0R0: {
+		symbols.NT_OptStarPlus, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_10, 
+			symbols.NT_WS,
+		}, 
+		OptStarPlus0R0, 
+	},
+	OptStarPlus0R1: {
+		symbols.NT_OptStarPlus, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_10, 
+			symbols.NT_WS,
+		}, 
+		OptStarPlus0R1, 
+	},
+	OptStarPlus0R2: {
+		symbols.NT_OptStarPlus, 0, 2, 
+		symbols.Symbols{  
+			symbols.T_10, 
+			symbols.NT_WS,
+		}, 
+		OptStarPlus0R2, 
+	},
+	OptStarPlus1R0: {
+		symbols.NT_OptStarPlus, 1, 0, 
+		symbols.Symbols{  
+			symbols.T_5, 
+			symbols.NT_WS,
+		}, 
+		OptStarPlus1R0, 
+	},
+	OptStarPlus1R1: {
+		symbols.NT_OptStarPlus, 1, 1, 
+		symbols.Symbols{  
+			symbols.T_5, 
+			symbols.NT_WS,
+		}, 
+		OptStarPlus1R1, 
+	},
+	OptStarPlus1R2: {
+		symbols.NT_OptStarPlus, 1, 2, 
+		symbols.Symbols{  
+			symbols.T_5, 
+			symbols.NT_WS,
+		}, 
+		OptStarPlus1R2, 
+	},
+	OptStarPlus2R0: {
+		symbols.NT_OptStarPlus, 2, 0, 
+		symbols.Symbols{  
+			symbols.T_6, 
+			symbols.NT_WS,
+		}, 
+		OptStarPlus2R0, 
+	},
+	OptStarPlus2R1: {
+		symbols.NT_OptStarPlus, 2, 1, 
+		symbols.Symbols{  
+			symbols.T_6, 
+			symbols.NT_WS,
+		}, 
+		OptStarPlus2R1, 
+	},
+	OptStarPlus2R2: {
+		symbols.NT_OptStarPlus, 2, 2, 
+		symbols.Symbols{  
+			symbols.T_6, 
+			symbols.NT_WS,
+		}, 
+		OptStarPlus2R2, 
+	},
+	OptStarPlus3R0: {
+		symbols.NT_OptStarPlus, 3, 0, 
+		symbols.Symbols{ 
+		}, 
+		OptStarPlus3R0, 
+	},
+	PipedSeq0R0: {
+		symbols.NT_PipedSeq, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_24, 
+			symbols.NT_Sequence,
+		}, 
+		PipedSeq0R0, 
+	},
+	PipedSeq0R1: {
+		symbols.NT_PipedSeq, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_24, 
+			symbols.NT_Sequence,
+		}, 
+		PipedSeq0R1, 
+	},
+	PipedSeq0R2: {
+		symbols.NT_PipedSeq, 0, 2, 
+		symbols.Symbols{  
+			symbols.T_24, 
+			symbols.NT_Sequence,
+		}, 
+		PipedSeq0R2, 
+	},
+	PipedSeq0x0R0: {
+		symbols.NT_PipedSeq0x, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_PipedSeq, 
+			symbols.NT_PipedSeq0x,
+		}, 
+		PipedSeq0x0R0, 
+	},
+	PipedSeq0x0R1: {
+		symbols.NT_PipedSeq0x, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_PipedSeq, 
+			symbols.NT_PipedSeq0x,
+		}, 
+		PipedSeq0x0R1, 
+	},
+	PipedSeq0x0R2: {
+		symbols.NT_PipedSeq0x, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_PipedSeq, 
+			symbols.NT_PipedSeq0x,
+		}, 
+		PipedSeq0x0R2, 
+	},
+	PipedSeq0x1R0: {
+		symbols.NT_PipedSeq0x, 1, 0, 
+		symbols.Symbols{ 
+		}, 
+		PipedSeq0x1R0, 
+	},
+	Primary0R0: {
+		symbols.NT_Primary, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_Identifier, 
+			symbols.T_19,
+		}, 
+		Primary0R0, 
+	},
+	Primary0R1: {
+		symbols.NT_Primary, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_Identifier, 
+			symbols.T_19,
+		}, 
+		Primary0R1, 
+	},
+	Primary0R2: {
+		symbols.NT_Primary, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_Identifier, 
+			symbols.T_19,
+		}, 
+		Primary0R2, 
+	},
+	Primary1R0: {
+		symbols.NT_Primary, 1, 0, 
+		symbols.Symbols{  
+			symbols.T_3, 
+			symbols.NT_Choice, 
+			symbols.T_4,
+		}, 
+		Primary1R0, 
+	},
+	Primary1R1: {
+		symbols.NT_Primary, 1, 1, 
+		symbols.Symbols{  
+			symbols.T_3, 
+			symbols.NT_Choice, 
+			symbols.T_4,
+		}, 
+		Primary1R1, 
+	},
+	Primary1R2: {
+		symbols.NT_Primary, 1, 2, 
+		symbols.Symbols{  
+			symbols.T_3, 
+			symbols.NT_Choice, 
+			symbols.T_4,
+		}, 
+		Primary1R2, 
+	},
+	Primary1R3: {
+		symbols.NT_Primary, 1, 3, 
+		symbols.Symbols{  
+			symbols.T_3, 
+			symbols.NT_Choice, 
+			symbols.T_4,
+		}, 
+		Primary1R3, 
+	},
+	Primary2R0: {
+		symbols.NT_Primary, 2, 0, 
+		symbols.Symbols{  
+			symbols.NT_StringLiteral,
+		}, 
+		Primary2R0, 
+	},
+	Primary2R1: {
+		symbols.NT_Primary, 2, 1, 
+		symbols.Symbols{  
+			symbols.NT_StringLiteral,
+		}, 
+		Primary2R1, 
+	},
+	Primary3R0: {
+		symbols.NT_Primary, 3, 0, 
+		symbols.Symbols{  
+			symbols.NT_CharLiteral,
+		}, 
+		Primary3R0, 
+	},
+	Primary3R1: {
+		symbols.NT_Primary, 3, 1, 
+		symbols.Symbols{  
+			symbols.NT_CharLiteral,
+		}, 
+		Primary3R1, 
+	},
+	Primary4R0: {
+		symbols.NT_Primary, 4, 0, 
+		symbols.Symbols{  
+			symbols.NT_CharClass,
+		}, 
+		Primary4R0, 
+	},
+	Primary4R1: {
+		symbols.NT_Primary, 4, 1, 
+		symbols.Symbols{  
+			symbols.NT_CharClass,
+		}, 
+		Primary4R1, 
+	},
+	Primary5R0: {
+		symbols.NT_Primary, 5, 0, 
+		symbols.Symbols{  
+			symbols.T_7, 
+			symbols.NT_WS,
+		}, 
+		Primary5R0, 
+	},
+	Primary5R1: {
+		symbols.NT_Primary, 5, 1, 
+		symbols.Symbols{  
+			symbols.T_7, 
+			symbols.NT_WS,
+		}, 
+		Primary5R1, 
+	},
+	Primary5R2: {
+		symbols.NT_Primary, 5, 2, 
+		symbols.Symbols{  
+			symbols.T_7, 
+			symbols.NT_WS,
+		}, 
+		Primary5R2, 
+	},
+	Primary6R0: {
+		symbols.NT_Primary, 6, 0, 
+		symbols.Symbols{  
+			symbols.T_8, 
+			symbols.NT_WS,
+		}, 
+		Primary6R0, 
+	},
+	Primary6R1: {
+		symbols.NT_Primary, 6, 1, 
+		symbols.Symbols{  
+			symbols.T_8, 
+			symbols.NT_WS,
+		}, 
+		Primary6R1, 
+	},
+	Primary6R2: {
+		symbols.NT_Primary, 6, 2, 
+		symbols.Symbols{  
+			symbols.T_8, 
+			symbols.NT_WS,
+		}, 
+		Primary6R2, 
+	},
+	Rule0R0: {
+		symbols.NT_Rule, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_Identifier, 
+			symbols.T_9, 
+			symbols.NT_Choice,
+		}, 
+		Rule0R0, 
+	},
+	Rule0R1: {
+		symbols.NT_Rule, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_Identifier, 
+			symbols.T_9, 
+			symbols.NT_Choice,
+		}, 
+		Rule0R1, 
+	},
+	Rule0R2: {
+		symbols.NT_Rule, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_Identifier, 
+			symbols.T_9, 
+			symbols.NT_Choice,
+		}, 
+		Rule0R2, 
+	},
+	Rule0R3: {
+		symbols.NT_Rule, 0, 3, 
+		symbols.Symbols{  
+			symbols.NT_Identifier, 
+			symbols.T_9, 
+			symbols.NT_Choice,
+		}, 
+		Rule0R3, 
+	},
+	Rules0R0: {
+		symbols.NT_Rules, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_Rule, 
+			symbols.NT_Rules,
+		}, 
+		Rules0R0, 
+	},
+	Rules0R1: {
+		symbols.NT_Rules, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_Rule, 
+			symbols.NT_Rules,
+		}, 
+		Rules0R1, 
+	},
+	Rules0R2: {
+		symbols.NT_Rules, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_Rule, 
+			symbols.NT_Rules,
+		}, 
+		Rules0R2, 
+	},
+	Rules1R0: {
+		symbols.NT_Rules, 1, 0, 
+		symbols.Symbols{ 
+		}, 
+		Rules1R0, 
+	},
+	Sequence0R0: {
+		symbols.NT_Sequence, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_Expression, 
+			symbols.NT_Expr1x,
+		}, 
+		Sequence0R0, 
+	},
+	Sequence0R1: {
+		symbols.NT_Sequence, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_Expression, 
+			symbols.NT_Expr1x,
+		}, 
+		Sequence0R1, 
+	},
+	Sequence0R2: {
+		symbols.NT_Sequence, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_Expression, 
+			symbols.NT_Expr1x,
+		}, 
+		Sequence0R2, 
 	},
 	SpaceOrComment0R0: {
 		symbols.NT_SpaceOrComment, 0, 0, 
 		symbols.Symbols{  
-			symbols.T_6,
+			symbols.T_23,
 		}, 
 		SpaceOrComment0R0, 
 	},
 	SpaceOrComment0R1: {
 		symbols.NT_SpaceOrComment, 0, 1, 
 		symbols.Symbols{  
-			symbols.T_6,
+			symbols.T_23,
 		}, 
 		SpaceOrComment0R1, 
 	},
@@ -195,6 +1092,140 @@ var slots = map[Label]*Slot{
 			symbols.NT_LineOrBlock,
 		}, 
 		SpaceOrComment1R1, 
+	},
+	String0R0: {
+		symbols.NT_String, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_Character, 
+			symbols.NT_String,
+		}, 
+		String0R0, 
+	},
+	String0R1: {
+		symbols.NT_String, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_Character, 
+			symbols.NT_String,
+		}, 
+		String0R1, 
+	},
+	String0R2: {
+		symbols.NT_String, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_Character, 
+			symbols.NT_String,
+		}, 
+		String0R2, 
+	},
+	String1R0: {
+		symbols.NT_String, 1, 0, 
+		symbols.Symbols{ 
+		}, 
+		String1R0, 
+	},
+	StringLiteral0R0: {
+		symbols.NT_StringLiteral, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_14, 
+			symbols.NT_String, 
+			symbols.T_14, 
+			symbols.NT_WS,
+		}, 
+		StringLiteral0R0, 
+	},
+	StringLiteral0R1: {
+		symbols.NT_StringLiteral, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_14, 
+			symbols.NT_String, 
+			symbols.T_14, 
+			symbols.NT_WS,
+		}, 
+		StringLiteral0R1, 
+	},
+	StringLiteral0R2: {
+		symbols.NT_StringLiteral, 0, 2, 
+		symbols.Symbols{  
+			symbols.T_14, 
+			symbols.NT_String, 
+			symbols.T_14, 
+			symbols.NT_WS,
+		}, 
+		StringLiteral0R2, 
+	},
+	StringLiteral0R3: {
+		symbols.NT_StringLiteral, 0, 3, 
+		symbols.Symbols{  
+			symbols.T_14, 
+			symbols.NT_String, 
+			symbols.T_14, 
+			symbols.NT_WS,
+		}, 
+		StringLiteral0R3, 
+	},
+	StringLiteral0R4: {
+		symbols.NT_StringLiteral, 0, 4, 
+		symbols.Symbols{  
+			symbols.T_14, 
+			symbols.NT_String, 
+			symbols.T_14, 
+			symbols.NT_WS,
+		}, 
+		StringLiteral0R4, 
+	},
+	UnChar0R0: {
+		symbols.NT_UnChar, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_21, 
+			symbols.NT_Character,
+		}, 
+		UnChar0R0, 
+	},
+	UnChar0R1: {
+		symbols.NT_UnChar, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_21, 
+			symbols.NT_Character,
+		}, 
+		UnChar0R1, 
+	},
+	UnChar0R2: {
+		symbols.NT_UnChar, 0, 2, 
+		symbols.Symbols{  
+			symbols.T_21, 
+			symbols.NT_Character,
+		}, 
+		UnChar0R2, 
+	},
+	UnChars0R0: {
+		symbols.NT_UnChars, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_UnChar, 
+			symbols.NT_UnChars,
+		}, 
+		UnChars0R0, 
+	},
+	UnChars0R1: {
+		symbols.NT_UnChars, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_UnChar, 
+			symbols.NT_UnChars,
+		}, 
+		UnChars0R1, 
+	},
+	UnChars0R2: {
+		symbols.NT_UnChars, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_UnChar, 
+			symbols.NT_UnChars,
+		}, 
+		UnChars0R2, 
+	},
+	UnChars1R0: {
+		symbols.NT_UnChars, 1, 0, 
+		symbols.Symbols{ 
+		}, 
+		UnChars1R0, 
 	},
 	WS0R0: {
 		symbols.NT_WS, 0, 0, 
@@ -229,17 +1260,130 @@ var slots = map[Label]*Slot{
 }
 
 var slotIndex = map[Index]Label { 
-	Index{ symbols.NT_EMPTY,0,0 }: EMPTY0R0,
-	Index{ symbols.NT_EMPTY,0,1 }: EMPTY0R1,
-	Index{ symbols.NT_EMPTY,0,2 }: EMPTY0R2,
+	Index{ symbols.NT_CharClass,0,0 }: CharClass0R0,
+	Index{ symbols.NT_CharClass,0,1 }: CharClass0R1,
+	Index{ symbols.NT_CharClass,0,2 }: CharClass0R2,
+	Index{ symbols.NT_CharClass,0,3 }: CharClass0R3,
+	Index{ symbols.NT_CharClass,0,4 }: CharClass0R4,
+	Index{ symbols.NT_CharLiteral,0,0 }: CharLiteral0R0,
+	Index{ symbols.NT_CharLiteral,0,1 }: CharLiteral0R1,
+	Index{ symbols.NT_CharLiteral,0,2 }: CharLiteral0R2,
+	Index{ symbols.NT_CharLiteral,0,3 }: CharLiteral0R3,
+	Index{ symbols.NT_Character,0,0 }: Character0R0,
+	Index{ symbols.NT_Character,0,1 }: Character0R1,
+	Index{ symbols.NT_Character,1,0 }: Character1R0,
+	Index{ symbols.NT_Character,1,1 }: Character1R1,
+	Index{ symbols.NT_Choice,0,0 }: Choice0R0,
+	Index{ symbols.NT_Choice,0,1 }: Choice0R1,
+	Index{ symbols.NT_Choice,0,2 }: Choice0R2,
+	Index{ symbols.NT_Expr1x,0,0 }: Expr1x0R0,
+	Index{ symbols.NT_Expr1x,0,1 }: Expr1x0R1,
+	Index{ symbols.NT_Expr1x,0,2 }: Expr1x0R2,
+	Index{ symbols.NT_Expr1x,1,0 }: Expr1x1R0,
+	Index{ symbols.NT_Expression,0,0 }: Expression0R0,
+	Index{ symbols.NT_Expression,0,1 }: Expression0R1,
+	Index{ symbols.NT_Expression,0,2 }: Expression0R2,
+	Index{ symbols.NT_Expression,0,3 }: Expression0R3,
+	Index{ symbols.NT_Expression,1,0 }: Expression1R0,
+	Index{ symbols.NT_Expression,1,1 }: Expression1R1,
+	Index{ symbols.NT_Expression,1,2 }: Expression1R2,
+	Index{ symbols.NT_Expression,1,3 }: Expression1R3,
+	Index{ symbols.NT_Expression,2,0 }: Expression2R0,
+	Index{ symbols.NT_Expression,2,1 }: Expression2R1,
+	Index{ symbols.NT_Expression,2,2 }: Expression2R2,
+	Index{ symbols.NT_Grammar,0,0 }: Grammar0R0,
+	Index{ symbols.NT_Grammar,0,1 }: Grammar0R1,
+	Index{ symbols.NT_Grammar,0,2 }: Grammar0R2,
+	Index{ symbols.NT_Grammar,0,3 }: Grammar0R3,
+	Index{ symbols.NT_Identifier,0,0 }: Identifier0R0,
+	Index{ symbols.NT_Identifier,0,1 }: Identifier0R1,
+	Index{ symbols.NT_Identifier,0,2 }: Identifier0R2,
+	Index{ symbols.NT_Identifier,0,3 }: Identifier0R3,
+	Index{ symbols.NT_LetOrNum,0,0 }: LetOrNum0R0,
+	Index{ symbols.NT_LetOrNum,0,1 }: LetOrNum0R1,
+	Index{ symbols.NT_LetOrNum,1,0 }: LetOrNum1R0,
+	Index{ symbols.NT_LetOrNum,1,1 }: LetOrNum1R1,
+	Index{ symbols.NT_LetOrNum,2,0 }: LetOrNum2R0,
+	Index{ symbols.NT_LetOrNum,2,1 }: LetOrNum2R1,
+	Index{ symbols.NT_LetOrNum0x,0,0 }: LetOrNum0x0R0,
+	Index{ symbols.NT_LetOrNum0x,0,1 }: LetOrNum0x0R1,
+	Index{ symbols.NT_LetOrNum0x,0,2 }: LetOrNum0x0R2,
+	Index{ symbols.NT_LetOrNum0x,1,0 }: LetOrNum0x1R0,
+	Index{ symbols.NT_LetWS,0,0 }: LetWS0R0,
+	Index{ symbols.NT_LetWS,0,1 }: LetWS0R1,
+	Index{ symbols.NT_LetWS,1,0 }: LetWS1R0,
+	Index{ symbols.NT_LetWS,1,1 }: LetWS1R1,
 	Index{ symbols.NT_LineOrBlock,0,0 }: LineOrBlock0R0,
 	Index{ symbols.NT_LineOrBlock,0,1 }: LineOrBlock0R1,
 	Index{ symbols.NT_LineOrBlock,1,0 }: LineOrBlock1R0,
 	Index{ symbols.NT_LineOrBlock,1,1 }: LineOrBlock1R1,
+	Index{ symbols.NT_OptStarPlus,0,0 }: OptStarPlus0R0,
+	Index{ symbols.NT_OptStarPlus,0,1 }: OptStarPlus0R1,
+	Index{ symbols.NT_OptStarPlus,0,2 }: OptStarPlus0R2,
+	Index{ symbols.NT_OptStarPlus,1,0 }: OptStarPlus1R0,
+	Index{ symbols.NT_OptStarPlus,1,1 }: OptStarPlus1R1,
+	Index{ symbols.NT_OptStarPlus,1,2 }: OptStarPlus1R2,
+	Index{ symbols.NT_OptStarPlus,2,0 }: OptStarPlus2R0,
+	Index{ symbols.NT_OptStarPlus,2,1 }: OptStarPlus2R1,
+	Index{ symbols.NT_OptStarPlus,2,2 }: OptStarPlus2R2,
+	Index{ symbols.NT_OptStarPlus,3,0 }: OptStarPlus3R0,
+	Index{ symbols.NT_PipedSeq,0,0 }: PipedSeq0R0,
+	Index{ symbols.NT_PipedSeq,0,1 }: PipedSeq0R1,
+	Index{ symbols.NT_PipedSeq,0,2 }: PipedSeq0R2,
+	Index{ symbols.NT_PipedSeq0x,0,0 }: PipedSeq0x0R0,
+	Index{ symbols.NT_PipedSeq0x,0,1 }: PipedSeq0x0R1,
+	Index{ symbols.NT_PipedSeq0x,0,2 }: PipedSeq0x0R2,
+	Index{ symbols.NT_PipedSeq0x,1,0 }: PipedSeq0x1R0,
+	Index{ symbols.NT_Primary,0,0 }: Primary0R0,
+	Index{ symbols.NT_Primary,0,1 }: Primary0R1,
+	Index{ symbols.NT_Primary,0,2 }: Primary0R2,
+	Index{ symbols.NT_Primary,1,0 }: Primary1R0,
+	Index{ symbols.NT_Primary,1,1 }: Primary1R1,
+	Index{ symbols.NT_Primary,1,2 }: Primary1R2,
+	Index{ symbols.NT_Primary,1,3 }: Primary1R3,
+	Index{ symbols.NT_Primary,2,0 }: Primary2R0,
+	Index{ symbols.NT_Primary,2,1 }: Primary2R1,
+	Index{ symbols.NT_Primary,3,0 }: Primary3R0,
+	Index{ symbols.NT_Primary,3,1 }: Primary3R1,
+	Index{ symbols.NT_Primary,4,0 }: Primary4R0,
+	Index{ symbols.NT_Primary,4,1 }: Primary4R1,
+	Index{ symbols.NT_Primary,5,0 }: Primary5R0,
+	Index{ symbols.NT_Primary,5,1 }: Primary5R1,
+	Index{ symbols.NT_Primary,5,2 }: Primary5R2,
+	Index{ symbols.NT_Primary,6,0 }: Primary6R0,
+	Index{ symbols.NT_Primary,6,1 }: Primary6R1,
+	Index{ symbols.NT_Primary,6,2 }: Primary6R2,
+	Index{ symbols.NT_Rule,0,0 }: Rule0R0,
+	Index{ symbols.NT_Rule,0,1 }: Rule0R1,
+	Index{ symbols.NT_Rule,0,2 }: Rule0R2,
+	Index{ symbols.NT_Rule,0,3 }: Rule0R3,
+	Index{ symbols.NT_Rules,0,0 }: Rules0R0,
+	Index{ symbols.NT_Rules,0,1 }: Rules0R1,
+	Index{ symbols.NT_Rules,0,2 }: Rules0R2,
+	Index{ symbols.NT_Rules,1,0 }: Rules1R0,
+	Index{ symbols.NT_Sequence,0,0 }: Sequence0R0,
+	Index{ symbols.NT_Sequence,0,1 }: Sequence0R1,
+	Index{ symbols.NT_Sequence,0,2 }: Sequence0R2,
 	Index{ symbols.NT_SpaceOrComment,0,0 }: SpaceOrComment0R0,
 	Index{ symbols.NT_SpaceOrComment,0,1 }: SpaceOrComment0R1,
 	Index{ symbols.NT_SpaceOrComment,1,0 }: SpaceOrComment1R0,
 	Index{ symbols.NT_SpaceOrComment,1,1 }: SpaceOrComment1R1,
+	Index{ symbols.NT_String,0,0 }: String0R0,
+	Index{ symbols.NT_String,0,1 }: String0R1,
+	Index{ symbols.NT_String,0,2 }: String0R2,
+	Index{ symbols.NT_String,1,0 }: String1R0,
+	Index{ symbols.NT_StringLiteral,0,0 }: StringLiteral0R0,
+	Index{ symbols.NT_StringLiteral,0,1 }: StringLiteral0R1,
+	Index{ symbols.NT_StringLiteral,0,2 }: StringLiteral0R2,
+	Index{ symbols.NT_StringLiteral,0,3 }: StringLiteral0R3,
+	Index{ symbols.NT_StringLiteral,0,4 }: StringLiteral0R4,
+	Index{ symbols.NT_UnChar,0,0 }: UnChar0R0,
+	Index{ symbols.NT_UnChar,0,1 }: UnChar0R1,
+	Index{ symbols.NT_UnChar,0,2 }: UnChar0R2,
+	Index{ symbols.NT_UnChars,0,0 }: UnChars0R0,
+	Index{ symbols.NT_UnChars,0,1 }: UnChars0R1,
+	Index{ symbols.NT_UnChars,0,2 }: UnChars0R2,
+	Index{ symbols.NT_UnChars,1,0 }: UnChars1R0,
 	Index{ symbols.NT_WS,0,0 }: WS0R0,
 	Index{ symbols.NT_WS,0,1 }: WS0R1,
 	Index{ symbols.NT_WS,0,2 }: WS0R2,
@@ -247,7 +1391,28 @@ var slotIndex = map[Index]Label {
 }
 
 var alternates = map[symbols.NT][]Label{ 
-	symbols.NT_EMPTY:[]Label{ EMPTY0R0 },
+	symbols.NT_Grammar:[]Label{ Grammar0R0 },
+	symbols.NT_Rules:[]Label{ Rules0R0,Rules1R0 },
+	symbols.NT_Rule:[]Label{ Rule0R0 },
+	symbols.NT_Choice:[]Label{ Choice0R0 },
+	symbols.NT_PipedSeq0x:[]Label{ PipedSeq0x0R0,PipedSeq0x1R0 },
+	symbols.NT_PipedSeq:[]Label{ PipedSeq0R0 },
+	symbols.NT_Sequence:[]Label{ Sequence0R0 },
+	symbols.NT_Expr1x:[]Label{ Expr1x0R0,Expr1x1R0 },
+	symbols.NT_Expression:[]Label{ Expression0R0,Expression1R0,Expression2R0 },
+	symbols.NT_OptStarPlus:[]Label{ OptStarPlus0R0,OptStarPlus1R0,OptStarPlus2R0,OptStarPlus3R0 },
+	symbols.NT_Primary:[]Label{ Primary0R0,Primary1R0,Primary2R0,Primary3R0,Primary4R0,Primary5R0,Primary6R0 },
+	symbols.NT_Identifier:[]Label{ Identifier0R0 },
+	symbols.NT_LetWS:[]Label{ LetWS0R0,LetWS1R0 },
+	symbols.NT_LetOrNum0x:[]Label{ LetOrNum0x0R0,LetOrNum0x1R0 },
+	symbols.NT_LetOrNum:[]Label{ LetOrNum0R0,LetOrNum1R0,LetOrNum2R0 },
+	symbols.NT_StringLiteral:[]Label{ StringLiteral0R0 },
+	symbols.NT_String:[]Label{ String0R0,String1R0 },
+	symbols.NT_CharLiteral:[]Label{ CharLiteral0R0 },
+	symbols.NT_CharClass:[]Label{ CharClass0R0 },
+	symbols.NT_UnChars:[]Label{ UnChars0R0,UnChars1R0 },
+	symbols.NT_UnChar:[]Label{ UnChar0R0 },
+	symbols.NT_Character:[]Label{ Character0R0,Character1R0 },
 	symbols.NT_WS:[]Label{ WS0R0,WS1R0 },
 	symbols.NT_SpaceOrComment:[]Label{ SpaceOrComment0R0,SpaceOrComment1R0 },
 	symbols.NT_LineOrBlock:[]Label{ LineOrBlock0R0,LineOrBlock1R0 },

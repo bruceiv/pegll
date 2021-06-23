@@ -14,22 +14,61 @@ func (T) isSymbol() {}
 // NT is the type of non-terminals symbols
 type NT int
 const( 
-	NT_EMPTY NT = iota
+	NT_CharClass NT = iota
+	NT_CharLiteral 
+	NT_Character 
+	NT_Choice 
+	NT_Expr1x 
+	NT_Expression 
+	NT_Grammar 
+	NT_Identifier 
+	NT_LetOrNum 
+	NT_LetOrNum0x 
+	NT_LetWS 
 	NT_LineOrBlock 
+	NT_OptStarPlus 
+	NT_PipedSeq 
+	NT_PipedSeq0x 
+	NT_Primary 
+	NT_Rule 
+	NT_Rules 
+	NT_Sequence 
 	NT_SpaceOrComment 
+	NT_String 
+	NT_StringLiteral 
+	NT_UnChar 
+	NT_UnChars 
 	NT_WS 
 )
 
 // T is the type of terminals symbols
 type T int
 const( 
-	T_0 T = iota // ; 
-	T_1  // block_comment 
-	T_2  // carriage_ret 
-	T_3  // end_of_line 
-	T_4  // line_comment 
-	T_5  // newline 
-	T_6  // space 
+	T_0 T = iota // ! 
+	T_1  // & 
+	T_2  // ' 
+	T_3  // ( 
+	T_4  // ) 
+	T_5  // * 
+	T_6  // + 
+	T_7  // . 
+	T_8  // ; 
+	T_9  // = 
+	T_10  // ? 
+	T_11  // [ 
+	T_12  // ] 
+	T_13  // block_comment 
+	T_14  // dQuote 
+	T_15  // end_of_line 
+	T_16  // escAny 
+	T_17  // let 
+	T_18  // line_comment 
+	T_19  // neq 
+	T_20  // notQuotesEsc 
+	T_21  // notSqBk 
+	T_22  // num 
+	T_23  // space 
+	T_24  // | 
 )
 
 type Symbols []Symbol
@@ -59,25 +98,85 @@ func (t T) String() string {
 }
 
 var ntToString = []string { 
-	"EMPTY", /* NT_EMPTY */
+	"CharClass", /* NT_CharClass */
+	"CharLiteral", /* NT_CharLiteral */
+	"Character", /* NT_Character */
+	"Choice", /* NT_Choice */
+	"Expr1x", /* NT_Expr1x */
+	"Expression", /* NT_Expression */
+	"Grammar", /* NT_Grammar */
+	"Identifier", /* NT_Identifier */
+	"LetOrNum", /* NT_LetOrNum */
+	"LetOrNum0x", /* NT_LetOrNum0x */
+	"LetWS", /* NT_LetWS */
 	"LineOrBlock", /* NT_LineOrBlock */
+	"OptStarPlus", /* NT_OptStarPlus */
+	"PipedSeq", /* NT_PipedSeq */
+	"PipedSeq0x", /* NT_PipedSeq0x */
+	"Primary", /* NT_Primary */
+	"Rule", /* NT_Rule */
+	"Rules", /* NT_Rules */
+	"Sequence", /* NT_Sequence */
 	"SpaceOrComment", /* NT_SpaceOrComment */
+	"String", /* NT_String */
+	"StringLiteral", /* NT_StringLiteral */
+	"UnChar", /* NT_UnChar */
+	"UnChars", /* NT_UnChars */
 	"WS", /* NT_WS */ 
 }
 
 var tToString = []string { 
-	";", /* T_0 */
-	"block_comment", /* T_1 */
-	"carriage_ret", /* T_2 */
-	"end_of_line", /* T_3 */
-	"line_comment", /* T_4 */
-	"newline", /* T_5 */
-	"space", /* T_6 */ 
+	"!", /* T_0 */
+	"&", /* T_1 */
+	"'", /* T_2 */
+	"(", /* T_3 */
+	")", /* T_4 */
+	"*", /* T_5 */
+	"+", /* T_6 */
+	".", /* T_7 */
+	";", /* T_8 */
+	"=", /* T_9 */
+	"?", /* T_10 */
+	"[", /* T_11 */
+	"]", /* T_12 */
+	"block_comment", /* T_13 */
+	"dQuote", /* T_14 */
+	"end_of_line", /* T_15 */
+	"escAny", /* T_16 */
+	"let", /* T_17 */
+	"line_comment", /* T_18 */
+	"neq", /* T_19 */
+	"notQuotesEsc", /* T_20 */
+	"notSqBk", /* T_21 */
+	"num", /* T_22 */
+	"space", /* T_23 */
+	"|", /* T_24 */ 
 }
 
 var stringNT = map[string]NT{ 
-	"EMPTY":NT_EMPTY,
+	"CharClass":NT_CharClass,
+	"CharLiteral":NT_CharLiteral,
+	"Character":NT_Character,
+	"Choice":NT_Choice,
+	"Expr1x":NT_Expr1x,
+	"Expression":NT_Expression,
+	"Grammar":NT_Grammar,
+	"Identifier":NT_Identifier,
+	"LetOrNum":NT_LetOrNum,
+	"LetOrNum0x":NT_LetOrNum0x,
+	"LetWS":NT_LetWS,
 	"LineOrBlock":NT_LineOrBlock,
+	"OptStarPlus":NT_OptStarPlus,
+	"PipedSeq":NT_PipedSeq,
+	"PipedSeq0x":NT_PipedSeq0x,
+	"Primary":NT_Primary,
+	"Rule":NT_Rule,
+	"Rules":NT_Rules,
+	"Sequence":NT_Sequence,
 	"SpaceOrComment":NT_SpaceOrComment,
+	"String":NT_String,
+	"StringLiteral":NT_StringLiteral,
+	"UnChar":NT_UnChar,
+	"UnChars":NT_UnChars,
 	"WS":NT_WS,
 }

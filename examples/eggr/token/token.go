@@ -106,13 +106,31 @@ func (t Type) ID() string {
 const(
     Error  Type = iota  // Error 
     EOF  // $ 
-    T_0  // ; 
-    T_1  // block_comment 
-    T_2  // carriage_ret 
-    T_3  // end_of_line 
-    T_4  // line_comment 
-    T_5  // newline 
-    T_6  // space 
+    T_0  // ! 
+    T_1  // & 
+    T_2  // ' 
+    T_3  // ( 
+    T_4  // ) 
+    T_5  // * 
+    T_6  // + 
+    T_7  // . 
+    T_8  // ; 
+    T_9  // = 
+    T_10  // ? 
+    T_11  // [ 
+    T_12  // ] 
+    T_13  // block_comment 
+    T_14  // dQuote 
+    T_15  // end_of_line 
+    T_16  // escAny 
+    T_17  // let 
+    T_18  // line_comment 
+    T_19  // neq 
+    T_20  // notQuotesEsc 
+    T_21  // notSqBk 
+    T_22  // num 
+    T_23  // space 
+    T_24  // | 
 )
 
 var TypeToString = []string{ 
@@ -125,6 +143,24 @@ var TypeToString = []string{
     "T_4",
     "T_5",
     "T_6",
+    "T_7",
+    "T_8",
+    "T_9",
+    "T_10",
+    "T_11",
+    "T_12",
+    "T_13",
+    "T_14",
+    "T_15",
+    "T_16",
+    "T_17",
+    "T_18",
+    "T_19",
+    "T_20",
+    "T_21",
+    "T_22",
+    "T_23",
+    "T_24",
 }
 
 var StringToType = map[string] Type { 
@@ -137,28 +173,82 @@ var StringToType = map[string] Type {
     "T_4" : T_4, 
     "T_5" : T_5, 
     "T_6" : T_6, 
+    "T_7" : T_7, 
+    "T_8" : T_8, 
+    "T_9" : T_9, 
+    "T_10" : T_10, 
+    "T_11" : T_11, 
+    "T_12" : T_12, 
+    "T_13" : T_13, 
+    "T_14" : T_14, 
+    "T_15" : T_15, 
+    "T_16" : T_16, 
+    "T_17" : T_17, 
+    "T_18" : T_18, 
+    "T_19" : T_19, 
+    "T_20" : T_20, 
+    "T_21" : T_21, 
+    "T_22" : T_22, 
+    "T_23" : T_23, 
+    "T_24" : T_24, 
 }
 
 var TypeToID = []string { 
     "Error", 
     "$", 
+    "!", 
+    "&", 
+    "'", 
+    "(", 
+    ")", 
+    "*", 
+    "+", 
+    ".", 
     ";", 
+    "=", 
+    "?", 
+    "[", 
+    "]", 
     "block_comment", 
-    "carriage_ret", 
+    "dQuote", 
     "end_of_line", 
+    "escAny", 
+    "let", 
     "line_comment", 
-    "newline", 
+    "neq", 
+    "notQuotesEsc", 
+    "notSqBk", 
+    "num", 
     "space", 
+    "|", 
 }
 
 var Suppress = []bool { 
     false, 
     false, 
     false, 
-    true, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
     false, 
     false, 
     true, 
+    false, 
+    false, 
+    false, 
+    false, 
+    true, 
+    false, 
+    false, 
+    false, 
+    false, 
     false, 
     false, 
 }
