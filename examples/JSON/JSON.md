@@ -13,7 +13,7 @@ An originally Egg Parsing grammar created by Aaron Moss ported into the GoGLL gr
 #### *Parser Generated :* Complete
 #### *Test File Creation:* Incomplete
 #### *Testing Results:* Unknown
-### **`JSON` Grammar Guide**
+### **`JSON` GRAMMAR GUIDE**
 ```
 package "JSON" 
 ```
