@@ -19,76 +19,113 @@ ERRORS
 - FIX ESCAPES UNDER STRING/CHAR LITS
 ```
 package "JSON" 
+
+
+JSON            : WS Object                     ;
+
+Object          : LBRACE Members Mems1x RBRACE  ;
+        Mems1x  : Members Mems1x
+                / empty                         ;
+
+Members         : Pair ComPair0x                ;
+      ComPair0x : ComPair ComPair0x
+                / empty                         ; 
+        ComPair  : COMMA Pair                   ;
+
+Pair            : String COLON Value            ;
+
+Array           : LBRACKET OptElem RBRACKET     ;
+        OptElem : Elements 
+                / empty                         ;
+
+Elements        : Value ComVal0x                ;
+       ComVal0x : ComVal ComVal0x
+                / empty                         ; 
+        ComVal  : COMMA Value                   ;
+
+Value           : String 
+                | Number 
+                | Object 
+                | Array 
+                | TRUE 
+                | FALSE 
+                | NUL                           ;
 ```  
 #### ***String and Character Literals***
 ```
-String          : doubleQuote Close WS ;
-        Close   : doubleQuote
-                / CHAR Close ;
-    doubleQuote : any "\"" ;
-CHAR            : upSlash 
-                | backSlash CharCode ;
-      backSlash : '\\' ;
+String          : dQuote Close WS       ;
+        Close   : dQuote
+                / CHAR Close            ;
+    dQuote      : any "\""              ;
+
+CHAR            : carrot 
+                | bSlash CharCode       ;  
+        bSlash  : '\\'                  ;
        CharCode : esc
-                | "u" HEX HEX HEX HEX ;
-        esc     : any "\\\"/bfnrt" ;
-        upSlash : any "^\\" ;
+                | "u" HEX HEX HEX HEX   ;
+        esc     : any "\\\"/bfnrt"      ;
+        carrot : any "^\\"              ;        
 ```
 #### ***Numeric Literals***
 ```
- HEX:   NumberHEX;
-        NumberHEX : Number aA_fF 
-                | empty ;
-        aA_fF   : any "abcdefABCDEF"    ; 
+ HEX            :   NumberHEX                                   ;
+      NumberHEX : Number aA_fF 
+                | empty                                         ;
+        aA_fF   : any "abcdefABCDEF"                            ; 
         
-Number          : INT optFrac optExp WS ;
-        optFrac : [ any "." < any "0123456789" >  ] ;
-        optExp  : [ any "eE" 
-                [ any "+-" ] 
-                < any "0123456789" > ] ;
-INT     : neg Integers ;
-        Integers: integer
-                | zero ;
-        zero    : any "0";
-        integer    : any "123456789" { < any "0123456789" > } ;
-        neg     : [ '-' ]               ;
-FRAC    : "." numbers1x         ;
-EXP     : eE plusMinus numbers1x;  
-        numbers1x : < any "0123456789" > ;
-        plusMinus : [ any "+-" ] ;
-        eE      : any "eE" ;
+Number          : INT OptFrac OptExp WS                         ;
+        OptFrac : frac
+                | empty                                         ;
+        OptExp  : exp
+                | empty                                         ;
+
+INT             : optNeg Integers                               ;
+       Integers : integer
+                / zero                                          ;
+        zero    : any "0"                                       ;
+        integer : any "123456789" { < any "0123456789" > }      ;
+        optNeg  : [ '-' ]                                       ;
+                       
+frac            : any "." < any "0123456789" >                  ;
+
+exp             : any "eE" [ any "+-" ] < any "0123456789" >    ;  
+
 ```
 #### ***Operators and Special Characters***
 ```
-TRUE            : "true" WS ;
-FALSE           : "false" WS ;
-NUL             : "null" WS ;
-COMMA           : "," WS ;
-COLON           : ":" WS ;
-LBRACE          : "{" WS ;
-RBRACE          : "}" WS ;
-LBRACKET        : "[" WS ;
-RBRACKET        : "]" WS ;
+TRUE            : "true"   WS           ;
+FALSE           : "false"  WS           ;
+NUL             : "null"   WS           ;
+COMMA           : ","      WS           ;
+COLON           : ":"      WS           ;
+LBRACE          : "{"      WS           ;
+RBRACE          : "}"      WS           ;
+LBRACKET        : "["      WS           ;              
+RBRACKET        : "]"      WS           ;
 ```
 #### ***Whitespace and Escape Sequences***
 ```
 WS              : EscOrComment WS
-                | empty ;
+                | empty                 ;
 
 EscOrComment    : escChar 
-                | LineOrBlock ;
-escCharSpace    : < any " \t\r\n" > ;
-escChar         : any "\t\r\n" ; 
+                | LineOrBlock           ;
+                
+escCharSpace    : < any " \t\r\n" >     ;
+
+escChar         : any "\t\r\n"          ; 
 
 LineOrBlock     : line_comment 
-                | block_comment ;
-!line_comment   : '/' '/' { not "\n" } ;
+                | block_comment         ;
+
+!line_comment   : '/' '/' { not "\n" }  ;
+
 !block_comment  : '/''*' 
                 { not "*" 
                 | '*' not "/" 
-                } '*''/' ;
+                } '*''/'                ;
 
-newLine         : any "\r\n" ;                 
+newLine         : any "\r\n"            ;                 
 ```
 #
 ### **COPYRIGHT AND LICENSING INFORMATION**

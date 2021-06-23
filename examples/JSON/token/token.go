@@ -107,34 +107,30 @@ const(
     Error  Type = iota  // Error 
     EOF  // $ 
     T_0  // , 
-    T_1  // . 
-    T_2  // : 
-    T_3  // [ 
-    T_4  // ] 
-    T_5  // aA_fF 
-    T_6  // backSlash 
-    T_7  // block_comment 
-    T_8  // doubleQuote 
-    T_9  // eE 
-    T_10  // esc 
-    T_11  // escChar 
-    T_12  // escCharSpace 
+    T_1  // : 
+    T_2  // [ 
+    T_3  // ] 
+    T_4  // aA_fF 
+    T_5  // bSlash 
+    T_6  // block_comment 
+    T_7  // carrot 
+    T_8  // dQuote 
+    T_9  // esc 
+    T_10  // escChar 
+    T_11  // escCharSpace 
+    T_12  // exp 
     T_13  // false 
-    T_14  // integer 
-    T_15  // line_comment 
-    T_16  // neg 
+    T_14  // frac 
+    T_15  // integer 
+    T_16  // line_comment 
     T_17  // newLine 
     T_18  // null 
-    T_19  // numbers1x 
-    T_20  // optExp 
-    T_21  // optFrac 
-    T_22  // plusMinus 
-    T_23  // true 
-    T_24  // u 
-    T_25  // upSlash 
-    T_26  // zero 
-    T_27  // { 
-    T_28  // } 
+    T_19  // optNeg 
+    T_20  // true 
+    T_21  // u 
+    T_22  // zero 
+    T_23  // { 
+    T_24  // } 
 )
 
 var TypeToString = []string{ 
@@ -165,10 +161,6 @@ var TypeToString = []string{
     "T_22",
     "T_23",
     "T_24",
-    "T_25",
-    "T_26",
-    "T_27",
-    "T_28",
 }
 
 var StringToType = map[string] Type { 
@@ -199,41 +191,33 @@ var StringToType = map[string] Type {
     "T_22" : T_22, 
     "T_23" : T_23, 
     "T_24" : T_24, 
-    "T_25" : T_25, 
-    "T_26" : T_26, 
-    "T_27" : T_27, 
-    "T_28" : T_28, 
 }
 
 var TypeToID = []string { 
     "Error", 
     "$", 
     ",", 
-    ".", 
     ":", 
     "[", 
     "]", 
     "aA_fF", 
-    "backSlash", 
+    "bSlash", 
     "block_comment", 
-    "doubleQuote", 
-    "eE", 
+    "carrot", 
+    "dQuote", 
     "esc", 
     "escChar", 
     "escCharSpace", 
+    "exp", 
     "false", 
+    "frac", 
     "integer", 
     "line_comment", 
-    "neg", 
     "newLine", 
     "null", 
-    "numbers1x", 
-    "optExp", 
-    "optFrac", 
-    "plusMinus", 
+    "optNeg", 
     "true", 
     "u", 
-    "upSlash", 
     "zero", 
     "{", 
     "}", 
@@ -248,7 +232,6 @@ var Suppress = []bool {
     false, 
     false, 
     false, 
-    false, 
     true, 
     false, 
     false, 
@@ -257,12 +240,9 @@ var Suppress = []bool {
     false, 
     false, 
     false, 
+    false, 
+    false, 
     true, 
-    false, 
-    false, 
-    false, 
-    false, 
-    false, 
     false, 
     false, 
     false, 

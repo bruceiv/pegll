@@ -14,23 +14,72 @@ func (T) isSymbol() {}
 // NT is the type of non-terminals symbols
 type NT int
 const( 
-	NT_EscOrComment NT = iota
+	NT_Array NT = iota
+	NT_CHAR 
+	NT_COLON 
+	NT_COMMA 
+	NT_CharCode 
+	NT_Close 
+	NT_ComPair 
+	NT_ComPair0x 
+	NT_ComVal 
+	NT_ComVal0x 
+	NT_Elements 
+	NT_EscOrComment 
+	NT_FALSE 
+	NT_HEX 
+	NT_INT 
+	NT_Integers 
+	NT_JSON 
+	NT_LBRACE 
+	NT_LBRACKET 
 	NT_LineOrBlock 
+	NT_Members 
+	NT_Mems1x 
+	NT_NUL 
+	NT_Number 
+	NT_NumberHEX 
+	NT_Object 
+	NT_OptElem 
+	NT_OptExp 
+	NT_OptFrac 
+	NT_Pair 
+	NT_RBRACE 
+	NT_RBRACKET 
+	NT_String 
+	NT_TRUE 
+	NT_Value 
 	NT_WS 
 )
 
 // T is the type of terminals symbols
 type T int
 const( 
-	T_0 T = iota // block_comment 
-	T_1  // eE 
-	T_2  // escChar 
-	T_3  // escCharSpace 
-	T_4  // line_comment 
-	T_5  // newLine 
-	T_6  // notZero 
-	T_7  // optNumbers 
-	T_8  // plusMinus 
+	T_0 T = iota // , 
+	T_1  // : 
+	T_2  // [ 
+	T_3  // ] 
+	T_4  // aA_fF 
+	T_5  // bSlash 
+	T_6  // block_comment 
+	T_7  // carrot 
+	T_8  // dQuote 
+	T_9  // esc 
+	T_10  // escChar 
+	T_11  // escCharSpace 
+	T_12  // exp 
+	T_13  // false 
+	T_14  // frac 
+	T_15  // integer 
+	T_16  // line_comment 
+	T_17  // newLine 
+	T_18  // null 
+	T_19  // optNeg 
+	T_20  // true 
+	T_21  // u 
+	T_22  // zero 
+	T_23  // { 
+	T_24  // } 
 )
 
 type Symbols []Symbol
@@ -60,25 +109,107 @@ func (t T) String() string {
 }
 
 var ntToString = []string { 
+	"Array", /* NT_Array */
+	"CHAR", /* NT_CHAR */
+	"COLON", /* NT_COLON */
+	"COMMA", /* NT_COMMA */
+	"CharCode", /* NT_CharCode */
+	"Close", /* NT_Close */
+	"ComPair", /* NT_ComPair */
+	"ComPair0x", /* NT_ComPair0x */
+	"ComVal", /* NT_ComVal */
+	"ComVal0x", /* NT_ComVal0x */
+	"Elements", /* NT_Elements */
 	"EscOrComment", /* NT_EscOrComment */
+	"FALSE", /* NT_FALSE */
+	"HEX", /* NT_HEX */
+	"INT", /* NT_INT */
+	"Integers", /* NT_Integers */
+	"JSON", /* NT_JSON */
+	"LBRACE", /* NT_LBRACE */
+	"LBRACKET", /* NT_LBRACKET */
 	"LineOrBlock", /* NT_LineOrBlock */
+	"Members", /* NT_Members */
+	"Mems1x", /* NT_Mems1x */
+	"NUL", /* NT_NUL */
+	"Number", /* NT_Number */
+	"NumberHEX", /* NT_NumberHEX */
+	"Object", /* NT_Object */
+	"OptElem", /* NT_OptElem */
+	"OptExp", /* NT_OptExp */
+	"OptFrac", /* NT_OptFrac */
+	"Pair", /* NT_Pair */
+	"RBRACE", /* NT_RBRACE */
+	"RBRACKET", /* NT_RBRACKET */
+	"String", /* NT_String */
+	"TRUE", /* NT_TRUE */
+	"Value", /* NT_Value */
 	"WS", /* NT_WS */ 
 }
 
 var tToString = []string { 
-	"block_comment", /* T_0 */
-	"eE", /* T_1 */
-	"escChar", /* T_2 */
-	"escCharSpace", /* T_3 */
-	"line_comment", /* T_4 */
-	"newLine", /* T_5 */
-	"notZero", /* T_6 */
-	"optNumbers", /* T_7 */
-	"plusMinus", /* T_8 */ 
+	",", /* T_0 */
+	":", /* T_1 */
+	"[", /* T_2 */
+	"]", /* T_3 */
+	"aA_fF", /* T_4 */
+	"bSlash", /* T_5 */
+	"block_comment", /* T_6 */
+	"carrot", /* T_7 */
+	"dQuote", /* T_8 */
+	"esc", /* T_9 */
+	"escChar", /* T_10 */
+	"escCharSpace", /* T_11 */
+	"exp", /* T_12 */
+	"false", /* T_13 */
+	"frac", /* T_14 */
+	"integer", /* T_15 */
+	"line_comment", /* T_16 */
+	"newLine", /* T_17 */
+	"null", /* T_18 */
+	"optNeg", /* T_19 */
+	"true", /* T_20 */
+	"u", /* T_21 */
+	"zero", /* T_22 */
+	"{", /* T_23 */
+	"}", /* T_24 */ 
 }
 
 var stringNT = map[string]NT{ 
+	"Array":NT_Array,
+	"CHAR":NT_CHAR,
+	"COLON":NT_COLON,
+	"COMMA":NT_COMMA,
+	"CharCode":NT_CharCode,
+	"Close":NT_Close,
+	"ComPair":NT_ComPair,
+	"ComPair0x":NT_ComPair0x,
+	"ComVal":NT_ComVal,
+	"ComVal0x":NT_ComVal0x,
+	"Elements":NT_Elements,
 	"EscOrComment":NT_EscOrComment,
+	"FALSE":NT_FALSE,
+	"HEX":NT_HEX,
+	"INT":NT_INT,
+	"Integers":NT_Integers,
+	"JSON":NT_JSON,
+	"LBRACE":NT_LBRACE,
+	"LBRACKET":NT_LBRACKET,
 	"LineOrBlock":NT_LineOrBlock,
+	"Members":NT_Members,
+	"Mems1x":NT_Mems1x,
+	"NUL":NT_NUL,
+	"Number":NT_Number,
+	"NumberHEX":NT_NumberHEX,
+	"Object":NT_Object,
+	"OptElem":NT_OptElem,
+	"OptExp":NT_OptExp,
+	"OptFrac":NT_OptFrac,
+	"Pair":NT_Pair,
+	"RBRACE":NT_RBRACE,
+	"RBRACKET":NT_RBRACKET,
+	"String":NT_String,
+	"TRUE":NT_TRUE,
+	"Value":NT_Value,
 	"WS":NT_WS,
 }
