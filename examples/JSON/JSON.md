@@ -3,24 +3,23 @@
 #### *Authors :* Brynn Harrington and Emily Hoppe Copyright (C) 2021
 #### *Adapted from :* Aaron Moss's [`JSON` Egg Grammar](https://github.com/bruceiv/egg/blob/deriv/grammars/JSON-u.egg)
 #### *Creation Date :* June 11, 2021 
-#### *Last Modified :* June 18, 2021
+#### *Last Modified :* June 23, 2021
 #### *Copyright and Licensing Information :* See end of file.
 
 ###  **GENERAL DESCRIPTION**
 An originally Egg Parsing grammar created by Aaron Moss ported into the GoGLL grammar for the `JSON` language tests. Modification of `JSON` grammar from [Egg](https://github.com/bruceiv/egg/blob/deriv/grammars/JSON-u.egg) to test `JSON` input files under the parser generated.
 ### **STATUS ON GRAMMAR**
-#### *Markdown File Creation:* Not working 
-#### *Parser Generated :* Incomplete
+#### *Markdown File Creation:* Working 
+#### *Parser Generated :* Complete
 #### *Test File Creation:* Incomplete
 #### *Testing Results:* Unknown
 ### **`JSON` Grammar Guide**
-ERRORS
-- COME BACK TO FINISH OPTIONAL PORTION OF HEX
-- FIX ESCAPES UNDER STRING/CHAR LITS
 ```
 package "JSON" 
-
-
+```
+#### ***Higher-Level Language Structures***
+The following are the GoGLL representations of the higher level JSON components.
+```
 JSON            : WS Object                     ;
 
 Object          : LBRACE Members Mems1x RBRACE  ;
@@ -52,6 +51,7 @@ Value           : String
                 | NUL                           ;
 ```  
 #### ***String and Character Literals***
+The following are the GoGLL representations of the JSON string and character literals.
 ```
 String          : dQuote Close WS       ;
         Close   : dQuote
@@ -67,6 +67,7 @@ CHAR            : carrot
         carrot : any "^\\"              ;        
 ```
 #### ***Numeric Literals***
+The following are the GoGLL representations of the JSON numeric literals.
 ```
  HEX            :   NumberHEX                                   ;
       NumberHEX : Number aA_fF 
@@ -92,6 +93,7 @@ exp             : any "eE" [ any "+-" ] < any "0123456789" >    ;
 
 ```
 #### ***Operators and Special Characters***
+The following are the GoGLL representations of the JSON operators and special characters.
 ```
 TRUE            : "true"   WS           ;
 FALSE           : "false"  WS           ;
@@ -104,6 +106,8 @@ LBRACKET        : "["      WS           ;
 RBRACKET        : "]"      WS           ;
 ```
 #### ***Whitespace and Escape Sequences***
+The following are the GoGLL representations of the JSON whitespace and escape sequences.
+###### *Note:* `!line_comment` and `!block_comment` were taken from Ackerman's [comments.md.](https://github.com/bruceiv/pegll/tree/main/examples/comments) 
 ```
 WS              : EscOrComment WS
                 | empty                 ;
