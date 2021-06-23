@@ -112,24 +112,29 @@ const(
     T_3  // [ 
     T_4  // ] 
     T_5  // aA_fF 
-    T_6  // block_comment 
-    T_7  // eE 
-    T_8  // escChar 
-    T_9  // escCharSpace 
-    T_10  // false 
-    T_11  // integer 
-    T_12  // line_comment 
-    T_13  // neg 
-    T_14  // newLine 
-    T_15  // null 
-    T_16  // numbers1x 
-    T_17  // optExp 
-    T_18  // optFrac 
-    T_19  // plusMinus 
-    T_20  // true 
-    T_21  // zero 
-    T_22  // { 
-    T_23  // } 
+    T_6  // backSlash 
+    T_7  // block_comment 
+    T_8  // doubleQuote 
+    T_9  // eE 
+    T_10  // esc 
+    T_11  // escChar 
+    T_12  // escCharSpace 
+    T_13  // false 
+    T_14  // integer 
+    T_15  // line_comment 
+    T_16  // neg 
+    T_17  // newLine 
+    T_18  // null 
+    T_19  // numbers1x 
+    T_20  // optExp 
+    T_21  // optFrac 
+    T_22  // plusMinus 
+    T_23  // true 
+    T_24  // u 
+    T_25  // upSlash 
+    T_26  // zero 
+    T_27  // { 
+    T_28  // } 
 )
 
 var TypeToString = []string{ 
@@ -159,6 +164,11 @@ var TypeToString = []string{
     "T_21",
     "T_22",
     "T_23",
+    "T_24",
+    "T_25",
+    "T_26",
+    "T_27",
+    "T_28",
 }
 
 var StringToType = map[string] Type { 
@@ -188,6 +198,11 @@ var StringToType = map[string] Type {
     "T_21" : T_21, 
     "T_22" : T_22, 
     "T_23" : T_23, 
+    "T_24" : T_24, 
+    "T_25" : T_25, 
+    "T_26" : T_26, 
+    "T_27" : T_27, 
+    "T_28" : T_28, 
 }
 
 var TypeToID = []string { 
@@ -199,8 +214,11 @@ var TypeToID = []string {
     "[", 
     "]", 
     "aA_fF", 
+    "backSlash", 
     "block_comment", 
+    "doubleQuote", 
     "eE", 
+    "esc", 
     "escChar", 
     "escCharSpace", 
     "false", 
@@ -214,6 +232,8 @@ var TypeToID = []string {
     "optFrac", 
     "plusMinus", 
     "true", 
+    "u", 
+    "upSlash", 
     "zero", 
     "{", 
     "}", 
@@ -228,13 +248,18 @@ var Suppress = []bool {
     false, 
     false, 
     false, 
+    false, 
+    true, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
     true, 
     false, 
     false, 
-    false, 
-    false, 
-    false, 
-    true, 
     false, 
     false, 
     false, 

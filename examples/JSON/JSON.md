@@ -22,8 +22,17 @@ package "JSON"
 ```  
 #### ***String and Character Literals***
 ```
-
-
+String          : doubleQuote Close WS ;
+        Close   : doubleQuote
+                / CHAR Close ;
+    doubleQuote : any "\"" ;
+CHAR            : upSlash 
+                | backSlash CharCode ;
+      backSlash : '\\' ;
+       CharCode : esc
+                | "u" HEX HEX HEX HEX ;
+        esc     : any "\\\"/bfnrt" ;
+        upSlash : any "^\\" ;
 ```
 #### ***Numeric Literals***
 ```
@@ -81,132 +90,6 @@ LineOrBlock     : line_comment
 
 newLine         : any "\r\n" ;                 
 ```
-#### ORIGINAL GRAMMAR
-#### ***Object Creation***
-JSON            : _ Object              ;
-Object          : LBRACE OptMem RBRACE  ;
-        OptMem  : < Members >           ;
-Members         : Pair ComPair          ;
-        ComPair : {COMMA Pair}          ;
-Pair            : String COLON Value    ;
-Array           : LBRACKET OptElem RBRACKET ;
-        OptElem : [ Elements ]          ;
-Elements        : Value ComVal          ;
-        ComVal  : {COMMA Value}         ;
-Value           : String 
-                | Number 
-                | Object 
-                | Array 
-                | TRUE 
-                | FALSE 
-                | NUL                   ;
-#### ***String and Character Literals***
-String          : '\"' Close _          ;
-        Close   : '\"' 
-                / CHAR Close            ;
-CHAR            : UpSlash | '\\' ChCode ;
-        ChCode  : Escs 
-                | "u" HEX HEX HEX HEX   ;
-        Escs    : '\\' 
-                | '\"' 
-                | '/' 
-                | 'b' 
-                | 'f' 
-                | 'n' 
-                | 'r' 
-                | 't'                   ;
-        UpSlash : '^' 
-                | '\\'                  ;
-#### ***Numeric Literals***
-HEX             : < Number aA-fF >      ;
-        aA-fF   : any "abcdefABCDEF"    ;  
-Number          : INT OptFrac OptExp _  ;
-        OptFrac : [ FRAC ]              ;
-        OptExp  : [ EXP ]               ;
-INT             : Neg Ints              ;
-        Ints    : ( NotZero OptNums 
-                | '0' )                 ; 
-        Neg     : [ '-' ]               ;
-FRAC            : '.' Numbers1x         ;
-EXP             : eE PlusMinus Numbers1x;
-        NotZero : not '0' number        ;
-        OptNums : { Numbers1x }         ;
-      Numbers1x : < number >            ;
-      PlusMinus : [ '+' | '-' ]         ;
-        eE      : 'e' | 'E'             ;
-#### ***Operators and Special Characters***
-TRUE            : "true" _              ;
-FALSE           : "false" _             ;
-NUL             : "null" _              ;
-COMMA           : ',' _                 ;
-COLON           : ':' _                 ;
-LBRACE          : '{' _                 ;
-RBRACE          : '}' _                 ;
-LBRACKET        : '[' _                 ;
-RBRACKET        : ']' _                 ;
-#### ***Whitespace and Escape Sequences***
-_               : { EscChar 
-                | BlockComment 
-                | Comment }             ;
-EscCharSpace    : < ' ' 
-                | EscChar >              ;
-EscChar         : '\t' 
-                | newLine               ; 
-BlockComment    : "*/" 
-                / "/*" BlockComment     ;
-Comment         : newLine 
-                / "//" Comment          ; 
-
-newLine         : '\r' 
-                | '\n'                  ;
-#### PARTIALLY WORKING GRAMMAR
- HEX:   NumberHEX;
-        NumberHEX : Number aA_fF 
-                | empty ;
-        aA_fF   : any "abcdefABCDEF"    ; 
-Number          : INT optFrac optExp WS ;
-        optFrac : [ any "." < any "0123456789" >  ] ;
-        optExp  : [ any "eE" [ any "+-" ] < any "0123456789" > ] ;
-INT     : neg Integers ;
-        Integers: integer
-                | zero ;
-        zero    : any "0";
-        integer    : any "123456789" { < any "0123456789" > } ;
-        neg     : [ '-' ]               ;
-FRAC    : "." numbers1x         ;
-EXP     : eE plusMinus numbers1x;  
-        optNumbers : { < any "0123456789" > } ;
-        numbers1x : < any "0123456789" > ;
-        plusMinus : [ any "+-" ] ;
-        eE      : any "eE" ;
-
-TRUE            : "true" WS ;
-FALSE           : "false" WS ;
-NUL             : "null" WS ;
-COMMA           : "," WS ;
-COLON           : ":" WS ;
-LBRACE          : "{" WS ;
-RBRACE          : "}" WS ;
-LBRACKET        : "[" WS ;
-RBRACKET        : "]" WS ;
-
-WS              : EscOrComment WS
-                | empty ;
-
-EscOrComment    : escChar 
-                | LineOrBlock ;
-escCharSpace    : < any " \t\r\n" > ;
-escChar         : any "\t\r\n" ; 
-
-LineOrBlock     : line_comment 
-                | block_comment ;
-!line_comment   : '/' '/' { not "\n" } ;
-!block_comment  : '/''*' 
-                { not "*" 
-                | '*' not "/" 
-                } '*''/' ;
-
-newLine         : any "\r\n" ;  
 #
 ### **COPYRIGHT AND LICENSING INFORMATION**
 **Copyright 2021 Brynn Harrington and Emily Hoppe**
