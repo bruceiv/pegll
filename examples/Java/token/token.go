@@ -106,25 +106,64 @@ func (t Type) ID() string {
 const(
     Error  Type = iota  // Error 
     EOF  // $ 
-    T_0  // ) 
-    T_1  // * 
-    T_2  // *= 
-    T_3  // ; 
-    T_4  // << 
-    T_5  // <<= 
-    T_6  // > 
-    T_7  // >> 
-    T_8  // >>= 
-    T_9  // ? 
-    T_10  // ] 
-    T_11  // block_comment 
-    T_12  // escCharSp 
-    T_13  // line_comment 
-    T_14  // nEq 
-    T_15  // newline 
-    T_16  // notEqCar 
-    T_17  // } 
-    T_18  // ~ 
+    T_0  // ! 
+    T_1  // != 
+    T_2  // % 
+    T_3  // %= 
+    T_4  // & 
+    T_5  // && 
+    T_6  // &= 
+    T_7  // ( 
+    T_8  // ) 
+    T_9  // * 
+    T_10  // *= 
+    T_11  // + 
+    T_12  // ++ 
+    T_13  // += 
+    T_14  // , 
+    T_15  // - 
+    T_16  // -- 
+    T_17  // -= 
+    T_18  // . 
+    T_19  // / 
+    T_20  // /= 
+    T_21  // : 
+    T_22  // ; 
+    T_23  // < 
+    T_24  // << 
+    T_25  // <<= 
+    T_26  // <= 
+    T_27  // = 
+    T_28  // == 
+    T_29  // > 
+    T_30  // >= 
+    T_31  // >> 
+    T_32  // >>= 
+    T_33  // >>> 
+    T_34  // >>>= 
+    T_35  // ? 
+    T_36  // @ 
+    T_37  // [ 
+    T_38  // ] 
+    T_39  // ^ 
+    T_40  // ^= 
+    T_41  // block_comment 
+    T_42  // escCharSp 
+    T_43  // line_comment 
+    T_44  // nEq 
+    T_45  // newline 
+    T_46  // notEqAnd 
+    T_47  // notEqCar 
+    T_48  // notEqCar2 
+    T_49  // notEqPipe 
+    T_50  // notEqPlus 
+    T_51  // notEqSlDash 
+    T_52  // { 
+    T_53  // | 
+    T_54  // |= 
+    T_55  // || 
+    T_56  // } 
+    T_57  // ~ 
 )
 
 var TypeToString = []string{ 
@@ -149,6 +188,45 @@ var TypeToString = []string{
     "T_16",
     "T_17",
     "T_18",
+    "T_19",
+    "T_20",
+    "T_21",
+    "T_22",
+    "T_23",
+    "T_24",
+    "T_25",
+    "T_26",
+    "T_27",
+    "T_28",
+    "T_29",
+    "T_30",
+    "T_31",
+    "T_32",
+    "T_33",
+    "T_34",
+    "T_35",
+    "T_36",
+    "T_37",
+    "T_38",
+    "T_39",
+    "T_40",
+    "T_41",
+    "T_42",
+    "T_43",
+    "T_44",
+    "T_45",
+    "T_46",
+    "T_47",
+    "T_48",
+    "T_49",
+    "T_50",
+    "T_51",
+    "T_52",
+    "T_53",
+    "T_54",
+    "T_55",
+    "T_56",
+    "T_57",
 }
 
 var StringToType = map[string] Type { 
@@ -173,28 +251,106 @@ var StringToType = map[string] Type {
     "T_16" : T_16, 
     "T_17" : T_17, 
     "T_18" : T_18, 
+    "T_19" : T_19, 
+    "T_20" : T_20, 
+    "T_21" : T_21, 
+    "T_22" : T_22, 
+    "T_23" : T_23, 
+    "T_24" : T_24, 
+    "T_25" : T_25, 
+    "T_26" : T_26, 
+    "T_27" : T_27, 
+    "T_28" : T_28, 
+    "T_29" : T_29, 
+    "T_30" : T_30, 
+    "T_31" : T_31, 
+    "T_32" : T_32, 
+    "T_33" : T_33, 
+    "T_34" : T_34, 
+    "T_35" : T_35, 
+    "T_36" : T_36, 
+    "T_37" : T_37, 
+    "T_38" : T_38, 
+    "T_39" : T_39, 
+    "T_40" : T_40, 
+    "T_41" : T_41, 
+    "T_42" : T_42, 
+    "T_43" : T_43, 
+    "T_44" : T_44, 
+    "T_45" : T_45, 
+    "T_46" : T_46, 
+    "T_47" : T_47, 
+    "T_48" : T_48, 
+    "T_49" : T_49, 
+    "T_50" : T_50, 
+    "T_51" : T_51, 
+    "T_52" : T_52, 
+    "T_53" : T_53, 
+    "T_54" : T_54, 
+    "T_55" : T_55, 
+    "T_56" : T_56, 
+    "T_57" : T_57, 
 }
 
 var TypeToID = []string { 
     "Error", 
     "$", 
+    "!", 
+    "!=", 
+    "%", 
+    "%=", 
+    "&", 
+    "&&", 
+    "&=", 
+    "(", 
     ")", 
     "*", 
     "*=", 
+    "+", 
+    "++", 
+    "+=", 
+    ",", 
+    "-", 
+    "--", 
+    "-=", 
+    ".", 
+    "/", 
+    "/=", 
+    ":", 
     ";", 
+    "<", 
     "<<", 
     "<<=", 
+    "<=", 
+    "=", 
+    "==", 
     ">", 
+    ">=", 
     ">>", 
     ">>=", 
+    ">>>", 
+    ">>>=", 
     "?", 
+    "@", 
+    "[", 
     "]", 
+    "^", 
+    "^=", 
     "block_comment", 
     "escCharSp", 
     "line_comment", 
     "nEq", 
     "newline", 
+    "notEqAnd", 
     "notEqCar", 
+    "notEqCar2", 
+    "notEqPipe", 
+    "notEqPlus", 
+    "notEqSlDash", 
+    "{", 
+    "|", 
+    "|=", 
+    "||", 
     "}", 
     "~", 
 }
@@ -213,9 +369,48 @@ var Suppress = []bool {
     false, 
     false, 
     false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
     true, 
     false, 
     true, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
     false, 
     false, 
     false, 
