@@ -7,6 +7,7 @@ import(
 	"fmt"
 	
 	"axbc/parser/symbols"
+	"axbc/token"
 )
 
 type Label int
@@ -93,8 +94,25 @@ func (l Label) Symbols() symbols.Symbols {
 	return l.Slot().Symbols
 }
 
+func (l Label) IsNullable() bool {
+	return nullable[l]
+}
+
+func (l Label) FirstContains(typ token.Type) bool {
+	return firstT[l][typ]
+}
+
 func (s *Slot) EoR() bool {
 	return s.Pos >= len(s.Symbols)
+}
+
+func (s *Slot) Successor() *Slot {
+	if s.EoR() {
+		return nil
+	} else {
+		// TODO try slots[s.Label + 1]
+		return slots[slotIndex[Index{s.NT,s.Alt,s.Pos+1}]]
+	}
 }
 
 func (s *Slot) String() string {
@@ -228,3 +246,32 @@ var alternates = map[symbols.NT][]Label{
 	symbols.NT_As:[]Label{ As0R0,As1R0 },
 }
 
+var nullable = []bool { 
+	true, // AorB0R0 
+	true, // AorB0R1 
+	false, // AorB1R0 
+	false, // AorB1R1 
+	true, // AorB1R2 
+	false, // As0R0 
+	true, // As0R1 
+	true, // As0R2 
+	true, // As1R0 
+	false, // AxBC0R0 
+	false, // AxBC0R1 
+	true, // AxBC0R2 
+}
+
+var firstT = []map[token.Type]bool { 
+	{  token.T_0: true,  }, // AorB0R0 
+	{  }, // AorB0R1 
+	{  token.T_0: true,  }, // AorB1R0 
+	{  token.T_1: true,  }, // AorB1R1 
+	{  }, // AorB1R2 
+	{  token.T_0: true,  }, // As0R0 
+	{  token.T_0: true,  }, // As0R1 
+	{  }, // As0R2 
+	{  }, // As1R0 
+	{  token.T_0: true,  token.T_2: true,  }, // AxBC0R0 
+	{  token.T_2: true,  }, // AxBC0R1 
+	{  }, // AxBC0R2 
+}
