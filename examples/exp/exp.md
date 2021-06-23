@@ -14,7 +14,7 @@ An originally Egg Parsing grammar created by Aaron Moss ported into the GoGLL gr
 #### *Parser Generated :* Complete
 #### *Test File Creation:* Incomplete
 #### *Testing Results:* Unknown
-### **`exp` Grammar Guide**
+### **`exp` GRAMMAR GUIDE**
 The following grammar will have exponential runtime under recursive descent. It utilizes three lexical rules to act ask token identifiers with one starting rule exercising the recursive descent. 
 See the [grammar for details.](../../gogll.md)
 ```
