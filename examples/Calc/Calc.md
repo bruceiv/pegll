@@ -10,7 +10,7 @@
 ###  **GENERAL DESCRIPTION**
 An originally Egg Parsing grammar created by Aaron Moss ported into the GoGLL grammar to test a simple calculator. Modification of `calc` grammar from [Egg](https://github.com/bruceiv/egg/blob/deriv/grammars/Calc.egg) to calculate based on given inputs.
 
-### **`calc` Grammar Guide**
+### **`calc` GRAMMAR GUIDE**
 ERRORS:
 - cannot figure out how to use a whitespace token ID 
 - cannot get past element - asking for EOF token in rule
