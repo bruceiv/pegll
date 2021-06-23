@@ -14,7 +14,7 @@ An originally Egg Parsing grammar created by Aaron Moss ported into the GoGLL gr
 #### *Parser Generated :* Complete
 #### *Test File Creation:* Incomplete
 #### *Testing Results:* Unknown
-### **`eggr` Grammar Guide**
+### **`eggr` GRAMMAR GUIDE**
 NEED TO FIX:
 - double check translation of regular expressions in semantic rules
 
