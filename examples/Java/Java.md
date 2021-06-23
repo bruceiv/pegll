@@ -9,7 +9,7 @@
 ###  **GENERAL DESCRIPTION**
 An originally Egg Parsing grammar created by Aaron Moss ported into the GoGLL grammar for the `Java` language tests. Modification of `Java` grammar from [Egg](https:github.com/bruceiv/egg/blob/deriv/grammars/Java-u.egg) to test `Java` input files under the parser generated.
 
-### **`Java` Grammar Guide**
+### **`Java` GRAMMAR GUIDE**
 ERRORS: 
 - decimal numeral not working correctly 
 

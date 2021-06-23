@@ -13,7 +13,7 @@ An originally Egg Parsing grammar created by Aaron Moss ported into the GoGLL gr
 #### *Parser Generated :* Complete
 #### *Test File Creation:* Incomplete
 #### *Testing Results:* Unknown
-### **`miniegg` Grammar Guide**
+### **`miniegg` GRAMMAR GUIDE**
 Errors:
 - not sure if id is functioning the way it should - going based on how basic IDs work
 ```

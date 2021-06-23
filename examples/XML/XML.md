@@ -8,7 +8,7 @@
 
 ### **GENERAL DESCRIPTION**
 An originally Egg Parsing grammar created by Aaron Moss ported into the GoGLL grammar for the `XML` language tests. Modification of `XML` grammar from [Egg](https://github.com/bruceiv/egg/blob/deriv/grammars/XML-u.egg) to test `XML` input files under the parser generated.
-### **`XML` Grammar Guide**
+### **`XML` GRAMMAR GUIDE**
 NEED TO FINISH ONE GRAMMAR IS WORKING 
 
 - ASK IF SPACE IS CALLED DIFFERENT FOR ANY (do you need to escape the space?)
