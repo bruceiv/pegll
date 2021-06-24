@@ -1,4 +1,4 @@
-# **`ax` Grammar**
+# **`ax` GRAMMAR**
 
 ### **AUTHORSHIP INFORMATION**
 #### *Authors :* Brynn Harrington and Emily Hoppe Copyright (C) 2021

@@ -1,4 +1,4 @@
-# **`exp` Grammar**
+# **`exp` GRAMMAR**
 
 ### **AUTHORSHIP INFORMATION**
 #### *Author :* Brynn Harrington and Emily Hoppe Copyright (C) 2021
