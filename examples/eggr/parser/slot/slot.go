@@ -82,6 +82,7 @@ const(
 	PipedSeq0R0
 	PipedSeq0R1
 	PipedSeq0R2
+	PipedSeq0R3
 	PipedSeq0x0R0
 	PipedSeq0x0R1
 	PipedSeq0x0R2
@@ -109,6 +110,7 @@ const(
 	Rule0R1
 	Rule0R2
 	Rule0R3
+	Rule0R4
 	Rules0R0
 	Rules0R1
 	Rules0R2
@@ -775,6 +777,7 @@ var slots = map[Label]*Slot{
 		symbols.NT_PipedSeq, 0, 0, 
 		symbols.Symbols{  
 			symbols.T_24, 
+			symbols.NT_WS, 
 			symbols.NT_Sequence,
 		}, 
 		PipedSeq0R0, 
@@ -783,6 +786,7 @@ var slots = map[Label]*Slot{
 		symbols.NT_PipedSeq, 0, 1, 
 		symbols.Symbols{  
 			symbols.T_24, 
+			symbols.NT_WS, 
 			symbols.NT_Sequence,
 		}, 
 		PipedSeq0R1, 
@@ -791,9 +795,19 @@ var slots = map[Label]*Slot{
 		symbols.NT_PipedSeq, 0, 2, 
 		symbols.Symbols{  
 			symbols.T_24, 
+			symbols.NT_WS, 
 			symbols.NT_Sequence,
 		}, 
 		PipedSeq0R2, 
+	},
+	PipedSeq0R3: {
+		symbols.NT_PipedSeq, 0, 3, 
+		symbols.Symbols{  
+			symbols.T_24, 
+			symbols.NT_WS, 
+			symbols.NT_Sequence,
+		}, 
+		PipedSeq0R3, 
 	},
 	PipedSeq0x0R0: {
 		symbols.NT_PipedSeq0x, 0, 0, 
@@ -980,6 +994,7 @@ var slots = map[Label]*Slot{
 		symbols.Symbols{  
 			symbols.NT_Identifier, 
 			symbols.T_9, 
+			symbols.NT_WS, 
 			symbols.NT_Choice,
 		}, 
 		Rule0R0, 
@@ -989,6 +1004,7 @@ var slots = map[Label]*Slot{
 		symbols.Symbols{  
 			symbols.NT_Identifier, 
 			symbols.T_9, 
+			symbols.NT_WS, 
 			symbols.NT_Choice,
 		}, 
 		Rule0R1, 
@@ -998,6 +1014,7 @@ var slots = map[Label]*Slot{
 		symbols.Symbols{  
 			symbols.NT_Identifier, 
 			symbols.T_9, 
+			symbols.NT_WS, 
 			symbols.NT_Choice,
 		}, 
 		Rule0R2, 
@@ -1007,9 +1024,20 @@ var slots = map[Label]*Slot{
 		symbols.Symbols{  
 			symbols.NT_Identifier, 
 			symbols.T_9, 
+			symbols.NT_WS, 
 			symbols.NT_Choice,
 		}, 
 		Rule0R3, 
+	},
+	Rule0R4: {
+		symbols.NT_Rule, 0, 4, 
+		symbols.Symbols{  
+			symbols.NT_Identifier, 
+			symbols.T_9, 
+			symbols.NT_WS, 
+			symbols.NT_Choice,
+		}, 
+		Rule0R4, 
 	},
 	Rules0R0: {
 		symbols.NT_Rules, 0, 0, 
@@ -1330,6 +1358,7 @@ var slotIndex = map[Index]Label {
 	Index{ symbols.NT_PipedSeq,0,0 }: PipedSeq0R0,
 	Index{ symbols.NT_PipedSeq,0,1 }: PipedSeq0R1,
 	Index{ symbols.NT_PipedSeq,0,2 }: PipedSeq0R2,
+	Index{ symbols.NT_PipedSeq,0,3 }: PipedSeq0R3,
 	Index{ symbols.NT_PipedSeq0x,0,0 }: PipedSeq0x0R0,
 	Index{ symbols.NT_PipedSeq0x,0,1 }: PipedSeq0x0R1,
 	Index{ symbols.NT_PipedSeq0x,0,2 }: PipedSeq0x0R2,
@@ -1357,6 +1386,7 @@ var slotIndex = map[Index]Label {
 	Index{ symbols.NT_Rule,0,1 }: Rule0R1,
 	Index{ symbols.NT_Rule,0,2 }: Rule0R2,
 	Index{ symbols.NT_Rule,0,3 }: Rule0R3,
+	Index{ symbols.NT_Rule,0,4 }: Rule0R4,
 	Index{ symbols.NT_Rules,0,0 }: Rules0R0,
 	Index{ symbols.NT_Rules,0,1 }: Rules0R1,
 	Index{ symbols.NT_Rules,0,2 }: Rules0R2,

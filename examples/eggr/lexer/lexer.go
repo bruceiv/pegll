@@ -206,12 +206,12 @@ var accept = []token.Type{
 	token.T_12, 
 	token.T_24, 
 	token.T_14, 
-	token.T_17, 
-	token.T_21, 
-	token.T_20, 
 	token.T_15, 
 	token.T_19, 
+	token.T_17, 
 	token.T_22, 
+	token.T_21, 
+	token.T_20, 
 	token.T_19, 
 	token.Error, 
 	token.T_18, 
@@ -258,17 +258,17 @@ var nextState = []func(r rune) state{
 			return 16 
 		case any(r, []rune{'"'}):
 			return 17 
-		case unicode.IsLetter(r):
-			return 18 
-		case not(r, []rune{']'}):
-			return 19 
-		case not(r, []rune{'"','\'','\\'}):
-			return 20 
 		case any(r, []rune{'\n','\r'}):
-			return 21 
+			return 18 
 		case any(r, []rune{'\t','\n','\r',' '}):
-			return 22 
+			return 19 
+		case unicode.IsLetter(r):
+			return 20 
 		case unicode.IsNumber(r):
+			return 21 
+		case not(r, []rune{']'}):
+			return 22 
+		case not(r, []rune{'"','\'','\\'}):
 			return 23 
 		case not(r, []rune{'='}):
 			return 24 

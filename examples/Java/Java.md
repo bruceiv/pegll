@@ -24,83 +24,55 @@ See the [grammar for details.](../../gogll.md)
 package "Java"
 
 ```
-#### ***General Numeric Literals***
-- Note: In IntegerLiteral, OctalNumeral may prefix 
-HexNumeral and DecimalNumeral may prefix OctalNumeral
-```
-
-FloatLiteral      : HexFloat 
-                  | DecimalFloat                      ;
-
-IntegerLiteral    : NumeralAlts optOneL               ;
-      NumeralAlts : HexNumeral 
-                  | OctalNumeral  
-                  | DecimalNumeral                    ;
-      optOneL     : [ any "1L" ]                      ;
-
-DecimalFloat      :  repDig1x dot repDig0x optExpo fF_dD 
-                  | dot RepDig1xExp 
-                  | RepDig1xExp fF_dD
-                  | RepDig1xOptExp fF_dD                   ;
-   RepDig1xOptExp : repDig1x optExpo                       ;
-      RepDig1xExp : repDig1x Exponent                      ;
-      optExpo     : [ any "eE" { number } [ any "+\\-" ] ] ;
-
-```
-
 #### ***BASE-SIXTEEN AND BASE-EIGHT LITERALS***
 Incomplete decimalnumeral!!!
 ```
-DecimalNumeral  : ze 
-                | 1thru9 repNumx0                   ;
-    repNumx0    : number repNumx0 / empty           ;
-    1thru9      : any "123456789"                   ;
+ DecimalNumeral   : ze
+                  | onenine repNumx0                ;
+      
+    repNumx0      : { number }                      ;
+    onenine       : any "123456789"                 ;
+    ze            : '0'                             ;
 
-HexFloat          : HexSignificand BinaryExponent fF_dD ;
-      fF_dD       : [ any "fFdD" ]                      ; 
-
-HexSignificand    : HexNumeral optDot 
-                  | RepHex0xDot hexDigit RepHex0x   ;
-      RepHex0xDot : zeroxX RepHex0x dot             ;
-      optDot      : [ '.' ]                         ; 
-      dot         : '.'                             ;
-
-HexNumeral        : zeroxX hexDigit RepHex0x        ; 
-      zeroxX      : any "0xX"                       ; 
-      RepHex0x : hexDigit RepHex0x / empty          ;
+HexFloat          : HexSignificand  Beoptfd         ;
+      Beoptfd     : binaryExponent optfFdD          ;
+      optfFdD     : [ any "fFdD" ]                  ;
+      
+HexSignificand    : HexNumeral OptDot 
+                  | RepHex0xDot hexDigit repHex0x   ;
+      RepHex0xDot : Any0xX repHex0x "."             ;
+      OptDot      : "." 
+                  / empty                           ; 
+      
+HexNumeral      : Any0xX repHex1x ; 
+      Any0xX    : "0"
+                | "x"
+                | "X"                               ;
+      repHex1x  : < < number any "abcdefABCDEF" > > ;
+      repHex0x  : < number any "abcdefABCDEF" >     ;
 
 hexDigit        : < number any "abcdefABCDEF" >     ;
 
-OctalNumeral    : ze Int07 Rep07x1                  ; 
-      ze        : '0'                               ;
-      Rep07x1   : Int07 Rep07x1 
-                / empty                             ;
-
-OctalEscape     : Int03Two07
-                / Two07
-                / Int07                             ;
-    Int03Two07  : int03 Two07                       ;
-      Two07     : Int07 Int07                       ;
-      Int07     : int03
-                | any4567                           ;
+octalNumeral    : '0' < any "01234567" >            ; 
+                
+OctalEscape     : int03Two07
+                / two07
+                / int07                             ;
+    int03Two07  : any "0123" any "01234567" any "01234567" ;
+      two07     : any "01234567" any "01234567"     ;
+      int07     : any "01234567"                    ;
       any4567   : any "4567"                        ;
       int03     : any "0123"                        ;
 ```
 #### ***Exponent and Digital Literals***
-Original Egg grammar had a NT "Digit", which is replaced here in GoGll by the reserved word "number".
+Original Egg grammar had a NT "Digit", which is replaced here in GoGll by the reserved word "number" and occasionally the NT "num" which has been assigned to number.
 ```
-Exponent        : eE optPSM repDig0x                    ;
-      eE        : any "eE"                              ;
-      repDig0x  : { number }                            ; 
-      optPSM    : [ any "+\\-" ]                        ;
+exponent        : any "eE" [ any "+\\-" ] { number }    ;
+binaryExponent  : any "pP" any "+\\-" < number >        ; 
 
-BinaryExponent  : pP psm repDig1x                       ;
-    pP          : any "pP"                              ;
-    psm         : any "+\\-"                            ;
-    repDig1x    : < number >                            ;        
+num             : number                                ;     
 
 ```   
-
 #### ***Separators and Operators***
 ```
 AT                  :  "@"            WS                 ;

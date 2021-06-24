@@ -38,10 +38,10 @@ func newParser(l *lexer.Lexer) *parser {
 		U:      &descriptors{},
 		popped: make(map[poppedNode]bool),
 		crf: map[clusterNode][]*crfNode{
-			{symbols.NT_DoubleLArrow, 0}: {},
+			{symbols.NT_Test, 0}: {},
 		},
 		crfNodes:    map[crfNode]*crfNode{},
-		bsrSet:      bsr.New(symbols.NT_DoubleLArrow, l),
+		bsrSet:      bsr.New(symbols.NT_Test, l),
 		parseErrors: nil,
 	}
 }
@@ -55,7 +55,7 @@ func Parse(l *lexer.Lexer) (*bsr.Set, []*Error) {
 func (p *parser) parse() (*bsr.Set, []*Error) {
 	var L slot.Label
 	m, cU := len(p.lex.Tokens)-1, 0
-	p.ntAdd(symbols.NT_DoubleLArrow, 0)
+	p.ntAdd(symbols.NT_Test, 0)
 	// p.DumpDescriptors()
 	for !p.R.empty() {
 		L, cU, p.cI = p.R.remove()
@@ -65,28 +65,35 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 		// p.DumpDescriptors()
 
 		switch L {
-		case slot.DoubleLArrow0R0: // DoubleLArrow : ∙>> notAnyTest
+		case slot.Test0R0: // Test : ∙exponent binaryExponent num
 
-			p.bsrSet.Add(slot.DoubleLArrow0R1, cU, p.cI, p.cI+1)
+			p.bsrSet.Add(slot.Test0R1, cU, p.cI, p.cI+1)
 			p.cI++
-			if !p.testSelect(slot.DoubleLArrow0R1) {
-				p.parseError(slot.DoubleLArrow0R1, p.cI, first[slot.DoubleLArrow0R1])
+			if !p.testSelect(slot.Test0R1) {
+				p.parseError(slot.Test0R1, p.cI, first[slot.Test0R1])
 				break
 			}
 
-			p.bsrSet.Add(slot.DoubleLArrow0R2, cU, p.cI, p.cI+1)
+			p.bsrSet.Add(slot.Test0R2, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_DoubleLArrow) {
-				p.rtn(symbols.NT_DoubleLArrow, cU, p.cI)
+			if !p.testSelect(slot.Test0R2) {
+				p.parseError(slot.Test0R2, p.cI, first[slot.Test0R2])
+				break
+			}
+
+			p.bsrSet.Add(slot.Test0R3, cU, p.cI, p.cI+1)
+			p.cI++
+			if p.follow(symbols.NT_Test) {
+				p.rtn(symbols.NT_Test, cU, p.cI)
 			} else {
-				p.parseError(slot.DoubleLArrow0R0, p.cI, followSets[symbols.NT_DoubleLArrow])
+				p.parseError(slot.Test0R0, p.cI, followSets[symbols.NT_Test])
 			}
 
 		default:
 			panic("This must not happen")
 		}
 	}
-	if !p.bsrSet.Contain(symbols.NT_DoubleLArrow, 0, m) {
+	if !p.bsrSet.Contain(symbols.NT_Test, 0, m) {
 		p.sortParseErrors()
 		return nil, p.parseErrors
 	}
@@ -323,22 +330,26 @@ func (p *parser) testSelect(l slot.Label) bool {
 }
 
 var first = []map[token.Type]string{
-	// DoubleLArrow : ∙>> notAnyTest
+	// Test : ∙exponent binaryExponent num
 	{
-		token.T_0: ">>",
+		token.T_1: "exponent",
 	},
-	// DoubleLArrow : >> ∙notAnyTest
+	// Test : exponent ∙binaryExponent num
 	{
-		token.T_4: "notAnyTest",
+		token.T_0: "binaryExponent",
 	},
-	// DoubleLArrow : >> notAnyTest ∙
+	// Test : exponent binaryExponent ∙num
+	{
+		token.T_2: "num",
+	},
+	// Test : exponent binaryExponent num ∙
 	{
 		token.EOF: "$",
 	},
 }
 
 var followSets = []map[token.Type]string{
-	// DoubleLArrow
+	// Test
 	{
 		token.EOF: "$",
 	},

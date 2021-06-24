@@ -109,12 +109,8 @@ const(
     T_0  // anyColUn 
     T_1  // anyDotDashEtc 
     T_2  // anyDotDashEtc2 
-    T_3  // charData 
-    T_4  // eq 
-    T_5  // lets 
-    T_6  // num 
-    T_7  // optSpaceEsc 
-    T_8  // spaceEsc 
+    T_3  // lets 
+    T_4  // num 
 )
 
 var TypeToString = []string{ 
@@ -125,10 +121,6 @@ var TypeToString = []string{
     "T_2",
     "T_3",
     "T_4",
-    "T_5",
-    "T_6",
-    "T_7",
-    "T_8",
 }
 
 var StringToType = map[string] Type { 
@@ -139,10 +131,6 @@ var StringToType = map[string] Type {
     "T_2" : T_2, 
     "T_3" : T_3, 
     "T_4" : T_4, 
-    "T_5" : T_5, 
-    "T_6" : T_6, 
-    "T_7" : T_7, 
-    "T_8" : T_8, 
 }
 
 var TypeToID = []string { 
@@ -151,19 +139,11 @@ var TypeToID = []string {
     "anyColUn", 
     "anyDotDashEtc", 
     "anyDotDashEtc2", 
-    "charData", 
-    "eq", 
     "lets", 
     "num", 
-    "optSpaceEsc", 
-    "spaceEsc", 
 }
 
 var Suppress = []bool { 
-    false, 
-    false, 
-    false, 
-    false, 
     false, 
     false, 
     false, 

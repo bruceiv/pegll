@@ -453,7 +453,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			} else {
 				p.parseError(slot.OptStarPlus3R0, p.cI, followSets[symbols.NT_OptStarPlus])
 			}
-		case slot.PipedSeq0R0: // PipedSeq : ∙| Sequence
+		case slot.PipedSeq0R0: // PipedSeq : ∙| WS Sequence
 
 			p.bsrSet.Add(slot.PipedSeq0R1, cU, p.cI, p.cI+1)
 			p.cI++
@@ -463,7 +463,15 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			}
 
 			p.call(slot.PipedSeq0R2, cU, p.cI)
-		case slot.PipedSeq0R2: // PipedSeq : | Sequence ∙
+		case slot.PipedSeq0R2: // PipedSeq : | WS ∙Sequence
+
+			if !p.testSelect(slot.PipedSeq0R2) {
+				p.parseError(slot.PipedSeq0R2, p.cI, first[slot.PipedSeq0R2])
+				break
+			}
+
+			p.call(slot.PipedSeq0R3, cU, p.cI)
+		case slot.PipedSeq0R3: // PipedSeq : | WS Sequence ∙
 
 			if p.follow(symbols.NT_PipedSeq) {
 				p.rtn(symbols.NT_PipedSeq, cU, p.cI)
@@ -601,10 +609,10 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			} else {
 				p.parseError(slot.Primary6R0, p.cI, followSets[symbols.NT_Primary])
 			}
-		case slot.Rule0R0: // Rule : ∙Identifier = Choice
+		case slot.Rule0R0: // Rule : ∙Identifier = WS Choice
 
 			p.call(slot.Rule0R1, cU, p.cI)
-		case slot.Rule0R1: // Rule : Identifier ∙= Choice
+		case slot.Rule0R1: // Rule : Identifier ∙= WS Choice
 
 			if !p.testSelect(slot.Rule0R1) {
 				p.parseError(slot.Rule0R1, p.cI, first[slot.Rule0R1])
@@ -619,7 +627,15 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			}
 
 			p.call(slot.Rule0R3, cU, p.cI)
-		case slot.Rule0R3: // Rule : Identifier = Choice ∙
+		case slot.Rule0R3: // Rule : Identifier = WS ∙Choice
+
+			if !p.testSelect(slot.Rule0R3) {
+				p.parseError(slot.Rule0R3, p.cI, first[slot.Rule0R3])
+				break
+			}
+
+			p.call(slot.Rule0R4, cU, p.cI)
+		case slot.Rule0R4: // Rule : Identifier = WS Choice ∙
 
 			if p.follow(symbols.NT_Rule) {
 				p.rtn(symbols.NT_Rule, cU, p.cI)
@@ -1881,11 +1897,11 @@ var first = []map[token.Type]string{
 		token.T_23: "space",
 		token.T_24: "|",
 	},
-	// PipedSeq : ∙| Sequence
+	// PipedSeq : ∙| WS Sequence
 	{
 		token.T_24: "|",
 	},
-	// PipedSeq : | ∙Sequence
+	// PipedSeq : | ∙WS Sequence
 	{
 		token.T_0:  "!",
 		token.T_1:  "&",
@@ -1902,7 +1918,24 @@ var first = []map[token.Type]string{
 		token.T_22: "num",
 		token.T_23: "space",
 	},
-	// PipedSeq : | Sequence ∙
+	// PipedSeq : | WS ∙Sequence
+	{
+		token.T_0:  "!",
+		token.T_1:  "&",
+		token.T_2:  "'",
+		token.T_3:  "(",
+		token.T_7:  ".",
+		token.T_8:  ";",
+		token.T_11: "[",
+		token.T_13: "block_comment",
+		token.T_14: "dQuote",
+		token.T_17: "let",
+		token.T_18: "line_comment",
+		token.T_19: "neq",
+		token.T_22: "num",
+		token.T_23: "space",
+	},
+	// PipedSeq : | WS Sequence ∙
 	{
 		token.EOF:  "$",
 		token.T_4:  ")",
@@ -2232,7 +2265,7 @@ var first = []map[token.Type]string{
 		token.T_23: "space",
 		token.T_24: "|",
 	},
-	// Rule : ∙Identifier = Choice
+	// Rule : ∙Identifier = WS Choice
 	{
 		token.T_9:  "=",
 		token.T_13: "block_comment",
@@ -2241,11 +2274,11 @@ var first = []map[token.Type]string{
 		token.T_22: "num",
 		token.T_23: "space",
 	},
-	// Rule : Identifier ∙= Choice
+	// Rule : Identifier ∙= WS Choice
 	{
 		token.T_9: "=",
 	},
-	// Rule : Identifier = ∙Choice
+	// Rule : Identifier = ∙WS Choice
 	{
 		token.T_0:  "!",
 		token.T_1:  "&",
@@ -2262,7 +2295,24 @@ var first = []map[token.Type]string{
 		token.T_22: "num",
 		token.T_23: "space",
 	},
-	// Rule : Identifier = Choice ∙
+	// Rule : Identifier = WS ∙Choice
+	{
+		token.T_0:  "!",
+		token.T_1:  "&",
+		token.T_2:  "'",
+		token.T_3:  "(",
+		token.T_7:  ".",
+		token.T_8:  ";",
+		token.T_11: "[",
+		token.T_13: "block_comment",
+		token.T_14: "dQuote",
+		token.T_17: "let",
+		token.T_18: "line_comment",
+		token.T_19: "neq",
+		token.T_22: "num",
+		token.T_23: "space",
+	},
+	// Rule : Identifier = WS Choice ∙
 	{
 		token.EOF:  "$",
 		token.T_9:  "=",

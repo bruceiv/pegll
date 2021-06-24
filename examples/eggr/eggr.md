@@ -29,12 +29,12 @@ The following sections handles the grammar, rules, and choices:
 Grammar         : WS Rule Rules ;
         Rules   : Rule Rules
                 / empty; 
-Rule            : Identifier "=" Choice ;
+Rule            : Identifier "=" WS Choice ;
 
 Choice          : Sequence PipedSeq0x ;
      PipedSeq0x : PipedSeq PipedSeq0x
                 / empty ; 
-       PipedSeq : "|" Sequence ;
+       PipedSeq : "|" WS Sequence ;
 ```
 The following sections handles sequences and expressions, where:
 - `Sequence` is one or more expressions;

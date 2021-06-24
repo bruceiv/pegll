@@ -14,17 +14,15 @@ func (T) isSymbol() {}
 // NT is the type of non-terminals symbols
 type NT int
 const( 
-	NT_DoubleLArrow NT = iota
+	NT_Test NT = iota
 )
 
 // T is the type of terminals symbols
 type T int
 const( 
-	T_0 T = iota // >> 
-	T_1  // block_comment 
-	T_2  // line_comment 
-	T_3  // newline 
-	T_4  // notAnyTest 
+	T_0 T = iota // binaryExponent 
+	T_1  // exponent 
+	T_2  // num 
 )
 
 type Symbols []Symbol
@@ -54,17 +52,15 @@ func (t T) String() string {
 }
 
 var ntToString = []string { 
-	"DoubleLArrow", /* NT_DoubleLArrow */ 
+	"Test", /* NT_Test */ 
 }
 
 var tToString = []string { 
-	">>", /* T_0 */
-	"block_comment", /* T_1 */
-	"line_comment", /* T_2 */
-	"newline", /* T_3 */
-	"notAnyTest", /* T_4 */ 
+	"binaryExponent", /* T_0 */
+	"exponent", /* T_1 */
+	"num", /* T_2 */ 
 }
 
 var stringNT = map[string]NT{ 
-	"DoubleLArrow":NT_DoubleLArrow,
+	"Test":NT_Test,
 }

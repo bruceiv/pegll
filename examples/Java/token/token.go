@@ -127,43 +127,58 @@ const(
     T_18  // . 
     T_19  // / 
     T_20  // /= 
-    T_21  // : 
-    T_22  // ; 
-    T_23  // < 
-    T_24  // << 
-    T_25  // <<= 
-    T_26  // <= 
-    T_27  // = 
-    T_28  // == 
-    T_29  // > 
-    T_30  // >= 
-    T_31  // >> 
-    T_32  // >>= 
-    T_33  // >>> 
-    T_34  // >>>= 
-    T_35  // ? 
-    T_36  // @ 
-    T_37  // [ 
-    T_38  // ] 
-    T_39  // ^ 
-    T_40  // ^= 
-    T_41  // block_comment 
-    T_42  // escCharSp 
-    T_43  // line_comment 
-    T_44  // nEq 
-    T_45  // newline 
-    T_46  // notEqAnd 
-    T_47  // notEqCar 
-    T_48  // notEqCar2 
-    T_49  // notEqPipe 
-    T_50  // notEqPlus 
-    T_51  // notEqSlDash 
-    T_52  // { 
-    T_53  // | 
-    T_54  // |= 
-    T_55  // || 
-    T_56  // } 
-    T_57  // ~ 
+    T_21  // 0 
+    T_22  // : 
+    T_23  // ; 
+    T_24  // < 
+    T_25  // << 
+    T_26  // <<= 
+    T_27  // <= 
+    T_28  // = 
+    T_29  // == 
+    T_30  // > 
+    T_31  // >= 
+    T_32  // >> 
+    T_33  // >>= 
+    T_34  // >>> 
+    T_35  // >>>= 
+    T_36  // ? 
+    T_37  // @ 
+    T_38  // X 
+    T_39  // [ 
+    T_40  // ] 
+    T_41  // ^ 
+    T_42  // ^= 
+    T_43  // any4567 
+    T_44  // binaryExponent 
+    T_45  // block_comment 
+    T_46  // escCharSp 
+    T_47  // exponent 
+    T_48  // hexDigit 
+    T_49  // int03 
+    T_50  // int03Two07 
+    T_51  // int07 
+    T_52  // line_comment 
+    T_53  // nEq 
+    T_54  // newline 
+    T_55  // notEqAnd 
+    T_56  // notEqCar 
+    T_57  // notEqCar2 
+    T_58  // notEqPipe 
+    T_59  // notEqPlus 
+    T_60  // notEqSlDash 
+    T_61  // num 
+    T_62  // octalNumeral 
+    T_63  // repHex0x 
+    T_64  // repHex1x 
+    T_65  // two07 
+    T_66  // x 
+    T_67  // { 
+    T_68  // | 
+    T_69  // |= 
+    T_70  // || 
+    T_71  // } 
+    T_72  // ~ 
 )
 
 var TypeToString = []string{ 
@@ -227,6 +242,21 @@ var TypeToString = []string{
     "T_55",
     "T_56",
     "T_57",
+    "T_58",
+    "T_59",
+    "T_60",
+    "T_61",
+    "T_62",
+    "T_63",
+    "T_64",
+    "T_65",
+    "T_66",
+    "T_67",
+    "T_68",
+    "T_69",
+    "T_70",
+    "T_71",
+    "T_72",
 }
 
 var StringToType = map[string] Type { 
@@ -290,6 +320,21 @@ var StringToType = map[string] Type {
     "T_55" : T_55, 
     "T_56" : T_56, 
     "T_57" : T_57, 
+    "T_58" : T_58, 
+    "T_59" : T_59, 
+    "T_60" : T_60, 
+    "T_61" : T_61, 
+    "T_62" : T_62, 
+    "T_63" : T_63, 
+    "T_64" : T_64, 
+    "T_65" : T_65, 
+    "T_66" : T_66, 
+    "T_67" : T_67, 
+    "T_68" : T_68, 
+    "T_69" : T_69, 
+    "T_70" : T_70, 
+    "T_71" : T_71, 
+    "T_72" : T_72, 
 }
 
 var TypeToID = []string { 
@@ -316,6 +361,7 @@ var TypeToID = []string {
     ".", 
     "/", 
     "/=", 
+    "0", 
     ":", 
     ";", 
     "<", 
@@ -332,12 +378,20 @@ var TypeToID = []string {
     ">>>=", 
     "?", 
     "@", 
+    "X", 
     "[", 
     "]", 
     "^", 
     "^=", 
+    "any4567", 
+    "binaryExponent", 
     "block_comment", 
     "escCharSp", 
+    "exponent", 
+    "hexDigit", 
+    "int03", 
+    "int03Two07", 
+    "int07", 
     "line_comment", 
     "nEq", 
     "newline", 
@@ -347,6 +401,12 @@ var TypeToID = []string {
     "notEqPipe", 
     "notEqPlus", 
     "notEqSlDash", 
+    "num", 
+    "octalNumeral", 
+    "repHex0x", 
+    "repHex1x", 
+    "two07", 
+    "x", 
     "{", 
     "|", 
     "|=", 
@@ -399,9 +459,24 @@ var Suppress = []bool {
     false, 
     false, 
     false, 
-    true, 
+    false, 
+    false, 
+    false, 
     false, 
     true, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    true, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
     false, 
     false, 
     false, 

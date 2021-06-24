@@ -15,9 +15,9 @@ GRAMMAR IS WORKING
 ```
 package "XML"
 
-        Document       : Prolog Element RepMisc0 ;
+        Document       : Prolog Element RepMisc0                ;
 
-        Prolog 	       : OptXMLDecl RepMisc0 ;
+        Prolog 	       : OptXMLDecl RepMisc0                    ;
         XMLDecl        : xmlDeclStart VersionInfo OptEncodDecl optSpaceEsc xmlDeclEnd ;
                 OptXMLDecl : XMLDecl 
                            / empty                              ;
@@ -40,31 +40,31 @@ package "XML"
 #### ***Values and References***
 ```
         ATT_VALUE       : dubQu DubCondClose 
-                        | sinQu SinCondClose            ;
-                SinCondClose :   sinQu
-                        / SymRefAlts SinCondClose       ;
-                DubCondClose  :   dubQu 
-                        / SymRefAlts DubCondClose       ;
+                        | sinQu SinCondClose           ;
+                SinCondClose : sinQu
+                        / SymRefAlts SinCondClose      ;
+                DubCondClose  : dubQu 
+                        / SymRefAlts DubCondClose      ;
                 SymRefAlts    : andCarrs
-                              | REFERENCE               ;
+                              | REFERENCE              ;
                 andCarrs : any "^<&"    ;
                 dubQu    : '"'          ;
                 sinQu    : '\''         ;
 
         REFERENCE       : ENTITY_REF 
-                        | CHAR_REF                      ;
-        ENTITY_REF      : and NAME semi                 ;
-        CHAR_REF        : andPx Hex semi  
-                        | andP repNum1 semi             ;
-                andPx : '&' '#' 'x' ;
-                andP  : '&' '#'  ;
-                and   : '&'      ;
-                semi  : ';'      ;
+                        | CHAR_REF                     ;
+        ENTITY_REF      : "&" NAME ";"                 ;
+        CHAR_REF        : "&#x" Hex ";"  
+                        | "&#" repNum1 ";"             ;
+                AndPx : AndP "x" ;
+                AndP  : And "#"     ;
+                And   : "&"         ;
+                semi  : ';'         ;  
                 Hex             : HexAlts RepHexAlts    ;
                 RepHexAlts      : HexAlts Hex
                                 / empty                 ;
                 HexAlts         : num
-                                | anyafAF ;  
+                                | anyafAF    ;  
                 repNum1         : < number >            ;
                 anyafAF         : any "abcdefABCDEF"    ;
 ```
@@ -76,23 +76,24 @@ package "XML"
                 ContentAlts     : COMMENT 
                                 | Element 
                                 | REFERENCE 
-                                | charData             ;
+                                | charData              ;
         Misc 	         : COMMENT 
                          | spaceEsc                     ; 
                 RepMisc0 : Misc RepMisc0 
                         / empty                         ;
 
         COMMENT        : ComStart ComEnterior clCarr1   ;
-                ComStart        : opCarr1 excla dubDash  ;
-                dubDash         : '-' '-'               ;
-                ComEnterior     : dubDash 
+                ComStart        : opCarr1 excla DubDash ;
+                DubDash         : "--"            ;
+                ComEnterior     : DubDash 
                                 / lets ComEnterior      ;
 
 
         Element        : opCarr1 NAME RepSAttx0 optSpaceEsc  ElemCloseAlts ;
-                SAtt      : spaceEsc Attribute ;
-                RepSAttx0 : SAtt RepSAttx0  / empty ;
-                ElemCloseAlts : clCarr1 Content  opCarr2 NAME optSpaceEsc  clCarr1 
+                SAtt          : spaceEsc Attribute ;
+                RepSAttx0     : SAtt RepSAttx0  
+                              / empty ;
+                ElemCloseAlts : clCarr1 Content opCarr2 NAME optSpaceEsc  clCarr1 
                               | clCarr2 ;
                 opCarr1 : '<'     ;
                 opCarr2 : '<' '/' ;
@@ -116,8 +117,8 @@ package "XML"
                 anyColUn          : any "_:"                            ; 
 
         NAME_CHAR      : lets 
-                | num
-                | anyDotDashEtc2                                        ;
+                       | num
+                       | anyDotDashEtc2                                 ;
         anyDotDashEtc2 : any "\\-._:"                                   ;
 
         EncName        : lets LetDigSymAltsRepx0                        ;
@@ -128,7 +129,7 @@ package "XML"
                                    | anyDotDashEtc                      ;
                 anyDotDashEtc      : any "._\\-"                        ;
                 lets               : letter                             ;
-                num             : number                                ;
+                num                : number                                ;
 
 ```
 
