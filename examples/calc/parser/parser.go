@@ -215,10 +215,18 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			} else {
 				p.parseError(slot.PLUSorMINUS0R0, p.cI, followSets[symbols.NT_PLUSorMINUS])
 			}
-		case slot.PLUSorMINUS1R0: // PLUSorMINUS : ∙MINUS
+		case slot.PLUSorMINUS1R0: // PLUSorMINUS : ∙MINUS PROD
 
 			p.call(slot.PLUSorMINUS1R1, cU, p.cI)
-		case slot.PLUSorMINUS1R1: // PLUSorMINUS : MINUS ∙
+		case slot.PLUSorMINUS1R1: // PLUSorMINUS : MINUS ∙PROD
+
+			if !p.testSelect(slot.PLUSorMINUS1R1) {
+				p.parseError(slot.PLUSorMINUS1R1, p.cI, first[slot.PLUSorMINUS1R1])
+				break
+			}
+
+			p.call(slot.PLUSorMINUS1R2, cU, p.cI)
+		case slot.PLUSorMINUS1R2: // PLUSorMINUS : MINUS PROD ∙
 
 			if p.follow(symbols.NT_PLUSorMINUS) {
 				p.rtn(symbols.NT_PLUSorMINUS, cU, p.cI)
@@ -695,10 +703,8 @@ var first = []map[token.Type]string{
 	},
 	// MINUS : - space ∙
 	{
-		token.EOF: "$",
-		token.T_1: ")",
-		token.T_3: "+",
-		token.T_4: "-",
+		token.T_0: "(",
+		token.T_6: "num",
 	},
 	// OPEN : ∙( space
 	{
@@ -742,11 +748,16 @@ var first = []map[token.Type]string{
 		token.T_3: "+",
 		token.T_4: "-",
 	},
-	// PLUSorMINUS : ∙MINUS
+	// PLUSorMINUS : ∙MINUS PROD
 	{
 		token.T_4: "-",
 	},
-	// PLUSorMINUS : MINUS ∙
+	// PLUSorMINUS : MINUS ∙PROD
+	{
+		token.T_0: "(",
+		token.T_6: "num",
+	},
+	// PLUSorMINUS : MINUS PROD ∙
 	{
 		token.EOF: "$",
 		token.T_1: ")",
@@ -922,10 +933,8 @@ var followSets = []map[token.Type]string{
 	},
 	// MINUS
 	{
-		token.EOF: "$",
-		token.T_1: ")",
-		token.T_3: "+",
-		token.T_4: "-",
+		token.T_0: "(",
+		token.T_6: "num",
 	},
 	// OPEN
 	{

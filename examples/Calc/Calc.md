@@ -33,7 +33,7 @@ SUM    : PROD PoMRep ;
 
 PoMRep      : PLUSorMINUS PoMRep / empty ;
 PLUSorMINUS : PLUS PROD 
-              | MINUS  ;
+              | MINUS PROD ;
 
 PROD   : ELEM ToDRep ;
 

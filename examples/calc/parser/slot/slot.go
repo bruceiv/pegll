@@ -41,6 +41,7 @@ const(
 	PLUSorMINUS0R2
 	PLUSorMINUS1R0
 	PLUSorMINUS1R1
+	PLUSorMINUS1R2
 	PROD0R0
 	PROD0R1
 	PROD0R2
@@ -374,16 +375,26 @@ var slots = map[Label]*Slot{
 	PLUSorMINUS1R0: {
 		symbols.NT_PLUSorMINUS, 1, 0, 
 		symbols.Symbols{  
-			symbols.NT_MINUS,
+			symbols.NT_MINUS, 
+			symbols.NT_PROD,
 		}, 
 		PLUSorMINUS1R0, 
 	},
 	PLUSorMINUS1R1: {
 		symbols.NT_PLUSorMINUS, 1, 1, 
 		symbols.Symbols{  
-			symbols.NT_MINUS,
+			symbols.NT_MINUS, 
+			symbols.NT_PROD,
 		}, 
 		PLUSorMINUS1R1, 
+	},
+	PLUSorMINUS1R2: {
+		symbols.NT_PLUSorMINUS, 1, 2, 
+		symbols.Symbols{  
+			symbols.NT_MINUS, 
+			symbols.NT_PROD,
+		}, 
+		PLUSorMINUS1R2, 
 	},
 	PROD0R0: {
 		symbols.NT_PROD, 0, 0, 
@@ -597,6 +608,7 @@ var slotIndex = map[Index]Label {
 	Index{ symbols.NT_PLUSorMINUS,0,2 }: PLUSorMINUS0R2,
 	Index{ symbols.NT_PLUSorMINUS,1,0 }: PLUSorMINUS1R0,
 	Index{ symbols.NT_PLUSorMINUS,1,1 }: PLUSorMINUS1R1,
+	Index{ symbols.NT_PLUSorMINUS,1,2 }: PLUSorMINUS1R2,
 	Index{ symbols.NT_PROD,0,0 }: PROD0R0,
 	Index{ symbols.NT_PROD,0,1 }: PROD0R1,
 	Index{ symbols.NT_PROD,0,2 }: PROD0R2,
