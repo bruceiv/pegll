@@ -73,7 +73,7 @@ DIVIDE           : "/" space                     ;
 OPEN             : "(" space                     ;                
 CLOSE            : ")" space                     ;
 ```
-`space` is a lexical rule composed of the whitespace characters ' ' and '\t'. It may be repeated zero or more times as defined by the `{}` in the GoGLL grammar. See the [grammar for details.](../../gogll.md)
+`space` is a lexical rule matched through the whitespace characters ' ' and '\t'. It may be repeated zero or more times as defined by the bracketed expression `{}` in the GoGLL grammar. See the [grammar for details.](../../gogll.md)
 ```
 space            : { ' ' | '\t' }                ;
 ```

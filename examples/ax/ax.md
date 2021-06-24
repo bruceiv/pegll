@@ -17,7 +17,7 @@ A modification of the `astar` [Egg](https://github.com/bruceiv/egg/blob/deriv/gr
 #### *Testing Results:* Unknown
 
 ### **`ax` GRAMMAR GUIDE**
-The following grammar tests the repeatability of a character, in this case 'a', within GoGLL. `Repa0x` represents the start rule while `repa0x` consists of the repeated token of `a` zero or more times. The use of `{}` within this grammar is to indicate a set of tokens or identifiers repeated zero or more times. See the [grammar for details.](../../gogll.md)
+The following grammar tests the repeatability of a character, in this case 'a', within GoGLL. `Repa0x` represents the start rule while `repa0x` consists of the repeated token of `a` zero or more times. The use of the bracketed expression`{}` within this grammar is to indicate a set of tokens or identifiers repeated zero or more times. See the [grammar for details.](../../gogll.md)
 
 ```
 package "ax"
