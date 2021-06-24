@@ -4,92 +4,78 @@
 #### *Authors :* Emily Hoppe Copyright (C) 2021
 #### *Adapted from :* Aaron Moss's [`Calc` Egg Grammar](https://github.com/bruceiv/egg/blob/deriv/grammars/Calc.egg)
 #### *Creation Date :* June 17, 2021 
-#### *Last Modified :* June 22, 2021
+#### *Last Modified :* June 24, 2021
 #### *Copyright and Licensing Information :* See end of file.
 
 ###  **GENERAL DESCRIPTION**
 An originally Egg Parsing grammar created by Aaron Moss ported into the GoGLL grammar to test a simple calculator. Modification of `calc` grammar from [Egg](https://github.com/bruceiv/egg/blob/deriv/grammars/Calc.egg) to calculate based on given inputs.
-
-### **`calc` GRAMMAR GUIDE**
-ERRORS:
-- cannot figure out how to use a whitespace token ID 
-- cannot get past element - asking for EOF token in rule
-- cannot figure out repetitions for PROD and SUM
-       - may need to have an ordered choice to use the '{}' grouping 
-
-See the [grammar for details.](../../gogll.md)
-
 ### **STATUS ON GRAMMAR**
 #### *Markdown File Creation:* Working 
 #### *Parser Generated :* Complete
 #### *Test File Creation:* Incomplete
 #### *Testing Results:* Unknown
+### **`calc` GRAMMAR GUIDE**
+The following grammar tests simple calculations, order of operations under consideration, based on a given input.
 ```
 package "calc"
-
-EXPR   : space SUM ;
-
-SUM    : PROD PoMRep ;
-
-PoMRep      : PLUSorMINUS PoMRep / empty ;
-PLUSorMINUS : PLUS PROD 
-              | MINUS PROD ;
-
-PROD   : ELEM ToDRep ;
-
-ToDRep        : TIMESorDIVIDE ToDRep / empty ;
-TIMESorDIVIDE : TIMES ELEM 
-              | DIVIDE ELEM  ;
-              
-ELEM   : OPEN SUM CLOSE 
-       | num ;
-
-num    : < number > { ' ' | '\t' } ;
-
-PLUS   : "+" space ;
-MINUS  : "-" space ;
-TIMES  : "*" space ;
-DIVIDE : "/" space ;
-OPEN   : "(" space ;        
-CLOSE  : ")" space ;
-
-space  : { ' ' | '\t' } ;
 ```
-### **IN PROGRESS GRAMMARS**
-**Original / Not working**
-expr :  _ sum ;
-
-sum  : prod { PLUS prod | MINUS } ;
-
-prod : elem { TIMES elem | DIVIDE elem } ;
-
-elem : OPEN sum CLOSE | num ;
-
-num  :  < number > _ ;
-
-PLUS   : '+' _ ;
-MINUS  : '-' _ ;
-TIMES  : '*' _ ; 
-DIVIDE : '/' - ;
-OPEN   : '(' _ ; 
-CLOSE  : ')' _ ;
-
-_      : { ' ' | '\t' } ;
-**Partially Working**
-EXPR   : SUM ;
-
-SUM    : PROD plus PROD | minus  ;
-PROD   : ELEM times ELEM | divide ELEM  ;
-ELEM   : open SUM close | num ;
-
-num    : < number > { ' ' | '\t' } ;
-
-plus   : '+' { ' ' | '\t' } ;
-minus  : '-' { ' ' | '\t' } ;
-times  : '*' { ' ' | '\t' } ;
-divide : '/' { ' ' | '\t' } ;
-open   : '(' { ' ' | '\t' } ;        
-close  : ')' { ' ' | '\t' } ;
+`EXPR` represents the starting rule for the grammar being a semantic rule composed of a space followed by a `SUM`.
+```
+EXPR             : space SUM                     ;
+```
+The following section is composed of `SUM`, `RepPLUSorMINUS0x`, and `PLUSorMINUS`, where:
+- `SUM` is a semantic rule matched with `PRODUCT` followed by `RepPLUSorMINUS0x`;
+- `RepPLUSorMINUS0x` is a semantic rule matched by zero or more repetitions of addition or subtraction;
+- `PLUSorMINUS` is a semantic rule matched by adding or subtracting a `PRODUCT`.
+```
+SUM              : PRODUCT RepPLUSorMINUS0x      ;
+RepPLUSorMINUS0x : PLUSorMINUS RepPLUSorMINUS0x 
+                 / empty                         ;
+PLUSorMINUS      : PLUS PRODUCT 
+                 | MINUS PRODUCT                 ; 
+```
+The following section is composed of `PRODUCT`, `RepTIMESorDIV0x`, and `TIMESorDIV`, where:
+- `PRODUCT` is a semantic rule matched with `ELEMENT` followed by `RepTIMESorDIV0x`;
+- `RepTIMESorDIV0x` is a semantic rule matched by zero or more repetitions of multiplication or division;
+- `TIMESorDIV` is a semantic rule matched by multiplication or division an `ELEMENT`.
+```
+PRODUCT          : ELEMENT RepTIMESorDIV0x       ;
+RepTIMESorDIV0x  : TIMESorDIVIDE RepTIMESorDIV0x 
+                 / empty                         ;
+TIMESorDIVIDE    : TIMES ELEMENT  
+                 | DIVIDE ELEMENT                ;
+```
+The following section is composed of `ELEMENT`, `Number`, and `repNumber1x`, where:
+- `ELEMENT` is a semantic rule matched with `SUM` enclosed by `OPEN` and `CLOSE` or a number;
+- `Number` is a semantic rule matched by `repNumber1x` followed by a space;
+- `repNumber1x` is a lexical rule matched by a `number` repeated one or more times.
+For more information about the `number` reserved word, see the [grammar for details.](../../gogll.md)
+```       
+ELEMENT          : OPEN SUM CLOSE 
+                 | Number                        ;
+Number           : repNumber1x space             ;
+repNumber1x      : < number >                    ;
+```
+The following section is composed of `PLUS`, `MINUS`, `TIMES`, `DIVIDE`, `OPEN`, and `CLOSE`, where:
+- `PLUS` is a semantic rule matched with a '+' character followed by a space;
+- `MINUS` is a semantic rule matched with a '-' character followed by a space;
+- `TIMES` is a semantic rule matched with a '*' character followed by a space;
+- `DIVIDE` is a semantic rule matched with a '/' character followed by a space;
+- `OPEN` is a semantic rule matched with a '(' character followed by a space;
+- `CLOSE` is a semantic rule matched with a ')' character followed by a space.
+```
+PLUS             : "+" space                     ;
+MINUS            : "-" space                     ;
+TIMES            : "*" space                     ;
+DIVIDE           : "/" space                     ;
+OPEN             : "(" space                     ;                
+CLOSE            : ")" space                     ;
+```
+`space` is a lexical rule composed of the whitespace characters ' ' and '\t'. It may be repeated zero or mroe times as defined by the `{}` in the GoGLL grammar. See the [grammar for details.](../../gogll.md)
+```
+space            : { ' ' 
+                 | '\t' }                        ;
+```
 #
 ### **COPYRIGHT AND LICENSING INFORMATION**
 **Copyright 2021 Brynn Harrington and Emily Hoppe**

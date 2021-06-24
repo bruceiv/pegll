@@ -197,7 +197,6 @@ var accept = []token.Type{
 	token.T_4, 
 	token.T_5, 
 	token.T_6, 
-	token.T_6, 
 }
 
 var nextState = []func(r rune) state{ 
@@ -274,22 +273,8 @@ var nextState = []func(r rune) state{
 	// Set8
 	func(r rune) state {
 		switch { 
-		case r == '\t':
-			return 9 
-		case r == ' ':
-			return 9 
 		case unicode.IsNumber(r):
 			return 8 
-		}
-		return nullState
-	}, 
-	// Set9
-	func(r rune) state {
-		switch { 
-		case r == '\t':
-			return 9 
-		case r == ' ':
-			return 9 
 		}
 		return nullState
 	}, 
