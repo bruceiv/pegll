@@ -24,6 +24,104 @@ See the [grammar for details.](../../gogll.md)
 ```
 package "Java"
 ```
+#### ***Compilation Unit***
+```
+CompUnit          : WS OptPackDecl RepImpDecl0x RepSemiModDecl0x ;
+      OptPackDecl : PackDecl                      
+                  / empty                             ;
+     RepImpDecl0x : ImportDecl RepImpDecl0x
+                  / empty                             ; 
+ RepSemiModDecl0x : SemiModDecl RepSemiModDecl0x
+                  / empty                             ;
+      SemiModDecl :  SEMI 
+                  | RepModif0 DeclAlts                ;
+      DeclAlts    : ClsDecl  
+                  | IntfDecl                          ;
+
+PackDecl          : PACKAGE QualifiedID SEMI          ;
+
+ImportDecl        : IMPORT OptStatic QualifiedID OptDotStar SEMI ;
+      OptDotStar  : DOT STAR 
+                  / empty                     ;
+```
+#### ***Class Declarations***
+- Note: The following are the representations of the 
+    MemDecl (Member Decl): 
+    - Type ID FormalParams RepDim0x OptThrowClsTypLst MemAlts = Method
+    - VOID ID FormalParams OptThrowClsTypLst MemAlts = Void Method
+    - ID FormalParams OptThrowClsTypLst Block = Constructor
+    - IntfDecl = Interface
+    - ClsDecl = Class
+    - Type VarDecl RepComVDecl0x = Field
+- Note: The following are the representations of the 
+     ClsBdyDecl (ClassBodyDeclaration): 
+    - SEMI = Semicolon
+    - OptStatic Block  = Static or Instance Initializer
+    - RepModif0 MemDecl = Class Member Declaration  
+```
+ClsDecl           : Cls ID OptExtClsType OptImpClsLst ClsBdy ;
+    OptExtClsType : EXTENDS ClsType              
+                  / empty                             ;
+     OptImpClsLst : IMPLEMENTS ClsTypeList 
+                  / empty       ;
+      
+ClsBdy            : LWING RepClsBDecl0x RWING         ;
+    RepClsBDecl0x : ClsBdyDecl RepClsBDecl0x
+                  / empty                             ;            
+
+ClsBdyDecl        : SEMI
+                  | OptStatic Block 
+                  | RepModif0 MemDecl                 ;
+      OptStatic : STATIC
+                  / empty                             ; 
+
+MemDecl           : Type ID FormalParams RepDim0x OptThrowClsTypLst MemAlts
+                  | VOID ID FormalParams OptThrowClsTypLst MemAlts
+                  | ID FormalParams OptThrowClsTypLst Block
+                  | IntfDecl 
+                  | ClsDecl
+                  | Type VarDecl RepComVDecl0x        ; 
+      MemAlts     : SEMI 
+                  | Block                             ;
+```
+#### ***Interface Declarations***
+```
+IntfDecl   : Intf ID OptExtendsClsLis IntfBdy         ;
+      OptExtendsClsLis : EXTENDS ClsTypeList 
+                        / empty      ;
+
+IntfBdy           : LWING RepInBodDecl0x RWING        ;
+   RepInBodDecl0x : IntfBdyDecl RepInBodDecl0x
+                  / empty                             ;
+
+IntfBdyDecl       : RepModif0 IntfMemDecl 
+                  | SEMI                              ;
+
+IntfMemDecl       : IntfMethFieldDecl
+                  | VOID ID VoidIntfMethDeclRst
+                  | IntfDecl
+                  | ClsDecl                           ;
+
+IntfMethFieldDecl: Type ID IntfMethFieldRest          ;
+
+IntfMethFieldRest : ConstDeclsRest SEMI 
+                  | IntfMethDeclRest                  ;
+
+IntfMethDeclRest  : FormalParams RepDim0x OptThrowClsTypLst SEMI ;
+
+VoidIntfMethDeclRst: FormalParams OptThrowClsTypLst SEMI;
+ OptThrowClsTypLst: THROWS ClsTypeList
+                  / empty                             ;
+
+ConstDeclsRest    : ConstDeclRest RepComCnstDecl0x    ;
+ RepComCnstDecl0x : COMMA ConstDecl RepComCnstDecl0x
+                  / empty                             ;
+
+ConstDecl         : ID ConstDeclRest                  ;
+
+ConstDeclRest     : RepDim0x EQU VarInitial           ;
+
+```
 #### ***Variable Declarations***
 ```
 LocalVarDeclStmt  : OptFinType VarDecl RepComVDecl0x SEMI ;
@@ -347,7 +445,7 @@ Modifier          : Modifs notLorD                    ;
             NOTKEYWORD NEEDS FIXING
 ```
 
-ID                : notkeyword LetterLorD             ;   
+ID                : notKeyword LetterLorD             ;   
 
       LetterLorD  : Letter RepLorD0x WS               ;
       RepLorD0x   : LorD  RepLorD0x 

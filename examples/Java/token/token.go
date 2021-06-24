@@ -195,60 +195,61 @@ const(
     T_86  // let 
     T_87  // line_comment 
     T_88  // long 
-    T_89  // n 
-    T_90  // nEq 
-    T_91  // native 
-    T_92  // new 
-    T_93  // newline 
-    T_94  // notEqAnd 
-    T_95  // notEqCar 
-    T_96  // notEqCar2 
-    T_97  // notEqPipe 
-    T_98  // notEqPlus 
-    T_99  // notEqSlDash 
-    T_100  // null 
-    T_101  // num 
-    T_102  // octalNumeral 
-    T_103  // onenine 
-    T_104  // optExpo 
-    T_105  // optOneL 
-    T_106  // optfFdD 
-    T_107  // package 
-    T_108  // private 
-    T_109  // protected 
-    T_110  // public 
-    T_111  // repDig0x 
-    T_112  // repDig1x 
-    T_113  // repHex0x 
-    T_114  // repHex1x 
-    T_115  // repNumx0 
-    T_116  // return 
-    T_117  // short 
-    T_118  // sinQuo 
-    T_119  // static 
-    T_120  // strictfp 
-    T_121  // super 
-    T_122  // switch 
-    T_123  // synchronized 
-    T_124  // this 
-    T_125  // throw 
-    T_126  // throws 
-    T_127  // transient 
-    T_128  // true 
-    T_129  // try 
-    T_130  // two07 
-    T_131  // u 
-    T_132  // void 
-    T_133  // volatile 
-    T_134  // while 
-    T_135  // x 
-    T_136  // ze 
-    T_137  // { 
-    T_138  // | 
-    T_139  // |= 
-    T_140  // || 
-    T_141  // } 
-    T_142  // ~ 
+    T_89  // nEq 
+    T_90  // native 
+    T_91  // new 
+    T_92  // newline 
+    T_93  // notEqAnd 
+    T_94  // notEqCar 
+    T_95  // notEqCar2 
+    T_96  // notEqPipe 
+    T_97  // notEqPlus 
+    T_98  // notEqSlDash 
+    T_99  // notKeyword 
+    T_100  // notLorD 
+    T_101  // null 
+    T_102  // num 
+    T_103  // octalNumeral 
+    T_104  // onenine 
+    T_105  // optExpo 
+    T_106  // optOneL 
+    T_107  // optfFdD 
+    T_108  // package 
+    T_109  // private 
+    T_110  // protected 
+    T_111  // public 
+    T_112  // repDig0x 
+    T_113  // repDig1x 
+    T_114  // repHex0x 
+    T_115  // repHex1x 
+    T_116  // repNumx0 
+    T_117  // return 
+    T_118  // short 
+    T_119  // sinQuo 
+    T_120  // static 
+    T_121  // strictfp 
+    T_122  // super 
+    T_123  // switch 
+    T_124  // synchronized 
+    T_125  // this 
+    T_126  // throw 
+    T_127  // throws 
+    T_128  // transient 
+    T_129  // true 
+    T_130  // try 
+    T_131  // two07 
+    T_132  // u 
+    T_133  // void 
+    T_134  // volatile 
+    T_135  // while 
+    T_136  // x 
+    T_137  // ze 
+    T_138  // { 
+    T_139  // | 
+    T_140  // |= 
+    T_141  // || 
+    T_142  // } 
+    T_143  // ~ 
 )
 
 var TypeToString = []string{ 
@@ -397,6 +398,7 @@ var TypeToString = []string{
     "T_140",
     "T_141",
     "T_142",
+    "T_143",
 }
 
 var StringToType = map[string] Type { 
@@ -545,6 +547,7 @@ var StringToType = map[string] Type {
     "T_140" : T_140, 
     "T_141" : T_141, 
     "T_142" : T_142, 
+    "T_143" : T_143, 
 }
 
 var TypeToID = []string { 
@@ -639,7 +642,6 @@ var TypeToID = []string {
     "let", 
     "line_comment", 
     "long", 
-    "n", 
     "nEq", 
     "native", 
     "new", 
@@ -650,6 +652,8 @@ var TypeToID = []string {
     "notEqPipe", 
     "notEqPlus", 
     "notEqSlDash", 
+    "notKeyword", 
+    "notLorD", 
     "null", 
     "num", 
     "octalNumeral", 
@@ -786,6 +790,7 @@ var Suppress = []bool {
     false, 
     false, 
     true, 
+    false, 
     false, 
     false, 
     false, 
