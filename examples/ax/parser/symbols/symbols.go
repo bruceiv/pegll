@@ -14,7 +14,7 @@ func (T) isSymbol() {}
 // NT is the type of non-terminals symbols
 type NT int
 const( 
-	NT_S1 NT = iota
+	NT_Repa0x NT = iota
 )
 
 // T is the type of terminals symbols
@@ -50,7 +50,7 @@ func (t T) String() string {
 }
 
 var ntToString = []string { 
-	"S1", /* NT_S1 */ 
+	"Repa0x", /* NT_Repa0x */ 
 }
 
 var tToString = []string { 
@@ -58,5 +58,5 @@ var tToString = []string {
 }
 
 var stringNT = map[string]NT{ 
-	"S1":NT_S1,
+	"Repa0x":NT_Repa0x,
 }

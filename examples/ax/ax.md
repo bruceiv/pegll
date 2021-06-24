@@ -4,7 +4,7 @@
 #### *Authors :* Brynn Harrington and Emily Hoppe Copyright (C) 2021
 #### *Adapted from :* Aaron Moss's [`astar` Egg Grammar](https://github.com/bruceiv/egg/blob/deriv/grammars/abc.egg)
 #### *Creation Date :* June 10, 2021 
-#### *Last Modified :* June 18, 2021
+#### *Last Modified :* June 24, 2021
 #### *Copyright and Licensing Information :* See end of file.
 
 ### **GENERAL DESCRIPTION**
@@ -17,12 +17,12 @@ A modification of the `astar` [Egg](https://github.com/bruceiv/egg/blob/deriv/gr
 #### *Testing Results:* Unknown
 
 ### **`ax` GRAMMAR GUIDE**
-In this grammar, `S1` represents the start rule while `repa0x` consists of the repeated token of `a` zero or more times. The use of `{}` within this grammar is to indicate a set of tokens or identifiers repeated zero or more times. See the [grammar for details.](../../gogll.md)
+The following grammar tests the repeatability of a character, in this case 'a', within GoGLL. `Repa0x` represents the start rule while `repa0x` consists of the repeated token of `a` zero or more times. The use of `{}` within this grammar is to indicate a set of tokens or identifiers repeated zero or more times. See the [grammar for details.](../../gogll.md)
 
 ```
 package "ax"
 
-S1 : repa0x ;
+Repa0x : repa0x ;
 
 repa0x : { 'a' } ;
 ```

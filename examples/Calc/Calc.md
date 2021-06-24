@@ -1,4 +1,4 @@
-# **`calc` Grammar**
+# **`calc` GRAMMAR**
 
 ### **AUTHORSHIP INFORMATION**
 #### *Authors :* Emily Hoppe Copyright (C) 2021
@@ -8,14 +8,16 @@
 #### *Copyright and Licensing Information :* See end of file.
 
 ###  **GENERAL DESCRIPTION**
-An originally Egg Parsing grammar created by Aaron Moss ported into the GoGLL grammar to test a simple calculator. Modification of `calc` grammar from [Egg](https://github.com/bruceiv/egg/blob/deriv/grammars/Calc.egg) to calculate based on given inputs.
+A modification of `calc` grammar from [Egg](https://github.com/bruceiv/egg/blob/deriv/grammars/Calc.egg) ported into GoGLL to test a simple calculator.
+
 ### **STATUS ON GRAMMAR**
 #### *Markdown File Creation:* Working 
 #### *Parser Generated :* Complete
 #### *Test File Creation:* Incomplete
 #### *Testing Results:* Unknown
+
 ### **`calc` GRAMMAR GUIDE**
-The following grammar tests simple calculations, order of operations under consideration, based on a given input.
+The following grammar tests simple calculations, with order of operations under consideration, based on a given input.
 ```
 package "calc"
 ```
@@ -25,8 +27,8 @@ EXPR             : space SUM                     ;
 ```
 The following section is composed of `SUM`, `RepPLUSorMINUS0x`, and `PLUSorMINUS`, where:
 - `SUM` is a semantic rule matched with `PRODUCT` followed by `RepPLUSorMINUS0x`;
-- `RepPLUSorMINUS0x` is a semantic rule matched by zero or more repetitions of addition or subtraction;
-- `PLUSorMINUS` is a semantic rule matched by adding or subtracting a `PRODUCT`.
+- `RepPLUSorMINUS0x` is a semantic rule matched by zero or more repetitions of `PLUSorMINUS`;
+- `PLUSorMINUS` is a semantic rule matched by `PLUS`, addition, or `MINUS`, subtraction, of a `PRODUCT`.
 ```
 SUM              : PRODUCT RepPLUSorMINUS0x      ;
 RepPLUSorMINUS0x : PLUSorMINUS RepPLUSorMINUS0x 
@@ -36,8 +38,8 @@ PLUSorMINUS      : PLUS PRODUCT
 ```
 The following section is composed of `PRODUCT`, `RepTIMESorDIV0x`, and `TIMESorDIV`, where:
 - `PRODUCT` is a semantic rule matched with `ELEMENT` followed by `RepTIMESorDIV0x`;
-- `RepTIMESorDIV0x` is a semantic rule matched by zero or more repetitions of multiplication or division;
-- `TIMESorDIV` is a semantic rule matched by multiplication or division an `ELEMENT`.
+- `RepTIMESorDIV0x` is a semantic rule matched by zero or more repetitions of `TIMESorDIV`;
+- `TIMESorDIV` is a semantic rule matched by `TIMES`, multiplication, or `DIVIDE`, division, of an `ELEMENT`.
 ```
 PRODUCT          : ELEMENT RepTIMESorDIV0x       ;
 RepTIMESorDIV0x  : TIMESorDIVIDE RepTIMESorDIV0x 
@@ -57,10 +59,10 @@ Number           : repNumber1x space             ;
 repNumber1x      : < number >                    ;
 ```
 The following section is composed of `PLUS`, `MINUS`, `TIMES`, `DIVIDE`, `OPEN`, and `CLOSE`, where:
-- `PLUS` is a semantic rule matched with a '+' character followed by a space;
-- `MINUS` is a semantic rule matched with a '-' character followed by a space;
-- `TIMES` is a semantic rule matched with a '*' character followed by a space;
-- `DIVIDE` is a semantic rule matched with a '/' character followed by a space;
+- `PLUS` is a semantic rule matched with a '+' character followed by a space representing the addition operation;
+- `MINUS` is a semantic rule matched with a '-' character followed by a space representing the subtraction operation;
+- `TIMES` is a semantic rule matched with a '*' character followed by a space representing the multiplication operation;
+- `DIVIDE` is a semantic rule matched with a '/' character followed by a space representing the division operation;
 - `OPEN` is a semantic rule matched with a '(' character followed by a space;
 - `CLOSE` is a semantic rule matched with a ')' character followed by a space.
 ```
@@ -71,10 +73,9 @@ DIVIDE           : "/" space                     ;
 OPEN             : "(" space                     ;                
 CLOSE            : ")" space                     ;
 ```
-`space` is a lexical rule composed of the whitespace characters ' ' and '\t'. It may be repeated zero or mroe times as defined by the `{}` in the GoGLL grammar. See the [grammar for details.](../../gogll.md)
+`space` is a lexical rule composed of the whitespace characters ' ' and '\t'. It may be repeated zero or more times as defined by the `{}` in the GoGLL grammar. See the [grammar for details.](../../gogll.md)
 ```
-space            : { ' ' 
-                 | '\t' }                        ;
+space            : { ' ' | '\t' }                ;
 ```
 #
 ### **COPYRIGHT AND LICENSING INFORMATION**
