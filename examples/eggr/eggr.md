@@ -62,7 +62,7 @@ Primary         : Identifier neq
                 | CharLiteral
                 | CharClass
                 | "." WS
-                | ";"  WS;
+                | ";"  WS ;
         neq     : not "=" ;
 
 Identifier      : LetWS LetOrNum0x WS ;

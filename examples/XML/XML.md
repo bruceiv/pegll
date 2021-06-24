@@ -3,15 +3,14 @@
 #### *Authors :* Brynn Harrington and Emily Hoppe Copyright (C) 2021
 #### *Adapted from :* Aaron Moss's [`XML` Egg Grammar](https://github.com/bruceiv/egg/blob/deriv/grammars/XML-u.egg)
 #### *Creation Date :* June 11, 2021 
-#### *Last Modified :* June 18, 2021
+#### *Last Modified :* June 23, 2021
 #### *Copyright and Licensing Information :* See end of file.
 
 ### **GENERAL DESCRIPTION**
 An originally Egg Parsing grammar created by Aaron Moss ported into the GoGLL grammar for the `XML` language tests. Modification of `XML` grammar from [Egg](https://github.com/bruceiv/egg/blob/deriv/grammars/XML-u.egg) to test `XML` input files under the parser generated.
 ### **`XML` GRAMMAR GUIDE**
-NEED TO FINISH ONE GRAMMAR IS WORKING 
+GRAMMAR IS WORKING 
 
-- ASK IF SPACE IS CALLED DIFFERENT FOR ANY (do you need to escape the space?)
 
 ```
 package "XML"
