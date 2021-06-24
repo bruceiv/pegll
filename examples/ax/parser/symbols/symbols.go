@@ -20,7 +20,7 @@ const(
 // T is the type of terminals symbols
 type T int
 const( 
-	T_0 T = iota // ax 
+	T_0 T = iota // repa0x 
 )
 
 type Symbols []Symbol
@@ -54,7 +54,7 @@ var ntToString = []string {
 }
 
 var tToString = []string { 
-	"ax", /* T_0 */ 
+	"repa0x", /* T_0 */ 
 }
 
 var stringNT = map[string]NT{ 

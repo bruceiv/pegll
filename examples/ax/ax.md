@@ -11,7 +11,7 @@
 An originally Egg Parsing grammar created by Aaron Moss ported into the GoGLL grammar to test repeatability within the grammar. Modification of `astar` grammar from [Egg](https://github.com/bruceiv/egg/blob/deriv/grammars/astar.egg) to test repetition of a character.
 
 ### **`ax` GRAMMAR GUIDE**
-In this grammar, `S1` represents the start rule while `ax` consists of the repeated token of `a` zero or more times. The use of `{}` within this grammar is to indicate a set of tokens or identifiers repeated zero or more times. See the [grammar for details.](../../gogll.md)
+In this grammar, `S1` represents the start rule while `repa0x` consists of the repeated token of `a` zero or more times. The use of `{}` within this grammar is to indicate a set of tokens or identifiers repeated zero or more times. See the [grammar for details.](../../gogll.md)
 ### **STATUS ON GRAMMAR**
 #### *Markdown File Creation:* Complete
 #### *Parser Generated :* Complete
@@ -20,9 +20,9 @@ In this grammar, `S1` represents the start rule while `ax` consists of the repea
 ```
 package "ax"
 
-S1 : ax ;
+S1 : repa0x ;
 
-ax : { 'a' } ;
+repa0x : { 'a' } ;
 ```
 #
 ### **COPYRIGHT AND LICENSING INFORMATION**

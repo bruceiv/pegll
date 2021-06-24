@@ -65,7 +65,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 		// p.DumpDescriptors()
 
 		switch L {
-		case slot.S10R0: // S1 : ∙ax
+		case slot.S10R0: // S1 : ∙repa0x
 
 			p.bsrSet.Add(slot.S10R1, cU, p.cI, p.cI+1)
 			p.cI++
@@ -316,11 +316,11 @@ func (p *parser) testSelect(l slot.Label) bool {
 }
 
 var first = []map[token.Type]string{
-	// S1 : ∙ax
+	// S1 : ∙repa0x
 	{
-		token.T_0: "ax",
+		token.T_0: "repa0x",
 	},
-	// S1 : ax ∙
+	// S1 : repa0x ∙
 	{
 		token.EOF: "$",
 	},
