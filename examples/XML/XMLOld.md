@@ -16,7 +16,6 @@ NEED TO FINISH ONE GRAMMAR IS WORKING
 ```
 package "XML"
 
-
 optSpaceEsc     : [ < any " \t\r\n" > ] ;
 spaceEsc        : < any " \t\r\n" > ;
 charData        :  < any "^<&" > ; 
@@ -25,10 +24,7 @@ charData        :  < any "^<&" > ;
 
         Document       : prolog Element repMisc0 ;
 
-        Content        : { COMMENT 
-                | Element 
-                | REFERENCE 
-                | CHAR_DATA } ;
+        
 
         prolog 	       : optXMLDecl repMisc0 ;
         XMLDecl        : "<?xml" VersionInfo optEncodDecl optS "?>" ;
@@ -61,9 +57,14 @@ charData        :  < any "^<&" > ;
                                 | any "abcdefABCDEF" > ;
                 repNum1         : < number > ;
 #### ***Commenting, Elements, and Attributes***
+Content        : { COMMENT 
+                | Element 
+                | REFERENCE 
+                | CHAR_DATA } ;
         Misc 	         : COMMENT 
                         | SP ;
-                repMisc0 : { Misc } ;
+                RepMisc0 : Misc RepMisc0 
+                        / empty                        
 
         COMMENT        : "<!--" comEnterior '>' ;
                 comEnterior     : "--" 

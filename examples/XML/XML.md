@@ -16,87 +16,123 @@ NEED TO FINISH ONE GRAMMAR IS WORKING
 ```
 package "XML"
 
+        Document       : Prolog Element RepMisc0 ;
 
-optSpaceEsc     : [ < any " \t\r\n" > ] ;
-spaceEsc        : < any " \t\r\n" > ;
-charData        :  < any "^<&" > ; 
+        Prolog 	       : OptXMLDecl RepMisc0 ;
+        XMLDecl        : xmlDeclStart VersionInfo OptEncodDecl optSpaceEsc xmlDeclEnd ;
+                OptXMLDecl : XMLDecl 
+                           / empty                              ;
+                xmlDeclStart : '<' '?' 'x' 'm' 'l'              ;
+                xmlDeclEnd   :  '?' '>'                         ;
+
+        VersionInfo    : spaceEsc version Eq QuoVerNum          ;
+                QuoVerNum    : sinQu VersionNum sinQu  
+                             | dubQu VersionNum dubQu           ;
+        VersionNum     : NAME_CHAR NameCharRep                  ;
+                NameCharRep  : NAME_CHAR NameCharRep
+                             / empty                            ;
+        EncodingDecl   : spaceEsc encoding Eq QuoEncNam         ;
+                QuoEncNam    : sinQu EncName sinQu  
+                             | dubQu EncName dubQu              ;
+                OptEncodDecl : EncodingDecl / empty             ;
+                encoding     : 'e' 'n' 'c' 'o' 'd' 'i' 'n' 'g'  ;
+                version      : 'v' 'e' 'r' 's' 'i' 'o' 'n'      ;
 ```
-#### ORIGINAL GRAMMAR
-
-        Document       : prolog Element repMisc0 ;
-
-        Content        : { COMMENT 
-                | Element 
-                | REFERENCE 
-                | CHAR_DATA } ;
-
-        prolog 	       : optXMLDecl repMisc0 ;
-        XMLDecl        : "<?xml" VersionInfo optEncodDecl optS "?>" ;
-                optXMLDecl : [ XMLDecl ] ;
-
-        VersionInfo    : SP "version" Eq quoVerNum ;
-                quoVerNum    : '\'' VersionNum '\''  
-                        | '\"' VersionNum '\"' ;
-        VersionNum     : < NAME_ CHAR > ;
-        EncodingDecl   : SP "encoding" Eq quoEncNam ;
-                quoEncNam    : '\'' EncName '\''  
-                        | '\"' EncName '\"' ;
-                optEncodDecl : [ EncodingDecl ] ;
 #### ***Values and References***
-        ATT_VALUE       : '\"' dubCondClose 
-                        | '\'' sinCondClose ;
-                singCondClose :   '\'' 
-                        / SymRefAlts singCondClose ;
-                dubCondClose  :   '\"' 
-                        / SymRefAlts dubCondClose ;
-                        SymRefAlts   : any "^<&" 
-                                | REFERENCE  ;
+```
+        ATT_VALUE       : dubQu DubCondClose 
+                        | sinQu SinCondClose            ;
+                SinCondClose :   sinQu
+                        / SymRefAlts SinCondClose       ;
+                DubCondClose  :   dubQu 
+                        / SymRefAlts DubCondClose       ;
+                SymRefAlts    : andCarrs
+                              | REFERENCE               ;
+                andCarrs : any "^<&"    ;
+                dubQu    : '"'          ;
+                sinQu    : '\''         ;
 
         REFERENCE       : ENTITY_REF 
-                        | CHAR_REF ;
-        ENTITY_REF      : '&' NAME ';' ;
-        CHAR_REF        : "&#x" hex ';' 
-                        | "&#" repNum1 ';' ;
-                hex             : < number 
-                                | any "abcdefABCDEF" > ;
-                repNum1         : < number > ;
+                        | CHAR_REF                      ;
+        ENTITY_REF      : and NAME semi                 ;
+        CHAR_REF        : andPx Hex semi  
+                        | andP repNum1 semi             ;
+                andPx : '&' '#' 'x' ;
+                andP  : '&' '#'  ;
+                and   : '&'      ;
+                semi  : ';'      ;
+                Hex             : HexAlts RepHexAlts    ;
+                RepHexAlts      : HexAlts Hex
+                                / empty                 ;
+                HexAlts         : num
+                                | anyafAF ;  
+                repNum1         : < number >            ;
+                anyafAF         : any "abcdefABCDEF"    ;
+```
 #### ***Commenting, Elements, and Attributes***
+```
+        Content         : RepContentAltsx0              ;
+                RepContentAltsx0 : ContentAlts RepContentAltsx0
+                                / empty                 ;
+                ContentAlts     : COMMENT 
+                                | Element 
+                                | REFERENCE 
+                                | charData             ;
         Misc 	         : COMMENT 
-                        | SP ;
-                repMisc0 : { Misc } ;
+                         | spaceEsc                     ; 
+                RepMisc0 : Misc RepMisc0 
+                        / empty                         ;
 
-        COMMENT        : "<!--" comEnterior '>' ;
-                comEnterior     : "--" 
-                                / letter comEnterior ;
+        COMMENT        : ComStart ComEnterior clCarr1   ;
+                ComStart        : opCarr1 excla dubDash  ;
+                dubDash         : '-' '-'               ;
+                ComEnterior     : dubDash 
+                                / lets ComEnterior      ;
 
-        Element        : '<' NAME RepSAtt0 optS elemCloseAlts ;
-                RepSAtt0      : { SP Attribute } ;
-                elemCloseAlts : '>' Content  "</" NAME optS '>' 
-                        | "/>" ;
 
-        Attribute      : NAME optS '=' optS ATT_VALUE ;
+        Element        : opCarr1 NAME RepSAttx0 optSpaceEsc  ElemCloseAlts ;
+                SAtt      : spaceEsc Attribute ;
+                RepSAttx0 : SAtt RepSAttx0  / empty ;
+                ElemCloseAlts : clCarr1 Content  opCarr2 NAME optSpaceEsc  clCarr1 
+                              | clCarr2 ;
+                opCarr1 : '<'     ;
+                opCarr2 : '<' '/' ;
+                clCarr1 : '>'     ;
+                clCarr2 : '/' '>' ;
+                excla   : '!'     ;
 
-        Eq             : optS '=' optS ;
+        Attribute       : NAME optSpaceEsc eq optSpaceEsc ATT_VALUE ;
+        Eq              : optSpaceEsc eq optSpaceEsc    ;
+
+        optSpaceEsc     : [ < any " \t\r\n" > ]         ;
+        spaceEsc        : < any " \t\r\n" >             ;
+        charData        :  < any "^<&" >                ;
+        eq              : '='                           ;
+```
 #### ***Names, Encoding, and (Whitespace/Escape) Characters***
-        NAME           : letColonAlts repNameChar0 ;
-                letColonAlts      : letter | any "_:" ;
-                repNameChar0      : { NAME_CHAR } ;
-        NAME_CHAR      : letter 
-                | number 
-                | any "\-._:" ;
+```
+        NAME           : LetColonAlts RepNameChar0 ;
+                LetColonAlts      : lets | anyColUn                     ;
+                RepNameChar0      :  NAME_CHAR RepNameChar0 / empty     ;
+                anyColUn          : any "_:"                            ; 
 
-        EncName        : letter letDigSymAlts ;
-                letDigSymAlts     : { letter 
-                                | number 
-                                | any "._\-" } ;
+        NAME_CHAR      : lets 
+                | num
+                | anyDotDashEtc2                                        ;
+        anyDotDashEtc2 : any "\\-._:"                                   ;
 
-#### PARTIALLY WORKING GRAMMAR
-`optSpaceEsc`, `spaceEsc`, and `charData` are all lexical rules representing an optional space or escape sequence, one or more 
-        optSpaceEsc     : [ < any " \t\r\n" > ] ;
-        spaceEsc        : < any " \t\r\n" > ;
-        charData        :  < any "^<&" > ; 
+        EncName        : lets LetDigSymAltsRepx0                        ;
+                LetDigSymAltsRepx0 : LetDigSymAlts LetDigSymAltsRepx0
+                                   / empty                              ;
+                LetDigSymAlts      : lets 
+                                   | num
+                                   | anyDotDashEtc                      ;
+                anyDotDashEtc      : any "._\\-"                        ;
+                lets               : letter                             ;
+                num             : number                                ;
 
-#
+```
+
 ### **COPYRIGHT AND LICENSING INFORMATION**
 **Copyright 2021 Brynn Harrington and Emily Hoppe**
 
