@@ -14,17 +14,83 @@ func (T) isSymbol() {}
 // NT is the type of non-terminals symbols
 type NT int
 const( 
-	NT_EncName NT = iota
+	NT_ATT_VALUE NT = iota
+	NT_Attribute 
+	NT_CHAR_REF 
+	NT_COMMENT 
+	NT_ComEnterior 
+	NT_ComStart 
+	NT_Content 
+	NT_ContentAlts 
+	NT_Document 
+	NT_DubCondClose 
+	NT_DubDash 
+	NT_ENTITY_REF 
+	NT_ElemCloseAlts 
+	NT_Element 
+	NT_EncName 
+	NT_EncodingDecl 
+	NT_Eq 
+	NT_Hex 
+	NT_HexAlts 
+	NT_LetColonAlts 
 	NT_LetDigSymAlts 
 	NT_LetDigSymAltsRepx0 
+	NT_Misc 
+	NT_NAME 
+	NT_NAME_CHAR 
+	NT_NameCharRep 
+	NT_OptEncodDecl 
+	NT_OptXMLDecl 
+	NT_Prolog 
+	NT_QuoEncNam 
+	NT_QuoVerNum 
+	NT_REFERENCE 
+	NT_RepContentAltsx0 
+	NT_RepHexAlts 
+	NT_RepMisc0 
+	NT_RepNameChar0 
+	NT_RepSAttx0 
+	NT_SAtt 
+	NT_SinCondClose 
+	NT_SymRefAlts 
+	NT_VersionInfo 
+	NT_VersionNum 
+	NT_XMLDecl 
 )
 
 // T is the type of terminals symbols
 type T int
 const( 
-	T_0 T = iota // anyDotDashEtc 
-	T_1  // digit 
-	T_2  // lets 
+	T_0 T = iota // & 
+	T_1  // &# 
+	T_2  // &#x 
+	T_3  // -- 
+	T_4  // ; 
+	T_5  // andCarrs 
+	T_6  // anyColUn 
+	T_7  // anyDotDashEtc 
+	T_8  // anyDotDashEtc2 
+	T_9  // anyafAF 
+	T_10  // charData 
+	T_11  // clCarr1 
+	T_12  // clCarr2 
+	T_13  // dubQu 
+	T_14  // encoding 
+	T_15  // eq 
+	T_16  // excla 
+	T_17  // lets 
+	T_18  // num 
+	T_19  // opCarr1 
+	T_20  // opCarr2 
+	T_21  // optSpaceEsc 
+	T_22  // repNum1 
+	T_23  // semi 
+	T_24  // sinQu 
+	T_25  // spaceEsc 
+	T_26  // version 
+	T_27  // xmlDeclEnd 
+	T_28  // xmlDeclStart 
 )
 
 type Symbols []Symbol
@@ -54,19 +120,125 @@ func (t T) String() string {
 }
 
 var ntToString = []string { 
+	"ATT_VALUE", /* NT_ATT_VALUE */
+	"Attribute", /* NT_Attribute */
+	"CHAR_REF", /* NT_CHAR_REF */
+	"COMMENT", /* NT_COMMENT */
+	"ComEnterior", /* NT_ComEnterior */
+	"ComStart", /* NT_ComStart */
+	"Content", /* NT_Content */
+	"ContentAlts", /* NT_ContentAlts */
+	"Document", /* NT_Document */
+	"DubCondClose", /* NT_DubCondClose */
+	"DubDash", /* NT_DubDash */
+	"ENTITY_REF", /* NT_ENTITY_REF */
+	"ElemCloseAlts", /* NT_ElemCloseAlts */
+	"Element", /* NT_Element */
 	"EncName", /* NT_EncName */
+	"EncodingDecl", /* NT_EncodingDecl */
+	"Eq", /* NT_Eq */
+	"Hex", /* NT_Hex */
+	"HexAlts", /* NT_HexAlts */
+	"LetColonAlts", /* NT_LetColonAlts */
 	"LetDigSymAlts", /* NT_LetDigSymAlts */
-	"LetDigSymAltsRepx0", /* NT_LetDigSymAltsRepx0 */ 
+	"LetDigSymAltsRepx0", /* NT_LetDigSymAltsRepx0 */
+	"Misc", /* NT_Misc */
+	"NAME", /* NT_NAME */
+	"NAME_CHAR", /* NT_NAME_CHAR */
+	"NameCharRep", /* NT_NameCharRep */
+	"OptEncodDecl", /* NT_OptEncodDecl */
+	"OptXMLDecl", /* NT_OptXMLDecl */
+	"Prolog", /* NT_Prolog */
+	"QuoEncNam", /* NT_QuoEncNam */
+	"QuoVerNum", /* NT_QuoVerNum */
+	"REFERENCE", /* NT_REFERENCE */
+	"RepContentAltsx0", /* NT_RepContentAltsx0 */
+	"RepHexAlts", /* NT_RepHexAlts */
+	"RepMisc0", /* NT_RepMisc0 */
+	"RepNameChar0", /* NT_RepNameChar0 */
+	"RepSAttx0", /* NT_RepSAttx0 */
+	"SAtt", /* NT_SAtt */
+	"SinCondClose", /* NT_SinCondClose */
+	"SymRefAlts", /* NT_SymRefAlts */
+	"VersionInfo", /* NT_VersionInfo */
+	"VersionNum", /* NT_VersionNum */
+	"XMLDecl", /* NT_XMLDecl */ 
 }
 
 var tToString = []string { 
-	"anyDotDashEtc", /* T_0 */
-	"digit", /* T_1 */
-	"lets", /* T_2 */ 
+	"&", /* T_0 */
+	"&#", /* T_1 */
+	"&#x", /* T_2 */
+	"--", /* T_3 */
+	";", /* T_4 */
+	"andCarrs", /* T_5 */
+	"anyColUn", /* T_6 */
+	"anyDotDashEtc", /* T_7 */
+	"anyDotDashEtc2", /* T_8 */
+	"anyafAF", /* T_9 */
+	"charData", /* T_10 */
+	"clCarr1", /* T_11 */
+	"clCarr2", /* T_12 */
+	"dubQu", /* T_13 */
+	"encoding", /* T_14 */
+	"eq", /* T_15 */
+	"excla", /* T_16 */
+	"lets", /* T_17 */
+	"num", /* T_18 */
+	"opCarr1", /* T_19 */
+	"opCarr2", /* T_20 */
+	"optSpaceEsc", /* T_21 */
+	"repNum1", /* T_22 */
+	"semi", /* T_23 */
+	"sinQu", /* T_24 */
+	"spaceEsc", /* T_25 */
+	"version", /* T_26 */
+	"xmlDeclEnd", /* T_27 */
+	"xmlDeclStart", /* T_28 */ 
 }
 
 var stringNT = map[string]NT{ 
+	"ATT_VALUE":NT_ATT_VALUE,
+	"Attribute":NT_Attribute,
+	"CHAR_REF":NT_CHAR_REF,
+	"COMMENT":NT_COMMENT,
+	"ComEnterior":NT_ComEnterior,
+	"ComStart":NT_ComStart,
+	"Content":NT_Content,
+	"ContentAlts":NT_ContentAlts,
+	"Document":NT_Document,
+	"DubCondClose":NT_DubCondClose,
+	"DubDash":NT_DubDash,
+	"ENTITY_REF":NT_ENTITY_REF,
+	"ElemCloseAlts":NT_ElemCloseAlts,
+	"Element":NT_Element,
 	"EncName":NT_EncName,
+	"EncodingDecl":NT_EncodingDecl,
+	"Eq":NT_Eq,
+	"Hex":NT_Hex,
+	"HexAlts":NT_HexAlts,
+	"LetColonAlts":NT_LetColonAlts,
 	"LetDigSymAlts":NT_LetDigSymAlts,
 	"LetDigSymAltsRepx0":NT_LetDigSymAltsRepx0,
+	"Misc":NT_Misc,
+	"NAME":NT_NAME,
+	"NAME_CHAR":NT_NAME_CHAR,
+	"NameCharRep":NT_NameCharRep,
+	"OptEncodDecl":NT_OptEncodDecl,
+	"OptXMLDecl":NT_OptXMLDecl,
+	"Prolog":NT_Prolog,
+	"QuoEncNam":NT_QuoEncNam,
+	"QuoVerNum":NT_QuoVerNum,
+	"REFERENCE":NT_REFERENCE,
+	"RepContentAltsx0":NT_RepContentAltsx0,
+	"RepHexAlts":NT_RepHexAlts,
+	"RepMisc0":NT_RepMisc0,
+	"RepNameChar0":NT_RepNameChar0,
+	"RepSAttx0":NT_RepSAttx0,
+	"SAtt":NT_SAtt,
+	"SinCondClose":NT_SinCondClose,
+	"SymRefAlts":NT_SymRefAlts,
+	"VersionInfo":NT_VersionInfo,
+	"VersionNum":NT_VersionNum,
+	"XMLDecl":NT_XMLDecl,
 }

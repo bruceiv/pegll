@@ -206,8 +206,8 @@ var accept = []token.Type{
 	token.T_10, 
 	token.T_22, 
 	token.T_10, 
-	token.T_11, 
 	token.T_4, 
+	token.T_11, 
 	token.T_4, 
 	token.T_5, 
 	token.Error, 
@@ -270,11 +270,11 @@ var nextState = []func(r rune) state{
 			return 16 
 		case any(r, []rune{'\t','\n','\r'}):
 			return 17 
-		case any(r, []rune{'\t','\n','\r',' '}):
-			return 18 
-		case any(r, []rune{'E','e'}):
-			return 19 
 		case any(r, []rune{'A','B','C','D','E','F','a','b','c','d','e','f'}):
+			return 18 
+		case any(r, []rune{'\t','\n','\r',' '}):
+			return 19 
+		case any(r, []rune{'E','e'}):
 			return 20 
 		case any(r, []rune{'\\','^'}):
 			return 21 
@@ -387,7 +387,7 @@ var nextState = []func(r rune) state{
 	func(r rune) state {
 		switch { 
 		case any(r, []rune{'\t','\n','\r',' '}):
-			return 18 
+			return 19 
 		}
 		return nullState
 	}, 
@@ -401,33 +401,33 @@ var nextState = []func(r rune) state{
 	func(r rune) state {
 		switch { 
 		case any(r, []rune{'\t','\n','\r',' '}):
-			return 18 
+			return 19 
 		}
 		return nullState
 	}, 
 	// Set18
 	func(r rune) state {
 		switch { 
-		case any(r, []rune{'\t','\n','\r',' '}):
-			return 18 
+		case r == 'a':
+			return 27 
 		}
 		return nullState
 	}, 
 	// Set19
 	func(r rune) state {
 		switch { 
-		case any(r, []rune{'+','-'}):
-			return 30 
-		case any(r, []rune{'0','1','2','3','4','5','6','7','8','9'}):
-			return 31 
+		case any(r, []rune{'\t','\n','\r',' '}):
+			return 19 
 		}
 		return nullState
 	}, 
 	// Set20
 	func(r rune) state {
 		switch { 
-		case r == 'a':
-			return 27 
+		case any(r, []rune{'+','-'}):
+			return 30 
+		case any(r, []rune{'0','1','2','3','4','5','6','7','8','9'}):
+			return 31 
 		}
 		return nullState
 	}, 

@@ -106,11 +106,35 @@ func (t Type) ID() string {
 const(
     Error  Type = iota  // Error 
     EOF  // $ 
-    T_0  // anyColUn 
-    T_1  // anyDotDashEtc 
-    T_2  // anyDotDashEtc2 
-    T_3  // lets 
-    T_4  // num 
+    T_0  // & 
+    T_1  // &# 
+    T_2  // &#x 
+    T_3  // -- 
+    T_4  // ; 
+    T_5  // andCarrs 
+    T_6  // anyColUn 
+    T_7  // anyDotDashEtc 
+    T_8  // anyDotDashEtc2 
+    T_9  // anyafAF 
+    T_10  // charData 
+    T_11  // clCarr1 
+    T_12  // clCarr2 
+    T_13  // dubQu 
+    T_14  // encoding 
+    T_15  // eq 
+    T_16  // excla 
+    T_17  // lets 
+    T_18  // num 
+    T_19  // opCarr1 
+    T_20  // opCarr2 
+    T_21  // optSpaceEsc 
+    T_22  // repNum1 
+    T_23  // semi 
+    T_24  // sinQu 
+    T_25  // spaceEsc 
+    T_26  // version 
+    T_27  // xmlDeclEnd 
+    T_28  // xmlDeclStart 
 )
 
 var TypeToString = []string{ 
@@ -121,6 +145,30 @@ var TypeToString = []string{
     "T_2",
     "T_3",
     "T_4",
+    "T_5",
+    "T_6",
+    "T_7",
+    "T_8",
+    "T_9",
+    "T_10",
+    "T_11",
+    "T_12",
+    "T_13",
+    "T_14",
+    "T_15",
+    "T_16",
+    "T_17",
+    "T_18",
+    "T_19",
+    "T_20",
+    "T_21",
+    "T_22",
+    "T_23",
+    "T_24",
+    "T_25",
+    "T_26",
+    "T_27",
+    "T_28",
 }
 
 var StringToType = map[string] Type { 
@@ -131,19 +179,91 @@ var StringToType = map[string] Type {
     "T_2" : T_2, 
     "T_3" : T_3, 
     "T_4" : T_4, 
+    "T_5" : T_5, 
+    "T_6" : T_6, 
+    "T_7" : T_7, 
+    "T_8" : T_8, 
+    "T_9" : T_9, 
+    "T_10" : T_10, 
+    "T_11" : T_11, 
+    "T_12" : T_12, 
+    "T_13" : T_13, 
+    "T_14" : T_14, 
+    "T_15" : T_15, 
+    "T_16" : T_16, 
+    "T_17" : T_17, 
+    "T_18" : T_18, 
+    "T_19" : T_19, 
+    "T_20" : T_20, 
+    "T_21" : T_21, 
+    "T_22" : T_22, 
+    "T_23" : T_23, 
+    "T_24" : T_24, 
+    "T_25" : T_25, 
+    "T_26" : T_26, 
+    "T_27" : T_27, 
+    "T_28" : T_28, 
 }
 
 var TypeToID = []string { 
     "Error", 
     "$", 
+    "&", 
+    "&#", 
+    "&#x", 
+    "--", 
+    ";", 
+    "andCarrs", 
     "anyColUn", 
     "anyDotDashEtc", 
     "anyDotDashEtc2", 
+    "anyafAF", 
+    "charData", 
+    "clCarr1", 
+    "clCarr2", 
+    "dubQu", 
+    "encoding", 
+    "eq", 
+    "excla", 
     "lets", 
     "num", 
+    "opCarr1", 
+    "opCarr2", 
+    "optSpaceEsc", 
+    "repNum1", 
+    "semi", 
+    "sinQu", 
+    "spaceEsc", 
+    "version", 
+    "xmlDeclEnd", 
+    "xmlDeclStart", 
 }
 
 var Suppress = []bool { 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
     false, 
     false, 
     false, 

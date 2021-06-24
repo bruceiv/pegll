@@ -56,9 +56,6 @@ package "XML"
         ENTITY_REF      : "&" NAME ";"                 ;
         CHAR_REF        : "&#x" Hex ";"  
                         | "&#" repNum1 ";"             ;
-                AndPx : AndP "x" ;
-                AndP  : And "#"     ;
-                And   : "&"         ;
                 semi  : ';'         ;  
                 Hex             : HexAlts RepHexAlts    ;
                 RepHexAlts      : HexAlts Hex
