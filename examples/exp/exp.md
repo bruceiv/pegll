@@ -4,23 +4,23 @@
 #### *Author :* Brynn Harrington and Emily Hoppe Copyright (C) 2021
 #### *Adapted from :* Aaron Moss's [`eggr` Egg Grammar](https://github.com/bruceiv/egg/blob/deriv/grammars/exp.egg)
 #### *Creation Date :* June 11, 2021 
-#### *Last Modified :* June 18, 2021
+#### *Last Modified :* June 24, 2021
 #### *Copyright and Licensing Information :* See end of file.
 
 ###  **GENERAL DESCRIPTION**
-An originally Egg Parsing grammar created by Aaron Moss ported into the GoGLL grammar to determine if a grammar, under recursive descent, will have exponential runtime. Modification of `exp` grammar from [Egg](https://github.com/bruceiv/egg/blob/deriv/grammars/exp.egg) to test an example grammar with possible exponential runtime under recursive descent.
+A modification of the `exp`[Egg](https://github.com/bruceiv/egg/blob/deriv/grammars/exp.egg) Parsing Grammar ported into the GoGLL to test an example grammar with possible exponential runtime under recursive descent.
+
 ### **STATUS ON GRAMMAR**
 #### *Markdown File Creation:* Working
 #### *Parser Generated :* Complete
 #### *Test File Creation:* Incomplete
 #### *Testing Results:* Unknown
+
 ### **`exp` GRAMMAR GUIDE**
-The following grammar will have exponential runtime under recursive descent. It utilizes three lexical rules to act ask token identifiers with one starting rule exercising the recursive descent. 
+The following grammar will utilize recursive descent to determine if exponential runtime occurs. `EXP` represents the starting semantic rule exercising recursive descent through calling itself within the characters 'a' then 'b', 'a' then 'c', or empty, choice based on the input grammar. Here, the `|` operator represents unordered choice. See the [grammar for details.](../../gogll.md).
 ```
 package "exp"
-```
-`EXP` represents the starting semantic rule exercising recursive descent through calling itself within the characters 'a' then 'b', 'a' then 'c', or empty, choice based on the input grammar. Here, the `|` operator represents unordered choice. See the [grammar for details.](../../gogll.md). The recursion descent 
-```
+
 EXP     : "a" EXP "b" 
         | "a" EXP "c" 
         | empty         ;
