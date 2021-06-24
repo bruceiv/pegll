@@ -16,23 +16,16 @@ An originally Egg Parsing grammar created by Aaron Moss ported into the GoGLL gr
 #### *Testing Results:* Unknown
 ### **`exp` GRAMMAR GUIDE**
 The following grammar will have exponential runtime under recursive descent. It utilizes three lexical rules to act ask token identifiers with one starting rule exercising the recursive descent. 
-See the [grammar for details.](../../gogll.md)
 ```
 package "exp"
 ```
-`S1` represents the starting semantic rule exercising recursive descent through calling itself within a set of lexical rules, or empty, choice based on the input grammar. Here, the `|` operator represents unordered choice.
+`EXP` represents the starting semantic rule exercising recursive descent through calling itself within the characters 'a' then 'b', 'a' then 'c', or empty, choice based on the input grammar. Here, the `|` operator represents unordered choice. See the [grammar for details.](../../gogll.md). The recursion descent 
 ```
-S1  : aa S1 bb 
-    | aa S1 cc 
-    | empty ;
+EXP     : "a" EXP "b" 
+        | "a" EXP "c" 
+        | empty         ;
 ```
-The following rules are the lexical rules representing a single character: `aa` represents `'a'`, `bb` represents `'b'`, and `cc` represents `'c'`. As rules must be named using more than one character, they are named by the character repeated twice. This additionally satisfies that `S1` must utilize non-terminal token identifiers. 
-```
-aa : 'a' ;
-bb : 'b' ;
-cc : 'c' ;
-
-```
+#
 ### **COPYRIGHT AND LICENSING INFORMATION**
 **Copyright 2021 Brynn Harrington and Emily Hoppe**
 
