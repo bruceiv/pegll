@@ -169,16 +169,20 @@ const(
     T_60  // notEqSlDash 
     T_61  // num 
     T_62  // octalNumeral 
-    T_63  // repHex0x 
-    T_64  // repHex1x 
-    T_65  // two07 
-    T_66  // x 
-    T_67  // { 
-    T_68  // | 
-    T_69  // |= 
-    T_70  // || 
-    T_71  // } 
-    T_72  // ~ 
+    T_63  // onenine 
+    T_64  // optfFdD 
+    T_65  // repHex0x 
+    T_66  // repHex1x 
+    T_67  // repNumx0 
+    T_68  // two07 
+    T_69  // x 
+    T_70  // ze 
+    T_71  // { 
+    T_72  // | 
+    T_73  // |= 
+    T_74  // || 
+    T_75  // } 
+    T_76  // ~ 
 )
 
 var TypeToString = []string{ 
@@ -257,6 +261,10 @@ var TypeToString = []string{
     "T_70",
     "T_71",
     "T_72",
+    "T_73",
+    "T_74",
+    "T_75",
+    "T_76",
 }
 
 var StringToType = map[string] Type { 
@@ -335,6 +343,10 @@ var StringToType = map[string] Type {
     "T_70" : T_70, 
     "T_71" : T_71, 
     "T_72" : T_72, 
+    "T_73" : T_73, 
+    "T_74" : T_74, 
+    "T_75" : T_75, 
+    "T_76" : T_76, 
 }
 
 var TypeToID = []string { 
@@ -403,10 +415,14 @@ var TypeToID = []string {
     "notEqSlDash", 
     "num", 
     "octalNumeral", 
+    "onenine", 
+    "optfFdD", 
     "repHex0x", 
     "repHex1x", 
+    "repNumx0", 
     "two07", 
     "x", 
+    "ze", 
     "{", 
     "|", 
     "|=", 
@@ -471,6 +487,10 @@ var Suppress = []bool {
     false, 
     false, 
     true, 
+    false, 
+    false, 
+    false, 
+    false, 
     false, 
     false, 
     false, 
