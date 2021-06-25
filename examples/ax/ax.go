@@ -1,46 +1,48 @@
-package main
+/* ax.go
+* Test the repeatability of the grammar 
+*/
+// import the ax package 
+package ax
 
+// import the parser files generated
 import (
-	"fmt"
-
 	"ax/lexer"
 	"ax/parser"
+	"ax/token"
+	"testing"
+	"strings"
 )
 
-// test the repeatability of the grammar
 
-//Should match
-const a = `a`
-const aa = `aa`
-const aaa = `aaa`
+// testing repeatability of the character a 
+// last test should fail to match
+const (
+	rep_a1 	= `a`
+	//rep_a2 	= `aa`
+	//rep_a3 	= `aaa`
+	//non_rep	= `b`
+)
 
-//Should fail to match
-const ab = `ab`
 
-// use the GetRoot(s) function from bsr.go
-func parse(s []rune) bool {
-	// run GLL parser
-	bsrSet, _ := parser.Parse(lexer.New(s))
-	// quit early if parse fails
-	if bsrSet == nil {
-		return false
+// test function for repeatability 
+//	Repa0x : repa0x  ;
+// 	repa0x : { 'a' } ;
+
+func Test1( t *testing.T )  {
+	bs, errs := parser.Parse(lexer.New([]rune(rep_a1)))
+
+	// determine if any errors exist 
+	if len( errs ) != 0 {
+		t.Fail()
 	}
-	// check that root covers whole input
-	root := bsrSet.GetRoots()
-	return root.RightExtent() == bsrSet.GetRightExtent()
-}
+	
+	// Repa0x : repa0x
+	root := bs.GetRoot()
 
-func parseAndPrint(s string) {
-	if parse([]rune(s)) {
-		fmt.Println("`" + s + "` matched")
-	} else {
-		fmt.Println("`" + s + "` DID NOT match")
+	// repa0x : { 'a' }
+	a_test := root.GetNTChildI(0)
+	if rep_a1 != a_test.LiteralString() {
+		t.Fail()
 	}
 }
 
-func main() {
-	parseAndPrint(a)
-	parseAndPrint(aa)
-	parseAndPrint(aaa)
-	parseAndPrint(ab)
-}
