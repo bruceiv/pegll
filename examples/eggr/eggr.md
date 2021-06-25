@@ -1,22 +1,22 @@
-# **`eggr` Grammar**
+# **`eggr` GRAMMAR**
 
 ### **AUTHORSHIP INFORMATION**
 #### *Author :* Brynn Harrington and Emily Hoppe Copyright (C) 2021
 #### *Adapted from :* Aaron Moss's [`eggr` Egg Grammar](https://github.com/bruceiv/egg/blob/deriv/grammars/eggr.egg)
 #### *Creation Date :* June 11, 2021 
-#### *Last Modified :* June 23, 2021
+#### *Last Modified :* June 24, 2021
 #### *Copyright and Licensing Information :* See end of file.
 
 ###  **GENERAL DESCRIPTION**
-An originally Egg Parsing grammar created by Aaron Moss ported into the GoGLL grammar to test a given structure.Modification of `eggr` grammar from [Egg](https://github.com/bruceiv/egg/blob/deriv/grammars/eggr.egg) to test an example structure.
+A modification of `eggr`[Egg](https://github.com/bruceiv/egg/blob/deriv/grammars/eggr.egg) parsing grammar ported into GoGLL a given structure.
+
 ### **STATUS ON GRAMMAR**
 #### *Markdown File Creation:* Working
 #### *Parser Generated :* Complete
 #### *Test File Creation:* Incomplete
 #### *Testing Results:* Unknown
 ### **`eggr` GRAMMAR GUIDE**
-NEED TO FIX:
-- double check translation of regular expressions in semantic rules
+The following grammar tests a given structure 
 
 ```
 package "eggr"

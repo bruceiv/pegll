@@ -1,13 +1,13 @@
-# `A~BC` Grammar
+# **`A~BC` GRAMMAR**
 ### **AUTHORSHIP INFORMATION**
 #### *Author :* Aaron Moss Copyright (C) 2021
 #### *Adapted from :* Aaron Moss's [`abc` Egg Grammar](https://github.com/bruceiv/egg/blob/deriv/grammars/abc.egg)
 #### *Creation Date :* June 11, 2021 
-#### *Last Modified :* June 18, 2021
+#### *Last Modified :* June 24, 2021
 #### *Copyright and Licensing Information :* See end of file.
 
 ###  **GENERAL DESCRIPTION**
-An originally Egg Parsing grammar created by Aaron Moss ported into the GoGLL grammar to test ordered choice through the elimination of the `"ab"` branch. Modification of `abc` grammar from [Egg](https://github.com/bruceiv/egg/blob/deriv/grammars/abc.egg) to meaningfully exercise ordered choice by eliminating `"ab"` branch.
+A modification of `abc` [Egg](https://github.com/bruceiv/egg/blob/deriv/grammars/abc.egg) parsing grammar to test and meaningfully exercise ordered choice through the elimination of the `"ab"` branch.
 
 ### **STATUS ON GRAMMAR**
 #### *Markdown File Creation:* Complete
@@ -16,8 +16,7 @@ An originally Egg Parsing grammar created by Aaron Moss ported into the GoGLL gr
 #### *Testing Results:* Passed
 
 ### **`A~BC` Grammar Guide**
-The `/` syntax rule after`"ab"` and in front of `as` instructs the parser to recognize the ordered choice of these tokens. See the [grammar for details.](../../gogll.md)
-
+The following grammar tests ordered choice in GoGLL. This grammar attempts to exercise ordered choice through the elimination of the `"ab"` branch.
 ```
 package "axbc"
 ```

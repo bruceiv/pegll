@@ -8,7 +8,7 @@
 #### *Copyright and Licensing Information :* See end of file.
 
 ### **GENERAL DESCRIPTION**
-A modification of the `astar` [Egg](https://github.com/bruceiv/egg/blob/deriv/grammars/astar.egg) Parsing Grammar ported into GoGLL to test repeatability within the grammar. 
+A modification of the `astar` [Egg](https://github.com/bruceiv/egg/blob/deriv/grammars/astar.egg) parsing grammar ported into GoGLL to test repeatability within the grammar. 
 
 ### **STATUS ON GRAMMAR**
 #### *Markdown File Creation:* Complete
