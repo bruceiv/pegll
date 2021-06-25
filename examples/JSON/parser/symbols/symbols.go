@@ -20,9 +20,7 @@ const(
 	NT_COMMA 
 	NT_CharCode 
 	NT_Close 
-	NT_ComPair 
 	NT_ComPair0x 
-	NT_ComVal 
 	NT_ComVal0x 
 	NT_Elements 
 	NT_EscOrComment 
@@ -35,10 +33,9 @@ const(
 	NT_LBRACKET 
 	NT_LineOrBlock 
 	NT_Members 
-	NT_Mems1x 
+	NT_Mems0x 
 	NT_NUL 
 	NT_Number 
-	NT_NumberHEX 
 	NT_Object 
 	NT_OptElem 
 	NT_OptExp 
@@ -62,7 +59,7 @@ const(
 	T_4  // aA_fF 
 	T_5  // bSlash 
 	T_6  // block_comment 
-	T_7  // carrot 
+	T_7  // carrotSlash 
 	T_8  // dQuote 
 	T_9  // esc 
 	T_10  // escChar 
@@ -115,9 +112,7 @@ var ntToString = []string {
 	"COMMA", /* NT_COMMA */
 	"CharCode", /* NT_CharCode */
 	"Close", /* NT_Close */
-	"ComPair", /* NT_ComPair */
 	"ComPair0x", /* NT_ComPair0x */
-	"ComVal", /* NT_ComVal */
 	"ComVal0x", /* NT_ComVal0x */
 	"Elements", /* NT_Elements */
 	"EscOrComment", /* NT_EscOrComment */
@@ -130,10 +125,9 @@ var ntToString = []string {
 	"LBRACKET", /* NT_LBRACKET */
 	"LineOrBlock", /* NT_LineOrBlock */
 	"Members", /* NT_Members */
-	"Mems1x", /* NT_Mems1x */
+	"Mems0x", /* NT_Mems0x */
 	"NUL", /* NT_NUL */
 	"Number", /* NT_Number */
-	"NumberHEX", /* NT_NumberHEX */
 	"Object", /* NT_Object */
 	"OptElem", /* NT_OptElem */
 	"OptExp", /* NT_OptExp */
@@ -155,7 +149,7 @@ var tToString = []string {
 	"aA_fF", /* T_4 */
 	"bSlash", /* T_5 */
 	"block_comment", /* T_6 */
-	"carrot", /* T_7 */
+	"carrotSlash", /* T_7 */
 	"dQuote", /* T_8 */
 	"esc", /* T_9 */
 	"escChar", /* T_10 */
@@ -182,9 +176,7 @@ var stringNT = map[string]NT{
 	"COMMA":NT_COMMA,
 	"CharCode":NT_CharCode,
 	"Close":NT_Close,
-	"ComPair":NT_ComPair,
 	"ComPair0x":NT_ComPair0x,
-	"ComVal":NT_ComVal,
 	"ComVal0x":NT_ComVal0x,
 	"Elements":NT_Elements,
 	"EscOrComment":NT_EscOrComment,
@@ -197,10 +189,9 @@ var stringNT = map[string]NT{
 	"LBRACKET":NT_LBRACKET,
 	"LineOrBlock":NT_LineOrBlock,
 	"Members":NT_Members,
-	"Mems1x":NT_Mems1x,
+	"Mems0x":NT_Mems0x,
 	"NUL":NT_NUL,
 	"Number":NT_Number,
-	"NumberHEX":NT_NumberHEX,
 	"Object":NT_Object,
 	"OptElem":NT_OptElem,
 	"OptExp":NT_OptExp,

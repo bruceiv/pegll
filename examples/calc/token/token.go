@@ -112,7 +112,7 @@ const(
     T_3  // + 
     T_4  // - 
     T_5  // / 
-    T_6  // num 
+    T_6  // repNumber1x 
     T_7  // space 
 )
 
@@ -151,7 +151,7 @@ var TypeToID = []string {
     "+", 
     "-", 
     "/", 
-    "num", 
+    "repNumber1x", 
     "space", 
 }
 

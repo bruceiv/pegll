@@ -12,15 +12,15 @@ import(
 type Label int
 
 const(
-	S10R0 Label = iota
-	S10R1
-	S10R2
-	S10R3
-	S11R0
-	S11R1
-	S11R2
-	S11R3
-	S12R0
+	EXP0R0 Label = iota
+	EXP0R1
+	EXP0R2
+	EXP0R3
+	EXP1R0
+	EXP1R1
+	EXP1R2
+	EXP1R3
+	EXP2R0
 )
 
 type Slot struct {
@@ -110,99 +110,99 @@ func (s *Slot) String() string {
 }
 
 var slots = map[Label]*Slot{ 
-	S10R0: {
-		symbols.NT_S1, 0, 0, 
+	EXP0R0: {
+		symbols.NT_EXP, 0, 0, 
 		symbols.Symbols{  
 			symbols.T_0, 
-			symbols.NT_S1, 
+			symbols.NT_EXP, 
 			symbols.T_1,
 		}, 
-		S10R0, 
+		EXP0R0, 
 	},
-	S10R1: {
-		symbols.NT_S1, 0, 1, 
+	EXP0R1: {
+		symbols.NT_EXP, 0, 1, 
 		symbols.Symbols{  
 			symbols.T_0, 
-			symbols.NT_S1, 
+			symbols.NT_EXP, 
 			symbols.T_1,
 		}, 
-		S10R1, 
+		EXP0R1, 
 	},
-	S10R2: {
-		symbols.NT_S1, 0, 2, 
+	EXP0R2: {
+		symbols.NT_EXP, 0, 2, 
 		symbols.Symbols{  
 			symbols.T_0, 
-			symbols.NT_S1, 
+			symbols.NT_EXP, 
 			symbols.T_1,
 		}, 
-		S10R2, 
+		EXP0R2, 
 	},
-	S10R3: {
-		symbols.NT_S1, 0, 3, 
+	EXP0R3: {
+		symbols.NT_EXP, 0, 3, 
 		symbols.Symbols{  
 			symbols.T_0, 
-			symbols.NT_S1, 
+			symbols.NT_EXP, 
 			symbols.T_1,
 		}, 
-		S10R3, 
+		EXP0R3, 
 	},
-	S11R0: {
-		symbols.NT_S1, 1, 0, 
+	EXP1R0: {
+		symbols.NT_EXP, 1, 0, 
 		symbols.Symbols{  
 			symbols.T_0, 
-			symbols.NT_S1, 
+			symbols.NT_EXP, 
 			symbols.T_2,
 		}, 
-		S11R0, 
+		EXP1R0, 
 	},
-	S11R1: {
-		symbols.NT_S1, 1, 1, 
+	EXP1R1: {
+		symbols.NT_EXP, 1, 1, 
 		symbols.Symbols{  
 			symbols.T_0, 
-			symbols.NT_S1, 
+			symbols.NT_EXP, 
 			symbols.T_2,
 		}, 
-		S11R1, 
+		EXP1R1, 
 	},
-	S11R2: {
-		symbols.NT_S1, 1, 2, 
+	EXP1R2: {
+		symbols.NT_EXP, 1, 2, 
 		symbols.Symbols{  
 			symbols.T_0, 
-			symbols.NT_S1, 
+			symbols.NT_EXP, 
 			symbols.T_2,
 		}, 
-		S11R2, 
+		EXP1R2, 
 	},
-	S11R3: {
-		symbols.NT_S1, 1, 3, 
+	EXP1R3: {
+		symbols.NT_EXP, 1, 3, 
 		symbols.Symbols{  
 			symbols.T_0, 
-			symbols.NT_S1, 
+			symbols.NT_EXP, 
 			symbols.T_2,
 		}, 
-		S11R3, 
+		EXP1R3, 
 	},
-	S12R0: {
-		symbols.NT_S1, 2, 0, 
+	EXP2R0: {
+		symbols.NT_EXP, 2, 0, 
 		symbols.Symbols{ 
 		}, 
-		S12R0, 
+		EXP2R0, 
 	},
 }
 
 var slotIndex = map[Index]Label { 
-	Index{ symbols.NT_S1,0,0 }: S10R0,
-	Index{ symbols.NT_S1,0,1 }: S10R1,
-	Index{ symbols.NT_S1,0,2 }: S10R2,
-	Index{ symbols.NT_S1,0,3 }: S10R3,
-	Index{ symbols.NT_S1,1,0 }: S11R0,
-	Index{ symbols.NT_S1,1,1 }: S11R1,
-	Index{ symbols.NT_S1,1,2 }: S11R2,
-	Index{ symbols.NT_S1,1,3 }: S11R3,
-	Index{ symbols.NT_S1,2,0 }: S12R0,
+	Index{ symbols.NT_EXP,0,0 }: EXP0R0,
+	Index{ symbols.NT_EXP,0,1 }: EXP0R1,
+	Index{ symbols.NT_EXP,0,2 }: EXP0R2,
+	Index{ symbols.NT_EXP,0,3 }: EXP0R3,
+	Index{ symbols.NT_EXP,1,0 }: EXP1R0,
+	Index{ symbols.NT_EXP,1,1 }: EXP1R1,
+	Index{ symbols.NT_EXP,1,2 }: EXP1R2,
+	Index{ symbols.NT_EXP,1,3 }: EXP1R3,
+	Index{ symbols.NT_EXP,2,0 }: EXP2R0,
 }
 
 var alternates = map[symbols.NT][]Label{ 
-	symbols.NT_S1:[]Label{ S10R0,S11R0,S12R0 },
+	symbols.NT_EXP:[]Label{ EXP0R0,EXP1R0,EXP2R0 },
 }
 

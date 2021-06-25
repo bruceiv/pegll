@@ -1,31 +1,30 @@
-# **`ax` Grammar**
+# **`ax` GRAMMAR**
 
 ### **AUTHORSHIP INFORMATION**
 #### *Authors :* Brynn Harrington and Emily Hoppe Copyright (C) 2021
 #### *Adapted from :* Aaron Moss's [`astar` Egg Grammar](https://github.com/bruceiv/egg/blob/deriv/grammars/abc.egg)
 #### *Creation Date :* June 10, 2021 
-#### *Last Modified :* June 18, 2021
+#### *Last Modified :* June 24, 2021
 #### *Copyright and Licensing Information :* See end of file.
 
 ### **GENERAL DESCRIPTION**
-An originally Egg Parsing grammar created by Aaron Moss ported into the GoGLL grammar to test repeatability within the grammar. Modification of `astar` grammar from [Egg](https://github.com/bruceiv/egg/blob/deriv/grammars/astar.egg) to test repetition of a character.
+A modification of the `astar` [Egg](https://github.com/bruceiv/egg/blob/deriv/grammars/astar.egg) parsing grammar ported into GoGLL to test repeatability within the grammar. 
+
 ### **STATUS ON GRAMMAR**
 #### *Markdown File Creation:* Complete
 #### *Parser Generated :* Complete
 #### *Test File Creation:* Incomplete
 #### *Testing Results:* Unknown
+
 ### **`ax` GRAMMAR GUIDE**
-The following grammar was written as to test repeatability. See the [grammar for details.](../../gogll.md)
+The following grammar tests the repeatability of a character, in this case 'a', within GoGLL. `Repa0x` represents the start rule while `repa0x` consists of the repeated token of `a` zero or more times. The use of the bracketed expression`{}` within this grammar is to indicate a set of tokens or identifiers repeated zero or more times. See the [grammar for details.](../../gogll.md)
+
 ```
 package "ax"
-```
-In this grammar, `S1` represents the semantic start rule.
-```
-S1 : ax ;
-```
-`ax` consists of the repeated token of `a` zero or more times. The use of `{}` within this grammar is to indicate a set of tokens or identifiers repeated zero or more times.
-```
-ax : { 'a' } ;
+
+Repa0x : repa0x ;
+
+repa0x : { 'a' } ;
 ```
 #
 ### **COPYRIGHT AND LICENSING INFORMATION**

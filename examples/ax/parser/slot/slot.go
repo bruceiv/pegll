@@ -12,8 +12,8 @@ import(
 type Label int
 
 const(
-	S10R0 Label = iota
-	S10R1
+	Repa0x0R0 Label = iota
+	Repa0x0R1
 )
 
 type Slot struct {
@@ -103,28 +103,28 @@ func (s *Slot) String() string {
 }
 
 var slots = map[Label]*Slot{ 
-	S10R0: {
-		symbols.NT_S1, 0, 0, 
+	Repa0x0R0: {
+		symbols.NT_Repa0x, 0, 0, 
 		symbols.Symbols{  
 			symbols.T_0,
 		}, 
-		S10R0, 
+		Repa0x0R0, 
 	},
-	S10R1: {
-		symbols.NT_S1, 0, 1, 
+	Repa0x0R1: {
+		symbols.NT_Repa0x, 0, 1, 
 		symbols.Symbols{  
 			symbols.T_0,
 		}, 
-		S10R1, 
+		Repa0x0R1, 
 	},
 }
 
 var slotIndex = map[Index]Label { 
-	Index{ symbols.NT_S1,0,0 }: S10R0,
-	Index{ symbols.NT_S1,0,1 }: S10R1,
+	Index{ symbols.NT_Repa0x,0,0 }: Repa0x0R0,
+	Index{ symbols.NT_Repa0x,0,1 }: Repa0x0R1,
 }
 
 var alternates = map[symbols.NT][]Label{ 
-	symbols.NT_S1:[]Label{ S10R0 },
+	symbols.NT_Repa0x:[]Label{ Repa0x0R0 },
 }
 

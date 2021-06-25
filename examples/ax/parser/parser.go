@@ -38,10 +38,10 @@ func newParser(l *lexer.Lexer) *parser {
 		U:      &descriptors{},
 		popped: make(map[poppedNode]bool),
 		crf: map[clusterNode][]*crfNode{
-			{symbols.NT_S1, 0}: {},
+			{symbols.NT_Repa0x, 0}: {},
 		},
 		crfNodes:    map[crfNode]*crfNode{},
-		bsrSet:      bsr.New(symbols.NT_S1, l),
+		bsrSet:      bsr.New(symbols.NT_Repa0x, l),
 		parseErrors: nil,
 	}
 }
@@ -55,7 +55,7 @@ func Parse(l *lexer.Lexer) (*bsr.Set, []*Error) {
 func (p *parser) parse() (*bsr.Set, []*Error) {
 	var L slot.Label
 	m, cU := len(p.lex.Tokens)-1, 0
-	p.ntAdd(symbols.NT_S1, 0)
+	p.ntAdd(symbols.NT_Repa0x, 0)
 	// p.DumpDescriptors()
 	for !p.R.empty() {
 		L, cU, p.cI = p.R.remove()
@@ -65,21 +65,21 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 		// p.DumpDescriptors()
 
 		switch L {
-		case slot.S10R0: // S1 : ∙ax
+		case slot.Repa0x0R0: // Repa0x : ∙repa0x
 
-			p.bsrSet.Add(slot.S10R1, cU, p.cI, p.cI+1)
+			p.bsrSet.Add(slot.Repa0x0R1, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_S1) {
-				p.rtn(symbols.NT_S1, cU, p.cI)
+			if p.follow(symbols.NT_Repa0x) {
+				p.rtn(symbols.NT_Repa0x, cU, p.cI)
 			} else {
-				p.parseError(slot.S10R0, p.cI, followSets[symbols.NT_S1])
+				p.parseError(slot.Repa0x0R0, p.cI, followSets[symbols.NT_Repa0x])
 			}
 
 		default:
 			panic("This must not happen")
 		}
 	}
-	if !p.bsrSet.Contain(symbols.NT_S1, 0, m) {
+	if !p.bsrSet.Contain(symbols.NT_Repa0x, 0, m) {
 		p.sortParseErrors()
 		return nil, p.parseErrors
 	}
@@ -316,18 +316,18 @@ func (p *parser) testSelect(l slot.Label) bool {
 }
 
 var first = []map[token.Type]string{
-	// S1 : ∙ax
+	// Repa0x : ∙repa0x
 	{
-		token.T_0: "ax",
+		token.T_0: "repa0x",
 	},
-	// S1 : ax ∙
+	// Repa0x : repa0x ∙
 	{
 		token.EOF: "$",
 	},
 }
 
 var followSets = []map[token.Type]string{
-	// S1
+	// Repa0x
 	{
 		token.EOF: "$",
 	},

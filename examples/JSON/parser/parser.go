@@ -91,7 +91,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			} else {
 				p.parseError(slot.Array0R0, p.cI, followSets[symbols.NT_Array])
 			}
-		case slot.CHAR0R0: // CHAR : ∙carrot
+		case slot.CHAR0R0: // CHAR : ∙carrotSlash
 
 			p.bsrSet.Add(slot.CHAR0R1, cU, p.cI, p.cI+1)
 			p.cI++
@@ -228,28 +228,10 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			} else {
 				p.parseError(slot.Close1R0, p.cI, followSets[symbols.NT_Close])
 			}
-		case slot.ComPair0R0: // ComPair : ∙COMMA Pair
-
-			p.call(slot.ComPair0R1, cU, p.cI)
-		case slot.ComPair0R1: // ComPair : COMMA ∙Pair
-
-			if !p.testSelect(slot.ComPair0R1) {
-				p.parseError(slot.ComPair0R1, p.cI, first[slot.ComPair0R1])
-				break
-			}
-
-			p.call(slot.ComPair0R2, cU, p.cI)
-		case slot.ComPair0R2: // ComPair : COMMA Pair ∙
-
-			if p.follow(symbols.NT_ComPair) {
-				p.rtn(symbols.NT_ComPair, cU, p.cI)
-			} else {
-				p.parseError(slot.ComPair0R0, p.cI, followSets[symbols.NT_ComPair])
-			}
-		case slot.ComPair0x0R0: // ComPair0x : ∙ComPair ComPair0x
+		case slot.ComPair0x0R0: // ComPair0x : ∙COMMA Pair ComPair0x
 
 			p.call(slot.ComPair0x0R1, cU, p.cI)
-		case slot.ComPair0x0R1: // ComPair0x : ComPair ∙ComPair0x
+		case slot.ComPair0x0R1: // ComPair0x : COMMA ∙Pair ComPair0x
 
 			if !p.testSelect(slot.ComPair0x0R1) {
 				p.parseError(slot.ComPair0x0R1, p.cI, first[slot.ComPair0x0R1])
@@ -257,7 +239,15 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			}
 
 			p.call(slot.ComPair0x0R2, cU, p.cI)
-		case slot.ComPair0x0R2: // ComPair0x : ComPair ComPair0x ∙
+		case slot.ComPair0x0R2: // ComPair0x : COMMA Pair ∙ComPair0x
+
+			if !p.testSelect(slot.ComPair0x0R2) {
+				p.parseError(slot.ComPair0x0R2, p.cI, first[slot.ComPair0x0R2])
+				break
+			}
+
+			p.call(slot.ComPair0x0R3, cU, p.cI)
+		case slot.ComPair0x0R3: // ComPair0x : COMMA Pair ComPair0x ∙
 
 			if p.follow(symbols.NT_ComPair0x) {
 				p.rtn(symbols.NT_ComPair0x, cU, p.cI)
@@ -272,28 +262,10 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			} else {
 				p.parseError(slot.ComPair0x1R0, p.cI, followSets[symbols.NT_ComPair0x])
 			}
-		case slot.ComVal0R0: // ComVal : ∙COMMA Value
-
-			p.call(slot.ComVal0R1, cU, p.cI)
-		case slot.ComVal0R1: // ComVal : COMMA ∙Value
-
-			if !p.testSelect(slot.ComVal0R1) {
-				p.parseError(slot.ComVal0R1, p.cI, first[slot.ComVal0R1])
-				break
-			}
-
-			p.call(slot.ComVal0R2, cU, p.cI)
-		case slot.ComVal0R2: // ComVal : COMMA Value ∙
-
-			if p.follow(symbols.NT_ComVal) {
-				p.rtn(symbols.NT_ComVal, cU, p.cI)
-			} else {
-				p.parseError(slot.ComVal0R0, p.cI, followSets[symbols.NT_ComVal])
-			}
-		case slot.ComVal0x0R0: // ComVal0x : ∙ComVal ComVal0x
+		case slot.ComVal0x0R0: // ComVal0x : ∙COMMA Value ComVal0x
 
 			p.call(slot.ComVal0x0R1, cU, p.cI)
-		case slot.ComVal0x0R1: // ComVal0x : ComVal ∙ComVal0x
+		case slot.ComVal0x0R1: // ComVal0x : COMMA ∙Value ComVal0x
 
 			if !p.testSelect(slot.ComVal0x0R1) {
 				p.parseError(slot.ComVal0x0R1, p.cI, first[slot.ComVal0x0R1])
@@ -301,7 +273,15 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			}
 
 			p.call(slot.ComVal0x0R2, cU, p.cI)
-		case slot.ComVal0x0R2: // ComVal0x : ComVal ComVal0x ∙
+		case slot.ComVal0x0R2: // ComVal0x : COMMA Value ∙ComVal0x
+
+			if !p.testSelect(slot.ComVal0x0R2) {
+				p.parseError(slot.ComVal0x0R2, p.cI, first[slot.ComVal0x0R2])
+				break
+			}
+
+			p.call(slot.ComVal0x0R3, cU, p.cI)
+		case slot.ComVal0x0R3: // ComVal0x : COMMA Value ComVal0x ∙
 
 			if p.follow(symbols.NT_ComVal0x) {
 				p.rtn(symbols.NT_ComVal0x, cU, p.cI)
@@ -370,15 +350,30 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			} else {
 				p.parseError(slot.FALSE0R0, p.cI, followSets[symbols.NT_FALSE])
 			}
-		case slot.HEX0R0: // HEX : ∙NumberHEX
+		case slot.HEX0R0: // HEX : ∙Number aA_fF
 
 			p.call(slot.HEX0R1, cU, p.cI)
-		case slot.HEX0R1: // HEX : NumberHEX ∙
+		case slot.HEX0R1: // HEX : Number ∙aA_fF
 
+			if !p.testSelect(slot.HEX0R1) {
+				p.parseError(slot.HEX0R1, p.cI, first[slot.HEX0R1])
+				break
+			}
+
+			p.bsrSet.Add(slot.HEX0R2, cU, p.cI, p.cI+1)
+			p.cI++
 			if p.follow(symbols.NT_HEX) {
 				p.rtn(symbols.NT_HEX, cU, p.cI)
 			} else {
 				p.parseError(slot.HEX0R0, p.cI, followSets[symbols.NT_HEX])
+			}
+		case slot.HEX1R0: // HEX : ∙
+			p.bsrSet.AddEmpty(slot.HEX1R0, p.cI)
+
+			if p.follow(symbols.NT_HEX) {
+				p.rtn(symbols.NT_HEX, cU, p.cI)
+			} else {
+				p.parseError(slot.HEX1R0, p.cI, followSets[symbols.NT_HEX])
 			}
 		case slot.INT0R0: // INT : ∙optNeg Integers
 
@@ -503,31 +498,31 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			} else {
 				p.parseError(slot.Members0R0, p.cI, followSets[symbols.NT_Members])
 			}
-		case slot.Mems1x0R0: // Mems1x : ∙Members Mems1x
+		case slot.Mems0x0R0: // Mems0x : ∙Members Mems0x
 
-			p.call(slot.Mems1x0R1, cU, p.cI)
-		case slot.Mems1x0R1: // Mems1x : Members ∙Mems1x
+			p.call(slot.Mems0x0R1, cU, p.cI)
+		case slot.Mems0x0R1: // Mems0x : Members ∙Mems0x
 
-			if !p.testSelect(slot.Mems1x0R1) {
-				p.parseError(slot.Mems1x0R1, p.cI, first[slot.Mems1x0R1])
+			if !p.testSelect(slot.Mems0x0R1) {
+				p.parseError(slot.Mems0x0R1, p.cI, first[slot.Mems0x0R1])
 				break
 			}
 
-			p.call(slot.Mems1x0R2, cU, p.cI)
-		case slot.Mems1x0R2: // Mems1x : Members Mems1x ∙
+			p.call(slot.Mems0x0R2, cU, p.cI)
+		case slot.Mems0x0R2: // Mems0x : Members Mems0x ∙
 
-			if p.follow(symbols.NT_Mems1x) {
-				p.rtn(symbols.NT_Mems1x, cU, p.cI)
+			if p.follow(symbols.NT_Mems0x) {
+				p.rtn(symbols.NT_Mems0x, cU, p.cI)
 			} else {
-				p.parseError(slot.Mems1x0R0, p.cI, followSets[symbols.NT_Mems1x])
+				p.parseError(slot.Mems0x0R0, p.cI, followSets[symbols.NT_Mems0x])
 			}
-		case slot.Mems1x1R0: // Mems1x : ∙
-			p.bsrSet.AddEmpty(slot.Mems1x1R0, p.cI)
+		case slot.Mems0x1R0: // Mems0x : ∙
+			p.bsrSet.AddEmpty(slot.Mems0x1R0, p.cI)
 
-			if p.follow(symbols.NT_Mems1x) {
-				p.rtn(symbols.NT_Mems1x, cU, p.cI)
+			if p.follow(symbols.NT_Mems0x) {
+				p.rtn(symbols.NT_Mems0x, cU, p.cI)
 			} else {
-				p.parseError(slot.Mems1x1R0, p.cI, followSets[symbols.NT_Mems1x])
+				p.parseError(slot.Mems0x1R0, p.cI, followSets[symbols.NT_Mems0x])
 			}
 		case slot.NUL0R0: // NUL : ∙null WS
 
@@ -580,35 +575,10 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			} else {
 				p.parseError(slot.Number0R0, p.cI, followSets[symbols.NT_Number])
 			}
-		case slot.NumberHEX0R0: // NumberHEX : ∙Number aA_fF
-
-			p.call(slot.NumberHEX0R1, cU, p.cI)
-		case slot.NumberHEX0R1: // NumberHEX : Number ∙aA_fF
-
-			if !p.testSelect(slot.NumberHEX0R1) {
-				p.parseError(slot.NumberHEX0R1, p.cI, first[slot.NumberHEX0R1])
-				break
-			}
-
-			p.bsrSet.Add(slot.NumberHEX0R2, cU, p.cI, p.cI+1)
-			p.cI++
-			if p.follow(symbols.NT_NumberHEX) {
-				p.rtn(symbols.NT_NumberHEX, cU, p.cI)
-			} else {
-				p.parseError(slot.NumberHEX0R0, p.cI, followSets[symbols.NT_NumberHEX])
-			}
-		case slot.NumberHEX1R0: // NumberHEX : ∙
-			p.bsrSet.AddEmpty(slot.NumberHEX1R0, p.cI)
-
-			if p.follow(symbols.NT_NumberHEX) {
-				p.rtn(symbols.NT_NumberHEX, cU, p.cI)
-			} else {
-				p.parseError(slot.NumberHEX1R0, p.cI, followSets[symbols.NT_NumberHEX])
-			}
-		case slot.Object0R0: // Object : ∙LBRACE Members Mems1x RBRACE
+		case slot.Object0R0: // Object : ∙LBRACE Members Mems0x RBRACE
 
 			p.call(slot.Object0R1, cU, p.cI)
-		case slot.Object0R1: // Object : LBRACE ∙Members Mems1x RBRACE
+		case slot.Object0R1: // Object : LBRACE ∙Members Mems0x RBRACE
 
 			if !p.testSelect(slot.Object0R1) {
 				p.parseError(slot.Object0R1, p.cI, first[slot.Object0R1])
@@ -616,7 +586,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			}
 
 			p.call(slot.Object0R2, cU, p.cI)
-		case slot.Object0R2: // Object : LBRACE Members ∙Mems1x RBRACE
+		case slot.Object0R2: // Object : LBRACE Members ∙Mems0x RBRACE
 
 			if !p.testSelect(slot.Object0R2) {
 				p.parseError(slot.Object0R2, p.cI, first[slot.Object0R2])
@@ -624,7 +594,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			}
 
 			p.call(slot.Object0R3, cU, p.cI)
-		case slot.Object0R3: // Object : LBRACE Members Mems1x ∙RBRACE
+		case slot.Object0R3: // Object : LBRACE Members Mems0x ∙RBRACE
 
 			if !p.testSelect(slot.Object0R3) {
 				p.parseError(slot.Object0R3, p.cI, first[slot.Object0R3])
@@ -632,7 +602,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			}
 
 			p.call(slot.Object0R4, cU, p.cI)
-		case slot.Object0R4: // Object : LBRACE Members Mems1x RBRACE ∙
+		case slot.Object0R4: // Object : LBRACE Members Mems0x RBRACE ∙
 
 			if p.follow(symbols.NT_Object) {
 				p.rtn(symbols.NT_Object, cU, p.cI)
@@ -1157,14 +1127,14 @@ var first = []map[token.Type]string{
 		token.T_8:  "dQuote",
 		token.T_24: "}",
 	},
-	// CHAR : ∙carrot
+	// CHAR : ∙carrotSlash
 	{
-		token.T_7: "carrot",
+		token.T_7: "carrotSlash",
 	},
-	// CHAR : carrot ∙
+	// CHAR : carrotSlash ∙
 	{
 		token.T_5: "bSlash",
-		token.T_7: "carrot",
+		token.T_7: "carrotSlash",
 		token.T_8: "dQuote",
 	},
 	// CHAR : ∙bSlash CharCode
@@ -1179,7 +1149,7 @@ var first = []map[token.Type]string{
 	// CHAR : bSlash CharCode ∙
 	{
 		token.T_5: "bSlash",
-		token.T_7: "carrot",
+		token.T_7: "carrotSlash",
 		token.T_8: "dQuote",
 	},
 	// COLON : ∙: WS
@@ -1243,7 +1213,7 @@ var first = []map[token.Type]string{
 	// CharCode : esc ∙
 	{
 		token.T_5: "bSlash",
-		token.T_7: "carrot",
+		token.T_7: "carrotSlash",
 		token.T_8: "dQuote",
 	},
 	// CharCode : ∙u HEX HEX HEX HEX
@@ -1254,34 +1224,34 @@ var first = []map[token.Type]string{
 	{
 		token.T_19: "optNeg",
 		token.T_5:  "bSlash",
-		token.T_7:  "carrot",
+		token.T_7:  "carrotSlash",
 		token.T_8:  "dQuote",
 	},
 	// CharCode : u HEX ∙HEX HEX HEX
 	{
 		token.T_19: "optNeg",
 		token.T_5:  "bSlash",
-		token.T_7:  "carrot",
+		token.T_7:  "carrotSlash",
 		token.T_8:  "dQuote",
 	},
 	// CharCode : u HEX HEX ∙HEX HEX
 	{
 		token.T_19: "optNeg",
 		token.T_5:  "bSlash",
-		token.T_7:  "carrot",
+		token.T_7:  "carrotSlash",
 		token.T_8:  "dQuote",
 	},
 	// CharCode : u HEX HEX HEX ∙HEX
 	{
 		token.T_19: "optNeg",
 		token.T_5:  "bSlash",
-		token.T_7:  "carrot",
+		token.T_7:  "carrotSlash",
 		token.T_8:  "dQuote",
 	},
 	// CharCode : u HEX HEX HEX HEX ∙
 	{
 		token.T_5: "bSlash",
-		token.T_7: "carrot",
+		token.T_7: "carrotSlash",
 		token.T_8: "dQuote",
 	},
 	// Close : ∙dQuote
@@ -1302,12 +1272,12 @@ var first = []map[token.Type]string{
 	// Close : ∙CHAR Close
 	{
 		token.T_5: "bSlash",
-		token.T_7: "carrot",
+		token.T_7: "carrotSlash",
 	},
 	// Close : CHAR ∙Close
 	{
 		token.T_5: "bSlash",
-		token.T_7: "carrot",
+		token.T_7: "carrotSlash",
 		token.T_8: "dQuote",
 	},
 	// Close : CHAR Close ∙
@@ -1321,31 +1291,21 @@ var first = []map[token.Type]string{
 		token.T_16: "line_comment",
 		token.T_24: "}",
 	},
-	// ComPair : ∙COMMA Pair
+	// ComPair0x : ∙COMMA Pair ComPair0x
 	{
 		token.T_0: ",",
 	},
-	// ComPair : COMMA ∙Pair
+	// ComPair0x : COMMA ∙Pair ComPair0x
 	{
 		token.T_8: "dQuote",
 	},
-	// ComPair : COMMA Pair ∙
+	// ComPair0x : COMMA Pair ∙ComPair0x
 	{
 		token.T_0:  ",",
 		token.T_8:  "dQuote",
 		token.T_24: "}",
 	},
-	// ComPair0x : ∙ComPair ComPair0x
-	{
-		token.T_0: ",",
-	},
-	// ComPair0x : ComPair ∙ComPair0x
-	{
-		token.T_0:  ",",
-		token.T_8:  "dQuote",
-		token.T_24: "}",
-	},
-	// ComPair0x : ComPair ComPair0x ∙
+	// ComPair0x : COMMA Pair ComPair0x ∙
 	{
 		token.T_8:  "dQuote",
 		token.T_24: "}",
@@ -1355,11 +1315,11 @@ var first = []map[token.Type]string{
 		token.T_8:  "dQuote",
 		token.T_24: "}",
 	},
-	// ComVal : ∙COMMA Value
+	// ComVal0x : ∙COMMA Value ComVal0x
 	{
 		token.T_0: ",",
 	},
-	// ComVal : COMMA ∙Value
+	// ComVal0x : COMMA ∙Value ComVal0x
 	{
 		token.T_2:  "[",
 		token.T_8:  "dQuote",
@@ -1369,21 +1329,12 @@ var first = []map[token.Type]string{
 		token.T_20: "true",
 		token.T_23: "{",
 	},
-	// ComVal : COMMA Value ∙
+	// ComVal0x : COMMA Value ∙ComVal0x
 	{
 		token.T_0: ",",
 		token.T_3: "]",
 	},
-	// ComVal0x : ∙ComVal ComVal0x
-	{
-		token.T_0: ",",
-	},
-	// ComVal0x : ComVal ∙ComVal0x
-	{
-		token.T_0: ",",
-		token.T_3: "]",
-	},
-	// ComVal0x : ComVal ComVal0x ∙
+	// ComVal0x : COMMA Value ComVal0x ∙
 	{
 		token.T_3: "]",
 	},
@@ -1478,18 +1429,25 @@ var first = []map[token.Type]string{
 		token.T_8:  "dQuote",
 		token.T_24: "}",
 	},
-	// HEX : ∙NumberHEX
+	// HEX : ∙Number aA_fF
 	{
 		token.T_19: "optNeg",
+	},
+	// HEX : Number ∙aA_fF
+	{
+		token.T_4: "aA_fF",
+	},
+	// HEX : Number aA_fF ∙
+	{
 		token.T_5:  "bSlash",
-		token.T_7:  "carrot",
+		token.T_7:  "carrotSlash",
 		token.T_8:  "dQuote",
 		token.T_19: "optNeg",
 	},
-	// HEX : NumberHEX ∙
+	// HEX : ∙
 	{
 		token.T_5:  "bSlash",
-		token.T_7:  "carrot",
+		token.T_7:  "carrotSlash",
 		token.T_8:  "dQuote",
 		token.T_19: "optNeg",
 	},
@@ -1669,20 +1627,20 @@ var first = []map[token.Type]string{
 		token.T_8:  "dQuote",
 		token.T_24: "}",
 	},
-	// Mems1x : ∙Members Mems1x
+	// Mems0x : ∙Members Mems0x
 	{
 		token.T_8: "dQuote",
 	},
-	// Mems1x : Members ∙Mems1x
+	// Mems0x : Members ∙Mems0x
 	{
 		token.T_8:  "dQuote",
 		token.T_24: "}",
 	},
-	// Mems1x : Members Mems1x ∙
+	// Mems0x : Members Mems0x ∙
 	{
 		token.T_24: "}",
 	},
-	// Mems1x : ∙
+	// Mems0x : ∙
 	{
 		token.T_24: "}",
 	},
@@ -1755,46 +1713,24 @@ var first = []map[token.Type]string{
 		token.T_8:  "dQuote",
 		token.T_24: "}",
 	},
-	// NumberHEX : ∙Number aA_fF
-	{
-		token.T_19: "optNeg",
-	},
-	// NumberHEX : Number ∙aA_fF
-	{
-		token.T_4: "aA_fF",
-	},
-	// NumberHEX : Number aA_fF ∙
-	{
-		token.T_5:  "bSlash",
-		token.T_7:  "carrot",
-		token.T_8:  "dQuote",
-		token.T_19: "optNeg",
-	},
-	// NumberHEX : ∙
-	{
-		token.T_5:  "bSlash",
-		token.T_7:  "carrot",
-		token.T_8:  "dQuote",
-		token.T_19: "optNeg",
-	},
-	// Object : ∙LBRACE Members Mems1x RBRACE
+	// Object : ∙LBRACE Members Mems0x RBRACE
 	{
 		token.T_23: "{",
 	},
-	// Object : LBRACE ∙Members Mems1x RBRACE
+	// Object : LBRACE ∙Members Mems0x RBRACE
 	{
 		token.T_8: "dQuote",
 	},
-	// Object : LBRACE Members ∙Mems1x RBRACE
+	// Object : LBRACE Members ∙Mems0x RBRACE
 	{
 		token.T_8:  "dQuote",
 		token.T_24: "}",
 	},
-	// Object : LBRACE Members Mems1x ∙RBRACE
+	// Object : LBRACE Members Mems0x ∙RBRACE
 	{
 		token.T_24: "}",
 	},
-	// Object : LBRACE Members Mems1x RBRACE ∙
+	// Object : LBRACE Members Mems0x RBRACE ∙
 	{
 		token.EOF:  "$",
 		token.T_0:  ",",
@@ -1949,7 +1885,7 @@ var first = []map[token.Type]string{
 	// String : dQuote ∙Close WS
 	{
 		token.T_5: "bSlash",
-		token.T_7: "carrot",
+		token.T_7: "carrotSlash",
 		token.T_8: "dQuote",
 	},
 	// String : dQuote Close ∙WS
@@ -2139,7 +2075,7 @@ var followSets = []map[token.Type]string{
 	// CHAR
 	{
 		token.T_5: "bSlash",
-		token.T_7: "carrot",
+		token.T_7: "carrotSlash",
 		token.T_8: "dQuote",
 	},
 	// COLON
@@ -2165,7 +2101,7 @@ var followSets = []map[token.Type]string{
 	// CharCode
 	{
 		token.T_5: "bSlash",
-		token.T_7: "carrot",
+		token.T_7: "carrotSlash",
 		token.T_8: "dQuote",
 	},
 	// Close
@@ -2179,21 +2115,10 @@ var followSets = []map[token.Type]string{
 		token.T_16: "line_comment",
 		token.T_24: "}",
 	},
-	// ComPair
-	{
-		token.T_0:  ",",
-		token.T_8:  "dQuote",
-		token.T_24: "}",
-	},
 	// ComPair0x
 	{
 		token.T_8:  "dQuote",
 		token.T_24: "}",
-	},
-	// ComVal
-	{
-		token.T_0: ",",
-		token.T_3: "]",
 	},
 	// ComVal0x
 	{
@@ -2232,7 +2157,7 @@ var followSets = []map[token.Type]string{
 	// HEX
 	{
 		token.T_5:  "bSlash",
-		token.T_7:  "carrot",
+		token.T_7:  "carrotSlash",
 		token.T_8:  "dQuote",
 		token.T_19: "optNeg",
 	},
@@ -2305,7 +2230,7 @@ var followSets = []map[token.Type]string{
 		token.T_8:  "dQuote",
 		token.T_24: "}",
 	},
-	// Mems1x
+	// Mems0x
 	{
 		token.T_24: "}",
 	},
@@ -2323,13 +2248,6 @@ var followSets = []map[token.Type]string{
 		token.T_4:  "aA_fF",
 		token.T_8:  "dQuote",
 		token.T_24: "}",
-	},
-	// NumberHEX
-	{
-		token.T_5:  "bSlash",
-		token.T_7:  "carrot",
-		token.T_8:  "dQuote",
-		token.T_19: "optNeg",
 	},
 	// Object
 	{

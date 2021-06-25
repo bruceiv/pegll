@@ -81,33 +81,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			} else {
 				p.parseError(slot.Expr0R0, p.cI, followSets[symbols.NT_Expr])
 			}
-		case slot.ExprRep0R0: // ExprRep : ∙Expr ExprRep
-
-			p.call(slot.ExprRep0R1, cU, p.cI)
-		case slot.ExprRep0R1: // ExprRep : Expr ∙ExprRep
-
-			if !p.testSelect(slot.ExprRep0R1) {
-				p.parseError(slot.ExprRep0R1, p.cI, first[slot.ExprRep0R1])
-				break
-			}
-
-			p.call(slot.ExprRep0R2, cU, p.cI)
-		case slot.ExprRep0R2: // ExprRep : Expr ExprRep ∙
-
-			if p.follow(symbols.NT_ExprRep) {
-				p.rtn(symbols.NT_ExprRep, cU, p.cI)
-			} else {
-				p.parseError(slot.ExprRep0R0, p.cI, followSets[symbols.NT_ExprRep])
-			}
-		case slot.ExprRep1R0: // ExprRep : ∙
-			p.bsrSet.AddEmpty(slot.ExprRep1R0, p.cI)
-
-			if p.follow(symbols.NT_ExprRep) {
-				p.rtn(symbols.NT_ExprRep, cU, p.cI)
-			} else {
-				p.parseError(slot.ExprRep1R0, p.cI, followSets[symbols.NT_ExprRep])
-			}
-		case slot.Grammar0R0: // Grammar : ∙  RuleRep
+		case slot.Grammar0R0: // Grammar : ∙  Rule RepRule0x
 
 			p.bsrSet.Add(slot.Grammar0R1, cU, p.cI, p.cI+1)
 			p.cI++
@@ -117,14 +91,74 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			}
 
 			p.call(slot.Grammar0R2, cU, p.cI)
-		case slot.Grammar0R2: // Grammar :   RuleRep ∙
+		case slot.Grammar0R2: // Grammar :   Rule ∙RepRule0x
+
+			if !p.testSelect(slot.Grammar0R2) {
+				p.parseError(slot.Grammar0R2, p.cI, first[slot.Grammar0R2])
+				break
+			}
+
+			p.call(slot.Grammar0R3, cU, p.cI)
+		case slot.Grammar0R3: // Grammar :   Rule RepRule0x ∙
 
 			if p.follow(symbols.NT_Grammar) {
 				p.rtn(symbols.NT_Grammar, cU, p.cI)
 			} else {
 				p.parseError(slot.Grammar0R0, p.cI, followSets[symbols.NT_Grammar])
 			}
-		case slot.Rule0R0: // Rule : ∙id eq   ExprRep
+		case slot.RepExpr0x0R0: // RepExpr0x : ∙Expr RepExpr0x
+
+			p.call(slot.RepExpr0x0R1, cU, p.cI)
+		case slot.RepExpr0x0R1: // RepExpr0x : Expr ∙RepExpr0x
+
+			if !p.testSelect(slot.RepExpr0x0R1) {
+				p.parseError(slot.RepExpr0x0R1, p.cI, first[slot.RepExpr0x0R1])
+				break
+			}
+
+			p.call(slot.RepExpr0x0R2, cU, p.cI)
+		case slot.RepExpr0x0R2: // RepExpr0x : Expr RepExpr0x ∙
+
+			if p.follow(symbols.NT_RepExpr0x) {
+				p.rtn(symbols.NT_RepExpr0x, cU, p.cI)
+			} else {
+				p.parseError(slot.RepExpr0x0R0, p.cI, followSets[symbols.NT_RepExpr0x])
+			}
+		case slot.RepExpr0x1R0: // RepExpr0x : ∙
+			p.bsrSet.AddEmpty(slot.RepExpr0x1R0, p.cI)
+
+			if p.follow(symbols.NT_RepExpr0x) {
+				p.rtn(symbols.NT_RepExpr0x, cU, p.cI)
+			} else {
+				p.parseError(slot.RepExpr0x1R0, p.cI, followSets[symbols.NT_RepExpr0x])
+			}
+		case slot.RepRule0x0R0: // RepRule0x : ∙Rule RepRule0x
+
+			p.call(slot.RepRule0x0R1, cU, p.cI)
+		case slot.RepRule0x0R1: // RepRule0x : Rule ∙RepRule0x
+
+			if !p.testSelect(slot.RepRule0x0R1) {
+				p.parseError(slot.RepRule0x0R1, p.cI, first[slot.RepRule0x0R1])
+				break
+			}
+
+			p.call(slot.RepRule0x0R2, cU, p.cI)
+		case slot.RepRule0x0R2: // RepRule0x : Rule RepRule0x ∙
+
+			if p.follow(symbols.NT_RepRule0x) {
+				p.rtn(symbols.NT_RepRule0x, cU, p.cI)
+			} else {
+				p.parseError(slot.RepRule0x0R0, p.cI, followSets[symbols.NT_RepRule0x])
+			}
+		case slot.RepRule0x1R0: // RepRule0x : ∙
+			p.bsrSet.AddEmpty(slot.RepRule0x1R0, p.cI)
+
+			if p.follow(symbols.NT_RepRule0x) {
+				p.rtn(symbols.NT_RepRule0x, cU, p.cI)
+			} else {
+				p.parseError(slot.RepRule0x1R0, p.cI, followSets[symbols.NT_RepRule0x])
+			}
+		case slot.Rule0R0: // Rule : ∙id eq   Expr RepExpr0x
 
 			p.bsrSet.Add(slot.Rule0R1, cU, p.cI, p.cI+1)
 			p.cI++
@@ -148,38 +182,20 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			}
 
 			p.call(slot.Rule0R4, cU, p.cI)
-		case slot.Rule0R4: // Rule : id eq   ExprRep ∙
+		case slot.Rule0R4: // Rule : id eq   Expr ∙RepExpr0x
+
+			if !p.testSelect(slot.Rule0R4) {
+				p.parseError(slot.Rule0R4, p.cI, first[slot.Rule0R4])
+				break
+			}
+
+			p.call(slot.Rule0R5, cU, p.cI)
+		case slot.Rule0R5: // Rule : id eq   Expr RepExpr0x ∙
 
 			if p.follow(symbols.NT_Rule) {
 				p.rtn(symbols.NT_Rule, cU, p.cI)
 			} else {
 				p.parseError(slot.Rule0R0, p.cI, followSets[symbols.NT_Rule])
-			}
-		case slot.RuleRep0R0: // RuleRep : ∙Rule RuleRep
-
-			p.call(slot.RuleRep0R1, cU, p.cI)
-		case slot.RuleRep0R1: // RuleRep : Rule ∙RuleRep
-
-			if !p.testSelect(slot.RuleRep0R1) {
-				p.parseError(slot.RuleRep0R1, p.cI, first[slot.RuleRep0R1])
-				break
-			}
-
-			p.call(slot.RuleRep0R2, cU, p.cI)
-		case slot.RuleRep0R2: // RuleRep : Rule RuleRep ∙
-
-			if p.follow(symbols.NT_RuleRep) {
-				p.rtn(symbols.NT_RuleRep, cU, p.cI)
-			} else {
-				p.parseError(slot.RuleRep0R0, p.cI, followSets[symbols.NT_RuleRep])
-			}
-		case slot.RuleRep1R0: // RuleRep : ∙
-			p.bsrSet.AddEmpty(slot.RuleRep1R0, p.cI)
-
-			if p.follow(symbols.NT_RuleRep) {
-				p.rtn(symbols.NT_RuleRep, cU, p.cI)
-			} else {
-				p.parseError(slot.RuleRep1R0, p.cI, followSets[symbols.NT_RuleRep])
 			}
 
 		default:
@@ -436,78 +452,86 @@ var first = []map[token.Type]string{
 		token.EOF: "$",
 		token.T_2: "id",
 	},
-	// ExprRep : ∙Expr ExprRep
-	{
-		token.T_2: "id",
-	},
-	// ExprRep : Expr ∙ExprRep
-	{
-		token.T_2: "id",
-		token.EOF: "$",
-		token.T_2: "id",
-	},
-	// ExprRep : Expr ExprRep ∙
-	{
-		token.EOF: "$",
-		token.T_2: "id",
-	},
-	// ExprRep : ∙
-	{
-		token.EOF: "$",
-		token.T_2: "id",
-	},
-	// Grammar : ∙  RuleRep
+	// Grammar : ∙  Rule RepRule0x
 	{
 		token.T_0: " ",
 	},
-	// Grammar :   ∙RuleRep
+	// Grammar :   ∙Rule RepRule0x
+	{
+		token.T_2: "id",
+	},
+	// Grammar :   Rule ∙RepRule0x
 	{
 		token.T_2: "id",
 		token.EOF: "$",
 	},
-	// Grammar :   RuleRep ∙
+	// Grammar :   Rule RepRule0x ∙
 	{
 		token.EOF: "$",
 	},
-	// Rule : ∙id eq   ExprRep
+	// RepExpr0x : ∙Expr RepExpr0x
 	{
 		token.T_2: "id",
 	},
-	// Rule : id ∙eq   ExprRep
+	// RepExpr0x : Expr ∙RepExpr0x
+	{
+		token.T_2: "id",
+		token.EOF: "$",
+		token.T_2: "id",
+	},
+	// RepExpr0x : Expr RepExpr0x ∙
+	{
+		token.EOF: "$",
+		token.T_2: "id",
+	},
+	// RepExpr0x : ∙
+	{
+		token.EOF: "$",
+		token.T_2: "id",
+	},
+	// RepRule0x : ∙Rule RepRule0x
+	{
+		token.T_2: "id",
+	},
+	// RepRule0x : Rule ∙RepRule0x
+	{
+		token.T_2: "id",
+		token.EOF: "$",
+	},
+	// RepRule0x : Rule RepRule0x ∙
+	{
+		token.EOF: "$",
+	},
+	// RepRule0x : ∙
+	{
+		token.EOF: "$",
+	},
+	// Rule : ∙id eq   Expr RepExpr0x
+	{
+		token.T_2: "id",
+	},
+	// Rule : id ∙eq   Expr RepExpr0x
 	{
 		token.T_1: "eq",
 	},
-	// Rule : id eq ∙  ExprRep
+	// Rule : id eq ∙  Expr RepExpr0x
 	{
 		token.T_0: " ",
 	},
-	// Rule : id eq   ∙ExprRep
+	// Rule : id eq   ∙Expr RepExpr0x
+	{
+		token.T_2: "id",
+	},
+	// Rule : id eq   Expr ∙RepExpr0x
 	{
 		token.T_2: "id",
 		token.EOF: "$",
 		token.T_2: "id",
 	},
-	// Rule : id eq   ExprRep ∙
+	// Rule : id eq   Expr RepExpr0x ∙
 	{
 		token.EOF: "$",
 		token.T_2: "id",
-	},
-	// RuleRep : ∙Rule RuleRep
-	{
-		token.T_2: "id",
-	},
-	// RuleRep : Rule ∙RuleRep
-	{
-		token.T_2: "id",
-		token.EOF: "$",
-	},
-	// RuleRep : Rule RuleRep ∙
-	{
-		token.EOF: "$",
-	},
-	// RuleRep : ∙
-	{
-		token.EOF: "$",
 	},
 }
 
@@ -517,12 +541,16 @@ var followSets = []map[token.Type]string{
 		token.EOF: "$",
 		token.T_2: "id",
 	},
-	// ExprRep
+	// Grammar
+	{
+		token.EOF: "$",
+	},
+	// RepExpr0x
 	{
 		token.EOF: "$",
 		token.T_2: "id",
 	},
-	// Grammar
+	// RepRule0x
 	{
 		token.EOF: "$",
 	},
@@ -530,10 +558,6 @@ var followSets = []map[token.Type]string{
 	{
 		token.EOF: "$",
 		token.T_2: "id",
-	},
-	// RuleRep
-	{
-		token.EOF: "$",
 	},
 }
 

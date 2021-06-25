@@ -38,10 +38,10 @@ func newParser(l *lexer.Lexer) *parser {
 		U:      &descriptors{},
 		popped: make(map[poppedNode]bool),
 		crf: map[clusterNode][]*crfNode{
-			{symbols.NT_S1, 0}: {},
+			{symbols.NT_EXP, 0}: {},
 		},
 		crfNodes:    map[crfNode]*crfNode{},
-		bsrSet:      bsr.New(symbols.NT_S1, l),
+		bsrSet:      bsr.New(symbols.NT_EXP, l),
 		parseErrors: nil,
 	}
 }
@@ -55,7 +55,7 @@ func Parse(l *lexer.Lexer) (*bsr.Set, []*Error) {
 func (p *parser) parse() (*bsr.Set, []*Error) {
 	var L slot.Label
 	m, cU := len(p.lex.Tokens)-1, 0
-	p.ntAdd(symbols.NT_S1, 0)
+	p.ntAdd(symbols.NT_EXP, 0)
 	// p.DumpDescriptors()
 	for !p.R.empty() {
 		L, cU, p.cI = p.R.remove()
@@ -65,68 +65,68 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 		// p.DumpDescriptors()
 
 		switch L {
-		case slot.S10R0: // S1 : ∙aa S1 bb
+		case slot.EXP0R0: // EXP : ∙a EXP b
 
-			p.bsrSet.Add(slot.S10R1, cU, p.cI, p.cI+1)
+			p.bsrSet.Add(slot.EXP0R1, cU, p.cI, p.cI+1)
 			p.cI++
-			if !p.testSelect(slot.S10R1) {
-				p.parseError(slot.S10R1, p.cI, first[slot.S10R1])
+			if !p.testSelect(slot.EXP0R1) {
+				p.parseError(slot.EXP0R1, p.cI, first[slot.EXP0R1])
 				break
 			}
 
-			p.call(slot.S10R2, cU, p.cI)
-		case slot.S10R2: // S1 : aa S1 ∙bb
+			p.call(slot.EXP0R2, cU, p.cI)
+		case slot.EXP0R2: // EXP : a EXP ∙b
 
-			if !p.testSelect(slot.S10R2) {
-				p.parseError(slot.S10R2, p.cI, first[slot.S10R2])
+			if !p.testSelect(slot.EXP0R2) {
+				p.parseError(slot.EXP0R2, p.cI, first[slot.EXP0R2])
 				break
 			}
 
-			p.bsrSet.Add(slot.S10R3, cU, p.cI, p.cI+1)
+			p.bsrSet.Add(slot.EXP0R3, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_S1) {
-				p.rtn(symbols.NT_S1, cU, p.cI)
+			if p.follow(symbols.NT_EXP) {
+				p.rtn(symbols.NT_EXP, cU, p.cI)
 			} else {
-				p.parseError(slot.S10R0, p.cI, followSets[symbols.NT_S1])
+				p.parseError(slot.EXP0R0, p.cI, followSets[symbols.NT_EXP])
 			}
-		case slot.S11R0: // S1 : ∙aa S1 cc
+		case slot.EXP1R0: // EXP : ∙a EXP c
 
-			p.bsrSet.Add(slot.S11R1, cU, p.cI, p.cI+1)
+			p.bsrSet.Add(slot.EXP1R1, cU, p.cI, p.cI+1)
 			p.cI++
-			if !p.testSelect(slot.S11R1) {
-				p.parseError(slot.S11R1, p.cI, first[slot.S11R1])
+			if !p.testSelect(slot.EXP1R1) {
+				p.parseError(slot.EXP1R1, p.cI, first[slot.EXP1R1])
 				break
 			}
 
-			p.call(slot.S11R2, cU, p.cI)
-		case slot.S11R2: // S1 : aa S1 ∙cc
+			p.call(slot.EXP1R2, cU, p.cI)
+		case slot.EXP1R2: // EXP : a EXP ∙c
 
-			if !p.testSelect(slot.S11R2) {
-				p.parseError(slot.S11R2, p.cI, first[slot.S11R2])
+			if !p.testSelect(slot.EXP1R2) {
+				p.parseError(slot.EXP1R2, p.cI, first[slot.EXP1R2])
 				break
 			}
 
-			p.bsrSet.Add(slot.S11R3, cU, p.cI, p.cI+1)
+			p.bsrSet.Add(slot.EXP1R3, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_S1) {
-				p.rtn(symbols.NT_S1, cU, p.cI)
+			if p.follow(symbols.NT_EXP) {
+				p.rtn(symbols.NT_EXP, cU, p.cI)
 			} else {
-				p.parseError(slot.S11R0, p.cI, followSets[symbols.NT_S1])
+				p.parseError(slot.EXP1R0, p.cI, followSets[symbols.NT_EXP])
 			}
-		case slot.S12R0: // S1 : ∙
-			p.bsrSet.AddEmpty(slot.S12R0, p.cI)
+		case slot.EXP2R0: // EXP : ∙
+			p.bsrSet.AddEmpty(slot.EXP2R0, p.cI)
 
-			if p.follow(symbols.NT_S1) {
-				p.rtn(symbols.NT_S1, cU, p.cI)
+			if p.follow(symbols.NT_EXP) {
+				p.rtn(symbols.NT_EXP, cU, p.cI)
 			} else {
-				p.parseError(slot.S12R0, p.cI, followSets[symbols.NT_S1])
+				p.parseError(slot.EXP2R0, p.cI, followSets[symbols.NT_EXP])
 			}
 
 		default:
 			panic("This must not happen")
 		}
 	}
-	if !p.bsrSet.Contain(symbols.NT_S1, 0, m) {
+	if !p.bsrSet.Contain(symbols.NT_EXP, 0, m) {
 		p.sortParseErrors()
 		return nil, p.parseErrors
 	}
@@ -363,58 +363,58 @@ func (p *parser) testSelect(l slot.Label) bool {
 }
 
 var first = []map[token.Type]string{
-	// S1 : ∙aa S1 bb
+	// EXP : ∙a EXP b
 	{
-		token.T_0: "aa",
+		token.T_0: "a",
 	},
-	// S1 : aa ∙S1 bb
+	// EXP : a ∙EXP b
 	{
-		token.T_0: "aa",
-		token.T_1: "bb",
+		token.T_0: "a",
+		token.T_1: "b",
 	},
-	// S1 : aa S1 ∙bb
+	// EXP : a EXP ∙b
 	{
-		token.T_1: "bb",
+		token.T_1: "b",
 	},
-	// S1 : aa S1 bb ∙
+	// EXP : a EXP b ∙
 	{
 		token.EOF: "$",
-		token.T_1: "bb",
-		token.T_2: "cc",
+		token.T_1: "b",
+		token.T_2: "c",
 	},
-	// S1 : ∙aa S1 cc
+	// EXP : ∙a EXP c
 	{
-		token.T_0: "aa",
+		token.T_0: "a",
 	},
-	// S1 : aa ∙S1 cc
+	// EXP : a ∙EXP c
 	{
-		token.T_0: "aa",
-		token.T_2: "cc",
+		token.T_0: "a",
+		token.T_2: "c",
 	},
-	// S1 : aa S1 ∙cc
+	// EXP : a EXP ∙c
 	{
-		token.T_2: "cc",
+		token.T_2: "c",
 	},
-	// S1 : aa S1 cc ∙
-	{
-		token.EOF: "$",
-		token.T_1: "bb",
-		token.T_2: "cc",
-	},
-	// S1 : ∙
+	// EXP : a EXP c ∙
 	{
 		token.EOF: "$",
-		token.T_1: "bb",
-		token.T_2: "cc",
+		token.T_1: "b",
+		token.T_2: "c",
+	},
+	// EXP : ∙
+	{
+		token.EOF: "$",
+		token.T_1: "b",
+		token.T_2: "c",
 	},
 }
 
 var followSets = []map[token.Type]string{
-	// S1
+	// EXP
 	{
 		token.EOF: "$",
-		token.T_1: "bb",
-		token.T_2: "cc",
+		token.T_1: "b",
+		token.T_2: "c",
 	},
 }
 
