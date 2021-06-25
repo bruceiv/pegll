@@ -1,3 +1,4 @@
+// go test file 
 package main
 
 import (
@@ -10,12 +11,12 @@ import (
 // test the repeatability of the grammar
 
 // should match
-const a = `a`
-const aa = `aa`
-const aaa = `aaa`
+const a = 'a'
+const aa = "aa"
+const aaa = "aaa"
 
 // should fail to match
-const ab = `ab`
+const ab = "ab"
 
 // use the GetRoot(s) function from bsr.go
 func parse(s []rune) bool {
@@ -27,14 +28,14 @@ func parse(s []rune) bool {
 	}
 	// check that root covers whole input
 	root := bsrSet.GetRoots()
-	return root.LeftExtent == bsrSet.GetLeftExtent()
+	return root.RightExtent == bsrSet.GerRightExtent()
 }
 
 func parseAndPrint(s string) {
 	if parse([]rune(s)) {
-		fmt.Println("`" + s + "` matched")
+		fmt.Println("'" + s + "' matched")
 	} else {
-		fmt.Println("`" + s + "` DID NOT match")
+		fmt.Println("'" + s + "' DID NOT match")
 	}
 }
 
