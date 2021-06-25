@@ -1,19 +1,20 @@
 package exp
 
 import (
-	"fmt"
-
 	"exp/lexer"
 	"exp/parser"
+	"testing"
 )
 
-//Should match
-const ab = "ab"
-const aabc = "aabc"
+const (
+	//Should match
+	ab = "ab"
+	//aabc = "aabc"
+	//Should fail to match
+ 	//acc = "acc"
+)
 
-//Should fail to match
-const acc = "acc"
-
+/*
 func parse(s []rune) bool {
 	// run GLL parser
 	bsrSet, _ := parser.Parse(lexer.New(s))
@@ -22,7 +23,7 @@ func parse(s []rune) bool {
 		return false
 	}
 	// check that root covers whole input
-	root := bsrSet.GetRoots()
+	root := bsrSet.GetRoot()
 	return root.RightExtent() == bsrSet.GetRightExtent()
 }
 
@@ -39,8 +40,8 @@ func main() {
 	parseAndPrint(aabc)
 	parseAndPrint(acc)
 }
+ */
 
-/*
 // testing ab
 // untested
 func Test1(t *testing.T) {
@@ -49,8 +50,10 @@ func Test1(t *testing.T) {
 		t.Fail()
 	}
 
-	// get the root
+	// get the root 
+	// Repa0x : repa0x ;
 	root := bs.GetRoot()
+
 	// get the child to test
 	a := root.GetTChildI(0)
 	if ab != a.LiteralString() {
@@ -58,8 +61,8 @@ func Test1(t *testing.T) {
 	}
 }
 
-/*
-// testing aabc
+
+/* // testing aabc
 // untested
 func Test2(t *testing.T) {
 	bs, errs := parser.Parse(lexer.New([]rune(aabc)))
@@ -92,4 +95,4 @@ func Test3(t *testing.T) {
 		t.Fail()
 	}
 }
-*/
+ */

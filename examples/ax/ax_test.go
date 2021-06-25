@@ -73,7 +73,7 @@ func Test2(t *testing.T) {
 
 // test ab
 // FAILS - PROGRAM NEVER ENDS
-/* func Test_ab(t *testing.T) {
+func Test_ab(t *testing.T) {
 	bs, errs := parser.Parse(lexer.New([]rune(ab)))
 	if len(errs) != 0 {
 		t.Fail()
@@ -88,4 +88,4 @@ func Test2(t *testing.T) {
 	if ab != a.LiteralString() {
 		t.Fail()
 	}
-} */
+} 
