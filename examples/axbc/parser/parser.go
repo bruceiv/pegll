@@ -65,7 +65,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 		// p.DumpDescriptors()
 
 		switch L {
-		case slot.AorB0R0: // AorB : ∙as
+		case slot.AorB0R0: // AorB : ∙repa0x
 
 			p.bsrSet.Add(slot.AorB0R1, cU, p.cI, p.cI+1)
 			p.cI++
@@ -342,13 +342,13 @@ func (p *parser) testSelect(l slot.Label) bool {
 }
 
 var first = []map[token.Type]string{
-	// AorB : ∙as
+	// AorB : ∙repa0x
 	{
-		token.T_1: "as",
+		token.T_2: "repa0x",
 	},
-	// AorB : as ∙
+	// AorB : repa0x ∙
 	{
-		token.T_2: "c",
+		token.T_1: "c",
 	},
 	// AorB : ∙ab
 	{
@@ -356,16 +356,16 @@ var first = []map[token.Type]string{
 	},
 	// AorB : ab ∙
 	{
-		token.T_2: "c",
+		token.T_1: "c",
 	},
 	// AxBC : ∙AorB c
 	{
 		token.T_0: "ab",
-		token.T_1: "as",
+		token.T_2: "repa0x",
 	},
 	// AxBC : AorB ∙c
 	{
-		token.T_2: "c",
+		token.T_1: "c",
 	},
 	// AxBC : AorB c ∙
 	{
@@ -376,7 +376,7 @@ var first = []map[token.Type]string{
 var followSets = []map[token.Type]string{
 	// AorB
 	{
-		token.T_2: "c",
+		token.T_1: "c",
 	},
 	// AxBC
 	{

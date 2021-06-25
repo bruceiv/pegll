@@ -190,10 +190,10 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			} else {
 				p.parseError(slot.Character1R0, p.cI, followSets[symbols.NT_Character])
 			}
-		case slot.Choice0R0: // Choice : ∙Sequence PipedSeq0x
+		case slot.Choice0R0: // Choice : ∙Sequence RepPipedSeq0x
 
 			p.call(slot.Choice0R1, cU, p.cI)
-		case slot.Choice0R1: // Choice : Sequence ∙PipedSeq0x
+		case slot.Choice0R1: // Choice : Sequence ∙RepPipedSeq0x
 
 			if !p.testSelect(slot.Choice0R1) {
 				p.parseError(slot.Choice0R1, p.cI, first[slot.Choice0R1])
@@ -201,7 +201,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			}
 
 			p.call(slot.Choice0R2, cU, p.cI)
-		case slot.Choice0R2: // Choice : Sequence PipedSeq0x ∙
+		case slot.Choice0R2: // Choice : Sequence RepPipedSeq0x ∙
 
 			if p.follow(symbols.NT_Choice) {
 				p.rtn(symbols.NT_Choice, cU, p.cI)
@@ -241,34 +241,6 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 				p.rtn(symbols.NT_EQUAL, cU, p.cI)
 			} else {
 				p.parseError(slot.EQUAL0R0, p.cI, followSets[symbols.NT_EQUAL])
-			}
-		case slot.Expr1x0R0: // Expr1x : ∙Expression Expr1x
-
-			p.call(slot.Expr1x0R1, cU, p.cI)
-		case slot.Expr1x0R1: // Expr1x : Expression ∙Expr1x
-
-			if !p.testSelect(slot.Expr1x0R1) {
-				p.parseError(slot.Expr1x0R1, p.cI, first[slot.Expr1x0R1])
-				break
-			}
-
-			p.call(slot.Expr1x0R2, cU, p.cI)
-		case slot.Expr1x0R2: // Expr1x : Expression Expr1x ∙
-
-			if p.follow(symbols.NT_Expr1x) {
-				p.rtn(symbols.NT_Expr1x, cU, p.cI)
-			} else {
-				p.parseError(slot.Expr1x0R0, p.cI, followSets[symbols.NT_Expr1x])
-			}
-		case slot.Expr1x1R0: // Expr1x : ∙EMPTY
-
-			p.call(slot.Expr1x1R1, cU, p.cI)
-		case slot.Expr1x1R1: // Expr1x : EMPTY ∙
-
-			if p.follow(symbols.NT_Expr1x) {
-				p.rtn(symbols.NT_Expr1x, cU, p.cI)
-			} else {
-				p.parseError(slot.Expr1x1R0, p.cI, followSets[symbols.NT_Expr1x])
 			}
 		case slot.Expression0R0: // Expression : ∙AND Primary
 
@@ -324,10 +296,10 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			} else {
 				p.parseError(slot.Expression2R0, p.cI, followSets[symbols.NT_Expression])
 			}
-		case slot.Grammar0R0: // Grammar : ∙WS Rule Rules
+		case slot.Grammar0R0: // Grammar : ∙WS Rule RepRule0x
 
 			p.call(slot.Grammar0R1, cU, p.cI)
-		case slot.Grammar0R1: // Grammar : WS ∙Rule Rules
+		case slot.Grammar0R1: // Grammar : WS ∙Rule RepRule0x
 
 			if !p.testSelect(slot.Grammar0R1) {
 				p.parseError(slot.Grammar0R1, p.cI, first[slot.Grammar0R1])
@@ -335,7 +307,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			}
 
 			p.call(slot.Grammar0R2, cU, p.cI)
-		case slot.Grammar0R2: // Grammar : WS Rule ∙Rules
+		case slot.Grammar0R2: // Grammar : WS Rule ∙RepRule0x
 
 			if !p.testSelect(slot.Grammar0R2) {
 				p.parseError(slot.Grammar0R2, p.cI, first[slot.Grammar0R2])
@@ -343,7 +315,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			}
 
 			p.call(slot.Grammar0R3, cU, p.cI)
-		case slot.Grammar0R3: // Grammar : WS Rule Rules ∙
+		case slot.Grammar0R3: // Grammar : WS Rule RepRule0x ∙
 
 			if p.follow(symbols.NT_Grammar) {
 				p.rtn(symbols.NT_Grammar, cU, p.cI)
@@ -609,52 +581,6 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			} else {
 				p.parseError(slot.PLUS0R0, p.cI, followSets[symbols.NT_PLUS])
 			}
-		case slot.PipedSeq0R0: // PipedSeq : ∙PIPE Sequence
-
-			p.call(slot.PipedSeq0R1, cU, p.cI)
-		case slot.PipedSeq0R1: // PipedSeq : PIPE ∙Sequence
-
-			if !p.testSelect(slot.PipedSeq0R1) {
-				p.parseError(slot.PipedSeq0R1, p.cI, first[slot.PipedSeq0R1])
-				break
-			}
-
-			p.call(slot.PipedSeq0R2, cU, p.cI)
-		case slot.PipedSeq0R2: // PipedSeq : PIPE Sequence ∙
-
-			if p.follow(symbols.NT_PipedSeq) {
-				p.rtn(symbols.NT_PipedSeq, cU, p.cI)
-			} else {
-				p.parseError(slot.PipedSeq0R0, p.cI, followSets[symbols.NT_PipedSeq])
-			}
-		case slot.PipedSeq0x0R0: // PipedSeq0x : ∙PipedSeq PipedSeq0x
-
-			p.call(slot.PipedSeq0x0R1, cU, p.cI)
-		case slot.PipedSeq0x0R1: // PipedSeq0x : PipedSeq ∙PipedSeq0x
-
-			if !p.testSelect(slot.PipedSeq0x0R1) {
-				p.parseError(slot.PipedSeq0x0R1, p.cI, first[slot.PipedSeq0x0R1])
-				break
-			}
-
-			p.call(slot.PipedSeq0x0R2, cU, p.cI)
-		case slot.PipedSeq0x0R2: // PipedSeq0x : PipedSeq PipedSeq0x ∙
-
-			if p.follow(symbols.NT_PipedSeq0x) {
-				p.rtn(symbols.NT_PipedSeq0x, cU, p.cI)
-			} else {
-				p.parseError(slot.PipedSeq0x0R0, p.cI, followSets[symbols.NT_PipedSeq0x])
-			}
-		case slot.PipedSeq0x1R0: // PipedSeq0x : ∙EMPTY
-
-			p.call(slot.PipedSeq0x1R1, cU, p.cI)
-		case slot.PipedSeq0x1R1: // PipedSeq0x : EMPTY ∙
-
-			if p.follow(symbols.NT_PipedSeq0x) {
-				p.rtn(symbols.NT_PipedSeq0x, cU, p.cI)
-			} else {
-				p.parseError(slot.PipedSeq0x1R0, p.cI, followSets[symbols.NT_PipedSeq0x])
-			}
 		case slot.Primary0R0: // Primary : ∙Identifier NEQUAL
 
 			p.call(slot.Primary0R1, cU, p.cI)
@@ -749,6 +675,92 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			} else {
 				p.parseError(slot.Primary6R0, p.cI, followSets[symbols.NT_Primary])
 			}
+		case slot.RepExpr0x0R0: // RepExpr0x : ∙Expression RepExpr0x
+
+			p.call(slot.RepExpr0x0R1, cU, p.cI)
+		case slot.RepExpr0x0R1: // RepExpr0x : Expression ∙RepExpr0x
+
+			if !p.testSelect(slot.RepExpr0x0R1) {
+				p.parseError(slot.RepExpr0x0R1, p.cI, first[slot.RepExpr0x0R1])
+				break
+			}
+
+			p.call(slot.RepExpr0x0R2, cU, p.cI)
+		case slot.RepExpr0x0R2: // RepExpr0x : Expression RepExpr0x ∙
+
+			if p.follow(symbols.NT_RepExpr0x) {
+				p.rtn(symbols.NT_RepExpr0x, cU, p.cI)
+			} else {
+				p.parseError(slot.RepExpr0x0R0, p.cI, followSets[symbols.NT_RepExpr0x])
+			}
+		case slot.RepExpr0x1R0: // RepExpr0x : ∙
+			p.bsrSet.AddEmpty(slot.RepExpr0x1R0, p.cI)
+
+			if p.follow(symbols.NT_RepExpr0x) {
+				p.rtn(symbols.NT_RepExpr0x, cU, p.cI)
+			} else {
+				p.parseError(slot.RepExpr0x1R0, p.cI, followSets[symbols.NT_RepExpr0x])
+			}
+		case slot.RepPipedSeq0x0R0: // RepPipedSeq0x : ∙PIPE Sequence RepPipedSeq0x
+
+			p.call(slot.RepPipedSeq0x0R1, cU, p.cI)
+		case slot.RepPipedSeq0x0R1: // RepPipedSeq0x : PIPE ∙Sequence RepPipedSeq0x
+
+			if !p.testSelect(slot.RepPipedSeq0x0R1) {
+				p.parseError(slot.RepPipedSeq0x0R1, p.cI, first[slot.RepPipedSeq0x0R1])
+				break
+			}
+
+			p.call(slot.RepPipedSeq0x0R2, cU, p.cI)
+		case slot.RepPipedSeq0x0R2: // RepPipedSeq0x : PIPE Sequence ∙RepPipedSeq0x
+
+			if !p.testSelect(slot.RepPipedSeq0x0R2) {
+				p.parseError(slot.RepPipedSeq0x0R2, p.cI, first[slot.RepPipedSeq0x0R2])
+				break
+			}
+
+			p.call(slot.RepPipedSeq0x0R3, cU, p.cI)
+		case slot.RepPipedSeq0x0R3: // RepPipedSeq0x : PIPE Sequence RepPipedSeq0x ∙
+
+			if p.follow(symbols.NT_RepPipedSeq0x) {
+				p.rtn(symbols.NT_RepPipedSeq0x, cU, p.cI)
+			} else {
+				p.parseError(slot.RepPipedSeq0x0R0, p.cI, followSets[symbols.NT_RepPipedSeq0x])
+			}
+		case slot.RepPipedSeq0x1R0: // RepPipedSeq0x : ∙
+			p.bsrSet.AddEmpty(slot.RepPipedSeq0x1R0, p.cI)
+
+			if p.follow(symbols.NT_RepPipedSeq0x) {
+				p.rtn(symbols.NT_RepPipedSeq0x, cU, p.cI)
+			} else {
+				p.parseError(slot.RepPipedSeq0x1R0, p.cI, followSets[symbols.NT_RepPipedSeq0x])
+			}
+		case slot.RepRule0x0R0: // RepRule0x : ∙Rule RepRule0x
+
+			p.call(slot.RepRule0x0R1, cU, p.cI)
+		case slot.RepRule0x0R1: // RepRule0x : Rule ∙RepRule0x
+
+			if !p.testSelect(slot.RepRule0x0R1) {
+				p.parseError(slot.RepRule0x0R1, p.cI, first[slot.RepRule0x0R1])
+				break
+			}
+
+			p.call(slot.RepRule0x0R2, cU, p.cI)
+		case slot.RepRule0x0R2: // RepRule0x : Rule RepRule0x ∙
+
+			if p.follow(symbols.NT_RepRule0x) {
+				p.rtn(symbols.NT_RepRule0x, cU, p.cI)
+			} else {
+				p.parseError(slot.RepRule0x0R0, p.cI, followSets[symbols.NT_RepRule0x])
+			}
+		case slot.RepRule0x1R0: // RepRule0x : ∙
+			p.bsrSet.AddEmpty(slot.RepRule0x1R0, p.cI)
+
+			if p.follow(symbols.NT_RepRule0x) {
+				p.rtn(symbols.NT_RepRule0x, cU, p.cI)
+			} else {
+				p.parseError(slot.RepRule0x1R0, p.cI, followSets[symbols.NT_RepRule0x])
+			}
 		case slot.Rule0R0: // Rule : ∙Identifier EQUAL Choice
 
 			p.call(slot.Rule0R1, cU, p.cI)
@@ -775,34 +787,6 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			} else {
 				p.parseError(slot.Rule0R0, p.cI, followSets[symbols.NT_Rule])
 			}
-		case slot.Rules0R0: // Rules : ∙Rule Rules
-
-			p.call(slot.Rules0R1, cU, p.cI)
-		case slot.Rules0R1: // Rules : Rule ∙Rules
-
-			if !p.testSelect(slot.Rules0R1) {
-				p.parseError(slot.Rules0R1, p.cI, first[slot.Rules0R1])
-				break
-			}
-
-			p.call(slot.Rules0R2, cU, p.cI)
-		case slot.Rules0R2: // Rules : Rule Rules ∙
-
-			if p.follow(symbols.NT_Rules) {
-				p.rtn(symbols.NT_Rules, cU, p.cI)
-			} else {
-				p.parseError(slot.Rules0R0, p.cI, followSets[symbols.NT_Rules])
-			}
-		case slot.Rules1R0: // Rules : ∙EMPTY
-
-			p.call(slot.Rules1R1, cU, p.cI)
-		case slot.Rules1R1: // Rules : EMPTY ∙
-
-			if p.follow(symbols.NT_Rules) {
-				p.rtn(symbols.NT_Rules, cU, p.cI)
-			} else {
-				p.parseError(slot.Rules1R0, p.cI, followSets[symbols.NT_Rules])
-			}
 		case slot.STAR0R0: // STAR : ∙* WS
 
 			p.bsrSet.Add(slot.STAR0R1, cU, p.cI, p.cI+1)
@@ -820,10 +804,10 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			} else {
 				p.parseError(slot.STAR0R0, p.cI, followSets[symbols.NT_STAR])
 			}
-		case slot.Sequence0R0: // Sequence : ∙Expression Expr1x
+		case slot.Sequence0R0: // Sequence : ∙Expression RepExpr0x
 
 			p.call(slot.Sequence0R1, cU, p.cI)
-		case slot.Sequence0R1: // Sequence : Expression ∙Expr1x
+		case slot.Sequence0R1: // Sequence : Expression ∙RepExpr0x
 
 			if !p.testSelect(slot.Sequence0R1) {
 				p.parseError(slot.Sequence0R1, p.cI, first[slot.Sequence0R1])
@@ -831,7 +815,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			}
 
 			p.call(slot.Sequence0R2, cU, p.cI)
-		case slot.Sequence0R2: // Sequence : Expression Expr1x ∙
+		case slot.Sequence0R2: // Sequence : Expression RepExpr0x ∙
 
 			if p.follow(symbols.NT_Sequence) {
 				p.rtn(symbols.NT_Sequence, cU, p.cI)
@@ -1266,6 +1250,7 @@ var first = []map[token.Type]string{
 	// ANY : . WS ∙
 	{
 		token.T_0:  "!",
+		token.EOF:  "$",
 		token.T_1:  "&",
 		token.T_2:  "'",
 		token.T_3:  "(",
@@ -1280,6 +1265,7 @@ var first = []map[token.Type]string{
 		token.T_16: "let",
 		token.T_17: "lineComment",
 		token.T_22: "space",
+		token.T_23: "|",
 	},
 	// CLOSE : ∙( WS
 	{
@@ -1295,6 +1281,7 @@ var first = []map[token.Type]string{
 	// CLOSE : ( WS ∙
 	{
 		token.T_0:  "!",
+		token.EOF:  "$",
 		token.T_1:  "&",
 		token.T_2:  "'",
 		token.T_3:  "(",
@@ -1309,6 +1296,7 @@ var first = []map[token.Type]string{
 		token.T_16: "let",
 		token.T_17: "lineComment",
 		token.T_22: "space",
+		token.T_23: "|",
 	},
 	// CharClass : ∙[ UnclosedChars ] WS
 	{
@@ -1333,6 +1321,7 @@ var first = []map[token.Type]string{
 	// CharClass : [ UnclosedChars ] WS ∙
 	{
 		token.T_0:  "!",
+		token.EOF:  "$",
 		token.T_1:  "&",
 		token.T_2:  "'",
 		token.T_3:  "(",
@@ -1347,6 +1336,7 @@ var first = []map[token.Type]string{
 		token.T_16: "let",
 		token.T_17: "lineComment",
 		token.T_22: "space",
+		token.T_23: "|",
 	},
 	// CharLiteral : ∙' Character '
 	{
@@ -1364,6 +1354,7 @@ var first = []map[token.Type]string{
 	// CharLiteral : ' Character ' ∙
 	{
 		token.T_0:  "!",
+		token.EOF:  "$",
 		token.T_1:  "&",
 		token.T_2:  "'",
 		token.T_3:  "(",
@@ -1378,6 +1369,7 @@ var first = []map[token.Type]string{
 		token.T_16: "let",
 		token.T_17: "lineComment",
 		token.T_22: "space",
+		token.T_23: "|",
 	},
 	// Character : ∙notQuotesEsc
 	{
@@ -1405,7 +1397,7 @@ var first = []map[token.Type]string{
 		token.T_19: "notQuotesEsc",
 		token.T_20: "notSqBk",
 	},
-	// Choice : ∙Sequence PipedSeq0x
+	// Choice : ∙Sequence RepPipedSeq0x
 	{
 		token.T_0:  "!",
 		token.T_1:  "&",
@@ -1420,13 +1412,20 @@ var first = []map[token.Type]string{
 		token.T_17: "lineComment",
 		token.T_22: "space",
 	},
-	// Choice : Sequence ∙PipedSeq0x
+	// Choice : Sequence ∙RepPipedSeq0x
 	{
-		token.T_7:  ";",
 		token.T_23: "|",
+		token.EOF:  "$",
+		token.T_3:  "(",
+		token.T_7:  ";",
+		token.T_12: "blockComment",
+		token.T_16: "let",
+		token.T_17: "lineComment",
+		token.T_22: "space",
 	},
-	// Choice : Sequence PipedSeq0x ∙
+	// Choice : Sequence RepPipedSeq0x ∙
 	{
+		token.EOF:  "$",
 		token.T_3:  "(",
 		token.T_7:  ";",
 		token.T_12: "blockComment",
@@ -1494,50 +1493,6 @@ var first = []map[token.Type]string{
 		token.T_17: "lineComment",
 		token.T_22: "space",
 	},
-	// Expr1x : ∙Expression Expr1x
-	{
-		token.T_0:  "!",
-		token.T_1:  "&",
-		token.T_2:  "'",
-		token.T_3:  "(",
-		token.T_6:  ".",
-		token.T_7:  ";",
-		token.T_10: "[",
-		token.T_12: "blockComment",
-		token.T_13: "dQuote",
-		token.T_16: "let",
-		token.T_17: "lineComment",
-		token.T_22: "space",
-	},
-	// Expr1x : Expression ∙Expr1x
-	{
-		token.T_0:  "!",
-		token.T_1:  "&",
-		token.T_2:  "'",
-		token.T_3:  "(",
-		token.T_6:  ".",
-		token.T_7:  ";",
-		token.T_10: "[",
-		token.T_12: "blockComment",
-		token.T_13: "dQuote",
-		token.T_16: "let",
-		token.T_17: "lineComment",
-		token.T_22: "space",
-	},
-	// Expr1x : Expression Expr1x ∙
-	{
-		token.T_7:  ";",
-		token.T_23: "|",
-	},
-	// Expr1x : ∙EMPTY
-	{
-		token.T_7: ";",
-	},
-	// Expr1x : EMPTY ∙
-	{
-		token.T_7:  ";",
-		token.T_23: "|",
-	},
 	// Expression : ∙AND Primary
 	{
 		token.T_1: "&",
@@ -1558,6 +1513,7 @@ var first = []map[token.Type]string{
 	// Expression : AND Primary ∙
 	{
 		token.T_0:  "!",
+		token.EOF:  "$",
 		token.T_1:  "&",
 		token.T_2:  "'",
 		token.T_3:  "(",
@@ -1569,6 +1525,7 @@ var first = []map[token.Type]string{
 		token.T_16: "let",
 		token.T_17: "lineComment",
 		token.T_22: "space",
+		token.T_23: "|",
 	},
 	// Expression : ∙NOT Primary
 	{
@@ -1590,6 +1547,7 @@ var first = []map[token.Type]string{
 	// Expression : NOT Primary ∙
 	{
 		token.T_0:  "!",
+		token.EOF:  "$",
 		token.T_1:  "&",
 		token.T_2:  "'",
 		token.T_3:  "(",
@@ -1601,6 +1559,7 @@ var first = []map[token.Type]string{
 		token.T_16: "let",
 		token.T_17: "lineComment",
 		token.T_22: "space",
+		token.T_23: "|",
 	},
 	// Expression : ∙Primary OptStarPlus
 	{
@@ -1621,6 +1580,7 @@ var first = []map[token.Type]string{
 		token.T_5:  "+",
 		token.T_9:  "?",
 		token.T_0:  "!",
+		token.EOF:  "$",
 		token.T_1:  "&",
 		token.T_2:  "'",
 		token.T_3:  "(",
@@ -1632,10 +1592,12 @@ var first = []map[token.Type]string{
 		token.T_16: "let",
 		token.T_17: "lineComment",
 		token.T_22: "space",
+		token.T_23: "|",
 	},
 	// Expression : Primary OptStarPlus ∙
 	{
 		token.T_0:  "!",
+		token.EOF:  "$",
 		token.T_1:  "&",
 		token.T_2:  "'",
 		token.T_3:  "(",
@@ -1647,23 +1609,16 @@ var first = []map[token.Type]string{
 		token.T_16: "let",
 		token.T_17: "lineComment",
 		token.T_22: "space",
+		token.T_23: "|",
 	},
-	// Grammar : ∙WS Rule Rules
+	// Grammar : ∙WS Rule RepRule0x
 	{
 		token.T_7:  ";",
 		token.T_12: "blockComment",
 		token.T_17: "lineComment",
 		token.T_22: "space",
 	},
-	// Grammar : WS ∙Rule Rules
-	{
-		token.T_7:  ";",
-		token.T_12: "blockComment",
-		token.T_16: "let",
-		token.T_17: "lineComment",
-		token.T_22: "space",
-	},
-	// Grammar : WS Rule ∙Rules
+	// Grammar : WS ∙Rule RepRule0x
 	{
 		token.T_7:  ";",
 		token.T_12: "blockComment",
@@ -1671,7 +1626,16 @@ var first = []map[token.Type]string{
 		token.T_17: "lineComment",
 		token.T_22: "space",
 	},
-	// Grammar : WS Rule Rules ∙
+	// Grammar : WS Rule ∙RepRule0x
+	{
+		token.T_7:  ";",
+		token.T_12: "blockComment",
+		token.T_16: "let",
+		token.T_17: "lineComment",
+		token.T_22: "space",
+		token.EOF:  "$",
+	},
+	// Grammar : WS Rule RepRule0x ∙
 	{
 		token.EOF: "$",
 	},
@@ -1847,6 +1811,7 @@ var first = []map[token.Type]string{
 	// NEQUAL : neq WS ∙
 	{
 		token.T_0:  "!",
+		token.EOF:  "$",
 		token.T_1:  "&",
 		token.T_2:  "'",
 		token.T_3:  "(",
@@ -1861,6 +1826,7 @@ var first = []map[token.Type]string{
 		token.T_16: "let",
 		token.T_17: "lineComment",
 		token.T_22: "space",
+		token.T_23: "|",
 	},
 	// NOT : ∙! WS
 	{
@@ -1926,6 +1892,7 @@ var first = []map[token.Type]string{
 	// OPT : ? WS ∙
 	{
 		token.T_0:  "!",
+		token.EOF:  "$",
 		token.T_1:  "&",
 		token.T_2:  "'",
 		token.T_3:  "(",
@@ -1937,6 +1904,7 @@ var first = []map[token.Type]string{
 		token.T_16: "let",
 		token.T_17: "lineComment",
 		token.T_22: "space",
+		token.T_23: "|",
 	},
 	// OptStarPlus : ∙OPT
 	{
@@ -1945,6 +1913,7 @@ var first = []map[token.Type]string{
 	// OptStarPlus : OPT ∙
 	{
 		token.T_0:  "!",
+		token.EOF:  "$",
 		token.T_1:  "&",
 		token.T_2:  "'",
 		token.T_3:  "(",
@@ -1956,6 +1925,7 @@ var first = []map[token.Type]string{
 		token.T_16: "let",
 		token.T_17: "lineComment",
 		token.T_22: "space",
+		token.T_23: "|",
 	},
 	// OptStarPlus : ∙STAR
 	{
@@ -1964,6 +1934,7 @@ var first = []map[token.Type]string{
 	// OptStarPlus : STAR ∙
 	{
 		token.T_0:  "!",
+		token.EOF:  "$",
 		token.T_1:  "&",
 		token.T_2:  "'",
 		token.T_3:  "(",
@@ -1975,6 +1946,7 @@ var first = []map[token.Type]string{
 		token.T_16: "let",
 		token.T_17: "lineComment",
 		token.T_22: "space",
+		token.T_23: "|",
 	},
 	// OptStarPlus : ∙PLUS
 	{
@@ -1983,6 +1955,7 @@ var first = []map[token.Type]string{
 	// OptStarPlus : PLUS ∙
 	{
 		token.T_0:  "!",
+		token.EOF:  "$",
 		token.T_1:  "&",
 		token.T_2:  "'",
 		token.T_3:  "(",
@@ -1994,10 +1967,12 @@ var first = []map[token.Type]string{
 		token.T_16: "let",
 		token.T_17: "lineComment",
 		token.T_22: "space",
+		token.T_23: "|",
 	},
 	// OptStarPlus : ∙
 	{
 		token.T_0:  "!",
+		token.EOF:  "$",
 		token.T_1:  "&",
 		token.T_2:  "'",
 		token.T_3:  "(",
@@ -2009,6 +1984,7 @@ var first = []map[token.Type]string{
 		token.T_16: "let",
 		token.T_17: "lineComment",
 		token.T_22: "space",
+		token.T_23: "|",
 	},
 	// PIPE : ∙| WS
 	{
@@ -2050,6 +2026,7 @@ var first = []map[token.Type]string{
 	// PLUS : + WS ∙
 	{
 		token.T_0:  "!",
+		token.EOF:  "$",
 		token.T_1:  "&",
 		token.T_2:  "'",
 		token.T_3:  "(",
@@ -2061,61 +2038,7 @@ var first = []map[token.Type]string{
 		token.T_16: "let",
 		token.T_17: "lineComment",
 		token.T_22: "space",
-	},
-	// PipedSeq : ∙PIPE Sequence
-	{
 		token.T_23: "|",
-	},
-	// PipedSeq : PIPE ∙Sequence
-	{
-		token.T_0:  "!",
-		token.T_1:  "&",
-		token.T_2:  "'",
-		token.T_3:  "(",
-		token.T_6:  ".",
-		token.T_7:  ";",
-		token.T_10: "[",
-		token.T_12: "blockComment",
-		token.T_13: "dQuote",
-		token.T_16: "let",
-		token.T_17: "lineComment",
-		token.T_22: "space",
-	},
-	// PipedSeq : PIPE Sequence ∙
-	{
-		token.T_7:  ";",
-		token.T_23: "|",
-	},
-	// PipedSeq0x : ∙PipedSeq PipedSeq0x
-	{
-		token.T_23: "|",
-	},
-	// PipedSeq0x : PipedSeq ∙PipedSeq0x
-	{
-		token.T_7:  ";",
-		token.T_23: "|",
-	},
-	// PipedSeq0x : PipedSeq PipedSeq0x ∙
-	{
-		token.T_3:  "(",
-		token.T_7:  ";",
-		token.T_12: "blockComment",
-		token.T_16: "let",
-		token.T_17: "lineComment",
-		token.T_22: "space",
-	},
-	// PipedSeq0x : ∙EMPTY
-	{
-		token.T_7: ";",
-	},
-	// PipedSeq0x : EMPTY ∙
-	{
-		token.T_3:  "(",
-		token.T_7:  ";",
-		token.T_12: "blockComment",
-		token.T_16: "let",
-		token.T_17: "lineComment",
-		token.T_22: "space",
 	},
 	// Primary : ∙Identifier NEQUAL
 	{
@@ -2132,6 +2055,7 @@ var first = []map[token.Type]string{
 	// Primary : Identifier NEQUAL ∙
 	{
 		token.T_0:  "!",
+		token.EOF:  "$",
 		token.T_1:  "&",
 		token.T_2:  "'",
 		token.T_3:  "(",
@@ -2146,6 +2070,7 @@ var first = []map[token.Type]string{
 		token.T_16: "let",
 		token.T_17: "lineComment",
 		token.T_22: "space",
+		token.T_23: "|",
 	},
 	// Primary : ∙OPEN Choice CLOSE
 	{
@@ -2173,6 +2098,7 @@ var first = []map[token.Type]string{
 	// Primary : OPEN Choice CLOSE ∙
 	{
 		token.T_0:  "!",
+		token.EOF:  "$",
 		token.T_1:  "&",
 		token.T_2:  "'",
 		token.T_3:  "(",
@@ -2187,6 +2113,7 @@ var first = []map[token.Type]string{
 		token.T_16: "let",
 		token.T_17: "lineComment",
 		token.T_22: "space",
+		token.T_23: "|",
 	},
 	// Primary : ∙StringLiteral
 	{
@@ -2195,6 +2122,7 @@ var first = []map[token.Type]string{
 	// Primary : StringLiteral ∙
 	{
 		token.T_0:  "!",
+		token.EOF:  "$",
 		token.T_1:  "&",
 		token.T_2:  "'",
 		token.T_3:  "(",
@@ -2209,6 +2137,7 @@ var first = []map[token.Type]string{
 		token.T_16: "let",
 		token.T_17: "lineComment",
 		token.T_22: "space",
+		token.T_23: "|",
 	},
 	// Primary : ∙CharLiteral
 	{
@@ -2217,6 +2146,7 @@ var first = []map[token.Type]string{
 	// Primary : CharLiteral ∙
 	{
 		token.T_0:  "!",
+		token.EOF:  "$",
 		token.T_1:  "&",
 		token.T_2:  "'",
 		token.T_3:  "(",
@@ -2231,6 +2161,7 @@ var first = []map[token.Type]string{
 		token.T_16: "let",
 		token.T_17: "lineComment",
 		token.T_22: "space",
+		token.T_23: "|",
 	},
 	// Primary : ∙CharClass
 	{
@@ -2239,6 +2170,7 @@ var first = []map[token.Type]string{
 	// Primary : CharClass ∙
 	{
 		token.T_0:  "!",
+		token.EOF:  "$",
 		token.T_1:  "&",
 		token.T_2:  "'",
 		token.T_3:  "(",
@@ -2253,6 +2185,7 @@ var first = []map[token.Type]string{
 		token.T_16: "let",
 		token.T_17: "lineComment",
 		token.T_22: "space",
+		token.T_23: "|",
 	},
 	// Primary : ∙ANY
 	{
@@ -2261,6 +2194,7 @@ var first = []map[token.Type]string{
 	// Primary : ANY ∙
 	{
 		token.T_0:  "!",
+		token.EOF:  "$",
 		token.T_1:  "&",
 		token.T_2:  "'",
 		token.T_3:  "(",
@@ -2275,6 +2209,7 @@ var first = []map[token.Type]string{
 		token.T_16: "let",
 		token.T_17: "lineComment",
 		token.T_22: "space",
+		token.T_23: "|",
 	},
 	// Primary : ∙EMPTY
 	{
@@ -2283,6 +2218,7 @@ var first = []map[token.Type]string{
 	// Primary : EMPTY ∙
 	{
 		token.T_0:  "!",
+		token.EOF:  "$",
 		token.T_1:  "&",
 		token.T_2:  "'",
 		token.T_3:  "(",
@@ -2297,6 +2233,142 @@ var first = []map[token.Type]string{
 		token.T_16: "let",
 		token.T_17: "lineComment",
 		token.T_22: "space",
+		token.T_23: "|",
+	},
+	// RepExpr0x : ∙Expression RepExpr0x
+	{
+		token.T_0:  "!",
+		token.T_1:  "&",
+		token.T_2:  "'",
+		token.T_3:  "(",
+		token.T_6:  ".",
+		token.T_7:  ";",
+		token.T_10: "[",
+		token.T_12: "blockComment",
+		token.T_13: "dQuote",
+		token.T_16: "let",
+		token.T_17: "lineComment",
+		token.T_22: "space",
+	},
+	// RepExpr0x : Expression ∙RepExpr0x
+	{
+		token.T_0:  "!",
+		token.T_1:  "&",
+		token.T_2:  "'",
+		token.T_3:  "(",
+		token.T_6:  ".",
+		token.T_7:  ";",
+		token.T_10: "[",
+		token.T_12: "blockComment",
+		token.T_13: "dQuote",
+		token.T_16: "let",
+		token.T_17: "lineComment",
+		token.T_22: "space",
+		token.EOF:  "$",
+		token.T_3:  "(",
+		token.T_7:  ";",
+		token.T_12: "blockComment",
+		token.T_16: "let",
+		token.T_17: "lineComment",
+		token.T_22: "space",
+		token.T_23: "|",
+	},
+	// RepExpr0x : Expression RepExpr0x ∙
+	{
+		token.EOF:  "$",
+		token.T_3:  "(",
+		token.T_7:  ";",
+		token.T_12: "blockComment",
+		token.T_16: "let",
+		token.T_17: "lineComment",
+		token.T_22: "space",
+		token.T_23: "|",
+	},
+	// RepExpr0x : ∙
+	{
+		token.EOF:  "$",
+		token.T_3:  "(",
+		token.T_7:  ";",
+		token.T_12: "blockComment",
+		token.T_16: "let",
+		token.T_17: "lineComment",
+		token.T_22: "space",
+		token.T_23: "|",
+	},
+	// RepPipedSeq0x : ∙PIPE Sequence RepPipedSeq0x
+	{
+		token.T_23: "|",
+	},
+	// RepPipedSeq0x : PIPE ∙Sequence RepPipedSeq0x
+	{
+		token.T_0:  "!",
+		token.T_1:  "&",
+		token.T_2:  "'",
+		token.T_3:  "(",
+		token.T_6:  ".",
+		token.T_7:  ";",
+		token.T_10: "[",
+		token.T_12: "blockComment",
+		token.T_13: "dQuote",
+		token.T_16: "let",
+		token.T_17: "lineComment",
+		token.T_22: "space",
+	},
+	// RepPipedSeq0x : PIPE Sequence ∙RepPipedSeq0x
+	{
+		token.T_23: "|",
+		token.EOF:  "$",
+		token.T_3:  "(",
+		token.T_7:  ";",
+		token.T_12: "blockComment",
+		token.T_16: "let",
+		token.T_17: "lineComment",
+		token.T_22: "space",
+	},
+	// RepPipedSeq0x : PIPE Sequence RepPipedSeq0x ∙
+	{
+		token.EOF:  "$",
+		token.T_3:  "(",
+		token.T_7:  ";",
+		token.T_12: "blockComment",
+		token.T_16: "let",
+		token.T_17: "lineComment",
+		token.T_22: "space",
+	},
+	// RepPipedSeq0x : ∙
+	{
+		token.EOF:  "$",
+		token.T_3:  "(",
+		token.T_7:  ";",
+		token.T_12: "blockComment",
+		token.T_16: "let",
+		token.T_17: "lineComment",
+		token.T_22: "space",
+	},
+	// RepRule0x : ∙Rule RepRule0x
+	{
+		token.T_7:  ";",
+		token.T_12: "blockComment",
+		token.T_16: "let",
+		token.T_17: "lineComment",
+		token.T_22: "space",
+	},
+	// RepRule0x : Rule ∙RepRule0x
+	{
+		token.T_7:  ";",
+		token.T_12: "blockComment",
+		token.T_16: "let",
+		token.T_17: "lineComment",
+		token.T_22: "space",
+		token.EOF:  "$",
+	},
+	// RepRule0x : Rule RepRule0x ∙
+	{
+		token.EOF: "$",
+	},
+	// RepRule0x : ∙
+	{
+		token.EOF: "$",
 	},
 	// Rule : ∙Identifier EQUAL Choice
 	{
@@ -2327,39 +2399,12 @@ var first = []map[token.Type]string{
 	},
 	// Rule : Identifier EQUAL Choice ∙
 	{
+		token.EOF:  "$",
 		token.T_7:  ";",
 		token.T_12: "blockComment",
 		token.T_16: "let",
 		token.T_17: "lineComment",
 		token.T_22: "space",
-	},
-	// Rules : ∙Rule Rules
-	{
-		token.T_7:  ";",
-		token.T_12: "blockComment",
-		token.T_16: "let",
-		token.T_17: "lineComment",
-		token.T_22: "space",
-	},
-	// Rules : Rule ∙Rules
-	{
-		token.T_7:  ";",
-		token.T_12: "blockComment",
-		token.T_16: "let",
-		token.T_17: "lineComment",
-		token.T_22: "space",
-	},
-	// Rules : Rule Rules ∙
-	{
-		token.EOF: "$",
-	},
-	// Rules : ∙EMPTY
-	{
-		token.T_7: ";",
-	},
-	// Rules : EMPTY ∙
-	{
-		token.EOF: "$",
 	},
 	// STAR : ∙* WS
 	{
@@ -2375,6 +2420,7 @@ var first = []map[token.Type]string{
 	// STAR : * WS ∙
 	{
 		token.T_0:  "!",
+		token.EOF:  "$",
 		token.T_1:  "&",
 		token.T_2:  "'",
 		token.T_3:  "(",
@@ -2386,8 +2432,9 @@ var first = []map[token.Type]string{
 		token.T_16: "let",
 		token.T_17: "lineComment",
 		token.T_22: "space",
+		token.T_23: "|",
 	},
-	// Sequence : ∙Expression Expr1x
+	// Sequence : ∙Expression RepExpr0x
 	{
 		token.T_0:  "!",
 		token.T_1:  "&",
@@ -2402,7 +2449,7 @@ var first = []map[token.Type]string{
 		token.T_17: "lineComment",
 		token.T_22: "space",
 	},
-	// Sequence : Expression ∙Expr1x
+	// Sequence : Expression ∙RepExpr0x
 	{
 		token.T_0:  "!",
 		token.T_1:  "&",
@@ -2416,10 +2463,24 @@ var first = []map[token.Type]string{
 		token.T_16: "let",
 		token.T_17: "lineComment",
 		token.T_22: "space",
-	},
-	// Sequence : Expression Expr1x ∙
-	{
+		token.EOF:  "$",
+		token.T_3:  "(",
 		token.T_7:  ";",
+		token.T_12: "blockComment",
+		token.T_16: "let",
+		token.T_17: "lineComment",
+		token.T_22: "space",
+		token.T_23: "|",
+	},
+	// Sequence : Expression RepExpr0x ∙
+	{
+		token.EOF:  "$",
+		token.T_3:  "(",
+		token.T_7:  ";",
+		token.T_12: "blockComment",
+		token.T_16: "let",
+		token.T_17: "lineComment",
+		token.T_22: "space",
 		token.T_23: "|",
 	},
 	// SpaceOrComment : ∙space
@@ -2488,6 +2549,7 @@ var first = []map[token.Type]string{
 	// StringLiteral : dQuote String dQuote WS ∙
 	{
 		token.T_0:  "!",
+		token.EOF:  "$",
 		token.T_1:  "&",
 		token.T_2:  "'",
 		token.T_3:  "(",
@@ -2502,6 +2564,7 @@ var first = []map[token.Type]string{
 		token.T_16: "let",
 		token.T_17: "lineComment",
 		token.T_22: "space",
+		token.T_23: "|",
 	},
 	// UnclosedChar : ∙notSqBk Character
 	{
@@ -2616,6 +2679,7 @@ var followSets = []map[token.Type]string{
 	// ANY
 	{
 		token.T_0:  "!",
+		token.EOF:  "$",
 		token.T_1:  "&",
 		token.T_2:  "'",
 		token.T_3:  "(",
@@ -2630,10 +2694,12 @@ var followSets = []map[token.Type]string{
 		token.T_16: "let",
 		token.T_17: "lineComment",
 		token.T_22: "space",
+		token.T_23: "|",
 	},
 	// CLOSE
 	{
 		token.T_0:  "!",
+		token.EOF:  "$",
 		token.T_1:  "&",
 		token.T_2:  "'",
 		token.T_3:  "(",
@@ -2648,10 +2714,12 @@ var followSets = []map[token.Type]string{
 		token.T_16: "let",
 		token.T_17: "lineComment",
 		token.T_22: "space",
+		token.T_23: "|",
 	},
 	// CharClass
 	{
 		token.T_0:  "!",
+		token.EOF:  "$",
 		token.T_1:  "&",
 		token.T_2:  "'",
 		token.T_3:  "(",
@@ -2666,10 +2734,12 @@ var followSets = []map[token.Type]string{
 		token.T_16: "let",
 		token.T_17: "lineComment",
 		token.T_22: "space",
+		token.T_23: "|",
 	},
 	// CharLiteral
 	{
 		token.T_0:  "!",
+		token.EOF:  "$",
 		token.T_1:  "&",
 		token.T_2:  "'",
 		token.T_3:  "(",
@@ -2684,6 +2754,7 @@ var followSets = []map[token.Type]string{
 		token.T_16: "let",
 		token.T_17: "lineComment",
 		token.T_22: "space",
+		token.T_23: "|",
 	},
 	// Character
 	{
@@ -2696,6 +2767,7 @@ var followSets = []map[token.Type]string{
 	},
 	// Choice
 	{
+		token.EOF:  "$",
 		token.T_3:  "(",
 		token.T_7:  ";",
 		token.T_12: "blockComment",
@@ -2741,14 +2813,10 @@ var followSets = []map[token.Type]string{
 		token.T_17: "lineComment",
 		token.T_22: "space",
 	},
-	// Expr1x
-	{
-		token.T_7:  ";",
-		token.T_23: "|",
-	},
 	// Expression
 	{
 		token.T_0:  "!",
+		token.EOF:  "$",
 		token.T_1:  "&",
 		token.T_2:  "'",
 		token.T_3:  "(",
@@ -2760,6 +2828,7 @@ var followSets = []map[token.Type]string{
 		token.T_16: "let",
 		token.T_17: "lineComment",
 		token.T_22: "space",
+		token.T_23: "|",
 	},
 	// Grammar
 	{
@@ -2805,6 +2874,7 @@ var followSets = []map[token.Type]string{
 	// NEQUAL
 	{
 		token.T_0:  "!",
+		token.EOF:  "$",
 		token.T_1:  "&",
 		token.T_2:  "'",
 		token.T_3:  "(",
@@ -2819,6 +2889,7 @@ var followSets = []map[token.Type]string{
 		token.T_16: "let",
 		token.T_17: "lineComment",
 		token.T_22: "space",
+		token.T_23: "|",
 	},
 	// NOT
 	{
@@ -2851,6 +2922,7 @@ var followSets = []map[token.Type]string{
 	// OPT
 	{
 		token.T_0:  "!",
+		token.EOF:  "$",
 		token.T_1:  "&",
 		token.T_2:  "'",
 		token.T_3:  "(",
@@ -2862,10 +2934,12 @@ var followSets = []map[token.Type]string{
 		token.T_16: "let",
 		token.T_17: "lineComment",
 		token.T_22: "space",
+		token.T_23: "|",
 	},
 	// OptStarPlus
 	{
 		token.T_0:  "!",
+		token.EOF:  "$",
 		token.T_1:  "&",
 		token.T_2:  "'",
 		token.T_3:  "(",
@@ -2877,6 +2951,7 @@ var followSets = []map[token.Type]string{
 		token.T_16: "let",
 		token.T_17: "lineComment",
 		token.T_22: "space",
+		token.T_23: "|",
 	},
 	// PIPE
 	{
@@ -2896,6 +2971,7 @@ var followSets = []map[token.Type]string{
 	// PLUS
 	{
 		token.T_0:  "!",
+		token.EOF:  "$",
 		token.T_1:  "&",
 		token.T_2:  "'",
 		token.T_3:  "(",
@@ -2907,24 +2983,12 @@ var followSets = []map[token.Type]string{
 		token.T_16: "let",
 		token.T_17: "lineComment",
 		token.T_22: "space",
-	},
-	// PipedSeq
-	{
-		token.T_7:  ";",
 		token.T_23: "|",
-	},
-	// PipedSeq0x
-	{
-		token.T_3:  "(",
-		token.T_7:  ";",
-		token.T_12: "blockComment",
-		token.T_16: "let",
-		token.T_17: "lineComment",
-		token.T_22: "space",
 	},
 	// Primary
 	{
 		token.T_0:  "!",
+		token.EOF:  "$",
 		token.T_1:  "&",
 		token.T_2:  "'",
 		token.T_3:  "(",
@@ -2939,22 +3003,46 @@ var followSets = []map[token.Type]string{
 		token.T_16: "let",
 		token.T_17: "lineComment",
 		token.T_22: "space",
+		token.T_23: "|",
 	},
-	// Rule
+	// RepExpr0x
 	{
+		token.EOF:  "$",
+		token.T_3:  "(",
+		token.T_7:  ";",
+		token.T_12: "blockComment",
+		token.T_16: "let",
+		token.T_17: "lineComment",
+		token.T_22: "space",
+		token.T_23: "|",
+	},
+	// RepPipedSeq0x
+	{
+		token.EOF:  "$",
+		token.T_3:  "(",
 		token.T_7:  ";",
 		token.T_12: "blockComment",
 		token.T_16: "let",
 		token.T_17: "lineComment",
 		token.T_22: "space",
 	},
-	// Rules
+	// RepRule0x
 	{
 		token.EOF: "$",
+	},
+	// Rule
+	{
+		token.EOF:  "$",
+		token.T_7:  ";",
+		token.T_12: "blockComment",
+		token.T_16: "let",
+		token.T_17: "lineComment",
+		token.T_22: "space",
 	},
 	// STAR
 	{
 		token.T_0:  "!",
+		token.EOF:  "$",
 		token.T_1:  "&",
 		token.T_2:  "'",
 		token.T_3:  "(",
@@ -2966,10 +3054,17 @@ var followSets = []map[token.Type]string{
 		token.T_16: "let",
 		token.T_17: "lineComment",
 		token.T_22: "space",
+		token.T_23: "|",
 	},
 	// Sequence
 	{
+		token.EOF:  "$",
+		token.T_3:  "(",
 		token.T_7:  ";",
+		token.T_12: "blockComment",
+		token.T_16: "let",
+		token.T_17: "lineComment",
+		token.T_22: "space",
 		token.T_23: "|",
 	},
 	// SpaceOrComment
@@ -2986,6 +3081,7 @@ var followSets = []map[token.Type]string{
 	// StringLiteral
 	{
 		token.T_0:  "!",
+		token.EOF:  "$",
 		token.T_1:  "&",
 		token.T_2:  "'",
 		token.T_3:  "(",
@@ -3000,6 +3096,7 @@ var followSets = []map[token.Type]string{
 		token.T_16: "let",
 		token.T_17: "lineComment",
 		token.T_22: "space",
+		token.T_23: "|",
 	},
 	// UnclosedChar
 	{

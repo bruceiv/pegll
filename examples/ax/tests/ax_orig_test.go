@@ -1,4 +1,4 @@
-// go test file 
+// go test file
 package main
 
 import (

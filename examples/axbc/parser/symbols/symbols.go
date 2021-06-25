@@ -22,8 +22,8 @@ const(
 type T int
 const( 
 	T_0 T = iota // ab 
-	T_1  // as 
-	T_2  // c 
+	T_1  // c 
+	T_2  // repa0x 
 )
 
 type Symbols []Symbol
@@ -59,8 +59,8 @@ var ntToString = []string {
 
 var tToString = []string { 
 	"ab", /* T_0 */
-	"as", /* T_1 */
-	"c", /* T_2 */ 
+	"c", /* T_1 */
+	"repa0x", /* T_2 */ 
 }
 
 var stringNT = map[string]NT{ 

@@ -1,7 +1,8 @@
-package main
+package eggr
 
 import (
 	"fmt"
+	"testing"
 
 	"eggr/lexer"
 	"eggr/parser"
@@ -36,4 +37,38 @@ func parseAndPrint(s string) {
 func main() {
 	parseAndPrint(test1)
 	parseAndPrint(test2)
+}
+
+// test1
+// untested
+func Test1(t *testing.T) {
+	bs, errs := parser.Parse(lexer.New([]rune(test1)))
+	if len(errs) != 0 {
+		t.Fail()
+	}
+
+	// get the root
+	root := bs.GetRoot()
+	// get the child to test
+	a := root.GetTChildI(0)
+	if test1 != a.LiteralString() {
+		t.Fail()
+	}
+}
+
+// test2
+// untested
+func Test2(t *testing.T) {
+	bs, errs := parser.Parse(lexer.New([]rune(test2)))
+	if len(errs) != 0 {
+		t.Fail()
+	}
+
+	// get the root
+	root := bs.GetRoot()
+	// get the child to test
+	a := root.GetTChildI(0)
+	if test2 != a.LiteralString() {
+		t.Fail()
+	}
 }

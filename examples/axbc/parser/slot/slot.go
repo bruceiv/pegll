@@ -111,14 +111,14 @@ var slots = map[Label]*Slot{
 	AorB0R0: {
 		symbols.NT_AorB, 0, 0, 
 		symbols.Symbols{  
-			symbols.T_1,
+			symbols.T_2,
 		}, 
 		AorB0R0, 
 	},
 	AorB0R1: {
 		symbols.NT_AorB, 0, 1, 
 		symbols.Symbols{  
-			symbols.T_1,
+			symbols.T_2,
 		}, 
 		AorB0R1, 
 	},
@@ -140,7 +140,7 @@ var slots = map[Label]*Slot{
 		symbols.NT_AxBC, 0, 0, 
 		symbols.Symbols{  
 			symbols.NT_AorB, 
-			symbols.T_2,
+			symbols.T_1,
 		}, 
 		AxBC0R0, 
 	},
@@ -148,7 +148,7 @@ var slots = map[Label]*Slot{
 		symbols.NT_AxBC, 0, 1, 
 		symbols.Symbols{  
 			symbols.NT_AorB, 
-			symbols.T_2,
+			symbols.T_1,
 		}, 
 		AxBC0R1, 
 	},
@@ -156,7 +156,7 @@ var slots = map[Label]*Slot{
 		symbols.NT_AxBC, 0, 2, 
 		symbols.Symbols{  
 			symbols.NT_AorB, 
-			symbols.T_2,
+			symbols.T_1,
 		}, 
 		AxBC0R2, 
 	},

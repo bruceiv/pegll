@@ -188,10 +188,10 @@ func not(r rune, set []rune) bool {
 }
 
 var accept = []token.Type{ 
-	token.T_1, 
-	token.T_1, 
+	token.T_2, 
 	token.T_2, 
 	token.T_1, 
+	token.T_2, 
 	token.T_0, 
 }
 

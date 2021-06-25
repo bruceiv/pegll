@@ -23,7 +23,6 @@ const(
 	NT_Choice 
 	NT_EMPTY 
 	NT_EQUAL 
-	NT_Expr1x 
 	NT_Expression 
 	NT_Grammar 
 	NT_Identifier 
@@ -38,11 +37,11 @@ const(
 	NT_OptStarPlus 
 	NT_PIPE 
 	NT_PLUS 
-	NT_PipedSeq 
-	NT_PipedSeq0x 
 	NT_Primary 
+	NT_RepExpr0x 
+	NT_RepPipedSeq0x 
+	NT_RepRule0x 
 	NT_Rule 
-	NT_Rules 
 	NT_STAR 
 	NT_Sequence 
 	NT_SpaceOrComment 
@@ -118,7 +117,6 @@ var ntToString = []string {
 	"Choice", /* NT_Choice */
 	"EMPTY", /* NT_EMPTY */
 	"EQUAL", /* NT_EQUAL */
-	"Expr1x", /* NT_Expr1x */
 	"Expression", /* NT_Expression */
 	"Grammar", /* NT_Grammar */
 	"Identifier", /* NT_Identifier */
@@ -133,11 +131,11 @@ var ntToString = []string {
 	"OptStarPlus", /* NT_OptStarPlus */
 	"PIPE", /* NT_PIPE */
 	"PLUS", /* NT_PLUS */
-	"PipedSeq", /* NT_PipedSeq */
-	"PipedSeq0x", /* NT_PipedSeq0x */
 	"Primary", /* NT_Primary */
+	"RepExpr0x", /* NT_RepExpr0x */
+	"RepPipedSeq0x", /* NT_RepPipedSeq0x */
+	"RepRule0x", /* NT_RepRule0x */
 	"Rule", /* NT_Rule */
-	"Rules", /* NT_Rules */
 	"STAR", /* NT_STAR */
 	"Sequence", /* NT_Sequence */
 	"SpaceOrComment", /* NT_SpaceOrComment */
@@ -185,7 +183,6 @@ var stringNT = map[string]NT{
 	"Choice":NT_Choice,
 	"EMPTY":NT_EMPTY,
 	"EQUAL":NT_EQUAL,
-	"Expr1x":NT_Expr1x,
 	"Expression":NT_Expression,
 	"Grammar":NT_Grammar,
 	"Identifier":NT_Identifier,
@@ -200,11 +197,11 @@ var stringNT = map[string]NT{
 	"OptStarPlus":NT_OptStarPlus,
 	"PIPE":NT_PIPE,
 	"PLUS":NT_PLUS,
-	"PipedSeq":NT_PipedSeq,
-	"PipedSeq0x":NT_PipedSeq0x,
 	"Primary":NT_Primary,
+	"RepExpr0x":NT_RepExpr0x,
+	"RepPipedSeq0x":NT_RepPipedSeq0x,
+	"RepRule0x":NT_RepRule0x,
 	"Rule":NT_Rule,
-	"Rules":NT_Rules,
 	"STAR":NT_STAR,
 	"Sequence":NT_Sequence,
 	"SpaceOrComment":NT_SpaceOrComment,

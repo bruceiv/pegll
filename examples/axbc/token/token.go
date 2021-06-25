@@ -107,8 +107,8 @@ const(
     Error  Type = iota  // Error 
     EOF  // $ 
     T_0  // ab 
-    T_1  // as 
-    T_2  // c 
+    T_1  // c 
+    T_2  // repa0x 
 )
 
 var TypeToString = []string{ 
@@ -131,8 +131,8 @@ var TypeToID = []string {
     "Error", 
     "$", 
     "ab", 
-    "as", 
     "c", 
+    "repa0x", 
 }
 
 var Suppress = []bool { 

@@ -26,7 +26,7 @@ AxBC    : AorB "c"  ;
 ```
 `AorB` is a semantic rule that represents the ordered choice of a string beginning with `'a'` zero or more times, with the alternate choice being the string `"ab"`. Here the lexical rule `/` is utilized for ordered choice/ See the [grammar for details.](../../gogll.md)
 ```
-AorB    : as / "ab" ;
+AorB    : repa0x / "ab" ;
 ```
 `repa0x` consists of the repeated token of `a` zero or more times. The use of the bracketed expression`{}` within this grammar is to indicate a set of tokens or identifiers repeated zero or more times. See the [grammar for details.](../../gogll.md)
 ```
