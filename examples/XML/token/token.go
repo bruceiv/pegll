@@ -111,30 +111,29 @@ const(
     T_2  // &#x 
     T_3  // -- 
     T_4  // ; 
-    T_5  // andCarrs 
-    T_6  // anyColUn 
-    T_7  // anyDotDashEtc 
-    T_8  // anyDotDashEtc2 
-    T_9  // anyafAF 
-    T_10  // charData 
-    T_11  // clCarr1 
-    T_12  // clCarr2 
+    T_5  // aA_fF 
+    T_6  // andCarrs 
+    T_7  // angLBrk 
+    T_8  // angRBrk 
+    T_9  // charData 
+    T_10  // col_ 
+    T_11  // dot_BSlashDash 
+    T_12  // dot_BSlashDashCol 
     T_13  // dubQu 
     T_14  // encoding 
     T_15  // eq 
-    T_16  // excla 
-    T_17  // lets 
+    T_16  // exclamation 
+    T_17  // let 
     T_18  // num 
-    T_19  // opCarr1 
-    T_20  // opCarr2 
-    T_21  // optSpaceEsc 
-    T_22  // repNum1 
-    T_23  // semi 
-    T_24  // sinQu 
-    T_25  // spaceEsc 
-    T_26  // version 
-    T_27  // xmlDeclEnd 
-    T_28  // xmlDeclStart 
+    T_19  // optSpaceEsc 
+    T_20  // repNum1x 
+    T_21  // sinQu 
+    T_22  // slashAngLBrk 
+    T_23  // slashAngRBrk 
+    T_24  // spaceEsc 
+    T_25  // version 
+    T_26  // xmlDeclEnd 
+    T_27  // xmlDeclStart 
 )
 
 var TypeToString = []string{ 
@@ -168,7 +167,6 @@ var TypeToString = []string{
     "T_25",
     "T_26",
     "T_27",
-    "T_28",
 }
 
 var StringToType = map[string] Type { 
@@ -202,7 +200,6 @@ var StringToType = map[string] Type {
     "T_25" : T_25, 
     "T_26" : T_26, 
     "T_27" : T_27, 
-    "T_28" : T_28, 
 }
 
 var TypeToID = []string { 
@@ -213,26 +210,25 @@ var TypeToID = []string {
     "&#x", 
     "--", 
     ";", 
+    "aA_fF", 
     "andCarrs", 
-    "anyColUn", 
-    "anyDotDashEtc", 
-    "anyDotDashEtc2", 
-    "anyafAF", 
+    "angLBrk", 
+    "angRBrk", 
     "charData", 
-    "clCarr1", 
-    "clCarr2", 
+    "col_", 
+    "dot_BSlashDash", 
+    "dot_BSlashDashCol", 
     "dubQu", 
     "encoding", 
     "eq", 
-    "excla", 
-    "lets", 
+    "exclamation", 
+    "let", 
     "num", 
-    "opCarr1", 
-    "opCarr2", 
     "optSpaceEsc", 
-    "repNum1", 
-    "semi", 
+    "repNum1x", 
     "sinQu", 
+    "slashAngLBrk", 
+    "slashAngRBrk", 
     "spaceEsc", 
     "version", 
     "xmlDeclEnd", 
@@ -240,7 +236,6 @@ var TypeToID = []string {
 }
 
 var Suppress = []bool { 
-    false, 
     false, 
     false, 
     false, 

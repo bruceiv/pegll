@@ -35,7 +35,6 @@ const(
 	NT_HexAlts 
 	NT_LetColonAlts 
 	NT_LetDigSymAlts 
-	NT_LetDigSymAltsRepx0 
 	NT_Misc 
 	NT_NAME 
 	NT_NAME_CHAR 
@@ -46,11 +45,11 @@ const(
 	NT_QuoEncNam 
 	NT_QuoVerNum 
 	NT_REFERENCE 
-	NT_RepContentAltsx0 
-	NT_RepHexAlts 
-	NT_RepMisc0 
-	NT_RepNameChar0 
-	NT_RepSAttx0 
+	NT_RepHexAlts0x 
+	NT_RepLDSAlts0x 
+	NT_RepMisc0x 
+	NT_RepNameChar0x 
+	NT_RepSAttx0x 
 	NT_SAtt 
 	NT_SinCondClose 
 	NT_SymRefAlts 
@@ -67,30 +66,29 @@ const(
 	T_2  // &#x 
 	T_3  // -- 
 	T_4  // ; 
-	T_5  // andCarrs 
-	T_6  // anyColUn 
-	T_7  // anyDotDashEtc 
-	T_8  // anyDotDashEtc2 
-	T_9  // anyafAF 
-	T_10  // charData 
-	T_11  // clCarr1 
-	T_12  // clCarr2 
+	T_5  // aA_fF 
+	T_6  // andCarrs 
+	T_7  // angLBrk 
+	T_8  // angRBrk 
+	T_9  // charData 
+	T_10  // col_ 
+	T_11  // dot_BSlashDash 
+	T_12  // dot_BSlashDashCol 
 	T_13  // dubQu 
 	T_14  // encoding 
 	T_15  // eq 
-	T_16  // excla 
-	T_17  // lets 
+	T_16  // exclamation 
+	T_17  // let 
 	T_18  // num 
-	T_19  // opCarr1 
-	T_20  // opCarr2 
-	T_21  // optSpaceEsc 
-	T_22  // repNum1 
-	T_23  // semi 
-	T_24  // sinQu 
-	T_25  // spaceEsc 
-	T_26  // version 
-	T_27  // xmlDeclEnd 
-	T_28  // xmlDeclStart 
+	T_19  // optSpaceEsc 
+	T_20  // repNum1x 
+	T_21  // sinQu 
+	T_22  // slashAngLBrk 
+	T_23  // slashAngRBrk 
+	T_24  // spaceEsc 
+	T_25  // version 
+	T_26  // xmlDeclEnd 
+	T_27  // xmlDeclStart 
 )
 
 type Symbols []Symbol
@@ -141,7 +139,6 @@ var ntToString = []string {
 	"HexAlts", /* NT_HexAlts */
 	"LetColonAlts", /* NT_LetColonAlts */
 	"LetDigSymAlts", /* NT_LetDigSymAlts */
-	"LetDigSymAltsRepx0", /* NT_LetDigSymAltsRepx0 */
 	"Misc", /* NT_Misc */
 	"NAME", /* NT_NAME */
 	"NAME_CHAR", /* NT_NAME_CHAR */
@@ -152,11 +149,11 @@ var ntToString = []string {
 	"QuoEncNam", /* NT_QuoEncNam */
 	"QuoVerNum", /* NT_QuoVerNum */
 	"REFERENCE", /* NT_REFERENCE */
-	"RepContentAltsx0", /* NT_RepContentAltsx0 */
-	"RepHexAlts", /* NT_RepHexAlts */
-	"RepMisc0", /* NT_RepMisc0 */
-	"RepNameChar0", /* NT_RepNameChar0 */
-	"RepSAttx0", /* NT_RepSAttx0 */
+	"RepHexAlts0x", /* NT_RepHexAlts0x */
+	"RepLDSAlts0x", /* NT_RepLDSAlts0x */
+	"RepMisc0x", /* NT_RepMisc0x */
+	"RepNameChar0x", /* NT_RepNameChar0x */
+	"RepSAttx0x", /* NT_RepSAttx0x */
 	"SAtt", /* NT_SAtt */
 	"SinCondClose", /* NT_SinCondClose */
 	"SymRefAlts", /* NT_SymRefAlts */
@@ -171,30 +168,29 @@ var tToString = []string {
 	"&#x", /* T_2 */
 	"--", /* T_3 */
 	";", /* T_4 */
-	"andCarrs", /* T_5 */
-	"anyColUn", /* T_6 */
-	"anyDotDashEtc", /* T_7 */
-	"anyDotDashEtc2", /* T_8 */
-	"anyafAF", /* T_9 */
-	"charData", /* T_10 */
-	"clCarr1", /* T_11 */
-	"clCarr2", /* T_12 */
+	"aA_fF", /* T_5 */
+	"andCarrs", /* T_6 */
+	"angLBrk", /* T_7 */
+	"angRBrk", /* T_8 */
+	"charData", /* T_9 */
+	"col_", /* T_10 */
+	"dot_BSlashDash", /* T_11 */
+	"dot_BSlashDashCol", /* T_12 */
 	"dubQu", /* T_13 */
 	"encoding", /* T_14 */
 	"eq", /* T_15 */
-	"excla", /* T_16 */
-	"lets", /* T_17 */
+	"exclamation", /* T_16 */
+	"let", /* T_17 */
 	"num", /* T_18 */
-	"opCarr1", /* T_19 */
-	"opCarr2", /* T_20 */
-	"optSpaceEsc", /* T_21 */
-	"repNum1", /* T_22 */
-	"semi", /* T_23 */
-	"sinQu", /* T_24 */
-	"spaceEsc", /* T_25 */
-	"version", /* T_26 */
-	"xmlDeclEnd", /* T_27 */
-	"xmlDeclStart", /* T_28 */ 
+	"optSpaceEsc", /* T_19 */
+	"repNum1x", /* T_20 */
+	"sinQu", /* T_21 */
+	"slashAngLBrk", /* T_22 */
+	"slashAngRBrk", /* T_23 */
+	"spaceEsc", /* T_24 */
+	"version", /* T_25 */
+	"xmlDeclEnd", /* T_26 */
+	"xmlDeclStart", /* T_27 */ 
 }
 
 var stringNT = map[string]NT{ 
@@ -219,7 +215,6 @@ var stringNT = map[string]NT{
 	"HexAlts":NT_HexAlts,
 	"LetColonAlts":NT_LetColonAlts,
 	"LetDigSymAlts":NT_LetDigSymAlts,
-	"LetDigSymAltsRepx0":NT_LetDigSymAltsRepx0,
 	"Misc":NT_Misc,
 	"NAME":NT_NAME,
 	"NAME_CHAR":NT_NAME_CHAR,
@@ -230,11 +225,11 @@ var stringNT = map[string]NT{
 	"QuoEncNam":NT_QuoEncNam,
 	"QuoVerNum":NT_QuoVerNum,
 	"REFERENCE":NT_REFERENCE,
-	"RepContentAltsx0":NT_RepContentAltsx0,
-	"RepHexAlts":NT_RepHexAlts,
-	"RepMisc0":NT_RepMisc0,
-	"RepNameChar0":NT_RepNameChar0,
-	"RepSAttx0":NT_RepSAttx0,
+	"RepHexAlts0x":NT_RepHexAlts0x,
+	"RepLDSAlts0x":NT_RepLDSAlts0x,
+	"RepMisc0x":NT_RepMisc0x,
+	"RepNameChar0x":NT_RepNameChar0x,
+	"RepSAttx0x":NT_RepSAttx0x,
 	"SAtt":NT_SAtt,
 	"SinCondClose":NT_SinCondClose,
 	"SymRefAlts":NT_SymRefAlts,
