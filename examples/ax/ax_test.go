@@ -11,7 +11,7 @@ const (
 	rep_a0 	= " " 
 	rep_a1 	= "a"
 	rep_a2 	= "aa"
-	ab		= "b"
+	ab		= "ab"
 )
 
 /* INPUT STRING TESTS */
