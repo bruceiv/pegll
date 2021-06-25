@@ -26,6 +26,7 @@ const (
 	// get the root 
 	// Repa0x : repa0x ;
 	root := bs.GetRoot()
+	
 	// get the child to test
 	a := root.GetTChildI(0)
 	if rep_a0 != a.LiteralString() {
@@ -44,6 +45,7 @@ func Test1(t *testing.T) {
 	// get the root 
 	// Repa0x : repa0x ;
 	root := bs.GetRoot()
+
 	// get the child to test
 	a := root.GetTChildI(0)
 	if rep_a1 != a.LiteralString() {
@@ -61,6 +63,7 @@ func Test2(t *testing.T) {
 	// get the root 
 	// Repa0x : repa0x ;
 	root := bs.GetRoot()
+
 	// get the child to test
 	a := root.GetTChildI(0)
 	if rep_a2 != a.LiteralString() {
@@ -79,6 +82,7 @@ func Test2(t *testing.T) {
 	// get the root 
 	// Repa0x : repa0x ;
 	root := bs.GetRoot()
+
 	// get the child to test
 	a := root.GetTChildI(0)
 	if ab != a.LiteralString() {
