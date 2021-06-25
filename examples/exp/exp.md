@@ -17,7 +17,7 @@ A modification of the `exp`[Egg](https://github.com/bruceiv/egg/blob/deriv/gramm
 #### *Testing Results:* Unknown
 
 ### **`exp` GRAMMAR GUIDE**
-The following grammar will utilize recursive descent to determine if exponential runtime occurs. `EXP` represents the starting semantic rule exercising recursive descent through calling itself within the characters 'a' then 'b', 'a' then 'c', or empty, choice based on the input grammar. Here, the `|` rule represents unordered choice. See the [grammar for details.](../../gogll.md).
+The following grammar will utilize recursive descent to determine if exponential runtime occurs. `EXP` represents the starting semantic rule exercising recursive descent through calling itself within the characters 'a' then 'b', 'a' then 'c', or empty, choice based on the input grammar. Here, the `|` syntax rule represents unordered choice. See the [grammar for details.](../../gogll.md).
 ```
 package "exp"
 
