@@ -36,9 +36,9 @@ Expr            : id neq                        ;
 ```
 `id`, `eq`, and `neq` are lexical rules representing an identifier beginning with an uppercase letter followed by a space, the '=' character literal, and any character that is not '=' respectively. 
 ```
-id      : upcase ' ' ; 
-eq      : '=' ; 
-neq     : not "=" ;
+id              : upcase ' '                    ; 
+eq              : '='                           ; 
+neq             : not "="                       ;
 
 ```
 #
