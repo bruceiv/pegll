@@ -3,16 +3,19 @@ package main
 import (
 	"fmt"
 
-	"miniegg/lexer"
-	"miniegg/parser"
+	"JSON/lexer"
+	"JSON/parser"
 )
 
-// Should match
-const ab = "A=B C=D"
-const ri = "R = I O E E = I N"
+//Should match
+const t1 = `{
+    "fruit": "Apple",
+    "size": "Large",
+    "color": "Red"
+}`
 
 //Should fail to match
-const ff = "F=F F="
+const t2 = `not JSON ~~`
 
 func parse(s []rune) bool {
 	// run GLL parser
@@ -35,7 +38,6 @@ func parseAndPrint(s string) {
 }
 
 func main() {
-	parseAndPrint(ab)
-	parseAndPrint(ri)
-	parseAndPrint(ff)
+	parseAndPrint(t1)
+	parseAndPrint(t2)
 }

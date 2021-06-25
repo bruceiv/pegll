@@ -3,16 +3,19 @@ package main
 import (
 	"fmt"
 
-	"miniegg/lexer"
-	"miniegg/parser"
+	"Java/lexer"
+	"Java/parser"
 )
 
-// Should match
-const ab = "A=B C=D"
-const ri = "R = I O E E = I N"
+//Should match
+const t1 = `class HelloWorld {
+    public static void main(String[] args) {
+        System.out.println("Hello, World!"); 
+    }
+}`
 
 //Should fail to match
-const ff = "F=F F="
+const t2 = `println("Hello")`
 
 func parse(s []rune) bool {
 	// run GLL parser
@@ -22,7 +25,7 @@ func parse(s []rune) bool {
 		return false
 	}
 	// check that root covers whole input
-	root := bsrSet.GetRoots()
+	root := bsrSet.GetOrderedRoot()
 	return root.RightExtent() == bsrSet.GetRightExtent()
 }
 
@@ -35,7 +38,6 @@ func parseAndPrint(s string) {
 }
 
 func main() {
-	parseAndPrint(ab)
-	parseAndPrint(ri)
-	parseAndPrint(ff)
+	parseAndPrint(t1)
+	parseAndPrint(t2)
 }

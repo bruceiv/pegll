@@ -1,4 +1,3 @@
-// NEED TO IMPLEMENT
 package main
 
 import (

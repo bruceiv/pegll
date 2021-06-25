@@ -7,8 +7,12 @@ import (
 	"axbc/parser"
 )
 
+//Should match
 const aac = `aac`
 const abc = `abc`
+
+//Should fail to match
+const c = `c`
 
 func parse(s []rune) bool {
 	// run GLL parser
@@ -19,7 +23,7 @@ func parse(s []rune) bool {
 	}
 	// check that root covers whole input
 	root := bsrSet.GetOrderedRoot()
-	return root.RightExtent() == bsrSet.GetRightExtent();
+	return root.RightExtent() == bsrSet.GetRightExtent()
 }
 
 func parseAndPrint(s string) {
@@ -33,4 +37,5 @@ func parseAndPrint(s string) {
 func main() {
 	parseAndPrint(aac)
 	parseAndPrint(abc)
+	parseAndPrint(c)
 }
