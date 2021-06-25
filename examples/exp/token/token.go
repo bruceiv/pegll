@@ -106,30 +106,9 @@ func (t Type) ID() string {
 const(
     Error  Type = iota  // Error 
     EOF  // $ 
-    T_0  // ! 
-    T_1  // & 
-    T_2  // ' 
-    T_3  // ( 
-    T_4  // * 
-    T_5  // + 
-    T_6  // . 
-    T_7  // ; 
-    T_8  // = 
-    T_9  // ? 
-    T_10  // [ 
-    T_11  // ] 
-    T_12  // blockComment 
-    T_13  // dQuote 
-    T_14  // endOfLine 
-    T_15  // esc 
-    T_16  // let 
-    T_17  // lineComment 
-    T_18  // neq 
-    T_19  // notQuotesEsc 
-    T_20  // notSqBk 
-    T_21  // num 
-    T_22  // space 
-    T_23  // | 
+    T_0  // a 
+    T_1  // b 
+    T_2  // c 
 )
 
 var TypeToString = []string{ 
@@ -138,27 +117,6 @@ var TypeToString = []string{
     "T_0",
     "T_1",
     "T_2",
-    "T_3",
-    "T_4",
-    "T_5",
-    "T_6",
-    "T_7",
-    "T_8",
-    "T_9",
-    "T_10",
-    "T_11",
-    "T_12",
-    "T_13",
-    "T_14",
-    "T_15",
-    "T_16",
-    "T_17",
-    "T_18",
-    "T_19",
-    "T_20",
-    "T_21",
-    "T_22",
-    "T_23",
 }
 
 var StringToType = map[string] Type { 
@@ -167,80 +125,17 @@ var StringToType = map[string] Type {
     "T_0" : T_0, 
     "T_1" : T_1, 
     "T_2" : T_2, 
-    "T_3" : T_3, 
-    "T_4" : T_4, 
-    "T_5" : T_5, 
-    "T_6" : T_6, 
-    "T_7" : T_7, 
-    "T_8" : T_8, 
-    "T_9" : T_9, 
-    "T_10" : T_10, 
-    "T_11" : T_11, 
-    "T_12" : T_12, 
-    "T_13" : T_13, 
-    "T_14" : T_14, 
-    "T_15" : T_15, 
-    "T_16" : T_16, 
-    "T_17" : T_17, 
-    "T_18" : T_18, 
-    "T_19" : T_19, 
-    "T_20" : T_20, 
-    "T_21" : T_21, 
-    "T_22" : T_22, 
-    "T_23" : T_23, 
 }
 
 var TypeToID = []string { 
     "Error", 
     "$", 
-    "!", 
-    "&", 
-    "'", 
-    "(", 
-    "*", 
-    "+", 
-    ".", 
-    ";", 
-    "=", 
-    "?", 
-    "[", 
-    "]", 
-    "blockComment", 
-    "dQuote", 
-    "endOfLine", 
-    "esc", 
-    "let", 
-    "lineComment", 
-    "neq", 
-    "notQuotesEsc", 
-    "notSqBk", 
-    "num", 
-    "space", 
-    "|", 
+    "a", 
+    "b", 
+    "c", 
 }
 
 var Suppress = []bool { 
-    false, 
-    false, 
-    false, 
-    false, 
-    false, 
-    false, 
-    false, 
-    false, 
-    false, 
-    false, 
-    false, 
-    false, 
-    false, 
-    false, 
-    true, 
-    false, 
-    false, 
-    false, 
-    false, 
-    true, 
-    false, 
     false, 
     false, 
     false, 

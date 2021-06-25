@@ -1,3 +1,66 @@
+
+```
+#### ***General Numeric Literals***
+- Note: In IntegerLiteral, OctalNumeral may prefix 
+HexNumeral and DecimalNumeral may prefix OctalNumeral
+```
+
+FloatLiteral      : HexFloat 
+                  | DecimalFloat                      ;
+
+IntegerLiteral    : NumeralAlts optOneL               ;
+      NumeralAlts : HexNumeral 
+                  | OctalNumeral  
+                  | DecimalNumeral                    ;
+      optOneL     : [ any "1L" ]                      ;
+
+DecimalFloat      :  repDig1x dot repDig0x optExpo fF_dD 
+                  | dot RepDig1xExp 
+                  | RepDig1xExp fF_dD
+                  | RepDig1xOptExp fF_dD                   ;
+   RepDig1xOptExp : repDig1x optExpo                       ;
+      RepDig1xExp : repDig1x Exponent                      ;
+      optExpo     : [ any "eE" { number } [ any "+\\-" ] ] ;
+
+```
+
+#### ***BASE-SIXTEEN AND BASE-EIGHT LITERALS***
+Incomplete decimalnumeral!!!
+```
+DecimalNumeral  : ze 
+                | onenine RepNumx0                   ;
+    RepNumx0    : num RepNumx0 / empty               ;
+    onenine      : any "123456789"                   ;
+
+HexFloat          : HexSignificand BinaryExponent fF_dD ;
+      fF_dD       : [ any "fFdD" ]                      ; 
+
+HexSignificand    : HexNumeral optDot 
+                  | RepHex0xDot hexDigit RepHex0x   ;
+      RepHex0xDot : zeroxX RepHex0x dot             ;
+      optDot      : [ '.' ]                         ; 
+      dot         : '.'                             ;
+
+HexNumeral        : zeroxX hexDigit RepHex0x        ; 
+      zeroxX      : any "0xX"                       ; 
+      RepHex0x : hexDigit RepHex0x / empty          ;
+
+hexDigit        : < number any "abcdefABCDEF" >     ;
+OctalNumeral    : "0" Int07 Rep07x1                  ; 
+      Rep07x1   : Int07 Rep07x1 
+                / empty                             ;
+OctalEscape     : Int03Two07
+                / Two07
+                / Int07                             ;
+    Int03Two07  : int03 Two07                       ;
+      Two07     : Int07 Int07                       ;
+      Int07     : int03
+                | any4567                           ;
+      any4567   : any "4567"                        ;
+      int03     : any "0123"                        ;
+
+
+
 #### ORIGINAL GRAMMAR
 #### ***Compilation Unit***
 

@@ -8,7 +8,7 @@ import (
 	"strings"
 	"unicode"
 
-	"calc/token"
+	"exp/token"
 )
 
 type state int
@@ -188,49 +188,28 @@ func not(r rune, set []rune) bool {
 }
 
 var accept = []token.Type{ 
-	token.T_7, 
-	token.T_7, 
+	token.Error, 
 	token.T_0, 
 	token.T_1, 
 	token.T_2, 
-	token.T_3, 
-	token.T_4, 
-	token.T_5, 
-	token.T_6, 
 }
 
 var nextState = []func(r rune) state{ 
 	// Set0
 	func(r rune) state {
 		switch { 
-		case r == '\t':
+		case r == 'a':
 			return 1 
-		case r == ' ':
-			return 1 
-		case r == '(':
+		case r == 'b':
 			return 2 
-		case r == ')':
+		case r == 'c':
 			return 3 
-		case r == '*':
-			return 4 
-		case r == '+':
-			return 5 
-		case r == '-':
-			return 6 
-		case r == '/':
-			return 7 
-		case unicode.IsNumber(r):
-			return 8 
 		}
 		return nullState
 	}, 
 	// Set1
 	func(r rune) state {
 		switch { 
-		case r == '\t':
-			return 1 
-		case r == ' ':
-			return 1 
 		}
 		return nullState
 	}, 
@@ -243,38 +222,6 @@ var nextState = []func(r rune) state{
 	// Set3
 	func(r rune) state {
 		switch { 
-		}
-		return nullState
-	}, 
-	// Set4
-	func(r rune) state {
-		switch { 
-		}
-		return nullState
-	}, 
-	// Set5
-	func(r rune) state {
-		switch { 
-		}
-		return nullState
-	}, 
-	// Set6
-	func(r rune) state {
-		switch { 
-		}
-		return nullState
-	}, 
-	// Set7
-	func(r rune) state {
-		switch { 
-		}
-		return nullState
-	}, 
-	// Set8
-	func(r rune) state {
-		switch { 
-		case unicode.IsNumber(r):
-			return 8 
 		}
 		return nullState
 	}, 

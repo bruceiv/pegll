@@ -14,10 +14,15 @@ func (T) isSymbol() {}
 // NT is the type of non-terminals symbols
 type NT int
 const( 
-	NT_CharClass NT = iota
+	NT_AND NT = iota
+	NT_ANY 
+	NT_CLOSE 
+	NT_CharClass 
 	NT_CharLiteral 
 	NT_Character 
 	NT_Choice 
+	NT_EMPTY 
+	NT_EQUAL 
 	NT_Expr1x 
 	NT_Expression 
 	NT_Grammar 
@@ -26,18 +31,25 @@ const(
 	NT_LetOrNum0x 
 	NT_LetWS 
 	NT_LineOrBlock 
+	NT_NEQUAL 
+	NT_NOT 
+	NT_OPEN 
+	NT_OPT 
 	NT_OptStarPlus 
+	NT_PIPE 
+	NT_PLUS 
 	NT_PipedSeq 
 	NT_PipedSeq0x 
 	NT_Primary 
 	NT_Rule 
 	NT_Rules 
+	NT_STAR 
 	NT_Sequence 
 	NT_SpaceOrComment 
 	NT_String 
 	NT_StringLiteral 
-	NT_UnChar 
-	NT_UnChars 
+	NT_UnclosedChar 
+	NT_UnclosedChars 
 	NT_WS 
 )
 
@@ -48,27 +60,26 @@ const(
 	T_1  // & 
 	T_2  // ' 
 	T_3  // ( 
-	T_4  // ) 
-	T_5  // * 
-	T_6  // + 
-	T_7  // . 
-	T_8  // ; 
-	T_9  // = 
-	T_10  // ? 
-	T_11  // [ 
-	T_12  // ] 
-	T_13  // block_comment 
-	T_14  // dQuote 
-	T_15  // end_of_line 
-	T_16  // escAny 
-	T_17  // let 
-	T_18  // line_comment 
-	T_19  // neq 
-	T_20  // notQuotesEsc 
-	T_21  // notSqBk 
-	T_22  // num 
-	T_23  // space 
-	T_24  // | 
+	T_4  // * 
+	T_5  // + 
+	T_6  // . 
+	T_7  // ; 
+	T_8  // = 
+	T_9  // ? 
+	T_10  // [ 
+	T_11  // ] 
+	T_12  // blockComment 
+	T_13  // dQuote 
+	T_14  // endOfLine 
+	T_15  // esc 
+	T_16  // let 
+	T_17  // lineComment 
+	T_18  // neq 
+	T_19  // notQuotesEsc 
+	T_20  // notSqBk 
+	T_21  // num 
+	T_22  // space 
+	T_23  // | 
 )
 
 type Symbols []Symbol
@@ -98,10 +109,15 @@ func (t T) String() string {
 }
 
 var ntToString = []string { 
+	"AND", /* NT_AND */
+	"ANY", /* NT_ANY */
+	"CLOSE", /* NT_CLOSE */
 	"CharClass", /* NT_CharClass */
 	"CharLiteral", /* NT_CharLiteral */
 	"Character", /* NT_Character */
 	"Choice", /* NT_Choice */
+	"EMPTY", /* NT_EMPTY */
+	"EQUAL", /* NT_EQUAL */
 	"Expr1x", /* NT_Expr1x */
 	"Expression", /* NT_Expression */
 	"Grammar", /* NT_Grammar */
@@ -110,18 +126,25 @@ var ntToString = []string {
 	"LetOrNum0x", /* NT_LetOrNum0x */
 	"LetWS", /* NT_LetWS */
 	"LineOrBlock", /* NT_LineOrBlock */
+	"NEQUAL", /* NT_NEQUAL */
+	"NOT", /* NT_NOT */
+	"OPEN", /* NT_OPEN */
+	"OPT", /* NT_OPT */
 	"OptStarPlus", /* NT_OptStarPlus */
+	"PIPE", /* NT_PIPE */
+	"PLUS", /* NT_PLUS */
 	"PipedSeq", /* NT_PipedSeq */
 	"PipedSeq0x", /* NT_PipedSeq0x */
 	"Primary", /* NT_Primary */
 	"Rule", /* NT_Rule */
 	"Rules", /* NT_Rules */
+	"STAR", /* NT_STAR */
 	"Sequence", /* NT_Sequence */
 	"SpaceOrComment", /* NT_SpaceOrComment */
 	"String", /* NT_String */
 	"StringLiteral", /* NT_StringLiteral */
-	"UnChar", /* NT_UnChar */
-	"UnChars", /* NT_UnChars */
+	"UnclosedChar", /* NT_UnclosedChar */
+	"UnclosedChars", /* NT_UnclosedChars */
 	"WS", /* NT_WS */ 
 }
 
@@ -130,34 +153,38 @@ var tToString = []string {
 	"&", /* T_1 */
 	"'", /* T_2 */
 	"(", /* T_3 */
-	")", /* T_4 */
-	"*", /* T_5 */
-	"+", /* T_6 */
-	".", /* T_7 */
-	";", /* T_8 */
-	"=", /* T_9 */
-	"?", /* T_10 */
-	"[", /* T_11 */
-	"]", /* T_12 */
-	"block_comment", /* T_13 */
-	"dQuote", /* T_14 */
-	"end_of_line", /* T_15 */
-	"escAny", /* T_16 */
-	"let", /* T_17 */
-	"line_comment", /* T_18 */
-	"neq", /* T_19 */
-	"notQuotesEsc", /* T_20 */
-	"notSqBk", /* T_21 */
-	"num", /* T_22 */
-	"space", /* T_23 */
-	"|", /* T_24 */ 
+	"*", /* T_4 */
+	"+", /* T_5 */
+	".", /* T_6 */
+	";", /* T_7 */
+	"=", /* T_8 */
+	"?", /* T_9 */
+	"[", /* T_10 */
+	"]", /* T_11 */
+	"blockComment", /* T_12 */
+	"dQuote", /* T_13 */
+	"endOfLine", /* T_14 */
+	"esc", /* T_15 */
+	"let", /* T_16 */
+	"lineComment", /* T_17 */
+	"neq", /* T_18 */
+	"notQuotesEsc", /* T_19 */
+	"notSqBk", /* T_20 */
+	"num", /* T_21 */
+	"space", /* T_22 */
+	"|", /* T_23 */ 
 }
 
 var stringNT = map[string]NT{ 
+	"AND":NT_AND,
+	"ANY":NT_ANY,
+	"CLOSE":NT_CLOSE,
 	"CharClass":NT_CharClass,
 	"CharLiteral":NT_CharLiteral,
 	"Character":NT_Character,
 	"Choice":NT_Choice,
+	"EMPTY":NT_EMPTY,
+	"EQUAL":NT_EQUAL,
 	"Expr1x":NT_Expr1x,
 	"Expression":NT_Expression,
 	"Grammar":NT_Grammar,
@@ -166,17 +193,24 @@ var stringNT = map[string]NT{
 	"LetOrNum0x":NT_LetOrNum0x,
 	"LetWS":NT_LetWS,
 	"LineOrBlock":NT_LineOrBlock,
+	"NEQUAL":NT_NEQUAL,
+	"NOT":NT_NOT,
+	"OPEN":NT_OPEN,
+	"OPT":NT_OPT,
 	"OptStarPlus":NT_OptStarPlus,
+	"PIPE":NT_PIPE,
+	"PLUS":NT_PLUS,
 	"PipedSeq":NT_PipedSeq,
 	"PipedSeq0x":NT_PipedSeq0x,
 	"Primary":NT_Primary,
 	"Rule":NT_Rule,
 	"Rules":NT_Rules,
+	"STAR":NT_STAR,
 	"Sequence":NT_Sequence,
 	"SpaceOrComment":NT_SpaceOrComment,
 	"String":NT_String,
 	"StringLiteral":NT_StringLiteral,
-	"UnChar":NT_UnChar,
-	"UnChars":NT_UnChars,
+	"UnclosedChar":NT_UnclosedChar,
+	"UnclosedChars":NT_UnclosedChars,
 	"WS":NT_WS,
 }

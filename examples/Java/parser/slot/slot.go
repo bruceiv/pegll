@@ -12,9 +12,10 @@ import(
 type Label int
 
 const(
-	DoubleLArrow0R0 Label = iota
-	DoubleLArrow0R1
-	DoubleLArrow0R2
+	Test0R0 Label = iota
+	Test0R1
+	Test0R2
+	Test0R3
 )
 
 type Slot struct {
@@ -104,39 +105,52 @@ func (s *Slot) String() string {
 }
 
 var slots = map[Label]*Slot{ 
-	DoubleLArrow0R0: {
-		symbols.NT_DoubleLArrow, 0, 0, 
+	Test0R0: {
+		symbols.NT_Test, 0, 0, 
 		symbols.Symbols{  
+			symbols.T_1, 
 			symbols.T_0, 
-			symbols.T_4,
+			symbols.T_2,
 		}, 
-		DoubleLArrow0R0, 
+		Test0R0, 
 	},
-	DoubleLArrow0R1: {
-		symbols.NT_DoubleLArrow, 0, 1, 
+	Test0R1: {
+		symbols.NT_Test, 0, 1, 
 		symbols.Symbols{  
+			symbols.T_1, 
 			symbols.T_0, 
-			symbols.T_4,
+			symbols.T_2,
 		}, 
-		DoubleLArrow0R1, 
+		Test0R1, 
 	},
-	DoubleLArrow0R2: {
-		symbols.NT_DoubleLArrow, 0, 2, 
+	Test0R2: {
+		symbols.NT_Test, 0, 2, 
 		symbols.Symbols{  
+			symbols.T_1, 
 			symbols.T_0, 
-			symbols.T_4,
+			symbols.T_2,
 		}, 
-		DoubleLArrow0R2, 
+		Test0R2, 
+	},
+	Test0R3: {
+		symbols.NT_Test, 0, 3, 
+		symbols.Symbols{  
+			symbols.T_1, 
+			symbols.T_0, 
+			symbols.T_2,
+		}, 
+		Test0R3, 
 	},
 }
 
 var slotIndex = map[Index]Label { 
-	Index{ symbols.NT_DoubleLArrow,0,0 }: DoubleLArrow0R0,
-	Index{ symbols.NT_DoubleLArrow,0,1 }: DoubleLArrow0R1,
-	Index{ symbols.NT_DoubleLArrow,0,2 }: DoubleLArrow0R2,
+	Index{ symbols.NT_Test,0,0 }: Test0R0,
+	Index{ symbols.NT_Test,0,1 }: Test0R1,
+	Index{ symbols.NT_Test,0,2 }: Test0R2,
+	Index{ symbols.NT_Test,0,3 }: Test0R3,
 }
 
 var alternates = map[symbols.NT][]Label{ 
-	symbols.NT_DoubleLArrow:[]Label{ DoubleLArrow0R0 },
+	symbols.NT_Test:[]Label{ Test0R0 },
 }
 

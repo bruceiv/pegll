@@ -15,22 +15,24 @@ const(
 	Expr0R0 Label = iota
 	Expr0R1
 	Expr0R2
-	ExprRep0R0
-	ExprRep0R1
-	ExprRep0R2
-	ExprRep1R0
 	Grammar0R0
 	Grammar0R1
 	Grammar0R2
+	Grammar0R3
+	RepExpr0x0R0
+	RepExpr0x0R1
+	RepExpr0x0R2
+	RepExpr0x1R0
+	RepRule0x0R0
+	RepRule0x0R1
+	RepRule0x0R2
+	RepRule0x1R0
 	Rule0R0
 	Rule0R1
 	Rule0R2
 	Rule0R3
 	Rule0R4
-	RuleRep0R0
-	RuleRep0R1
-	RuleRep0R2
-	RuleRep1R0
+	Rule0R5
 )
 
 type Slot struct {
@@ -144,41 +146,12 @@ var slots = map[Label]*Slot{
 		}, 
 		Expr0R2, 
 	},
-	ExprRep0R0: {
-		symbols.NT_ExprRep, 0, 0, 
-		symbols.Symbols{  
-			symbols.NT_Expr, 
-			symbols.NT_ExprRep,
-		}, 
-		ExprRep0R0, 
-	},
-	ExprRep0R1: {
-		symbols.NT_ExprRep, 0, 1, 
-		symbols.Symbols{  
-			symbols.NT_Expr, 
-			symbols.NT_ExprRep,
-		}, 
-		ExprRep0R1, 
-	},
-	ExprRep0R2: {
-		symbols.NT_ExprRep, 0, 2, 
-		symbols.Symbols{  
-			symbols.NT_Expr, 
-			symbols.NT_ExprRep,
-		}, 
-		ExprRep0R2, 
-	},
-	ExprRep1R0: {
-		symbols.NT_ExprRep, 1, 0, 
-		symbols.Symbols{ 
-		}, 
-		ExprRep1R0, 
-	},
 	Grammar0R0: {
 		symbols.NT_Grammar, 0, 0, 
 		symbols.Symbols{  
 			symbols.T_0, 
-			symbols.NT_RuleRep,
+			symbols.NT_Rule, 
+			symbols.NT_RepRule0x,
 		}, 
 		Grammar0R0, 
 	},
@@ -186,7 +159,8 @@ var slots = map[Label]*Slot{
 		symbols.NT_Grammar, 0, 1, 
 		symbols.Symbols{  
 			symbols.T_0, 
-			symbols.NT_RuleRep,
+			symbols.NT_Rule, 
+			symbols.NT_RepRule0x,
 		}, 
 		Grammar0R1, 
 	},
@@ -194,9 +168,79 @@ var slots = map[Label]*Slot{
 		symbols.NT_Grammar, 0, 2, 
 		symbols.Symbols{  
 			symbols.T_0, 
-			symbols.NT_RuleRep,
+			symbols.NT_Rule, 
+			symbols.NT_RepRule0x,
 		}, 
 		Grammar0R2, 
+	},
+	Grammar0R3: {
+		symbols.NT_Grammar, 0, 3, 
+		symbols.Symbols{  
+			symbols.T_0, 
+			symbols.NT_Rule, 
+			symbols.NT_RepRule0x,
+		}, 
+		Grammar0R3, 
+	},
+	RepExpr0x0R0: {
+		symbols.NT_RepExpr0x, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_Expr, 
+			symbols.NT_RepExpr0x,
+		}, 
+		RepExpr0x0R0, 
+	},
+	RepExpr0x0R1: {
+		symbols.NT_RepExpr0x, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_Expr, 
+			symbols.NT_RepExpr0x,
+		}, 
+		RepExpr0x0R1, 
+	},
+	RepExpr0x0R2: {
+		symbols.NT_RepExpr0x, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_Expr, 
+			symbols.NT_RepExpr0x,
+		}, 
+		RepExpr0x0R2, 
+	},
+	RepExpr0x1R0: {
+		symbols.NT_RepExpr0x, 1, 0, 
+		symbols.Symbols{ 
+		}, 
+		RepExpr0x1R0, 
+	},
+	RepRule0x0R0: {
+		symbols.NT_RepRule0x, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_Rule, 
+			symbols.NT_RepRule0x,
+		}, 
+		RepRule0x0R0, 
+	},
+	RepRule0x0R1: {
+		symbols.NT_RepRule0x, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_Rule, 
+			symbols.NT_RepRule0x,
+		}, 
+		RepRule0x0R1, 
+	},
+	RepRule0x0R2: {
+		symbols.NT_RepRule0x, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_Rule, 
+			symbols.NT_RepRule0x,
+		}, 
+		RepRule0x0R2, 
+	},
+	RepRule0x1R0: {
+		symbols.NT_RepRule0x, 1, 0, 
+		symbols.Symbols{ 
+		}, 
+		RepRule0x1R0, 
 	},
 	Rule0R0: {
 		symbols.NT_Rule, 0, 0, 
@@ -204,7 +248,8 @@ var slots = map[Label]*Slot{
 			symbols.T_2, 
 			symbols.T_1, 
 			symbols.T_0, 
-			symbols.NT_ExprRep,
+			symbols.NT_Expr, 
+			symbols.NT_RepExpr0x,
 		}, 
 		Rule0R0, 
 	},
@@ -214,7 +259,8 @@ var slots = map[Label]*Slot{
 			symbols.T_2, 
 			symbols.T_1, 
 			symbols.T_0, 
-			symbols.NT_ExprRep,
+			symbols.NT_Expr, 
+			symbols.NT_RepExpr0x,
 		}, 
 		Rule0R1, 
 	},
@@ -224,7 +270,8 @@ var slots = map[Label]*Slot{
 			symbols.T_2, 
 			symbols.T_1, 
 			symbols.T_0, 
-			symbols.NT_ExprRep,
+			symbols.NT_Expr, 
+			symbols.NT_RepExpr0x,
 		}, 
 		Rule0R2, 
 	},
@@ -234,7 +281,8 @@ var slots = map[Label]*Slot{
 			symbols.T_2, 
 			symbols.T_1, 
 			symbols.T_0, 
-			symbols.NT_ExprRep,
+			symbols.NT_Expr, 
+			symbols.NT_RepExpr0x,
 		}, 
 		Rule0R3, 
 	},
@@ -244,39 +292,21 @@ var slots = map[Label]*Slot{
 			symbols.T_2, 
 			symbols.T_1, 
 			symbols.T_0, 
-			symbols.NT_ExprRep,
+			symbols.NT_Expr, 
+			symbols.NT_RepExpr0x,
 		}, 
 		Rule0R4, 
 	},
-	RuleRep0R0: {
-		symbols.NT_RuleRep, 0, 0, 
+	Rule0R5: {
+		symbols.NT_Rule, 0, 5, 
 		symbols.Symbols{  
-			symbols.NT_Rule, 
-			symbols.NT_RuleRep,
+			symbols.T_2, 
+			symbols.T_1, 
+			symbols.T_0, 
+			symbols.NT_Expr, 
+			symbols.NT_RepExpr0x,
 		}, 
-		RuleRep0R0, 
-	},
-	RuleRep0R1: {
-		symbols.NT_RuleRep, 0, 1, 
-		symbols.Symbols{  
-			symbols.NT_Rule, 
-			symbols.NT_RuleRep,
-		}, 
-		RuleRep0R1, 
-	},
-	RuleRep0R2: {
-		symbols.NT_RuleRep, 0, 2, 
-		symbols.Symbols{  
-			symbols.NT_Rule, 
-			symbols.NT_RuleRep,
-		}, 
-		RuleRep0R2, 
-	},
-	RuleRep1R0: {
-		symbols.NT_RuleRep, 1, 0, 
-		symbols.Symbols{ 
-		}, 
-		RuleRep1R0, 
+		Rule0R5, 
 	},
 }
 
@@ -284,29 +314,31 @@ var slotIndex = map[Index]Label {
 	Index{ symbols.NT_Expr,0,0 }: Expr0R0,
 	Index{ symbols.NT_Expr,0,1 }: Expr0R1,
 	Index{ symbols.NT_Expr,0,2 }: Expr0R2,
-	Index{ symbols.NT_ExprRep,0,0 }: ExprRep0R0,
-	Index{ symbols.NT_ExprRep,0,1 }: ExprRep0R1,
-	Index{ symbols.NT_ExprRep,0,2 }: ExprRep0R2,
-	Index{ symbols.NT_ExprRep,1,0 }: ExprRep1R0,
 	Index{ symbols.NT_Grammar,0,0 }: Grammar0R0,
 	Index{ symbols.NT_Grammar,0,1 }: Grammar0R1,
 	Index{ symbols.NT_Grammar,0,2 }: Grammar0R2,
+	Index{ symbols.NT_Grammar,0,3 }: Grammar0R3,
+	Index{ symbols.NT_RepExpr0x,0,0 }: RepExpr0x0R0,
+	Index{ symbols.NT_RepExpr0x,0,1 }: RepExpr0x0R1,
+	Index{ symbols.NT_RepExpr0x,0,2 }: RepExpr0x0R2,
+	Index{ symbols.NT_RepExpr0x,1,0 }: RepExpr0x1R0,
+	Index{ symbols.NT_RepRule0x,0,0 }: RepRule0x0R0,
+	Index{ symbols.NT_RepRule0x,0,1 }: RepRule0x0R1,
+	Index{ symbols.NT_RepRule0x,0,2 }: RepRule0x0R2,
+	Index{ symbols.NT_RepRule0x,1,0 }: RepRule0x1R0,
 	Index{ symbols.NT_Rule,0,0 }: Rule0R0,
 	Index{ symbols.NT_Rule,0,1 }: Rule0R1,
 	Index{ symbols.NT_Rule,0,2 }: Rule0R2,
 	Index{ symbols.NT_Rule,0,3 }: Rule0R3,
 	Index{ symbols.NT_Rule,0,4 }: Rule0R4,
-	Index{ symbols.NT_RuleRep,0,0 }: RuleRep0R0,
-	Index{ symbols.NT_RuleRep,0,1 }: RuleRep0R1,
-	Index{ symbols.NT_RuleRep,0,2 }: RuleRep0R2,
-	Index{ symbols.NT_RuleRep,1,0 }: RuleRep1R0,
+	Index{ symbols.NT_Rule,0,5 }: Rule0R5,
 }
 
 var alternates = map[symbols.NT][]Label{ 
 	symbols.NT_Grammar:[]Label{ Grammar0R0 },
-	symbols.NT_RuleRep:[]Label{ RuleRep0R0,RuleRep1R0 },
+	symbols.NT_RepRule0x:[]Label{ RepRule0x0R0,RepRule0x1R0 },
 	symbols.NT_Rule:[]Label{ Rule0R0 },
-	symbols.NT_ExprRep:[]Label{ ExprRep0R0,ExprRep1R0 },
+	symbols.NT_RepExpr0x:[]Label{ RepExpr0x0R0,RepExpr0x1R0 },
 	symbols.NT_Expr:[]Label{ Expr0R0 },
 }
 

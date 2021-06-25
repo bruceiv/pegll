@@ -97,40 +97,41 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			} else {
 				p.parseError(slot.DIVIDE0R0, p.cI, followSets[symbols.NT_DIVIDE])
 			}
-		case slot.ELEM0R0: // ELEM : ∙OPEN SUM CLOSE
+		case slot.ELEMENT0R0: // ELEMENT : ∙OPEN SUM CLOSE
 
-			p.call(slot.ELEM0R1, cU, p.cI)
-		case slot.ELEM0R1: // ELEM : OPEN ∙SUM CLOSE
+			p.call(slot.ELEMENT0R1, cU, p.cI)
+		case slot.ELEMENT0R1: // ELEMENT : OPEN ∙SUM CLOSE
 
-			if !p.testSelect(slot.ELEM0R1) {
-				p.parseError(slot.ELEM0R1, p.cI, first[slot.ELEM0R1])
+			if !p.testSelect(slot.ELEMENT0R1) {
+				p.parseError(slot.ELEMENT0R1, p.cI, first[slot.ELEMENT0R1])
 				break
 			}
 
-			p.call(slot.ELEM0R2, cU, p.cI)
-		case slot.ELEM0R2: // ELEM : OPEN SUM ∙CLOSE
+			p.call(slot.ELEMENT0R2, cU, p.cI)
+		case slot.ELEMENT0R2: // ELEMENT : OPEN SUM ∙CLOSE
 
-			if !p.testSelect(slot.ELEM0R2) {
-				p.parseError(slot.ELEM0R2, p.cI, first[slot.ELEM0R2])
+			if !p.testSelect(slot.ELEMENT0R2) {
+				p.parseError(slot.ELEMENT0R2, p.cI, first[slot.ELEMENT0R2])
 				break
 			}
 
-			p.call(slot.ELEM0R3, cU, p.cI)
-		case slot.ELEM0R3: // ELEM : OPEN SUM CLOSE ∙
+			p.call(slot.ELEMENT0R3, cU, p.cI)
+		case slot.ELEMENT0R3: // ELEMENT : OPEN SUM CLOSE ∙
 
-			if p.follow(symbols.NT_ELEM) {
-				p.rtn(symbols.NT_ELEM, cU, p.cI)
+			if p.follow(symbols.NT_ELEMENT) {
+				p.rtn(symbols.NT_ELEMENT, cU, p.cI)
 			} else {
-				p.parseError(slot.ELEM0R0, p.cI, followSets[symbols.NT_ELEM])
+				p.parseError(slot.ELEMENT0R0, p.cI, followSets[symbols.NT_ELEMENT])
 			}
-		case slot.ELEM1R0: // ELEM : ∙num
+		case slot.ELEMENT1R0: // ELEMENT : ∙Number
 
-			p.bsrSet.Add(slot.ELEM1R1, cU, p.cI, p.cI+1)
-			p.cI++
-			if p.follow(symbols.NT_ELEM) {
-				p.rtn(symbols.NT_ELEM, cU, p.cI)
+			p.call(slot.ELEMENT1R1, cU, p.cI)
+		case slot.ELEMENT1R1: // ELEMENT : Number ∙
+
+			if p.follow(symbols.NT_ELEMENT) {
+				p.rtn(symbols.NT_ELEMENT, cU, p.cI)
 			} else {
-				p.parseError(slot.ELEM1R0, p.cI, followSets[symbols.NT_ELEM])
+				p.parseError(slot.ELEMENT1R0, p.cI, followSets[symbols.NT_ELEMENT])
 			}
 		case slot.EXPR0R0: // EXPR : ∙space SUM
 
@@ -165,6 +166,22 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			} else {
 				p.parseError(slot.MINUS0R0, p.cI, followSets[symbols.NT_MINUS])
 			}
+		case slot.Number0R0: // Number : ∙repNumber1x space
+
+			p.bsrSet.Add(slot.Number0R1, cU, p.cI, p.cI+1)
+			p.cI++
+			if !p.testSelect(slot.Number0R1) {
+				p.parseError(slot.Number0R1, p.cI, first[slot.Number0R1])
+				break
+			}
+
+			p.bsrSet.Add(slot.Number0R2, cU, p.cI, p.cI+1)
+			p.cI++
+			if p.follow(symbols.NT_Number) {
+				p.rtn(symbols.NT_Number, cU, p.cI)
+			} else {
+				p.parseError(slot.Number0R0, p.cI, followSets[symbols.NT_Number])
+			}
 		case slot.OPEN0R0: // OPEN : ∙( space
 
 			p.bsrSet.Add(slot.OPEN0R1, cU, p.cI, p.cI+1)
@@ -197,10 +214,10 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			} else {
 				p.parseError(slot.PLUS0R0, p.cI, followSets[symbols.NT_PLUS])
 			}
-		case slot.PLUSorMINUS0R0: // PLUSorMINUS : ∙PLUS PROD
+		case slot.PLUSorMINUS0R0: // PLUSorMINUS : ∙PLUS PRODUCT
 
 			p.call(slot.PLUSorMINUS0R1, cU, p.cI)
-		case slot.PLUSorMINUS0R1: // PLUSorMINUS : PLUS ∙PROD
+		case slot.PLUSorMINUS0R1: // PLUSorMINUS : PLUS ∙PRODUCT
 
 			if !p.testSelect(slot.PLUSorMINUS0R1) {
 				p.parseError(slot.PLUSorMINUS0R1, p.cI, first[slot.PLUSorMINUS0R1])
@@ -208,17 +225,17 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			}
 
 			p.call(slot.PLUSorMINUS0R2, cU, p.cI)
-		case slot.PLUSorMINUS0R2: // PLUSorMINUS : PLUS PROD ∙
+		case slot.PLUSorMINUS0R2: // PLUSorMINUS : PLUS PRODUCT ∙
 
 			if p.follow(symbols.NT_PLUSorMINUS) {
 				p.rtn(symbols.NT_PLUSorMINUS, cU, p.cI)
 			} else {
 				p.parseError(slot.PLUSorMINUS0R0, p.cI, followSets[symbols.NT_PLUSorMINUS])
 			}
-		case slot.PLUSorMINUS1R0: // PLUSorMINUS : ∙MINUS PROD
+		case slot.PLUSorMINUS1R0: // PLUSorMINUS : ∙MINUS PRODUCT
 
 			p.call(slot.PLUSorMINUS1R1, cU, p.cI)
-		case slot.PLUSorMINUS1R1: // PLUSorMINUS : MINUS ∙PROD
+		case slot.PLUSorMINUS1R1: // PLUSorMINUS : MINUS ∙PRODUCT
 
 			if !p.testSelect(slot.PLUSorMINUS1R1) {
 				p.parseError(slot.PLUSorMINUS1R1, p.cI, first[slot.PLUSorMINUS1R1])
@@ -226,61 +243,87 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			}
 
 			p.call(slot.PLUSorMINUS1R2, cU, p.cI)
-		case slot.PLUSorMINUS1R2: // PLUSorMINUS : MINUS PROD ∙
+		case slot.PLUSorMINUS1R2: // PLUSorMINUS : MINUS PRODUCT ∙
 
 			if p.follow(symbols.NT_PLUSorMINUS) {
 				p.rtn(symbols.NT_PLUSorMINUS, cU, p.cI)
 			} else {
 				p.parseError(slot.PLUSorMINUS1R0, p.cI, followSets[symbols.NT_PLUSorMINUS])
 			}
-		case slot.PROD0R0: // PROD : ∙ELEM ToDRep
+		case slot.PRODUCT0R0: // PRODUCT : ∙ELEMENT RepTIMESorDIV0x
 
-			p.call(slot.PROD0R1, cU, p.cI)
-		case slot.PROD0R1: // PROD : ELEM ∙ToDRep
+			p.call(slot.PRODUCT0R1, cU, p.cI)
+		case slot.PRODUCT0R1: // PRODUCT : ELEMENT ∙RepTIMESorDIV0x
 
-			if !p.testSelect(slot.PROD0R1) {
-				p.parseError(slot.PROD0R1, p.cI, first[slot.PROD0R1])
+			if !p.testSelect(slot.PRODUCT0R1) {
+				p.parseError(slot.PRODUCT0R1, p.cI, first[slot.PRODUCT0R1])
 				break
 			}
 
-			p.call(slot.PROD0R2, cU, p.cI)
-		case slot.PROD0R2: // PROD : ELEM ToDRep ∙
+			p.call(slot.PRODUCT0R2, cU, p.cI)
+		case slot.PRODUCT0R2: // PRODUCT : ELEMENT RepTIMESorDIV0x ∙
 
-			if p.follow(symbols.NT_PROD) {
-				p.rtn(symbols.NT_PROD, cU, p.cI)
+			if p.follow(symbols.NT_PRODUCT) {
+				p.rtn(symbols.NT_PRODUCT, cU, p.cI)
 			} else {
-				p.parseError(slot.PROD0R0, p.cI, followSets[symbols.NT_PROD])
+				p.parseError(slot.PRODUCT0R0, p.cI, followSets[symbols.NT_PRODUCT])
 			}
-		case slot.PoMRep0R0: // PoMRep : ∙PLUSorMINUS PoMRep
+		case slot.RepPLUSorMINUS0x0R0: // RepPLUSorMINUS0x : ∙PLUSorMINUS RepPLUSorMINUS0x
 
-			p.call(slot.PoMRep0R1, cU, p.cI)
-		case slot.PoMRep0R1: // PoMRep : PLUSorMINUS ∙PoMRep
+			p.call(slot.RepPLUSorMINUS0x0R1, cU, p.cI)
+		case slot.RepPLUSorMINUS0x0R1: // RepPLUSorMINUS0x : PLUSorMINUS ∙RepPLUSorMINUS0x
 
-			if !p.testSelect(slot.PoMRep0R1) {
-				p.parseError(slot.PoMRep0R1, p.cI, first[slot.PoMRep0R1])
+			if !p.testSelect(slot.RepPLUSorMINUS0x0R1) {
+				p.parseError(slot.RepPLUSorMINUS0x0R1, p.cI, first[slot.RepPLUSorMINUS0x0R1])
 				break
 			}
 
-			p.call(slot.PoMRep0R2, cU, p.cI)
-		case slot.PoMRep0R2: // PoMRep : PLUSorMINUS PoMRep ∙
+			p.call(slot.RepPLUSorMINUS0x0R2, cU, p.cI)
+		case slot.RepPLUSorMINUS0x0R2: // RepPLUSorMINUS0x : PLUSorMINUS RepPLUSorMINUS0x ∙
 
-			if p.follow(symbols.NT_PoMRep) {
-				p.rtn(symbols.NT_PoMRep, cU, p.cI)
+			if p.follow(symbols.NT_RepPLUSorMINUS0x) {
+				p.rtn(symbols.NT_RepPLUSorMINUS0x, cU, p.cI)
 			} else {
-				p.parseError(slot.PoMRep0R0, p.cI, followSets[symbols.NT_PoMRep])
+				p.parseError(slot.RepPLUSorMINUS0x0R0, p.cI, followSets[symbols.NT_RepPLUSorMINUS0x])
 			}
-		case slot.PoMRep1R0: // PoMRep : ∙
-			p.bsrSet.AddEmpty(slot.PoMRep1R0, p.cI)
+		case slot.RepPLUSorMINUS0x1R0: // RepPLUSorMINUS0x : ∙
+			p.bsrSet.AddEmpty(slot.RepPLUSorMINUS0x1R0, p.cI)
 
-			if p.follow(symbols.NT_PoMRep) {
-				p.rtn(symbols.NT_PoMRep, cU, p.cI)
+			if p.follow(symbols.NT_RepPLUSorMINUS0x) {
+				p.rtn(symbols.NT_RepPLUSorMINUS0x, cU, p.cI)
 			} else {
-				p.parseError(slot.PoMRep1R0, p.cI, followSets[symbols.NT_PoMRep])
+				p.parseError(slot.RepPLUSorMINUS0x1R0, p.cI, followSets[symbols.NT_RepPLUSorMINUS0x])
 			}
-		case slot.SUM0R0: // SUM : ∙PROD PoMRep
+		case slot.RepTIMESorDIV0x0R0: // RepTIMESorDIV0x : ∙TIMESorDIVIDE RepTIMESorDIV0x
+
+			p.call(slot.RepTIMESorDIV0x0R1, cU, p.cI)
+		case slot.RepTIMESorDIV0x0R1: // RepTIMESorDIV0x : TIMESorDIVIDE ∙RepTIMESorDIV0x
+
+			if !p.testSelect(slot.RepTIMESorDIV0x0R1) {
+				p.parseError(slot.RepTIMESorDIV0x0R1, p.cI, first[slot.RepTIMESorDIV0x0R1])
+				break
+			}
+
+			p.call(slot.RepTIMESorDIV0x0R2, cU, p.cI)
+		case slot.RepTIMESorDIV0x0R2: // RepTIMESorDIV0x : TIMESorDIVIDE RepTIMESorDIV0x ∙
+
+			if p.follow(symbols.NT_RepTIMESorDIV0x) {
+				p.rtn(symbols.NT_RepTIMESorDIV0x, cU, p.cI)
+			} else {
+				p.parseError(slot.RepTIMESorDIV0x0R0, p.cI, followSets[symbols.NT_RepTIMESorDIV0x])
+			}
+		case slot.RepTIMESorDIV0x1R0: // RepTIMESorDIV0x : ∙
+			p.bsrSet.AddEmpty(slot.RepTIMESorDIV0x1R0, p.cI)
+
+			if p.follow(symbols.NT_RepTIMESorDIV0x) {
+				p.rtn(symbols.NT_RepTIMESorDIV0x, cU, p.cI)
+			} else {
+				p.parseError(slot.RepTIMESorDIV0x1R0, p.cI, followSets[symbols.NT_RepTIMESorDIV0x])
+			}
+		case slot.SUM0R0: // SUM : ∙PRODUCT RepPLUSorMINUS0x
 
 			p.call(slot.SUM0R1, cU, p.cI)
-		case slot.SUM0R1: // SUM : PROD ∙PoMRep
+		case slot.SUM0R1: // SUM : PRODUCT ∙RepPLUSorMINUS0x
 
 			if !p.testSelect(slot.SUM0R1) {
 				p.parseError(slot.SUM0R1, p.cI, first[slot.SUM0R1])
@@ -288,7 +331,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			}
 
 			p.call(slot.SUM0R2, cU, p.cI)
-		case slot.SUM0R2: // SUM : PROD PoMRep ∙
+		case slot.SUM0R2: // SUM : PRODUCT RepPLUSorMINUS0x ∙
 
 			if p.follow(symbols.NT_SUM) {
 				p.rtn(symbols.NT_SUM, cU, p.cI)
@@ -311,10 +354,10 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			} else {
 				p.parseError(slot.TIMES0R0, p.cI, followSets[symbols.NT_TIMES])
 			}
-		case slot.TIMESorDIVIDE0R0: // TIMESorDIVIDE : ∙TIMES ELEM
+		case slot.TIMESorDIVIDE0R0: // TIMESorDIVIDE : ∙TIMES ELEMENT
 
 			p.call(slot.TIMESorDIVIDE0R1, cU, p.cI)
-		case slot.TIMESorDIVIDE0R1: // TIMESorDIVIDE : TIMES ∙ELEM
+		case slot.TIMESorDIVIDE0R1: // TIMESorDIVIDE : TIMES ∙ELEMENT
 
 			if !p.testSelect(slot.TIMESorDIVIDE0R1) {
 				p.parseError(slot.TIMESorDIVIDE0R1, p.cI, first[slot.TIMESorDIVIDE0R1])
@@ -322,17 +365,17 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			}
 
 			p.call(slot.TIMESorDIVIDE0R2, cU, p.cI)
-		case slot.TIMESorDIVIDE0R2: // TIMESorDIVIDE : TIMES ELEM ∙
+		case slot.TIMESorDIVIDE0R2: // TIMESorDIVIDE : TIMES ELEMENT ∙
 
 			if p.follow(symbols.NT_TIMESorDIVIDE) {
 				p.rtn(symbols.NT_TIMESorDIVIDE, cU, p.cI)
 			} else {
 				p.parseError(slot.TIMESorDIVIDE0R0, p.cI, followSets[symbols.NT_TIMESorDIVIDE])
 			}
-		case slot.TIMESorDIVIDE1R0: // TIMESorDIVIDE : ∙DIVIDE ELEM
+		case slot.TIMESorDIVIDE1R0: // TIMESorDIVIDE : ∙DIVIDE ELEMENT
 
 			p.call(slot.TIMESorDIVIDE1R1, cU, p.cI)
-		case slot.TIMESorDIVIDE1R1: // TIMESorDIVIDE : DIVIDE ∙ELEM
+		case slot.TIMESorDIVIDE1R1: // TIMESorDIVIDE : DIVIDE ∙ELEMENT
 
 			if !p.testSelect(slot.TIMESorDIVIDE1R1) {
 				p.parseError(slot.TIMESorDIVIDE1R1, p.cI, first[slot.TIMESorDIVIDE1R1])
@@ -340,38 +383,12 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			}
 
 			p.call(slot.TIMESorDIVIDE1R2, cU, p.cI)
-		case slot.TIMESorDIVIDE1R2: // TIMESorDIVIDE : DIVIDE ELEM ∙
+		case slot.TIMESorDIVIDE1R2: // TIMESorDIVIDE : DIVIDE ELEMENT ∙
 
 			if p.follow(symbols.NT_TIMESorDIVIDE) {
 				p.rtn(symbols.NT_TIMESorDIVIDE, cU, p.cI)
 			} else {
 				p.parseError(slot.TIMESorDIVIDE1R0, p.cI, followSets[symbols.NT_TIMESorDIVIDE])
-			}
-		case slot.ToDRep0R0: // ToDRep : ∙TIMESorDIVIDE ToDRep
-
-			p.call(slot.ToDRep0R1, cU, p.cI)
-		case slot.ToDRep0R1: // ToDRep : TIMESorDIVIDE ∙ToDRep
-
-			if !p.testSelect(slot.ToDRep0R1) {
-				p.parseError(slot.ToDRep0R1, p.cI, first[slot.ToDRep0R1])
-				break
-			}
-
-			p.call(slot.ToDRep0R2, cU, p.cI)
-		case slot.ToDRep0R2: // ToDRep : TIMESorDIVIDE ToDRep ∙
-
-			if p.follow(symbols.NT_ToDRep) {
-				p.rtn(symbols.NT_ToDRep, cU, p.cI)
-			} else {
-				p.parseError(slot.ToDRep0R0, p.cI, followSets[symbols.NT_ToDRep])
-			}
-		case slot.ToDRep1R0: // ToDRep : ∙
-			p.bsrSet.AddEmpty(slot.ToDRep1R0, p.cI)
-
-			if p.follow(symbols.NT_ToDRep) {
-				p.rtn(symbols.NT_ToDRep, cU, p.cI)
-			} else {
-				p.parseError(slot.ToDRep1R0, p.cI, followSets[symbols.NT_ToDRep])
 			}
 
 		default:
@@ -643,22 +660,22 @@ var first = []map[token.Type]string{
 	// DIVIDE : / space ∙
 	{
 		token.T_0: "(",
-		token.T_6: "num",
+		token.T_6: "repNumber1x",
 	},
-	// ELEM : ∙OPEN SUM CLOSE
+	// ELEMENT : ∙OPEN SUM CLOSE
 	{
 		token.T_0: "(",
 	},
-	// ELEM : OPEN ∙SUM CLOSE
+	// ELEMENT : OPEN ∙SUM CLOSE
 	{
 		token.T_0: "(",
-		token.T_6: "num",
+		token.T_6: "repNumber1x",
 	},
-	// ELEM : OPEN SUM ∙CLOSE
+	// ELEMENT : OPEN SUM ∙CLOSE
 	{
 		token.T_1: ")",
 	},
-	// ELEM : OPEN SUM CLOSE ∙
+	// ELEMENT : OPEN SUM CLOSE ∙
 	{
 		token.EOF: "$",
 		token.T_1: ")",
@@ -667,11 +684,11 @@ var first = []map[token.Type]string{
 		token.T_4: "-",
 		token.T_5: "/",
 	},
-	// ELEM : ∙num
+	// ELEMENT : ∙Number
 	{
-		token.T_6: "num",
+		token.T_6: "repNumber1x",
 	},
-	// ELEM : num ∙
+	// ELEMENT : Number ∙
 	{
 		token.EOF: "$",
 		token.T_1: ")",
@@ -687,7 +704,7 @@ var first = []map[token.Type]string{
 	// EXPR : space ∙SUM
 	{
 		token.T_0: "(",
-		token.T_6: "num",
+		token.T_6: "repNumber1x",
 	},
 	// EXPR : space SUM ∙
 	{
@@ -704,7 +721,24 @@ var first = []map[token.Type]string{
 	// MINUS : - space ∙
 	{
 		token.T_0: "(",
-		token.T_6: "num",
+		token.T_6: "repNumber1x",
+	},
+	// Number : ∙repNumber1x space
+	{
+		token.T_6: "repNumber1x",
+	},
+	// Number : repNumber1x ∙space
+	{
+		token.T_7: "space",
+	},
+	// Number : repNumber1x space ∙
+	{
+		token.EOF: "$",
+		token.T_1: ")",
+		token.T_2: "*",
+		token.T_3: "+",
+		token.T_4: "-",
+		token.T_5: "/",
 	},
 	// OPEN : ∙( space
 	{
@@ -717,7 +751,7 @@ var first = []map[token.Type]string{
 	// OPEN : ( space ∙
 	{
 		token.T_0: "(",
-		token.T_6: "num",
+		token.T_6: "repNumber1x",
 	},
 	// PLUS : ∙+ space
 	{
@@ -730,46 +764,46 @@ var first = []map[token.Type]string{
 	// PLUS : + space ∙
 	{
 		token.T_0: "(",
-		token.T_6: "num",
+		token.T_6: "repNumber1x",
 	},
-	// PLUSorMINUS : ∙PLUS PROD
+	// PLUSorMINUS : ∙PLUS PRODUCT
 	{
 		token.T_3: "+",
 	},
-	// PLUSorMINUS : PLUS ∙PROD
+	// PLUSorMINUS : PLUS ∙PRODUCT
 	{
 		token.T_0: "(",
-		token.T_6: "num",
+		token.T_6: "repNumber1x",
 	},
-	// PLUSorMINUS : PLUS PROD ∙
+	// PLUSorMINUS : PLUS PRODUCT ∙
 	{
 		token.EOF: "$",
 		token.T_1: ")",
 		token.T_3: "+",
 		token.T_4: "-",
 	},
-	// PLUSorMINUS : ∙MINUS PROD
+	// PLUSorMINUS : ∙MINUS PRODUCT
 	{
 		token.T_4: "-",
 	},
-	// PLUSorMINUS : MINUS ∙PROD
+	// PLUSorMINUS : MINUS ∙PRODUCT
 	{
 		token.T_0: "(",
-		token.T_6: "num",
+		token.T_6: "repNumber1x",
 	},
-	// PLUSorMINUS : MINUS PROD ∙
+	// PLUSorMINUS : MINUS PRODUCT ∙
 	{
 		token.EOF: "$",
 		token.T_1: ")",
 		token.T_3: "+",
 		token.T_4: "-",
 	},
-	// PROD : ∙ELEM ToDRep
+	// PRODUCT : ∙ELEMENT RepTIMESorDIV0x
 	{
 		token.T_0: "(",
-		token.T_6: "num",
+		token.T_6: "repNumber1x",
 	},
-	// PROD : ELEM ∙ToDRep
+	// PRODUCT : ELEMENT ∙RepTIMESorDIV0x
 	{
 		token.T_2: "*",
 		token.T_5: "/",
@@ -778,48 +812,76 @@ var first = []map[token.Type]string{
 		token.T_3: "+",
 		token.T_4: "-",
 	},
-	// PROD : ELEM ToDRep ∙
+	// PRODUCT : ELEMENT RepTIMESorDIV0x ∙
 	{
 		token.EOF: "$",
 		token.T_1: ")",
 		token.T_3: "+",
 		token.T_4: "-",
 	},
-	// PoMRep : ∙PLUSorMINUS PoMRep
+	// RepPLUSorMINUS0x : ∙PLUSorMINUS RepPLUSorMINUS0x
 	{
 		token.T_3: "+",
 		token.T_4: "-",
 	},
-	// PoMRep : PLUSorMINUS ∙PoMRep
+	// RepPLUSorMINUS0x : PLUSorMINUS ∙RepPLUSorMINUS0x
 	{
 		token.T_3: "+",
 		token.T_4: "-",
 		token.EOF: "$",
 		token.T_1: ")",
 	},
-	// PoMRep : PLUSorMINUS PoMRep ∙
+	// RepPLUSorMINUS0x : PLUSorMINUS RepPLUSorMINUS0x ∙
 	{
 		token.EOF: "$",
 		token.T_1: ")",
 	},
-	// PoMRep : ∙
+	// RepPLUSorMINUS0x : ∙
 	{
 		token.EOF: "$",
 		token.T_1: ")",
 	},
-	// SUM : ∙PROD PoMRep
+	// RepTIMESorDIV0x : ∙TIMESorDIVIDE RepTIMESorDIV0x
+	{
+		token.T_2: "*",
+		token.T_5: "/",
+	},
+	// RepTIMESorDIV0x : TIMESorDIVIDE ∙RepTIMESorDIV0x
+	{
+		token.T_2: "*",
+		token.T_5: "/",
+		token.EOF: "$",
+		token.T_1: ")",
+		token.T_3: "+",
+		token.T_4: "-",
+	},
+	// RepTIMESorDIV0x : TIMESorDIVIDE RepTIMESorDIV0x ∙
+	{
+		token.EOF: "$",
+		token.T_1: ")",
+		token.T_3: "+",
+		token.T_4: "-",
+	},
+	// RepTIMESorDIV0x : ∙
+	{
+		token.EOF: "$",
+		token.T_1: ")",
+		token.T_3: "+",
+		token.T_4: "-",
+	},
+	// SUM : ∙PRODUCT RepPLUSorMINUS0x
 	{
 		token.T_0: "(",
-		token.T_6: "num",
+		token.T_6: "repNumber1x",
 	},
-	// SUM : PROD ∙PoMRep
+	// SUM : PRODUCT ∙RepPLUSorMINUS0x
 	{
 		token.T_3: "+",
 		token.T_4: "-",
 		token.EOF: "$",
 		token.T_1: ")",
 	},
-	// SUM : PROD PoMRep ∙
+	// SUM : PRODUCT RepPLUSorMINUS0x ∙
 	{
 		token.EOF: "$",
 		token.T_1: ")",
@@ -835,18 +897,18 @@ var first = []map[token.Type]string{
 	// TIMES : * space ∙
 	{
 		token.T_0: "(",
-		token.T_6: "num",
+		token.T_6: "repNumber1x",
 	},
-	// TIMESorDIVIDE : ∙TIMES ELEM
+	// TIMESorDIVIDE : ∙TIMES ELEMENT
 	{
 		token.T_2: "*",
 	},
-	// TIMESorDIVIDE : TIMES ∙ELEM
+	// TIMESorDIVIDE : TIMES ∙ELEMENT
 	{
 		token.T_0: "(",
-		token.T_6: "num",
+		token.T_6: "repNumber1x",
 	},
-	// TIMESorDIVIDE : TIMES ELEM ∙
+	// TIMESorDIVIDE : TIMES ELEMENT ∙
 	{
 		token.EOF: "$",
 		token.T_1: ")",
@@ -855,16 +917,16 @@ var first = []map[token.Type]string{
 		token.T_4: "-",
 		token.T_5: "/",
 	},
-	// TIMESorDIVIDE : ∙DIVIDE ELEM
+	// TIMESorDIVIDE : ∙DIVIDE ELEMENT
 	{
 		token.T_5: "/",
 	},
-	// TIMESorDIVIDE : DIVIDE ∙ELEM
+	// TIMESorDIVIDE : DIVIDE ∙ELEMENT
 	{
 		token.T_0: "(",
-		token.T_6: "num",
+		token.T_6: "repNumber1x",
 	},
-	// TIMESorDIVIDE : DIVIDE ELEM ∙
+	// TIMESorDIVIDE : DIVIDE ELEMENT ∙
 	{
 		token.EOF: "$",
 		token.T_1: ")",
@@ -872,34 +934,6 @@ var first = []map[token.Type]string{
 		token.T_3: "+",
 		token.T_4: "-",
 		token.T_5: "/",
-	},
-	// ToDRep : ∙TIMESorDIVIDE ToDRep
-	{
-		token.T_2: "*",
-		token.T_5: "/",
-	},
-	// ToDRep : TIMESorDIVIDE ∙ToDRep
-	{
-		token.T_2: "*",
-		token.T_5: "/",
-		token.EOF: "$",
-		token.T_1: ")",
-		token.T_3: "+",
-		token.T_4: "-",
-	},
-	// ToDRep : TIMESorDIVIDE ToDRep ∙
-	{
-		token.EOF: "$",
-		token.T_1: ")",
-		token.T_3: "+",
-		token.T_4: "-",
-	},
-	// ToDRep : ∙
-	{
-		token.EOF: "$",
-		token.T_1: ")",
-		token.T_3: "+",
-		token.T_4: "-",
 	},
 }
 
@@ -916,9 +950,9 @@ var followSets = []map[token.Type]string{
 	// DIVIDE
 	{
 		token.T_0: "(",
-		token.T_6: "num",
+		token.T_6: "repNumber1x",
 	},
-	// ELEM
+	// ELEMENT
 	{
 		token.EOF: "$",
 		token.T_1: ")",
@@ -934,17 +968,26 @@ var followSets = []map[token.Type]string{
 	// MINUS
 	{
 		token.T_0: "(",
-		token.T_6: "num",
+		token.T_6: "repNumber1x",
+	},
+	// Number
+	{
+		token.EOF: "$",
+		token.T_1: ")",
+		token.T_2: "*",
+		token.T_3: "+",
+		token.T_4: "-",
+		token.T_5: "/",
 	},
 	// OPEN
 	{
 		token.T_0: "(",
-		token.T_6: "num",
+		token.T_6: "repNumber1x",
 	},
 	// PLUS
 	{
 		token.T_0: "(",
-		token.T_6: "num",
+		token.T_6: "repNumber1x",
 	},
 	// PLUSorMINUS
 	{
@@ -953,17 +996,24 @@ var followSets = []map[token.Type]string{
 		token.T_3: "+",
 		token.T_4: "-",
 	},
-	// PROD
+	// PRODUCT
 	{
 		token.EOF: "$",
 		token.T_1: ")",
 		token.T_3: "+",
 		token.T_4: "-",
 	},
-	// PoMRep
+	// RepPLUSorMINUS0x
 	{
 		token.EOF: "$",
 		token.T_1: ")",
+	},
+	// RepTIMESorDIV0x
+	{
+		token.EOF: "$",
+		token.T_1: ")",
+		token.T_3: "+",
+		token.T_4: "-",
 	},
 	// SUM
 	{
@@ -973,7 +1023,7 @@ var followSets = []map[token.Type]string{
 	// TIMES
 	{
 		token.T_0: "(",
-		token.T_6: "num",
+		token.T_6: "repNumber1x",
 	},
 	// TIMESorDIVIDE
 	{
@@ -983,13 +1033,6 @@ var followSets = []map[token.Type]string{
 		token.T_3: "+",
 		token.T_4: "-",
 		token.T_5: "/",
-	},
-	// ToDRep
-	{
-		token.EOF: "$",
-		token.T_1: ")",
-		token.T_3: "+",
-		token.T_4: "-",
 	},
 }
 

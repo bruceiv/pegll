@@ -12,19 +12,202 @@ import(
 type Label int
 
 const(
-	EncName0R0 Label = iota
+	ATT_VALUE0R0 Label = iota
+	ATT_VALUE0R1
+	ATT_VALUE0R2
+	ATT_VALUE1R0
+	ATT_VALUE1R1
+	ATT_VALUE1R2
+	Attribute0R0
+	Attribute0R1
+	Attribute0R2
+	Attribute0R3
+	Attribute0R4
+	Attribute0R5
+	CHAR_REF0R0
+	CHAR_REF0R1
+	CHAR_REF0R2
+	CHAR_REF0R3
+	CHAR_REF1R0
+	CHAR_REF1R1
+	CHAR_REF1R2
+	CHAR_REF1R3
+	COMMENT0R0
+	COMMENT0R1
+	COMMENT0R2
+	COMMENT0R3
+	ComEnterior0R0
+	ComEnterior0R1
+	ComEnterior1R0
+	ComEnterior1R1
+	ComEnterior1R2
+	ComStart0R0
+	ComStart0R1
+	ComStart0R2
+	ComStart0R3
+	Content0R0
+	Content0R1
+	Content0R2
+	Content1R0
+	ContentAlts0R0
+	ContentAlts0R1
+	ContentAlts1R0
+	ContentAlts1R1
+	ContentAlts2R0
+	ContentAlts2R1
+	ContentAlts3R0
+	ContentAlts3R1
+	Document0R0
+	Document0R1
+	Document0R2
+	Document0R3
+	DubCondClose0R0
+	DubCondClose0R1
+	DubCondClose1R0
+	DubCondClose1R1
+	DubCondClose1R2
+	DubDash0R0
+	DubDash0R1
+	ENTITY_REF0R0
+	ENTITY_REF0R1
+	ENTITY_REF0R2
+	ENTITY_REF0R3
+	ElemCloseAlts0R0
+	ElemCloseAlts0R1
+	ElemCloseAlts0R2
+	ElemCloseAlts0R3
+	ElemCloseAlts0R4
+	ElemCloseAlts0R5
+	ElemCloseAlts0R6
+	ElemCloseAlts1R0
+	ElemCloseAlts1R1
+	Element0R0
+	Element0R1
+	Element0R2
+	Element0R3
+	Element0R4
+	Element0R5
+	EncName0R0
 	EncName0R1
 	EncName0R2
+	EncodingDecl0R0
+	EncodingDecl0R1
+	EncodingDecl0R2
+	EncodingDecl0R3
+	EncodingDecl0R4
+	Eq0R0
+	Eq0R1
+	Eq0R2
+	Eq0R3
+	Hex0R0
+	Hex0R1
+	Hex0R2
+	HexAlts0R0
+	HexAlts0R1
+	HexAlts1R0
+	HexAlts1R1
+	LetColonAlts0R0
+	LetColonAlts0R1
+	LetColonAlts1R0
+	LetColonAlts1R1
 	LetDigSymAlts0R0
 	LetDigSymAlts0R1
 	LetDigSymAlts1R0
 	LetDigSymAlts1R1
 	LetDigSymAlts2R0
 	LetDigSymAlts2R1
-	LetDigSymAltsRepx00R0
-	LetDigSymAltsRepx00R1
-	LetDigSymAltsRepx00R2
-	LetDigSymAltsRepx01R0
+	Misc0R0
+	Misc0R1
+	Misc1R0
+	Misc1R1
+	NAME0R0
+	NAME0R1
+	NAME0R2
+	NAME_CHAR0R0
+	NAME_CHAR0R1
+	NAME_CHAR1R0
+	NAME_CHAR1R1
+	NAME_CHAR2R0
+	NAME_CHAR2R1
+	NameCharRep0R0
+	NameCharRep0R1
+	NameCharRep0R2
+	NameCharRep1R0
+	OptEncodDecl0R0
+	OptEncodDecl0R1
+	OptEncodDecl1R0
+	OptXMLDecl0R0
+	OptXMLDecl0R1
+	OptXMLDecl1R0
+	Prolog0R0
+	Prolog0R1
+	Prolog0R2
+	QuoEncNam0R0
+	QuoEncNam0R1
+	QuoEncNam0R2
+	QuoEncNam0R3
+	QuoEncNam1R0
+	QuoEncNam1R1
+	QuoEncNam1R2
+	QuoEncNam1R3
+	QuoVerNum0R0
+	QuoVerNum0R1
+	QuoVerNum0R2
+	QuoVerNum0R3
+	QuoVerNum1R0
+	QuoVerNum1R1
+	QuoVerNum1R2
+	QuoVerNum1R3
+	REFERENCE0R0
+	REFERENCE0R1
+	REFERENCE1R0
+	REFERENCE1R1
+	RepHexAlts0x0R0
+	RepHexAlts0x0R1
+	RepHexAlts0x0R2
+	RepHexAlts0x1R0
+	RepLDSAlts0x0R0
+	RepLDSAlts0x0R1
+	RepLDSAlts0x0R2
+	RepLDSAlts0x1R0
+	RepMisc0x0R0
+	RepMisc0x0R1
+	RepMisc0x0R2
+	RepMisc0x1R0
+	RepNameChar0x0R0
+	RepNameChar0x0R1
+	RepNameChar0x0R2
+	RepNameChar0x1R0
+	RepSAttx0x0R0
+	RepSAttx0x0R1
+	RepSAttx0x0R2
+	RepSAttx0x1R0
+	SAtt0R0
+	SAtt0R1
+	SAtt0R2
+	SinCondClose0R0
+	SinCondClose0R1
+	SinCondClose1R0
+	SinCondClose1R1
+	SinCondClose1R2
+	SymRefAlts0R0
+	SymRefAlts0R1
+	SymRefAlts1R0
+	SymRefAlts1R1
+	VersionInfo0R0
+	VersionInfo0R1
+	VersionInfo0R2
+	VersionInfo0R3
+	VersionInfo0R4
+	VersionNum0R0
+	VersionNum0R1
+	VersionNum0R2
+	XMLDecl0R0
+	XMLDecl0R1
+	XMLDecl0R2
+	XMLDecl0R3
+	XMLDecl0R4
+	XMLDecl0R5
 )
 
 type Slot struct {
@@ -114,123 +297,1891 @@ func (s *Slot) String() string {
 }
 
 var slots = map[Label]*Slot{ 
+	ATT_VALUE0R0: {
+		symbols.NT_ATT_VALUE, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_13, 
+			symbols.NT_DubCondClose,
+		}, 
+		ATT_VALUE0R0, 
+	},
+	ATT_VALUE0R1: {
+		symbols.NT_ATT_VALUE, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_13, 
+			symbols.NT_DubCondClose,
+		}, 
+		ATT_VALUE0R1, 
+	},
+	ATT_VALUE0R2: {
+		symbols.NT_ATT_VALUE, 0, 2, 
+		symbols.Symbols{  
+			symbols.T_13, 
+			symbols.NT_DubCondClose,
+		}, 
+		ATT_VALUE0R2, 
+	},
+	ATT_VALUE1R0: {
+		symbols.NT_ATT_VALUE, 1, 0, 
+		symbols.Symbols{  
+			symbols.T_21, 
+			symbols.NT_SinCondClose,
+		}, 
+		ATT_VALUE1R0, 
+	},
+	ATT_VALUE1R1: {
+		symbols.NT_ATT_VALUE, 1, 1, 
+		symbols.Symbols{  
+			symbols.T_21, 
+			symbols.NT_SinCondClose,
+		}, 
+		ATT_VALUE1R1, 
+	},
+	ATT_VALUE1R2: {
+		symbols.NT_ATT_VALUE, 1, 2, 
+		symbols.Symbols{  
+			symbols.T_21, 
+			symbols.NT_SinCondClose,
+		}, 
+		ATT_VALUE1R2, 
+	},
+	Attribute0R0: {
+		symbols.NT_Attribute, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_NAME, 
+			symbols.T_19, 
+			symbols.T_15, 
+			symbols.T_19, 
+			symbols.NT_ATT_VALUE,
+		}, 
+		Attribute0R0, 
+	},
+	Attribute0R1: {
+		symbols.NT_Attribute, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_NAME, 
+			symbols.T_19, 
+			symbols.T_15, 
+			symbols.T_19, 
+			symbols.NT_ATT_VALUE,
+		}, 
+		Attribute0R1, 
+	},
+	Attribute0R2: {
+		symbols.NT_Attribute, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_NAME, 
+			symbols.T_19, 
+			symbols.T_15, 
+			symbols.T_19, 
+			symbols.NT_ATT_VALUE,
+		}, 
+		Attribute0R2, 
+	},
+	Attribute0R3: {
+		symbols.NT_Attribute, 0, 3, 
+		symbols.Symbols{  
+			symbols.NT_NAME, 
+			symbols.T_19, 
+			symbols.T_15, 
+			symbols.T_19, 
+			symbols.NT_ATT_VALUE,
+		}, 
+		Attribute0R3, 
+	},
+	Attribute0R4: {
+		symbols.NT_Attribute, 0, 4, 
+		symbols.Symbols{  
+			symbols.NT_NAME, 
+			symbols.T_19, 
+			symbols.T_15, 
+			symbols.T_19, 
+			symbols.NT_ATT_VALUE,
+		}, 
+		Attribute0R4, 
+	},
+	Attribute0R5: {
+		symbols.NT_Attribute, 0, 5, 
+		symbols.Symbols{  
+			symbols.NT_NAME, 
+			symbols.T_19, 
+			symbols.T_15, 
+			symbols.T_19, 
+			symbols.NT_ATT_VALUE,
+		}, 
+		Attribute0R5, 
+	},
+	CHAR_REF0R0: {
+		symbols.NT_CHAR_REF, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_2, 
+			symbols.NT_Hex, 
+			symbols.T_4,
+		}, 
+		CHAR_REF0R0, 
+	},
+	CHAR_REF0R1: {
+		symbols.NT_CHAR_REF, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_2, 
+			symbols.NT_Hex, 
+			symbols.T_4,
+		}, 
+		CHAR_REF0R1, 
+	},
+	CHAR_REF0R2: {
+		symbols.NT_CHAR_REF, 0, 2, 
+		symbols.Symbols{  
+			symbols.T_2, 
+			symbols.NT_Hex, 
+			symbols.T_4,
+		}, 
+		CHAR_REF0R2, 
+	},
+	CHAR_REF0R3: {
+		symbols.NT_CHAR_REF, 0, 3, 
+		symbols.Symbols{  
+			symbols.T_2, 
+			symbols.NT_Hex, 
+			symbols.T_4,
+		}, 
+		CHAR_REF0R3, 
+	},
+	CHAR_REF1R0: {
+		symbols.NT_CHAR_REF, 1, 0, 
+		symbols.Symbols{  
+			symbols.T_1, 
+			symbols.T_20, 
+			symbols.T_4,
+		}, 
+		CHAR_REF1R0, 
+	},
+	CHAR_REF1R1: {
+		symbols.NT_CHAR_REF, 1, 1, 
+		symbols.Symbols{  
+			symbols.T_1, 
+			symbols.T_20, 
+			symbols.T_4,
+		}, 
+		CHAR_REF1R1, 
+	},
+	CHAR_REF1R2: {
+		symbols.NT_CHAR_REF, 1, 2, 
+		symbols.Symbols{  
+			symbols.T_1, 
+			symbols.T_20, 
+			symbols.T_4,
+		}, 
+		CHAR_REF1R2, 
+	},
+	CHAR_REF1R3: {
+		symbols.NT_CHAR_REF, 1, 3, 
+		symbols.Symbols{  
+			symbols.T_1, 
+			symbols.T_20, 
+			symbols.T_4,
+		}, 
+		CHAR_REF1R3, 
+	},
+	COMMENT0R0: {
+		symbols.NT_COMMENT, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_ComStart, 
+			symbols.NT_ComEnterior, 
+			symbols.T_8,
+		}, 
+		COMMENT0R0, 
+	},
+	COMMENT0R1: {
+		symbols.NT_COMMENT, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_ComStart, 
+			symbols.NT_ComEnterior, 
+			symbols.T_8,
+		}, 
+		COMMENT0R1, 
+	},
+	COMMENT0R2: {
+		symbols.NT_COMMENT, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_ComStart, 
+			symbols.NT_ComEnterior, 
+			symbols.T_8,
+		}, 
+		COMMENT0R2, 
+	},
+	COMMENT0R3: {
+		symbols.NT_COMMENT, 0, 3, 
+		symbols.Symbols{  
+			symbols.NT_ComStart, 
+			symbols.NT_ComEnterior, 
+			symbols.T_8,
+		}, 
+		COMMENT0R3, 
+	},
+	ComEnterior0R0: {
+		symbols.NT_ComEnterior, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_DubDash,
+		}, 
+		ComEnterior0R0, 
+	},
+	ComEnterior0R1: {
+		symbols.NT_ComEnterior, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_DubDash,
+		}, 
+		ComEnterior0R1, 
+	},
+	ComEnterior1R0: {
+		symbols.NT_ComEnterior, 1, 0, 
+		symbols.Symbols{  
+			symbols.T_17, 
+			symbols.NT_ComEnterior,
+		}, 
+		ComEnterior1R0, 
+	},
+	ComEnterior1R1: {
+		symbols.NT_ComEnterior, 1, 1, 
+		symbols.Symbols{  
+			symbols.T_17, 
+			symbols.NT_ComEnterior,
+		}, 
+		ComEnterior1R1, 
+	},
+	ComEnterior1R2: {
+		symbols.NT_ComEnterior, 1, 2, 
+		symbols.Symbols{  
+			symbols.T_17, 
+			symbols.NT_ComEnterior,
+		}, 
+		ComEnterior1R2, 
+	},
+	ComStart0R0: {
+		symbols.NT_ComStart, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_7, 
+			symbols.T_16, 
+			symbols.NT_DubDash,
+		}, 
+		ComStart0R0, 
+	},
+	ComStart0R1: {
+		symbols.NT_ComStart, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_7, 
+			symbols.T_16, 
+			symbols.NT_DubDash,
+		}, 
+		ComStart0R1, 
+	},
+	ComStart0R2: {
+		symbols.NT_ComStart, 0, 2, 
+		symbols.Symbols{  
+			symbols.T_7, 
+			symbols.T_16, 
+			symbols.NT_DubDash,
+		}, 
+		ComStart0R2, 
+	},
+	ComStart0R3: {
+		symbols.NT_ComStart, 0, 3, 
+		symbols.Symbols{  
+			symbols.T_7, 
+			symbols.T_16, 
+			symbols.NT_DubDash,
+		}, 
+		ComStart0R3, 
+	},
+	Content0R0: {
+		symbols.NT_Content, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_ContentAlts, 
+			symbols.NT_Content,
+		}, 
+		Content0R0, 
+	},
+	Content0R1: {
+		symbols.NT_Content, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_ContentAlts, 
+			symbols.NT_Content,
+		}, 
+		Content0R1, 
+	},
+	Content0R2: {
+		symbols.NT_Content, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_ContentAlts, 
+			symbols.NT_Content,
+		}, 
+		Content0R2, 
+	},
+	Content1R0: {
+		symbols.NT_Content, 1, 0, 
+		symbols.Symbols{ 
+		}, 
+		Content1R0, 
+	},
+	ContentAlts0R0: {
+		symbols.NT_ContentAlts, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_COMMENT,
+		}, 
+		ContentAlts0R0, 
+	},
+	ContentAlts0R1: {
+		symbols.NT_ContentAlts, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_COMMENT,
+		}, 
+		ContentAlts0R1, 
+	},
+	ContentAlts1R0: {
+		symbols.NT_ContentAlts, 1, 0, 
+		symbols.Symbols{  
+			symbols.NT_Element,
+		}, 
+		ContentAlts1R0, 
+	},
+	ContentAlts1R1: {
+		symbols.NT_ContentAlts, 1, 1, 
+		symbols.Symbols{  
+			symbols.NT_Element,
+		}, 
+		ContentAlts1R1, 
+	},
+	ContentAlts2R0: {
+		symbols.NT_ContentAlts, 2, 0, 
+		symbols.Symbols{  
+			symbols.NT_REFERENCE,
+		}, 
+		ContentAlts2R0, 
+	},
+	ContentAlts2R1: {
+		symbols.NT_ContentAlts, 2, 1, 
+		symbols.Symbols{  
+			symbols.NT_REFERENCE,
+		}, 
+		ContentAlts2R1, 
+	},
+	ContentAlts3R0: {
+		symbols.NT_ContentAlts, 3, 0, 
+		symbols.Symbols{  
+			symbols.T_9,
+		}, 
+		ContentAlts3R0, 
+	},
+	ContentAlts3R1: {
+		symbols.NT_ContentAlts, 3, 1, 
+		symbols.Symbols{  
+			symbols.T_9,
+		}, 
+		ContentAlts3R1, 
+	},
+	Document0R0: {
+		symbols.NT_Document, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_Prolog, 
+			symbols.NT_Element, 
+			symbols.NT_RepMisc0x,
+		}, 
+		Document0R0, 
+	},
+	Document0R1: {
+		symbols.NT_Document, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_Prolog, 
+			symbols.NT_Element, 
+			symbols.NT_RepMisc0x,
+		}, 
+		Document0R1, 
+	},
+	Document0R2: {
+		symbols.NT_Document, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_Prolog, 
+			symbols.NT_Element, 
+			symbols.NT_RepMisc0x,
+		}, 
+		Document0R2, 
+	},
+	Document0R3: {
+		symbols.NT_Document, 0, 3, 
+		symbols.Symbols{  
+			symbols.NT_Prolog, 
+			symbols.NT_Element, 
+			symbols.NT_RepMisc0x,
+		}, 
+		Document0R3, 
+	},
+	DubCondClose0R0: {
+		symbols.NT_DubCondClose, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_13,
+		}, 
+		DubCondClose0R0, 
+	},
+	DubCondClose0R1: {
+		symbols.NT_DubCondClose, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_13,
+		}, 
+		DubCondClose0R1, 
+	},
+	DubCondClose1R0: {
+		symbols.NT_DubCondClose, 1, 0, 
+		symbols.Symbols{  
+			symbols.NT_SymRefAlts, 
+			symbols.NT_DubCondClose,
+		}, 
+		DubCondClose1R0, 
+	},
+	DubCondClose1R1: {
+		symbols.NT_DubCondClose, 1, 1, 
+		symbols.Symbols{  
+			symbols.NT_SymRefAlts, 
+			symbols.NT_DubCondClose,
+		}, 
+		DubCondClose1R1, 
+	},
+	DubCondClose1R2: {
+		symbols.NT_DubCondClose, 1, 2, 
+		symbols.Symbols{  
+			symbols.NT_SymRefAlts, 
+			symbols.NT_DubCondClose,
+		}, 
+		DubCondClose1R2, 
+	},
+	DubDash0R0: {
+		symbols.NT_DubDash, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_3,
+		}, 
+		DubDash0R0, 
+	},
+	DubDash0R1: {
+		symbols.NT_DubDash, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_3,
+		}, 
+		DubDash0R1, 
+	},
+	ENTITY_REF0R0: {
+		symbols.NT_ENTITY_REF, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_0, 
+			symbols.NT_NAME, 
+			symbols.T_4,
+		}, 
+		ENTITY_REF0R0, 
+	},
+	ENTITY_REF0R1: {
+		symbols.NT_ENTITY_REF, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_0, 
+			symbols.NT_NAME, 
+			symbols.T_4,
+		}, 
+		ENTITY_REF0R1, 
+	},
+	ENTITY_REF0R2: {
+		symbols.NT_ENTITY_REF, 0, 2, 
+		symbols.Symbols{  
+			symbols.T_0, 
+			symbols.NT_NAME, 
+			symbols.T_4,
+		}, 
+		ENTITY_REF0R2, 
+	},
+	ENTITY_REF0R3: {
+		symbols.NT_ENTITY_REF, 0, 3, 
+		symbols.Symbols{  
+			symbols.T_0, 
+			symbols.NT_NAME, 
+			symbols.T_4,
+		}, 
+		ENTITY_REF0R3, 
+	},
+	ElemCloseAlts0R0: {
+		symbols.NT_ElemCloseAlts, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_8, 
+			symbols.NT_Content, 
+			symbols.T_22, 
+			symbols.NT_NAME, 
+			symbols.T_19, 
+			symbols.T_8,
+		}, 
+		ElemCloseAlts0R0, 
+	},
+	ElemCloseAlts0R1: {
+		symbols.NT_ElemCloseAlts, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_8, 
+			symbols.NT_Content, 
+			symbols.T_22, 
+			symbols.NT_NAME, 
+			symbols.T_19, 
+			symbols.T_8,
+		}, 
+		ElemCloseAlts0R1, 
+	},
+	ElemCloseAlts0R2: {
+		symbols.NT_ElemCloseAlts, 0, 2, 
+		symbols.Symbols{  
+			symbols.T_8, 
+			symbols.NT_Content, 
+			symbols.T_22, 
+			symbols.NT_NAME, 
+			symbols.T_19, 
+			symbols.T_8,
+		}, 
+		ElemCloseAlts0R2, 
+	},
+	ElemCloseAlts0R3: {
+		symbols.NT_ElemCloseAlts, 0, 3, 
+		symbols.Symbols{  
+			symbols.T_8, 
+			symbols.NT_Content, 
+			symbols.T_22, 
+			symbols.NT_NAME, 
+			symbols.T_19, 
+			symbols.T_8,
+		}, 
+		ElemCloseAlts0R3, 
+	},
+	ElemCloseAlts0R4: {
+		symbols.NT_ElemCloseAlts, 0, 4, 
+		symbols.Symbols{  
+			symbols.T_8, 
+			symbols.NT_Content, 
+			symbols.T_22, 
+			symbols.NT_NAME, 
+			symbols.T_19, 
+			symbols.T_8,
+		}, 
+		ElemCloseAlts0R4, 
+	},
+	ElemCloseAlts0R5: {
+		symbols.NT_ElemCloseAlts, 0, 5, 
+		symbols.Symbols{  
+			symbols.T_8, 
+			symbols.NT_Content, 
+			symbols.T_22, 
+			symbols.NT_NAME, 
+			symbols.T_19, 
+			symbols.T_8,
+		}, 
+		ElemCloseAlts0R5, 
+	},
+	ElemCloseAlts0R6: {
+		symbols.NT_ElemCloseAlts, 0, 6, 
+		symbols.Symbols{  
+			symbols.T_8, 
+			symbols.NT_Content, 
+			symbols.T_22, 
+			symbols.NT_NAME, 
+			symbols.T_19, 
+			symbols.T_8,
+		}, 
+		ElemCloseAlts0R6, 
+	},
+	ElemCloseAlts1R0: {
+		symbols.NT_ElemCloseAlts, 1, 0, 
+		symbols.Symbols{  
+			symbols.T_23,
+		}, 
+		ElemCloseAlts1R0, 
+	},
+	ElemCloseAlts1R1: {
+		symbols.NT_ElemCloseAlts, 1, 1, 
+		symbols.Symbols{  
+			symbols.T_23,
+		}, 
+		ElemCloseAlts1R1, 
+	},
+	Element0R0: {
+		symbols.NT_Element, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_7, 
+			symbols.NT_NAME, 
+			symbols.NT_RepSAttx0x, 
+			symbols.T_19, 
+			symbols.NT_ElemCloseAlts,
+		}, 
+		Element0R0, 
+	},
+	Element0R1: {
+		symbols.NT_Element, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_7, 
+			symbols.NT_NAME, 
+			symbols.NT_RepSAttx0x, 
+			symbols.T_19, 
+			symbols.NT_ElemCloseAlts,
+		}, 
+		Element0R1, 
+	},
+	Element0R2: {
+		symbols.NT_Element, 0, 2, 
+		symbols.Symbols{  
+			symbols.T_7, 
+			symbols.NT_NAME, 
+			symbols.NT_RepSAttx0x, 
+			symbols.T_19, 
+			symbols.NT_ElemCloseAlts,
+		}, 
+		Element0R2, 
+	},
+	Element0R3: {
+		symbols.NT_Element, 0, 3, 
+		symbols.Symbols{  
+			symbols.T_7, 
+			symbols.NT_NAME, 
+			symbols.NT_RepSAttx0x, 
+			symbols.T_19, 
+			symbols.NT_ElemCloseAlts,
+		}, 
+		Element0R3, 
+	},
+	Element0R4: {
+		symbols.NT_Element, 0, 4, 
+		symbols.Symbols{  
+			symbols.T_7, 
+			symbols.NT_NAME, 
+			symbols.NT_RepSAttx0x, 
+			symbols.T_19, 
+			symbols.NT_ElemCloseAlts,
+		}, 
+		Element0R4, 
+	},
+	Element0R5: {
+		symbols.NT_Element, 0, 5, 
+		symbols.Symbols{  
+			symbols.T_7, 
+			symbols.NT_NAME, 
+			symbols.NT_RepSAttx0x, 
+			symbols.T_19, 
+			symbols.NT_ElemCloseAlts,
+		}, 
+		Element0R5, 
+	},
 	EncName0R0: {
 		symbols.NT_EncName, 0, 0, 
 		symbols.Symbols{  
-			symbols.T_2, 
-			symbols.NT_LetDigSymAltsRepx0,
+			symbols.T_17, 
+			symbols.NT_RepLDSAlts0x,
 		}, 
 		EncName0R0, 
 	},
 	EncName0R1: {
 		symbols.NT_EncName, 0, 1, 
 		symbols.Symbols{  
-			symbols.T_2, 
-			symbols.NT_LetDigSymAltsRepx0,
+			symbols.T_17, 
+			symbols.NT_RepLDSAlts0x,
 		}, 
 		EncName0R1, 
 	},
 	EncName0R2: {
 		symbols.NT_EncName, 0, 2, 
 		symbols.Symbols{  
-			symbols.T_2, 
-			symbols.NT_LetDigSymAltsRepx0,
+			symbols.T_17, 
+			symbols.NT_RepLDSAlts0x,
 		}, 
 		EncName0R2, 
+	},
+	EncodingDecl0R0: {
+		symbols.NT_EncodingDecl, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_24, 
+			symbols.T_14, 
+			symbols.NT_Eq, 
+			symbols.NT_QuoEncNam,
+		}, 
+		EncodingDecl0R0, 
+	},
+	EncodingDecl0R1: {
+		symbols.NT_EncodingDecl, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_24, 
+			symbols.T_14, 
+			symbols.NT_Eq, 
+			symbols.NT_QuoEncNam,
+		}, 
+		EncodingDecl0R1, 
+	},
+	EncodingDecl0R2: {
+		symbols.NT_EncodingDecl, 0, 2, 
+		symbols.Symbols{  
+			symbols.T_24, 
+			symbols.T_14, 
+			symbols.NT_Eq, 
+			symbols.NT_QuoEncNam,
+		}, 
+		EncodingDecl0R2, 
+	},
+	EncodingDecl0R3: {
+		symbols.NT_EncodingDecl, 0, 3, 
+		symbols.Symbols{  
+			symbols.T_24, 
+			symbols.T_14, 
+			symbols.NT_Eq, 
+			symbols.NT_QuoEncNam,
+		}, 
+		EncodingDecl0R3, 
+	},
+	EncodingDecl0R4: {
+		symbols.NT_EncodingDecl, 0, 4, 
+		symbols.Symbols{  
+			symbols.T_24, 
+			symbols.T_14, 
+			symbols.NT_Eq, 
+			symbols.NT_QuoEncNam,
+		}, 
+		EncodingDecl0R4, 
+	},
+	Eq0R0: {
+		symbols.NT_Eq, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_19, 
+			symbols.T_15, 
+			symbols.T_19,
+		}, 
+		Eq0R0, 
+	},
+	Eq0R1: {
+		symbols.NT_Eq, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_19, 
+			symbols.T_15, 
+			symbols.T_19,
+		}, 
+		Eq0R1, 
+	},
+	Eq0R2: {
+		symbols.NT_Eq, 0, 2, 
+		symbols.Symbols{  
+			symbols.T_19, 
+			symbols.T_15, 
+			symbols.T_19,
+		}, 
+		Eq0R2, 
+	},
+	Eq0R3: {
+		symbols.NT_Eq, 0, 3, 
+		symbols.Symbols{  
+			symbols.T_19, 
+			symbols.T_15, 
+			symbols.T_19,
+		}, 
+		Eq0R3, 
+	},
+	Hex0R0: {
+		symbols.NT_Hex, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_HexAlts, 
+			symbols.NT_RepHexAlts0x,
+		}, 
+		Hex0R0, 
+	},
+	Hex0R1: {
+		symbols.NT_Hex, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_HexAlts, 
+			symbols.NT_RepHexAlts0x,
+		}, 
+		Hex0R1, 
+	},
+	Hex0R2: {
+		symbols.NT_Hex, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_HexAlts, 
+			symbols.NT_RepHexAlts0x,
+		}, 
+		Hex0R2, 
+	},
+	HexAlts0R0: {
+		symbols.NT_HexAlts, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_18,
+		}, 
+		HexAlts0R0, 
+	},
+	HexAlts0R1: {
+		symbols.NT_HexAlts, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_18,
+		}, 
+		HexAlts0R1, 
+	},
+	HexAlts1R0: {
+		symbols.NT_HexAlts, 1, 0, 
+		symbols.Symbols{  
+			symbols.T_5,
+		}, 
+		HexAlts1R0, 
+	},
+	HexAlts1R1: {
+		symbols.NT_HexAlts, 1, 1, 
+		symbols.Symbols{  
+			symbols.T_5,
+		}, 
+		HexAlts1R1, 
+	},
+	LetColonAlts0R0: {
+		symbols.NT_LetColonAlts, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_17,
+		}, 
+		LetColonAlts0R0, 
+	},
+	LetColonAlts0R1: {
+		symbols.NT_LetColonAlts, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_17,
+		}, 
+		LetColonAlts0R1, 
+	},
+	LetColonAlts1R0: {
+		symbols.NT_LetColonAlts, 1, 0, 
+		symbols.Symbols{  
+			symbols.T_10,
+		}, 
+		LetColonAlts1R0, 
+	},
+	LetColonAlts1R1: {
+		symbols.NT_LetColonAlts, 1, 1, 
+		symbols.Symbols{  
+			symbols.T_10,
+		}, 
+		LetColonAlts1R1, 
 	},
 	LetDigSymAlts0R0: {
 		symbols.NT_LetDigSymAlts, 0, 0, 
 		symbols.Symbols{  
-			symbols.T_2,
+			symbols.T_17,
 		}, 
 		LetDigSymAlts0R0, 
 	},
 	LetDigSymAlts0R1: {
 		symbols.NT_LetDigSymAlts, 0, 1, 
 		symbols.Symbols{  
-			symbols.T_2,
+			symbols.T_17,
 		}, 
 		LetDigSymAlts0R1, 
 	},
 	LetDigSymAlts1R0: {
 		symbols.NT_LetDigSymAlts, 1, 0, 
 		symbols.Symbols{  
-			symbols.T_1,
+			symbols.T_18,
 		}, 
 		LetDigSymAlts1R0, 
 	},
 	LetDigSymAlts1R1: {
 		symbols.NT_LetDigSymAlts, 1, 1, 
 		symbols.Symbols{  
-			symbols.T_1,
+			symbols.T_18,
 		}, 
 		LetDigSymAlts1R1, 
 	},
 	LetDigSymAlts2R0: {
 		symbols.NT_LetDigSymAlts, 2, 0, 
 		symbols.Symbols{  
-			symbols.T_0,
+			symbols.T_11,
 		}, 
 		LetDigSymAlts2R0, 
 	},
 	LetDigSymAlts2R1: {
 		symbols.NT_LetDigSymAlts, 2, 1, 
 		symbols.Symbols{  
-			symbols.T_0,
+			symbols.T_11,
 		}, 
 		LetDigSymAlts2R1, 
 	},
-	LetDigSymAltsRepx00R0: {
-		symbols.NT_LetDigSymAltsRepx0, 0, 0, 
+	Misc0R0: {
+		symbols.NT_Misc, 0, 0, 
 		symbols.Symbols{  
-			symbols.NT_LetDigSymAlts, 
-			symbols.NT_LetDigSymAltsRepx0,
+			symbols.NT_COMMENT,
 		}, 
-		LetDigSymAltsRepx00R0, 
+		Misc0R0, 
 	},
-	LetDigSymAltsRepx00R1: {
-		symbols.NT_LetDigSymAltsRepx0, 0, 1, 
+	Misc0R1: {
+		symbols.NT_Misc, 0, 1, 
 		symbols.Symbols{  
-			symbols.NT_LetDigSymAlts, 
-			symbols.NT_LetDigSymAltsRepx0,
+			symbols.NT_COMMENT,
 		}, 
-		LetDigSymAltsRepx00R1, 
+		Misc0R1, 
 	},
-	LetDigSymAltsRepx00R2: {
-		symbols.NT_LetDigSymAltsRepx0, 0, 2, 
+	Misc1R0: {
+		symbols.NT_Misc, 1, 0, 
 		symbols.Symbols{  
-			symbols.NT_LetDigSymAlts, 
-			symbols.NT_LetDigSymAltsRepx0,
+			symbols.T_24,
 		}, 
-		LetDigSymAltsRepx00R2, 
+		Misc1R0, 
 	},
-	LetDigSymAltsRepx01R0: {
-		symbols.NT_LetDigSymAltsRepx0, 1, 0, 
+	Misc1R1: {
+		symbols.NT_Misc, 1, 1, 
+		symbols.Symbols{  
+			symbols.T_24,
+		}, 
+		Misc1R1, 
+	},
+	NAME0R0: {
+		symbols.NT_NAME, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_LetColonAlts, 
+			symbols.NT_RepNameChar0x,
+		}, 
+		NAME0R0, 
+	},
+	NAME0R1: {
+		symbols.NT_NAME, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_LetColonAlts, 
+			symbols.NT_RepNameChar0x,
+		}, 
+		NAME0R1, 
+	},
+	NAME0R2: {
+		symbols.NT_NAME, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_LetColonAlts, 
+			symbols.NT_RepNameChar0x,
+		}, 
+		NAME0R2, 
+	},
+	NAME_CHAR0R0: {
+		symbols.NT_NAME_CHAR, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_17,
+		}, 
+		NAME_CHAR0R0, 
+	},
+	NAME_CHAR0R1: {
+		symbols.NT_NAME_CHAR, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_17,
+		}, 
+		NAME_CHAR0R1, 
+	},
+	NAME_CHAR1R0: {
+		symbols.NT_NAME_CHAR, 1, 0, 
+		symbols.Symbols{  
+			symbols.T_18,
+		}, 
+		NAME_CHAR1R0, 
+	},
+	NAME_CHAR1R1: {
+		symbols.NT_NAME_CHAR, 1, 1, 
+		symbols.Symbols{  
+			symbols.T_18,
+		}, 
+		NAME_CHAR1R1, 
+	},
+	NAME_CHAR2R0: {
+		symbols.NT_NAME_CHAR, 2, 0, 
+		symbols.Symbols{  
+			symbols.T_12,
+		}, 
+		NAME_CHAR2R0, 
+	},
+	NAME_CHAR2R1: {
+		symbols.NT_NAME_CHAR, 2, 1, 
+		symbols.Symbols{  
+			symbols.T_12,
+		}, 
+		NAME_CHAR2R1, 
+	},
+	NameCharRep0R0: {
+		symbols.NT_NameCharRep, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_NAME_CHAR, 
+			symbols.NT_NameCharRep,
+		}, 
+		NameCharRep0R0, 
+	},
+	NameCharRep0R1: {
+		symbols.NT_NameCharRep, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_NAME_CHAR, 
+			symbols.NT_NameCharRep,
+		}, 
+		NameCharRep0R1, 
+	},
+	NameCharRep0R2: {
+		symbols.NT_NameCharRep, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_NAME_CHAR, 
+			symbols.NT_NameCharRep,
+		}, 
+		NameCharRep0R2, 
+	},
+	NameCharRep1R0: {
+		symbols.NT_NameCharRep, 1, 0, 
 		symbols.Symbols{ 
 		}, 
-		LetDigSymAltsRepx01R0, 
+		NameCharRep1R0, 
+	},
+	OptEncodDecl0R0: {
+		symbols.NT_OptEncodDecl, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_EncodingDecl,
+		}, 
+		OptEncodDecl0R0, 
+	},
+	OptEncodDecl0R1: {
+		symbols.NT_OptEncodDecl, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_EncodingDecl,
+		}, 
+		OptEncodDecl0R1, 
+	},
+	OptEncodDecl1R0: {
+		symbols.NT_OptEncodDecl, 1, 0, 
+		symbols.Symbols{ 
+		}, 
+		OptEncodDecl1R0, 
+	},
+	OptXMLDecl0R0: {
+		symbols.NT_OptXMLDecl, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_XMLDecl,
+		}, 
+		OptXMLDecl0R0, 
+	},
+	OptXMLDecl0R1: {
+		symbols.NT_OptXMLDecl, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_XMLDecl,
+		}, 
+		OptXMLDecl0R1, 
+	},
+	OptXMLDecl1R0: {
+		symbols.NT_OptXMLDecl, 1, 0, 
+		symbols.Symbols{ 
+		}, 
+		OptXMLDecl1R0, 
+	},
+	Prolog0R0: {
+		symbols.NT_Prolog, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_OptXMLDecl, 
+			symbols.NT_RepMisc0x,
+		}, 
+		Prolog0R0, 
+	},
+	Prolog0R1: {
+		symbols.NT_Prolog, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_OptXMLDecl, 
+			symbols.NT_RepMisc0x,
+		}, 
+		Prolog0R1, 
+	},
+	Prolog0R2: {
+		symbols.NT_Prolog, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_OptXMLDecl, 
+			symbols.NT_RepMisc0x,
+		}, 
+		Prolog0R2, 
+	},
+	QuoEncNam0R0: {
+		symbols.NT_QuoEncNam, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_21, 
+			symbols.NT_EncName, 
+			symbols.T_21,
+		}, 
+		QuoEncNam0R0, 
+	},
+	QuoEncNam0R1: {
+		symbols.NT_QuoEncNam, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_21, 
+			symbols.NT_EncName, 
+			symbols.T_21,
+		}, 
+		QuoEncNam0R1, 
+	},
+	QuoEncNam0R2: {
+		symbols.NT_QuoEncNam, 0, 2, 
+		symbols.Symbols{  
+			symbols.T_21, 
+			symbols.NT_EncName, 
+			symbols.T_21,
+		}, 
+		QuoEncNam0R2, 
+	},
+	QuoEncNam0R3: {
+		symbols.NT_QuoEncNam, 0, 3, 
+		symbols.Symbols{  
+			symbols.T_21, 
+			symbols.NT_EncName, 
+			symbols.T_21,
+		}, 
+		QuoEncNam0R3, 
+	},
+	QuoEncNam1R0: {
+		symbols.NT_QuoEncNam, 1, 0, 
+		symbols.Symbols{  
+			symbols.T_13, 
+			symbols.NT_EncName, 
+			symbols.T_13,
+		}, 
+		QuoEncNam1R0, 
+	},
+	QuoEncNam1R1: {
+		symbols.NT_QuoEncNam, 1, 1, 
+		symbols.Symbols{  
+			symbols.T_13, 
+			symbols.NT_EncName, 
+			symbols.T_13,
+		}, 
+		QuoEncNam1R1, 
+	},
+	QuoEncNam1R2: {
+		symbols.NT_QuoEncNam, 1, 2, 
+		symbols.Symbols{  
+			symbols.T_13, 
+			symbols.NT_EncName, 
+			symbols.T_13,
+		}, 
+		QuoEncNam1R2, 
+	},
+	QuoEncNam1R3: {
+		symbols.NT_QuoEncNam, 1, 3, 
+		symbols.Symbols{  
+			symbols.T_13, 
+			symbols.NT_EncName, 
+			symbols.T_13,
+		}, 
+		QuoEncNam1R3, 
+	},
+	QuoVerNum0R0: {
+		symbols.NT_QuoVerNum, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_21, 
+			symbols.NT_VersionNum, 
+			symbols.T_21,
+		}, 
+		QuoVerNum0R0, 
+	},
+	QuoVerNum0R1: {
+		symbols.NT_QuoVerNum, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_21, 
+			symbols.NT_VersionNum, 
+			symbols.T_21,
+		}, 
+		QuoVerNum0R1, 
+	},
+	QuoVerNum0R2: {
+		symbols.NT_QuoVerNum, 0, 2, 
+		symbols.Symbols{  
+			symbols.T_21, 
+			symbols.NT_VersionNum, 
+			symbols.T_21,
+		}, 
+		QuoVerNum0R2, 
+	},
+	QuoVerNum0R3: {
+		symbols.NT_QuoVerNum, 0, 3, 
+		symbols.Symbols{  
+			symbols.T_21, 
+			symbols.NT_VersionNum, 
+			symbols.T_21,
+		}, 
+		QuoVerNum0R3, 
+	},
+	QuoVerNum1R0: {
+		symbols.NT_QuoVerNum, 1, 0, 
+		symbols.Symbols{  
+			symbols.T_13, 
+			symbols.NT_VersionNum, 
+			symbols.T_13,
+		}, 
+		QuoVerNum1R0, 
+	},
+	QuoVerNum1R1: {
+		symbols.NT_QuoVerNum, 1, 1, 
+		symbols.Symbols{  
+			symbols.T_13, 
+			symbols.NT_VersionNum, 
+			symbols.T_13,
+		}, 
+		QuoVerNum1R1, 
+	},
+	QuoVerNum1R2: {
+		symbols.NT_QuoVerNum, 1, 2, 
+		symbols.Symbols{  
+			symbols.T_13, 
+			symbols.NT_VersionNum, 
+			symbols.T_13,
+		}, 
+		QuoVerNum1R2, 
+	},
+	QuoVerNum1R3: {
+		symbols.NT_QuoVerNum, 1, 3, 
+		symbols.Symbols{  
+			symbols.T_13, 
+			symbols.NT_VersionNum, 
+			symbols.T_13,
+		}, 
+		QuoVerNum1R3, 
+	},
+	REFERENCE0R0: {
+		symbols.NT_REFERENCE, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_ENTITY_REF,
+		}, 
+		REFERENCE0R0, 
+	},
+	REFERENCE0R1: {
+		symbols.NT_REFERENCE, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_ENTITY_REF,
+		}, 
+		REFERENCE0R1, 
+	},
+	REFERENCE1R0: {
+		symbols.NT_REFERENCE, 1, 0, 
+		symbols.Symbols{  
+			symbols.NT_CHAR_REF,
+		}, 
+		REFERENCE1R0, 
+	},
+	REFERENCE1R1: {
+		symbols.NT_REFERENCE, 1, 1, 
+		symbols.Symbols{  
+			symbols.NT_CHAR_REF,
+		}, 
+		REFERENCE1R1, 
+	},
+	RepHexAlts0x0R0: {
+		symbols.NT_RepHexAlts0x, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_HexAlts, 
+			symbols.NT_Hex,
+		}, 
+		RepHexAlts0x0R0, 
+	},
+	RepHexAlts0x0R1: {
+		symbols.NT_RepHexAlts0x, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_HexAlts, 
+			symbols.NT_Hex,
+		}, 
+		RepHexAlts0x0R1, 
+	},
+	RepHexAlts0x0R2: {
+		symbols.NT_RepHexAlts0x, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_HexAlts, 
+			symbols.NT_Hex,
+		}, 
+		RepHexAlts0x0R2, 
+	},
+	RepHexAlts0x1R0: {
+		symbols.NT_RepHexAlts0x, 1, 0, 
+		symbols.Symbols{ 
+		}, 
+		RepHexAlts0x1R0, 
+	},
+	RepLDSAlts0x0R0: {
+		symbols.NT_RepLDSAlts0x, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_LetDigSymAlts, 
+			symbols.NT_RepLDSAlts0x,
+		}, 
+		RepLDSAlts0x0R0, 
+	},
+	RepLDSAlts0x0R1: {
+		symbols.NT_RepLDSAlts0x, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_LetDigSymAlts, 
+			symbols.NT_RepLDSAlts0x,
+		}, 
+		RepLDSAlts0x0R1, 
+	},
+	RepLDSAlts0x0R2: {
+		symbols.NT_RepLDSAlts0x, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_LetDigSymAlts, 
+			symbols.NT_RepLDSAlts0x,
+		}, 
+		RepLDSAlts0x0R2, 
+	},
+	RepLDSAlts0x1R0: {
+		symbols.NT_RepLDSAlts0x, 1, 0, 
+		symbols.Symbols{ 
+		}, 
+		RepLDSAlts0x1R0, 
+	},
+	RepMisc0x0R0: {
+		symbols.NT_RepMisc0x, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_Misc, 
+			symbols.NT_RepMisc0x,
+		}, 
+		RepMisc0x0R0, 
+	},
+	RepMisc0x0R1: {
+		symbols.NT_RepMisc0x, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_Misc, 
+			symbols.NT_RepMisc0x,
+		}, 
+		RepMisc0x0R1, 
+	},
+	RepMisc0x0R2: {
+		symbols.NT_RepMisc0x, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_Misc, 
+			symbols.NT_RepMisc0x,
+		}, 
+		RepMisc0x0R2, 
+	},
+	RepMisc0x1R0: {
+		symbols.NT_RepMisc0x, 1, 0, 
+		symbols.Symbols{ 
+		}, 
+		RepMisc0x1R0, 
+	},
+	RepNameChar0x0R0: {
+		symbols.NT_RepNameChar0x, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_NAME_CHAR, 
+			symbols.NT_RepNameChar0x,
+		}, 
+		RepNameChar0x0R0, 
+	},
+	RepNameChar0x0R1: {
+		symbols.NT_RepNameChar0x, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_NAME_CHAR, 
+			symbols.NT_RepNameChar0x,
+		}, 
+		RepNameChar0x0R1, 
+	},
+	RepNameChar0x0R2: {
+		symbols.NT_RepNameChar0x, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_NAME_CHAR, 
+			symbols.NT_RepNameChar0x,
+		}, 
+		RepNameChar0x0R2, 
+	},
+	RepNameChar0x1R0: {
+		symbols.NT_RepNameChar0x, 1, 0, 
+		symbols.Symbols{ 
+		}, 
+		RepNameChar0x1R0, 
+	},
+	RepSAttx0x0R0: {
+		symbols.NT_RepSAttx0x, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_SAtt, 
+			symbols.NT_RepSAttx0x,
+		}, 
+		RepSAttx0x0R0, 
+	},
+	RepSAttx0x0R1: {
+		symbols.NT_RepSAttx0x, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_SAtt, 
+			symbols.NT_RepSAttx0x,
+		}, 
+		RepSAttx0x0R1, 
+	},
+	RepSAttx0x0R2: {
+		symbols.NT_RepSAttx0x, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_SAtt, 
+			symbols.NT_RepSAttx0x,
+		}, 
+		RepSAttx0x0R2, 
+	},
+	RepSAttx0x1R0: {
+		symbols.NT_RepSAttx0x, 1, 0, 
+		symbols.Symbols{ 
+		}, 
+		RepSAttx0x1R0, 
+	},
+	SAtt0R0: {
+		symbols.NT_SAtt, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_24, 
+			symbols.NT_Attribute,
+		}, 
+		SAtt0R0, 
+	},
+	SAtt0R1: {
+		symbols.NT_SAtt, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_24, 
+			symbols.NT_Attribute,
+		}, 
+		SAtt0R1, 
+	},
+	SAtt0R2: {
+		symbols.NT_SAtt, 0, 2, 
+		symbols.Symbols{  
+			symbols.T_24, 
+			symbols.NT_Attribute,
+		}, 
+		SAtt0R2, 
+	},
+	SinCondClose0R0: {
+		symbols.NT_SinCondClose, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_21,
+		}, 
+		SinCondClose0R0, 
+	},
+	SinCondClose0R1: {
+		symbols.NT_SinCondClose, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_21,
+		}, 
+		SinCondClose0R1, 
+	},
+	SinCondClose1R0: {
+		symbols.NT_SinCondClose, 1, 0, 
+		symbols.Symbols{  
+			symbols.NT_SymRefAlts, 
+			symbols.NT_SinCondClose,
+		}, 
+		SinCondClose1R0, 
+	},
+	SinCondClose1R1: {
+		symbols.NT_SinCondClose, 1, 1, 
+		symbols.Symbols{  
+			symbols.NT_SymRefAlts, 
+			symbols.NT_SinCondClose,
+		}, 
+		SinCondClose1R1, 
+	},
+	SinCondClose1R2: {
+		symbols.NT_SinCondClose, 1, 2, 
+		symbols.Symbols{  
+			symbols.NT_SymRefAlts, 
+			symbols.NT_SinCondClose,
+		}, 
+		SinCondClose1R2, 
+	},
+	SymRefAlts0R0: {
+		symbols.NT_SymRefAlts, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_6,
+		}, 
+		SymRefAlts0R0, 
+	},
+	SymRefAlts0R1: {
+		symbols.NT_SymRefAlts, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_6,
+		}, 
+		SymRefAlts0R1, 
+	},
+	SymRefAlts1R0: {
+		symbols.NT_SymRefAlts, 1, 0, 
+		symbols.Symbols{  
+			symbols.NT_REFERENCE,
+		}, 
+		SymRefAlts1R0, 
+	},
+	SymRefAlts1R1: {
+		symbols.NT_SymRefAlts, 1, 1, 
+		symbols.Symbols{  
+			symbols.NT_REFERENCE,
+		}, 
+		SymRefAlts1R1, 
+	},
+	VersionInfo0R0: {
+		symbols.NT_VersionInfo, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_24, 
+			symbols.T_25, 
+			symbols.NT_Eq, 
+			symbols.NT_QuoVerNum,
+		}, 
+		VersionInfo0R0, 
+	},
+	VersionInfo0R1: {
+		symbols.NT_VersionInfo, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_24, 
+			symbols.T_25, 
+			symbols.NT_Eq, 
+			symbols.NT_QuoVerNum,
+		}, 
+		VersionInfo0R1, 
+	},
+	VersionInfo0R2: {
+		symbols.NT_VersionInfo, 0, 2, 
+		symbols.Symbols{  
+			symbols.T_24, 
+			symbols.T_25, 
+			symbols.NT_Eq, 
+			symbols.NT_QuoVerNum,
+		}, 
+		VersionInfo0R2, 
+	},
+	VersionInfo0R3: {
+		symbols.NT_VersionInfo, 0, 3, 
+		symbols.Symbols{  
+			symbols.T_24, 
+			symbols.T_25, 
+			symbols.NT_Eq, 
+			symbols.NT_QuoVerNum,
+		}, 
+		VersionInfo0R3, 
+	},
+	VersionInfo0R4: {
+		symbols.NT_VersionInfo, 0, 4, 
+		symbols.Symbols{  
+			symbols.T_24, 
+			symbols.T_25, 
+			symbols.NT_Eq, 
+			symbols.NT_QuoVerNum,
+		}, 
+		VersionInfo0R4, 
+	},
+	VersionNum0R0: {
+		symbols.NT_VersionNum, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_NAME_CHAR, 
+			symbols.NT_NameCharRep,
+		}, 
+		VersionNum0R0, 
+	},
+	VersionNum0R1: {
+		symbols.NT_VersionNum, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_NAME_CHAR, 
+			symbols.NT_NameCharRep,
+		}, 
+		VersionNum0R1, 
+	},
+	VersionNum0R2: {
+		symbols.NT_VersionNum, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_NAME_CHAR, 
+			symbols.NT_NameCharRep,
+		}, 
+		VersionNum0R2, 
+	},
+	XMLDecl0R0: {
+		symbols.NT_XMLDecl, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_27, 
+			symbols.NT_VersionInfo, 
+			symbols.NT_OptEncodDecl, 
+			symbols.T_19, 
+			symbols.T_26,
+		}, 
+		XMLDecl0R0, 
+	},
+	XMLDecl0R1: {
+		symbols.NT_XMLDecl, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_27, 
+			symbols.NT_VersionInfo, 
+			symbols.NT_OptEncodDecl, 
+			symbols.T_19, 
+			symbols.T_26,
+		}, 
+		XMLDecl0R1, 
+	},
+	XMLDecl0R2: {
+		symbols.NT_XMLDecl, 0, 2, 
+		symbols.Symbols{  
+			symbols.T_27, 
+			symbols.NT_VersionInfo, 
+			symbols.NT_OptEncodDecl, 
+			symbols.T_19, 
+			symbols.T_26,
+		}, 
+		XMLDecl0R2, 
+	},
+	XMLDecl0R3: {
+		symbols.NT_XMLDecl, 0, 3, 
+		symbols.Symbols{  
+			symbols.T_27, 
+			symbols.NT_VersionInfo, 
+			symbols.NT_OptEncodDecl, 
+			symbols.T_19, 
+			symbols.T_26,
+		}, 
+		XMLDecl0R3, 
+	},
+	XMLDecl0R4: {
+		symbols.NT_XMLDecl, 0, 4, 
+		symbols.Symbols{  
+			symbols.T_27, 
+			symbols.NT_VersionInfo, 
+			symbols.NT_OptEncodDecl, 
+			symbols.T_19, 
+			symbols.T_26,
+		}, 
+		XMLDecl0R4, 
+	},
+	XMLDecl0R5: {
+		symbols.NT_XMLDecl, 0, 5, 
+		symbols.Symbols{  
+			symbols.T_27, 
+			symbols.NT_VersionInfo, 
+			symbols.NT_OptEncodDecl, 
+			symbols.T_19, 
+			symbols.T_26,
+		}, 
+		XMLDecl0R5, 
 	},
 }
 
 var slotIndex = map[Index]Label { 
+	Index{ symbols.NT_ATT_VALUE,0,0 }: ATT_VALUE0R0,
+	Index{ symbols.NT_ATT_VALUE,0,1 }: ATT_VALUE0R1,
+	Index{ symbols.NT_ATT_VALUE,0,2 }: ATT_VALUE0R2,
+	Index{ symbols.NT_ATT_VALUE,1,0 }: ATT_VALUE1R0,
+	Index{ symbols.NT_ATT_VALUE,1,1 }: ATT_VALUE1R1,
+	Index{ symbols.NT_ATT_VALUE,1,2 }: ATT_VALUE1R2,
+	Index{ symbols.NT_Attribute,0,0 }: Attribute0R0,
+	Index{ symbols.NT_Attribute,0,1 }: Attribute0R1,
+	Index{ symbols.NT_Attribute,0,2 }: Attribute0R2,
+	Index{ symbols.NT_Attribute,0,3 }: Attribute0R3,
+	Index{ symbols.NT_Attribute,0,4 }: Attribute0R4,
+	Index{ symbols.NT_Attribute,0,5 }: Attribute0R5,
+	Index{ symbols.NT_CHAR_REF,0,0 }: CHAR_REF0R0,
+	Index{ symbols.NT_CHAR_REF,0,1 }: CHAR_REF0R1,
+	Index{ symbols.NT_CHAR_REF,0,2 }: CHAR_REF0R2,
+	Index{ symbols.NT_CHAR_REF,0,3 }: CHAR_REF0R3,
+	Index{ symbols.NT_CHAR_REF,1,0 }: CHAR_REF1R0,
+	Index{ symbols.NT_CHAR_REF,1,1 }: CHAR_REF1R1,
+	Index{ symbols.NT_CHAR_REF,1,2 }: CHAR_REF1R2,
+	Index{ symbols.NT_CHAR_REF,1,3 }: CHAR_REF1R3,
+	Index{ symbols.NT_COMMENT,0,0 }: COMMENT0R0,
+	Index{ symbols.NT_COMMENT,0,1 }: COMMENT0R1,
+	Index{ symbols.NT_COMMENT,0,2 }: COMMENT0R2,
+	Index{ symbols.NT_COMMENT,0,3 }: COMMENT0R3,
+	Index{ symbols.NT_ComEnterior,0,0 }: ComEnterior0R0,
+	Index{ symbols.NT_ComEnterior,0,1 }: ComEnterior0R1,
+	Index{ symbols.NT_ComEnterior,1,0 }: ComEnterior1R0,
+	Index{ symbols.NT_ComEnterior,1,1 }: ComEnterior1R1,
+	Index{ symbols.NT_ComEnterior,1,2 }: ComEnterior1R2,
+	Index{ symbols.NT_ComStart,0,0 }: ComStart0R0,
+	Index{ symbols.NT_ComStart,0,1 }: ComStart0R1,
+	Index{ symbols.NT_ComStart,0,2 }: ComStart0R2,
+	Index{ symbols.NT_ComStart,0,3 }: ComStart0R3,
+	Index{ symbols.NT_Content,0,0 }: Content0R0,
+	Index{ symbols.NT_Content,0,1 }: Content0R1,
+	Index{ symbols.NT_Content,0,2 }: Content0R2,
+	Index{ symbols.NT_Content,1,0 }: Content1R0,
+	Index{ symbols.NT_ContentAlts,0,0 }: ContentAlts0R0,
+	Index{ symbols.NT_ContentAlts,0,1 }: ContentAlts0R1,
+	Index{ symbols.NT_ContentAlts,1,0 }: ContentAlts1R0,
+	Index{ symbols.NT_ContentAlts,1,1 }: ContentAlts1R1,
+	Index{ symbols.NT_ContentAlts,2,0 }: ContentAlts2R0,
+	Index{ symbols.NT_ContentAlts,2,1 }: ContentAlts2R1,
+	Index{ symbols.NT_ContentAlts,3,0 }: ContentAlts3R0,
+	Index{ symbols.NT_ContentAlts,3,1 }: ContentAlts3R1,
+	Index{ symbols.NT_Document,0,0 }: Document0R0,
+	Index{ symbols.NT_Document,0,1 }: Document0R1,
+	Index{ symbols.NT_Document,0,2 }: Document0R2,
+	Index{ symbols.NT_Document,0,3 }: Document0R3,
+	Index{ symbols.NT_DubCondClose,0,0 }: DubCondClose0R0,
+	Index{ symbols.NT_DubCondClose,0,1 }: DubCondClose0R1,
+	Index{ symbols.NT_DubCondClose,1,0 }: DubCondClose1R0,
+	Index{ symbols.NT_DubCondClose,1,1 }: DubCondClose1R1,
+	Index{ symbols.NT_DubCondClose,1,2 }: DubCondClose1R2,
+	Index{ symbols.NT_DubDash,0,0 }: DubDash0R0,
+	Index{ symbols.NT_DubDash,0,1 }: DubDash0R1,
+	Index{ symbols.NT_ENTITY_REF,0,0 }: ENTITY_REF0R0,
+	Index{ symbols.NT_ENTITY_REF,0,1 }: ENTITY_REF0R1,
+	Index{ symbols.NT_ENTITY_REF,0,2 }: ENTITY_REF0R2,
+	Index{ symbols.NT_ENTITY_REF,0,3 }: ENTITY_REF0R3,
+	Index{ symbols.NT_ElemCloseAlts,0,0 }: ElemCloseAlts0R0,
+	Index{ symbols.NT_ElemCloseAlts,0,1 }: ElemCloseAlts0R1,
+	Index{ symbols.NT_ElemCloseAlts,0,2 }: ElemCloseAlts0R2,
+	Index{ symbols.NT_ElemCloseAlts,0,3 }: ElemCloseAlts0R3,
+	Index{ symbols.NT_ElemCloseAlts,0,4 }: ElemCloseAlts0R4,
+	Index{ symbols.NT_ElemCloseAlts,0,5 }: ElemCloseAlts0R5,
+	Index{ symbols.NT_ElemCloseAlts,0,6 }: ElemCloseAlts0R6,
+	Index{ symbols.NT_ElemCloseAlts,1,0 }: ElemCloseAlts1R0,
+	Index{ symbols.NT_ElemCloseAlts,1,1 }: ElemCloseAlts1R1,
+	Index{ symbols.NT_Element,0,0 }: Element0R0,
+	Index{ symbols.NT_Element,0,1 }: Element0R1,
+	Index{ symbols.NT_Element,0,2 }: Element0R2,
+	Index{ symbols.NT_Element,0,3 }: Element0R3,
+	Index{ symbols.NT_Element,0,4 }: Element0R4,
+	Index{ symbols.NT_Element,0,5 }: Element0R5,
 	Index{ symbols.NT_EncName,0,0 }: EncName0R0,
 	Index{ symbols.NT_EncName,0,1 }: EncName0R1,
 	Index{ symbols.NT_EncName,0,2 }: EncName0R2,
+	Index{ symbols.NT_EncodingDecl,0,0 }: EncodingDecl0R0,
+	Index{ symbols.NT_EncodingDecl,0,1 }: EncodingDecl0R1,
+	Index{ symbols.NT_EncodingDecl,0,2 }: EncodingDecl0R2,
+	Index{ symbols.NT_EncodingDecl,0,3 }: EncodingDecl0R3,
+	Index{ symbols.NT_EncodingDecl,0,4 }: EncodingDecl0R4,
+	Index{ symbols.NT_Eq,0,0 }: Eq0R0,
+	Index{ symbols.NT_Eq,0,1 }: Eq0R1,
+	Index{ symbols.NT_Eq,0,2 }: Eq0R2,
+	Index{ symbols.NT_Eq,0,3 }: Eq0R3,
+	Index{ symbols.NT_Hex,0,0 }: Hex0R0,
+	Index{ symbols.NT_Hex,0,1 }: Hex0R1,
+	Index{ symbols.NT_Hex,0,2 }: Hex0R2,
+	Index{ symbols.NT_HexAlts,0,0 }: HexAlts0R0,
+	Index{ symbols.NT_HexAlts,0,1 }: HexAlts0R1,
+	Index{ symbols.NT_HexAlts,1,0 }: HexAlts1R0,
+	Index{ symbols.NT_HexAlts,1,1 }: HexAlts1R1,
+	Index{ symbols.NT_LetColonAlts,0,0 }: LetColonAlts0R0,
+	Index{ symbols.NT_LetColonAlts,0,1 }: LetColonAlts0R1,
+	Index{ symbols.NT_LetColonAlts,1,0 }: LetColonAlts1R0,
+	Index{ symbols.NT_LetColonAlts,1,1 }: LetColonAlts1R1,
 	Index{ symbols.NT_LetDigSymAlts,0,0 }: LetDigSymAlts0R0,
 	Index{ symbols.NT_LetDigSymAlts,0,1 }: LetDigSymAlts0R1,
 	Index{ symbols.NT_LetDigSymAlts,1,0 }: LetDigSymAlts1R0,
 	Index{ symbols.NT_LetDigSymAlts,1,1 }: LetDigSymAlts1R1,
 	Index{ symbols.NT_LetDigSymAlts,2,0 }: LetDigSymAlts2R0,
 	Index{ symbols.NT_LetDigSymAlts,2,1 }: LetDigSymAlts2R1,
-	Index{ symbols.NT_LetDigSymAltsRepx0,0,0 }: LetDigSymAltsRepx00R0,
-	Index{ symbols.NT_LetDigSymAltsRepx0,0,1 }: LetDigSymAltsRepx00R1,
-	Index{ symbols.NT_LetDigSymAltsRepx0,0,2 }: LetDigSymAltsRepx00R2,
-	Index{ symbols.NT_LetDigSymAltsRepx0,1,0 }: LetDigSymAltsRepx01R0,
+	Index{ symbols.NT_Misc,0,0 }: Misc0R0,
+	Index{ symbols.NT_Misc,0,1 }: Misc0R1,
+	Index{ symbols.NT_Misc,1,0 }: Misc1R0,
+	Index{ symbols.NT_Misc,1,1 }: Misc1R1,
+	Index{ symbols.NT_NAME,0,0 }: NAME0R0,
+	Index{ symbols.NT_NAME,0,1 }: NAME0R1,
+	Index{ symbols.NT_NAME,0,2 }: NAME0R2,
+	Index{ symbols.NT_NAME_CHAR,0,0 }: NAME_CHAR0R0,
+	Index{ symbols.NT_NAME_CHAR,0,1 }: NAME_CHAR0R1,
+	Index{ symbols.NT_NAME_CHAR,1,0 }: NAME_CHAR1R0,
+	Index{ symbols.NT_NAME_CHAR,1,1 }: NAME_CHAR1R1,
+	Index{ symbols.NT_NAME_CHAR,2,0 }: NAME_CHAR2R0,
+	Index{ symbols.NT_NAME_CHAR,2,1 }: NAME_CHAR2R1,
+	Index{ symbols.NT_NameCharRep,0,0 }: NameCharRep0R0,
+	Index{ symbols.NT_NameCharRep,0,1 }: NameCharRep0R1,
+	Index{ symbols.NT_NameCharRep,0,2 }: NameCharRep0R2,
+	Index{ symbols.NT_NameCharRep,1,0 }: NameCharRep1R0,
+	Index{ symbols.NT_OptEncodDecl,0,0 }: OptEncodDecl0R0,
+	Index{ symbols.NT_OptEncodDecl,0,1 }: OptEncodDecl0R1,
+	Index{ symbols.NT_OptEncodDecl,1,0 }: OptEncodDecl1R0,
+	Index{ symbols.NT_OptXMLDecl,0,0 }: OptXMLDecl0R0,
+	Index{ symbols.NT_OptXMLDecl,0,1 }: OptXMLDecl0R1,
+	Index{ symbols.NT_OptXMLDecl,1,0 }: OptXMLDecl1R0,
+	Index{ symbols.NT_Prolog,0,0 }: Prolog0R0,
+	Index{ symbols.NT_Prolog,0,1 }: Prolog0R1,
+	Index{ symbols.NT_Prolog,0,2 }: Prolog0R2,
+	Index{ symbols.NT_QuoEncNam,0,0 }: QuoEncNam0R0,
+	Index{ symbols.NT_QuoEncNam,0,1 }: QuoEncNam0R1,
+	Index{ symbols.NT_QuoEncNam,0,2 }: QuoEncNam0R2,
+	Index{ symbols.NT_QuoEncNam,0,3 }: QuoEncNam0R3,
+	Index{ symbols.NT_QuoEncNam,1,0 }: QuoEncNam1R0,
+	Index{ symbols.NT_QuoEncNam,1,1 }: QuoEncNam1R1,
+	Index{ symbols.NT_QuoEncNam,1,2 }: QuoEncNam1R2,
+	Index{ symbols.NT_QuoEncNam,1,3 }: QuoEncNam1R3,
+	Index{ symbols.NT_QuoVerNum,0,0 }: QuoVerNum0R0,
+	Index{ symbols.NT_QuoVerNum,0,1 }: QuoVerNum0R1,
+	Index{ symbols.NT_QuoVerNum,0,2 }: QuoVerNum0R2,
+	Index{ symbols.NT_QuoVerNum,0,3 }: QuoVerNum0R3,
+	Index{ symbols.NT_QuoVerNum,1,0 }: QuoVerNum1R0,
+	Index{ symbols.NT_QuoVerNum,1,1 }: QuoVerNum1R1,
+	Index{ symbols.NT_QuoVerNum,1,2 }: QuoVerNum1R2,
+	Index{ symbols.NT_QuoVerNum,1,3 }: QuoVerNum1R3,
+	Index{ symbols.NT_REFERENCE,0,0 }: REFERENCE0R0,
+	Index{ symbols.NT_REFERENCE,0,1 }: REFERENCE0R1,
+	Index{ symbols.NT_REFERENCE,1,0 }: REFERENCE1R0,
+	Index{ symbols.NT_REFERENCE,1,1 }: REFERENCE1R1,
+	Index{ symbols.NT_RepHexAlts0x,0,0 }: RepHexAlts0x0R0,
+	Index{ symbols.NT_RepHexAlts0x,0,1 }: RepHexAlts0x0R1,
+	Index{ symbols.NT_RepHexAlts0x,0,2 }: RepHexAlts0x0R2,
+	Index{ symbols.NT_RepHexAlts0x,1,0 }: RepHexAlts0x1R0,
+	Index{ symbols.NT_RepLDSAlts0x,0,0 }: RepLDSAlts0x0R0,
+	Index{ symbols.NT_RepLDSAlts0x,0,1 }: RepLDSAlts0x0R1,
+	Index{ symbols.NT_RepLDSAlts0x,0,2 }: RepLDSAlts0x0R2,
+	Index{ symbols.NT_RepLDSAlts0x,1,0 }: RepLDSAlts0x1R0,
+	Index{ symbols.NT_RepMisc0x,0,0 }: RepMisc0x0R0,
+	Index{ symbols.NT_RepMisc0x,0,1 }: RepMisc0x0R1,
+	Index{ symbols.NT_RepMisc0x,0,2 }: RepMisc0x0R2,
+	Index{ symbols.NT_RepMisc0x,1,0 }: RepMisc0x1R0,
+	Index{ symbols.NT_RepNameChar0x,0,0 }: RepNameChar0x0R0,
+	Index{ symbols.NT_RepNameChar0x,0,1 }: RepNameChar0x0R1,
+	Index{ symbols.NT_RepNameChar0x,0,2 }: RepNameChar0x0R2,
+	Index{ symbols.NT_RepNameChar0x,1,0 }: RepNameChar0x1R0,
+	Index{ symbols.NT_RepSAttx0x,0,0 }: RepSAttx0x0R0,
+	Index{ symbols.NT_RepSAttx0x,0,1 }: RepSAttx0x0R1,
+	Index{ symbols.NT_RepSAttx0x,0,2 }: RepSAttx0x0R2,
+	Index{ symbols.NT_RepSAttx0x,1,0 }: RepSAttx0x1R0,
+	Index{ symbols.NT_SAtt,0,0 }: SAtt0R0,
+	Index{ symbols.NT_SAtt,0,1 }: SAtt0R1,
+	Index{ symbols.NT_SAtt,0,2 }: SAtt0R2,
+	Index{ symbols.NT_SinCondClose,0,0 }: SinCondClose0R0,
+	Index{ symbols.NT_SinCondClose,0,1 }: SinCondClose0R1,
+	Index{ symbols.NT_SinCondClose,1,0 }: SinCondClose1R0,
+	Index{ symbols.NT_SinCondClose,1,1 }: SinCondClose1R1,
+	Index{ symbols.NT_SinCondClose,1,2 }: SinCondClose1R2,
+	Index{ symbols.NT_SymRefAlts,0,0 }: SymRefAlts0R0,
+	Index{ symbols.NT_SymRefAlts,0,1 }: SymRefAlts0R1,
+	Index{ symbols.NT_SymRefAlts,1,0 }: SymRefAlts1R0,
+	Index{ symbols.NT_SymRefAlts,1,1 }: SymRefAlts1R1,
+	Index{ symbols.NT_VersionInfo,0,0 }: VersionInfo0R0,
+	Index{ symbols.NT_VersionInfo,0,1 }: VersionInfo0R1,
+	Index{ symbols.NT_VersionInfo,0,2 }: VersionInfo0R2,
+	Index{ symbols.NT_VersionInfo,0,3 }: VersionInfo0R3,
+	Index{ symbols.NT_VersionInfo,0,4 }: VersionInfo0R4,
+	Index{ symbols.NT_VersionNum,0,0 }: VersionNum0R0,
+	Index{ symbols.NT_VersionNum,0,1 }: VersionNum0R1,
+	Index{ symbols.NT_VersionNum,0,2 }: VersionNum0R2,
+	Index{ symbols.NT_XMLDecl,0,0 }: XMLDecl0R0,
+	Index{ symbols.NT_XMLDecl,0,1 }: XMLDecl0R1,
+	Index{ symbols.NT_XMLDecl,0,2 }: XMLDecl0R2,
+	Index{ symbols.NT_XMLDecl,0,3 }: XMLDecl0R3,
+	Index{ symbols.NT_XMLDecl,0,4 }: XMLDecl0R4,
+	Index{ symbols.NT_XMLDecl,0,5 }: XMLDecl0R5,
 }
 
 var alternates = map[symbols.NT][]Label{ 
+	symbols.NT_Document:[]Label{ Document0R0 },
+	symbols.NT_Prolog:[]Label{ Prolog0R0 },
+	symbols.NT_XMLDecl:[]Label{ XMLDecl0R0 },
+	symbols.NT_OptXMLDecl:[]Label{ OptXMLDecl0R0,OptXMLDecl1R0 },
+	symbols.NT_VersionInfo:[]Label{ VersionInfo0R0 },
+	symbols.NT_QuoVerNum:[]Label{ QuoVerNum0R0,QuoVerNum1R0 },
+	symbols.NT_VersionNum:[]Label{ VersionNum0R0 },
+	symbols.NT_NameCharRep:[]Label{ NameCharRep0R0,NameCharRep1R0 },
+	symbols.NT_EncodingDecl:[]Label{ EncodingDecl0R0 },
+	symbols.NT_QuoEncNam:[]Label{ QuoEncNam0R0,QuoEncNam1R0 },
+	symbols.NT_OptEncodDecl:[]Label{ OptEncodDecl0R0,OptEncodDecl1R0 },
+	symbols.NT_ATT_VALUE:[]Label{ ATT_VALUE0R0,ATT_VALUE1R0 },
+	symbols.NT_SinCondClose:[]Label{ SinCondClose0R0,SinCondClose1R0 },
+	symbols.NT_DubCondClose:[]Label{ DubCondClose0R0,DubCondClose1R0 },
+	symbols.NT_SymRefAlts:[]Label{ SymRefAlts0R0,SymRefAlts1R0 },
+	symbols.NT_REFERENCE:[]Label{ REFERENCE0R0,REFERENCE1R0 },
+	symbols.NT_ENTITY_REF:[]Label{ ENTITY_REF0R0 },
+	symbols.NT_CHAR_REF:[]Label{ CHAR_REF0R0,CHAR_REF1R0 },
+	symbols.NT_Hex:[]Label{ Hex0R0 },
+	symbols.NT_RepHexAlts0x:[]Label{ RepHexAlts0x0R0,RepHexAlts0x1R0 },
+	symbols.NT_HexAlts:[]Label{ HexAlts0R0,HexAlts1R0 },
+	symbols.NT_Content:[]Label{ Content0R0,Content1R0 },
+	symbols.NT_ContentAlts:[]Label{ ContentAlts0R0,ContentAlts1R0,ContentAlts2R0,ContentAlts3R0 },
+	symbols.NT_Misc:[]Label{ Misc0R0,Misc1R0 },
+	symbols.NT_RepMisc0x:[]Label{ RepMisc0x0R0,RepMisc0x1R0 },
+	symbols.NT_COMMENT:[]Label{ COMMENT0R0 },
+	symbols.NT_ComStart:[]Label{ ComStart0R0 },
+	symbols.NT_DubDash:[]Label{ DubDash0R0 },
+	symbols.NT_ComEnterior:[]Label{ ComEnterior0R0,ComEnterior1R0 },
+	symbols.NT_Element:[]Label{ Element0R0 },
+	symbols.NT_SAtt:[]Label{ SAtt0R0 },
+	symbols.NT_RepSAttx0x:[]Label{ RepSAttx0x0R0,RepSAttx0x1R0 },
+	symbols.NT_ElemCloseAlts:[]Label{ ElemCloseAlts0R0,ElemCloseAlts1R0 },
+	symbols.NT_Attribute:[]Label{ Attribute0R0 },
+	symbols.NT_Eq:[]Label{ Eq0R0 },
+	symbols.NT_NAME:[]Label{ NAME0R0 },
+	symbols.NT_LetColonAlts:[]Label{ LetColonAlts0R0,LetColonAlts1R0 },
+	symbols.NT_RepNameChar0x:[]Label{ RepNameChar0x0R0,RepNameChar0x1R0 },
+	symbols.NT_NAME_CHAR:[]Label{ NAME_CHAR0R0,NAME_CHAR1R0,NAME_CHAR2R0 },
 	symbols.NT_EncName:[]Label{ EncName0R0 },
-	symbols.NT_LetDigSymAltsRepx0:[]Label{ LetDigSymAltsRepx00R0,LetDigSymAltsRepx01R0 },
+	symbols.NT_RepLDSAlts0x:[]Label{ RepLDSAlts0x0R0,RepLDSAlts0x1R0 },
 	symbols.NT_LetDigSymAlts:[]Label{ LetDigSymAlts0R0,LetDigSymAlts1R0,LetDigSymAlts2R0 },
 }
 

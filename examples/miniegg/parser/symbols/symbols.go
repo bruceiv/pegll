@@ -15,10 +15,10 @@ func (T) isSymbol() {}
 type NT int
 const( 
 	NT_Expr NT = iota
-	NT_ExprRep 
 	NT_Grammar 
+	NT_RepExpr0x 
+	NT_RepRule0x 
 	NT_Rule 
-	NT_RuleRep 
 )
 
 // T is the type of terminals symbols
@@ -58,10 +58,10 @@ func (t T) String() string {
 
 var ntToString = []string { 
 	"Expr", /* NT_Expr */
-	"ExprRep", /* NT_ExprRep */
 	"Grammar", /* NT_Grammar */
-	"Rule", /* NT_Rule */
-	"RuleRep", /* NT_RuleRep */ 
+	"RepExpr0x", /* NT_RepExpr0x */
+	"RepRule0x", /* NT_RepRule0x */
+	"Rule", /* NT_Rule */ 
 }
 
 var tToString = []string { 
@@ -73,8 +73,8 @@ var tToString = []string {
 
 var stringNT = map[string]NT{ 
 	"Expr":NT_Expr,
-	"ExprRep":NT_ExprRep,
 	"Grammar":NT_Grammar,
+	"RepExpr0x":NT_RepExpr0x,
+	"RepRule0x":NT_RepRule0x,
 	"Rule":NT_Rule,
-	"RuleRep":NT_RuleRep,
 }

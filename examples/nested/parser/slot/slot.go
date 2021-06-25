@@ -244,8 +244,8 @@ var slotIndex = map[Index]Label {
 
 var alternates = map[symbols.NT][]Label{ 
 	symbols.NT_String:[]Label{ String0R0 },
-	symbols.NT_ParensOrChar:[]Label{ ParensOrChar0R0,ParensOrChar1R0 },
 	symbols.NT_Content:[]Label{ Content0R0,Content1R0 },
 	symbols.NT_Parens:[]Label{ Parens0R0 },
+	symbols.NT_ParensOrChar:[]Label{ ParensOrChar0R0,ParensOrChar1R0 },
 }
 

@@ -127,43 +127,129 @@ const(
     T_18  // . 
     T_19  // / 
     T_20  // /= 
-    T_21  // : 
-    T_22  // ; 
-    T_23  // < 
-    T_24  // << 
-    T_25  // <<= 
-    T_26  // <= 
-    T_27  // = 
-    T_28  // == 
-    T_29  // > 
-    T_30  // >= 
-    T_31  // >> 
-    T_32  // >>= 
-    T_33  // >>> 
-    T_34  // >>>= 
-    T_35  // ? 
-    T_36  // @ 
-    T_37  // [ 
-    T_38  // ] 
-    T_39  // ^ 
-    T_40  // ^= 
-    T_41  // block_comment 
-    T_42  // escCharSp 
-    T_43  // line_comment 
-    T_44  // nEq 
-    T_45  // newline 
-    T_46  // notEqAnd 
-    T_47  // notEqCar 
-    T_48  // notEqCar2 
-    T_49  // notEqPipe 
-    T_50  // notEqPlus 
-    T_51  // notEqSlDash 
-    T_52  // { 
-    T_53  // | 
-    T_54  // |= 
-    T_55  // || 
-    T_56  // } 
-    T_57  // ~ 
+    T_21  // 0 
+    T_22  // : 
+    T_23  // ; 
+    T_24  // < 
+    T_25  // << 
+    T_26  // <<= 
+    T_27  // <= 
+    T_28  // = 
+    T_29  // == 
+    T_30  // > 
+    T_31  // >= 
+    T_32  // >> 
+    T_33  // >>= 
+    T_34  // >>> 
+    T_35  // >>>= 
+    T_36  // ? 
+    T_37  // @ 
+    T_38  // Cls 
+    T_39  // Intf 
+    T_40  // X 
+    T_41  // [ 
+    T_42  // ] 
+    T_43  // ^ 
+    T_44  // ^= 
+    T_45  // abstract 
+    T_46  // any4567 
+    T_47  // anyCarSl 
+    T_48  // assert 
+    T_49  // binaryExponent 
+    T_50  // block_comment 
+    T_51  // boolean 
+    T_52  // break 
+    T_53  // byte 
+    T_54  // carrot 
+    T_55  // case 
+    T_56  // catch 
+    T_57  // char 
+    T_58  // continue 
+    T_59  // default 
+    T_60  // do 
+    T_61  // dot 
+    T_62  // double 
+    T_63  // dubQuo 
+    T_64  // dubSlash 
+    T_65  // else 
+    T_66  // enum 
+    T_67  // esc 
+    T_68  // escCharSp 
+    T_69  // exponent 
+    T_70  // extends 
+    T_71  // fF_dD 
+    T_72  // false 
+    T_73  // final 
+    T_74  // finally 
+    T_75  // float 
+    T_76  // for 
+    T_77  // hexDigit 
+    T_78  // if 
+    T_79  // implements 
+    T_80  // import 
+    T_81  // instanceof 
+    T_82  // int 
+    T_83  // int03 
+    T_84  // int03Two07 
+    T_85  // int07 
+    T_86  // let 
+    T_87  // line_comment 
+    T_88  // long 
+    T_89  // nEq 
+    T_90  // native 
+    T_91  // new 
+    T_92  // newline 
+    T_93  // notEqAnd 
+    T_94  // notEqCar 
+    T_95  // notEqCar2 
+    T_96  // notEqPipe 
+    T_97  // notEqPlus 
+    T_98  // notEqSlDash 
+    T_99  // notKeyword 
+    T_100  // notLorD 
+    T_101  // null 
+    T_102  // num 
+    T_103  // octalNumeral 
+    T_104  // onenine 
+    T_105  // optExpo 
+    T_106  // optOneL 
+    T_107  // optfFdD 
+    T_108  // package 
+    T_109  // private 
+    T_110  // protected 
+    T_111  // public 
+    T_112  // repDig0x 
+    T_113  // repDig1x 
+    T_114  // repHex0x 
+    T_115  // repHex1x 
+    T_116  // repNumx0 
+    T_117  // return 
+    T_118  // short 
+    T_119  // sinQuo 
+    T_120  // static 
+    T_121  // strictfp 
+    T_122  // super 
+    T_123  // switch 
+    T_124  // synchronized 
+    T_125  // this 
+    T_126  // throw 
+    T_127  // throws 
+    T_128  // transient 
+    T_129  // true 
+    T_130  // try 
+    T_131  // two07 
+    T_132  // u 
+    T_133  // void 
+    T_134  // volatile 
+    T_135  // while 
+    T_136  // x 
+    T_137  // ze 
+    T_138  // { 
+    T_139  // | 
+    T_140  // |= 
+    T_141  // || 
+    T_142  // } 
+    T_143  // ~ 
 )
 
 var TypeToString = []string{ 
@@ -227,6 +313,92 @@ var TypeToString = []string{
     "T_55",
     "T_56",
     "T_57",
+    "T_58",
+    "T_59",
+    "T_60",
+    "T_61",
+    "T_62",
+    "T_63",
+    "T_64",
+    "T_65",
+    "T_66",
+    "T_67",
+    "T_68",
+    "T_69",
+    "T_70",
+    "T_71",
+    "T_72",
+    "T_73",
+    "T_74",
+    "T_75",
+    "T_76",
+    "T_77",
+    "T_78",
+    "T_79",
+    "T_80",
+    "T_81",
+    "T_82",
+    "T_83",
+    "T_84",
+    "T_85",
+    "T_86",
+    "T_87",
+    "T_88",
+    "T_89",
+    "T_90",
+    "T_91",
+    "T_92",
+    "T_93",
+    "T_94",
+    "T_95",
+    "T_96",
+    "T_97",
+    "T_98",
+    "T_99",
+    "T_100",
+    "T_101",
+    "T_102",
+    "T_103",
+    "T_104",
+    "T_105",
+    "T_106",
+    "T_107",
+    "T_108",
+    "T_109",
+    "T_110",
+    "T_111",
+    "T_112",
+    "T_113",
+    "T_114",
+    "T_115",
+    "T_116",
+    "T_117",
+    "T_118",
+    "T_119",
+    "T_120",
+    "T_121",
+    "T_122",
+    "T_123",
+    "T_124",
+    "T_125",
+    "T_126",
+    "T_127",
+    "T_128",
+    "T_129",
+    "T_130",
+    "T_131",
+    "T_132",
+    "T_133",
+    "T_134",
+    "T_135",
+    "T_136",
+    "T_137",
+    "T_138",
+    "T_139",
+    "T_140",
+    "T_141",
+    "T_142",
+    "T_143",
 }
 
 var StringToType = map[string] Type { 
@@ -290,6 +462,92 @@ var StringToType = map[string] Type {
     "T_55" : T_55, 
     "T_56" : T_56, 
     "T_57" : T_57, 
+    "T_58" : T_58, 
+    "T_59" : T_59, 
+    "T_60" : T_60, 
+    "T_61" : T_61, 
+    "T_62" : T_62, 
+    "T_63" : T_63, 
+    "T_64" : T_64, 
+    "T_65" : T_65, 
+    "T_66" : T_66, 
+    "T_67" : T_67, 
+    "T_68" : T_68, 
+    "T_69" : T_69, 
+    "T_70" : T_70, 
+    "T_71" : T_71, 
+    "T_72" : T_72, 
+    "T_73" : T_73, 
+    "T_74" : T_74, 
+    "T_75" : T_75, 
+    "T_76" : T_76, 
+    "T_77" : T_77, 
+    "T_78" : T_78, 
+    "T_79" : T_79, 
+    "T_80" : T_80, 
+    "T_81" : T_81, 
+    "T_82" : T_82, 
+    "T_83" : T_83, 
+    "T_84" : T_84, 
+    "T_85" : T_85, 
+    "T_86" : T_86, 
+    "T_87" : T_87, 
+    "T_88" : T_88, 
+    "T_89" : T_89, 
+    "T_90" : T_90, 
+    "T_91" : T_91, 
+    "T_92" : T_92, 
+    "T_93" : T_93, 
+    "T_94" : T_94, 
+    "T_95" : T_95, 
+    "T_96" : T_96, 
+    "T_97" : T_97, 
+    "T_98" : T_98, 
+    "T_99" : T_99, 
+    "T_100" : T_100, 
+    "T_101" : T_101, 
+    "T_102" : T_102, 
+    "T_103" : T_103, 
+    "T_104" : T_104, 
+    "T_105" : T_105, 
+    "T_106" : T_106, 
+    "T_107" : T_107, 
+    "T_108" : T_108, 
+    "T_109" : T_109, 
+    "T_110" : T_110, 
+    "T_111" : T_111, 
+    "T_112" : T_112, 
+    "T_113" : T_113, 
+    "T_114" : T_114, 
+    "T_115" : T_115, 
+    "T_116" : T_116, 
+    "T_117" : T_117, 
+    "T_118" : T_118, 
+    "T_119" : T_119, 
+    "T_120" : T_120, 
+    "T_121" : T_121, 
+    "T_122" : T_122, 
+    "T_123" : T_123, 
+    "T_124" : T_124, 
+    "T_125" : T_125, 
+    "T_126" : T_126, 
+    "T_127" : T_127, 
+    "T_128" : T_128, 
+    "T_129" : T_129, 
+    "T_130" : T_130, 
+    "T_131" : T_131, 
+    "T_132" : T_132, 
+    "T_133" : T_133, 
+    "T_134" : T_134, 
+    "T_135" : T_135, 
+    "T_136" : T_136, 
+    "T_137" : T_137, 
+    "T_138" : T_138, 
+    "T_139" : T_139, 
+    "T_140" : T_140, 
+    "T_141" : T_141, 
+    "T_142" : T_142, 
+    "T_143" : T_143, 
 }
 
 var TypeToID = []string { 
@@ -316,6 +574,7 @@ var TypeToID = []string {
     ".", 
     "/", 
     "/=", 
+    "0", 
     ":", 
     ";", 
     "<", 
@@ -332,14 +591,60 @@ var TypeToID = []string {
     ">>>=", 
     "?", 
     "@", 
+    "Cls", 
+    "Intf", 
+    "X", 
     "[", 
     "]", 
     "^", 
     "^=", 
+    "abstract", 
+    "any4567", 
+    "anyCarSl", 
+    "assert", 
+    "binaryExponent", 
     "block_comment", 
+    "boolean", 
+    "break", 
+    "byte", 
+    "carrot", 
+    "case", 
+    "catch", 
+    "char", 
+    "continue", 
+    "default", 
+    "do", 
+    "dot", 
+    "double", 
+    "dubQuo", 
+    "dubSlash", 
+    "else", 
+    "enum", 
+    "esc", 
     "escCharSp", 
+    "exponent", 
+    "extends", 
+    "fF_dD", 
+    "false", 
+    "final", 
+    "finally", 
+    "float", 
+    "for", 
+    "hexDigit", 
+    "if", 
+    "implements", 
+    "import", 
+    "instanceof", 
+    "int", 
+    "int03", 
+    "int03Two07", 
+    "int07", 
+    "let", 
     "line_comment", 
+    "long", 
     "nEq", 
+    "native", 
+    "new", 
     "newline", 
     "notEqAnd", 
     "notEqCar", 
@@ -347,6 +652,45 @@ var TypeToID = []string {
     "notEqPipe", 
     "notEqPlus", 
     "notEqSlDash", 
+    "notKeyword", 
+    "notLorD", 
+    "null", 
+    "num", 
+    "octalNumeral", 
+    "onenine", 
+    "optExpo", 
+    "optOneL", 
+    "optfFdD", 
+    "package", 
+    "private", 
+    "protected", 
+    "public", 
+    "repDig0x", 
+    "repDig1x", 
+    "repHex0x", 
+    "repHex1x", 
+    "repNumx0", 
+    "return", 
+    "short", 
+    "sinQuo", 
+    "static", 
+    "strictfp", 
+    "super", 
+    "switch", 
+    "synchronized", 
+    "this", 
+    "throw", 
+    "throws", 
+    "transient", 
+    "true", 
+    "try", 
+    "two07", 
+    "u", 
+    "void", 
+    "volatile", 
+    "while", 
+    "x", 
+    "ze", 
     "{", 
     "|", 
     "|=", 
@@ -399,9 +743,95 @@ var Suppress = []bool {
     false, 
     false, 
     false, 
-    true, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
     false, 
     true, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    true, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
     false, 
     false, 
     false, 

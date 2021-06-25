@@ -16,18 +16,19 @@ type NT int
 const( 
 	NT_CLOSE NT = iota
 	NT_DIVIDE 
-	NT_ELEM 
+	NT_ELEMENT 
 	NT_EXPR 
 	NT_MINUS 
+	NT_Number 
 	NT_OPEN 
 	NT_PLUS 
 	NT_PLUSorMINUS 
-	NT_PROD 
-	NT_PoMRep 
+	NT_PRODUCT 
+	NT_RepPLUSorMINUS0x 
+	NT_RepTIMESorDIV0x 
 	NT_SUM 
 	NT_TIMES 
 	NT_TIMESorDIVIDE 
-	NT_ToDRep 
 )
 
 // T is the type of terminals symbols
@@ -39,7 +40,7 @@ const(
 	T_3  // + 
 	T_4  // - 
 	T_5  // / 
-	T_6  // num 
+	T_6  // repNumber1x 
 	T_7  // space 
 )
 
@@ -72,18 +73,19 @@ func (t T) String() string {
 var ntToString = []string { 
 	"CLOSE", /* NT_CLOSE */
 	"DIVIDE", /* NT_DIVIDE */
-	"ELEM", /* NT_ELEM */
+	"ELEMENT", /* NT_ELEMENT */
 	"EXPR", /* NT_EXPR */
 	"MINUS", /* NT_MINUS */
+	"Number", /* NT_Number */
 	"OPEN", /* NT_OPEN */
 	"PLUS", /* NT_PLUS */
 	"PLUSorMINUS", /* NT_PLUSorMINUS */
-	"PROD", /* NT_PROD */
-	"PoMRep", /* NT_PoMRep */
+	"PRODUCT", /* NT_PRODUCT */
+	"RepPLUSorMINUS0x", /* NT_RepPLUSorMINUS0x */
+	"RepTIMESorDIV0x", /* NT_RepTIMESorDIV0x */
 	"SUM", /* NT_SUM */
 	"TIMES", /* NT_TIMES */
-	"TIMESorDIVIDE", /* NT_TIMESorDIVIDE */
-	"ToDRep", /* NT_ToDRep */ 
+	"TIMESorDIVIDE", /* NT_TIMESorDIVIDE */ 
 }
 
 var tToString = []string { 
@@ -93,23 +95,24 @@ var tToString = []string {
 	"+", /* T_3 */
 	"-", /* T_4 */
 	"/", /* T_5 */
-	"num", /* T_6 */
+	"repNumber1x", /* T_6 */
 	"space", /* T_7 */ 
 }
 
 var stringNT = map[string]NT{ 
 	"CLOSE":NT_CLOSE,
 	"DIVIDE":NT_DIVIDE,
-	"ELEM":NT_ELEM,
+	"ELEMENT":NT_ELEMENT,
 	"EXPR":NT_EXPR,
 	"MINUS":NT_MINUS,
+	"Number":NT_Number,
 	"OPEN":NT_OPEN,
 	"PLUS":NT_PLUS,
 	"PLUSorMINUS":NT_PLUSorMINUS,
-	"PROD":NT_PROD,
-	"PoMRep":NT_PoMRep,
+	"PRODUCT":NT_PRODUCT,
+	"RepPLUSorMINUS0x":NT_RepPLUSorMINUS0x,
+	"RepTIMESorDIV0x":NT_RepTIMESorDIV0x,
 	"SUM":NT_SUM,
 	"TIMES":NT_TIMES,
 	"TIMESorDIVIDE":NT_TIMESorDIVIDE,
-	"ToDRep":NT_ToDRep,
 }
