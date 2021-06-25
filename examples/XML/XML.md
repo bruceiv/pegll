@@ -17,7 +17,6 @@ A modification of `XML` [Egg](https://github.com/bruceiv/egg/blob/deriv/grammars
 
 ### **`XML` GRAMMAR GUIDE**
 The following grammar tests input files from the `XML` language.
-
 ```
 package "XML"
 ```

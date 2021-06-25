@@ -7,20 +7,16 @@
 #### *Copyright and Licensing Information :* See end of file.
 
 ###  **GENERAL DESCRIPTION**
-An originally Egg Parsing grammar created by Aaron Moss ported into the GoGLL grammar for the `Java` language tests. Modification of `Java` grammar from [Egg](https:github.com/bruceiv/egg/blob/deriv/grammars/Java-u.egg) to test `Java` input files under the parser generated.
-
-### **`Java` GRAMMAR GUIDE**
-ERRORS: 
-- in basic identifiers, notLorD needs fixing
--in  indentifiers, NOTKEYWORD needs fixing
-
-See the [grammar for details.](../../gogll.md)
+A modification of `Java` [Egg](https:github.com/bruceiv/egg/blob/deriv/grammars/Java-u.egg) parsing grammar ported into GoGLL to test `Java` input files.
 
 ### **STATUS ON GRAMMAR**
 #### *Markdown File Creation:* Not working 
 #### *Parser Generated :* Incomplete
 #### *Test File Creation:* Incomplete
 #### *Testing Results:* Unknown
+
+### **`Java` GRAMMAR GUIDE**
+The following grammar tests input files from the `Java` language.
 ```
 package "Java"
 ```
