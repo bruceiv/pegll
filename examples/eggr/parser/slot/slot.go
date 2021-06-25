@@ -12,7 +12,16 @@ import(
 type Label int
 
 const(
-	CharClass0R0 Label = iota
+	AND0R0 Label = iota
+	AND0R1
+	AND0R2
+	ANY0R0
+	ANY0R1
+	ANY0R2
+	CLOSE0R0
+	CLOSE0R1
+	CLOSE0R2
+	CharClass0R0
 	CharClass0R1
 	CharClass0R2
 	CharClass0R3
@@ -28,18 +37,23 @@ const(
 	Choice0R0
 	Choice0R1
 	Choice0R2
+	EMPTY0R0
+	EMPTY0R1
+	EMPTY0R2
+	EQUAL0R0
+	EQUAL0R1
+	EQUAL0R2
 	Expr1x0R0
 	Expr1x0R1
 	Expr1x0R2
 	Expr1x1R0
+	Expr1x1R1
 	Expression0R0
 	Expression0R1
 	Expression0R2
-	Expression0R3
 	Expression1R0
 	Expression1R1
 	Expression1R2
-	Expression1R3
 	Expression2R0
 	Expression2R1
 	Expression2R2
@@ -61,6 +75,7 @@ const(
 	LetOrNum0x0R1
 	LetOrNum0x0R2
 	LetOrNum0x1R0
+	LetOrNum0x1R1
 	LetWS0R0
 	LetWS0R1
 	LetWS1R0
@@ -69,24 +84,39 @@ const(
 	LineOrBlock0R1
 	LineOrBlock1R0
 	LineOrBlock1R1
+	NEQUAL0R0
+	NEQUAL0R1
+	NEQUAL0R2
+	NOT0R0
+	NOT0R1
+	NOT0R2
+	OPEN0R0
+	OPEN0R1
+	OPEN0R2
+	OPT0R0
+	OPT0R1
+	OPT0R2
 	OptStarPlus0R0
 	OptStarPlus0R1
-	OptStarPlus0R2
 	OptStarPlus1R0
 	OptStarPlus1R1
-	OptStarPlus1R2
 	OptStarPlus2R0
 	OptStarPlus2R1
-	OptStarPlus2R2
 	OptStarPlus3R0
+	PIPE0R0
+	PIPE0R1
+	PIPE0R2
+	PLUS0R0
+	PLUS0R1
+	PLUS0R2
 	PipedSeq0R0
 	PipedSeq0R1
 	PipedSeq0R2
-	PipedSeq0R3
 	PipedSeq0x0R0
 	PipedSeq0x0R1
 	PipedSeq0x0R2
 	PipedSeq0x1R0
+	PipedSeq0x1R1
 	Primary0R0
 	Primary0R1
 	Primary0R2
@@ -102,19 +132,20 @@ const(
 	Primary4R1
 	Primary5R0
 	Primary5R1
-	Primary5R2
 	Primary6R0
 	Primary6R1
-	Primary6R2
 	Rule0R0
 	Rule0R1
 	Rule0R2
 	Rule0R3
-	Rule0R4
 	Rules0R0
 	Rules0R1
 	Rules0R2
 	Rules1R0
+	Rules1R1
+	STAR0R0
+	STAR0R1
+	STAR0R2
 	Sequence0R0
 	Sequence0R1
 	Sequence0R2
@@ -131,17 +162,18 @@ const(
 	StringLiteral0R2
 	StringLiteral0R3
 	StringLiteral0R4
-	UnChar0R0
-	UnChar0R1
-	UnChar0R2
-	UnChars0R0
-	UnChars0R1
-	UnChars0R2
-	UnChars1R0
+	UnclosedChar0R0
+	UnclosedChar0R1
+	UnclosedChar0R2
+	UnclosedChars0R0
+	UnclosedChars0R1
+	UnclosedChars0R2
+	UnclosedChars1R0
 	WS0R0
 	WS0R1
 	WS0R2
 	WS1R0
+	WS1R1
 )
 
 type Slot struct {
@@ -231,12 +263,84 @@ func (s *Slot) String() string {
 }
 
 var slots = map[Label]*Slot{ 
+	AND0R0: {
+		symbols.NT_AND, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_1, 
+			symbols.NT_WS,
+		}, 
+		AND0R0, 
+	},
+	AND0R1: {
+		symbols.NT_AND, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_1, 
+			symbols.NT_WS,
+		}, 
+		AND0R1, 
+	},
+	AND0R2: {
+		symbols.NT_AND, 0, 2, 
+		symbols.Symbols{  
+			symbols.T_1, 
+			symbols.NT_WS,
+		}, 
+		AND0R2, 
+	},
+	ANY0R0: {
+		symbols.NT_ANY, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_6, 
+			symbols.NT_WS,
+		}, 
+		ANY0R0, 
+	},
+	ANY0R1: {
+		symbols.NT_ANY, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_6, 
+			symbols.NT_WS,
+		}, 
+		ANY0R1, 
+	},
+	ANY0R2: {
+		symbols.NT_ANY, 0, 2, 
+		symbols.Symbols{  
+			symbols.T_6, 
+			symbols.NT_WS,
+		}, 
+		ANY0R2, 
+	},
+	CLOSE0R0: {
+		symbols.NT_CLOSE, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_3, 
+			symbols.NT_WS,
+		}, 
+		CLOSE0R0, 
+	},
+	CLOSE0R1: {
+		symbols.NT_CLOSE, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_3, 
+			symbols.NT_WS,
+		}, 
+		CLOSE0R1, 
+	},
+	CLOSE0R2: {
+		symbols.NT_CLOSE, 0, 2, 
+		symbols.Symbols{  
+			symbols.T_3, 
+			symbols.NT_WS,
+		}, 
+		CLOSE0R2, 
+	},
 	CharClass0R0: {
 		symbols.NT_CharClass, 0, 0, 
 		symbols.Symbols{  
+			symbols.T_10, 
+			symbols.NT_UnclosedChars, 
 			symbols.T_11, 
-			symbols.NT_UnChars, 
-			symbols.T_12, 
 			symbols.NT_WS,
 		}, 
 		CharClass0R0, 
@@ -244,9 +348,9 @@ var slots = map[Label]*Slot{
 	CharClass0R1: {
 		symbols.NT_CharClass, 0, 1, 
 		symbols.Symbols{  
+			symbols.T_10, 
+			symbols.NT_UnclosedChars, 
 			symbols.T_11, 
-			symbols.NT_UnChars, 
-			symbols.T_12, 
 			symbols.NT_WS,
 		}, 
 		CharClass0R1, 
@@ -254,9 +358,9 @@ var slots = map[Label]*Slot{
 	CharClass0R2: {
 		symbols.NT_CharClass, 0, 2, 
 		symbols.Symbols{  
+			symbols.T_10, 
+			symbols.NT_UnclosedChars, 
 			symbols.T_11, 
-			symbols.NT_UnChars, 
-			symbols.T_12, 
 			symbols.NT_WS,
 		}, 
 		CharClass0R2, 
@@ -264,9 +368,9 @@ var slots = map[Label]*Slot{
 	CharClass0R3: {
 		symbols.NT_CharClass, 0, 3, 
 		symbols.Symbols{  
+			symbols.T_10, 
+			symbols.NT_UnclosedChars, 
 			symbols.T_11, 
-			symbols.NT_UnChars, 
-			symbols.T_12, 
 			symbols.NT_WS,
 		}, 
 		CharClass0R3, 
@@ -274,9 +378,9 @@ var slots = map[Label]*Slot{
 	CharClass0R4: {
 		symbols.NT_CharClass, 0, 4, 
 		symbols.Symbols{  
+			symbols.T_10, 
+			symbols.NT_UnclosedChars, 
 			symbols.T_11, 
-			symbols.NT_UnChars, 
-			symbols.T_12, 
 			symbols.NT_WS,
 		}, 
 		CharClass0R4, 
@@ -320,28 +424,28 @@ var slots = map[Label]*Slot{
 	Character0R0: {
 		symbols.NT_Character, 0, 0, 
 		symbols.Symbols{  
-			symbols.T_20,
+			symbols.T_19,
 		}, 
 		Character0R0, 
 	},
 	Character0R1: {
 		symbols.NT_Character, 0, 1, 
 		symbols.Symbols{  
-			symbols.T_20,
+			symbols.T_19,
 		}, 
 		Character0R1, 
 	},
 	Character1R0: {
 		symbols.NT_Character, 1, 0, 
 		symbols.Symbols{  
-			symbols.T_16,
+			symbols.T_15,
 		}, 
 		Character1R0, 
 	},
 	Character1R1: {
 		symbols.NT_Character, 1, 1, 
 		symbols.Symbols{  
-			symbols.T_16,
+			symbols.T_15,
 		}, 
 		Character1R1, 
 	},
@@ -369,6 +473,54 @@ var slots = map[Label]*Slot{
 		}, 
 		Choice0R2, 
 	},
+	EMPTY0R0: {
+		symbols.NT_EMPTY, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_7, 
+			symbols.NT_WS,
+		}, 
+		EMPTY0R0, 
+	},
+	EMPTY0R1: {
+		symbols.NT_EMPTY, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_7, 
+			symbols.NT_WS,
+		}, 
+		EMPTY0R1, 
+	},
+	EMPTY0R2: {
+		symbols.NT_EMPTY, 0, 2, 
+		symbols.Symbols{  
+			symbols.T_7, 
+			symbols.NT_WS,
+		}, 
+		EMPTY0R2, 
+	},
+	EQUAL0R0: {
+		symbols.NT_EQUAL, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_8, 
+			symbols.NT_WS,
+		}, 
+		EQUAL0R0, 
+	},
+	EQUAL0R1: {
+		symbols.NT_EQUAL, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_8, 
+			symbols.NT_WS,
+		}, 
+		EQUAL0R1, 
+	},
+	EQUAL0R2: {
+		symbols.NT_EQUAL, 0, 2, 
+		symbols.Symbols{  
+			symbols.T_8, 
+			symbols.NT_WS,
+		}, 
+		EQUAL0R2, 
+	},
 	Expr1x0R0: {
 		symbols.NT_Expr1x, 0, 0, 
 		symbols.Symbols{  
@@ -395,15 +547,22 @@ var slots = map[Label]*Slot{
 	},
 	Expr1x1R0: {
 		symbols.NT_Expr1x, 1, 0, 
-		symbols.Symbols{ 
+		symbols.Symbols{  
+			symbols.NT_EMPTY,
 		}, 
 		Expr1x1R0, 
+	},
+	Expr1x1R1: {
+		symbols.NT_Expr1x, 1, 1, 
+		symbols.Symbols{  
+			symbols.NT_EMPTY,
+		}, 
+		Expr1x1R1, 
 	},
 	Expression0R0: {
 		symbols.NT_Expression, 0, 0, 
 		symbols.Symbols{  
-			symbols.T_1, 
-			symbols.NT_WS, 
+			symbols.NT_AND, 
 			symbols.NT_Primary,
 		}, 
 		Expression0R0, 
@@ -411,8 +570,7 @@ var slots = map[Label]*Slot{
 	Expression0R1: {
 		symbols.NT_Expression, 0, 1, 
 		symbols.Symbols{  
-			symbols.T_1, 
-			symbols.NT_WS, 
+			symbols.NT_AND, 
 			symbols.NT_Primary,
 		}, 
 		Expression0R1, 
@@ -420,26 +578,15 @@ var slots = map[Label]*Slot{
 	Expression0R2: {
 		symbols.NT_Expression, 0, 2, 
 		symbols.Symbols{  
-			symbols.T_1, 
-			symbols.NT_WS, 
+			symbols.NT_AND, 
 			symbols.NT_Primary,
 		}, 
 		Expression0R2, 
 	},
-	Expression0R3: {
-		symbols.NT_Expression, 0, 3, 
-		symbols.Symbols{  
-			symbols.T_1, 
-			symbols.NT_WS, 
-			symbols.NT_Primary,
-		}, 
-		Expression0R3, 
-	},
 	Expression1R0: {
 		symbols.NT_Expression, 1, 0, 
 		symbols.Symbols{  
-			symbols.T_0, 
-			symbols.NT_WS, 
+			symbols.NT_NOT, 
 			symbols.NT_Primary,
 		}, 
 		Expression1R0, 
@@ -447,8 +594,7 @@ var slots = map[Label]*Slot{
 	Expression1R1: {
 		symbols.NT_Expression, 1, 1, 
 		symbols.Symbols{  
-			symbols.T_0, 
-			symbols.NT_WS, 
+			symbols.NT_NOT, 
 			symbols.NT_Primary,
 		}, 
 		Expression1R1, 
@@ -456,20 +602,10 @@ var slots = map[Label]*Slot{
 	Expression1R2: {
 		symbols.NT_Expression, 1, 2, 
 		symbols.Symbols{  
-			symbols.T_0, 
-			symbols.NT_WS, 
+			symbols.NT_NOT, 
 			symbols.NT_Primary,
 		}, 
 		Expression1R2, 
-	},
-	Expression1R3: {
-		symbols.NT_Expression, 1, 3, 
-		symbols.Symbols{  
-			symbols.T_0, 
-			symbols.NT_WS, 
-			symbols.NT_Primary,
-		}, 
-		Expression1R3, 
 	},
 	Expression2R0: {
 		symbols.NT_Expression, 2, 0, 
@@ -570,28 +706,28 @@ var slots = map[Label]*Slot{
 	LetOrNum0R0: {
 		symbols.NT_LetOrNum, 0, 0, 
 		symbols.Symbols{  
-			symbols.T_17,
+			symbols.T_16,
 		}, 
 		LetOrNum0R0, 
 	},
 	LetOrNum0R1: {
 		symbols.NT_LetOrNum, 0, 1, 
 		symbols.Symbols{  
-			symbols.T_17,
+			symbols.T_16,
 		}, 
 		LetOrNum0R1, 
 	},
 	LetOrNum1R0: {
 		symbols.NT_LetOrNum, 1, 0, 
 		symbols.Symbols{  
-			symbols.T_22,
+			symbols.T_21,
 		}, 
 		LetOrNum1R0, 
 	},
 	LetOrNum1R1: {
 		symbols.NT_LetOrNum, 1, 1, 
 		symbols.Symbols{  
-			symbols.T_22,
+			symbols.T_21,
 		}, 
 		LetOrNum1R1, 
 	},
@@ -635,21 +771,29 @@ var slots = map[Label]*Slot{
 	},
 	LetOrNum0x1R0: {
 		symbols.NT_LetOrNum0x, 1, 0, 
-		symbols.Symbols{ 
+		symbols.Symbols{  
+			symbols.NT_EMPTY,
 		}, 
 		LetOrNum0x1R0, 
+	},
+	LetOrNum0x1R1: {
+		symbols.NT_LetOrNum0x, 1, 1, 
+		symbols.Symbols{  
+			symbols.NT_EMPTY,
+		}, 
+		LetOrNum0x1R1, 
 	},
 	LetWS0R0: {
 		symbols.NT_LetWS, 0, 0, 
 		symbols.Symbols{  
-			symbols.T_17,
+			symbols.T_16,
 		}, 
 		LetWS0R0, 
 	},
 	LetWS0R1: {
 		symbols.NT_LetWS, 0, 1, 
 		symbols.Symbols{  
-			symbols.T_17,
+			symbols.T_16,
 		}, 
 		LetWS0R1, 
 	},
@@ -670,102 +814,168 @@ var slots = map[Label]*Slot{
 	LineOrBlock0R0: {
 		symbols.NT_LineOrBlock, 0, 0, 
 		symbols.Symbols{  
-			symbols.T_18,
+			symbols.T_17,
 		}, 
 		LineOrBlock0R0, 
 	},
 	LineOrBlock0R1: {
 		symbols.NT_LineOrBlock, 0, 1, 
 		symbols.Symbols{  
-			symbols.T_18,
+			symbols.T_17,
 		}, 
 		LineOrBlock0R1, 
 	},
 	LineOrBlock1R0: {
 		symbols.NT_LineOrBlock, 1, 0, 
 		symbols.Symbols{  
-			symbols.T_13,
+			symbols.T_12,
 		}, 
 		LineOrBlock1R0, 
 	},
 	LineOrBlock1R1: {
 		symbols.NT_LineOrBlock, 1, 1, 
 		symbols.Symbols{  
-			symbols.T_13,
+			symbols.T_12,
 		}, 
 		LineOrBlock1R1, 
+	},
+	NEQUAL0R0: {
+		symbols.NT_NEQUAL, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_18, 
+			symbols.NT_WS,
+		}, 
+		NEQUAL0R0, 
+	},
+	NEQUAL0R1: {
+		symbols.NT_NEQUAL, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_18, 
+			symbols.NT_WS,
+		}, 
+		NEQUAL0R1, 
+	},
+	NEQUAL0R2: {
+		symbols.NT_NEQUAL, 0, 2, 
+		symbols.Symbols{  
+			symbols.T_18, 
+			symbols.NT_WS,
+		}, 
+		NEQUAL0R2, 
+	},
+	NOT0R0: {
+		symbols.NT_NOT, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_0, 
+			symbols.NT_WS,
+		}, 
+		NOT0R0, 
+	},
+	NOT0R1: {
+		symbols.NT_NOT, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_0, 
+			symbols.NT_WS,
+		}, 
+		NOT0R1, 
+	},
+	NOT0R2: {
+		symbols.NT_NOT, 0, 2, 
+		symbols.Symbols{  
+			symbols.T_0, 
+			symbols.NT_WS,
+		}, 
+		NOT0R2, 
+	},
+	OPEN0R0: {
+		symbols.NT_OPEN, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_3, 
+			symbols.NT_WS,
+		}, 
+		OPEN0R0, 
+	},
+	OPEN0R1: {
+		symbols.NT_OPEN, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_3, 
+			symbols.NT_WS,
+		}, 
+		OPEN0R1, 
+	},
+	OPEN0R2: {
+		symbols.NT_OPEN, 0, 2, 
+		symbols.Symbols{  
+			symbols.T_3, 
+			symbols.NT_WS,
+		}, 
+		OPEN0R2, 
+	},
+	OPT0R0: {
+		symbols.NT_OPT, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_9, 
+			symbols.NT_WS,
+		}, 
+		OPT0R0, 
+	},
+	OPT0R1: {
+		symbols.NT_OPT, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_9, 
+			symbols.NT_WS,
+		}, 
+		OPT0R1, 
+	},
+	OPT0R2: {
+		symbols.NT_OPT, 0, 2, 
+		symbols.Symbols{  
+			symbols.T_9, 
+			symbols.NT_WS,
+		}, 
+		OPT0R2, 
 	},
 	OptStarPlus0R0: {
 		symbols.NT_OptStarPlus, 0, 0, 
 		symbols.Symbols{  
-			symbols.T_10, 
-			symbols.NT_WS,
+			symbols.NT_OPT,
 		}, 
 		OptStarPlus0R0, 
 	},
 	OptStarPlus0R1: {
 		symbols.NT_OptStarPlus, 0, 1, 
 		symbols.Symbols{  
-			symbols.T_10, 
-			symbols.NT_WS,
+			symbols.NT_OPT,
 		}, 
 		OptStarPlus0R1, 
-	},
-	OptStarPlus0R2: {
-		symbols.NT_OptStarPlus, 0, 2, 
-		symbols.Symbols{  
-			symbols.T_10, 
-			symbols.NT_WS,
-		}, 
-		OptStarPlus0R2, 
 	},
 	OptStarPlus1R0: {
 		symbols.NT_OptStarPlus, 1, 0, 
 		symbols.Symbols{  
-			symbols.T_5, 
-			symbols.NT_WS,
+			symbols.NT_STAR,
 		}, 
 		OptStarPlus1R0, 
 	},
 	OptStarPlus1R1: {
 		symbols.NT_OptStarPlus, 1, 1, 
 		symbols.Symbols{  
-			symbols.T_5, 
-			symbols.NT_WS,
+			symbols.NT_STAR,
 		}, 
 		OptStarPlus1R1, 
-	},
-	OptStarPlus1R2: {
-		symbols.NT_OptStarPlus, 1, 2, 
-		symbols.Symbols{  
-			symbols.T_5, 
-			symbols.NT_WS,
-		}, 
-		OptStarPlus1R2, 
 	},
 	OptStarPlus2R0: {
 		symbols.NT_OptStarPlus, 2, 0, 
 		symbols.Symbols{  
-			symbols.T_6, 
-			symbols.NT_WS,
+			symbols.NT_PLUS,
 		}, 
 		OptStarPlus2R0, 
 	},
 	OptStarPlus2R1: {
 		symbols.NT_OptStarPlus, 2, 1, 
 		symbols.Symbols{  
-			symbols.T_6, 
-			symbols.NT_WS,
+			symbols.NT_PLUS,
 		}, 
 		OptStarPlus2R1, 
-	},
-	OptStarPlus2R2: {
-		symbols.NT_OptStarPlus, 2, 2, 
-		symbols.Symbols{  
-			symbols.T_6, 
-			symbols.NT_WS,
-		}, 
-		OptStarPlus2R2, 
 	},
 	OptStarPlus3R0: {
 		symbols.NT_OptStarPlus, 3, 0, 
@@ -773,11 +983,58 @@ var slots = map[Label]*Slot{
 		}, 
 		OptStarPlus3R0, 
 	},
+	PIPE0R0: {
+		symbols.NT_PIPE, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_23, 
+			symbols.NT_WS,
+		}, 
+		PIPE0R0, 
+	},
+	PIPE0R1: {
+		symbols.NT_PIPE, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_23, 
+			symbols.NT_WS,
+		}, 
+		PIPE0R1, 
+	},
+	PIPE0R2: {
+		symbols.NT_PIPE, 0, 2, 
+		symbols.Symbols{  
+			symbols.T_23, 
+			symbols.NT_WS,
+		}, 
+		PIPE0R2, 
+	},
+	PLUS0R0: {
+		symbols.NT_PLUS, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_5, 
+			symbols.NT_WS,
+		}, 
+		PLUS0R0, 
+	},
+	PLUS0R1: {
+		symbols.NT_PLUS, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_5, 
+			symbols.NT_WS,
+		}, 
+		PLUS0R1, 
+	},
+	PLUS0R2: {
+		symbols.NT_PLUS, 0, 2, 
+		symbols.Symbols{  
+			symbols.T_5, 
+			symbols.NT_WS,
+		}, 
+		PLUS0R2, 
+	},
 	PipedSeq0R0: {
 		symbols.NT_PipedSeq, 0, 0, 
 		symbols.Symbols{  
-			symbols.T_24, 
-			symbols.NT_WS, 
+			symbols.NT_PIPE, 
 			symbols.NT_Sequence,
 		}, 
 		PipedSeq0R0, 
@@ -785,8 +1042,7 @@ var slots = map[Label]*Slot{
 	PipedSeq0R1: {
 		symbols.NT_PipedSeq, 0, 1, 
 		symbols.Symbols{  
-			symbols.T_24, 
-			symbols.NT_WS, 
+			symbols.NT_PIPE, 
 			symbols.NT_Sequence,
 		}, 
 		PipedSeq0R1, 
@@ -794,20 +1050,10 @@ var slots = map[Label]*Slot{
 	PipedSeq0R2: {
 		symbols.NT_PipedSeq, 0, 2, 
 		symbols.Symbols{  
-			symbols.T_24, 
-			symbols.NT_WS, 
+			symbols.NT_PIPE, 
 			symbols.NT_Sequence,
 		}, 
 		PipedSeq0R2, 
-	},
-	PipedSeq0R3: {
-		symbols.NT_PipedSeq, 0, 3, 
-		symbols.Symbols{  
-			symbols.T_24, 
-			symbols.NT_WS, 
-			symbols.NT_Sequence,
-		}, 
-		PipedSeq0R3, 
 	},
 	PipedSeq0x0R0: {
 		symbols.NT_PipedSeq0x, 0, 0, 
@@ -835,15 +1081,23 @@ var slots = map[Label]*Slot{
 	},
 	PipedSeq0x1R0: {
 		symbols.NT_PipedSeq0x, 1, 0, 
-		symbols.Symbols{ 
+		symbols.Symbols{  
+			symbols.NT_EMPTY,
 		}, 
 		PipedSeq0x1R0, 
+	},
+	PipedSeq0x1R1: {
+		symbols.NT_PipedSeq0x, 1, 1, 
+		symbols.Symbols{  
+			symbols.NT_EMPTY,
+		}, 
+		PipedSeq0x1R1, 
 	},
 	Primary0R0: {
 		symbols.NT_Primary, 0, 0, 
 		symbols.Symbols{  
 			symbols.NT_Identifier, 
-			symbols.T_19,
+			symbols.NT_NEQUAL,
 		}, 
 		Primary0R0, 
 	},
@@ -851,7 +1105,7 @@ var slots = map[Label]*Slot{
 		symbols.NT_Primary, 0, 1, 
 		symbols.Symbols{  
 			symbols.NT_Identifier, 
-			symbols.T_19,
+			symbols.NT_NEQUAL,
 		}, 
 		Primary0R1, 
 	},
@@ -859,43 +1113,43 @@ var slots = map[Label]*Slot{
 		symbols.NT_Primary, 0, 2, 
 		symbols.Symbols{  
 			symbols.NT_Identifier, 
-			symbols.T_19,
+			symbols.NT_NEQUAL,
 		}, 
 		Primary0R2, 
 	},
 	Primary1R0: {
 		symbols.NT_Primary, 1, 0, 
 		symbols.Symbols{  
-			symbols.T_3, 
+			symbols.NT_OPEN, 
 			symbols.NT_Choice, 
-			symbols.T_4,
+			symbols.NT_CLOSE,
 		}, 
 		Primary1R0, 
 	},
 	Primary1R1: {
 		symbols.NT_Primary, 1, 1, 
 		symbols.Symbols{  
-			symbols.T_3, 
+			symbols.NT_OPEN, 
 			symbols.NT_Choice, 
-			symbols.T_4,
+			symbols.NT_CLOSE,
 		}, 
 		Primary1R1, 
 	},
 	Primary1R2: {
 		symbols.NT_Primary, 1, 2, 
 		symbols.Symbols{  
-			symbols.T_3, 
+			symbols.NT_OPEN, 
 			symbols.NT_Choice, 
-			symbols.T_4,
+			symbols.NT_CLOSE,
 		}, 
 		Primary1R2, 
 	},
 	Primary1R3: {
 		symbols.NT_Primary, 1, 3, 
 		symbols.Symbols{  
-			symbols.T_3, 
+			symbols.NT_OPEN, 
 			symbols.NT_Choice, 
-			symbols.T_4,
+			symbols.NT_CLOSE,
 		}, 
 		Primary1R3, 
 	},
@@ -944,57 +1198,36 @@ var slots = map[Label]*Slot{
 	Primary5R0: {
 		symbols.NT_Primary, 5, 0, 
 		symbols.Symbols{  
-			symbols.T_7, 
-			symbols.NT_WS,
+			symbols.NT_ANY,
 		}, 
 		Primary5R0, 
 	},
 	Primary5R1: {
 		symbols.NT_Primary, 5, 1, 
 		symbols.Symbols{  
-			symbols.T_7, 
-			symbols.NT_WS,
+			symbols.NT_ANY,
 		}, 
 		Primary5R1, 
-	},
-	Primary5R2: {
-		symbols.NT_Primary, 5, 2, 
-		symbols.Symbols{  
-			symbols.T_7, 
-			symbols.NT_WS,
-		}, 
-		Primary5R2, 
 	},
 	Primary6R0: {
 		symbols.NT_Primary, 6, 0, 
 		symbols.Symbols{  
-			symbols.T_8, 
-			symbols.NT_WS,
+			symbols.NT_EMPTY,
 		}, 
 		Primary6R0, 
 	},
 	Primary6R1: {
 		symbols.NT_Primary, 6, 1, 
 		symbols.Symbols{  
-			symbols.T_8, 
-			symbols.NT_WS,
+			symbols.NT_EMPTY,
 		}, 
 		Primary6R1, 
-	},
-	Primary6R2: {
-		symbols.NT_Primary, 6, 2, 
-		symbols.Symbols{  
-			symbols.T_8, 
-			symbols.NT_WS,
-		}, 
-		Primary6R2, 
 	},
 	Rule0R0: {
 		symbols.NT_Rule, 0, 0, 
 		symbols.Symbols{  
 			symbols.NT_Identifier, 
-			symbols.T_9, 
-			symbols.NT_WS, 
+			symbols.NT_EQUAL, 
 			symbols.NT_Choice,
 		}, 
 		Rule0R0, 
@@ -1003,8 +1236,7 @@ var slots = map[Label]*Slot{
 		symbols.NT_Rule, 0, 1, 
 		symbols.Symbols{  
 			symbols.NT_Identifier, 
-			symbols.T_9, 
-			symbols.NT_WS, 
+			symbols.NT_EQUAL, 
 			symbols.NT_Choice,
 		}, 
 		Rule0R1, 
@@ -1013,8 +1245,7 @@ var slots = map[Label]*Slot{
 		symbols.NT_Rule, 0, 2, 
 		symbols.Symbols{  
 			symbols.NT_Identifier, 
-			symbols.T_9, 
-			symbols.NT_WS, 
+			symbols.NT_EQUAL, 
 			symbols.NT_Choice,
 		}, 
 		Rule0R2, 
@@ -1023,21 +1254,10 @@ var slots = map[Label]*Slot{
 		symbols.NT_Rule, 0, 3, 
 		symbols.Symbols{  
 			symbols.NT_Identifier, 
-			symbols.T_9, 
-			symbols.NT_WS, 
+			symbols.NT_EQUAL, 
 			symbols.NT_Choice,
 		}, 
 		Rule0R3, 
-	},
-	Rule0R4: {
-		symbols.NT_Rule, 0, 4, 
-		symbols.Symbols{  
-			symbols.NT_Identifier, 
-			symbols.T_9, 
-			symbols.NT_WS, 
-			symbols.NT_Choice,
-		}, 
-		Rule0R4, 
 	},
 	Rules0R0: {
 		symbols.NT_Rules, 0, 0, 
@@ -1065,9 +1285,41 @@ var slots = map[Label]*Slot{
 	},
 	Rules1R0: {
 		symbols.NT_Rules, 1, 0, 
-		symbols.Symbols{ 
+		symbols.Symbols{  
+			symbols.NT_EMPTY,
 		}, 
 		Rules1R0, 
+	},
+	Rules1R1: {
+		symbols.NT_Rules, 1, 1, 
+		symbols.Symbols{  
+			symbols.NT_EMPTY,
+		}, 
+		Rules1R1, 
+	},
+	STAR0R0: {
+		symbols.NT_STAR, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_4, 
+			symbols.NT_WS,
+		}, 
+		STAR0R0, 
+	},
+	STAR0R1: {
+		symbols.NT_STAR, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_4, 
+			symbols.NT_WS,
+		}, 
+		STAR0R1, 
+	},
+	STAR0R2: {
+		symbols.NT_STAR, 0, 2, 
+		symbols.Symbols{  
+			symbols.T_4, 
+			symbols.NT_WS,
+		}, 
+		STAR0R2, 
 	},
 	Sequence0R0: {
 		symbols.NT_Sequence, 0, 0, 
@@ -1096,14 +1348,14 @@ var slots = map[Label]*Slot{
 	SpaceOrComment0R0: {
 		symbols.NT_SpaceOrComment, 0, 0, 
 		symbols.Symbols{  
-			symbols.T_23,
+			symbols.T_22,
 		}, 
 		SpaceOrComment0R0, 
 	},
 	SpaceOrComment0R1: {
 		symbols.NT_SpaceOrComment, 0, 1, 
 		symbols.Symbols{  
-			symbols.T_23,
+			symbols.T_22,
 		}, 
 		SpaceOrComment0R1, 
 	},
@@ -1154,9 +1406,9 @@ var slots = map[Label]*Slot{
 	StringLiteral0R0: {
 		symbols.NT_StringLiteral, 0, 0, 
 		symbols.Symbols{  
-			symbols.T_14, 
+			symbols.T_13, 
 			symbols.NT_String, 
-			symbols.T_14, 
+			symbols.T_13, 
 			symbols.NT_WS,
 		}, 
 		StringLiteral0R0, 
@@ -1164,9 +1416,9 @@ var slots = map[Label]*Slot{
 	StringLiteral0R1: {
 		symbols.NT_StringLiteral, 0, 1, 
 		symbols.Symbols{  
-			symbols.T_14, 
+			symbols.T_13, 
 			symbols.NT_String, 
-			symbols.T_14, 
+			symbols.T_13, 
 			symbols.NT_WS,
 		}, 
 		StringLiteral0R1, 
@@ -1174,9 +1426,9 @@ var slots = map[Label]*Slot{
 	StringLiteral0R2: {
 		symbols.NT_StringLiteral, 0, 2, 
 		symbols.Symbols{  
-			symbols.T_14, 
+			symbols.T_13, 
 			symbols.NT_String, 
-			symbols.T_14, 
+			symbols.T_13, 
 			symbols.NT_WS,
 		}, 
 		StringLiteral0R2, 
@@ -1184,9 +1436,9 @@ var slots = map[Label]*Slot{
 	StringLiteral0R3: {
 		symbols.NT_StringLiteral, 0, 3, 
 		symbols.Symbols{  
-			symbols.T_14, 
+			symbols.T_13, 
 			symbols.NT_String, 
-			symbols.T_14, 
+			symbols.T_13, 
 			symbols.NT_WS,
 		}, 
 		StringLiteral0R3, 
@@ -1194,66 +1446,66 @@ var slots = map[Label]*Slot{
 	StringLiteral0R4: {
 		symbols.NT_StringLiteral, 0, 4, 
 		symbols.Symbols{  
-			symbols.T_14, 
+			symbols.T_13, 
 			symbols.NT_String, 
-			symbols.T_14, 
+			symbols.T_13, 
 			symbols.NT_WS,
 		}, 
 		StringLiteral0R4, 
 	},
-	UnChar0R0: {
-		symbols.NT_UnChar, 0, 0, 
+	UnclosedChar0R0: {
+		symbols.NT_UnclosedChar, 0, 0, 
 		symbols.Symbols{  
-			symbols.T_21, 
+			symbols.T_20, 
 			symbols.NT_Character,
 		}, 
-		UnChar0R0, 
+		UnclosedChar0R0, 
 	},
-	UnChar0R1: {
-		symbols.NT_UnChar, 0, 1, 
+	UnclosedChar0R1: {
+		symbols.NT_UnclosedChar, 0, 1, 
 		symbols.Symbols{  
-			symbols.T_21, 
+			symbols.T_20, 
 			symbols.NT_Character,
 		}, 
-		UnChar0R1, 
+		UnclosedChar0R1, 
 	},
-	UnChar0R2: {
-		symbols.NT_UnChar, 0, 2, 
+	UnclosedChar0R2: {
+		symbols.NT_UnclosedChar, 0, 2, 
 		symbols.Symbols{  
-			symbols.T_21, 
+			symbols.T_20, 
 			symbols.NT_Character,
 		}, 
-		UnChar0R2, 
+		UnclosedChar0R2, 
 	},
-	UnChars0R0: {
-		symbols.NT_UnChars, 0, 0, 
+	UnclosedChars0R0: {
+		symbols.NT_UnclosedChars, 0, 0, 
 		symbols.Symbols{  
-			symbols.NT_UnChar, 
-			symbols.NT_UnChars,
+			symbols.NT_UnclosedChar, 
+			symbols.NT_UnclosedChars,
 		}, 
-		UnChars0R0, 
+		UnclosedChars0R0, 
 	},
-	UnChars0R1: {
-		symbols.NT_UnChars, 0, 1, 
+	UnclosedChars0R1: {
+		symbols.NT_UnclosedChars, 0, 1, 
 		symbols.Symbols{  
-			symbols.NT_UnChar, 
-			symbols.NT_UnChars,
+			symbols.NT_UnclosedChar, 
+			symbols.NT_UnclosedChars,
 		}, 
-		UnChars0R1, 
+		UnclosedChars0R1, 
 	},
-	UnChars0R2: {
-		symbols.NT_UnChars, 0, 2, 
+	UnclosedChars0R2: {
+		symbols.NT_UnclosedChars, 0, 2, 
 		symbols.Symbols{  
-			symbols.NT_UnChar, 
-			symbols.NT_UnChars,
+			symbols.NT_UnclosedChar, 
+			symbols.NT_UnclosedChars,
 		}, 
-		UnChars0R2, 
+		UnclosedChars0R2, 
 	},
-	UnChars1R0: {
-		symbols.NT_UnChars, 1, 0, 
+	UnclosedChars1R0: {
+		symbols.NT_UnclosedChars, 1, 0, 
 		symbols.Symbols{ 
 		}, 
-		UnChars1R0, 
+		UnclosedChars1R0, 
 	},
 	WS0R0: {
 		symbols.NT_WS, 0, 0, 
@@ -1281,13 +1533,30 @@ var slots = map[Label]*Slot{
 	},
 	WS1R0: {
 		symbols.NT_WS, 1, 0, 
-		symbols.Symbols{ 
+		symbols.Symbols{  
+			symbols.NT_EMPTY,
 		}, 
 		WS1R0, 
+	},
+	WS1R1: {
+		symbols.NT_WS, 1, 1, 
+		symbols.Symbols{  
+			symbols.NT_EMPTY,
+		}, 
+		WS1R1, 
 	},
 }
 
 var slotIndex = map[Index]Label { 
+	Index{ symbols.NT_AND,0,0 }: AND0R0,
+	Index{ symbols.NT_AND,0,1 }: AND0R1,
+	Index{ symbols.NT_AND,0,2 }: AND0R2,
+	Index{ symbols.NT_ANY,0,0 }: ANY0R0,
+	Index{ symbols.NT_ANY,0,1 }: ANY0R1,
+	Index{ symbols.NT_ANY,0,2 }: ANY0R2,
+	Index{ symbols.NT_CLOSE,0,0 }: CLOSE0R0,
+	Index{ symbols.NT_CLOSE,0,1 }: CLOSE0R1,
+	Index{ symbols.NT_CLOSE,0,2 }: CLOSE0R2,
 	Index{ symbols.NT_CharClass,0,0 }: CharClass0R0,
 	Index{ symbols.NT_CharClass,0,1 }: CharClass0R1,
 	Index{ symbols.NT_CharClass,0,2 }: CharClass0R2,
@@ -1304,18 +1573,23 @@ var slotIndex = map[Index]Label {
 	Index{ symbols.NT_Choice,0,0 }: Choice0R0,
 	Index{ symbols.NT_Choice,0,1 }: Choice0R1,
 	Index{ symbols.NT_Choice,0,2 }: Choice0R2,
+	Index{ symbols.NT_EMPTY,0,0 }: EMPTY0R0,
+	Index{ symbols.NT_EMPTY,0,1 }: EMPTY0R1,
+	Index{ symbols.NT_EMPTY,0,2 }: EMPTY0R2,
+	Index{ symbols.NT_EQUAL,0,0 }: EQUAL0R0,
+	Index{ symbols.NT_EQUAL,0,1 }: EQUAL0R1,
+	Index{ symbols.NT_EQUAL,0,2 }: EQUAL0R2,
 	Index{ symbols.NT_Expr1x,0,0 }: Expr1x0R0,
 	Index{ symbols.NT_Expr1x,0,1 }: Expr1x0R1,
 	Index{ symbols.NT_Expr1x,0,2 }: Expr1x0R2,
 	Index{ symbols.NT_Expr1x,1,0 }: Expr1x1R0,
+	Index{ symbols.NT_Expr1x,1,1 }: Expr1x1R1,
 	Index{ symbols.NT_Expression,0,0 }: Expression0R0,
 	Index{ symbols.NT_Expression,0,1 }: Expression0R1,
 	Index{ symbols.NT_Expression,0,2 }: Expression0R2,
-	Index{ symbols.NT_Expression,0,3 }: Expression0R3,
 	Index{ symbols.NT_Expression,1,0 }: Expression1R0,
 	Index{ symbols.NT_Expression,1,1 }: Expression1R1,
 	Index{ symbols.NT_Expression,1,2 }: Expression1R2,
-	Index{ symbols.NT_Expression,1,3 }: Expression1R3,
 	Index{ symbols.NT_Expression,2,0 }: Expression2R0,
 	Index{ symbols.NT_Expression,2,1 }: Expression2R1,
 	Index{ symbols.NT_Expression,2,2 }: Expression2R2,
@@ -1337,6 +1611,7 @@ var slotIndex = map[Index]Label {
 	Index{ symbols.NT_LetOrNum0x,0,1 }: LetOrNum0x0R1,
 	Index{ symbols.NT_LetOrNum0x,0,2 }: LetOrNum0x0R2,
 	Index{ symbols.NT_LetOrNum0x,1,0 }: LetOrNum0x1R0,
+	Index{ symbols.NT_LetOrNum0x,1,1 }: LetOrNum0x1R1,
 	Index{ symbols.NT_LetWS,0,0 }: LetWS0R0,
 	Index{ symbols.NT_LetWS,0,1 }: LetWS0R1,
 	Index{ symbols.NT_LetWS,1,0 }: LetWS1R0,
@@ -1345,24 +1620,39 @@ var slotIndex = map[Index]Label {
 	Index{ symbols.NT_LineOrBlock,0,1 }: LineOrBlock0R1,
 	Index{ symbols.NT_LineOrBlock,1,0 }: LineOrBlock1R0,
 	Index{ symbols.NT_LineOrBlock,1,1 }: LineOrBlock1R1,
+	Index{ symbols.NT_NEQUAL,0,0 }: NEQUAL0R0,
+	Index{ symbols.NT_NEQUAL,0,1 }: NEQUAL0R1,
+	Index{ symbols.NT_NEQUAL,0,2 }: NEQUAL0R2,
+	Index{ symbols.NT_NOT,0,0 }: NOT0R0,
+	Index{ symbols.NT_NOT,0,1 }: NOT0R1,
+	Index{ symbols.NT_NOT,0,2 }: NOT0R2,
+	Index{ symbols.NT_OPEN,0,0 }: OPEN0R0,
+	Index{ symbols.NT_OPEN,0,1 }: OPEN0R1,
+	Index{ symbols.NT_OPEN,0,2 }: OPEN0R2,
+	Index{ symbols.NT_OPT,0,0 }: OPT0R0,
+	Index{ symbols.NT_OPT,0,1 }: OPT0R1,
+	Index{ symbols.NT_OPT,0,2 }: OPT0R2,
 	Index{ symbols.NT_OptStarPlus,0,0 }: OptStarPlus0R0,
 	Index{ symbols.NT_OptStarPlus,0,1 }: OptStarPlus0R1,
-	Index{ symbols.NT_OptStarPlus,0,2 }: OptStarPlus0R2,
 	Index{ symbols.NT_OptStarPlus,1,0 }: OptStarPlus1R0,
 	Index{ symbols.NT_OptStarPlus,1,1 }: OptStarPlus1R1,
-	Index{ symbols.NT_OptStarPlus,1,2 }: OptStarPlus1R2,
 	Index{ symbols.NT_OptStarPlus,2,0 }: OptStarPlus2R0,
 	Index{ symbols.NT_OptStarPlus,2,1 }: OptStarPlus2R1,
-	Index{ symbols.NT_OptStarPlus,2,2 }: OptStarPlus2R2,
 	Index{ symbols.NT_OptStarPlus,3,0 }: OptStarPlus3R0,
+	Index{ symbols.NT_PIPE,0,0 }: PIPE0R0,
+	Index{ symbols.NT_PIPE,0,1 }: PIPE0R1,
+	Index{ symbols.NT_PIPE,0,2 }: PIPE0R2,
+	Index{ symbols.NT_PLUS,0,0 }: PLUS0R0,
+	Index{ symbols.NT_PLUS,0,1 }: PLUS0R1,
+	Index{ symbols.NT_PLUS,0,2 }: PLUS0R2,
 	Index{ symbols.NT_PipedSeq,0,0 }: PipedSeq0R0,
 	Index{ symbols.NT_PipedSeq,0,1 }: PipedSeq0R1,
 	Index{ symbols.NT_PipedSeq,0,2 }: PipedSeq0R2,
-	Index{ symbols.NT_PipedSeq,0,3 }: PipedSeq0R3,
 	Index{ symbols.NT_PipedSeq0x,0,0 }: PipedSeq0x0R0,
 	Index{ symbols.NT_PipedSeq0x,0,1 }: PipedSeq0x0R1,
 	Index{ symbols.NT_PipedSeq0x,0,2 }: PipedSeq0x0R2,
 	Index{ symbols.NT_PipedSeq0x,1,0 }: PipedSeq0x1R0,
+	Index{ symbols.NT_PipedSeq0x,1,1 }: PipedSeq0x1R1,
 	Index{ symbols.NT_Primary,0,0 }: Primary0R0,
 	Index{ symbols.NT_Primary,0,1 }: Primary0R1,
 	Index{ symbols.NT_Primary,0,2 }: Primary0R2,
@@ -1378,19 +1668,20 @@ var slotIndex = map[Index]Label {
 	Index{ symbols.NT_Primary,4,1 }: Primary4R1,
 	Index{ symbols.NT_Primary,5,0 }: Primary5R0,
 	Index{ symbols.NT_Primary,5,1 }: Primary5R1,
-	Index{ symbols.NT_Primary,5,2 }: Primary5R2,
 	Index{ symbols.NT_Primary,6,0 }: Primary6R0,
 	Index{ symbols.NT_Primary,6,1 }: Primary6R1,
-	Index{ symbols.NT_Primary,6,2 }: Primary6R2,
 	Index{ symbols.NT_Rule,0,0 }: Rule0R0,
 	Index{ symbols.NT_Rule,0,1 }: Rule0R1,
 	Index{ symbols.NT_Rule,0,2 }: Rule0R2,
 	Index{ symbols.NT_Rule,0,3 }: Rule0R3,
-	Index{ symbols.NT_Rule,0,4 }: Rule0R4,
 	Index{ symbols.NT_Rules,0,0 }: Rules0R0,
 	Index{ symbols.NT_Rules,0,1 }: Rules0R1,
 	Index{ symbols.NT_Rules,0,2 }: Rules0R2,
 	Index{ symbols.NT_Rules,1,0 }: Rules1R0,
+	Index{ symbols.NT_Rules,1,1 }: Rules1R1,
+	Index{ symbols.NT_STAR,0,0 }: STAR0R0,
+	Index{ symbols.NT_STAR,0,1 }: STAR0R1,
+	Index{ symbols.NT_STAR,0,2 }: STAR0R2,
 	Index{ symbols.NT_Sequence,0,0 }: Sequence0R0,
 	Index{ symbols.NT_Sequence,0,1 }: Sequence0R1,
 	Index{ symbols.NT_Sequence,0,2 }: Sequence0R2,
@@ -1407,17 +1698,18 @@ var slotIndex = map[Index]Label {
 	Index{ symbols.NT_StringLiteral,0,2 }: StringLiteral0R2,
 	Index{ symbols.NT_StringLiteral,0,3 }: StringLiteral0R3,
 	Index{ symbols.NT_StringLiteral,0,4 }: StringLiteral0R4,
-	Index{ symbols.NT_UnChar,0,0 }: UnChar0R0,
-	Index{ symbols.NT_UnChar,0,1 }: UnChar0R1,
-	Index{ symbols.NT_UnChar,0,2 }: UnChar0R2,
-	Index{ symbols.NT_UnChars,0,0 }: UnChars0R0,
-	Index{ symbols.NT_UnChars,0,1 }: UnChars0R1,
-	Index{ symbols.NT_UnChars,0,2 }: UnChars0R2,
-	Index{ symbols.NT_UnChars,1,0 }: UnChars1R0,
+	Index{ symbols.NT_UnclosedChar,0,0 }: UnclosedChar0R0,
+	Index{ symbols.NT_UnclosedChar,0,1 }: UnclosedChar0R1,
+	Index{ symbols.NT_UnclosedChar,0,2 }: UnclosedChar0R2,
+	Index{ symbols.NT_UnclosedChars,0,0 }: UnclosedChars0R0,
+	Index{ symbols.NT_UnclosedChars,0,1 }: UnclosedChars0R1,
+	Index{ symbols.NT_UnclosedChars,0,2 }: UnclosedChars0R2,
+	Index{ symbols.NT_UnclosedChars,1,0 }: UnclosedChars1R0,
 	Index{ symbols.NT_WS,0,0 }: WS0R0,
 	Index{ symbols.NT_WS,0,1 }: WS0R1,
 	Index{ symbols.NT_WS,0,2 }: WS0R2,
 	Index{ symbols.NT_WS,1,0 }: WS1R0,
+	Index{ symbols.NT_WS,1,1 }: WS1R1,
 }
 
 var alternates = map[symbols.NT][]Label{ 
@@ -1440,9 +1732,21 @@ var alternates = map[symbols.NT][]Label{
 	symbols.NT_String:[]Label{ String0R0,String1R0 },
 	symbols.NT_CharLiteral:[]Label{ CharLiteral0R0 },
 	symbols.NT_CharClass:[]Label{ CharClass0R0 },
-	symbols.NT_UnChars:[]Label{ UnChars0R0,UnChars1R0 },
-	symbols.NT_UnChar:[]Label{ UnChar0R0 },
+	symbols.NT_UnclosedChars:[]Label{ UnclosedChars0R0,UnclosedChars1R0 },
+	symbols.NT_UnclosedChar:[]Label{ UnclosedChar0R0 },
 	symbols.NT_Character:[]Label{ Character0R0,Character1R0 },
+	symbols.NT_EQUAL:[]Label{ EQUAL0R0 },
+	symbols.NT_NEQUAL:[]Label{ NEQUAL0R0 },
+	symbols.NT_PIPE:[]Label{ PIPE0R0 },
+	symbols.NT_AND:[]Label{ AND0R0 },
+	symbols.NT_NOT:[]Label{ NOT0R0 },
+	symbols.NT_OPT:[]Label{ OPT0R0 },
+	symbols.NT_STAR:[]Label{ STAR0R0 },
+	symbols.NT_PLUS:[]Label{ PLUS0R0 },
+	symbols.NT_OPEN:[]Label{ OPEN0R0 },
+	symbols.NT_CLOSE:[]Label{ CLOSE0R0 },
+	symbols.NT_ANY:[]Label{ ANY0R0 },
+	symbols.NT_EMPTY:[]Label{ EMPTY0R0 },
 	symbols.NT_WS:[]Label{ WS0R0,WS1R0 },
 	symbols.NT_SpaceOrComment:[]Label{ SpaceOrComment0R0,SpaceOrComment1R0 },
 	symbols.NT_LineOrBlock:[]Label{ LineOrBlock0R0,LineOrBlock1R0 },

@@ -110,27 +110,26 @@ const(
     T_1  // & 
     T_2  // ' 
     T_3  // ( 
-    T_4  // ) 
-    T_5  // * 
-    T_6  // + 
-    T_7  // . 
-    T_8  // ; 
-    T_9  // = 
-    T_10  // ? 
-    T_11  // [ 
-    T_12  // ] 
-    T_13  // block_comment 
-    T_14  // dQuote 
-    T_15  // end_of_line 
-    T_16  // escAny 
-    T_17  // let 
-    T_18  // line_comment 
-    T_19  // neq 
-    T_20  // notQuotesEsc 
-    T_21  // notSqBk 
-    T_22  // num 
-    T_23  // space 
-    T_24  // | 
+    T_4  // * 
+    T_5  // + 
+    T_6  // . 
+    T_7  // ; 
+    T_8  // = 
+    T_9  // ? 
+    T_10  // [ 
+    T_11  // ] 
+    T_12  // blockComment 
+    T_13  // dQuote 
+    T_14  // endOfLine 
+    T_15  // esc 
+    T_16  // let 
+    T_17  // lineComment 
+    T_18  // neq 
+    T_19  // notQuotesEsc 
+    T_20  // notSqBk 
+    T_21  // num 
+    T_22  // space 
+    T_23  // | 
 )
 
 var TypeToString = []string{ 
@@ -160,7 +159,6 @@ var TypeToString = []string{
     "T_21",
     "T_22",
     "T_23",
-    "T_24",
 }
 
 var StringToType = map[string] Type { 
@@ -190,7 +188,6 @@ var StringToType = map[string] Type {
     "T_21" : T_21, 
     "T_22" : T_22, 
     "T_23" : T_23, 
-    "T_24" : T_24, 
 }
 
 var TypeToID = []string { 
@@ -200,7 +197,6 @@ var TypeToID = []string {
     "&", 
     "'", 
     "(", 
-    ")", 
     "*", 
     "+", 
     ".", 
@@ -209,12 +205,12 @@ var TypeToID = []string {
     "?", 
     "[", 
     "]", 
-    "block_comment", 
+    "blockComment", 
     "dQuote", 
-    "end_of_line", 
-    "escAny", 
+    "endOfLine", 
+    "esc", 
     "let", 
-    "line_comment", 
+    "lineComment", 
     "neq", 
     "notQuotesEsc", 
     "notSqBk", 
@@ -224,7 +220,6 @@ var TypeToID = []string {
 }
 
 var Suppress = []bool { 
-    false, 
     false, 
     false, 
     false, 

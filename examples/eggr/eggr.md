@@ -16,8 +16,7 @@ A modification of `eggr`[Egg](https://github.com/bruceiv/egg/blob/deriv/grammars
 #### *Test File Creation:* Incomplete
 #### *Testing Results:* Unknown
 ### **`eggr` GRAMMAR GUIDE**
-The following grammar tests a given structure 
-
+The following grammar takes a given structure and tests the grammars capability to match the structure of `Egg` parsing grammar.
 ```
 package "eggr"
 ```
@@ -26,107 +25,133 @@ The following sections handles the grammar, rules, and choices:
 - `Rule` is an identifier equal to a choice;
 - `Choice` is zero or more piped sequences. 
 ```
-Grammar         : WS Rule Rules ;
-        Rules   : Rule Rules
-                / empty; 
-Rule            : Identifier "=" WS Choice ;
+Grammar                 : WS Rule RepRule0x             ;
+        RepRule0x       : Rule RepRule0x
+                        / empty                         ; 
+Rule                    : Identifier EQUAL Choice ;
 
-Choice          : Sequence PipedSeq0x ;
-     PipedSeq0x : PipedSeq PipedSeq0x
-                / empty ; 
-       PipedSeq : "|" WS Sequence ;
+Choice                  : Sequence RepPipedSeq0x        ;
+     RepPipedSeq0x      : PIPE Sequence RepPipedSeq0x
+                        / empty                         ; 
 ```
 The following sections handles sequences and expressions, where:
 - `Sequence` is one or more expressions;
 - `Expression` uses operators of the grammar to determine rules. 
 ```
-Sequence        : Expression Expr1x ;
-        Expr1x  : Expression Expr1x
-                / empty ;
+Sequence                : Expression RepExpr0x          ;
+        RepExpr0x       : Expression RepExpr0x
+                        / empty                         ;
 
-Expression      : "&" WS Primary 
-                | "!" WS Primary 
-                | Primary OptStarPlus ;                     
-    OptStarPlus : "?" WS 
-                | "*" WS 
-                | "+" WS 
-                | empty ; 
+Expression              : AND Primary 
+                        | NOT Primary 
+                        | Primary OptStarPlus           ;                     
+    OptStarPlus         : OPT 
+                        | STAR
+                        | PLUS
+                        | empty                         ; 
 ```
-The following sections handles primaries and identifers, in which :
-- `Primary` is matched by an `Identifier` followed by anything but '=', a nested `Choice`, `StringLiteral`, `CharLiteral`, `CharClass`, any character, or a semicolon;
-` `Identifier` is matched by a letter followed by whitespace and then a letter or number combination repeated zero or more times.
+The following sections handles `Primary` and `Identifier`, in which :
+- `Primary` is matched by an `Identifier` followed by `NEQUAL`, a `Choice` enclosed in parentheses, `StringLiteral`, `CharLiteral`, `CharClass`, `ANY`, or `EMPTY`;
+- `Identifier` is matched by a letter followed by whitespace and then a letter or number combination repeated zero or more times.
 ```
-Primary         : Identifier neq
-                | "(" Choice ")"
-                | StringLiteral
-                | CharLiteral
-                | CharClass
-                | "." WS
-                | ";"  WS ;
-        neq     : not "=" ;
+Primary                 : Identifier NEQUAL
+                        | OPEN Choice CLOSE
+                        | StringLiteral
+                        | CharLiteral
+                        | CharClass
+                        | ANY
+                        | EMPTY                         ;
 
-Identifier      : LetWS LetOrNum0x WS ;
-        LetWS   : let
-                / WS ;
-     LetOrNum0x : LetOrNum LetOrNum0x
-                / empty ;     
-       LetOrNum : let
-                / num
-                / WS ;
-        num     : number ;
-        let     : letter ;
+Identifier              : LetWS LetOrNum0x WS           ;
+        LetWS           : let
+                        / WS                            ;
+     LetOrNum0x         : LetOrNum LetOrNum0x
+                        / EMPTY                         ;     
+       LetOrNum         : let
+                        / num
+                        / WS                            ;
+        num             : number                        ;
+        let             : letter                        ;
 ```
-The following sections handles string and character literals where:
-- `StringLiteral` is any string literal, which is made of a character repeated zero or more times surrounded in double quotes, followed by a whitespace. 
-- `CharLiteral` is any character literal, surrounded by single quotes, followed by whitespace.
-- `CharClass` is the character class consisting of unclosed characters `UnChars`, any character other than ']', repeated zero of more times. 
+The following sections handles `StringLiteral`, `CharLiteral`, `CharClass`, and `Character` where:
+- `StringLiteral` is any string literal matched by a character repeated zero or more times surrounded in double quotes and then followed by a whitespace;
+- `CharLiteral` is any character literal, surrounded by single quotes, followed by whitespace;
+- `CharClass` is the character class consisting of `UnclosedChars`, any character other than ']', repeated zero of more times; 
 - `Character` is the semantic rule to represent a character in the `eggr` grammar. 
 ```
-StringLiteral   : dQuote String dQuote WS ;
-        dQuote  : any "\"" ;
-        String  : Character String
-                / empty ;
+StringLiteral           : dQuote String dQuote WS       ;
+        dQuote          : any "\""                      ;
+        String          : Character String
+                        / empty                         ;
 
-CharLiteral     : "'" Character "'" ;
+CharLiteral             : "'" Character "'"             ;
 
-CharClass       : "[" UnChars "]" WS;
-        UnChars : UnChar UnChars 
-                / empty ;
-        UnChar : notSqBk Character ;
-        notSqBk : not "]" ;
+CharClass               : "[" UnclosedChars "]" WS      ;
+        UnclosedChars   : UnclosedChar UnclosedChars 
+                        / empty                         ;
+        UnclosedChar    : notSqBk Character             ;
+        notSqBk         : not "]"                       ;
 
-Character       : notQuotesEsc
-                | escAny ;  
-   notQuotesEsc : not "'\"\\" ;
-        escAny  :'\\' any "nrt'\"\\" ;        
+Character               : notQuotesEsc
+                        | esc                           ;  
+   notQuotesEsc         : not "'\"\\"                   ;
+        esc             :'\\' any "nrt'\"\\"            ;  
 ```
-The following section handles whitespace, spacing/commenting, and escape character/end of line sequences where: 
-- `WS` is a semantic rule matching any kind of whitespace - a space/comment sequence or an empty
-- `SpaceOrComment` is a semantic rule where the option between a space or `LineOrBlock` comment can be matched. 
-- `space` is a lexical rule for escape characters representing a set of spaces or the end of line.
-- `end_of_line` is a lexical rule for the escape characters that signify the end of the line. Any of these characters will indicate the end of line has been reached in `eggr`. 
+The following section handles `EQUAL`, `NEQUAL` `PIPE`, `and`, `not`, `OPT`, `STAR`, `PLUS`, `OPEN`, `CLOSE`, `ANY`, and `EMPTY`, where:
+- `EQUAL` is a semantic rule representing the character '=' followed by whitespace;
+- `NEQUAL` is a semantic rule representing any character except '=' followed by whitespace;
+- `PIPE` is a semantic rule representing the character '|' followed by whitespace;
+- `AND` is a semantic rule representing the character '&' followed by whitespace;
+- `NOT` is a semantic rule representing the character '!' followed by whitespace;
+- `OPT` is a semantic rule representing the character '?' followed by whitespace;
+- `STAR` is a semantic rule representing the character '*' followed by whitespace;
+- `PLUS` is a semantic rule representing the character '+' followed by whitespace;
+- `OPEN` is a semantic rule representing the character '(' followed by whitespace;
+- `CLOSE` is a semantic rule representing the character ')' followed by whitespace;
+- `ANY` is a semantic rule representing the character '.' followed by whitespace;
+- `EMPTY` is a semantic rule representing the character ';' followed by whitespace.
 ```
-WS              : SpaceOrComment WS
-                | empty ;
-SpaceOrComment  : space
-                | LineOrBlock ;
-space           : any " \t\r\n" ;
-end_of_line     : any "\n\r" ;  
+EQUAL                   : "="   WS                      ;
+NEQUAL                  : neq   WS                      ;
+        neq             : not "="                       ;
+PIPE                    : "|"   WS                      ;
+AND                     : "&"   WS                      ;
+NOT                     : "!"   WS                      ;
+OPT                     : "?"   WS                      ;
+STAR                    : "*"   WS                      ;
+PLUS                    : "+"   WS                      ;
+OPEN                    : "("   WS                      ;
+CLOSE                   : "("   WS                      ;
+ANY                     : "."   WS                      ;
+EMPTY                   : ";"   WS                      ;      
+```     
+The following section handles `WS`, `SpaceOrComment`, `space` and `endOfLine` where: 
+- `WS` is a semantic rule matching any kind of whitespace - a space/comment sequence or an EMPTY;
+- `SpaceOrComment` is a semantic rule where either a `space` or `LineOrBlock` comment can be matched; 
+- `space` is a lexical rule for escape characters representing a set of spaces or the end of line;
+- `endOfLine` is a lexical rule for the escape characters that signify the end of the line. Any of these characters will indicate the end of line has been reached in `eggr`. 
 ```
-The following section handles commenting where:
-- `LineOrBlock` represents the semantic rule for either a line or a block comment. 
-- `!line_comment` is a lexical rule representing a C-style line comment. Everything from the first slash to the end of line is a comment. 
-- `!block_comment` is a lexical rule representing a C-style block comment. Everything between and including `/*` and `*/` is a comment. 
-- The `!` in front of `!line_comment` and `!block_comment` instructs the lexer to suppress those tokens. See the [grammar for details.](../../gogll.md) 
-#### *Note:* `!line_comment` and `!block_comment` were taken from [comments.md.](https://github.com/bruceiv/pegll/tree/main/examples/comments) 
+WS                      : SpaceOrComment WS
+                        / EMPTY                         ;
+SpaceOrComment          : space
+                        | LineOrBlock                   ;
+space                   : any " \t\r\n"                 ;
+endOfLine               : any "\n\r"                    ;  
 ```
-LineOrBlock     : line_comment 
-                | block_comment ;
-!line_comment   : '/' '/' {not "\n"} ;
-!block_comment  : '/''*' 
-                { not "*" 
-                | '*' not "/" 
-                } '*''/' ;
+The following section handles `LineOrBlock`, `lineComment`, and `blockComment` where:
+- `LineOrBlock` represents the semantic rule for either a line or a block comment;
+- `!lineComment` is a lexical rule representing a C-style line comment. Everything from the first slash to the end of line is a comment;
+- `!blockComment` is a lexical rule representing a C-style block comment. Everything between and including `/*` and `*/` is a comment;
+- The `!` in front of `!lineComment` and `!blockComment` instructs the lexer to suppress those tokens. See the [grammar for details.](../../gogll.md) 
+#### *Note:* `!lineComment` and `!blockComment` were taken from [comments.md.](https://github.com/bruceiv/pegll/tree/main/examples/comments) 
+```
+LineOrBlock             : lineComment 
+                        | blockComment                  ;
+!lineComment            : '/' '/' { not "\n" }          ;
+!blockComment           : '/''*' 
+                        { not "*" 
+                        | '*' not "/" 
+                        } '*''/'                        ;       
 ```
 #
 ### **COPYRIGHT AND LICENSING INFORMATION**
