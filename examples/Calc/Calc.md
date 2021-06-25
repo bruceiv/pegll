@@ -1,7 +1,7 @@
 # **`calc` GRAMMAR**
 
 ### **AUTHORSHIP INFORMATION**
-#### *Authors :* Emily Hoppe Copyright (C) 2021
+#### *Authors :* Brynn Harrington and Emily Hoppe Copyright (C) 2021
 #### *Adapted from :* Aaron Moss's [`Calc` Egg Grammar](https://github.com/bruceiv/egg/blob/deriv/grammars/Calc.egg)
 #### *Creation Date :* June 17, 2021 
 #### *Last Modified :* June 24, 2021

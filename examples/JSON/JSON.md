@@ -1,4 +1,4 @@
-# **`JSON` Grammar**
+# **`JSON` GRAMMAR**
 ### **AUTHORSHIP INFORMATION**
 #### *Authors :* Brynn Harrington and Emily Hoppe Copyright (C) 2021
 #### *Adapted from :* Aaron Moss's [`JSON` Egg Grammar](https://github.com/bruceiv/egg/blob/deriv/grammars/JSON-u.egg)
@@ -23,12 +23,12 @@ The following are the GoGLL representations of the higher level JSON components.
 ```
 JSON            : WS Object                             ;
 
-Object          : LBRACE Members Mems0x RBRACE          ;
-        Mems0x  : Members Mems0x
+Object          : LBRACE Members RepMems0x RBRACE       ;
+     RepMems0x  : Members RepMems0x
                 / empty                                 ;
 
-Members         : Pair ComPair0x                        ;
-      ComPair0x : COMMA Pair ComPair0x  
+Members         : Pair RepComPair0x                     ;
+   RepComPair0x : COMMA Pair RepComPair0x  
                 / empty                                 ; 
 
 Pair            : String COLON Value                    ;
@@ -37,8 +37,8 @@ Array           : LBRACKET OptElem RBRACKET             ;
         OptElem : Elements 
                 / empty                                 ;
 
-Elements        : Value ComVal0x                        ;
-       ComVal0x : COMMA Value ComVal0x
+Elements        : Value RepComVal0x                     ;
+    RepComVal0x : COMMA Value RepComVal0x
                 / empty                                 ; 
 
 Value           : String 
