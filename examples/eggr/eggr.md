@@ -81,10 +81,11 @@ The following sections handles `StringLiteral`, `CharLiteral`, `CharClass`, and 
 ```
 StringLiteral           : dQuote String dQuote WS       ;
         dQuote          : any "\""                      ;
+        sQuote          : '\''                          ;
         String          : Character String
                         / empty                         ;
 
-CharLiteral             : "'" Character "'"             ;
+CharLiteral             : sQuote Character sQuote       ;
 
 CharClass               : "[" UnclosedChars "]" WS      ;
         UnclosedChars   : UnclosedChar UnclosedChars 

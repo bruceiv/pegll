@@ -1,0 +1,6 @@
+0: ((a | (b & c)) | (d & e))
+1: <nil>
+2: (a | ((b & c) | (d & e)))
+3: <nil>
+PASS
+ok  	boolx	0.176s

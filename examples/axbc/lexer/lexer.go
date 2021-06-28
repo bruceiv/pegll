@@ -156,8 +156,11 @@ func (l *Lexer) GetLineColumnOfToken(i int) (line, col int) {
 }
 
 // GetString returns the input string from the left extent of Token[lext] to
-// the right extent of Token[rext]
+// the right extent of Token[rext], or empty string if range empty
 func (l *Lexer) GetString(lext, rext int) string {
+	if rext < lext {
+		return ""
+	}
 	return string(l.I[l.Tokens[lext].Lext():l.Tokens[rext].Rext()])
 }
 
@@ -188,11 +191,10 @@ func not(r rune, set []rune) bool {
 }
 
 var accept = []token.Type{ 
-	token.T_1, 
+	token.Error, 
+	token.T_0, 
 	token.T_1, 
 	token.T_2, 
-	token.T_1, 
-	token.T_0, 
 }
 
 var nextState = []func(r rune) state{ 
@@ -201,18 +203,16 @@ var nextState = []func(r rune) state{
 		switch { 
 		case r == 'a':
 			return 1 
-		case r == 'c':
+		case r == 'b':
 			return 2 
+		case r == 'c':
+			return 3 
 		}
 		return nullState
 	}, 
 	// Set1
 	func(r rune) state {
 		switch { 
-		case r == 'a':
-			return 3 
-		case r == 'b':
-			return 4 
 		}
 		return nullState
 	}, 
@@ -223,14 +223,6 @@ var nextState = []func(r rune) state{
 		return nullState
 	}, 
 	// Set3
-	func(r rune) state {
-		switch { 
-		case r == 'a':
-			return 3 
-		}
-		return nullState
-	}, 
-	// Set4
 	func(r rune) state {
 		switch { 
 		}
