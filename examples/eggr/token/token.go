@@ -115,23 +115,21 @@ const(
     T_6  // ; 
     T_7  // = 
     T_8  // ? 
-    T_9  // Expression 
-    T_10  // Rule 
-    T_11  // [ 
-    T_12  // ] 
-    T_13  // blockComment 
-    T_14  // dQuote 
-    T_15  // endOfLine 
-    T_16  // esc 
-    T_17  // let 
-    T_18  // lineComment 
-    T_19  // neq 
-    T_20  // notQuotesEsc 
-    T_21  // notSqBk 
-    T_22  // num 
-    T_23  // sQuote 
-    T_24  // space 
-    T_25  // | 
+    T_9  // [ 
+    T_10  // ] 
+    T_11  // blockComment 
+    T_12  // dQuote 
+    T_13  // endOfLine 
+    T_14  // esc 
+    T_15  // let 
+    T_16  // lineComment 
+    T_17  // neq 
+    T_18  // notQuotesEsc 
+    T_19  // notSqBk 
+    T_20  // num 
+    T_21  // sQuote 
+    T_22  // space 
+    T_23  // | 
 )
 
 var TypeToString = []string{ 
@@ -161,8 +159,6 @@ var TypeToString = []string{
     "T_21",
     "T_22",
     "T_23",
-    "T_24",
-    "T_25",
 }
 
 var StringToType = map[string] Type { 
@@ -192,8 +188,6 @@ var StringToType = map[string] Type {
     "T_21" : T_21, 
     "T_22" : T_22, 
     "T_23" : T_23, 
-    "T_24" : T_24, 
-    "T_25" : T_25, 
 }
 
 var TypeToID = []string { 
@@ -208,8 +202,6 @@ var TypeToID = []string {
     ";", 
     "=", 
     "?", 
-    "Expression", 
-    "Rule", 
     "[", 
     "]", 
     "blockComment", 
@@ -228,8 +220,6 @@ var TypeToID = []string {
 }
 
 var Suppress = []bool { 
-    false, 
-    false, 
     false, 
     false, 
     false, 

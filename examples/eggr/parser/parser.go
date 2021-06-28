@@ -296,10 +296,10 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			} else {
 				p.parseError(slot.Expression2R0, p.cI, followSets[symbols.NT_Expression])
 			}
-		case slot.Grammar0R0: // Grammar : ∙WS Pl RepRule0x
+		case slot.Grammar0R0: // Grammar : ∙WS Rule RepRule0x
 
 			p.call(slot.Grammar0R1, cU, p.cI)
-		case slot.Grammar0R1: // Grammar : WS ∙Pl RepRule0x
+		case slot.Grammar0R1: // Grammar : WS ∙Rule RepRule0x
 
 			if !p.testSelect(slot.Grammar0R1) {
 				p.parseError(slot.Grammar0R1, p.cI, first[slot.Grammar0R1])
@@ -307,7 +307,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			}
 
 			p.call(slot.Grammar0R2, cU, p.cI)
-		case slot.Grammar0R2: // Grammar : WS Pl ∙RepRule0x
+		case slot.Grammar0R2: // Grammar : WS Rule ∙RepRule0x
 
 			if !p.testSelect(slot.Grammar0R2) {
 				p.parseError(slot.Grammar0R2, p.cI, first[slot.Grammar0R2])
@@ -315,7 +315,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			}
 
 			p.call(slot.Grammar0R3, cU, p.cI)
-		case slot.Grammar0R3: // Grammar : WS Pl RepRule0x ∙
+		case slot.Grammar0R3: // Grammar : WS Rule RepRule0x ∙
 
 			if p.follow(symbols.NT_Grammar) {
 				p.rtn(symbols.NT_Grammar, cU, p.cI)
@@ -581,24 +581,6 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			} else {
 				p.parseError(slot.PLUS0R0, p.cI, followSets[symbols.NT_PLUS])
 			}
-		case slot.Pl0R0: // Pl : ∙Rule
-
-			p.bsrSet.Add(slot.Pl0R1, cU, p.cI, p.cI+1)
-			p.cI++
-			if p.follow(symbols.NT_Pl) {
-				p.rtn(symbols.NT_Pl, cU, p.cI)
-			} else {
-				p.parseError(slot.Pl0R0, p.cI, followSets[symbols.NT_Pl])
-			}
-		case slot.Pla0R0: // Pla : ∙Expression
-
-			p.bsrSet.Add(slot.Pla0R1, cU, p.cI, p.cI+1)
-			p.cI++
-			if p.follow(symbols.NT_Pla) {
-				p.rtn(symbols.NT_Pla, cU, p.cI)
-			} else {
-				p.parseError(slot.Pla0R0, p.cI, followSets[symbols.NT_Pla])
-			}
 		case slot.Primary0R0: // Primary : ∙Identifier NEQUAL
 
 			p.call(slot.Primary0R1, cU, p.cI)
@@ -695,8 +677,9 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			}
 		case slot.RepExpr0x0R0: // RepExpr0x : ∙Expression RepExpr0x
 
-			p.bsrSet.Add(slot.RepExpr0x0R1, cU, p.cI, p.cI+1)
-			p.cI++
+			p.call(slot.RepExpr0x0R1, cU, p.cI)
+		case slot.RepExpr0x0R1: // RepExpr0x : Expression ∙RepExpr0x
+
 			if !p.testSelect(slot.RepExpr0x0R1) {
 				p.parseError(slot.RepExpr0x0R1, p.cI, first[slot.RepExpr0x0R1])
 				break
@@ -754,8 +737,9 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			}
 		case slot.RepRule0x0R0: // RepRule0x : ∙Rule RepRule0x
 
-			p.bsrSet.Add(slot.RepRule0x0R1, cU, p.cI, p.cI+1)
-			p.cI++
+			p.call(slot.RepRule0x0R1, cU, p.cI)
+		case slot.RepRule0x0R1: // RepRule0x : Rule ∙RepRule0x
+
 			if !p.testSelect(slot.RepRule0x0R1) {
 				p.parseError(slot.RepRule0x0R1, p.cI, first[slot.RepRule0x0R1])
 				break
@@ -820,10 +804,10 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			} else {
 				p.parseError(slot.STAR0R0, p.cI, followSets[symbols.NT_STAR])
 			}
-		case slot.Sequence0R0: // Sequence : ∙Pla RepExpr0x
+		case slot.Sequence0R0: // Sequence : ∙Expression RepExpr0x
 
 			p.call(slot.Sequence0R1, cU, p.cI)
-		case slot.Sequence0R1: // Sequence : Pla ∙RepExpr0x
+		case slot.Sequence0R1: // Sequence : Expression ∙RepExpr0x
 
 			if !p.testSelect(slot.Sequence0R1) {
 				p.parseError(slot.Sequence0R1, p.cI, first[slot.Sequence0R1])
@@ -831,7 +815,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			}
 
 			p.call(slot.Sequence0R2, cU, p.cI)
-		case slot.Sequence0R2: // Sequence : Pla RepExpr0x ∙
+		case slot.Sequence0R2: // Sequence : Expression RepExpr0x ∙
 
 			if p.follow(symbols.NT_Sequence) {
 				p.rtn(symbols.NT_Sequence, cU, p.cI)
@@ -1235,22 +1219,22 @@ var first = []map[token.Type]string{
 	// AND : & ∙WS
 	{
 		token.T_6:  ";",
-		token.T_13: "blockComment",
-		token.T_18: "lineComment",
-		token.T_24: "space",
+		token.T_11: "blockComment",
+		token.T_16: "lineComment",
+		token.T_22: "space",
 	},
 	// AND : & WS ∙
 	{
 		token.T_2:  "(",
 		token.T_5:  ".",
 		token.T_6:  ";",
-		token.T_11: "[",
-		token.T_13: "blockComment",
-		token.T_14: "dQuote",
-		token.T_17: "let",
-		token.T_18: "lineComment",
-		token.T_23: "sQuote",
-		token.T_24: "space",
+		token.T_9:  "[",
+		token.T_11: "blockComment",
+		token.T_12: "dQuote",
+		token.T_15: "let",
+		token.T_16: "lineComment",
+		token.T_21: "sQuote",
+		token.T_22: "space",
 	},
 	// ANY : ∙. WS
 	{
@@ -1259,20 +1243,29 @@ var first = []map[token.Type]string{
 	// ANY : . ∙WS
 	{
 		token.T_6:  ";",
-		token.T_13: "blockComment",
-		token.T_18: "lineComment",
-		token.T_24: "space",
+		token.T_11: "blockComment",
+		token.T_16: "lineComment",
+		token.T_22: "space",
 	},
 	// ANY : . WS ∙
 	{
+		token.T_0:  "!",
 		token.EOF:  "$",
+		token.T_1:  "&",
 		token.T_2:  "(",
 		token.T_3:  "*",
 		token.T_4:  "+",
+		token.T_5:  ".",
+		token.T_6:  ";",
 		token.T_8:  "?",
-		token.T_9:  "Expression",
-		token.T_10: "Rule",
-		token.T_25: "|",
+		token.T_9:  "[",
+		token.T_11: "blockComment",
+		token.T_12: "dQuote",
+		token.T_15: "let",
+		token.T_16: "lineComment",
+		token.T_21: "sQuote",
+		token.T_22: "space",
+		token.T_23: "|",
 	},
 	// CLOSE : ∙( WS
 	{
@@ -1281,118 +1274,164 @@ var first = []map[token.Type]string{
 	// CLOSE : ( ∙WS
 	{
 		token.T_6:  ";",
-		token.T_13: "blockComment",
-		token.T_18: "lineComment",
-		token.T_24: "space",
+		token.T_11: "blockComment",
+		token.T_16: "lineComment",
+		token.T_22: "space",
 	},
 	// CLOSE : ( WS ∙
 	{
+		token.T_0:  "!",
 		token.EOF:  "$",
+		token.T_1:  "&",
 		token.T_2:  "(",
 		token.T_3:  "*",
 		token.T_4:  "+",
+		token.T_5:  ".",
+		token.T_6:  ";",
 		token.T_8:  "?",
-		token.T_9:  "Expression",
-		token.T_10: "Rule",
-		token.T_25: "|",
+		token.T_9:  "[",
+		token.T_11: "blockComment",
+		token.T_12: "dQuote",
+		token.T_15: "let",
+		token.T_16: "lineComment",
+		token.T_21: "sQuote",
+		token.T_22: "space",
+		token.T_23: "|",
 	},
 	// CharClass : ∙[ UnclosedChars ] WS
 	{
-		token.T_11: "[",
+		token.T_9: "[",
 	},
 	// CharClass : [ ∙UnclosedChars ] WS
 	{
-		token.T_12: "]",
-		token.T_21: "notSqBk",
+		token.T_10: "]",
+		token.T_19: "notSqBk",
 	},
 	// CharClass : [ UnclosedChars ∙] WS
 	{
-		token.T_12: "]",
+		token.T_10: "]",
 	},
 	// CharClass : [ UnclosedChars ] ∙WS
 	{
 		token.T_6:  ";",
-		token.T_13: "blockComment",
-		token.T_18: "lineComment",
-		token.T_24: "space",
+		token.T_11: "blockComment",
+		token.T_16: "lineComment",
+		token.T_22: "space",
 	},
 	// CharClass : [ UnclosedChars ] WS ∙
 	{
+		token.T_0:  "!",
 		token.EOF:  "$",
+		token.T_1:  "&",
 		token.T_2:  "(",
 		token.T_3:  "*",
 		token.T_4:  "+",
+		token.T_5:  ".",
+		token.T_6:  ";",
 		token.T_8:  "?",
-		token.T_9:  "Expression",
-		token.T_10: "Rule",
-		token.T_25: "|",
+		token.T_9:  "[",
+		token.T_11: "blockComment",
+		token.T_12: "dQuote",
+		token.T_15: "let",
+		token.T_16: "lineComment",
+		token.T_21: "sQuote",
+		token.T_22: "space",
+		token.T_23: "|",
 	},
 	// CharLiteral : ∙sQuote Character sQuote
 	{
-		token.T_23: "sQuote",
+		token.T_21: "sQuote",
 	},
 	// CharLiteral : sQuote ∙Character sQuote
 	{
-		token.T_16: "esc",
-		token.T_20: "notQuotesEsc",
+		token.T_14: "esc",
+		token.T_18: "notQuotesEsc",
 	},
 	// CharLiteral : sQuote Character ∙sQuote
 	{
-		token.T_23: "sQuote",
+		token.T_21: "sQuote",
 	},
 	// CharLiteral : sQuote Character sQuote ∙
 	{
+		token.T_0:  "!",
 		token.EOF:  "$",
+		token.T_1:  "&",
 		token.T_2:  "(",
 		token.T_3:  "*",
 		token.T_4:  "+",
+		token.T_5:  ".",
+		token.T_6:  ";",
 		token.T_8:  "?",
-		token.T_9:  "Expression",
-		token.T_10: "Rule",
-		token.T_25: "|",
+		token.T_9:  "[",
+		token.T_11: "blockComment",
+		token.T_12: "dQuote",
+		token.T_15: "let",
+		token.T_16: "lineComment",
+		token.T_21: "sQuote",
+		token.T_22: "space",
+		token.T_23: "|",
 	},
 	// Character : ∙notQuotesEsc
 	{
-		token.T_20: "notQuotesEsc",
+		token.T_18: "notQuotesEsc",
 	},
 	// Character : notQuotesEsc ∙
 	{
-		token.T_12: "]",
-		token.T_14: "dQuote",
-		token.T_16: "esc",
-		token.T_20: "notQuotesEsc",
-		token.T_21: "notSqBk",
-		token.T_23: "sQuote",
+		token.T_10: "]",
+		token.T_12: "dQuote",
+		token.T_14: "esc",
+		token.T_18: "notQuotesEsc",
+		token.T_19: "notSqBk",
+		token.T_21: "sQuote",
 	},
 	// Character : ∙esc
 	{
-		token.T_16: "esc",
+		token.T_14: "esc",
 	},
 	// Character : esc ∙
 	{
-		token.T_12: "]",
-		token.T_14: "dQuote",
-		token.T_16: "esc",
-		token.T_20: "notQuotesEsc",
-		token.T_21: "notSqBk",
-		token.T_23: "sQuote",
+		token.T_10: "]",
+		token.T_12: "dQuote",
+		token.T_14: "esc",
+		token.T_18: "notQuotesEsc",
+		token.T_19: "notSqBk",
+		token.T_21: "sQuote",
 	},
 	// Choice : ∙Sequence RepPipedSeq0x
 	{
-		token.T_9: "Expression",
+		token.T_0:  "!",
+		token.T_1:  "&",
+		token.T_2:  "(",
+		token.T_5:  ".",
+		token.T_6:  ";",
+		token.T_9:  "[",
+		token.T_11: "blockComment",
+		token.T_12: "dQuote",
+		token.T_15: "let",
+		token.T_16: "lineComment",
+		token.T_21: "sQuote",
+		token.T_22: "space",
 	},
 	// Choice : Sequence ∙RepPipedSeq0x
 	{
-		token.T_25: "|",
+		token.T_23: "|",
 		token.EOF:  "$",
 		token.T_2:  "(",
-		token.T_10: "Rule",
+		token.T_6:  ";",
+		token.T_11: "blockComment",
+		token.T_15: "let",
+		token.T_16: "lineComment",
+		token.T_22: "space",
 	},
 	// Choice : Sequence RepPipedSeq0x ∙
 	{
 		token.EOF:  "$",
 		token.T_2:  "(",
-		token.T_10: "Rule",
+		token.T_6:  ";",
+		token.T_11: "blockComment",
+		token.T_15: "let",
+		token.T_16: "lineComment",
+		token.T_22: "space",
 	},
 	// EMPTY : ∙; WS
 	{
@@ -1401,13 +1440,15 @@ var first = []map[token.Type]string{
 	// EMPTY : ; ∙WS
 	{
 		token.T_6:  ";",
-		token.T_13: "blockComment",
-		token.T_18: "lineComment",
-		token.T_24: "space",
+		token.T_11: "blockComment",
+		token.T_16: "lineComment",
+		token.T_22: "space",
 	},
 	// EMPTY : ; WS ∙
 	{
+		token.T_0:  "!",
 		token.EOF:  "$",
+		token.T_1:  "&",
 		token.T_2:  "(",
 		token.T_3:  "*",
 		token.T_4:  "+",
@@ -1415,18 +1456,16 @@ var first = []map[token.Type]string{
 		token.T_6:  ";",
 		token.T_7:  "=",
 		token.T_8:  "?",
-		token.T_9:  "Expression",
-		token.T_10: "Rule",
-		token.T_11: "[",
-		token.T_13: "blockComment",
-		token.T_14: "dQuote",
-		token.T_17: "let",
-		token.T_18: "lineComment",
-		token.T_19: "neq",
-		token.T_22: "num",
-		token.T_23: "sQuote",
-		token.T_24: "space",
-		token.T_25: "|",
+		token.T_9:  "[",
+		token.T_11: "blockComment",
+		token.T_12: "dQuote",
+		token.T_15: "let",
+		token.T_16: "lineComment",
+		token.T_17: "neq",
+		token.T_20: "num",
+		token.T_21: "sQuote",
+		token.T_22: "space",
+		token.T_23: "|",
 	},
 	// EQUAL : ∙= WS
 	{
@@ -1435,13 +1474,24 @@ var first = []map[token.Type]string{
 	// EQUAL : = ∙WS
 	{
 		token.T_6:  ";",
-		token.T_13: "blockComment",
-		token.T_18: "lineComment",
-		token.T_24: "space",
+		token.T_11: "blockComment",
+		token.T_16: "lineComment",
+		token.T_22: "space",
 	},
 	// EQUAL : = WS ∙
 	{
-		token.T_9: "Expression",
+		token.T_0:  "!",
+		token.T_1:  "&",
+		token.T_2:  "(",
+		token.T_5:  ".",
+		token.T_6:  ";",
+		token.T_9:  "[",
+		token.T_11: "blockComment",
+		token.T_12: "dQuote",
+		token.T_15: "let",
+		token.T_16: "lineComment",
+		token.T_21: "sQuote",
+		token.T_22: "space",
 	},
 	// Expression : ∙AND Primary
 	{
@@ -1452,21 +1502,30 @@ var first = []map[token.Type]string{
 		token.T_2:  "(",
 		token.T_5:  ".",
 		token.T_6:  ";",
-		token.T_11: "[",
-		token.T_13: "blockComment",
-		token.T_14: "dQuote",
-		token.T_17: "let",
-		token.T_18: "lineComment",
-		token.T_23: "sQuote",
-		token.T_24: "space",
+		token.T_9:  "[",
+		token.T_11: "blockComment",
+		token.T_12: "dQuote",
+		token.T_15: "let",
+		token.T_16: "lineComment",
+		token.T_21: "sQuote",
+		token.T_22: "space",
 	},
 	// Expression : AND Primary ∙
 	{
+		token.T_0:  "!",
 		token.EOF:  "$",
+		token.T_1:  "&",
 		token.T_2:  "(",
-		token.T_9:  "Expression",
-		token.T_10: "Rule",
-		token.T_25: "|",
+		token.T_5:  ".",
+		token.T_6:  ";",
+		token.T_9:  "[",
+		token.T_11: "blockComment",
+		token.T_12: "dQuote",
+		token.T_15: "let",
+		token.T_16: "lineComment",
+		token.T_21: "sQuote",
+		token.T_22: "space",
+		token.T_23: "|",
 	},
 	// Expression : ∙NOT Primary
 	{
@@ -1477,169 +1536,204 @@ var first = []map[token.Type]string{
 		token.T_2:  "(",
 		token.T_5:  ".",
 		token.T_6:  ";",
-		token.T_11: "[",
-		token.T_13: "blockComment",
-		token.T_14: "dQuote",
-		token.T_17: "let",
-		token.T_18: "lineComment",
-		token.T_23: "sQuote",
-		token.T_24: "space",
+		token.T_9:  "[",
+		token.T_11: "blockComment",
+		token.T_12: "dQuote",
+		token.T_15: "let",
+		token.T_16: "lineComment",
+		token.T_21: "sQuote",
+		token.T_22: "space",
 	},
 	// Expression : NOT Primary ∙
 	{
+		token.T_0:  "!",
 		token.EOF:  "$",
+		token.T_1:  "&",
 		token.T_2:  "(",
-		token.T_9:  "Expression",
-		token.T_10: "Rule",
-		token.T_25: "|",
+		token.T_5:  ".",
+		token.T_6:  ";",
+		token.T_9:  "[",
+		token.T_11: "blockComment",
+		token.T_12: "dQuote",
+		token.T_15: "let",
+		token.T_16: "lineComment",
+		token.T_21: "sQuote",
+		token.T_22: "space",
+		token.T_23: "|",
 	},
 	// Expression : ∙Primary OptStarPlus
 	{
 		token.T_2:  "(",
 		token.T_5:  ".",
 		token.T_6:  ";",
-		token.T_11: "[",
-		token.T_13: "blockComment",
-		token.T_14: "dQuote",
-		token.T_17: "let",
-		token.T_18: "lineComment",
-		token.T_23: "sQuote",
-		token.T_24: "space",
+		token.T_9:  "[",
+		token.T_11: "blockComment",
+		token.T_12: "dQuote",
+		token.T_15: "let",
+		token.T_16: "lineComment",
+		token.T_21: "sQuote",
+		token.T_22: "space",
 	},
 	// Expression : Primary ∙OptStarPlus
 	{
 		token.T_3:  "*",
 		token.T_4:  "+",
 		token.T_8:  "?",
+		token.T_0:  "!",
 		token.EOF:  "$",
+		token.T_1:  "&",
 		token.T_2:  "(",
-		token.T_9:  "Expression",
-		token.T_10: "Rule",
-		token.T_25: "|",
+		token.T_5:  ".",
+		token.T_6:  ";",
+		token.T_9:  "[",
+		token.T_11: "blockComment",
+		token.T_12: "dQuote",
+		token.T_15: "let",
+		token.T_16: "lineComment",
+		token.T_21: "sQuote",
+		token.T_22: "space",
+		token.T_23: "|",
 	},
 	// Expression : Primary OptStarPlus ∙
 	{
+		token.T_0:  "!",
 		token.EOF:  "$",
+		token.T_1:  "&",
 		token.T_2:  "(",
-		token.T_9:  "Expression",
-		token.T_10: "Rule",
-		token.T_25: "|",
+		token.T_5:  ".",
+		token.T_6:  ";",
+		token.T_9:  "[",
+		token.T_11: "blockComment",
+		token.T_12: "dQuote",
+		token.T_15: "let",
+		token.T_16: "lineComment",
+		token.T_21: "sQuote",
+		token.T_22: "space",
+		token.T_23: "|",
 	},
-	// Grammar : ∙WS Pl RepRule0x
+	// Grammar : ∙WS Rule RepRule0x
 	{
 		token.T_6:  ";",
-		token.T_13: "blockComment",
-		token.T_18: "lineComment",
-		token.T_24: "space",
+		token.T_11: "blockComment",
+		token.T_16: "lineComment",
+		token.T_22: "space",
 	},
-	// Grammar : WS ∙Pl RepRule0x
+	// Grammar : WS ∙Rule RepRule0x
 	{
-		token.T_10: "Rule",
+		token.T_6:  ";",
+		token.T_11: "blockComment",
+		token.T_15: "let",
+		token.T_16: "lineComment",
+		token.T_22: "space",
 	},
-	// Grammar : WS Pl ∙RepRule0x
+	// Grammar : WS Rule ∙RepRule0x
 	{
-		token.T_10: "Rule",
+		token.T_6:  ";",
+		token.T_11: "blockComment",
+		token.T_15: "let",
+		token.T_16: "lineComment",
+		token.T_22: "space",
 		token.EOF:  "$",
 	},
-	// Grammar : WS Pl RepRule0x ∙
+	// Grammar : WS Rule RepRule0x ∙
 	{
 		token.EOF: "$",
 	},
 	// Identifier : ∙LetWS LetOrNum0x WS
 	{
 		token.T_6:  ";",
-		token.T_13: "blockComment",
-		token.T_17: "let",
-		token.T_18: "lineComment",
-		token.T_24: "space",
+		token.T_11: "blockComment",
+		token.T_15: "let",
+		token.T_16: "lineComment",
+		token.T_22: "space",
 	},
 	// Identifier : LetWS ∙LetOrNum0x WS
 	{
 		token.T_6:  ";",
-		token.T_13: "blockComment",
-		token.T_17: "let",
-		token.T_18: "lineComment",
-		token.T_22: "num",
-		token.T_24: "space",
+		token.T_11: "blockComment",
+		token.T_15: "let",
+		token.T_16: "lineComment",
+		token.T_20: "num",
+		token.T_22: "space",
 	},
 	// Identifier : LetWS LetOrNum0x ∙WS
 	{
 		token.T_6:  ";",
-		token.T_13: "blockComment",
-		token.T_18: "lineComment",
-		token.T_24: "space",
+		token.T_11: "blockComment",
+		token.T_16: "lineComment",
+		token.T_22: "space",
 	},
 	// Identifier : LetWS LetOrNum0x WS ∙
 	{
 		token.T_7:  "=",
-		token.T_19: "neq",
+		token.T_17: "neq",
 	},
 	// LetOrNum : ∙let
 	{
-		token.T_17: "let",
+		token.T_15: "let",
 	},
 	// LetOrNum : let ∙
 	{
 		token.T_6:  ";",
-		token.T_13: "blockComment",
-		token.T_17: "let",
-		token.T_18: "lineComment",
-		token.T_22: "num",
-		token.T_24: "space",
+		token.T_11: "blockComment",
+		token.T_15: "let",
+		token.T_16: "lineComment",
+		token.T_20: "num",
+		token.T_22: "space",
 	},
 	// LetOrNum : ∙num
 	{
-		token.T_22: "num",
+		token.T_20: "num",
 	},
 	// LetOrNum : num ∙
 	{
 		token.T_6:  ";",
-		token.T_13: "blockComment",
-		token.T_17: "let",
-		token.T_18: "lineComment",
-		token.T_22: "num",
-		token.T_24: "space",
+		token.T_11: "blockComment",
+		token.T_15: "let",
+		token.T_16: "lineComment",
+		token.T_20: "num",
+		token.T_22: "space",
 	},
 	// LetOrNum : ∙WS
 	{
 		token.T_6:  ";",
-		token.T_13: "blockComment",
-		token.T_18: "lineComment",
-		token.T_24: "space",
+		token.T_11: "blockComment",
+		token.T_16: "lineComment",
+		token.T_22: "space",
 	},
 	// LetOrNum : WS ∙
 	{
 		token.T_6:  ";",
-		token.T_13: "blockComment",
-		token.T_17: "let",
-		token.T_18: "lineComment",
-		token.T_22: "num",
-		token.T_24: "space",
+		token.T_11: "blockComment",
+		token.T_15: "let",
+		token.T_16: "lineComment",
+		token.T_20: "num",
+		token.T_22: "space",
 	},
 	// LetOrNum0x : ∙LetOrNum LetOrNum0x
 	{
 		token.T_6:  ";",
-		token.T_13: "blockComment",
-		token.T_17: "let",
-		token.T_18: "lineComment",
-		token.T_22: "num",
-		token.T_24: "space",
+		token.T_11: "blockComment",
+		token.T_15: "let",
+		token.T_16: "lineComment",
+		token.T_20: "num",
+		token.T_22: "space",
 	},
 	// LetOrNum0x : LetOrNum ∙LetOrNum0x
 	{
 		token.T_6:  ";",
-		token.T_13: "blockComment",
-		token.T_17: "let",
-		token.T_18: "lineComment",
-		token.T_22: "num",
-		token.T_24: "space",
+		token.T_11: "blockComment",
+		token.T_15: "let",
+		token.T_16: "lineComment",
+		token.T_20: "num",
+		token.T_22: "space",
 	},
 	// LetOrNum0x : LetOrNum LetOrNum0x ∙
 	{
 		token.T_6:  ";",
-		token.T_13: "blockComment",
-		token.T_18: "lineComment",
-		token.T_24: "space",
+		token.T_11: "blockComment",
+		token.T_16: "lineComment",
+		token.T_22: "space",
 	},
 	// LetOrNum0x : ∙EMPTY
 	{
@@ -1648,82 +1742,91 @@ var first = []map[token.Type]string{
 	// LetOrNum0x : EMPTY ∙
 	{
 		token.T_6:  ";",
-		token.T_13: "blockComment",
-		token.T_18: "lineComment",
-		token.T_24: "space",
+		token.T_11: "blockComment",
+		token.T_16: "lineComment",
+		token.T_22: "space",
 	},
 	// LetWS : ∙let
 	{
-		token.T_17: "let",
+		token.T_15: "let",
 	},
 	// LetWS : let ∙
 	{
 		token.T_6:  ";",
-		token.T_13: "blockComment",
-		token.T_17: "let",
-		token.T_18: "lineComment",
-		token.T_22: "num",
-		token.T_24: "space",
+		token.T_11: "blockComment",
+		token.T_15: "let",
+		token.T_16: "lineComment",
+		token.T_20: "num",
+		token.T_22: "space",
 	},
 	// LetWS : ∙WS
 	{
 		token.T_6:  ";",
-		token.T_13: "blockComment",
-		token.T_18: "lineComment",
-		token.T_24: "space",
+		token.T_11: "blockComment",
+		token.T_16: "lineComment",
+		token.T_22: "space",
 	},
 	// LetWS : WS ∙
 	{
 		token.T_6:  ";",
-		token.T_13: "blockComment",
-		token.T_17: "let",
-		token.T_18: "lineComment",
-		token.T_22: "num",
-		token.T_24: "space",
+		token.T_11: "blockComment",
+		token.T_15: "let",
+		token.T_16: "lineComment",
+		token.T_20: "num",
+		token.T_22: "space",
 	},
 	// LineOrBlock : ∙lineComment
 	{
-		token.T_18: "lineComment",
+		token.T_16: "lineComment",
 	},
 	// LineOrBlock : lineComment ∙
 	{
 		token.T_6:  ";",
-		token.T_13: "blockComment",
-		token.T_18: "lineComment",
-		token.T_24: "space",
+		token.T_11: "blockComment",
+		token.T_16: "lineComment",
+		token.T_22: "space",
 	},
 	// LineOrBlock : ∙blockComment
 	{
-		token.T_13: "blockComment",
+		token.T_11: "blockComment",
 	},
 	// LineOrBlock : blockComment ∙
 	{
 		token.T_6:  ";",
-		token.T_13: "blockComment",
-		token.T_18: "lineComment",
-		token.T_24: "space",
+		token.T_11: "blockComment",
+		token.T_16: "lineComment",
+		token.T_22: "space",
 	},
 	// NEQUAL : ∙neq WS
 	{
-		token.T_19: "neq",
+		token.T_17: "neq",
 	},
 	// NEQUAL : neq ∙WS
 	{
 		token.T_6:  ";",
-		token.T_13: "blockComment",
-		token.T_18: "lineComment",
-		token.T_24: "space",
+		token.T_11: "blockComment",
+		token.T_16: "lineComment",
+		token.T_22: "space",
 	},
 	// NEQUAL : neq WS ∙
 	{
+		token.T_0:  "!",
 		token.EOF:  "$",
+		token.T_1:  "&",
 		token.T_2:  "(",
 		token.T_3:  "*",
 		token.T_4:  "+",
+		token.T_5:  ".",
+		token.T_6:  ";",
 		token.T_8:  "?",
-		token.T_9:  "Expression",
-		token.T_10: "Rule",
-		token.T_25: "|",
+		token.T_9:  "[",
+		token.T_11: "blockComment",
+		token.T_12: "dQuote",
+		token.T_15: "let",
+		token.T_16: "lineComment",
+		token.T_21: "sQuote",
+		token.T_22: "space",
+		token.T_23: "|",
 	},
 	// NOT : ∙! WS
 	{
@@ -1732,22 +1835,22 @@ var first = []map[token.Type]string{
 	// NOT : ! ∙WS
 	{
 		token.T_6:  ";",
-		token.T_13: "blockComment",
-		token.T_18: "lineComment",
-		token.T_24: "space",
+		token.T_11: "blockComment",
+		token.T_16: "lineComment",
+		token.T_22: "space",
 	},
 	// NOT : ! WS ∙
 	{
 		token.T_2:  "(",
 		token.T_5:  ".",
 		token.T_6:  ";",
-		token.T_11: "[",
-		token.T_13: "blockComment",
-		token.T_14: "dQuote",
-		token.T_17: "let",
-		token.T_18: "lineComment",
-		token.T_23: "sQuote",
-		token.T_24: "space",
+		token.T_9:  "[",
+		token.T_11: "blockComment",
+		token.T_12: "dQuote",
+		token.T_15: "let",
+		token.T_16: "lineComment",
+		token.T_21: "sQuote",
+		token.T_22: "space",
 	},
 	// OPEN : ∙( WS
 	{
@@ -1756,13 +1859,24 @@ var first = []map[token.Type]string{
 	// OPEN : ( ∙WS
 	{
 		token.T_6:  ";",
-		token.T_13: "blockComment",
-		token.T_18: "lineComment",
-		token.T_24: "space",
+		token.T_11: "blockComment",
+		token.T_16: "lineComment",
+		token.T_22: "space",
 	},
 	// OPEN : ( WS ∙
 	{
-		token.T_9: "Expression",
+		token.T_0:  "!",
+		token.T_1:  "&",
+		token.T_2:  "(",
+		token.T_5:  ".",
+		token.T_6:  ";",
+		token.T_9:  "[",
+		token.T_11: "blockComment",
+		token.T_12: "dQuote",
+		token.T_15: "let",
+		token.T_16: "lineComment",
+		token.T_21: "sQuote",
+		token.T_22: "space",
 	},
 	// OPT : ∙? WS
 	{
@@ -1771,17 +1885,26 @@ var first = []map[token.Type]string{
 	// OPT : ? ∙WS
 	{
 		token.T_6:  ";",
-		token.T_13: "blockComment",
-		token.T_18: "lineComment",
-		token.T_24: "space",
+		token.T_11: "blockComment",
+		token.T_16: "lineComment",
+		token.T_22: "space",
 	},
 	// OPT : ? WS ∙
 	{
+		token.T_0:  "!",
 		token.EOF:  "$",
+		token.T_1:  "&",
 		token.T_2:  "(",
-		token.T_9:  "Expression",
-		token.T_10: "Rule",
-		token.T_25: "|",
+		token.T_5:  ".",
+		token.T_6:  ";",
+		token.T_9:  "[",
+		token.T_11: "blockComment",
+		token.T_12: "dQuote",
+		token.T_15: "let",
+		token.T_16: "lineComment",
+		token.T_21: "sQuote",
+		token.T_22: "space",
+		token.T_23: "|",
 	},
 	// OptStarPlus : ∙OPT
 	{
@@ -1789,11 +1912,20 @@ var first = []map[token.Type]string{
 	},
 	// OptStarPlus : OPT ∙
 	{
+		token.T_0:  "!",
 		token.EOF:  "$",
+		token.T_1:  "&",
 		token.T_2:  "(",
-		token.T_9:  "Expression",
-		token.T_10: "Rule",
-		token.T_25: "|",
+		token.T_5:  ".",
+		token.T_6:  ";",
+		token.T_9:  "[",
+		token.T_11: "blockComment",
+		token.T_12: "dQuote",
+		token.T_15: "let",
+		token.T_16: "lineComment",
+		token.T_21: "sQuote",
+		token.T_22: "space",
+		token.T_23: "|",
 	},
 	// OptStarPlus : ∙STAR
 	{
@@ -1801,11 +1933,20 @@ var first = []map[token.Type]string{
 	},
 	// OptStarPlus : STAR ∙
 	{
+		token.T_0:  "!",
 		token.EOF:  "$",
+		token.T_1:  "&",
 		token.T_2:  "(",
-		token.T_9:  "Expression",
-		token.T_10: "Rule",
-		token.T_25: "|",
+		token.T_5:  ".",
+		token.T_6:  ";",
+		token.T_9:  "[",
+		token.T_11: "blockComment",
+		token.T_12: "dQuote",
+		token.T_15: "let",
+		token.T_16: "lineComment",
+		token.T_21: "sQuote",
+		token.T_22: "space",
+		token.T_23: "|",
 	},
 	// OptStarPlus : ∙PLUS
 	{
@@ -1813,34 +1954,63 @@ var first = []map[token.Type]string{
 	},
 	// OptStarPlus : PLUS ∙
 	{
+		token.T_0:  "!",
 		token.EOF:  "$",
+		token.T_1:  "&",
 		token.T_2:  "(",
-		token.T_9:  "Expression",
-		token.T_10: "Rule",
-		token.T_25: "|",
+		token.T_5:  ".",
+		token.T_6:  ";",
+		token.T_9:  "[",
+		token.T_11: "blockComment",
+		token.T_12: "dQuote",
+		token.T_15: "let",
+		token.T_16: "lineComment",
+		token.T_21: "sQuote",
+		token.T_22: "space",
+		token.T_23: "|",
 	},
 	// OptStarPlus : ∙
 	{
+		token.T_0:  "!",
 		token.EOF:  "$",
+		token.T_1:  "&",
 		token.T_2:  "(",
-		token.T_9:  "Expression",
-		token.T_10: "Rule",
-		token.T_25: "|",
+		token.T_5:  ".",
+		token.T_6:  ";",
+		token.T_9:  "[",
+		token.T_11: "blockComment",
+		token.T_12: "dQuote",
+		token.T_15: "let",
+		token.T_16: "lineComment",
+		token.T_21: "sQuote",
+		token.T_22: "space",
+		token.T_23: "|",
 	},
 	// PIPE : ∙| WS
 	{
-		token.T_25: "|",
+		token.T_23: "|",
 	},
 	// PIPE : | ∙WS
 	{
 		token.T_6:  ";",
-		token.T_13: "blockComment",
-		token.T_18: "lineComment",
-		token.T_24: "space",
+		token.T_11: "blockComment",
+		token.T_16: "lineComment",
+		token.T_22: "space",
 	},
 	// PIPE : | WS ∙
 	{
-		token.T_9: "Expression",
+		token.T_0:  "!",
+		token.T_1:  "&",
+		token.T_2:  "(",
+		token.T_5:  ".",
+		token.T_6:  ";",
+		token.T_9:  "[",
+		token.T_11: "blockComment",
+		token.T_12: "dQuote",
+		token.T_15: "let",
+		token.T_16: "lineComment",
+		token.T_21: "sQuote",
+		token.T_22: "space",
 	},
 	// PLUS : ∙+ WS
 	{
@@ -1849,61 +2019,58 @@ var first = []map[token.Type]string{
 	// PLUS : + ∙WS
 	{
 		token.T_6:  ";",
-		token.T_13: "blockComment",
-		token.T_18: "lineComment",
-		token.T_24: "space",
+		token.T_11: "blockComment",
+		token.T_16: "lineComment",
+		token.T_22: "space",
 	},
 	// PLUS : + WS ∙
 	{
+		token.T_0:  "!",
 		token.EOF:  "$",
+		token.T_1:  "&",
 		token.T_2:  "(",
-		token.T_9:  "Expression",
-		token.T_10: "Rule",
-		token.T_25: "|",
-	},
-	// Pl : ∙Rule
-	{
-		token.T_10: "Rule",
-	},
-	// Pl : Rule ∙
-	{
-		token.EOF:  "$",
-		token.T_10: "Rule",
-	},
-	// Pla : ∙Expression
-	{
-		token.T_9: "Expression",
-	},
-	// Pla : Expression ∙
-	{
-		token.EOF:  "$",
-		token.T_2:  "(",
-		token.T_9:  "Expression",
-		token.T_10: "Rule",
-		token.T_25: "|",
+		token.T_5:  ".",
+		token.T_6:  ";",
+		token.T_9:  "[",
+		token.T_11: "blockComment",
+		token.T_12: "dQuote",
+		token.T_15: "let",
+		token.T_16: "lineComment",
+		token.T_21: "sQuote",
+		token.T_22: "space",
+		token.T_23: "|",
 	},
 	// Primary : ∙Identifier NEQUAL
 	{
 		token.T_6:  ";",
-		token.T_13: "blockComment",
-		token.T_17: "let",
-		token.T_18: "lineComment",
-		token.T_24: "space",
+		token.T_11: "blockComment",
+		token.T_15: "let",
+		token.T_16: "lineComment",
+		token.T_22: "space",
 	},
 	// Primary : Identifier ∙NEQUAL
 	{
-		token.T_19: "neq",
+		token.T_17: "neq",
 	},
 	// Primary : Identifier NEQUAL ∙
 	{
+		token.T_0:  "!",
 		token.EOF:  "$",
+		token.T_1:  "&",
 		token.T_2:  "(",
 		token.T_3:  "*",
 		token.T_4:  "+",
+		token.T_5:  ".",
+		token.T_6:  ";",
 		token.T_8:  "?",
-		token.T_9:  "Expression",
-		token.T_10: "Rule",
-		token.T_25: "|",
+		token.T_9:  "[",
+		token.T_11: "blockComment",
+		token.T_12: "dQuote",
+		token.T_15: "let",
+		token.T_16: "lineComment",
+		token.T_21: "sQuote",
+		token.T_22: "space",
+		token.T_23: "|",
 	},
 	// Primary : ∙OPEN Choice CLOSE
 	{
@@ -1911,7 +2078,18 @@ var first = []map[token.Type]string{
 	},
 	// Primary : OPEN ∙Choice CLOSE
 	{
-		token.T_9: "Expression",
+		token.T_0:  "!",
+		token.T_1:  "&",
+		token.T_2:  "(",
+		token.T_5:  ".",
+		token.T_6:  ";",
+		token.T_9:  "[",
+		token.T_11: "blockComment",
+		token.T_12: "dQuote",
+		token.T_15: "let",
+		token.T_16: "lineComment",
+		token.T_21: "sQuote",
+		token.T_22: "space",
 	},
 	// Primary : OPEN Choice ∙CLOSE
 	{
@@ -1919,59 +2097,95 @@ var first = []map[token.Type]string{
 	},
 	// Primary : OPEN Choice CLOSE ∙
 	{
+		token.T_0:  "!",
 		token.EOF:  "$",
+		token.T_1:  "&",
 		token.T_2:  "(",
 		token.T_3:  "*",
 		token.T_4:  "+",
+		token.T_5:  ".",
+		token.T_6:  ";",
 		token.T_8:  "?",
-		token.T_9:  "Expression",
-		token.T_10: "Rule",
-		token.T_25: "|",
+		token.T_9:  "[",
+		token.T_11: "blockComment",
+		token.T_12: "dQuote",
+		token.T_15: "let",
+		token.T_16: "lineComment",
+		token.T_21: "sQuote",
+		token.T_22: "space",
+		token.T_23: "|",
 	},
 	// Primary : ∙StringLiteral
 	{
-		token.T_14: "dQuote",
+		token.T_12: "dQuote",
 	},
 	// Primary : StringLiteral ∙
 	{
+		token.T_0:  "!",
 		token.EOF:  "$",
+		token.T_1:  "&",
 		token.T_2:  "(",
 		token.T_3:  "*",
 		token.T_4:  "+",
+		token.T_5:  ".",
+		token.T_6:  ";",
 		token.T_8:  "?",
-		token.T_9:  "Expression",
-		token.T_10: "Rule",
-		token.T_25: "|",
+		token.T_9:  "[",
+		token.T_11: "blockComment",
+		token.T_12: "dQuote",
+		token.T_15: "let",
+		token.T_16: "lineComment",
+		token.T_21: "sQuote",
+		token.T_22: "space",
+		token.T_23: "|",
 	},
 	// Primary : ∙CharLiteral
 	{
-		token.T_23: "sQuote",
+		token.T_21: "sQuote",
 	},
 	// Primary : CharLiteral ∙
 	{
+		token.T_0:  "!",
 		token.EOF:  "$",
+		token.T_1:  "&",
 		token.T_2:  "(",
 		token.T_3:  "*",
 		token.T_4:  "+",
+		token.T_5:  ".",
+		token.T_6:  ";",
 		token.T_8:  "?",
-		token.T_9:  "Expression",
-		token.T_10: "Rule",
-		token.T_25: "|",
+		token.T_9:  "[",
+		token.T_11: "blockComment",
+		token.T_12: "dQuote",
+		token.T_15: "let",
+		token.T_16: "lineComment",
+		token.T_21: "sQuote",
+		token.T_22: "space",
+		token.T_23: "|",
 	},
 	// Primary : ∙CharClass
 	{
-		token.T_11: "[",
+		token.T_9: "[",
 	},
 	// Primary : CharClass ∙
 	{
+		token.T_0:  "!",
 		token.EOF:  "$",
+		token.T_1:  "&",
 		token.T_2:  "(",
 		token.T_3:  "*",
 		token.T_4:  "+",
+		token.T_5:  ".",
+		token.T_6:  ";",
 		token.T_8:  "?",
-		token.T_9:  "Expression",
-		token.T_10: "Rule",
-		token.T_25: "|",
+		token.T_9:  "[",
+		token.T_11: "blockComment",
+		token.T_12: "dQuote",
+		token.T_15: "let",
+		token.T_16: "lineComment",
+		token.T_21: "sQuote",
+		token.T_22: "space",
+		token.T_23: "|",
 	},
 	// Primary : ∙ANY
 	{
@@ -1979,14 +2193,23 @@ var first = []map[token.Type]string{
 	},
 	// Primary : ANY ∙
 	{
+		token.T_0:  "!",
 		token.EOF:  "$",
+		token.T_1:  "&",
 		token.T_2:  "(",
 		token.T_3:  "*",
 		token.T_4:  "+",
+		token.T_5:  ".",
+		token.T_6:  ";",
 		token.T_8:  "?",
-		token.T_9:  "Expression",
-		token.T_10: "Rule",
-		token.T_25: "|",
+		token.T_9:  "[",
+		token.T_11: "blockComment",
+		token.T_12: "dQuote",
+		token.T_15: "let",
+		token.T_16: "lineComment",
+		token.T_21: "sQuote",
+		token.T_22: "space",
+		token.T_23: "|",
 	},
 	// Primary : ∙EMPTY
 	{
@@ -1994,75 +2217,149 @@ var first = []map[token.Type]string{
 	},
 	// Primary : EMPTY ∙
 	{
+		token.T_0:  "!",
 		token.EOF:  "$",
+		token.T_1:  "&",
 		token.T_2:  "(",
 		token.T_3:  "*",
 		token.T_4:  "+",
+		token.T_5:  ".",
+		token.T_6:  ";",
 		token.T_8:  "?",
-		token.T_9:  "Expression",
-		token.T_10: "Rule",
-		token.T_25: "|",
+		token.T_9:  "[",
+		token.T_11: "blockComment",
+		token.T_12: "dQuote",
+		token.T_15: "let",
+		token.T_16: "lineComment",
+		token.T_21: "sQuote",
+		token.T_22: "space",
+		token.T_23: "|",
 	},
 	// RepExpr0x : ∙Expression RepExpr0x
 	{
-		token.T_9: "Expression",
+		token.T_0:  "!",
+		token.T_1:  "&",
+		token.T_2:  "(",
+		token.T_5:  ".",
+		token.T_6:  ";",
+		token.T_9:  "[",
+		token.T_11: "blockComment",
+		token.T_12: "dQuote",
+		token.T_15: "let",
+		token.T_16: "lineComment",
+		token.T_21: "sQuote",
+		token.T_22: "space",
 	},
 	// RepExpr0x : Expression ∙RepExpr0x
 	{
-		token.T_9:  "Expression",
+		token.T_0:  "!",
+		token.T_1:  "&",
+		token.T_2:  "(",
+		token.T_5:  ".",
+		token.T_6:  ";",
+		token.T_9:  "[",
+		token.T_11: "blockComment",
+		token.T_12: "dQuote",
+		token.T_15: "let",
+		token.T_16: "lineComment",
+		token.T_21: "sQuote",
+		token.T_22: "space",
 		token.EOF:  "$",
 		token.T_2:  "(",
-		token.T_10: "Rule",
-		token.T_25: "|",
+		token.T_6:  ";",
+		token.T_11: "blockComment",
+		token.T_15: "let",
+		token.T_16: "lineComment",
+		token.T_22: "space",
+		token.T_23: "|",
 	},
 	// RepExpr0x : Expression RepExpr0x ∙
 	{
 		token.EOF:  "$",
 		token.T_2:  "(",
-		token.T_10: "Rule",
-		token.T_25: "|",
+		token.T_6:  ";",
+		token.T_11: "blockComment",
+		token.T_15: "let",
+		token.T_16: "lineComment",
+		token.T_22: "space",
+		token.T_23: "|",
 	},
 	// RepExpr0x : ∙
 	{
 		token.EOF:  "$",
 		token.T_2:  "(",
-		token.T_10: "Rule",
-		token.T_25: "|",
+		token.T_6:  ";",
+		token.T_11: "blockComment",
+		token.T_15: "let",
+		token.T_16: "lineComment",
+		token.T_22: "space",
+		token.T_23: "|",
 	},
 	// RepPipedSeq0x : ∙PIPE Sequence RepPipedSeq0x
 	{
-		token.T_25: "|",
+		token.T_23: "|",
 	},
 	// RepPipedSeq0x : PIPE ∙Sequence RepPipedSeq0x
 	{
-		token.T_9: "Expression",
+		token.T_0:  "!",
+		token.T_1:  "&",
+		token.T_2:  "(",
+		token.T_5:  ".",
+		token.T_6:  ";",
+		token.T_9:  "[",
+		token.T_11: "blockComment",
+		token.T_12: "dQuote",
+		token.T_15: "let",
+		token.T_16: "lineComment",
+		token.T_21: "sQuote",
+		token.T_22: "space",
 	},
 	// RepPipedSeq0x : PIPE Sequence ∙RepPipedSeq0x
 	{
-		token.T_25: "|",
+		token.T_23: "|",
 		token.EOF:  "$",
 		token.T_2:  "(",
-		token.T_10: "Rule",
+		token.T_6:  ";",
+		token.T_11: "blockComment",
+		token.T_15: "let",
+		token.T_16: "lineComment",
+		token.T_22: "space",
 	},
 	// RepPipedSeq0x : PIPE Sequence RepPipedSeq0x ∙
 	{
 		token.EOF:  "$",
 		token.T_2:  "(",
-		token.T_10: "Rule",
+		token.T_6:  ";",
+		token.T_11: "blockComment",
+		token.T_15: "let",
+		token.T_16: "lineComment",
+		token.T_22: "space",
 	},
 	// RepPipedSeq0x : ∙
 	{
 		token.EOF:  "$",
 		token.T_2:  "(",
-		token.T_10: "Rule",
+		token.T_6:  ";",
+		token.T_11: "blockComment",
+		token.T_15: "let",
+		token.T_16: "lineComment",
+		token.T_22: "space",
 	},
 	// RepRule0x : ∙Rule RepRule0x
 	{
-		token.T_10: "Rule",
+		token.T_6:  ";",
+		token.T_11: "blockComment",
+		token.T_15: "let",
+		token.T_16: "lineComment",
+		token.T_22: "space",
 	},
 	// RepRule0x : Rule ∙RepRule0x
 	{
-		token.T_10: "Rule",
+		token.T_6:  ";",
+		token.T_11: "blockComment",
+		token.T_15: "let",
+		token.T_16: "lineComment",
+		token.T_22: "space",
 		token.EOF:  "$",
 	},
 	// RepRule0x : Rule RepRule0x ∙
@@ -2076,10 +2373,10 @@ var first = []map[token.Type]string{
 	// Rule : ∙Identifier EQUAL Choice
 	{
 		token.T_6:  ";",
-		token.T_13: "blockComment",
-		token.T_17: "let",
-		token.T_18: "lineComment",
-		token.T_24: "space",
+		token.T_11: "blockComment",
+		token.T_15: "let",
+		token.T_16: "lineComment",
+		token.T_22: "space",
 	},
 	// Rule : Identifier ∙EQUAL Choice
 	{
@@ -2087,12 +2384,27 @@ var first = []map[token.Type]string{
 	},
 	// Rule : Identifier EQUAL ∙Choice
 	{
-		token.T_9: "Expression",
+		token.T_0:  "!",
+		token.T_1:  "&",
+		token.T_2:  "(",
+		token.T_5:  ".",
+		token.T_6:  ";",
+		token.T_9:  "[",
+		token.T_11: "blockComment",
+		token.T_12: "dQuote",
+		token.T_15: "let",
+		token.T_16: "lineComment",
+		token.T_21: "sQuote",
+		token.T_22: "space",
 	},
 	// Rule : Identifier EQUAL Choice ∙
 	{
 		token.EOF:  "$",
-		token.T_10: "Rule",
+		token.T_6:  ";",
+		token.T_11: "blockComment",
+		token.T_15: "let",
+		token.T_16: "lineComment",
+		token.T_22: "space",
 	},
 	// STAR : ∙* WS
 	{
@@ -2101,158 +2413,208 @@ var first = []map[token.Type]string{
 	// STAR : * ∙WS
 	{
 		token.T_6:  ";",
-		token.T_13: "blockComment",
-		token.T_18: "lineComment",
-		token.T_24: "space",
+		token.T_11: "blockComment",
+		token.T_16: "lineComment",
+		token.T_22: "space",
 	},
 	// STAR : * WS ∙
 	{
+		token.T_0:  "!",
+		token.EOF:  "$",
+		token.T_1:  "&",
+		token.T_2:  "(",
+		token.T_5:  ".",
+		token.T_6:  ";",
+		token.T_9:  "[",
+		token.T_11: "blockComment",
+		token.T_12: "dQuote",
+		token.T_15: "let",
+		token.T_16: "lineComment",
+		token.T_21: "sQuote",
+		token.T_22: "space",
+		token.T_23: "|",
+	},
+	// Sequence : ∙Expression RepExpr0x
+	{
+		token.T_0:  "!",
+		token.T_1:  "&",
+		token.T_2:  "(",
+		token.T_5:  ".",
+		token.T_6:  ";",
+		token.T_9:  "[",
+		token.T_11: "blockComment",
+		token.T_12: "dQuote",
+		token.T_15: "let",
+		token.T_16: "lineComment",
+		token.T_21: "sQuote",
+		token.T_22: "space",
+	},
+	// Sequence : Expression ∙RepExpr0x
+	{
+		token.T_0:  "!",
+		token.T_1:  "&",
+		token.T_2:  "(",
+		token.T_5:  ".",
+		token.T_6:  ";",
+		token.T_9:  "[",
+		token.T_11: "blockComment",
+		token.T_12: "dQuote",
+		token.T_15: "let",
+		token.T_16: "lineComment",
+		token.T_21: "sQuote",
+		token.T_22: "space",
 		token.EOF:  "$",
 		token.T_2:  "(",
-		token.T_9:  "Expression",
-		token.T_10: "Rule",
-		token.T_25: "|",
+		token.T_6:  ";",
+		token.T_11: "blockComment",
+		token.T_15: "let",
+		token.T_16: "lineComment",
+		token.T_22: "space",
+		token.T_23: "|",
 	},
-	// Sequence : ∙Pla RepExpr0x
-	{
-		token.T_9: "Expression",
-	},
-	// Sequence : Pla ∙RepExpr0x
-	{
-		token.T_9:  "Expression",
-		token.EOF:  "$",
-		token.T_2:  "(",
-		token.T_10: "Rule",
-		token.T_25: "|",
-	},
-	// Sequence : Pla RepExpr0x ∙
+	// Sequence : Expression RepExpr0x ∙
 	{
 		token.EOF:  "$",
 		token.T_2:  "(",
-		token.T_10: "Rule",
-		token.T_25: "|",
+		token.T_6:  ";",
+		token.T_11: "blockComment",
+		token.T_15: "let",
+		token.T_16: "lineComment",
+		token.T_22: "space",
+		token.T_23: "|",
 	},
 	// SpaceOrComment : ∙space
 	{
-		token.T_24: "space",
+		token.T_22: "space",
 	},
 	// SpaceOrComment : space ∙
 	{
 		token.T_6:  ";",
-		token.T_13: "blockComment",
-		token.T_18: "lineComment",
-		token.T_24: "space",
+		token.T_11: "blockComment",
+		token.T_16: "lineComment",
+		token.T_22: "space",
 	},
 	// SpaceOrComment : ∙LineOrBlock
 	{
-		token.T_13: "blockComment",
-		token.T_18: "lineComment",
+		token.T_11: "blockComment",
+		token.T_16: "lineComment",
 	},
 	// SpaceOrComment : LineOrBlock ∙
 	{
 		token.T_6:  ";",
-		token.T_13: "blockComment",
-		token.T_18: "lineComment",
-		token.T_24: "space",
+		token.T_11: "blockComment",
+		token.T_16: "lineComment",
+		token.T_22: "space",
 	},
 	// String : ∙Character String
 	{
-		token.T_16: "esc",
-		token.T_20: "notQuotesEsc",
+		token.T_14: "esc",
+		token.T_18: "notQuotesEsc",
 	},
 	// String : Character ∙String
 	{
-		token.T_16: "esc",
-		token.T_20: "notQuotesEsc",
-		token.T_14: "dQuote",
+		token.T_14: "esc",
+		token.T_18: "notQuotesEsc",
+		token.T_12: "dQuote",
 	},
 	// String : Character String ∙
 	{
-		token.T_14: "dQuote",
+		token.T_12: "dQuote",
 	},
 	// String : ∙
 	{
-		token.T_14: "dQuote",
+		token.T_12: "dQuote",
 	},
 	// StringLiteral : ∙dQuote String dQuote WS
 	{
-		token.T_14: "dQuote",
+		token.T_12: "dQuote",
 	},
 	// StringLiteral : dQuote ∙String dQuote WS
 	{
-		token.T_14: "dQuote",
-		token.T_16: "esc",
-		token.T_20: "notQuotesEsc",
+		token.T_12: "dQuote",
+		token.T_14: "esc",
+		token.T_18: "notQuotesEsc",
 	},
 	// StringLiteral : dQuote String ∙dQuote WS
 	{
-		token.T_14: "dQuote",
+		token.T_12: "dQuote",
 	},
 	// StringLiteral : dQuote String dQuote ∙WS
 	{
 		token.T_6:  ";",
-		token.T_13: "blockComment",
-		token.T_18: "lineComment",
-		token.T_24: "space",
+		token.T_11: "blockComment",
+		token.T_16: "lineComment",
+		token.T_22: "space",
 	},
 	// StringLiteral : dQuote String dQuote WS ∙
 	{
+		token.T_0:  "!",
 		token.EOF:  "$",
+		token.T_1:  "&",
 		token.T_2:  "(",
 		token.T_3:  "*",
 		token.T_4:  "+",
+		token.T_5:  ".",
+		token.T_6:  ";",
 		token.T_8:  "?",
-		token.T_9:  "Expression",
-		token.T_10: "Rule",
-		token.T_25: "|",
+		token.T_9:  "[",
+		token.T_11: "blockComment",
+		token.T_12: "dQuote",
+		token.T_15: "let",
+		token.T_16: "lineComment",
+		token.T_21: "sQuote",
+		token.T_22: "space",
+		token.T_23: "|",
 	},
 	// UnclosedChar : ∙notSqBk Character
 	{
-		token.T_21: "notSqBk",
+		token.T_19: "notSqBk",
 	},
 	// UnclosedChar : notSqBk ∙Character
 	{
-		token.T_16: "esc",
-		token.T_20: "notQuotesEsc",
+		token.T_14: "esc",
+		token.T_18: "notQuotesEsc",
 	},
 	// UnclosedChar : notSqBk Character ∙
 	{
-		token.T_12: "]",
-		token.T_21: "notSqBk",
+		token.T_10: "]",
+		token.T_19: "notSqBk",
 	},
 	// UnclosedChars : ∙UnclosedChar UnclosedChars
 	{
-		token.T_21: "notSqBk",
+		token.T_19: "notSqBk",
 	},
 	// UnclosedChars : UnclosedChar ∙UnclosedChars
 	{
-		token.T_21: "notSqBk",
-		token.T_12: "]",
+		token.T_19: "notSqBk",
+		token.T_10: "]",
 	},
 	// UnclosedChars : UnclosedChar UnclosedChars ∙
 	{
-		token.T_12: "]",
+		token.T_10: "]",
 	},
 	// UnclosedChars : ∙
 	{
-		token.T_12: "]",
+		token.T_10: "]",
 	},
 	// WS : ∙SpaceOrComment WS
 	{
-		token.T_13: "blockComment",
-		token.T_18: "lineComment",
-		token.T_24: "space",
+		token.T_11: "blockComment",
+		token.T_16: "lineComment",
+		token.T_22: "space",
 	},
 	// WS : SpaceOrComment ∙WS
 	{
 		token.T_6:  ";",
-		token.T_13: "blockComment",
-		token.T_18: "lineComment",
-		token.T_24: "space",
+		token.T_11: "blockComment",
+		token.T_16: "lineComment",
+		token.T_22: "space",
 	},
 	// WS : SpaceOrComment WS ∙
 	{
+		token.T_0:  "!",
 		token.EOF:  "$",
+		token.T_1:  "&",
 		token.T_2:  "(",
 		token.T_3:  "*",
 		token.T_4:  "+",
@@ -2260,18 +2622,16 @@ var first = []map[token.Type]string{
 		token.T_6:  ";",
 		token.T_7:  "=",
 		token.T_8:  "?",
-		token.T_9:  "Expression",
-		token.T_10: "Rule",
-		token.T_11: "[",
-		token.T_13: "blockComment",
-		token.T_14: "dQuote",
-		token.T_17: "let",
-		token.T_18: "lineComment",
-		token.T_19: "neq",
-		token.T_22: "num",
-		token.T_23: "sQuote",
-		token.T_24: "space",
-		token.T_25: "|",
+		token.T_9:  "[",
+		token.T_11: "blockComment",
+		token.T_12: "dQuote",
+		token.T_15: "let",
+		token.T_16: "lineComment",
+		token.T_17: "neq",
+		token.T_20: "num",
+		token.T_21: "sQuote",
+		token.T_22: "space",
+		token.T_23: "|",
 	},
 	// WS : ∙EMPTY
 	{
@@ -2279,7 +2639,9 @@ var first = []map[token.Type]string{
 	},
 	// WS : EMPTY ∙
 	{
+		token.T_0:  "!",
 		token.EOF:  "$",
+		token.T_1:  "&",
 		token.T_2:  "(",
 		token.T_3:  "*",
 		token.T_4:  "+",
@@ -2287,18 +2649,16 @@ var first = []map[token.Type]string{
 		token.T_6:  ";",
 		token.T_7:  "=",
 		token.T_8:  "?",
-		token.T_9:  "Expression",
-		token.T_10: "Rule",
-		token.T_11: "[",
-		token.T_13: "blockComment",
-		token.T_14: "dQuote",
-		token.T_17: "let",
-		token.T_18: "lineComment",
-		token.T_19: "neq",
-		token.T_22: "num",
-		token.T_23: "sQuote",
-		token.T_24: "space",
-		token.T_25: "|",
+		token.T_9:  "[",
+		token.T_11: "blockComment",
+		token.T_12: "dQuote",
+		token.T_15: "let",
+		token.T_16: "lineComment",
+		token.T_17: "neq",
+		token.T_20: "num",
+		token.T_21: "sQuote",
+		token.T_22: "space",
+		token.T_23: "|",
 	},
 }
 
@@ -2308,76 +2668,118 @@ var followSets = []map[token.Type]string{
 		token.T_2:  "(",
 		token.T_5:  ".",
 		token.T_6:  ";",
-		token.T_11: "[",
-		token.T_13: "blockComment",
-		token.T_14: "dQuote",
-		token.T_17: "let",
-		token.T_18: "lineComment",
-		token.T_23: "sQuote",
-		token.T_24: "space",
+		token.T_9:  "[",
+		token.T_11: "blockComment",
+		token.T_12: "dQuote",
+		token.T_15: "let",
+		token.T_16: "lineComment",
+		token.T_21: "sQuote",
+		token.T_22: "space",
 	},
 	// ANY
 	{
+		token.T_0:  "!",
 		token.EOF:  "$",
+		token.T_1:  "&",
 		token.T_2:  "(",
 		token.T_3:  "*",
 		token.T_4:  "+",
+		token.T_5:  ".",
+		token.T_6:  ";",
 		token.T_8:  "?",
-		token.T_9:  "Expression",
-		token.T_10: "Rule",
-		token.T_25: "|",
+		token.T_9:  "[",
+		token.T_11: "blockComment",
+		token.T_12: "dQuote",
+		token.T_15: "let",
+		token.T_16: "lineComment",
+		token.T_21: "sQuote",
+		token.T_22: "space",
+		token.T_23: "|",
 	},
 	// CLOSE
 	{
+		token.T_0:  "!",
 		token.EOF:  "$",
+		token.T_1:  "&",
 		token.T_2:  "(",
 		token.T_3:  "*",
 		token.T_4:  "+",
+		token.T_5:  ".",
+		token.T_6:  ";",
 		token.T_8:  "?",
-		token.T_9:  "Expression",
-		token.T_10: "Rule",
-		token.T_25: "|",
+		token.T_9:  "[",
+		token.T_11: "blockComment",
+		token.T_12: "dQuote",
+		token.T_15: "let",
+		token.T_16: "lineComment",
+		token.T_21: "sQuote",
+		token.T_22: "space",
+		token.T_23: "|",
 	},
 	// CharClass
 	{
+		token.T_0:  "!",
 		token.EOF:  "$",
+		token.T_1:  "&",
 		token.T_2:  "(",
 		token.T_3:  "*",
 		token.T_4:  "+",
+		token.T_5:  ".",
+		token.T_6:  ";",
 		token.T_8:  "?",
-		token.T_9:  "Expression",
-		token.T_10: "Rule",
-		token.T_25: "|",
+		token.T_9:  "[",
+		token.T_11: "blockComment",
+		token.T_12: "dQuote",
+		token.T_15: "let",
+		token.T_16: "lineComment",
+		token.T_21: "sQuote",
+		token.T_22: "space",
+		token.T_23: "|",
 	},
 	// CharLiteral
 	{
+		token.T_0:  "!",
 		token.EOF:  "$",
+		token.T_1:  "&",
 		token.T_2:  "(",
 		token.T_3:  "*",
 		token.T_4:  "+",
+		token.T_5:  ".",
+		token.T_6:  ";",
 		token.T_8:  "?",
-		token.T_9:  "Expression",
-		token.T_10: "Rule",
-		token.T_25: "|",
+		token.T_9:  "[",
+		token.T_11: "blockComment",
+		token.T_12: "dQuote",
+		token.T_15: "let",
+		token.T_16: "lineComment",
+		token.T_21: "sQuote",
+		token.T_22: "space",
+		token.T_23: "|",
 	},
 	// Character
 	{
-		token.T_12: "]",
-		token.T_14: "dQuote",
-		token.T_16: "esc",
-		token.T_20: "notQuotesEsc",
-		token.T_21: "notSqBk",
-		token.T_23: "sQuote",
+		token.T_10: "]",
+		token.T_12: "dQuote",
+		token.T_14: "esc",
+		token.T_18: "notQuotesEsc",
+		token.T_19: "notSqBk",
+		token.T_21: "sQuote",
 	},
 	// Choice
 	{
 		token.EOF:  "$",
 		token.T_2:  "(",
-		token.T_10: "Rule",
+		token.T_6:  ";",
+		token.T_11: "blockComment",
+		token.T_15: "let",
+		token.T_16: "lineComment",
+		token.T_22: "space",
 	},
 	// EMPTY
 	{
+		token.T_0:  "!",
 		token.EOF:  "$",
+		token.T_1:  "&",
 		token.T_2:  "(",
 		token.T_3:  "*",
 		token.T_4:  "+",
@@ -2385,30 +2787,48 @@ var followSets = []map[token.Type]string{
 		token.T_6:  ";",
 		token.T_7:  "=",
 		token.T_8:  "?",
-		token.T_9:  "Expression",
-		token.T_10: "Rule",
-		token.T_11: "[",
-		token.T_13: "blockComment",
-		token.T_14: "dQuote",
-		token.T_17: "let",
-		token.T_18: "lineComment",
-		token.T_19: "neq",
-		token.T_22: "num",
-		token.T_23: "sQuote",
-		token.T_24: "space",
-		token.T_25: "|",
+		token.T_9:  "[",
+		token.T_11: "blockComment",
+		token.T_12: "dQuote",
+		token.T_15: "let",
+		token.T_16: "lineComment",
+		token.T_17: "neq",
+		token.T_20: "num",
+		token.T_21: "sQuote",
+		token.T_22: "space",
+		token.T_23: "|",
 	},
 	// EQUAL
 	{
-		token.T_9: "Expression",
+		token.T_0:  "!",
+		token.T_1:  "&",
+		token.T_2:  "(",
+		token.T_5:  ".",
+		token.T_6:  ";",
+		token.T_9:  "[",
+		token.T_11: "blockComment",
+		token.T_12: "dQuote",
+		token.T_15: "let",
+		token.T_16: "lineComment",
+		token.T_21: "sQuote",
+		token.T_22: "space",
 	},
 	// Expression
 	{
+		token.T_0:  "!",
 		token.EOF:  "$",
+		token.T_1:  "&",
 		token.T_2:  "(",
-		token.T_9:  "Expression",
-		token.T_10: "Rule",
-		token.T_25: "|",
+		token.T_5:  ".",
+		token.T_6:  ";",
+		token.T_9:  "[",
+		token.T_11: "blockComment",
+		token.T_12: "dQuote",
+		token.T_15: "let",
+		token.T_16: "lineComment",
+		token.T_21: "sQuote",
+		token.T_22: "space",
+		token.T_23: "|",
 	},
 	// Grammar
 	{
@@ -2417,132 +2837,194 @@ var followSets = []map[token.Type]string{
 	// Identifier
 	{
 		token.T_7:  "=",
-		token.T_19: "neq",
+		token.T_17: "neq",
 	},
 	// LetOrNum
 	{
 		token.T_6:  ";",
-		token.T_13: "blockComment",
-		token.T_17: "let",
-		token.T_18: "lineComment",
-		token.T_22: "num",
-		token.T_24: "space",
+		token.T_11: "blockComment",
+		token.T_15: "let",
+		token.T_16: "lineComment",
+		token.T_20: "num",
+		token.T_22: "space",
 	},
 	// LetOrNum0x
 	{
 		token.T_6:  ";",
-		token.T_13: "blockComment",
-		token.T_18: "lineComment",
-		token.T_24: "space",
+		token.T_11: "blockComment",
+		token.T_16: "lineComment",
+		token.T_22: "space",
 	},
 	// LetWS
 	{
 		token.T_6:  ";",
-		token.T_13: "blockComment",
-		token.T_17: "let",
-		token.T_18: "lineComment",
-		token.T_22: "num",
-		token.T_24: "space",
+		token.T_11: "blockComment",
+		token.T_15: "let",
+		token.T_16: "lineComment",
+		token.T_20: "num",
+		token.T_22: "space",
 	},
 	// LineOrBlock
 	{
 		token.T_6:  ";",
-		token.T_13: "blockComment",
-		token.T_18: "lineComment",
-		token.T_24: "space",
+		token.T_11: "blockComment",
+		token.T_16: "lineComment",
+		token.T_22: "space",
 	},
 	// NEQUAL
 	{
+		token.T_0:  "!",
 		token.EOF:  "$",
+		token.T_1:  "&",
 		token.T_2:  "(",
 		token.T_3:  "*",
 		token.T_4:  "+",
+		token.T_5:  ".",
+		token.T_6:  ";",
 		token.T_8:  "?",
-		token.T_9:  "Expression",
-		token.T_10: "Rule",
-		token.T_25: "|",
+		token.T_9:  "[",
+		token.T_11: "blockComment",
+		token.T_12: "dQuote",
+		token.T_15: "let",
+		token.T_16: "lineComment",
+		token.T_21: "sQuote",
+		token.T_22: "space",
+		token.T_23: "|",
 	},
 	// NOT
 	{
 		token.T_2:  "(",
 		token.T_5:  ".",
 		token.T_6:  ";",
-		token.T_11: "[",
-		token.T_13: "blockComment",
-		token.T_14: "dQuote",
-		token.T_17: "let",
-		token.T_18: "lineComment",
-		token.T_23: "sQuote",
-		token.T_24: "space",
+		token.T_9:  "[",
+		token.T_11: "blockComment",
+		token.T_12: "dQuote",
+		token.T_15: "let",
+		token.T_16: "lineComment",
+		token.T_21: "sQuote",
+		token.T_22: "space",
 	},
 	// OPEN
 	{
-		token.T_9: "Expression",
+		token.T_0:  "!",
+		token.T_1:  "&",
+		token.T_2:  "(",
+		token.T_5:  ".",
+		token.T_6:  ";",
+		token.T_9:  "[",
+		token.T_11: "blockComment",
+		token.T_12: "dQuote",
+		token.T_15: "let",
+		token.T_16: "lineComment",
+		token.T_21: "sQuote",
+		token.T_22: "space",
 	},
 	// OPT
 	{
+		token.T_0:  "!",
 		token.EOF:  "$",
+		token.T_1:  "&",
 		token.T_2:  "(",
-		token.T_9:  "Expression",
-		token.T_10: "Rule",
-		token.T_25: "|",
+		token.T_5:  ".",
+		token.T_6:  ";",
+		token.T_9:  "[",
+		token.T_11: "blockComment",
+		token.T_12: "dQuote",
+		token.T_15: "let",
+		token.T_16: "lineComment",
+		token.T_21: "sQuote",
+		token.T_22: "space",
+		token.T_23: "|",
 	},
 	// OptStarPlus
 	{
+		token.T_0:  "!",
 		token.EOF:  "$",
+		token.T_1:  "&",
 		token.T_2:  "(",
-		token.T_9:  "Expression",
-		token.T_10: "Rule",
-		token.T_25: "|",
+		token.T_5:  ".",
+		token.T_6:  ";",
+		token.T_9:  "[",
+		token.T_11: "blockComment",
+		token.T_12: "dQuote",
+		token.T_15: "let",
+		token.T_16: "lineComment",
+		token.T_21: "sQuote",
+		token.T_22: "space",
+		token.T_23: "|",
 	},
 	// PIPE
 	{
-		token.T_9: "Expression",
+		token.T_0:  "!",
+		token.T_1:  "&",
+		token.T_2:  "(",
+		token.T_5:  ".",
+		token.T_6:  ";",
+		token.T_9:  "[",
+		token.T_11: "blockComment",
+		token.T_12: "dQuote",
+		token.T_15: "let",
+		token.T_16: "lineComment",
+		token.T_21: "sQuote",
+		token.T_22: "space",
 	},
 	// PLUS
 	{
+		token.T_0:  "!",
 		token.EOF:  "$",
+		token.T_1:  "&",
 		token.T_2:  "(",
-		token.T_9:  "Expression",
-		token.T_10: "Rule",
-		token.T_25: "|",
-	},
-	// Pl
-	{
-		token.EOF:  "$",
-		token.T_10: "Rule",
-	},
-	// Pla
-	{
-		token.EOF:  "$",
-		token.T_2:  "(",
-		token.T_9:  "Expression",
-		token.T_10: "Rule",
-		token.T_25: "|",
+		token.T_5:  ".",
+		token.T_6:  ";",
+		token.T_9:  "[",
+		token.T_11: "blockComment",
+		token.T_12: "dQuote",
+		token.T_15: "let",
+		token.T_16: "lineComment",
+		token.T_21: "sQuote",
+		token.T_22: "space",
+		token.T_23: "|",
 	},
 	// Primary
 	{
+		token.T_0:  "!",
 		token.EOF:  "$",
+		token.T_1:  "&",
 		token.T_2:  "(",
 		token.T_3:  "*",
 		token.T_4:  "+",
+		token.T_5:  ".",
+		token.T_6:  ";",
 		token.T_8:  "?",
-		token.T_9:  "Expression",
-		token.T_10: "Rule",
-		token.T_25: "|",
+		token.T_9:  "[",
+		token.T_11: "blockComment",
+		token.T_12: "dQuote",
+		token.T_15: "let",
+		token.T_16: "lineComment",
+		token.T_21: "sQuote",
+		token.T_22: "space",
+		token.T_23: "|",
 	},
 	// RepExpr0x
 	{
 		token.EOF:  "$",
 		token.T_2:  "(",
-		token.T_10: "Rule",
-		token.T_25: "|",
+		token.T_6:  ";",
+		token.T_11: "blockComment",
+		token.T_15: "let",
+		token.T_16: "lineComment",
+		token.T_22: "space",
+		token.T_23: "|",
 	},
 	// RepPipedSeq0x
 	{
 		token.EOF:  "$",
 		token.T_2:  "(",
-		token.T_10: "Rule",
+		token.T_6:  ";",
+		token.T_11: "blockComment",
+		token.T_15: "let",
+		token.T_16: "lineComment",
+		token.T_22: "space",
 	},
 	// RepRule0x
 	{
@@ -2551,57 +3033,85 @@ var followSets = []map[token.Type]string{
 	// Rule
 	{
 		token.EOF:  "$",
-		token.T_10: "Rule",
+		token.T_6:  ";",
+		token.T_11: "blockComment",
+		token.T_15: "let",
+		token.T_16: "lineComment",
+		token.T_22: "space",
 	},
 	// STAR
 	{
+		token.T_0:  "!",
 		token.EOF:  "$",
+		token.T_1:  "&",
 		token.T_2:  "(",
-		token.T_9:  "Expression",
-		token.T_10: "Rule",
-		token.T_25: "|",
+		token.T_5:  ".",
+		token.T_6:  ";",
+		token.T_9:  "[",
+		token.T_11: "blockComment",
+		token.T_12: "dQuote",
+		token.T_15: "let",
+		token.T_16: "lineComment",
+		token.T_21: "sQuote",
+		token.T_22: "space",
+		token.T_23: "|",
 	},
 	// Sequence
 	{
 		token.EOF:  "$",
 		token.T_2:  "(",
-		token.T_10: "Rule",
-		token.T_25: "|",
+		token.T_6:  ";",
+		token.T_11: "blockComment",
+		token.T_15: "let",
+		token.T_16: "lineComment",
+		token.T_22: "space",
+		token.T_23: "|",
 	},
 	// SpaceOrComment
 	{
 		token.T_6:  ";",
-		token.T_13: "blockComment",
-		token.T_18: "lineComment",
-		token.T_24: "space",
+		token.T_11: "blockComment",
+		token.T_16: "lineComment",
+		token.T_22: "space",
 	},
 	// String
 	{
-		token.T_14: "dQuote",
+		token.T_12: "dQuote",
 	},
 	// StringLiteral
 	{
+		token.T_0:  "!",
 		token.EOF:  "$",
+		token.T_1:  "&",
 		token.T_2:  "(",
 		token.T_3:  "*",
 		token.T_4:  "+",
+		token.T_5:  ".",
+		token.T_6:  ";",
 		token.T_8:  "?",
-		token.T_9:  "Expression",
-		token.T_10: "Rule",
-		token.T_25: "|",
+		token.T_9:  "[",
+		token.T_11: "blockComment",
+		token.T_12: "dQuote",
+		token.T_15: "let",
+		token.T_16: "lineComment",
+		token.T_21: "sQuote",
+		token.T_22: "space",
+		token.T_23: "|",
 	},
 	// UnclosedChar
 	{
-		token.T_12: "]",
-		token.T_21: "notSqBk",
+		token.T_10: "]",
+		token.T_19: "notSqBk",
 	},
 	// UnclosedChars
 	{
-		token.T_12: "]",
+		token.T_10: "]",
 	},
 	// WS
 	{
+		token.T_0:  "!",
 		token.EOF:  "$",
+		token.T_1:  "&",
 		token.T_2:  "(",
 		token.T_3:  "*",
 		token.T_4:  "+",
@@ -2609,18 +3119,16 @@ var followSets = []map[token.Type]string{
 		token.T_6:  ";",
 		token.T_7:  "=",
 		token.T_8:  "?",
-		token.T_9:  "Expression",
-		token.T_10: "Rule",
-		token.T_11: "[",
-		token.T_13: "blockComment",
-		token.T_14: "dQuote",
-		token.T_17: "let",
-		token.T_18: "lineComment",
-		token.T_19: "neq",
-		token.T_22: "num",
-		token.T_23: "sQuote",
-		token.T_24: "space",
-		token.T_25: "|",
+		token.T_9:  "[",
+		token.T_11: "blockComment",
+		token.T_12: "dQuote",
+		token.T_15: "let",
+		token.T_16: "lineComment",
+		token.T_17: "neq",
+		token.T_20: "num",
+		token.T_21: "sQuote",
+		token.T_22: "space",
+		token.T_23: "|",
 	},
 }
 
