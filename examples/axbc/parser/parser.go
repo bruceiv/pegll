@@ -65,24 +65,24 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 		// p.DumpDescriptors()
 
 		switch L {
-		case slot.AorB0R0: // AorB : ∙repa0x
+		case slot.AorB0R0: // AorB : ∙Repa0x
 
-			p.bsrSet.Add(slot.AorB0R1, cU, p.cI, p.cI+1)
-			p.cI++
-			if p.follow(symbols.NT_AorB) {
-				p.rtn(symbols.NT_AorB, cU, p.cI)
-			} else {
-				p.parseError(slot.AorB0R0, p.cI, followSets[symbols.NT_AorB])
-			}
-		case slot.AorB1R0: // AorB : ∙ab
+			p.call(slot.AorB0R1, cU, p.cI)
+		case slot.AorB0R1: // AorB : Repa0x ∙
+
+			p.rtn(symbols.NT_AorB, cU, p.cI)
+		case slot.AorB1R0: // AorB : ∙a b
 
 			p.bsrSet.Add(slot.AorB1R1, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_AorB) {
-				p.rtn(symbols.NT_AorB, cU, p.cI)
-			} else {
-				p.parseError(slot.AorB1R0, p.cI, followSets[symbols.NT_AorB])
+			if !p.testSelect(slot.AorB1R1) {
+				p.parseError(slot.AorB1R1, p.cI, first[slot.AorB1R1])
+				break
 			}
+
+			p.bsrSet.Add(slot.AorB1R2, cU, p.cI, p.cI+1)
+			p.cI++
+			p.rtn(symbols.NT_AorB, cU, p.cI)
 		case slot.AxBC0R0: // AxBC : ∙AorB c
 
 			p.call(slot.AxBC0R1, cU, p.cI)
@@ -95,11 +95,24 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 
 			p.bsrSet.Add(slot.AxBC0R2, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_AxBC) {
-				p.rtn(symbols.NT_AxBC, cU, p.cI)
-			} else {
-				p.parseError(slot.AxBC0R0, p.cI, followSets[symbols.NT_AxBC])
+			p.rtn(symbols.NT_AxBC, cU, p.cI)
+		case slot.Repa0x0R0: // Repa0x : ∙a Repa0x
+
+			p.bsrSet.Add(slot.Repa0x0R1, cU, p.cI, p.cI+1)
+			p.cI++
+			if !p.testSelect(slot.Repa0x0R1) {
+				p.parseError(slot.Repa0x0R1, p.cI, first[slot.Repa0x0R1])
+				break
 			}
+
+			p.call(slot.Repa0x0R2, cU, p.cI)
+		case slot.Repa0x0R2: // Repa0x : a Repa0x ∙
+
+			p.rtn(symbols.NT_Repa0x, cU, p.cI)
+		case slot.Repa0x1R0: // Repa0x : ∙
+			p.bsrSet.AddEmpty(slot.Repa0x1R0, p.cI)
+
+			p.rtn(symbols.NT_Repa0x, cU, p.cI)
 
 		default:
 			panic("This must not happen")
@@ -336,51 +349,77 @@ func (p *parser) follow(nt symbols.NT) bool {
 }
 
 func (p *parser) testSelect(l slot.Label) bool {
-	_, exist := first[l][p.lex.Tokens[p.cI].Type()]
-	// fmt.Printf("testSelect(%s) = %t\n", l, exist)
-	return exist
+	return l.IsNullable() || l.FirstContains(p.lex.Tokens[p.cI].Type())
+	// _, exist := first[l][p.lex.Tokens[p.cI].Type()]
+	// return exist
 }
 
 var first = []map[token.Type]string{
-	// AorB : ∙repa0x
+	// AorB : ∙Repa0x
 	{
-		token.T_2: "repa0x",
+		token.T_0: "a",
+		token.T_2: "c",
 	},
-	// AorB : repa0x ∙
+	// AorB : Repa0x ∙
 	{
-		token.T_1: "c",
+		token.T_2: "c",
 	},
-	// AorB : ∙ab
+	// AorB : ∙a b
 	{
-		token.T_0: "ab",
+		token.T_0: "a",
 	},
-	// AorB : ab ∙
+	// AorB : a ∙b
 	{
-		token.T_1: "c",
+		token.T_1: "b",
+	},
+	// AorB : a b ∙
+	{
+		token.T_2: "c",
 	},
 	// AxBC : ∙AorB c
 	{
-		token.T_0: "ab",
-		token.T_2: "repa0x",
+		token.T_0: "a",
+		token.T_2: "c",
 	},
 	// AxBC : AorB ∙c
 	{
-		token.T_1: "c",
+		token.T_2: "c",
 	},
 	// AxBC : AorB c ∙
 	{
 		token.EOF: "$",
+	},
+	// Repa0x : ∙a Repa0x
+	{
+		token.T_0: "a",
+	},
+	// Repa0x : a ∙Repa0x
+	{
+		token.T_0: "a",
+		token.T_2: "c",
+	},
+	// Repa0x : a Repa0x ∙
+	{
+		token.T_2: "c",
+	},
+	// Repa0x : ∙
+	{
+		token.T_2: "c",
 	},
 }
 
 var followSets = []map[token.Type]string{
 	// AorB
 	{
-		token.T_1: "c",
+		token.T_2: "c",
 	},
 	// AxBC
 	{
 		token.EOF: "$",
+	},
+	// Repa0x
+	{
+		token.T_2: "c",
 	},
 }
 

@@ -1,3 +1,4 @@
+//  Copyright 2021 Aaron Moss
 //  Copyright 2019 Marius Ackerman
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
@@ -22,6 +23,7 @@ import (
 	"github.com/goccmack/gogll/ast"
 	"github.com/goccmack/gogll/frstflw"
 	"github.com/goccmack/gogll/gslot"
+	gsyms "github.com/goccmack/gogll/symbols"
 	"github.com/goccmack/goutil/ioutil"
 )
 
@@ -51,17 +53,19 @@ type AltData struct {
 }
 
 type SlotData struct {
-	Label   string
-	NT      string
-	Alt     int
-	Pos     int
-	Symbols []string
+	Label    string
+	NT       string
+	Alt      int
+	Pos      int
+	Nullable bool
+	Symbols  []string
+	FirstT   []string
 }
 
 func getData(g *ast.GoGLL, gs *gslot.GSlot, ff *frstflw.FF) *Data {
 	return &Data{
 		Package: g.Package.GetString(),
-		Slots:   getSlotData(gs),
+		Slots:   getSlotData(gs, ff),
 		Alts:    getAltData(g, gs, ff),
 	}
 }
@@ -85,18 +89,44 @@ func getLabelList(rule *ast.SyntaxRule, g *ast.GoGLL, gs *gslot.GSlot, ff *frstf
 	return buf.String()
 }
 
-func getSlotData(gs *gslot.GSlot) (data []*SlotData) {
+func getSlotData(gs *gslot.GSlot, ff *frstflw.FF) (data []*SlotData) {
 	for _, s := range gs.Slots() {
 		d := &SlotData{
-			Label:   s.Label(),
-			NT:      s.Head,
-			Alt:     s.Alternate,
-			Pos:     s.Pos,
-			Symbols: s.Symbols().GoStrings(),
+			Label:    s.Label(),
+			NT:       s.Head,
+			Alt:      s.Alternate,
+			Pos:      s.Pos,
+			Nullable: isNullable(s, ff),
+			Symbols:  s.Symbols().GoStrings(),
+			FirstT:   firstT(s, ff),
 		}
 		data = append(data, d)
 	}
 	return
+}
+
+// true if the remainder of the symbols in the sequence represented by this slot can
+// match while consuming no input
+func isNullable(s gslot.Label, ff *frstflw.FF) bool {
+	syms := s.Symbols()
+	for i := s.Pos; i < len(syms); i++ {
+		if !ff.IsNullable(syms[i].String()) {
+			return false
+		}
+	}
+	return true
+}
+
+// gets FIRST set for a slot
+func firstT(s gslot.Label, ff *frstflw.FF) []string {
+	fsts := ff.FirstOfString(s.Symbols().Strings()[s.Pos:])
+	fsts.Remove(frstflw.Empty)
+	r := make([]string, 0, fsts.Len())
+	for _, lit := range fsts.Elements() {
+		t := gsyms.TerminalLiteralToType(lit)
+		r = append(r, t.GoString())
+	}
+	return r
 }
 
 const slotTmpl = `
@@ -108,6 +138,7 @@ import(
 	"fmt"
 	
 	"{{.Package}}/parser/symbols"
+	"{{.Package}}/token"
 )
 
 type Label int
@@ -183,8 +214,25 @@ func (l Label) Symbols() symbols.Symbols {
 	return l.Slot().Symbols
 }
 
+func (l Label) IsNullable() bool {
+	return nullable[l]
+}
+
+func (l Label) FirstContains(typ token.Type) bool {
+	return firstT[l][typ]
+}
+
 func (s *Slot) EoR() bool {
 	return s.Pos >= len(s.Symbols)
+}
+
+func (s *Slot) Successor() *Slot {
+	if s.EoR() {
+		return nil
+	} else {
+		// TODO try slots[s.Label + 1]
+		return slots[slotIndex[Index{s.NT,s.Alt,s.Pos+1}]]
+	}
 }
 
 func (s *Slot) String() string {
@@ -220,4 +268,11 @@ var alternates = map[symbols.NT][]Label{ {{range $i, $a := .Alts}}
 	symbols.NT_{{$a.NT}}:[]Label{ {{$a.Labels}} },{{end}}
 }
 
+var nullable = []bool { {{range $i, $s := .Slots}}
+	{{$s.Nullable}}, // {{$s.Label}} {{end}}
+}
+
+var firstT = []map[token.Type]bool { {{range $i, $s := .Slots}}
+	{ {{range $j, $t := $s.FirstT}} token.{{$t}}: true, {{end}} }, // {{$s.Label}} {{end}}
+}
 `

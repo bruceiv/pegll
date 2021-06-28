@@ -52,6 +52,10 @@ const(
 	NT_WS 
 )
 
+const NumNTs = 36
+
+type NTs []NT
+
 // T is the type of terminals symbols
 type T int
 const( 
@@ -105,6 +109,10 @@ func (nt NT) String() string {
 
 func (t T) String() string {
 	return tToString[t]
+}
+
+func (nt NT) LeftRec() NTs {
+	return leftRec[nt]
 }
 
 var ntToString = []string { 
@@ -210,4 +218,43 @@ var stringNT = map[string]NT{
 	"UnclosedChar":NT_UnclosedChar,
 	"UnclosedChars":NT_UnclosedChars,
 	"WS":NT_WS,
+}
+
+var leftRec = map[NT]NTs { 
+	NT_AND: NTs {  },
+	NT_ANY: NTs {  },
+	NT_CLOSE: NTs {  },
+	NT_CharClass: NTs {  },
+	NT_CharLiteral: NTs {  },
+	NT_Character: NTs {  },
+	NT_Choice: NTs {  NT_Expression,  NT_NOT,  NT_SpaceOrComment,  NT_LetWS,  NT_ANY,  NT_AND,  NT_LineOrBlock,  NT_StringLiteral,  NT_Primary,  NT_Identifier,  NT_Sequence,  NT_WS,  NT_OPEN,  NT_EMPTY,  NT_CharClass,  NT_CharLiteral,  },
+	NT_EMPTY: NTs {  },
+	NT_EQUAL: NTs {  },
+	NT_Expression: NTs {  NT_Identifier,  NT_StringLiteral,  NT_AND,  NT_Primary,  NT_NOT,  NT_LetWS,  NT_LineOrBlock,  NT_CharClass,  NT_ANY,  NT_WS,  NT_OPEN,  NT_CharLiteral,  NT_EMPTY,  NT_SpaceOrComment,  },
+	NT_Grammar: NTs {  NT_WS,  NT_LineOrBlock,  NT_EMPTY,  NT_SpaceOrComment,  },
+	NT_Identifier: NTs {  NT_LetWS,  NT_EMPTY,  NT_WS,  NT_SpaceOrComment,  NT_LineOrBlock,  },
+	NT_LetOrNum: NTs {  NT_WS,  NT_SpaceOrComment,  NT_LineOrBlock,  NT_EMPTY,  },
+	NT_LetOrNum0x: NTs {  NT_LetOrNum,  NT_WS,  NT_SpaceOrComment,  NT_LineOrBlock,  NT_EMPTY,  },
+	NT_LetWS: NTs {  NT_LineOrBlock,  NT_EMPTY,  NT_WS,  NT_SpaceOrComment,  },
+	NT_LineOrBlock: NTs {  },
+	NT_NEQUAL: NTs {  },
+	NT_NOT: NTs {  },
+	NT_OPEN: NTs {  },
+	NT_OPT: NTs {  },
+	NT_OptStarPlus: NTs {  NT_OPT,  NT_STAR,  NT_PLUS,  },
+	NT_PIPE: NTs {  },
+	NT_PLUS: NTs {  },
+	NT_Primary: NTs {  NT_CharClass,  NT_ANY,  NT_Identifier,  NT_EMPTY,  NT_SpaceOrComment,  NT_LineOrBlock,  NT_CharLiteral,  NT_LetWS,  NT_WS,  NT_OPEN,  NT_StringLiteral,  },
+	NT_RepExpr0x: NTs {  NT_AND,  NT_EMPTY,  NT_WS,  NT_Primary,  NT_StringLiteral,  NT_CharClass,  NT_OPEN,  NT_SpaceOrComment,  NT_LineOrBlock,  NT_ANY,  NT_Identifier,  NT_Expression,  NT_CharLiteral,  NT_NOT,  NT_LetWS,  },
+	NT_RepPipedSeq0x: NTs {  NT_PIPE,  },
+	NT_RepRule0x: NTs {  NT_Rule,  NT_WS,  NT_SpaceOrComment,  NT_LineOrBlock,  NT_Identifier,  NT_LetWS,  NT_EMPTY,  },
+	NT_Rule: NTs {  NT_Identifier,  NT_LetWS,  NT_EMPTY,  NT_WS,  NT_SpaceOrComment,  NT_LineOrBlock,  },
+	NT_STAR: NTs {  },
+	NT_Sequence: NTs {  NT_LineOrBlock,  NT_WS,  NT_LetWS,  NT_OPEN,  NT_EMPTY,  NT_ANY,  NT_StringLiteral,  NT_Expression,  NT_CharClass,  NT_Primary,  NT_Identifier,  NT_NOT,  NT_SpaceOrComment,  NT_AND,  NT_CharLiteral,  },
+	NT_SpaceOrComment: NTs {  NT_LineOrBlock,  },
+	NT_String: NTs {  NT_Character,  },
+	NT_StringLiteral: NTs {  },
+	NT_UnclosedChar: NTs {  },
+	NT_UnclosedChars: NTs {  NT_UnclosedChar,  },
+	NT_WS: NTs {  NT_EMPTY,  NT_SpaceOrComment,  NT_LineOrBlock,  },
 }

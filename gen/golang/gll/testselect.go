@@ -1,3 +1,4 @@
+//  Copyright 2021 Aaron Moss
 //  Copyright 2019 Marius Ackerman
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
@@ -102,6 +103,13 @@ func (g *gen) getFirst(l gslot.Label) (tokens []*Symbol) {
 
 	ss := l.Symbols()[l.Pos:]
 	frst := g.ff.FirstOfString(ss.Strings())
+	if frst.Contain(frstflw.Empty) {
+		// Also add FOLLOW set if FIRST may contain empty set
+		frst.AddSet(g.ff.Follow(l.Head))
+	}
+	// ensure ϵ not included in output set
+	frst.Remove(frstflw.Empty)
+
 	firstSymbols := frst.Elements()
 	sort.Slice(
 		firstSymbols,
@@ -110,16 +118,11 @@ func (g *gen) getFirst(l gslot.Label) (tokens []*Symbol) {
 	// fmt.Printf("  first: %s\n", frst)
 
 	for _, sym := range firstSymbols {
-		if sym != frstflw.Empty {
-			tokens = append(tokens,
-				&Symbol{
-					TokType: symbols.TerminalLiteralToType(sym).TypeString(),
-					Label:   sym,
-				})
-		}
-	}
-	if frst.Contain(frstflw.Empty) {
-		tokens = append(tokens, g.getFollowConditions(l.Head)...)
+		tokens = append(tokens,
+			&Symbol{
+				TokType: symbols.TerminalLiteralToType(sym).TypeString(),
+				Label:   sym,
+			})
 	}
 	return
 }

@@ -77,11 +77,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.AND0R2, cU, p.cI)
 		case slot.AND0R2: // AND : & WS ∙
 
-			if p.follow(symbols.NT_AND) {
-				p.rtn(symbols.NT_AND, cU, p.cI)
-			} else {
-				p.parseError(slot.AND0R0, p.cI, followSets[symbols.NT_AND])
-			}
+			p.rtn(symbols.NT_AND, cU, p.cI)
 		case slot.ANY0R0: // ANY : ∙. WS
 
 			p.bsrSet.Add(slot.ANY0R1, cU, p.cI, p.cI+1)
@@ -94,11 +90,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.ANY0R2, cU, p.cI)
 		case slot.ANY0R2: // ANY : . WS ∙
 
-			if p.follow(symbols.NT_ANY) {
-				p.rtn(symbols.NT_ANY, cU, p.cI)
-			} else {
-				p.parseError(slot.ANY0R0, p.cI, followSets[symbols.NT_ANY])
-			}
+			p.rtn(symbols.NT_ANY, cU, p.cI)
 		case slot.CLOSE0R0: // CLOSE : ∙( WS
 
 			p.bsrSet.Add(slot.CLOSE0R1, cU, p.cI, p.cI+1)
@@ -111,11 +103,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.CLOSE0R2, cU, p.cI)
 		case slot.CLOSE0R2: // CLOSE : ( WS ∙
 
-			if p.follow(symbols.NT_CLOSE) {
-				p.rtn(symbols.NT_CLOSE, cU, p.cI)
-			} else {
-				p.parseError(slot.CLOSE0R0, p.cI, followSets[symbols.NT_CLOSE])
-			}
+			p.rtn(symbols.NT_CLOSE, cU, p.cI)
 		case slot.CharClass0R0: // CharClass : ∙[ UnclosedChars ] WS
 
 			p.bsrSet.Add(slot.CharClass0R1, cU, p.cI, p.cI+1)
@@ -143,11 +131,15 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.CharClass0R4, cU, p.cI)
 		case slot.CharClass0R4: // CharClass : [ UnclosedChars ] WS ∙
 
+<<<<<<< HEAD
 			if p.follow(symbols.NT_CharClass) {
 				p.rtn(symbols.NT_CharClass, cU, p.cI)
 			} else {
 				p.parseError(slot.CharClass0R0, p.cI, followSets[symbols.NT_CharClass])
 			}
+=======
+			p.rtn(symbols.NT_CharClass, cU, p.cI)
+>>>>>>> 564748ec1ab5add9adf49a316621b27087a81d71
 		case slot.CharLiteral0R0: // CharLiteral : ∙sQuote Character sQuote
 
 			p.bsrSet.Add(slot.CharLiteral0R1, cU, p.cI, p.cI+1)
@@ -167,29 +159,17 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 
 			p.bsrSet.Add(slot.CharLiteral0R3, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_CharLiteral) {
-				p.rtn(symbols.NT_CharLiteral, cU, p.cI)
-			} else {
-				p.parseError(slot.CharLiteral0R0, p.cI, followSets[symbols.NT_CharLiteral])
-			}
+			p.rtn(symbols.NT_CharLiteral, cU, p.cI)
 		case slot.Character0R0: // Character : ∙notQuotesEsc
 
 			p.bsrSet.Add(slot.Character0R1, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_Character) {
-				p.rtn(symbols.NT_Character, cU, p.cI)
-			} else {
-				p.parseError(slot.Character0R0, p.cI, followSets[symbols.NT_Character])
-			}
+			p.rtn(symbols.NT_Character, cU, p.cI)
 		case slot.Character1R0: // Character : ∙esc
 
 			p.bsrSet.Add(slot.Character1R1, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_Character) {
-				p.rtn(symbols.NT_Character, cU, p.cI)
-			} else {
-				p.parseError(slot.Character1R0, p.cI, followSets[symbols.NT_Character])
-			}
+			p.rtn(symbols.NT_Character, cU, p.cI)
 		case slot.Choice0R0: // Choice : ∙Sequence RepPipedSeq0x
 
 			p.call(slot.Choice0R1, cU, p.cI)
@@ -203,11 +183,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.Choice0R2, cU, p.cI)
 		case slot.Choice0R2: // Choice : Sequence RepPipedSeq0x ∙
 
-			if p.follow(symbols.NT_Choice) {
-				p.rtn(symbols.NT_Choice, cU, p.cI)
-			} else {
-				p.parseError(slot.Choice0R0, p.cI, followSets[symbols.NT_Choice])
-			}
+			p.rtn(symbols.NT_Choice, cU, p.cI)
 		case slot.EMPTY0R0: // EMPTY : ∙; WS
 
 			p.bsrSet.Add(slot.EMPTY0R1, cU, p.cI, p.cI+1)
@@ -220,11 +196,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.EMPTY0R2, cU, p.cI)
 		case slot.EMPTY0R2: // EMPTY : ; WS ∙
 
-			if p.follow(symbols.NT_EMPTY) {
-				p.rtn(symbols.NT_EMPTY, cU, p.cI)
-			} else {
-				p.parseError(slot.EMPTY0R0, p.cI, followSets[symbols.NT_EMPTY])
-			}
+			p.rtn(symbols.NT_EMPTY, cU, p.cI)
 		case slot.EQUAL0R0: // EQUAL : ∙= WS
 
 			p.bsrSet.Add(slot.EQUAL0R1, cU, p.cI, p.cI+1)
@@ -237,11 +209,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.EQUAL0R2, cU, p.cI)
 		case slot.EQUAL0R2: // EQUAL : = WS ∙
 
-			if p.follow(symbols.NT_EQUAL) {
-				p.rtn(symbols.NT_EQUAL, cU, p.cI)
-			} else {
-				p.parseError(slot.EQUAL0R0, p.cI, followSets[symbols.NT_EQUAL])
-			}
+			p.rtn(symbols.NT_EQUAL, cU, p.cI)
 		case slot.Expression0R0: // Expression : ∙AND Primary
 
 			p.call(slot.Expression0R1, cU, p.cI)
@@ -255,11 +223,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.Expression0R2, cU, p.cI)
 		case slot.Expression0R2: // Expression : AND Primary ∙
 
-			if p.follow(symbols.NT_Expression) {
-				p.rtn(symbols.NT_Expression, cU, p.cI)
-			} else {
-				p.parseError(slot.Expression0R0, p.cI, followSets[symbols.NT_Expression])
-			}
+			p.rtn(symbols.NT_Expression, cU, p.cI)
 		case slot.Expression1R0: // Expression : ∙NOT Primary
 
 			p.call(slot.Expression1R1, cU, p.cI)
@@ -273,11 +237,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.Expression1R2, cU, p.cI)
 		case slot.Expression1R2: // Expression : NOT Primary ∙
 
-			if p.follow(symbols.NT_Expression) {
-				p.rtn(symbols.NT_Expression, cU, p.cI)
-			} else {
-				p.parseError(slot.Expression1R0, p.cI, followSets[symbols.NT_Expression])
-			}
+			p.rtn(symbols.NT_Expression, cU, p.cI)
 		case slot.Expression2R0: // Expression : ∙Primary OptStarPlus
 
 			p.call(slot.Expression2R1, cU, p.cI)
@@ -291,11 +251,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.Expression2R2, cU, p.cI)
 		case slot.Expression2R2: // Expression : Primary OptStarPlus ∙
 
-			if p.follow(symbols.NT_Expression) {
-				p.rtn(symbols.NT_Expression, cU, p.cI)
-			} else {
-				p.parseError(slot.Expression2R0, p.cI, followSets[symbols.NT_Expression])
-			}
+			p.rtn(symbols.NT_Expression, cU, p.cI)
 		case slot.Grammar0R0: // Grammar : ∙WS Rule RepRule0x
 
 			p.call(slot.Grammar0R1, cU, p.cI)
@@ -317,11 +273,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.Grammar0R3, cU, p.cI)
 		case slot.Grammar0R3: // Grammar : WS Rule RepRule0x ∙
 
-			if p.follow(symbols.NT_Grammar) {
-				p.rtn(symbols.NT_Grammar, cU, p.cI)
-			} else {
-				p.parseError(slot.Grammar0R0, p.cI, followSets[symbols.NT_Grammar])
-			}
+			p.rtn(symbols.NT_Grammar, cU, p.cI)
 		case slot.Identifier0R0: // Identifier : ∙LetWS LetOrNum0x WS
 
 			p.call(slot.Identifier0R1, cU, p.cI)
@@ -343,39 +295,23 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.Identifier0R3, cU, p.cI)
 		case slot.Identifier0R3: // Identifier : LetWS LetOrNum0x WS ∙
 
-			if p.follow(symbols.NT_Identifier) {
-				p.rtn(symbols.NT_Identifier, cU, p.cI)
-			} else {
-				p.parseError(slot.Identifier0R0, p.cI, followSets[symbols.NT_Identifier])
-			}
+			p.rtn(symbols.NT_Identifier, cU, p.cI)
 		case slot.LetOrNum0R0: // LetOrNum : ∙let
 
 			p.bsrSet.Add(slot.LetOrNum0R1, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_LetOrNum) {
-				p.rtn(symbols.NT_LetOrNum, cU, p.cI)
-			} else {
-				p.parseError(slot.LetOrNum0R0, p.cI, followSets[symbols.NT_LetOrNum])
-			}
+			p.rtn(symbols.NT_LetOrNum, cU, p.cI)
 		case slot.LetOrNum1R0: // LetOrNum : ∙num
 
 			p.bsrSet.Add(slot.LetOrNum1R1, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_LetOrNum) {
-				p.rtn(symbols.NT_LetOrNum, cU, p.cI)
-			} else {
-				p.parseError(slot.LetOrNum1R0, p.cI, followSets[symbols.NT_LetOrNum])
-			}
+			p.rtn(symbols.NT_LetOrNum, cU, p.cI)
 		case slot.LetOrNum2R0: // LetOrNum : ∙WS
 
 			p.call(slot.LetOrNum2R1, cU, p.cI)
 		case slot.LetOrNum2R1: // LetOrNum : WS ∙
 
-			if p.follow(symbols.NT_LetOrNum) {
-				p.rtn(symbols.NT_LetOrNum, cU, p.cI)
-			} else {
-				p.parseError(slot.LetOrNum2R0, p.cI, followSets[symbols.NT_LetOrNum])
-			}
+			p.rtn(symbols.NT_LetOrNum, cU, p.cI)
 		case slot.LetOrNum0x0R0: // LetOrNum0x : ∙LetOrNum LetOrNum0x
 
 			p.call(slot.LetOrNum0x0R1, cU, p.cI)
@@ -389,58 +325,34 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.LetOrNum0x0R2, cU, p.cI)
 		case slot.LetOrNum0x0R2: // LetOrNum0x : LetOrNum LetOrNum0x ∙
 
-			if p.follow(symbols.NT_LetOrNum0x) {
-				p.rtn(symbols.NT_LetOrNum0x, cU, p.cI)
-			} else {
-				p.parseError(slot.LetOrNum0x0R0, p.cI, followSets[symbols.NT_LetOrNum0x])
-			}
+			p.rtn(symbols.NT_LetOrNum0x, cU, p.cI)
 		case slot.LetOrNum0x1R0: // LetOrNum0x : ∙EMPTY
 
 			p.call(slot.LetOrNum0x1R1, cU, p.cI)
 		case slot.LetOrNum0x1R1: // LetOrNum0x : EMPTY ∙
 
-			if p.follow(symbols.NT_LetOrNum0x) {
-				p.rtn(symbols.NT_LetOrNum0x, cU, p.cI)
-			} else {
-				p.parseError(slot.LetOrNum0x1R0, p.cI, followSets[symbols.NT_LetOrNum0x])
-			}
+			p.rtn(symbols.NT_LetOrNum0x, cU, p.cI)
 		case slot.LetWS0R0: // LetWS : ∙let
 
 			p.bsrSet.Add(slot.LetWS0R1, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_LetWS) {
-				p.rtn(symbols.NT_LetWS, cU, p.cI)
-			} else {
-				p.parseError(slot.LetWS0R0, p.cI, followSets[symbols.NT_LetWS])
-			}
+			p.rtn(symbols.NT_LetWS, cU, p.cI)
 		case slot.LetWS1R0: // LetWS : ∙WS
 
 			p.call(slot.LetWS1R1, cU, p.cI)
 		case slot.LetWS1R1: // LetWS : WS ∙
 
-			if p.follow(symbols.NT_LetWS) {
-				p.rtn(symbols.NT_LetWS, cU, p.cI)
-			} else {
-				p.parseError(slot.LetWS1R0, p.cI, followSets[symbols.NT_LetWS])
-			}
+			p.rtn(symbols.NT_LetWS, cU, p.cI)
 		case slot.LineOrBlock0R0: // LineOrBlock : ∙lineComment
 
 			p.bsrSet.Add(slot.LineOrBlock0R1, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_LineOrBlock) {
-				p.rtn(symbols.NT_LineOrBlock, cU, p.cI)
-			} else {
-				p.parseError(slot.LineOrBlock0R0, p.cI, followSets[symbols.NT_LineOrBlock])
-			}
+			p.rtn(symbols.NT_LineOrBlock, cU, p.cI)
 		case slot.LineOrBlock1R0: // LineOrBlock : ∙blockComment
 
 			p.bsrSet.Add(slot.LineOrBlock1R1, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_LineOrBlock) {
-				p.rtn(symbols.NT_LineOrBlock, cU, p.cI)
-			} else {
-				p.parseError(slot.LineOrBlock1R0, p.cI, followSets[symbols.NT_LineOrBlock])
-			}
+			p.rtn(symbols.NT_LineOrBlock, cU, p.cI)
 		case slot.NEQUAL0R0: // NEQUAL : ∙neq WS
 
 			p.bsrSet.Add(slot.NEQUAL0R1, cU, p.cI, p.cI+1)
@@ -453,11 +365,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.NEQUAL0R2, cU, p.cI)
 		case slot.NEQUAL0R2: // NEQUAL : neq WS ∙
 
-			if p.follow(symbols.NT_NEQUAL) {
-				p.rtn(symbols.NT_NEQUAL, cU, p.cI)
-			} else {
-				p.parseError(slot.NEQUAL0R0, p.cI, followSets[symbols.NT_NEQUAL])
-			}
+			p.rtn(symbols.NT_NEQUAL, cU, p.cI)
 		case slot.NOT0R0: // NOT : ∙! WS
 
 			p.bsrSet.Add(slot.NOT0R1, cU, p.cI, p.cI+1)
@@ -470,11 +378,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.NOT0R2, cU, p.cI)
 		case slot.NOT0R2: // NOT : ! WS ∙
 
-			if p.follow(symbols.NT_NOT) {
-				p.rtn(symbols.NT_NOT, cU, p.cI)
-			} else {
-				p.parseError(slot.NOT0R0, p.cI, followSets[symbols.NT_NOT])
-			}
+			p.rtn(symbols.NT_NOT, cU, p.cI)
 		case slot.OPEN0R0: // OPEN : ∙( WS
 
 			p.bsrSet.Add(slot.OPEN0R1, cU, p.cI, p.cI+1)
@@ -487,11 +391,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.OPEN0R2, cU, p.cI)
 		case slot.OPEN0R2: // OPEN : ( WS ∙
 
-			if p.follow(symbols.NT_OPEN) {
-				p.rtn(symbols.NT_OPEN, cU, p.cI)
-			} else {
-				p.parseError(slot.OPEN0R0, p.cI, followSets[symbols.NT_OPEN])
-			}
+			p.rtn(symbols.NT_OPEN, cU, p.cI)
 		case slot.OPT0R0: // OPT : ∙? WS
 
 			p.bsrSet.Add(slot.OPT0R1, cU, p.cI, p.cI+1)
@@ -504,49 +404,29 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.OPT0R2, cU, p.cI)
 		case slot.OPT0R2: // OPT : ? WS ∙
 
-			if p.follow(symbols.NT_OPT) {
-				p.rtn(symbols.NT_OPT, cU, p.cI)
-			} else {
-				p.parseError(slot.OPT0R0, p.cI, followSets[symbols.NT_OPT])
-			}
+			p.rtn(symbols.NT_OPT, cU, p.cI)
 		case slot.OptStarPlus0R0: // OptStarPlus : ∙OPT
 
 			p.call(slot.OptStarPlus0R1, cU, p.cI)
 		case slot.OptStarPlus0R1: // OptStarPlus : OPT ∙
 
-			if p.follow(symbols.NT_OptStarPlus) {
-				p.rtn(symbols.NT_OptStarPlus, cU, p.cI)
-			} else {
-				p.parseError(slot.OptStarPlus0R0, p.cI, followSets[symbols.NT_OptStarPlus])
-			}
+			p.rtn(symbols.NT_OptStarPlus, cU, p.cI)
 		case slot.OptStarPlus1R0: // OptStarPlus : ∙STAR
 
 			p.call(slot.OptStarPlus1R1, cU, p.cI)
 		case slot.OptStarPlus1R1: // OptStarPlus : STAR ∙
 
-			if p.follow(symbols.NT_OptStarPlus) {
-				p.rtn(symbols.NT_OptStarPlus, cU, p.cI)
-			} else {
-				p.parseError(slot.OptStarPlus1R0, p.cI, followSets[symbols.NT_OptStarPlus])
-			}
+			p.rtn(symbols.NT_OptStarPlus, cU, p.cI)
 		case slot.OptStarPlus2R0: // OptStarPlus : ∙PLUS
 
 			p.call(slot.OptStarPlus2R1, cU, p.cI)
 		case slot.OptStarPlus2R1: // OptStarPlus : PLUS ∙
 
-			if p.follow(symbols.NT_OptStarPlus) {
-				p.rtn(symbols.NT_OptStarPlus, cU, p.cI)
-			} else {
-				p.parseError(slot.OptStarPlus2R0, p.cI, followSets[symbols.NT_OptStarPlus])
-			}
+			p.rtn(symbols.NT_OptStarPlus, cU, p.cI)
 		case slot.OptStarPlus3R0: // OptStarPlus : ∙
 			p.bsrSet.AddEmpty(slot.OptStarPlus3R0, p.cI)
 
-			if p.follow(symbols.NT_OptStarPlus) {
-				p.rtn(symbols.NT_OptStarPlus, cU, p.cI)
-			} else {
-				p.parseError(slot.OptStarPlus3R0, p.cI, followSets[symbols.NT_OptStarPlus])
-			}
+			p.rtn(symbols.NT_OptStarPlus, cU, p.cI)
 		case slot.PIPE0R0: // PIPE : ∙| WS
 
 			p.bsrSet.Add(slot.PIPE0R1, cU, p.cI, p.cI+1)
@@ -559,11 +439,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.PIPE0R2, cU, p.cI)
 		case slot.PIPE0R2: // PIPE : | WS ∙
 
-			if p.follow(symbols.NT_PIPE) {
-				p.rtn(symbols.NT_PIPE, cU, p.cI)
-			} else {
-				p.parseError(slot.PIPE0R0, p.cI, followSets[symbols.NT_PIPE])
-			}
+			p.rtn(symbols.NT_PIPE, cU, p.cI)
 		case slot.PLUS0R0: // PLUS : ∙+ WS
 
 			p.bsrSet.Add(slot.PLUS0R1, cU, p.cI, p.cI+1)
@@ -576,11 +452,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.PLUS0R2, cU, p.cI)
 		case slot.PLUS0R2: // PLUS : + WS ∙
 
-			if p.follow(symbols.NT_PLUS) {
-				p.rtn(symbols.NT_PLUS, cU, p.cI)
-			} else {
-				p.parseError(slot.PLUS0R0, p.cI, followSets[symbols.NT_PLUS])
-			}
+			p.rtn(symbols.NT_PLUS, cU, p.cI)
 		case slot.Primary0R0: // Primary : ∙Identifier NEQUAL
 
 			p.call(slot.Primary0R1, cU, p.cI)
@@ -594,11 +466,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.Primary0R2, cU, p.cI)
 		case slot.Primary0R2: // Primary : Identifier NEQUAL ∙
 
-			if p.follow(symbols.NT_Primary) {
-				p.rtn(symbols.NT_Primary, cU, p.cI)
-			} else {
-				p.parseError(slot.Primary0R0, p.cI, followSets[symbols.NT_Primary])
-			}
+			p.rtn(symbols.NT_Primary, cU, p.cI)
 		case slot.Primary1R0: // Primary : ∙OPEN Choice CLOSE
 
 			p.call(slot.Primary1R1, cU, p.cI)
@@ -620,61 +488,37 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.Primary1R3, cU, p.cI)
 		case slot.Primary1R3: // Primary : OPEN Choice CLOSE ∙
 
-			if p.follow(symbols.NT_Primary) {
-				p.rtn(symbols.NT_Primary, cU, p.cI)
-			} else {
-				p.parseError(slot.Primary1R0, p.cI, followSets[symbols.NT_Primary])
-			}
+			p.rtn(symbols.NT_Primary, cU, p.cI)
 		case slot.Primary2R0: // Primary : ∙StringLiteral
 
 			p.call(slot.Primary2R1, cU, p.cI)
 		case slot.Primary2R1: // Primary : StringLiteral ∙
 
-			if p.follow(symbols.NT_Primary) {
-				p.rtn(symbols.NT_Primary, cU, p.cI)
-			} else {
-				p.parseError(slot.Primary2R0, p.cI, followSets[symbols.NT_Primary])
-			}
+			p.rtn(symbols.NT_Primary, cU, p.cI)
 		case slot.Primary3R0: // Primary : ∙CharLiteral
 
 			p.call(slot.Primary3R1, cU, p.cI)
 		case slot.Primary3R1: // Primary : CharLiteral ∙
 
-			if p.follow(symbols.NT_Primary) {
-				p.rtn(symbols.NT_Primary, cU, p.cI)
-			} else {
-				p.parseError(slot.Primary3R0, p.cI, followSets[symbols.NT_Primary])
-			}
+			p.rtn(symbols.NT_Primary, cU, p.cI)
 		case slot.Primary4R0: // Primary : ∙CharClass
 
 			p.call(slot.Primary4R1, cU, p.cI)
 		case slot.Primary4R1: // Primary : CharClass ∙
 
-			if p.follow(symbols.NT_Primary) {
-				p.rtn(symbols.NT_Primary, cU, p.cI)
-			} else {
-				p.parseError(slot.Primary4R0, p.cI, followSets[symbols.NT_Primary])
-			}
+			p.rtn(symbols.NT_Primary, cU, p.cI)
 		case slot.Primary5R0: // Primary : ∙ANY
 
 			p.call(slot.Primary5R1, cU, p.cI)
 		case slot.Primary5R1: // Primary : ANY ∙
 
-			if p.follow(symbols.NT_Primary) {
-				p.rtn(symbols.NT_Primary, cU, p.cI)
-			} else {
-				p.parseError(slot.Primary5R0, p.cI, followSets[symbols.NT_Primary])
-			}
+			p.rtn(symbols.NT_Primary, cU, p.cI)
 		case slot.Primary6R0: // Primary : ∙EMPTY
 
 			p.call(slot.Primary6R1, cU, p.cI)
 		case slot.Primary6R1: // Primary : EMPTY ∙
 
-			if p.follow(symbols.NT_Primary) {
-				p.rtn(symbols.NT_Primary, cU, p.cI)
-			} else {
-				p.parseError(slot.Primary6R0, p.cI, followSets[symbols.NT_Primary])
-			}
+			p.rtn(symbols.NT_Primary, cU, p.cI)
 		case slot.RepExpr0x0R0: // RepExpr0x : ∙Expression RepExpr0x
 
 			p.call(slot.RepExpr0x0R1, cU, p.cI)
@@ -688,19 +532,11 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.RepExpr0x0R2, cU, p.cI)
 		case slot.RepExpr0x0R2: // RepExpr0x : Expression RepExpr0x ∙
 
-			if p.follow(symbols.NT_RepExpr0x) {
-				p.rtn(symbols.NT_RepExpr0x, cU, p.cI)
-			} else {
-				p.parseError(slot.RepExpr0x0R0, p.cI, followSets[symbols.NT_RepExpr0x])
-			}
+			p.rtn(symbols.NT_RepExpr0x, cU, p.cI)
 		case slot.RepExpr0x1R0: // RepExpr0x : ∙
 			p.bsrSet.AddEmpty(slot.RepExpr0x1R0, p.cI)
 
-			if p.follow(symbols.NT_RepExpr0x) {
-				p.rtn(symbols.NT_RepExpr0x, cU, p.cI)
-			} else {
-				p.parseError(slot.RepExpr0x1R0, p.cI, followSets[symbols.NT_RepExpr0x])
-			}
+			p.rtn(symbols.NT_RepExpr0x, cU, p.cI)
 		case slot.RepPipedSeq0x0R0: // RepPipedSeq0x : ∙PIPE Sequence RepPipedSeq0x
 
 			p.call(slot.RepPipedSeq0x0R1, cU, p.cI)
@@ -722,19 +558,11 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.RepPipedSeq0x0R3, cU, p.cI)
 		case slot.RepPipedSeq0x0R3: // RepPipedSeq0x : PIPE Sequence RepPipedSeq0x ∙
 
-			if p.follow(symbols.NT_RepPipedSeq0x) {
-				p.rtn(symbols.NT_RepPipedSeq0x, cU, p.cI)
-			} else {
-				p.parseError(slot.RepPipedSeq0x0R0, p.cI, followSets[symbols.NT_RepPipedSeq0x])
-			}
+			p.rtn(symbols.NT_RepPipedSeq0x, cU, p.cI)
 		case slot.RepPipedSeq0x1R0: // RepPipedSeq0x : ∙
 			p.bsrSet.AddEmpty(slot.RepPipedSeq0x1R0, p.cI)
 
-			if p.follow(symbols.NT_RepPipedSeq0x) {
-				p.rtn(symbols.NT_RepPipedSeq0x, cU, p.cI)
-			} else {
-				p.parseError(slot.RepPipedSeq0x1R0, p.cI, followSets[symbols.NT_RepPipedSeq0x])
-			}
+			p.rtn(symbols.NT_RepPipedSeq0x, cU, p.cI)
 		case slot.RepRule0x0R0: // RepRule0x : ∙Rule RepRule0x
 
 			p.call(slot.RepRule0x0R1, cU, p.cI)
@@ -748,19 +576,11 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.RepRule0x0R2, cU, p.cI)
 		case slot.RepRule0x0R2: // RepRule0x : Rule RepRule0x ∙
 
-			if p.follow(symbols.NT_RepRule0x) {
-				p.rtn(symbols.NT_RepRule0x, cU, p.cI)
-			} else {
-				p.parseError(slot.RepRule0x0R0, p.cI, followSets[symbols.NT_RepRule0x])
-			}
+			p.rtn(symbols.NT_RepRule0x, cU, p.cI)
 		case slot.RepRule0x1R0: // RepRule0x : ∙
 			p.bsrSet.AddEmpty(slot.RepRule0x1R0, p.cI)
 
-			if p.follow(symbols.NT_RepRule0x) {
-				p.rtn(symbols.NT_RepRule0x, cU, p.cI)
-			} else {
-				p.parseError(slot.RepRule0x1R0, p.cI, followSets[symbols.NT_RepRule0x])
-			}
+			p.rtn(symbols.NT_RepRule0x, cU, p.cI)
 		case slot.Rule0R0: // Rule : ∙Identifier EQUAL Choice
 
 			p.call(slot.Rule0R1, cU, p.cI)
@@ -782,11 +602,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.Rule0R3, cU, p.cI)
 		case slot.Rule0R3: // Rule : Identifier EQUAL Choice ∙
 
-			if p.follow(symbols.NT_Rule) {
-				p.rtn(symbols.NT_Rule, cU, p.cI)
-			} else {
-				p.parseError(slot.Rule0R0, p.cI, followSets[symbols.NT_Rule])
-			}
+			p.rtn(symbols.NT_Rule, cU, p.cI)
 		case slot.STAR0R0: // STAR : ∙* WS
 
 			p.bsrSet.Add(slot.STAR0R1, cU, p.cI, p.cI+1)
@@ -799,11 +615,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.STAR0R2, cU, p.cI)
 		case slot.STAR0R2: // STAR : * WS ∙
 
-			if p.follow(symbols.NT_STAR) {
-				p.rtn(symbols.NT_STAR, cU, p.cI)
-			} else {
-				p.parseError(slot.STAR0R0, p.cI, followSets[symbols.NT_STAR])
-			}
+			p.rtn(symbols.NT_STAR, cU, p.cI)
 		case slot.Sequence0R0: // Sequence : ∙Expression RepExpr0x
 
 			p.call(slot.Sequence0R1, cU, p.cI)
@@ -817,30 +629,18 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.Sequence0R2, cU, p.cI)
 		case slot.Sequence0R2: // Sequence : Expression RepExpr0x ∙
 
-			if p.follow(symbols.NT_Sequence) {
-				p.rtn(symbols.NT_Sequence, cU, p.cI)
-			} else {
-				p.parseError(slot.Sequence0R0, p.cI, followSets[symbols.NT_Sequence])
-			}
+			p.rtn(symbols.NT_Sequence, cU, p.cI)
 		case slot.SpaceOrComment0R0: // SpaceOrComment : ∙space
 
 			p.bsrSet.Add(slot.SpaceOrComment0R1, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_SpaceOrComment) {
-				p.rtn(symbols.NT_SpaceOrComment, cU, p.cI)
-			} else {
-				p.parseError(slot.SpaceOrComment0R0, p.cI, followSets[symbols.NT_SpaceOrComment])
-			}
+			p.rtn(symbols.NT_SpaceOrComment, cU, p.cI)
 		case slot.SpaceOrComment1R0: // SpaceOrComment : ∙LineOrBlock
 
 			p.call(slot.SpaceOrComment1R1, cU, p.cI)
 		case slot.SpaceOrComment1R1: // SpaceOrComment : LineOrBlock ∙
 
-			if p.follow(symbols.NT_SpaceOrComment) {
-				p.rtn(symbols.NT_SpaceOrComment, cU, p.cI)
-			} else {
-				p.parseError(slot.SpaceOrComment1R0, p.cI, followSets[symbols.NT_SpaceOrComment])
-			}
+			p.rtn(symbols.NT_SpaceOrComment, cU, p.cI)
 		case slot.String0R0: // String : ∙Character String
 
 			p.call(slot.String0R1, cU, p.cI)
@@ -854,19 +654,11 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.String0R2, cU, p.cI)
 		case slot.String0R2: // String : Character String ∙
 
-			if p.follow(symbols.NT_String) {
-				p.rtn(symbols.NT_String, cU, p.cI)
-			} else {
-				p.parseError(slot.String0R0, p.cI, followSets[symbols.NT_String])
-			}
+			p.rtn(symbols.NT_String, cU, p.cI)
 		case slot.String1R0: // String : ∙
 			p.bsrSet.AddEmpty(slot.String1R0, p.cI)
 
-			if p.follow(symbols.NT_String) {
-				p.rtn(symbols.NT_String, cU, p.cI)
-			} else {
-				p.parseError(slot.String1R0, p.cI, followSets[symbols.NT_String])
-			}
+			p.rtn(symbols.NT_String, cU, p.cI)
 		case slot.StringLiteral0R0: // StringLiteral : ∙dQuote String dQuote WS
 
 			p.bsrSet.Add(slot.StringLiteral0R1, cU, p.cI, p.cI+1)
@@ -894,11 +686,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.StringLiteral0R4, cU, p.cI)
 		case slot.StringLiteral0R4: // StringLiteral : dQuote String dQuote WS ∙
 
-			if p.follow(symbols.NT_StringLiteral) {
-				p.rtn(symbols.NT_StringLiteral, cU, p.cI)
-			} else {
-				p.parseError(slot.StringLiteral0R0, p.cI, followSets[symbols.NT_StringLiteral])
-			}
+			p.rtn(symbols.NT_StringLiteral, cU, p.cI)
 		case slot.UnclosedChar0R0: // UnclosedChar : ∙notSqBk Character
 
 			p.bsrSet.Add(slot.UnclosedChar0R1, cU, p.cI, p.cI+1)
@@ -911,11 +699,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.UnclosedChar0R2, cU, p.cI)
 		case slot.UnclosedChar0R2: // UnclosedChar : notSqBk Character ∙
 
-			if p.follow(symbols.NT_UnclosedChar) {
-				p.rtn(symbols.NT_UnclosedChar, cU, p.cI)
-			} else {
-				p.parseError(slot.UnclosedChar0R0, p.cI, followSets[symbols.NT_UnclosedChar])
-			}
+			p.rtn(symbols.NT_UnclosedChar, cU, p.cI)
 		case slot.UnclosedChars0R0: // UnclosedChars : ∙UnclosedChar UnclosedChars
 
 			p.call(slot.UnclosedChars0R1, cU, p.cI)
@@ -929,19 +713,11 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.UnclosedChars0R2, cU, p.cI)
 		case slot.UnclosedChars0R2: // UnclosedChars : UnclosedChar UnclosedChars ∙
 
-			if p.follow(symbols.NT_UnclosedChars) {
-				p.rtn(symbols.NT_UnclosedChars, cU, p.cI)
-			} else {
-				p.parseError(slot.UnclosedChars0R0, p.cI, followSets[symbols.NT_UnclosedChars])
-			}
+			p.rtn(symbols.NT_UnclosedChars, cU, p.cI)
 		case slot.UnclosedChars1R0: // UnclosedChars : ∙
 			p.bsrSet.AddEmpty(slot.UnclosedChars1R0, p.cI)
 
-			if p.follow(symbols.NT_UnclosedChars) {
-				p.rtn(symbols.NT_UnclosedChars, cU, p.cI)
-			} else {
-				p.parseError(slot.UnclosedChars1R0, p.cI, followSets[symbols.NT_UnclosedChars])
-			}
+			p.rtn(symbols.NT_UnclosedChars, cU, p.cI)
 		case slot.WS0R0: // WS : ∙SpaceOrComment WS
 
 			p.call(slot.WS0R1, cU, p.cI)
@@ -955,21 +731,13 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.WS0R2, cU, p.cI)
 		case slot.WS0R2: // WS : SpaceOrComment WS ∙
 
-			if p.follow(symbols.NT_WS) {
-				p.rtn(symbols.NT_WS, cU, p.cI)
-			} else {
-				p.parseError(slot.WS0R0, p.cI, followSets[symbols.NT_WS])
-			}
+			p.rtn(symbols.NT_WS, cU, p.cI)
 		case slot.WS1R0: // WS : ∙EMPTY
 
 			p.call(slot.WS1R1, cU, p.cI)
 		case slot.WS1R1: // WS : EMPTY ∙
 
-			if p.follow(symbols.NT_WS) {
-				p.rtn(symbols.NT_WS, cU, p.cI)
-			} else {
-				p.parseError(slot.WS1R0, p.cI, followSets[symbols.NT_WS])
-			}
+			p.rtn(symbols.NT_WS, cU, p.cI)
 
 		default:
 			panic("This must not happen")
@@ -1206,9 +974,9 @@ func (p *parser) follow(nt symbols.NT) bool {
 }
 
 func (p *parser) testSelect(l slot.Label) bool {
-	_, exist := first[l][p.lex.Tokens[p.cI].Type()]
-	// fmt.Printf("testSelect(%s) = %t\n", l, exist)
-	return exist
+	return l.IsNullable() || l.FirstContains(p.lex.Tokens[p.cI].Type())
+	// _, exist := first[l][p.lex.Tokens[p.cI].Type()]
+	// return exist
 }
 
 var first = []map[token.Type]string{
@@ -1414,7 +1182,6 @@ var first = []map[token.Type]string{
 	},
 	// Choice : Sequence ∙RepPipedSeq0x
 	{
-		token.T_23: "|",
 		token.EOF:  "$",
 		token.T_2:  "(",
 		token.T_6:  ";",
@@ -1422,6 +1189,7 @@ var first = []map[token.Type]string{
 		token.T_15: "let",
 		token.T_16: "lineComment",
 		token.T_22: "space",
+		token.T_23: "|",
 	},
 	// Choice : Sequence RepPipedSeq0x ∙
 	{
@@ -1576,15 +1344,26 @@ var first = []map[token.Type]string{
 	},
 	// Expression : Primary ∙OptStarPlus
 	{
+<<<<<<< HEAD
 		token.T_3:  "*",
 		token.T_4:  "+",
 		token.T_8:  "?",
+=======
+>>>>>>> 564748ec1ab5add9adf49a316621b27087a81d71
 		token.T_0:  "!",
 		token.EOF:  "$",
 		token.T_1:  "&",
 		token.T_2:  "(",
+<<<<<<< HEAD
 		token.T_5:  ".",
 		token.T_6:  ";",
+=======
+		token.T_3:  "*",
+		token.T_4:  "+",
+		token.T_5:  ".",
+		token.T_6:  ";",
+		token.T_8:  "?",
+>>>>>>> 564748ec1ab5add9adf49a316621b27087a81d71
 		token.T_9:  "[",
 		token.T_11: "blockComment",
 		token.T_12: "dQuote",
@@ -1628,12 +1407,20 @@ var first = []map[token.Type]string{
 	},
 	// Grammar : WS Rule ∙RepRule0x
 	{
+<<<<<<< HEAD
 		token.T_6:  ";",
 		token.T_11: "blockComment",
 		token.T_15: "let",
 		token.T_16: "lineComment",
 		token.T_22: "space",
+=======
+>>>>>>> 564748ec1ab5add9adf49a316621b27087a81d71
 		token.EOF:  "$",
+		token.T_6:  ";",
+		token.T_11: "blockComment",
+		token.T_15: "let",
+		token.T_16: "lineComment",
+		token.T_22: "space",
 	},
 	// Grammar : WS Rule RepRule0x ∙
 	{
@@ -2253,6 +2040,7 @@ var first = []map[token.Type]string{
 	// RepExpr0x : Expression ∙RepExpr0x
 	{
 		token.T_0:  "!",
+<<<<<<< HEAD
 		token.T_1:  "&",
 		token.T_2:  "(",
 		token.T_5:  ".",
@@ -2270,6 +2058,19 @@ var first = []map[token.Type]string{
 		token.T_11: "blockComment",
 		token.T_15: "let",
 		token.T_16: "lineComment",
+=======
+		token.EOF:  "$",
+		token.T_1:  "&",
+		token.T_2:  "(",
+		token.T_5:  ".",
+		token.T_6:  ";",
+		token.T_9:  "[",
+		token.T_11: "blockComment",
+		token.T_12: "dQuote",
+		token.T_15: "let",
+		token.T_16: "lineComment",
+		token.T_21: "sQuote",
+>>>>>>> 564748ec1ab5add9adf49a316621b27087a81d71
 		token.T_22: "space",
 		token.T_23: "|",
 	},
@@ -2316,7 +2117,6 @@ var first = []map[token.Type]string{
 	},
 	// RepPipedSeq0x : PIPE Sequence ∙RepPipedSeq0x
 	{
-		token.T_23: "|",
 		token.EOF:  "$",
 		token.T_2:  "(",
 		token.T_6:  ";",
@@ -2324,6 +2124,7 @@ var first = []map[token.Type]string{
 		token.T_15: "let",
 		token.T_16: "lineComment",
 		token.T_22: "space",
+		token.T_23: "|",
 	},
 	// RepPipedSeq0x : PIPE Sequence RepPipedSeq0x ∙
 	{
@@ -2355,12 +2156,20 @@ var first = []map[token.Type]string{
 	},
 	// RepRule0x : Rule ∙RepRule0x
 	{
+<<<<<<< HEAD
 		token.T_6:  ";",
 		token.T_11: "blockComment",
 		token.T_15: "let",
 		token.T_16: "lineComment",
 		token.T_22: "space",
+=======
+>>>>>>> 564748ec1ab5add9adf49a316621b27087a81d71
 		token.EOF:  "$",
+		token.T_6:  ";",
+		token.T_11: "blockComment",
+		token.T_15: "let",
+		token.T_16: "lineComment",
+		token.T_22: "space",
 	},
 	// RepRule0x : Rule RepRule0x ∙
 	{
@@ -2452,6 +2261,7 @@ var first = []map[token.Type]string{
 	// Sequence : Expression ∙RepExpr0x
 	{
 		token.T_0:  "!",
+<<<<<<< HEAD
 		token.T_1:  "&",
 		token.T_2:  "(",
 		token.T_5:  ".",
@@ -2469,6 +2279,19 @@ var first = []map[token.Type]string{
 		token.T_11: "blockComment",
 		token.T_15: "let",
 		token.T_16: "lineComment",
+=======
+		token.EOF:  "$",
+		token.T_1:  "&",
+		token.T_2:  "(",
+		token.T_5:  ".",
+		token.T_6:  ";",
+		token.T_9:  "[",
+		token.T_11: "blockComment",
+		token.T_12: "dQuote",
+		token.T_15: "let",
+		token.T_16: "lineComment",
+		token.T_21: "sQuote",
+>>>>>>> 564748ec1ab5add9adf49a316621b27087a81d71
 		token.T_22: "space",
 		token.T_23: "|",
 	},
@@ -2513,9 +2336,15 @@ var first = []map[token.Type]string{
 	},
 	// String : Character ∙String
 	{
+<<<<<<< HEAD
 		token.T_14: "esc",
 		token.T_18: "notQuotesEsc",
 		token.T_12: "dQuote",
+=======
+		token.T_12: "dQuote",
+		token.T_14: "esc",
+		token.T_18: "notQuotesEsc",
+>>>>>>> 564748ec1ab5add9adf49a316621b27087a81d71
 	},
 	// String : Character String ∙
 	{
@@ -2586,8 +2415,13 @@ var first = []map[token.Type]string{
 	},
 	// UnclosedChars : UnclosedChar ∙UnclosedChars
 	{
+<<<<<<< HEAD
 		token.T_19: "notSqBk",
 		token.T_10: "]",
+=======
+		token.T_10: "]",
+		token.T_19: "notSqBk",
+>>>>>>> 564748ec1ab5add9adf49a316621b27087a81d71
 	},
 	// UnclosedChars : UnclosedChar UnclosedChars ∙
 	{

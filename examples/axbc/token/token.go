@@ -106,9 +106,9 @@ func (t Type) ID() string {
 const(
     Error  Type = iota  // Error 
     EOF  // $ 
-    T_0  // ab 
-    T_1  // c 
-    T_2  // repa0x 
+    T_0  // a 
+    T_1  // b 
+    T_2  // c 
 )
 
 var TypeToString = []string{ 
@@ -130,9 +130,9 @@ var StringToType = map[string] Type {
 var TypeToID = []string { 
     "Error", 
     "$", 
-    "ab", 
+    "a", 
+    "b", 
     "c", 
-    "repa0x", 
 }
 
 var Suppress = []bool { 
