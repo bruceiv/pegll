@@ -2,13 +2,13 @@ package main
 
 import (
 	"fmt"
-
 	"miniegg/lexer"
 	"miniegg/parser"
 )
 
 // Should match
 const ab = "A=B C=D"
+
 const ri = "R = I O E E = I N"
 
 //Should fail to match
@@ -36,6 +36,6 @@ func parseAndPrint(s string) {
 
 func main() {
 	parseAndPrint(ab)
-	parseAndPrint(ri)
-	parseAndPrint(ff)
+	//parseAndPrint(ri)
+	//parseAndPrint(ff)
 }

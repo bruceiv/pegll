@@ -19,9 +19,6 @@ const(
 	NT_COLON 
 	NT_COMMA 
 	NT_CharCode 
-	NT_Close 
-	NT_ComPair0x 
-	NT_ComVal0x 
 	NT_Elements 
 	NT_EscOrComment 
 	NT_FALSE 
@@ -33,16 +30,19 @@ const(
 	NT_LBRACKET 
 	NT_LineOrBlock 
 	NT_Members 
-	NT_Mems0x 
 	NT_NUL 
 	NT_Number 
 	NT_Object 
 	NT_OptElem 
 	NT_OptExp 
 	NT_OptFrac 
+	NT_OptMems 
 	NT_Pair 
 	NT_RBRACE 
 	NT_RBRACKET 
+	NT_RepChar0x 
+	NT_RepComPair0x 
+	NT_RepComVal0x 
 	NT_String 
 	NT_TRUE 
 	NT_Value 
@@ -59,7 +59,7 @@ const(
 	T_4  // aA_fF 
 	T_5  // bSlash 
 	T_6  // block_comment 
-	T_7  // carrotSlash 
+	T_7  // char 
 	T_8  // dQuote 
 	T_9  // esc 
 	T_10  // escChar 
@@ -111,9 +111,6 @@ var ntToString = []string {
 	"COLON", /* NT_COLON */
 	"COMMA", /* NT_COMMA */
 	"CharCode", /* NT_CharCode */
-	"Close", /* NT_Close */
-	"ComPair0x", /* NT_ComPair0x */
-	"ComVal0x", /* NT_ComVal0x */
 	"Elements", /* NT_Elements */
 	"EscOrComment", /* NT_EscOrComment */
 	"FALSE", /* NT_FALSE */
@@ -125,16 +122,19 @@ var ntToString = []string {
 	"LBRACKET", /* NT_LBRACKET */
 	"LineOrBlock", /* NT_LineOrBlock */
 	"Members", /* NT_Members */
-	"Mems0x", /* NT_Mems0x */
 	"NUL", /* NT_NUL */
 	"Number", /* NT_Number */
 	"Object", /* NT_Object */
 	"OptElem", /* NT_OptElem */
 	"OptExp", /* NT_OptExp */
 	"OptFrac", /* NT_OptFrac */
+	"OptMems", /* NT_OptMems */
 	"Pair", /* NT_Pair */
 	"RBRACE", /* NT_RBRACE */
 	"RBRACKET", /* NT_RBRACKET */
+	"RepChar0x", /* NT_RepChar0x */
+	"RepComPair0x", /* NT_RepComPair0x */
+	"RepComVal0x", /* NT_RepComVal0x */
 	"String", /* NT_String */
 	"TRUE", /* NT_TRUE */
 	"Value", /* NT_Value */
@@ -149,7 +149,7 @@ var tToString = []string {
 	"aA_fF", /* T_4 */
 	"bSlash", /* T_5 */
 	"block_comment", /* T_6 */
-	"carrotSlash", /* T_7 */
+	"char", /* T_7 */
 	"dQuote", /* T_8 */
 	"esc", /* T_9 */
 	"escChar", /* T_10 */
@@ -175,9 +175,6 @@ var stringNT = map[string]NT{
 	"COLON":NT_COLON,
 	"COMMA":NT_COMMA,
 	"CharCode":NT_CharCode,
-	"Close":NT_Close,
-	"ComPair0x":NT_ComPair0x,
-	"ComVal0x":NT_ComVal0x,
 	"Elements":NT_Elements,
 	"EscOrComment":NT_EscOrComment,
 	"FALSE":NT_FALSE,
@@ -189,16 +186,19 @@ var stringNT = map[string]NT{
 	"LBRACKET":NT_LBRACKET,
 	"LineOrBlock":NT_LineOrBlock,
 	"Members":NT_Members,
-	"Mems0x":NT_Mems0x,
 	"NUL":NT_NUL,
 	"Number":NT_Number,
 	"Object":NT_Object,
 	"OptElem":NT_OptElem,
 	"OptExp":NT_OptExp,
 	"OptFrac":NT_OptFrac,
+	"OptMems":NT_OptMems,
 	"Pair":NT_Pair,
 	"RBRACE":NT_RBRACE,
 	"RBRACKET":NT_RBRACKET,
+	"RepChar0x":NT_RepChar0x,
+	"RepComPair0x":NT_RepComPair0x,
+	"RepComVal0x":NT_RepComVal0x,
 	"String":NT_String,
 	"TRUE":NT_TRUE,
 	"Value":NT_Value,

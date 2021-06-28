@@ -1,4 +1,5 @@
 # **`eggr` GRAMMAR**
+TODO: SINGLE QUOTES ISSUES
 
 ### **AUTHORSHIP INFORMATION**
 #### *Author :* Brynn Harrington and Emily Hoppe Copyright (C) 2021
@@ -25,7 +26,7 @@ The following sections handles the grammar, rules, and choices:
 - `Rule` is an identifier equal to a choice;
 - `Choice` is zero or more piped sequences. 
 ```
-Grammar                 : WS Rule RepRule0x             ;
+Grammar                 : WS  Rule RepRule0x              ;
         RepRule0x       : Rule RepRule0x
                         / empty                         ; 
 Rule                    : Identifier EQUAL Choice ;
@@ -81,10 +82,11 @@ The following sections handles `StringLiteral`, `CharLiteral`, `CharClass`, and 
 ```
 StringLiteral           : dQuote String dQuote WS       ;
         dQuote          : any "\""                      ;
+        sQuote          : '\''                          ;
         String          : Character String
                         / empty                         ;
 
-CharLiteral             : "'" Character "'"             ;
+CharLiteral             : sQuote Character sQuote       ;
 
 CharClass               : "[" UnclosedChars "]" WS      ;
         UnclosedChars   : UnclosedChar UnclosedChars 

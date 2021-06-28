@@ -108,28 +108,30 @@ const(
     EOF  // $ 
     T_0  // ! 
     T_1  // & 
-    T_2  // ' 
-    T_3  // ( 
-    T_4  // * 
-    T_5  // + 
-    T_6  // . 
-    T_7  // ; 
-    T_8  // = 
-    T_9  // ? 
-    T_10  // [ 
-    T_11  // ] 
-    T_12  // blockComment 
-    T_13  // dQuote 
-    T_14  // endOfLine 
-    T_15  // esc 
-    T_16  // let 
-    T_17  // lineComment 
-    T_18  // neq 
-    T_19  // notQuotesEsc 
-    T_20  // notSqBk 
-    T_21  // num 
-    T_22  // space 
-    T_23  // | 
+    T_2  // ( 
+    T_3  // * 
+    T_4  // + 
+    T_5  // . 
+    T_6  // ; 
+    T_7  // = 
+    T_8  // ? 
+    T_9  // Expression 
+    T_10  // Rule 
+    T_11  // [ 
+    T_12  // ] 
+    T_13  // blockComment 
+    T_14  // dQuote 
+    T_15  // endOfLine 
+    T_16  // esc 
+    T_17  // let 
+    T_18  // lineComment 
+    T_19  // neq 
+    T_20  // notQuotesEsc 
+    T_21  // notSqBk 
+    T_22  // num 
+    T_23  // sQuote 
+    T_24  // space 
+    T_25  // | 
 )
 
 var TypeToString = []string{ 
@@ -159,6 +161,8 @@ var TypeToString = []string{
     "T_21",
     "T_22",
     "T_23",
+    "T_24",
+    "T_25",
 }
 
 var StringToType = map[string] Type { 
@@ -188,6 +192,8 @@ var StringToType = map[string] Type {
     "T_21" : T_21, 
     "T_22" : T_22, 
     "T_23" : T_23, 
+    "T_24" : T_24, 
+    "T_25" : T_25, 
 }
 
 var TypeToID = []string { 
@@ -195,7 +201,6 @@ var TypeToID = []string {
     "$", 
     "!", 
     "&", 
-    "'", 
     "(", 
     "*", 
     "+", 
@@ -203,6 +208,8 @@ var TypeToID = []string {
     ";", 
     "=", 
     "?", 
+    "Expression", 
+    "Rule", 
     "[", 
     "]", 
     "blockComment", 
@@ -215,6 +222,7 @@ var TypeToID = []string {
     "notQuotesEsc", 
     "notSqBk", 
     "num", 
+    "sQuote", 
     "space", 
     "|", 
 }
@@ -234,12 +242,14 @@ var Suppress = []bool {
     false, 
     false, 
     false, 
-    true, 
-    false, 
-    false, 
-    false, 
     false, 
     true, 
+    false, 
+    false, 
+    false, 
+    false, 
+    true, 
+    false, 
     false, 
     false, 
     false, 

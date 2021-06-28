@@ -1,8 +1,5 @@
 package exp
 
-//These tests all fail under gogll, possibly because of
-//the middle recursion of the grammar
-
 import (
 	"exp/lexer"
 	"exp/parser"

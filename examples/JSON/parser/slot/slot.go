@@ -35,21 +35,6 @@ const(
 	CharCode1R3
 	CharCode1R4
 	CharCode1R5
-	Close0R0
-	Close0R1
-	Close1R0
-	Close1R1
-	Close1R2
-	ComPair0x0R0
-	ComPair0x0R1
-	ComPair0x0R2
-	ComPair0x0R3
-	ComPair0x1R0
-	ComVal0x0R0
-	ComVal0x0R1
-	ComVal0x0R2
-	ComVal0x0R3
-	ComVal0x1R0
 	Elements0R0
 	Elements0R1
 	Elements0R2
@@ -62,8 +47,8 @@ const(
 	FALSE0R2
 	HEX0R0
 	HEX0R1
-	HEX0R2
 	HEX1R0
+	HEX1R1
 	INT0R0
 	INT0R1
 	INT0R2
@@ -87,10 +72,6 @@ const(
 	Members0R0
 	Members0R1
 	Members0R2
-	Mems0x0R0
-	Mems0x0R1
-	Mems0x0R2
-	Mems0x1R0
 	NUL0R0
 	NUL0R1
 	NUL0R2
@@ -103,7 +84,6 @@ const(
 	Object0R1
 	Object0R2
 	Object0R3
-	Object0R4
 	OptElem0R0
 	OptElem0R1
 	OptElem1R0
@@ -113,6 +93,9 @@ const(
 	OptFrac0R0
 	OptFrac0R1
 	OptFrac1R0
+	OptMems0R0
+	OptMems0R1
+	OptMems1R0
 	Pair0R0
 	Pair0R1
 	Pair0R2
@@ -123,10 +106,25 @@ const(
 	RBRACKET0R0
 	RBRACKET0R1
 	RBRACKET0R2
+	RepChar0x0R0
+	RepChar0x0R1
+	RepChar0x0R2
+	RepChar0x1R0
+	RepComPair0x0R0
+	RepComPair0x0R1
+	RepComPair0x0R2
+	RepComPair0x0R3
+	RepComPair0x1R0
+	RepComVal0x0R0
+	RepComVal0x0R1
+	RepComVal0x0R2
+	RepComVal0x0R3
+	RepComVal0x1R0
 	String0R0
 	String0R1
 	String0R2
 	String0R3
+	String0R4
 	TRUE0R0
 	TRUE0R1
 	TRUE0R2
@@ -439,133 +437,11 @@ var slots = map[Label]*Slot{
 		}, 
 		CharCode1R5, 
 	},
-	Close0R0: {
-		symbols.NT_Close, 0, 0, 
-		symbols.Symbols{  
-			symbols.T_8,
-		}, 
-		Close0R0, 
-	},
-	Close0R1: {
-		symbols.NT_Close, 0, 1, 
-		symbols.Symbols{  
-			symbols.T_8,
-		}, 
-		Close0R1, 
-	},
-	Close1R0: {
-		symbols.NT_Close, 1, 0, 
-		symbols.Symbols{  
-			symbols.NT_CHAR, 
-			symbols.NT_Close,
-		}, 
-		Close1R0, 
-	},
-	Close1R1: {
-		symbols.NT_Close, 1, 1, 
-		symbols.Symbols{  
-			symbols.NT_CHAR, 
-			symbols.NT_Close,
-		}, 
-		Close1R1, 
-	},
-	Close1R2: {
-		symbols.NT_Close, 1, 2, 
-		symbols.Symbols{  
-			symbols.NT_CHAR, 
-			symbols.NT_Close,
-		}, 
-		Close1R2, 
-	},
-	ComPair0x0R0: {
-		symbols.NT_ComPair0x, 0, 0, 
-		symbols.Symbols{  
-			symbols.NT_COMMA, 
-			symbols.NT_Pair, 
-			symbols.NT_ComPair0x,
-		}, 
-		ComPair0x0R0, 
-	},
-	ComPair0x0R1: {
-		symbols.NT_ComPair0x, 0, 1, 
-		symbols.Symbols{  
-			symbols.NT_COMMA, 
-			symbols.NT_Pair, 
-			symbols.NT_ComPair0x,
-		}, 
-		ComPair0x0R1, 
-	},
-	ComPair0x0R2: {
-		symbols.NT_ComPair0x, 0, 2, 
-		symbols.Symbols{  
-			symbols.NT_COMMA, 
-			symbols.NT_Pair, 
-			symbols.NT_ComPair0x,
-		}, 
-		ComPair0x0R2, 
-	},
-	ComPair0x0R3: {
-		symbols.NT_ComPair0x, 0, 3, 
-		symbols.Symbols{  
-			symbols.NT_COMMA, 
-			symbols.NT_Pair, 
-			symbols.NT_ComPair0x,
-		}, 
-		ComPair0x0R3, 
-	},
-	ComPair0x1R0: {
-		symbols.NT_ComPair0x, 1, 0, 
-		symbols.Symbols{ 
-		}, 
-		ComPair0x1R0, 
-	},
-	ComVal0x0R0: {
-		symbols.NT_ComVal0x, 0, 0, 
-		symbols.Symbols{  
-			symbols.NT_COMMA, 
-			symbols.NT_Value, 
-			symbols.NT_ComVal0x,
-		}, 
-		ComVal0x0R0, 
-	},
-	ComVal0x0R1: {
-		symbols.NT_ComVal0x, 0, 1, 
-		symbols.Symbols{  
-			symbols.NT_COMMA, 
-			symbols.NT_Value, 
-			symbols.NT_ComVal0x,
-		}, 
-		ComVal0x0R1, 
-	},
-	ComVal0x0R2: {
-		symbols.NT_ComVal0x, 0, 2, 
-		symbols.Symbols{  
-			symbols.NT_COMMA, 
-			symbols.NT_Value, 
-			symbols.NT_ComVal0x,
-		}, 
-		ComVal0x0R2, 
-	},
-	ComVal0x0R3: {
-		symbols.NT_ComVal0x, 0, 3, 
-		symbols.Symbols{  
-			symbols.NT_COMMA, 
-			symbols.NT_Value, 
-			symbols.NT_ComVal0x,
-		}, 
-		ComVal0x0R3, 
-	},
-	ComVal0x1R0: {
-		symbols.NT_ComVal0x, 1, 0, 
-		symbols.Symbols{ 
-		}, 
-		ComVal0x1R0, 
-	},
 	Elements0R0: {
 		symbols.NT_Elements, 0, 0, 
 		symbols.Symbols{  
 			symbols.NT_Value, 
-			symbols.NT_ComVal0x,
+			symbols.NT_RepComVal0x,
 		}, 
 		Elements0R0, 
 	},
@@ -573,7 +449,7 @@ var slots = map[Label]*Slot{
 		symbols.NT_Elements, 0, 1, 
 		symbols.Symbols{  
 			symbols.NT_Value, 
-			symbols.NT_ComVal0x,
+			symbols.NT_RepComVal0x,
 		}, 
 		Elements0R1, 
 	},
@@ -581,7 +457,7 @@ var slots = map[Label]*Slot{
 		symbols.NT_Elements, 0, 2, 
 		symbols.Symbols{  
 			symbols.NT_Value, 
-			symbols.NT_ComVal0x,
+			symbols.NT_RepComVal0x,
 		}, 
 		Elements0R2, 
 	},
@@ -640,32 +516,30 @@ var slots = map[Label]*Slot{
 	HEX0R0: {
 		symbols.NT_HEX, 0, 0, 
 		symbols.Symbols{  
-			symbols.NT_Number, 
-			symbols.T_4,
+			symbols.NT_Number,
 		}, 
 		HEX0R0, 
 	},
 	HEX0R1: {
 		symbols.NT_HEX, 0, 1, 
 		symbols.Symbols{  
-			symbols.NT_Number, 
-			symbols.T_4,
+			symbols.NT_Number,
 		}, 
 		HEX0R1, 
 	},
-	HEX0R2: {
-		symbols.NT_HEX, 0, 2, 
-		symbols.Symbols{  
-			symbols.NT_Number, 
-			symbols.T_4,
-		}, 
-		HEX0R2, 
-	},
 	HEX1R0: {
 		symbols.NT_HEX, 1, 0, 
-		symbols.Symbols{ 
+		symbols.Symbols{  
+			symbols.T_4,
 		}, 
 		HEX1R0, 
+	},
+	HEX1R1: {
+		symbols.NT_HEX, 1, 1, 
+		symbols.Symbols{  
+			symbols.T_4,
+		}, 
+		HEX1R1, 
 	},
 	INT0R0: {
 		symbols.NT_INT, 0, 0, 
@@ -823,7 +697,7 @@ var slots = map[Label]*Slot{
 		symbols.NT_Members, 0, 0, 
 		symbols.Symbols{  
 			symbols.NT_Pair, 
-			symbols.NT_ComPair0x,
+			symbols.NT_RepComPair0x,
 		}, 
 		Members0R0, 
 	},
@@ -831,7 +705,7 @@ var slots = map[Label]*Slot{
 		symbols.NT_Members, 0, 1, 
 		symbols.Symbols{  
 			symbols.NT_Pair, 
-			symbols.NT_ComPair0x,
+			symbols.NT_RepComPair0x,
 		}, 
 		Members0R1, 
 	},
@@ -839,39 +713,9 @@ var slots = map[Label]*Slot{
 		symbols.NT_Members, 0, 2, 
 		symbols.Symbols{  
 			symbols.NT_Pair, 
-			symbols.NT_ComPair0x,
+			symbols.NT_RepComPair0x,
 		}, 
 		Members0R2, 
-	},
-	Mems0x0R0: {
-		symbols.NT_Mems0x, 0, 0, 
-		symbols.Symbols{  
-			symbols.NT_Members, 
-			symbols.NT_Mems0x,
-		}, 
-		Mems0x0R0, 
-	},
-	Mems0x0R1: {
-		symbols.NT_Mems0x, 0, 1, 
-		symbols.Symbols{  
-			symbols.NT_Members, 
-			symbols.NT_Mems0x,
-		}, 
-		Mems0x0R1, 
-	},
-	Mems0x0R2: {
-		symbols.NT_Mems0x, 0, 2, 
-		symbols.Symbols{  
-			symbols.NT_Members, 
-			symbols.NT_Mems0x,
-		}, 
-		Mems0x0R2, 
-	},
-	Mems0x1R0: {
-		symbols.NT_Mems0x, 1, 0, 
-		symbols.Symbols{ 
-		}, 
-		Mems0x1R0, 
 	},
 	NUL0R0: {
 		symbols.NT_NUL, 0, 0, 
@@ -951,8 +795,7 @@ var slots = map[Label]*Slot{
 		symbols.NT_Object, 0, 0, 
 		symbols.Symbols{  
 			symbols.NT_LBRACE, 
-			symbols.NT_Members, 
-			symbols.NT_Mems0x, 
+			symbols.NT_OptMems, 
 			symbols.NT_RBRACE,
 		}, 
 		Object0R0, 
@@ -961,8 +804,7 @@ var slots = map[Label]*Slot{
 		symbols.NT_Object, 0, 1, 
 		symbols.Symbols{  
 			symbols.NT_LBRACE, 
-			symbols.NT_Members, 
-			symbols.NT_Mems0x, 
+			symbols.NT_OptMems, 
 			symbols.NT_RBRACE,
 		}, 
 		Object0R1, 
@@ -971,8 +813,7 @@ var slots = map[Label]*Slot{
 		symbols.NT_Object, 0, 2, 
 		symbols.Symbols{  
 			symbols.NT_LBRACE, 
-			symbols.NT_Members, 
-			symbols.NT_Mems0x, 
+			symbols.NT_OptMems, 
 			symbols.NT_RBRACE,
 		}, 
 		Object0R2, 
@@ -981,21 +822,10 @@ var slots = map[Label]*Slot{
 		symbols.NT_Object, 0, 3, 
 		symbols.Symbols{  
 			symbols.NT_LBRACE, 
-			symbols.NT_Members, 
-			symbols.NT_Mems0x, 
+			symbols.NT_OptMems, 
 			symbols.NT_RBRACE,
 		}, 
 		Object0R3, 
-	},
-	Object0R4: {
-		symbols.NT_Object, 0, 4, 
-		symbols.Symbols{  
-			symbols.NT_LBRACE, 
-			symbols.NT_Members, 
-			symbols.NT_Mems0x, 
-			symbols.NT_RBRACE,
-		}, 
-		Object0R4, 
 	},
 	OptElem0R0: {
 		symbols.NT_OptElem, 0, 0, 
@@ -1056,6 +886,26 @@ var slots = map[Label]*Slot{
 		symbols.Symbols{ 
 		}, 
 		OptFrac1R0, 
+	},
+	OptMems0R0: {
+		symbols.NT_OptMems, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_Members,
+		}, 
+		OptMems0R0, 
+	},
+	OptMems0R1: {
+		symbols.NT_OptMems, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_Members,
+		}, 
+		OptMems0R1, 
+	},
+	OptMems1R0: {
+		symbols.NT_OptMems, 1, 0, 
+		symbols.Symbols{ 
+		}, 
+		OptMems1R0, 
 	},
 	Pair0R0: {
 		symbols.NT_Pair, 0, 0, 
@@ -1141,11 +991,126 @@ var slots = map[Label]*Slot{
 		}, 
 		RBRACKET0R2, 
 	},
+	RepChar0x0R0: {
+		symbols.NT_RepChar0x, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_CHAR, 
+			symbols.NT_RepChar0x,
+		}, 
+		RepChar0x0R0, 
+	},
+	RepChar0x0R1: {
+		symbols.NT_RepChar0x, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_CHAR, 
+			symbols.NT_RepChar0x,
+		}, 
+		RepChar0x0R1, 
+	},
+	RepChar0x0R2: {
+		symbols.NT_RepChar0x, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_CHAR, 
+			symbols.NT_RepChar0x,
+		}, 
+		RepChar0x0R2, 
+	},
+	RepChar0x1R0: {
+		symbols.NT_RepChar0x, 1, 0, 
+		symbols.Symbols{ 
+		}, 
+		RepChar0x1R0, 
+	},
+	RepComPair0x0R0: {
+		symbols.NT_RepComPair0x, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_COMMA, 
+			symbols.NT_Pair, 
+			symbols.NT_RepComPair0x,
+		}, 
+		RepComPair0x0R0, 
+	},
+	RepComPair0x0R1: {
+		symbols.NT_RepComPair0x, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_COMMA, 
+			symbols.NT_Pair, 
+			symbols.NT_RepComPair0x,
+		}, 
+		RepComPair0x0R1, 
+	},
+	RepComPair0x0R2: {
+		symbols.NT_RepComPair0x, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_COMMA, 
+			symbols.NT_Pair, 
+			symbols.NT_RepComPair0x,
+		}, 
+		RepComPair0x0R2, 
+	},
+	RepComPair0x0R3: {
+		symbols.NT_RepComPair0x, 0, 3, 
+		symbols.Symbols{  
+			symbols.NT_COMMA, 
+			symbols.NT_Pair, 
+			symbols.NT_RepComPair0x,
+		}, 
+		RepComPair0x0R3, 
+	},
+	RepComPair0x1R0: {
+		symbols.NT_RepComPair0x, 1, 0, 
+		symbols.Symbols{ 
+		}, 
+		RepComPair0x1R0, 
+	},
+	RepComVal0x0R0: {
+		symbols.NT_RepComVal0x, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_COMMA, 
+			symbols.NT_Value, 
+			symbols.NT_RepComVal0x,
+		}, 
+		RepComVal0x0R0, 
+	},
+	RepComVal0x0R1: {
+		symbols.NT_RepComVal0x, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_COMMA, 
+			symbols.NT_Value, 
+			symbols.NT_RepComVal0x,
+		}, 
+		RepComVal0x0R1, 
+	},
+	RepComVal0x0R2: {
+		symbols.NT_RepComVal0x, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_COMMA, 
+			symbols.NT_Value, 
+			symbols.NT_RepComVal0x,
+		}, 
+		RepComVal0x0R2, 
+	},
+	RepComVal0x0R3: {
+		symbols.NT_RepComVal0x, 0, 3, 
+		symbols.Symbols{  
+			symbols.NT_COMMA, 
+			symbols.NT_Value, 
+			symbols.NT_RepComVal0x,
+		}, 
+		RepComVal0x0R3, 
+	},
+	RepComVal0x1R0: {
+		symbols.NT_RepComVal0x, 1, 0, 
+		symbols.Symbols{ 
+		}, 
+		RepComVal0x1R0, 
+	},
 	String0R0: {
 		symbols.NT_String, 0, 0, 
 		symbols.Symbols{  
 			symbols.T_8, 
-			symbols.NT_Close, 
+			symbols.NT_RepChar0x, 
+			symbols.T_8, 
 			symbols.NT_WS,
 		}, 
 		String0R0, 
@@ -1154,7 +1119,8 @@ var slots = map[Label]*Slot{
 		symbols.NT_String, 0, 1, 
 		symbols.Symbols{  
 			symbols.T_8, 
-			symbols.NT_Close, 
+			symbols.NT_RepChar0x, 
+			symbols.T_8, 
 			symbols.NT_WS,
 		}, 
 		String0R1, 
@@ -1163,7 +1129,8 @@ var slots = map[Label]*Slot{
 		symbols.NT_String, 0, 2, 
 		symbols.Symbols{  
 			symbols.T_8, 
-			symbols.NT_Close, 
+			symbols.NT_RepChar0x, 
+			symbols.T_8, 
 			symbols.NT_WS,
 		}, 
 		String0R2, 
@@ -1172,10 +1139,21 @@ var slots = map[Label]*Slot{
 		symbols.NT_String, 0, 3, 
 		symbols.Symbols{  
 			symbols.T_8, 
-			symbols.NT_Close, 
+			symbols.NT_RepChar0x, 
+			symbols.T_8, 
 			symbols.NT_WS,
 		}, 
 		String0R3, 
+	},
+	String0R4: {
+		symbols.NT_String, 0, 4, 
+		symbols.Symbols{  
+			symbols.T_8, 
+			symbols.NT_RepChar0x, 
+			symbols.T_8, 
+			symbols.NT_WS,
+		}, 
+		String0R4, 
 	},
 	TRUE0R0: {
 		symbols.NT_TRUE, 0, 0, 
@@ -1355,21 +1333,6 @@ var slotIndex = map[Index]Label {
 	Index{ symbols.NT_CharCode,1,3 }: CharCode1R3,
 	Index{ symbols.NT_CharCode,1,4 }: CharCode1R4,
 	Index{ symbols.NT_CharCode,1,5 }: CharCode1R5,
-	Index{ symbols.NT_Close,0,0 }: Close0R0,
-	Index{ symbols.NT_Close,0,1 }: Close0R1,
-	Index{ symbols.NT_Close,1,0 }: Close1R0,
-	Index{ symbols.NT_Close,1,1 }: Close1R1,
-	Index{ symbols.NT_Close,1,2 }: Close1R2,
-	Index{ symbols.NT_ComPair0x,0,0 }: ComPair0x0R0,
-	Index{ symbols.NT_ComPair0x,0,1 }: ComPair0x0R1,
-	Index{ symbols.NT_ComPair0x,0,2 }: ComPair0x0R2,
-	Index{ symbols.NT_ComPair0x,0,3 }: ComPair0x0R3,
-	Index{ symbols.NT_ComPair0x,1,0 }: ComPair0x1R0,
-	Index{ symbols.NT_ComVal0x,0,0 }: ComVal0x0R0,
-	Index{ symbols.NT_ComVal0x,0,1 }: ComVal0x0R1,
-	Index{ symbols.NT_ComVal0x,0,2 }: ComVal0x0R2,
-	Index{ symbols.NT_ComVal0x,0,3 }: ComVal0x0R3,
-	Index{ symbols.NT_ComVal0x,1,0 }: ComVal0x1R0,
 	Index{ symbols.NT_Elements,0,0 }: Elements0R0,
 	Index{ symbols.NT_Elements,0,1 }: Elements0R1,
 	Index{ symbols.NT_Elements,0,2 }: Elements0R2,
@@ -1382,8 +1345,8 @@ var slotIndex = map[Index]Label {
 	Index{ symbols.NT_FALSE,0,2 }: FALSE0R2,
 	Index{ symbols.NT_HEX,0,0 }: HEX0R0,
 	Index{ symbols.NT_HEX,0,1 }: HEX0R1,
-	Index{ symbols.NT_HEX,0,2 }: HEX0R2,
 	Index{ symbols.NT_HEX,1,0 }: HEX1R0,
+	Index{ symbols.NT_HEX,1,1 }: HEX1R1,
 	Index{ symbols.NT_INT,0,0 }: INT0R0,
 	Index{ symbols.NT_INT,0,1 }: INT0R1,
 	Index{ symbols.NT_INT,0,2 }: INT0R2,
@@ -1407,10 +1370,6 @@ var slotIndex = map[Index]Label {
 	Index{ symbols.NT_Members,0,0 }: Members0R0,
 	Index{ symbols.NT_Members,0,1 }: Members0R1,
 	Index{ symbols.NT_Members,0,2 }: Members0R2,
-	Index{ symbols.NT_Mems0x,0,0 }: Mems0x0R0,
-	Index{ symbols.NT_Mems0x,0,1 }: Mems0x0R1,
-	Index{ symbols.NT_Mems0x,0,2 }: Mems0x0R2,
-	Index{ symbols.NT_Mems0x,1,0 }: Mems0x1R0,
 	Index{ symbols.NT_NUL,0,0 }: NUL0R0,
 	Index{ symbols.NT_NUL,0,1 }: NUL0R1,
 	Index{ symbols.NT_NUL,0,2 }: NUL0R2,
@@ -1423,7 +1382,6 @@ var slotIndex = map[Index]Label {
 	Index{ symbols.NT_Object,0,1 }: Object0R1,
 	Index{ symbols.NT_Object,0,2 }: Object0R2,
 	Index{ symbols.NT_Object,0,3 }: Object0R3,
-	Index{ symbols.NT_Object,0,4 }: Object0R4,
 	Index{ symbols.NT_OptElem,0,0 }: OptElem0R0,
 	Index{ symbols.NT_OptElem,0,1 }: OptElem0R1,
 	Index{ symbols.NT_OptElem,1,0 }: OptElem1R0,
@@ -1433,6 +1391,9 @@ var slotIndex = map[Index]Label {
 	Index{ symbols.NT_OptFrac,0,0 }: OptFrac0R0,
 	Index{ symbols.NT_OptFrac,0,1 }: OptFrac0R1,
 	Index{ symbols.NT_OptFrac,1,0 }: OptFrac1R0,
+	Index{ symbols.NT_OptMems,0,0 }: OptMems0R0,
+	Index{ symbols.NT_OptMems,0,1 }: OptMems0R1,
+	Index{ symbols.NT_OptMems,1,0 }: OptMems1R0,
 	Index{ symbols.NT_Pair,0,0 }: Pair0R0,
 	Index{ symbols.NT_Pair,0,1 }: Pair0R1,
 	Index{ symbols.NT_Pair,0,2 }: Pair0R2,
@@ -1443,10 +1404,25 @@ var slotIndex = map[Index]Label {
 	Index{ symbols.NT_RBRACKET,0,0 }: RBRACKET0R0,
 	Index{ symbols.NT_RBRACKET,0,1 }: RBRACKET0R1,
 	Index{ symbols.NT_RBRACKET,0,2 }: RBRACKET0R2,
+	Index{ symbols.NT_RepChar0x,0,0 }: RepChar0x0R0,
+	Index{ symbols.NT_RepChar0x,0,1 }: RepChar0x0R1,
+	Index{ symbols.NT_RepChar0x,0,2 }: RepChar0x0R2,
+	Index{ symbols.NT_RepChar0x,1,0 }: RepChar0x1R0,
+	Index{ symbols.NT_RepComPair0x,0,0 }: RepComPair0x0R0,
+	Index{ symbols.NT_RepComPair0x,0,1 }: RepComPair0x0R1,
+	Index{ symbols.NT_RepComPair0x,0,2 }: RepComPair0x0R2,
+	Index{ symbols.NT_RepComPair0x,0,3 }: RepComPair0x0R3,
+	Index{ symbols.NT_RepComPair0x,1,0 }: RepComPair0x1R0,
+	Index{ symbols.NT_RepComVal0x,0,0 }: RepComVal0x0R0,
+	Index{ symbols.NT_RepComVal0x,0,1 }: RepComVal0x0R1,
+	Index{ symbols.NT_RepComVal0x,0,2 }: RepComVal0x0R2,
+	Index{ symbols.NT_RepComVal0x,0,3 }: RepComVal0x0R3,
+	Index{ symbols.NT_RepComVal0x,1,0 }: RepComVal0x1R0,
 	Index{ symbols.NT_String,0,0 }: String0R0,
 	Index{ symbols.NT_String,0,1 }: String0R1,
 	Index{ symbols.NT_String,0,2 }: String0R2,
 	Index{ symbols.NT_String,0,3 }: String0R3,
+	Index{ symbols.NT_String,0,4 }: String0R4,
 	Index{ symbols.NT_TRUE,0,0 }: TRUE0R0,
 	Index{ symbols.NT_TRUE,0,1 }: TRUE0R1,
 	Index{ symbols.NT_TRUE,0,2 }: TRUE0R2,
@@ -1473,17 +1449,17 @@ var slotIndex = map[Index]Label {
 var alternates = map[symbols.NT][]Label{ 
 	symbols.NT_JSON:[]Label{ JSON0R0 },
 	symbols.NT_Object:[]Label{ Object0R0 },
-	symbols.NT_Mems0x:[]Label{ Mems0x0R0,Mems0x1R0 },
+	symbols.NT_OptMems:[]Label{ OptMems0R0,OptMems1R0 },
 	symbols.NT_Members:[]Label{ Members0R0 },
-	symbols.NT_ComPair0x:[]Label{ ComPair0x0R0,ComPair0x1R0 },
+	symbols.NT_RepComPair0x:[]Label{ RepComPair0x0R0,RepComPair0x1R0 },
 	symbols.NT_Pair:[]Label{ Pair0R0 },
 	symbols.NT_Array:[]Label{ Array0R0 },
 	symbols.NT_OptElem:[]Label{ OptElem0R0,OptElem1R0 },
 	symbols.NT_Elements:[]Label{ Elements0R0 },
-	symbols.NT_ComVal0x:[]Label{ ComVal0x0R0,ComVal0x1R0 },
+	symbols.NT_RepComVal0x:[]Label{ RepComVal0x0R0,RepComVal0x1R0 },
 	symbols.NT_Value:[]Label{ Value0R0,Value1R0,Value2R0,Value3R0,Value4R0,Value5R0,Value6R0 },
 	symbols.NT_String:[]Label{ String0R0 },
-	symbols.NT_Close:[]Label{ Close0R0,Close1R0 },
+	symbols.NT_RepChar0x:[]Label{ RepChar0x0R0,RepChar0x1R0 },
 	symbols.NT_CHAR:[]Label{ CHAR0R0,CHAR1R0 },
 	symbols.NT_CharCode:[]Label{ CharCode0R0,CharCode1R0 },
 	symbols.NT_HEX:[]Label{ HEX0R0,HEX1R0 },

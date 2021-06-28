@@ -1,21 +1,18 @@
 package main
 
 import (
+	"exp/lexer"
+	"exp/parser"
 	"fmt"
-
-	"Java/lexer"
-	"Java/parser"
 )
 
-//Should match
-const t1 = "class HelloWorld {
-    public static void main(String[] args) {
-        System.out.println("Hello, World!"); 
-    }
-}"
-
-//Should fail to match
-const t2 = "println("Hello")"
+const (
+	//Matches
+	ab   = "ab"
+	aabc = "aabc"
+	//Doesn't match
+	acc = "acc"
+)
 
 func parse(s []rune) bool {
 	// run GLL parser
@@ -25,7 +22,7 @@ func parse(s []rune) bool {
 		return false
 	}
 	// check that root covers whole input
-	root := bsrSet.GetOrderedRoot()
+	root := bsrSet.GetRoot()
 	return root.RightExtent() == bsrSet.GetRightExtent()
 }
 
@@ -38,6 +35,7 @@ func parseAndPrint(s string) {
 }
 
 func main() {
-	parseAndPrint(t1)
-	parseAndPrint(t2)
+	parseAndPrint(ab)
+	parseAndPrint(aabc)
+	parseAndPrint(acc)
 }

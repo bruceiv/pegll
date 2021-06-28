@@ -23,8 +23,8 @@ The following are the GoGLL representations of the higher level JSON components.
 ```
 JSON            : WS Object                             ;
 
-Object          : LBRACE Members RepMems0x RBRACE       ;
-     RepMems0x  : Members RepMems0x
+Object          : LBRACE OptMems RBRACE                 ;
+     OptMems : Members 
                 / empty                                 ;
 
 Members         : Pair RepComPair0x                     ;
@@ -52,37 +52,37 @@ Value           : String
 #### ***String and Character Literals***
 The following are the GoGLL representations of the JSON string and character literals.
 ```
-String          : dQuote Close WS                       ;
-        Close   : dQuote
-                / CHAR Close                            ;
+String          : dQuote RepChar0x dQuote WS            ;
+      RepChar0x : CHAR RepChar0x
+                / empty                                 ;
     dQuote      : any "\""                              ;
 
-CHAR            : carrotSlash 
+CHAR            : char 
                 | bSlash CharCode                       ;  
         bSlash  : '\\'                                  ;
        CharCode : esc
                 | "u" HEX HEX HEX HEX                   ;
         esc     : any "\\\"/bfnrt"                      ;
-    carrotSlash : any "^\\"                             ;        
+        char    : < not "\"\\" any "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890" > ;   
 ```
 #### ***Numeric Literals***
 The following are the GoGLL representations of the JSON numeric literals.
 ```
- HEX            : Number aA_fF 
-                | empty                                 ;
+ HEX            : Number 
+                | aA_fF                                 ;
         aA_fF   : any "abcdefABCDEF"                    ; 
         
 Number          : INT OptFrac OptExp WS                 ;
         OptFrac : frac
-                | empty                                 ;
+                / empty                                 ;
         OptExp  : exp
-                | empty                                 ;
+                / empty                                 ;
 
 INT             : optNeg Integers                       ;
        Integers : integer
                 / zero                                  ;
         zero    : any "0"                               ;
-        integer : any "123456789" { < number > }        ;
+        integer : any "123456789" { number }            ;
         optNeg  : [ '-' ]                               ;
                        
 frac            : any "." < number >                    ;

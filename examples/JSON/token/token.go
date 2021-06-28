@@ -113,7 +113,7 @@ const(
     T_4  // aA_fF 
     T_5  // bSlash 
     T_6  // block_comment 
-    T_7  // carrotSlash 
+    T_7  // char 
     T_8  // dQuote 
     T_9  // esc 
     T_10  // escChar 
@@ -203,7 +203,7 @@ var TypeToID = []string {
     "aA_fF", 
     "bSlash", 
     "block_comment", 
-    "carrotSlash", 
+    "char", 
     "dQuote", 
     "esc", 
     "escChar", 

@@ -37,6 +37,8 @@ const(
 	NT_OptStarPlus 
 	NT_PIPE 
 	NT_PLUS 
+	NT_Pl 
+	NT_Pla 
 	NT_Primary 
 	NT_RepExpr0x 
 	NT_RepPipedSeq0x 
@@ -57,28 +59,30 @@ type T int
 const( 
 	T_0 T = iota // ! 
 	T_1  // & 
-	T_2  // ' 
-	T_3  // ( 
-	T_4  // * 
-	T_5  // + 
-	T_6  // . 
-	T_7  // ; 
-	T_8  // = 
-	T_9  // ? 
-	T_10  // [ 
-	T_11  // ] 
-	T_12  // blockComment 
-	T_13  // dQuote 
-	T_14  // endOfLine 
-	T_15  // esc 
-	T_16  // let 
-	T_17  // lineComment 
-	T_18  // neq 
-	T_19  // notQuotesEsc 
-	T_20  // notSqBk 
-	T_21  // num 
-	T_22  // space 
-	T_23  // | 
+	T_2  // ( 
+	T_3  // * 
+	T_4  // + 
+	T_5  // . 
+	T_6  // ; 
+	T_7  // = 
+	T_8  // ? 
+	T_9  // Expression 
+	T_10  // Rule 
+	T_11  // [ 
+	T_12  // ] 
+	T_13  // blockComment 
+	T_14  // dQuote 
+	T_15  // endOfLine 
+	T_16  // esc 
+	T_17  // let 
+	T_18  // lineComment 
+	T_19  // neq 
+	T_20  // notQuotesEsc 
+	T_21  // notSqBk 
+	T_22  // num 
+	T_23  // sQuote 
+	T_24  // space 
+	T_25  // | 
 )
 
 type Symbols []Symbol
@@ -131,6 +135,8 @@ var ntToString = []string {
 	"OptStarPlus", /* NT_OptStarPlus */
 	"PIPE", /* NT_PIPE */
 	"PLUS", /* NT_PLUS */
+	"Pl", /* NT_Pl */
+	"Pla", /* NT_Pla */
 	"Primary", /* NT_Primary */
 	"RepExpr0x", /* NT_RepExpr0x */
 	"RepPipedSeq0x", /* NT_RepPipedSeq0x */
@@ -149,28 +155,30 @@ var ntToString = []string {
 var tToString = []string { 
 	"!", /* T_0 */
 	"&", /* T_1 */
-	"'", /* T_2 */
-	"(", /* T_3 */
-	"*", /* T_4 */
-	"+", /* T_5 */
-	".", /* T_6 */
-	";", /* T_7 */
-	"=", /* T_8 */
-	"?", /* T_9 */
-	"[", /* T_10 */
-	"]", /* T_11 */
-	"blockComment", /* T_12 */
-	"dQuote", /* T_13 */
-	"endOfLine", /* T_14 */
-	"esc", /* T_15 */
-	"let", /* T_16 */
-	"lineComment", /* T_17 */
-	"neq", /* T_18 */
-	"notQuotesEsc", /* T_19 */
-	"notSqBk", /* T_20 */
-	"num", /* T_21 */
-	"space", /* T_22 */
-	"|", /* T_23 */ 
+	"(", /* T_2 */
+	"*", /* T_3 */
+	"+", /* T_4 */
+	".", /* T_5 */
+	";", /* T_6 */
+	"=", /* T_7 */
+	"?", /* T_8 */
+	"Expression", /* T_9 */
+	"Rule", /* T_10 */
+	"[", /* T_11 */
+	"]", /* T_12 */
+	"blockComment", /* T_13 */
+	"dQuote", /* T_14 */
+	"endOfLine", /* T_15 */
+	"esc", /* T_16 */
+	"let", /* T_17 */
+	"lineComment", /* T_18 */
+	"neq", /* T_19 */
+	"notQuotesEsc", /* T_20 */
+	"notSqBk", /* T_21 */
+	"num", /* T_22 */
+	"sQuote", /* T_23 */
+	"space", /* T_24 */
+	"|", /* T_25 */ 
 }
 
 var stringNT = map[string]NT{ 
@@ -197,6 +205,8 @@ var stringNT = map[string]NT{
 	"OptStarPlus":NT_OptStarPlus,
 	"PIPE":NT_PIPE,
 	"PLUS":NT_PLUS,
+	"Pl":NT_Pl,
+	"Pla":NT_Pla,
 	"Primary":NT_Primary,
 	"RepExpr0x":NT_RepExpr0x,
 	"RepPipedSeq0x":NT_RepPipedSeq0x,

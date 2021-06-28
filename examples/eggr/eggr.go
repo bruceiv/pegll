@@ -1,18 +1,19 @@
-package eggr
+package main
 
 import (
 	"fmt"
-	"testing"
 
 	"eggr/lexer"
 	"eggr/parser"
 )
 
 //Should match
-const test1 = `C5 = & A 123 | B 4 B +`
+const test1 = "C = A"
+
+//const test1 = "C5 = & A 123 | B 4 B +"
 
 //Should fail to match
-const test2 = `A &`
+const test2 = "A &"
 
 func parse(s []rune) bool {
 	// run GLL parser
@@ -22,7 +23,7 @@ func parse(s []rune) bool {
 		return false
 	}
 	// check that root covers whole input
-	root := bsrSet.GetOrderedRoot()
+	root := bsrSet.GetRoot()
 	return root.RightExtent() == bsrSet.GetRightExtent()
 }
 
@@ -39,6 +40,7 @@ func main() {
 	parseAndPrint(test2)
 }
 
+/*
 // test1
 // untested
 func Test1(t *testing.T) {
@@ -71,4 +73,4 @@ func Test2(t *testing.T) {
 	if test2 != a.LiteralString() {
 		t.Fail()
 	}
-}
+}*/
