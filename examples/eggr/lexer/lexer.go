@@ -156,8 +156,11 @@ func (l *Lexer) GetLineColumnOfToken(i int) (line, col int) {
 }
 
 // GetString returns the input string from the left extent of Token[lext] to
-// the right extent of Token[rext]
+// the right extent of Token[rext], or empty string if range empty
 func (l *Lexer) GetString(lext, rext int) string {
+	if rext < lext {
+		return ""
+	}
 	return string(l.I[l.Tokens[lext].Lext():l.Tokens[rext].Rext()])
 }
 
@@ -191,32 +194,32 @@ var accept = []token.Type{
 	token.Error, 
 	token.T_0, 
 	token.T_1, 
+	token.T_17, 
 	token.T_2, 
 	token.T_3, 
 	token.T_4, 
 	token.T_5, 
+	token.T_17, 
 	token.T_6, 
-	token.T_18, 
 	token.T_7, 
 	token.T_8, 
 	token.T_9, 
+	token.T_17, 
 	token.T_10, 
-	token.T_18, 
-	token.T_11, 
 	token.T_23, 
-	token.T_14, 
-	token.T_18, 
+	token.T_13, 
+	token.T_17, 
+	token.T_17, 
 	token.T_18, 
 	token.T_19, 
-	token.T_20, 
-	token.T_13, 
-	token.T_16, 
-	token.T_21, 
-	token.Error, 
-	token.T_17, 
-	token.T_15, 
-	token.Error, 
 	token.T_12, 
+	token.T_15, 
+	token.T_20, 
+	token.Error, 
+	token.T_16, 
+	token.T_14, 
+	token.Error, 
+	token.T_11, 
 }
 
 var nextState = []func(r rune) state{ 
@@ -227,7 +230,7 @@ var nextState = []func(r rune) state{
 			return 1 
 		case r == '&':
 			return 2 
-		case r == ''':
+		case r == '\'':
 			return 3 
 		case r == '(':
 			return 4 

@@ -7,6 +7,7 @@ import(
 	"fmt"
 	
 	"eggr/parser/symbols"
+	"eggr/token"
 )
 
 type Label int
@@ -238,8 +239,25 @@ func (l Label) Symbols() symbols.Symbols {
 	return l.Slot().Symbols
 }
 
+func (l Label) IsNullable() bool {
+	return nullable[l]
+}
+
+func (l Label) FirstContains(typ token.Type) bool {
+	return firstT[l][typ]
+}
+
 func (s *Slot) EoR() bool {
 	return s.Pos >= len(s.Symbols)
+}
+
+func (s *Slot) Successor() *Slot {
+	if s.EoR() {
+		return nil
+	} else {
+		// TODO try slots[s.Label + 1]
+		return slots[slotIndex[Index{s.NT,s.Alt,s.Pos+1}]]
+	}
 }
 
 func (s *Slot) String() string {
@@ -285,7 +303,7 @@ var slots = map[Label]*Slot{
 	ANY0R0: {
 		symbols.NT_ANY, 0, 0, 
 		symbols.Symbols{  
-			symbols.T_6, 
+			symbols.T_5, 
 			symbols.NT_WS,
 		}, 
 		ANY0R0, 
@@ -293,7 +311,7 @@ var slots = map[Label]*Slot{
 	ANY0R1: {
 		symbols.NT_ANY, 0, 1, 
 		symbols.Symbols{  
-			symbols.T_6, 
+			symbols.T_5, 
 			symbols.NT_WS,
 		}, 
 		ANY0R1, 
@@ -301,7 +319,7 @@ var slots = map[Label]*Slot{
 	ANY0R2: {
 		symbols.NT_ANY, 0, 2, 
 		symbols.Symbols{  
-			symbols.T_6, 
+			symbols.T_5, 
 			symbols.NT_WS,
 		}, 
 		ANY0R2, 
@@ -309,7 +327,7 @@ var slots = map[Label]*Slot{
 	CLOSE0R0: {
 		symbols.NT_CLOSE, 0, 0, 
 		symbols.Symbols{  
-			symbols.T_3, 
+			symbols.T_2, 
 			symbols.NT_WS,
 		}, 
 		CLOSE0R0, 
@@ -317,7 +335,7 @@ var slots = map[Label]*Slot{
 	CLOSE0R1: {
 		symbols.NT_CLOSE, 0, 1, 
 		symbols.Symbols{  
-			symbols.T_3, 
+			symbols.T_2, 
 			symbols.NT_WS,
 		}, 
 		CLOSE0R1, 
@@ -325,7 +343,7 @@ var slots = map[Label]*Slot{
 	CLOSE0R2: {
 		symbols.NT_CLOSE, 0, 2, 
 		symbols.Symbols{  
-			symbols.T_3, 
+			symbols.T_2, 
 			symbols.NT_WS,
 		}, 
 		CLOSE0R2, 
@@ -333,9 +351,9 @@ var slots = map[Label]*Slot{
 	CharClass0R0: {
 		symbols.NT_CharClass, 0, 0, 
 		symbols.Symbols{  
-			symbols.T_10, 
+			symbols.T_9, 
 			symbols.NT_UnclosedChars, 
-			symbols.T_11, 
+			symbols.T_10, 
 			symbols.NT_WS,
 		}, 
 		CharClass0R0, 
@@ -343,9 +361,9 @@ var slots = map[Label]*Slot{
 	CharClass0R1: {
 		symbols.NT_CharClass, 0, 1, 
 		symbols.Symbols{  
-			symbols.T_10, 
+			symbols.T_9, 
 			symbols.NT_UnclosedChars, 
-			symbols.T_11, 
+			symbols.T_10, 
 			symbols.NT_WS,
 		}, 
 		CharClass0R1, 
@@ -353,9 +371,9 @@ var slots = map[Label]*Slot{
 	CharClass0R2: {
 		symbols.NT_CharClass, 0, 2, 
 		symbols.Symbols{  
-			symbols.T_10, 
+			symbols.T_9, 
 			symbols.NT_UnclosedChars, 
-			symbols.T_11, 
+			symbols.T_10, 
 			symbols.NT_WS,
 		}, 
 		CharClass0R2, 
@@ -363,9 +381,9 @@ var slots = map[Label]*Slot{
 	CharClass0R3: {
 		symbols.NT_CharClass, 0, 3, 
 		symbols.Symbols{  
-			symbols.T_10, 
+			symbols.T_9, 
 			symbols.NT_UnclosedChars, 
-			symbols.T_11, 
+			symbols.T_10, 
 			symbols.NT_WS,
 		}, 
 		CharClass0R3, 
@@ -373,9 +391,9 @@ var slots = map[Label]*Slot{
 	CharClass0R4: {
 		symbols.NT_CharClass, 0, 4, 
 		symbols.Symbols{  
-			symbols.T_10, 
+			symbols.T_9, 
 			symbols.NT_UnclosedChars, 
-			symbols.T_11, 
+			symbols.T_10, 
 			symbols.NT_WS,
 		}, 
 		CharClass0R4, 
@@ -383,64 +401,64 @@ var slots = map[Label]*Slot{
 	CharLiteral0R0: {
 		symbols.NT_CharLiteral, 0, 0, 
 		symbols.Symbols{  
-			symbols.T_2, 
+			symbols.T_21, 
 			symbols.NT_Character, 
-			symbols.T_2,
+			symbols.T_21,
 		}, 
 		CharLiteral0R0, 
 	},
 	CharLiteral0R1: {
 		symbols.NT_CharLiteral, 0, 1, 
 		symbols.Symbols{  
-			symbols.T_2, 
+			symbols.T_21, 
 			symbols.NT_Character, 
-			symbols.T_2,
+			symbols.T_21,
 		}, 
 		CharLiteral0R1, 
 	},
 	CharLiteral0R2: {
 		symbols.NT_CharLiteral, 0, 2, 
 		symbols.Symbols{  
-			symbols.T_2, 
+			symbols.T_21, 
 			symbols.NT_Character, 
-			symbols.T_2,
+			symbols.T_21,
 		}, 
 		CharLiteral0R2, 
 	},
 	CharLiteral0R3: {
 		symbols.NT_CharLiteral, 0, 3, 
 		symbols.Symbols{  
-			symbols.T_2, 
+			symbols.T_21, 
 			symbols.NT_Character, 
-			symbols.T_2,
+			symbols.T_21,
 		}, 
 		CharLiteral0R3, 
 	},
 	Character0R0: {
 		symbols.NT_Character, 0, 0, 
 		symbols.Symbols{  
-			symbols.T_19,
+			symbols.T_18,
 		}, 
 		Character0R0, 
 	},
 	Character0R1: {
 		symbols.NT_Character, 0, 1, 
 		symbols.Symbols{  
-			symbols.T_19,
+			symbols.T_18,
 		}, 
 		Character0R1, 
 	},
 	Character1R0: {
 		symbols.NT_Character, 1, 0, 
 		symbols.Symbols{  
-			symbols.T_15,
+			symbols.T_14,
 		}, 
 		Character1R0, 
 	},
 	Character1R1: {
 		symbols.NT_Character, 1, 1, 
 		symbols.Symbols{  
-			symbols.T_15,
+			symbols.T_14,
 		}, 
 		Character1R1, 
 	},
@@ -471,7 +489,7 @@ var slots = map[Label]*Slot{
 	EMPTY0R0: {
 		symbols.NT_EMPTY, 0, 0, 
 		symbols.Symbols{  
-			symbols.T_7, 
+			symbols.T_6, 
 			symbols.NT_WS,
 		}, 
 		EMPTY0R0, 
@@ -479,7 +497,7 @@ var slots = map[Label]*Slot{
 	EMPTY0R1: {
 		symbols.NT_EMPTY, 0, 1, 
 		symbols.Symbols{  
-			symbols.T_7, 
+			symbols.T_6, 
 			symbols.NT_WS,
 		}, 
 		EMPTY0R1, 
@@ -487,7 +505,7 @@ var slots = map[Label]*Slot{
 	EMPTY0R2: {
 		symbols.NT_EMPTY, 0, 2, 
 		symbols.Symbols{  
-			symbols.T_7, 
+			symbols.T_6, 
 			symbols.NT_WS,
 		}, 
 		EMPTY0R2, 
@@ -495,7 +513,7 @@ var slots = map[Label]*Slot{
 	EQUAL0R0: {
 		symbols.NT_EQUAL, 0, 0, 
 		symbols.Symbols{  
-			symbols.T_8, 
+			symbols.T_7, 
 			symbols.NT_WS,
 		}, 
 		EQUAL0R0, 
@@ -503,7 +521,7 @@ var slots = map[Label]*Slot{
 	EQUAL0R1: {
 		symbols.NT_EQUAL, 0, 1, 
 		symbols.Symbols{  
-			symbols.T_8, 
+			symbols.T_7, 
 			symbols.NT_WS,
 		}, 
 		EQUAL0R1, 
@@ -511,7 +529,7 @@ var slots = map[Label]*Slot{
 	EQUAL0R2: {
 		symbols.NT_EQUAL, 0, 2, 
 		symbols.Symbols{  
-			symbols.T_8, 
+			symbols.T_7, 
 			symbols.NT_WS,
 		}, 
 		EQUAL0R2, 
@@ -663,28 +681,28 @@ var slots = map[Label]*Slot{
 	LetOrNum0R0: {
 		symbols.NT_LetOrNum, 0, 0, 
 		symbols.Symbols{  
-			symbols.T_16,
+			symbols.T_15,
 		}, 
 		LetOrNum0R0, 
 	},
 	LetOrNum0R1: {
 		symbols.NT_LetOrNum, 0, 1, 
 		symbols.Symbols{  
-			symbols.T_16,
+			symbols.T_15,
 		}, 
 		LetOrNum0R1, 
 	},
 	LetOrNum1R0: {
 		symbols.NT_LetOrNum, 1, 0, 
 		symbols.Symbols{  
-			symbols.T_21,
+			symbols.T_20,
 		}, 
 		LetOrNum1R0, 
 	},
 	LetOrNum1R1: {
 		symbols.NT_LetOrNum, 1, 1, 
 		symbols.Symbols{  
-			symbols.T_21,
+			symbols.T_20,
 		}, 
 		LetOrNum1R1, 
 	},
@@ -743,14 +761,14 @@ var slots = map[Label]*Slot{
 	LetWS0R0: {
 		symbols.NT_LetWS, 0, 0, 
 		symbols.Symbols{  
-			symbols.T_16,
+			symbols.T_15,
 		}, 
 		LetWS0R0, 
 	},
 	LetWS0R1: {
 		symbols.NT_LetWS, 0, 1, 
 		symbols.Symbols{  
-			symbols.T_16,
+			symbols.T_15,
 		}, 
 		LetWS0R1, 
 	},
@@ -771,35 +789,35 @@ var slots = map[Label]*Slot{
 	LineOrBlock0R0: {
 		symbols.NT_LineOrBlock, 0, 0, 
 		symbols.Symbols{  
-			symbols.T_17,
+			symbols.T_16,
 		}, 
 		LineOrBlock0R0, 
 	},
 	LineOrBlock0R1: {
 		symbols.NT_LineOrBlock, 0, 1, 
 		symbols.Symbols{  
-			symbols.T_17,
+			symbols.T_16,
 		}, 
 		LineOrBlock0R1, 
 	},
 	LineOrBlock1R0: {
 		symbols.NT_LineOrBlock, 1, 0, 
 		symbols.Symbols{  
-			symbols.T_12,
+			symbols.T_11,
 		}, 
 		LineOrBlock1R0, 
 	},
 	LineOrBlock1R1: {
 		symbols.NT_LineOrBlock, 1, 1, 
 		symbols.Symbols{  
-			symbols.T_12,
+			symbols.T_11,
 		}, 
 		LineOrBlock1R1, 
 	},
 	NEQUAL0R0: {
 		symbols.NT_NEQUAL, 0, 0, 
 		symbols.Symbols{  
-			symbols.T_18, 
+			symbols.T_17, 
 			symbols.NT_WS,
 		}, 
 		NEQUAL0R0, 
@@ -807,7 +825,7 @@ var slots = map[Label]*Slot{
 	NEQUAL0R1: {
 		symbols.NT_NEQUAL, 0, 1, 
 		symbols.Symbols{  
-			symbols.T_18, 
+			symbols.T_17, 
 			symbols.NT_WS,
 		}, 
 		NEQUAL0R1, 
@@ -815,7 +833,7 @@ var slots = map[Label]*Slot{
 	NEQUAL0R2: {
 		symbols.NT_NEQUAL, 0, 2, 
 		symbols.Symbols{  
-			symbols.T_18, 
+			symbols.T_17, 
 			symbols.NT_WS,
 		}, 
 		NEQUAL0R2, 
@@ -847,7 +865,7 @@ var slots = map[Label]*Slot{
 	OPEN0R0: {
 		symbols.NT_OPEN, 0, 0, 
 		symbols.Symbols{  
-			symbols.T_3, 
+			symbols.T_2, 
 			symbols.NT_WS,
 		}, 
 		OPEN0R0, 
@@ -855,7 +873,7 @@ var slots = map[Label]*Slot{
 	OPEN0R1: {
 		symbols.NT_OPEN, 0, 1, 
 		symbols.Symbols{  
-			symbols.T_3, 
+			symbols.T_2, 
 			symbols.NT_WS,
 		}, 
 		OPEN0R1, 
@@ -863,7 +881,7 @@ var slots = map[Label]*Slot{
 	OPEN0R2: {
 		symbols.NT_OPEN, 0, 2, 
 		symbols.Symbols{  
-			symbols.T_3, 
+			symbols.T_2, 
 			symbols.NT_WS,
 		}, 
 		OPEN0R2, 
@@ -871,7 +889,7 @@ var slots = map[Label]*Slot{
 	OPT0R0: {
 		symbols.NT_OPT, 0, 0, 
 		symbols.Symbols{  
-			symbols.T_9, 
+			symbols.T_8, 
 			symbols.NT_WS,
 		}, 
 		OPT0R0, 
@@ -879,7 +897,7 @@ var slots = map[Label]*Slot{
 	OPT0R1: {
 		symbols.NT_OPT, 0, 1, 
 		symbols.Symbols{  
-			symbols.T_9, 
+			symbols.T_8, 
 			symbols.NT_WS,
 		}, 
 		OPT0R1, 
@@ -887,7 +905,7 @@ var slots = map[Label]*Slot{
 	OPT0R2: {
 		symbols.NT_OPT, 0, 2, 
 		symbols.Symbols{  
-			symbols.T_9, 
+			symbols.T_8, 
 			symbols.NT_WS,
 		}, 
 		OPT0R2, 
@@ -967,7 +985,7 @@ var slots = map[Label]*Slot{
 	PLUS0R0: {
 		symbols.NT_PLUS, 0, 0, 
 		symbols.Symbols{  
-			symbols.T_5, 
+			symbols.T_4, 
 			symbols.NT_WS,
 		}, 
 		PLUS0R0, 
@@ -975,7 +993,7 @@ var slots = map[Label]*Slot{
 	PLUS0R1: {
 		symbols.NT_PLUS, 0, 1, 
 		symbols.Symbols{  
-			symbols.T_5, 
+			symbols.T_4, 
 			symbols.NT_WS,
 		}, 
 		PLUS0R1, 
@@ -983,7 +1001,7 @@ var slots = map[Label]*Slot{
 	PLUS0R2: {
 		symbols.NT_PLUS, 0, 2, 
 		symbols.Symbols{  
-			symbols.T_5, 
+			symbols.T_4, 
 			symbols.NT_WS,
 		}, 
 		PLUS0R2, 
@@ -1259,7 +1277,7 @@ var slots = map[Label]*Slot{
 	STAR0R0: {
 		symbols.NT_STAR, 0, 0, 
 		symbols.Symbols{  
-			symbols.T_4, 
+			symbols.T_3, 
 			symbols.NT_WS,
 		}, 
 		STAR0R0, 
@@ -1267,7 +1285,7 @@ var slots = map[Label]*Slot{
 	STAR0R1: {
 		symbols.NT_STAR, 0, 1, 
 		symbols.Symbols{  
-			symbols.T_4, 
+			symbols.T_3, 
 			symbols.NT_WS,
 		}, 
 		STAR0R1, 
@@ -1275,7 +1293,7 @@ var slots = map[Label]*Slot{
 	STAR0R2: {
 		symbols.NT_STAR, 0, 2, 
 		symbols.Symbols{  
-			symbols.T_4, 
+			symbols.T_3, 
 			symbols.NT_WS,
 		}, 
 		STAR0R2, 
@@ -1365,9 +1383,9 @@ var slots = map[Label]*Slot{
 	StringLiteral0R0: {
 		symbols.NT_StringLiteral, 0, 0, 
 		symbols.Symbols{  
-			symbols.T_13, 
+			symbols.T_12, 
 			symbols.NT_String, 
-			symbols.T_13, 
+			symbols.T_12, 
 			symbols.NT_WS,
 		}, 
 		StringLiteral0R0, 
@@ -1375,9 +1393,9 @@ var slots = map[Label]*Slot{
 	StringLiteral0R1: {
 		symbols.NT_StringLiteral, 0, 1, 
 		symbols.Symbols{  
-			symbols.T_13, 
+			symbols.T_12, 
 			symbols.NT_String, 
-			symbols.T_13, 
+			symbols.T_12, 
 			symbols.NT_WS,
 		}, 
 		StringLiteral0R1, 
@@ -1385,9 +1403,9 @@ var slots = map[Label]*Slot{
 	StringLiteral0R2: {
 		symbols.NT_StringLiteral, 0, 2, 
 		symbols.Symbols{  
-			symbols.T_13, 
+			symbols.T_12, 
 			symbols.NT_String, 
-			symbols.T_13, 
+			symbols.T_12, 
 			symbols.NT_WS,
 		}, 
 		StringLiteral0R2, 
@@ -1395,9 +1413,9 @@ var slots = map[Label]*Slot{
 	StringLiteral0R3: {
 		symbols.NT_StringLiteral, 0, 3, 
 		symbols.Symbols{  
-			symbols.T_13, 
+			symbols.T_12, 
 			symbols.NT_String, 
-			symbols.T_13, 
+			symbols.T_12, 
 			symbols.NT_WS,
 		}, 
 		StringLiteral0R3, 
@@ -1405,9 +1423,9 @@ var slots = map[Label]*Slot{
 	StringLiteral0R4: {
 		symbols.NT_StringLiteral, 0, 4, 
 		symbols.Symbols{  
-			symbols.T_13, 
+			symbols.T_12, 
 			symbols.NT_String, 
-			symbols.T_13, 
+			symbols.T_12, 
 			symbols.NT_WS,
 		}, 
 		StringLiteral0R4, 
@@ -1415,7 +1433,7 @@ var slots = map[Label]*Slot{
 	UnclosedChar0R0: {
 		symbols.NT_UnclosedChar, 0, 0, 
 		symbols.Symbols{  
-			symbols.T_20, 
+			symbols.T_19, 
 			symbols.NT_Character,
 		}, 
 		UnclosedChar0R0, 
@@ -1423,7 +1441,7 @@ var slots = map[Label]*Slot{
 	UnclosedChar0R1: {
 		symbols.NT_UnclosedChar, 0, 1, 
 		symbols.Symbols{  
-			symbols.T_20, 
+			symbols.T_19, 
 			symbols.NT_Character,
 		}, 
 		UnclosedChar0R1, 
@@ -1431,7 +1449,7 @@ var slots = map[Label]*Slot{
 	UnclosedChar0R2: {
 		symbols.NT_UnclosedChar, 0, 2, 
 		symbols.Symbols{  
-			symbols.T_20, 
+			symbols.T_19, 
 			symbols.NT_Character,
 		}, 
 		UnclosedChar0R2, 
@@ -1705,3 +1723,322 @@ var alternates = map[symbols.NT][]Label{
 	symbols.NT_LineOrBlock:[]Label{ LineOrBlock0R0,LineOrBlock1R0 },
 }
 
+var nullable = []bool { 
+	false, // AND0R0 
+	false, // AND0R1 
+	true, // AND0R2 
+	false, // ANY0R0 
+	false, // ANY0R1 
+	true, // ANY0R2 
+	false, // CLOSE0R0 
+	false, // CLOSE0R1 
+	true, // CLOSE0R2 
+	false, // CharClass0R0 
+	false, // CharClass0R1 
+	false, // CharClass0R2 
+	false, // CharClass0R3 
+	true, // CharClass0R4 
+	false, // CharLiteral0R0 
+	false, // CharLiteral0R1 
+	false, // CharLiteral0R2 
+	true, // CharLiteral0R3 
+	false, // Character0R0 
+	true, // Character0R1 
+	false, // Character1R0 
+	true, // Character1R1 
+	false, // Choice0R0 
+	true, // Choice0R1 
+	true, // Choice0R2 
+	false, // EMPTY0R0 
+	false, // EMPTY0R1 
+	true, // EMPTY0R2 
+	false, // EQUAL0R0 
+	false, // EQUAL0R1 
+	true, // EQUAL0R2 
+	false, // Expression0R0 
+	false, // Expression0R1 
+	true, // Expression0R2 
+	false, // Expression1R0 
+	false, // Expression1R1 
+	true, // Expression1R2 
+	false, // Expression2R0 
+	true, // Expression2R1 
+	true, // Expression2R2 
+	false, // Grammar0R0 
+	false, // Grammar0R1 
+	true, // Grammar0R2 
+	true, // Grammar0R3 
+	false, // Identifier0R0 
+	false, // Identifier0R1 
+	false, // Identifier0R2 
+	true, // Identifier0R3 
+	false, // LetOrNum0R0 
+	true, // LetOrNum0R1 
+	false, // LetOrNum1R0 
+	true, // LetOrNum1R1 
+	false, // LetOrNum2R0 
+	true, // LetOrNum2R1 
+	false, // LetOrNum0x0R0 
+	false, // LetOrNum0x0R1 
+	true, // LetOrNum0x0R2 
+	false, // LetOrNum0x1R0 
+	true, // LetOrNum0x1R1 
+	false, // LetWS0R0 
+	true, // LetWS0R1 
+	false, // LetWS1R0 
+	true, // LetWS1R1 
+	false, // LineOrBlock0R0 
+	true, // LineOrBlock0R1 
+	false, // LineOrBlock1R0 
+	true, // LineOrBlock1R1 
+	false, // NEQUAL0R0 
+	false, // NEQUAL0R1 
+	true, // NEQUAL0R2 
+	false, // NOT0R0 
+	false, // NOT0R1 
+	true, // NOT0R2 
+	false, // OPEN0R0 
+	false, // OPEN0R1 
+	true, // OPEN0R2 
+	false, // OPT0R0 
+	false, // OPT0R1 
+	true, // OPT0R2 
+	false, // OptStarPlus0R0 
+	true, // OptStarPlus0R1 
+	false, // OptStarPlus1R0 
+	true, // OptStarPlus1R1 
+	false, // OptStarPlus2R0 
+	true, // OptStarPlus2R1 
+	true, // OptStarPlus3R0 
+	false, // PIPE0R0 
+	false, // PIPE0R1 
+	true, // PIPE0R2 
+	false, // PLUS0R0 
+	false, // PLUS0R1 
+	true, // PLUS0R2 
+	false, // Primary0R0 
+	false, // Primary0R1 
+	true, // Primary0R2 
+	false, // Primary1R0 
+	false, // Primary1R1 
+	false, // Primary1R2 
+	true, // Primary1R3 
+	false, // Primary2R0 
+	true, // Primary2R1 
+	false, // Primary3R0 
+	true, // Primary3R1 
+	false, // Primary4R0 
+	true, // Primary4R1 
+	false, // Primary5R0 
+	true, // Primary5R1 
+	false, // Primary6R0 
+	true, // Primary6R1 
+	false, // RepExpr0x0R0 
+	true, // RepExpr0x0R1 
+	true, // RepExpr0x0R2 
+	true, // RepExpr0x1R0 
+	false, // RepPipedSeq0x0R0 
+	false, // RepPipedSeq0x0R1 
+	true, // RepPipedSeq0x0R2 
+	true, // RepPipedSeq0x0R3 
+	true, // RepPipedSeq0x1R0 
+	false, // RepRule0x0R0 
+	true, // RepRule0x0R1 
+	true, // RepRule0x0R2 
+	true, // RepRule0x1R0 
+	false, // Rule0R0 
+	false, // Rule0R1 
+	false, // Rule0R2 
+	true, // Rule0R3 
+	false, // STAR0R0 
+	false, // STAR0R1 
+	true, // STAR0R2 
+	false, // Sequence0R0 
+	true, // Sequence0R1 
+	true, // Sequence0R2 
+	false, // SpaceOrComment0R0 
+	true, // SpaceOrComment0R1 
+	false, // SpaceOrComment1R0 
+	true, // SpaceOrComment1R1 
+	false, // String0R0 
+	true, // String0R1 
+	true, // String0R2 
+	true, // String1R0 
+	false, // StringLiteral0R0 
+	false, // StringLiteral0R1 
+	false, // StringLiteral0R2 
+	false, // StringLiteral0R3 
+	true, // StringLiteral0R4 
+	false, // UnclosedChar0R0 
+	false, // UnclosedChar0R1 
+	true, // UnclosedChar0R2 
+	false, // UnclosedChars0R0 
+	true, // UnclosedChars0R1 
+	true, // UnclosedChars0R2 
+	true, // UnclosedChars1R0 
+	false, // WS0R0 
+	false, // WS0R1 
+	true, // WS0R2 
+	false, // WS1R0 
+	true, // WS1R1 
+}
+
+var firstT = []map[token.Type]bool { 
+	{  token.T_1: true,  }, // AND0R0 
+	{  token.T_16: true,  token.T_11: true,  token.T_22: true,  token.T_6: true,  }, // AND0R1 
+	{  }, // AND0R2 
+	{  token.T_5: true,  }, // ANY0R0 
+	{  token.T_6: true,  token.T_16: true,  token.T_11: true,  token.T_22: true,  }, // ANY0R1 
+	{  }, // ANY0R2 
+	{  token.T_2: true,  }, // CLOSE0R0 
+	{  token.T_16: true,  token.T_11: true,  token.T_22: true,  token.T_6: true,  }, // CLOSE0R1 
+	{  }, // CLOSE0R2 
+	{  token.T_9: true,  }, // CharClass0R0 
+	{  token.T_19: true,  token.T_10: true,  }, // CharClass0R1 
+	{  token.T_10: true,  }, // CharClass0R2 
+	{  token.T_16: true,  token.T_11: true,  token.T_22: true,  token.T_6: true,  }, // CharClass0R3 
+	{  }, // CharClass0R4 
+	{  token.T_21: true,  }, // CharLiteral0R0 
+	{  token.T_18: true,  token.T_14: true,  }, // CharLiteral0R1 
+	{  token.T_21: true,  }, // CharLiteral0R2 
+	{  }, // CharLiteral0R3 
+	{  token.T_18: true,  }, // Character0R0 
+	{  }, // Character0R1 
+	{  token.T_14: true,  }, // Character1R0 
+	{  }, // Character1R1 
+	{  token.T_5: true,  token.T_22: true,  token.T_16: true,  token.T_0: true,  token.T_12: true,  token.T_1: true,  token.T_11: true,  token.T_6: true,  token.T_9: true,  token.T_2: true,  token.T_21: true,  token.T_15: true,  }, // Choice0R0 
+	{  token.T_23: true,  }, // Choice0R1 
+	{  }, // Choice0R2 
+	{  token.T_6: true,  }, // EMPTY0R0 
+	{  token.T_16: true,  token.T_11: true,  token.T_22: true,  token.T_6: true,  }, // EMPTY0R1 
+	{  }, // EMPTY0R2 
+	{  token.T_7: true,  }, // EQUAL0R0 
+	{  token.T_11: true,  token.T_22: true,  token.T_6: true,  token.T_16: true,  }, // EQUAL0R1 
+	{  }, // EQUAL0R2 
+	{  token.T_1: true,  }, // Expression0R0 
+	{  token.T_22: true,  token.T_5: true,  token.T_21: true,  token.T_11: true,  token.T_16: true,  token.T_2: true,  token.T_9: true,  token.T_15: true,  token.T_6: true,  token.T_12: true,  }, // Expression0R1 
+	{  }, // Expression0R2 
+	{  token.T_0: true,  }, // Expression1R0 
+	{  token.T_22: true,  token.T_21: true,  token.T_11: true,  token.T_5: true,  token.T_15: true,  token.T_2: true,  token.T_9: true,  token.T_12: true,  token.T_6: true,  token.T_16: true,  }, // Expression1R1 
+	{  }, // Expression1R2 
+	{  token.T_6: true,  token.T_2: true,  token.T_5: true,  token.T_11: true,  token.T_12: true,  token.T_21: true,  token.T_9: true,  token.T_22: true,  token.T_15: true,  token.T_16: true,  }, // Expression2R0 
+	{  token.T_8: true,  token.T_3: true,  token.T_4: true,  }, // Expression2R1 
+	{  }, // Expression2R2 
+	{  token.T_16: true,  token.T_11: true,  token.T_22: true,  token.T_6: true,  }, // Grammar0R0 
+	{  token.T_15: true,  token.T_6: true,  token.T_16: true,  token.T_11: true,  token.T_22: true,  }, // Grammar0R1 
+	{  token.T_6: true,  token.T_16: true,  token.T_11: true,  token.T_22: true,  token.T_15: true,  }, // Grammar0R2 
+	{  }, // Grammar0R3 
+	{  token.T_15: true,  token.T_6: true,  token.T_16: true,  token.T_11: true,  token.T_22: true,  }, // Identifier0R0 
+	{  token.T_6: true,  token.T_15: true,  token.T_20: true,  token.T_16: true,  token.T_11: true,  token.T_22: true,  }, // Identifier0R1 
+	{  token.T_16: true,  token.T_11: true,  token.T_22: true,  token.T_6: true,  }, // Identifier0R2 
+	{  }, // Identifier0R3 
+	{  token.T_15: true,  }, // LetOrNum0R0 
+	{  }, // LetOrNum0R1 
+	{  token.T_20: true,  }, // LetOrNum1R0 
+	{  }, // LetOrNum1R1 
+	{  token.T_22: true,  token.T_6: true,  token.T_16: true,  token.T_11: true,  }, // LetOrNum2R0 
+	{  }, // LetOrNum2R1 
+	{  token.T_15: true,  token.T_20: true,  token.T_16: true,  token.T_11: true,  token.T_22: true,  token.T_6: true,  }, // LetOrNum0x0R0 
+	{  token.T_16: true,  token.T_11: true,  token.T_22: true,  token.T_6: true,  token.T_15: true,  token.T_20: true,  }, // LetOrNum0x0R1 
+	{  }, // LetOrNum0x0R2 
+	{  token.T_6: true,  }, // LetOrNum0x1R0 
+	{  }, // LetOrNum0x1R1 
+	{  token.T_15: true,  }, // LetWS0R0 
+	{  }, // LetWS0R1 
+	{  token.T_11: true,  token.T_22: true,  token.T_6: true,  token.T_16: true,  }, // LetWS1R0 
+	{  }, // LetWS1R1 
+	{  token.T_16: true,  }, // LineOrBlock0R0 
+	{  }, // LineOrBlock0R1 
+	{  token.T_11: true,  }, // LineOrBlock1R0 
+	{  }, // LineOrBlock1R1 
+	{  token.T_17: true,  }, // NEQUAL0R0 
+	{  token.T_16: true,  token.T_11: true,  token.T_22: true,  token.T_6: true,  }, // NEQUAL0R1 
+	{  }, // NEQUAL0R2 
+	{  token.T_0: true,  }, // NOT0R0 
+	{  token.T_16: true,  token.T_11: true,  token.T_22: true,  token.T_6: true,  }, // NOT0R1 
+	{  }, // NOT0R2 
+	{  token.T_2: true,  }, // OPEN0R0 
+	{  token.T_16: true,  token.T_11: true,  token.T_22: true,  token.T_6: true,  }, // OPEN0R1 
+	{  }, // OPEN0R2 
+	{  token.T_8: true,  }, // OPT0R0 
+	{  token.T_16: true,  token.T_11: true,  token.T_22: true,  token.T_6: true,  }, // OPT0R1 
+	{  }, // OPT0R2 
+	{  token.T_8: true,  }, // OptStarPlus0R0 
+	{  }, // OptStarPlus0R1 
+	{  token.T_3: true,  }, // OptStarPlus1R0 
+	{  }, // OptStarPlus1R1 
+	{  token.T_4: true,  }, // OptStarPlus2R0 
+	{  }, // OptStarPlus2R1 
+	{  }, // OptStarPlus3R0 
+	{  token.T_23: true,  }, // PIPE0R0 
+	{  token.T_11: true,  token.T_22: true,  token.T_6: true,  token.T_16: true,  }, // PIPE0R1 
+	{  }, // PIPE0R2 
+	{  token.T_4: true,  }, // PLUS0R0 
+	{  token.T_16: true,  token.T_11: true,  token.T_22: true,  token.T_6: true,  }, // PLUS0R1 
+	{  }, // PLUS0R2 
+	{  token.T_6: true,  token.T_16: true,  token.T_11: true,  token.T_22: true,  token.T_15: true,  }, // Primary0R0 
+	{  token.T_17: true,  }, // Primary0R1 
+	{  }, // Primary0R2 
+	{  token.T_2: true,  }, // Primary1R0 
+	{  token.T_1: true,  token.T_5: true,  token.T_11: true,  token.T_22: true,  token.T_6: true,  token.T_0: true,  token.T_9: true,  token.T_12: true,  token.T_2: true,  token.T_15: true,  token.T_21: true,  token.T_16: true,  }, // Primary1R1 
+	{  token.T_2: true,  }, // Primary1R2 
+	{  }, // Primary1R3 
+	{  token.T_12: true,  }, // Primary2R0 
+	{  }, // Primary2R1 
+	{  token.T_21: true,  }, // Primary3R0 
+	{  }, // Primary3R1 
+	{  token.T_9: true,  }, // Primary4R0 
+	{  }, // Primary4R1 
+	{  token.T_5: true,  }, // Primary5R0 
+	{  }, // Primary5R1 
+	{  token.T_6: true,  }, // Primary6R0 
+	{  }, // Primary6R1 
+	{  token.T_15: true,  token.T_2: true,  token.T_6: true,  token.T_9: true,  token.T_21: true,  token.T_11: true,  token.T_1: true,  token.T_0: true,  token.T_16: true,  token.T_5: true,  token.T_22: true,  token.T_12: true,  }, // RepExpr0x0R0 
+	{  token.T_9: true,  token.T_15: true,  token.T_1: true,  token.T_2: true,  token.T_11: true,  token.T_0: true,  token.T_6: true,  token.T_12: true,  token.T_22: true,  token.T_5: true,  token.T_16: true,  token.T_21: true,  }, // RepExpr0x0R1 
+	{  }, // RepExpr0x0R2 
+	{  }, // RepExpr0x1R0 
+	{  token.T_23: true,  }, // RepPipedSeq0x0R0 
+	{  token.T_11: true,  token.T_2: true,  token.T_0: true,  token.T_9: true,  token.T_22: true,  token.T_16: true,  token.T_5: true,  token.T_12: true,  token.T_21: true,  token.T_15: true,  token.T_1: true,  token.T_6: true,  }, // RepPipedSeq0x0R1 
+	{  token.T_23: true,  }, // RepPipedSeq0x0R2 
+	{  }, // RepPipedSeq0x0R3 
+	{  }, // RepPipedSeq0x1R0 
+	{  token.T_16: true,  token.T_11: true,  token.T_22: true,  token.T_15: true,  token.T_6: true,  }, // RepRule0x0R0 
+	{  token.T_6: true,  token.T_16: true,  token.T_11: true,  token.T_22: true,  token.T_15: true,  }, // RepRule0x0R1 
+	{  }, // RepRule0x0R2 
+	{  }, // RepRule0x1R0 
+	{  token.T_16: true,  token.T_11: true,  token.T_22: true,  token.T_15: true,  token.T_6: true,  }, // Rule0R0 
+	{  token.T_7: true,  }, // Rule0R1 
+	{  token.T_6: true,  token.T_9: true,  token.T_21: true,  token.T_22: true,  token.T_0: true,  token.T_12: true,  token.T_1: true,  token.T_5: true,  token.T_2: true,  token.T_15: true,  token.T_11: true,  token.T_16: true,  }, // Rule0R2 
+	{  }, // Rule0R3 
+	{  token.T_3: true,  }, // STAR0R0 
+	{  token.T_22: true,  token.T_6: true,  token.T_16: true,  token.T_11: true,  }, // STAR0R1 
+	{  }, // STAR0R2 
+	{  token.T_22: true,  token.T_1: true,  token.T_16: true,  token.T_21: true,  token.T_11: true,  token.T_15: true,  token.T_2: true,  token.T_0: true,  token.T_5: true,  token.T_12: true,  token.T_9: true,  token.T_6: true,  }, // Sequence0R0 
+	{  token.T_12: true,  token.T_2: true,  token.T_11: true,  token.T_0: true,  token.T_5: true,  token.T_16: true,  token.T_21: true,  token.T_9: true,  token.T_15: true,  token.T_22: true,  token.T_6: true,  token.T_1: true,  }, // Sequence0R1 
+	{  }, // Sequence0R2 
+	{  token.T_22: true,  }, // SpaceOrComment0R0 
+	{  }, // SpaceOrComment0R1 
+	{  token.T_16: true,  token.T_11: true,  }, // SpaceOrComment1R0 
+	{  }, // SpaceOrComment1R1 
+	{  token.T_18: true,  token.T_14: true,  }, // String0R0 
+	{  token.T_14: true,  token.T_18: true,  }, // String0R1 
+	{  }, // String0R2 
+	{  }, // String1R0 
+	{  token.T_12: true,  }, // StringLiteral0R0 
+	{  token.T_14: true,  token.T_18: true,  token.T_12: true,  }, // StringLiteral0R1 
+	{  token.T_12: true,  }, // StringLiteral0R2 
+	{  token.T_11: true,  token.T_22: true,  token.T_6: true,  token.T_16: true,  }, // StringLiteral0R3 
+	{  }, // StringLiteral0R4 
+	{  token.T_19: true,  }, // UnclosedChar0R0 
+	{  token.T_18: true,  token.T_14: true,  }, // UnclosedChar0R1 
+	{  }, // UnclosedChar0R2 
+	{  token.T_19: true,  }, // UnclosedChars0R0 
+	{  token.T_19: true,  }, // UnclosedChars0R1 
+	{  }, // UnclosedChars0R2 
+	{  }, // UnclosedChars1R0 
+	{  token.T_22: true,  token.T_16: true,  token.T_11: true,  }, // WS0R0 
+	{  token.T_16: true,  token.T_11: true,  token.T_22: true,  token.T_6: true,  }, // WS0R1 
+	{  }, // WS0R2 
+	{  token.T_6: true,  }, // WS1R0 
+	{  }, // WS1R1 
+}

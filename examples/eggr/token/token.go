@@ -108,26 +108,26 @@ const(
     EOF  // $ 
     T_0  // ! 
     T_1  // & 
-    T_2  // ' 
-    T_3  // ( 
-    T_4  // * 
-    T_5  // + 
-    T_6  // . 
-    T_7  // ; 
-    T_8  // = 
-    T_9  // ? 
-    T_10  // [ 
-    T_11  // ] 
-    T_12  // blockComment 
-    T_13  // dQuote 
-    T_14  // endOfLine 
-    T_15  // esc 
-    T_16  // let 
-    T_17  // lineComment 
-    T_18  // neq 
-    T_19  // notQuotesEsc 
-    T_20  // notSqBk 
-    T_21  // num 
+    T_2  // ( 
+    T_3  // * 
+    T_4  // + 
+    T_5  // . 
+    T_6  // ; 
+    T_7  // = 
+    T_8  // ? 
+    T_9  // [ 
+    T_10  // ] 
+    T_11  // blockComment 
+    T_12  // dQuote 
+    T_13  // endOfLine 
+    T_14  // esc 
+    T_15  // let 
+    T_16  // lineComment 
+    T_17  // neq 
+    T_18  // notQuotesEsc 
+    T_19  // notSqBk 
+    T_20  // num 
+    T_21  // sQuote 
     T_22  // space 
     T_23  // | 
 )
@@ -195,7 +195,6 @@ var TypeToID = []string {
     "$", 
     "!", 
     "&", 
-    "'", 
     "(", 
     "*", 
     "+", 
@@ -215,6 +214,7 @@ var TypeToID = []string {
     "notQuotesEsc", 
     "notSqBk", 
     "num", 
+    "sQuote", 
     "space", 
     "|", 
 }
@@ -233,13 +233,13 @@ var Suppress = []bool {
     false, 
     false, 
     false, 
-    false, 
     true, 
     false, 
     false, 
     false, 
     false, 
     true, 
+    false, 
     false, 
     false, 
     false, 

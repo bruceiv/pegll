@@ -1,3 +1,4 @@
+//  Copyright 2021 Aaron Moss
 //  Copyright 2019 Marius Ackerman
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
@@ -21,20 +22,22 @@ import (
 
 	"github.com/goccmack/gogll/ast"
 	"github.com/goccmack/goutil/ioutil"
+	"github.com/goccmack/gogll/frstflw"
 )
 
 type Data struct {
 	NonTerminals []string
 	Terminals    []string
+	LeftRec      map[string][]string
 }
 
-func Gen(fname string, g *ast.GoGLL) {
+func Gen(fname string, g *ast.GoGLL, ff *frstflw.FF) {
 	tmpl, err := template.New("symbols").Parse(src)
 	if err != nil {
 		panic(err)
 	}
 	buf := new(bytes.Buffer)
-	if err := tmpl.Execute(buf, getData(g)); err != nil {
+	if err := tmpl.Execute(buf, getData(g, ff)); err != nil {
 		panic(err)
 	}
 	if err := ioutil.WriteFile(fname, buf.Bytes()); err != nil {
@@ -42,11 +45,24 @@ func Gen(fname string, g *ast.GoGLL) {
 	}
 }
 
-func getData(g *ast.GoGLL) *Data {
-	return &Data{
-		NonTerminals: g.NonTerminals.ElementsSorted(),
-		Terminals:    g.Terminals.ElementsSorted(),
+func getData(g *ast.GoGLL, ff *frstflw.FF) *Data {
+	nts := g.NonTerminals.ElementsSorted()
+	ts := g.Terminals.ElementsSorted()
+
+	lrs := make(map[string][]string)
+	for _, nt := range nts {
+		lrs[nt] = ff.LeftRec(nt).Elements()
 	}
+
+	return &Data{
+		NonTerminals: nts,
+		Terminals:    ts,
+		LeftRec:      lrs,
+	}
+}
+
+func (d Data) NumNTs() int {
+	return len(d.NonTerminals)
 }
 
 const src = `
@@ -67,6 +83,10 @@ type NT int
 const( {{range $i, $nt := .NonTerminals}}
 	NT_{{$nt}} {{if not $i}}NT = iota{{end}}{{end}}
 )
+
+const NumNTs = {{.NumNTs}}
+
+type NTs []NT
 
 // T is the type of terminals symbols
 type T int
@@ -100,6 +120,10 @@ func (t T) String() string {
 	return tToString[t]
 }
 
+func (nt NT) LeftRec() NTs {
+	return leftRec[nt]
+}
+
 var ntToString = []string { {{range $nt := .NonTerminals}}
 	"{{$nt}}", /* NT_{{$nt}} */{{end}} 
 }
@@ -110,5 +134,9 @@ var tToString = []string { {{range $i, $t := .Terminals}}
 
 var stringNT = map[string]NT{ {{range $i, $sym := .NonTerminals}}
 	"{{$sym}}":NT_{{$sym}},{{end}}
+}
+
+var leftRec = map[NT]NTs { {{range $sym, $lrs := .LeftRec}}
+	NT_{{$sym}}: NTs { {{range $i, $l := $lrs}} NT_{{$l}}, {{end}} },{{end}}
 }
 `

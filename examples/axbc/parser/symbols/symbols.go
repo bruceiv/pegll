@@ -16,14 +16,19 @@ type NT int
 const( 
 	NT_AorB NT = iota
 	NT_AxBC 
+	NT_Repa0x 
 )
+
+const NumNTs = 3
+
+type NTs []NT
 
 // T is the type of terminals symbols
 type T int
 const( 
-	T_0 T = iota // ab 
-	T_1  // c 
-	T_2  // repa0x 
+	T_0 T = iota // a 
+	T_1  // b 
+	T_2  // c 
 )
 
 type Symbols []Symbol
@@ -52,18 +57,30 @@ func (t T) String() string {
 	return tToString[t]
 }
 
+func (nt NT) LeftRec() NTs {
+	return leftRec[nt]
+}
+
 var ntToString = []string { 
 	"AorB", /* NT_AorB */
-	"AxBC", /* NT_AxBC */ 
+	"AxBC", /* NT_AxBC */
+	"Repa0x", /* NT_Repa0x */ 
 }
 
 var tToString = []string { 
-	"ab", /* T_0 */
-	"c", /* T_1 */
-	"repa0x", /* T_2 */ 
+	"a", /* T_0 */
+	"b", /* T_1 */
+	"c", /* T_2 */ 
 }
 
 var stringNT = map[string]NT{ 
 	"AorB":NT_AorB,
 	"AxBC":NT_AxBC,
+	"Repa0x":NT_Repa0x,
+}
+
+var leftRec = map[NT]NTs { 
+	NT_AorB: NTs {  NT_Repa0x,  },
+	NT_AxBC: NTs {  NT_AorB,  NT_Repa0x,  },
+	NT_Repa0x: NTs {  },
 }

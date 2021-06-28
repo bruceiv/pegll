@@ -116,9 +116,5 @@ const altCodeTmpl = `		case slot.{{.AltLabel}}: // {{.AltComment}}{{if .Empty}}
 case slot.{{$slot.PostLabel}}: // {{$slot.Comment}} 
 			{{else}}p.bsrSet.Add(slot.{{$slot.PostLabel}}, cU, p.cI, p.cI+1)
 			p.cI++ {{end}}{{end}}{{end}}
-			if p.follow(symbols.NT_{{.NT}}) {
-				p.rtn(symbols.NT_{{.NT}}, cU, p.cI)
-			} else { 
-				p.parseError(slot.{{.AltLabel}}, p.cI, followSets[symbols.NT_{{.NT}}])
-			}
+			p.rtn(symbols.NT_{{.NT}}, cU, p.cI)
 	`

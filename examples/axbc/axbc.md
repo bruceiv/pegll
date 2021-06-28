@@ -24,13 +24,13 @@ package "axbc"
 ```
 AxBC    : AorB "c"  ;
 ```
-`AorB` is a semantic rule that represents the ordered choice of a string beginning with `'a'` zero or more times, with the alternate choice being the string `"ab"`. Here the lexical rule `/` is utilized for ordered choice/ See the [grammar for details.](../../gogll.md)
+`AorB` is a semantic rule that represents the ordered choice of a string beginning with `'a'` zero or more times, with the alternate choice being the string `"ab"`. Here the lexical rule `/` is utilized for ordered choice/ See the [grammar for details.](../../gogll.md). A key aspect of this grammar is that each character must be an individual token, otherwise the lexer's longest-match tokenization process defeats the PEG semantics.
 ```
-AorB    : repa0x / "ab" ;
+AorB    : Repa0x / "a" "b" ;
 ```
-`repa0x` consists of the repeated token of `a` zero or more times. The use of the bracketed expression`{}` within this grammar is to indicate a set of tokens or identifiers repeated zero or more times. See the [grammar for details.](../../gogll.md)
+`Repa0x` consists of the repeated token of `a` zero or more times. Similarly to `AorB`, this must be done in a semantic rule to preserve the proper PEG behaviour.
 ```
-repa0x  : { 'a' }   ;
+Repa0x  : "a" Repa0x / empty ;
 ```
 #
 ### **COPYRIGHT AND LICENSING INFORMATION**

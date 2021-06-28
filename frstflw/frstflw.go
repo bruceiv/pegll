@@ -1,3 +1,4 @@
+//  Copyright 2021 Aaron Moss
 //  Copyright 2019 Marius Ackerman
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
@@ -26,6 +27,9 @@ type FF struct {
 	// Key=symbol, Value is first set of symbol
 	firstSets map[string]*stringset.StringSet
 
+	// Key=NonTerminal, Value is set of nonterminals that are left-recursively reachable
+	leftSets map[string]*stringset.StringSet
+
 	// Key=NonTerminal, Value is follow set of NonTerminal
 	followSets map[string]*stringset.StringSet
 
@@ -37,8 +41,14 @@ func New(g *ast.GoGLL) *FF {
 		g: g,
 	}
 	ff.genFirstSets()
+	ff.genLeftRec()
 	ff.genFollow()
 	return ff
+}
+
+// Checks whether a given symbol is nullable (contains ϵ in its FIRST set)
+func (ff *FF) IsNullable(s string) bool {
+	return ff.FirstOfSymbol(s).Contain(Empty)
 }
 
 func (ff *FF) FirstOfString(str []string) *stringset.StringSet {
@@ -60,6 +70,7 @@ func (ff *FF) FirstOfString(str []string) *stringset.StringSet {
 	return first
 }
 
+// Gets the FIRST set for a given symbol from an initialized struct
 func (ff *FF) FirstOfSymbol(s string) *stringset.StringSet {
 	// fmt.Printf("frstflw.FirstOfSymbol(%s)\n", s)
 	if f, exist := ff.firstSets[s]; exist {
@@ -68,6 +79,17 @@ func (ff *FF) FirstOfSymbol(s string) *stringset.StringSet {
 	return stringset.New()
 }
 
+// Gets the set of nonterminals that may be called left-recursively from a given
+// nonterminal (provided receiver has been initialized)
+func (ff *FF) LeftRec(nt string) *stringset.StringSet {
+	if l, exist := ff.leftSets[nt]; exist {
+		return l
+	} else {
+		return stringset.New()
+	}
+}
+
+// Gets the FOLLOW set for a given nonterminal (provided receiver has been initialized)
 func (ff *FF) Follow(nt string) *stringset.StringSet {
 	if f, exist := ff.followSets[nt]; exist {
 		return f
@@ -82,6 +104,7 @@ Dragon book FIRST set algorithm used
 func (ff *FF) genFirstSets() {
 	// println("genFirstSets")
 	ff.initFirstSets()
+	// iterate to fixed point
 	for again := true; again; {
 		// println(" again")
 		again = false
@@ -137,7 +160,59 @@ func (ff *FF) getFirstOfNonTerminal(s string) *stringset.StringSet {
 }
 
 /*
-Dragon book algoritm used for Follow
+Adapted FIRST algorithm for non-terminals.
+Assumes FIRST set is already generated so nullability can be checked
+*/
+func (ff *FF) genLeftRec() {
+	ff.initLeftRec()
+	// iterate to fixed point
+	for again := true; again; {
+		again = false
+		for _, nt := range ff.g.NonTerminals.Elements() {
+			// get left recursion of non-terminal
+			lnt := ff.getLeftOf(nt)
+			if !ff.leftSets[nt].Equal(lnt) {
+				ff.leftSets[nt] = lnt
+				again = true
+			}
+		}
+	}
+}
+
+// gets the current left-recursion set of a nonterminal
+func (ff *FF) getLeftOf(nt string) *stringset.StringSet {
+	left := stringset.New()
+	// for each alternate
+	for _, a := range ff.g.GetSyntaxRule(nt).Alternates {
+		// look at the symbols
+		for _, s := range a.Symbols {
+			sid := s.ID()
+			// add any nonterminals (and their own left sets)
+			if ont, ok := s.(*ast.NT); ok {
+				oid := ont.ID()
+				if !left.Contain(oid) {
+					left.Add(oid)
+					left.AddSet(ff.leftSets[oid])
+				}
+			}
+			// break when you hit a non-nullable symbol
+			if !ff.IsNullable(sid) {
+				break
+			}
+		}
+	}
+	return left
+}
+
+func (ff *FF) initLeftRec() {
+	ff.leftSets = make(map[string]*stringset.StringSet)
+	for _, nt := range ff.g.NonTerminals.Elements() {
+		ff.leftSets[nt] = stringset.New()
+	}
+}
+
+/*
+Dragon book algorithm used for Follow
 */
 func (ff *FF) genFollow() {
 	ff.initFollowSets()
