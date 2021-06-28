@@ -7,6 +7,7 @@ import(
 	"fmt"
 	
 	"XML/parser/symbols"
+	"XML/token"
 )
 
 type Label int
@@ -277,8 +278,25 @@ func (l Label) Symbols() symbols.Symbols {
 	return l.Slot().Symbols
 }
 
+func (l Label) IsNullable() bool {
+	return nullable[l]
+}
+
+func (l Label) FirstContains(typ token.Type) bool {
+	return firstT[l][typ]
+}
+
 func (s *Slot) EoR() bool {
 	return s.Pos >= len(s.Symbols)
+}
+
+func (s *Slot) Successor() *Slot {
+	if s.EoR() {
+		return nil
+	} else {
+		// TODO try slots[s.Label + 1]
+		return slots[slotIndex[Index{s.NT,s.Alt,s.Pos+1}]]
+	}
 }
 
 func (s *Slot) String() string {
@@ -2185,3 +2203,400 @@ var alternates = map[symbols.NT][]Label{
 	symbols.NT_LetDigSymAlts:[]Label{ LetDigSymAlts0R0,LetDigSymAlts1R0,LetDigSymAlts2R0 },
 }
 
+var nullable = []bool { 
+	false, // ATT_VALUE0R0 
+	false, // ATT_VALUE0R1 
+	true, // ATT_VALUE0R2 
+	false, // ATT_VALUE1R0 
+	false, // ATT_VALUE1R1 
+	true, // ATT_VALUE1R2 
+	false, // Attribute0R0 
+	false, // Attribute0R1 
+	false, // Attribute0R2 
+	false, // Attribute0R3 
+	false, // Attribute0R4 
+	true, // Attribute0R5 
+	false, // CHAR_REF0R0 
+	false, // CHAR_REF0R1 
+	false, // CHAR_REF0R2 
+	true, // CHAR_REF0R3 
+	false, // CHAR_REF1R0 
+	false, // CHAR_REF1R1 
+	false, // CHAR_REF1R2 
+	true, // CHAR_REF1R3 
+	false, // COMMENT0R0 
+	false, // COMMENT0R1 
+	false, // COMMENT0R2 
+	true, // COMMENT0R3 
+	false, // ComEnterior0R0 
+	true, // ComEnterior0R1 
+	false, // ComEnterior1R0 
+	false, // ComEnterior1R1 
+	true, // ComEnterior1R2 
+	false, // ComStart0R0 
+	false, // ComStart0R1 
+	false, // ComStart0R2 
+	true, // ComStart0R3 
+	false, // Content0R0 
+	true, // Content0R1 
+	true, // Content0R2 
+	true, // Content1R0 
+	false, // ContentAlts0R0 
+	true, // ContentAlts0R1 
+	false, // ContentAlts1R0 
+	true, // ContentAlts1R1 
+	false, // ContentAlts2R0 
+	true, // ContentAlts2R1 
+	false, // ContentAlts3R0 
+	true, // ContentAlts3R1 
+	false, // Document0R0 
+	false, // Document0R1 
+	true, // Document0R2 
+	true, // Document0R3 
+	false, // DubCondClose0R0 
+	true, // DubCondClose0R1 
+	false, // DubCondClose1R0 
+	false, // DubCondClose1R1 
+	true, // DubCondClose1R2 
+	false, // DubDash0R0 
+	true, // DubDash0R1 
+	false, // ENTITY_REF0R0 
+	false, // ENTITY_REF0R1 
+	false, // ENTITY_REF0R2 
+	true, // ENTITY_REF0R3 
+	false, // ElemCloseAlts0R0 
+	false, // ElemCloseAlts0R1 
+	false, // ElemCloseAlts0R2 
+	false, // ElemCloseAlts0R3 
+	false, // ElemCloseAlts0R4 
+	false, // ElemCloseAlts0R5 
+	true, // ElemCloseAlts0R6 
+	false, // ElemCloseAlts1R0 
+	true, // ElemCloseAlts1R1 
+	false, // Element0R0 
+	false, // Element0R1 
+	false, // Element0R2 
+	false, // Element0R3 
+	false, // Element0R4 
+	true, // Element0R5 
+	false, // EncName0R0 
+	true, // EncName0R1 
+	true, // EncName0R2 
+	false, // EncodingDecl0R0 
+	false, // EncodingDecl0R1 
+	false, // EncodingDecl0R2 
+	false, // EncodingDecl0R3 
+	true, // EncodingDecl0R4 
+	false, // Eq0R0 
+	false, // Eq0R1 
+	false, // Eq0R2 
+	true, // Eq0R3 
+	false, // Hex0R0 
+	true, // Hex0R1 
+	true, // Hex0R2 
+	false, // HexAlts0R0 
+	true, // HexAlts0R1 
+	false, // HexAlts1R0 
+	true, // HexAlts1R1 
+	false, // LetColonAlts0R0 
+	true, // LetColonAlts0R1 
+	false, // LetColonAlts1R0 
+	true, // LetColonAlts1R1 
+	false, // LetDigSymAlts0R0 
+	true, // LetDigSymAlts0R1 
+	false, // LetDigSymAlts1R0 
+	true, // LetDigSymAlts1R1 
+	false, // LetDigSymAlts2R0 
+	true, // LetDigSymAlts2R1 
+	false, // Misc0R0 
+	true, // Misc0R1 
+	false, // Misc1R0 
+	true, // Misc1R1 
+	false, // NAME0R0 
+	true, // NAME0R1 
+	true, // NAME0R2 
+	false, // NAME_CHAR0R0 
+	true, // NAME_CHAR0R1 
+	false, // NAME_CHAR1R0 
+	true, // NAME_CHAR1R1 
+	false, // NAME_CHAR2R0 
+	true, // NAME_CHAR2R1 
+	false, // NameCharRep0R0 
+	true, // NameCharRep0R1 
+	true, // NameCharRep0R2 
+	true, // NameCharRep1R0 
+	false, // OptEncodDecl0R0 
+	true, // OptEncodDecl0R1 
+	true, // OptEncodDecl1R0 
+	false, // OptXMLDecl0R0 
+	true, // OptXMLDecl0R1 
+	true, // OptXMLDecl1R0 
+	true, // Prolog0R0 
+	true, // Prolog0R1 
+	true, // Prolog0R2 
+	false, // QuoEncNam0R0 
+	false, // QuoEncNam0R1 
+	false, // QuoEncNam0R2 
+	true, // QuoEncNam0R3 
+	false, // QuoEncNam1R0 
+	false, // QuoEncNam1R1 
+	false, // QuoEncNam1R2 
+	true, // QuoEncNam1R3 
+	false, // QuoVerNum0R0 
+	false, // QuoVerNum0R1 
+	false, // QuoVerNum0R2 
+	true, // QuoVerNum0R3 
+	false, // QuoVerNum1R0 
+	false, // QuoVerNum1R1 
+	false, // QuoVerNum1R2 
+	true, // QuoVerNum1R3 
+	false, // REFERENCE0R0 
+	true, // REFERENCE0R1 
+	false, // REFERENCE1R0 
+	true, // REFERENCE1R1 
+	false, // RepHexAlts0x0R0 
+	false, // RepHexAlts0x0R1 
+	true, // RepHexAlts0x0R2 
+	true, // RepHexAlts0x1R0 
+	false, // RepLDSAlts0x0R0 
+	true, // RepLDSAlts0x0R1 
+	true, // RepLDSAlts0x0R2 
+	true, // RepLDSAlts0x1R0 
+	false, // RepMisc0x0R0 
+	true, // RepMisc0x0R1 
+	true, // RepMisc0x0R2 
+	true, // RepMisc0x1R0 
+	false, // RepNameChar0x0R0 
+	true, // RepNameChar0x0R1 
+	true, // RepNameChar0x0R2 
+	true, // RepNameChar0x1R0 
+	false, // RepSAttx0x0R0 
+	true, // RepSAttx0x0R1 
+	true, // RepSAttx0x0R2 
+	true, // RepSAttx0x1R0 
+	false, // SAtt0R0 
+	false, // SAtt0R1 
+	true, // SAtt0R2 
+	false, // SinCondClose0R0 
+	true, // SinCondClose0R1 
+	false, // SinCondClose1R0 
+	false, // SinCondClose1R1 
+	true, // SinCondClose1R2 
+	false, // SymRefAlts0R0 
+	true, // SymRefAlts0R1 
+	false, // SymRefAlts1R0 
+	true, // SymRefAlts1R1 
+	false, // VersionInfo0R0 
+	false, // VersionInfo0R1 
+	false, // VersionInfo0R2 
+	false, // VersionInfo0R3 
+	true, // VersionInfo0R4 
+	false, // VersionNum0R0 
+	true, // VersionNum0R1 
+	true, // VersionNum0R2 
+	false, // XMLDecl0R0 
+	false, // XMLDecl0R1 
+	false, // XMLDecl0R2 
+	false, // XMLDecl0R3 
+	false, // XMLDecl0R4 
+	true, // XMLDecl0R5 
+}
+
+var firstT = []map[token.Type]bool { 
+	{  token.T_13: true,  }, // ATT_VALUE0R0 
+	{  token.T_6: true,  token.T_2: true,  token.T_1: true,  token.T_0: true,  token.T_13: true,  }, // ATT_VALUE0R1 
+	{  }, // ATT_VALUE0R2 
+	{  token.T_21: true,  }, // ATT_VALUE1R0 
+	{  token.T_0: true,  token.T_21: true,  token.T_6: true,  token.T_2: true,  token.T_1: true,  }, // ATT_VALUE1R1 
+	{  }, // ATT_VALUE1R2 
+	{  token.T_17: true,  token.T_10: true,  }, // Attribute0R0 
+	{  token.T_19: true,  }, // Attribute0R1 
+	{  token.T_15: true,  }, // Attribute0R2 
+	{  token.T_19: true,  }, // Attribute0R3 
+	{  token.T_13: true,  token.T_21: true,  }, // Attribute0R4 
+	{  }, // Attribute0R5 
+	{  token.T_2: true,  }, // CHAR_REF0R0 
+	{  token.T_5: true,  token.T_18: true,  }, // CHAR_REF0R1 
+	{  token.T_4: true,  }, // CHAR_REF0R2 
+	{  }, // CHAR_REF0R3 
+	{  token.T_1: true,  }, // CHAR_REF1R0 
+	{  token.T_20: true,  }, // CHAR_REF1R1 
+	{  token.T_4: true,  }, // CHAR_REF1R2 
+	{  }, // CHAR_REF1R3 
+	{  token.T_7: true,  }, // COMMENT0R0 
+	{  token.T_3: true,  token.T_17: true,  }, // COMMENT0R1 
+	{  token.T_8: true,  }, // COMMENT0R2 
+	{  }, // COMMENT0R3 
+	{  token.T_3: true,  }, // ComEnterior0R0 
+	{  }, // ComEnterior0R1 
+	{  token.T_17: true,  }, // ComEnterior1R0 
+	{  token.T_3: true,  token.T_17: true,  }, // ComEnterior1R1 
+	{  }, // ComEnterior1R2 
+	{  token.T_7: true,  }, // ComStart0R0 
+	{  token.T_16: true,  }, // ComStart0R1 
+	{  token.T_3: true,  }, // ComStart0R2 
+	{  }, // ComStart0R3 
+	{  token.T_0: true,  token.T_2: true,  token.T_1: true,  token.T_9: true,  token.T_7: true,  }, // Content0R0 
+	{  token.T_0: true,  token.T_2: true,  token.T_1: true,  token.T_9: true,  token.T_7: true,  }, // Content0R1 
+	{  }, // Content0R2 
+	{  }, // Content1R0 
+	{  token.T_7: true,  }, // ContentAlts0R0 
+	{  }, // ContentAlts0R1 
+	{  token.T_7: true,  }, // ContentAlts1R0 
+	{  }, // ContentAlts1R1 
+	{  token.T_0: true,  token.T_2: true,  token.T_1: true,  }, // ContentAlts2R0 
+	{  }, // ContentAlts2R1 
+	{  token.T_9: true,  }, // ContentAlts3R0 
+	{  }, // ContentAlts3R1 
+	{  token.T_27: true,  token.T_7: true,  token.T_24: true,  }, // Document0R0 
+	{  token.T_7: true,  }, // Document0R1 
+	{  token.T_7: true,  token.T_24: true,  }, // Document0R2 
+	{  }, // Document0R3 
+	{  token.T_13: true,  }, // DubCondClose0R0 
+	{  }, // DubCondClose0R1 
+	{  token.T_2: true,  token.T_1: true,  token.T_0: true,  token.T_6: true,  }, // DubCondClose1R0 
+	{  token.T_0: true,  token.T_13: true,  token.T_6: true,  token.T_2: true,  token.T_1: true,  }, // DubCondClose1R1 
+	{  }, // DubCondClose1R2 
+	{  token.T_3: true,  }, // DubDash0R0 
+	{  }, // DubDash0R1 
+	{  token.T_0: true,  }, // ENTITY_REF0R0 
+	{  token.T_17: true,  token.T_10: true,  }, // ENTITY_REF0R1 
+	{  token.T_4: true,  }, // ENTITY_REF0R2 
+	{  }, // ENTITY_REF0R3 
+	{  token.T_8: true,  }, // ElemCloseAlts0R0 
+	{  token.T_1: true,  token.T_9: true,  token.T_22: true,  token.T_7: true,  token.T_0: true,  token.T_2: true,  }, // ElemCloseAlts0R1 
+	{  token.T_22: true,  }, // ElemCloseAlts0R2 
+	{  token.T_17: true,  token.T_10: true,  }, // ElemCloseAlts0R3 
+	{  token.T_19: true,  }, // ElemCloseAlts0R4 
+	{  token.T_8: true,  }, // ElemCloseAlts0R5 
+	{  }, // ElemCloseAlts0R6 
+	{  token.T_23: true,  }, // ElemCloseAlts1R0 
+	{  }, // ElemCloseAlts1R1 
+	{  token.T_7: true,  }, // Element0R0 
+	{  token.T_17: true,  token.T_10: true,  }, // Element0R1 
+	{  token.T_24: true,  token.T_19: true,  }, // Element0R2 
+	{  token.T_19: true,  }, // Element0R3 
+	{  token.T_8: true,  token.T_23: true,  }, // Element0R4 
+	{  }, // Element0R5 
+	{  token.T_17: true,  }, // EncName0R0 
+	{  token.T_18: true,  token.T_11: true,  token.T_17: true,  }, // EncName0R1 
+	{  }, // EncName0R2 
+	{  token.T_24: true,  }, // EncodingDecl0R0 
+	{  token.T_14: true,  }, // EncodingDecl0R1 
+	{  token.T_19: true,  }, // EncodingDecl0R2 
+	{  token.T_21: true,  token.T_13: true,  }, // EncodingDecl0R3 
+	{  }, // EncodingDecl0R4 
+	{  token.T_19: true,  }, // Eq0R0 
+	{  token.T_15: true,  }, // Eq0R1 
+	{  token.T_19: true,  }, // Eq0R2 
+	{  }, // Eq0R3 
+	{  token.T_18: true,  token.T_5: true,  }, // Hex0R0 
+	{  token.T_18: true,  token.T_5: true,  }, // Hex0R1 
+	{  }, // Hex0R2 
+	{  token.T_18: true,  }, // HexAlts0R0 
+	{  }, // HexAlts0R1 
+	{  token.T_5: true,  }, // HexAlts1R0 
+	{  }, // HexAlts1R1 
+	{  token.T_17: true,  }, // LetColonAlts0R0 
+	{  }, // LetColonAlts0R1 
+	{  token.T_10: true,  }, // LetColonAlts1R0 
+	{  }, // LetColonAlts1R1 
+	{  token.T_17: true,  }, // LetDigSymAlts0R0 
+	{  }, // LetDigSymAlts0R1 
+	{  token.T_18: true,  }, // LetDigSymAlts1R0 
+	{  }, // LetDigSymAlts1R1 
+	{  token.T_11: true,  }, // LetDigSymAlts2R0 
+	{  }, // LetDigSymAlts2R1 
+	{  token.T_7: true,  }, // Misc0R0 
+	{  }, // Misc0R1 
+	{  token.T_24: true,  }, // Misc1R0 
+	{  }, // Misc1R1 
+	{  token.T_17: true,  token.T_10: true,  }, // NAME0R0 
+	{  token.T_17: true,  token.T_18: true,  token.T_12: true,  }, // NAME0R1 
+	{  }, // NAME0R2 
+	{  token.T_17: true,  }, // NAME_CHAR0R0 
+	{  }, // NAME_CHAR0R1 
+	{  token.T_18: true,  }, // NAME_CHAR1R0 
+	{  }, // NAME_CHAR1R1 
+	{  token.T_12: true,  }, // NAME_CHAR2R0 
+	{  }, // NAME_CHAR2R1 
+	{  token.T_17: true,  token.T_18: true,  token.T_12: true,  }, // NameCharRep0R0 
+	{  token.T_12: true,  token.T_17: true,  token.T_18: true,  }, // NameCharRep0R1 
+	{  }, // NameCharRep0R2 
+	{  }, // NameCharRep1R0 
+	{  token.T_24: true,  }, // OptEncodDecl0R0 
+	{  }, // OptEncodDecl0R1 
+	{  }, // OptEncodDecl1R0 
+	{  token.T_27: true,  }, // OptXMLDecl0R0 
+	{  }, // OptXMLDecl0R1 
+	{  }, // OptXMLDecl1R0 
+	{  token.T_7: true,  token.T_24: true,  token.T_27: true,  }, // Prolog0R0 
+	{  token.T_7: true,  token.T_24: true,  }, // Prolog0R1 
+	{  }, // Prolog0R2 
+	{  token.T_21: true,  }, // QuoEncNam0R0 
+	{  token.T_17: true,  }, // QuoEncNam0R1 
+	{  token.T_21: true,  }, // QuoEncNam0R2 
+	{  }, // QuoEncNam0R3 
+	{  token.T_13: true,  }, // QuoEncNam1R0 
+	{  token.T_17: true,  }, // QuoEncNam1R1 
+	{  token.T_13: true,  }, // QuoEncNam1R2 
+	{  }, // QuoEncNam1R3 
+	{  token.T_21: true,  }, // QuoVerNum0R0 
+	{  token.T_18: true,  token.T_12: true,  token.T_17: true,  }, // QuoVerNum0R1 
+	{  token.T_21: true,  }, // QuoVerNum0R2 
+	{  }, // QuoVerNum0R3 
+	{  token.T_13: true,  }, // QuoVerNum1R0 
+	{  token.T_12: true,  token.T_17: true,  token.T_18: true,  }, // QuoVerNum1R1 
+	{  token.T_13: true,  }, // QuoVerNum1R2 
+	{  }, // QuoVerNum1R3 
+	{  token.T_0: true,  }, // REFERENCE0R0 
+	{  }, // REFERENCE0R1 
+	{  token.T_2: true,  token.T_1: true,  }, // REFERENCE1R0 
+	{  }, // REFERENCE1R1 
+	{  token.T_18: true,  token.T_5: true,  }, // RepHexAlts0x0R0 
+	{  token.T_18: true,  token.T_5: true,  }, // RepHexAlts0x0R1 
+	{  }, // RepHexAlts0x0R2 
+	{  }, // RepHexAlts0x1R0 
+	{  token.T_17: true,  token.T_18: true,  token.T_11: true,  }, // RepLDSAlts0x0R0 
+	{  token.T_17: true,  token.T_18: true,  token.T_11: true,  }, // RepLDSAlts0x0R1 
+	{  }, // RepLDSAlts0x0R2 
+	{  }, // RepLDSAlts0x1R0 
+	{  token.T_7: true,  token.T_24: true,  }, // RepMisc0x0R0 
+	{  token.T_7: true,  token.T_24: true,  }, // RepMisc0x0R1 
+	{  }, // RepMisc0x0R2 
+	{  }, // RepMisc0x1R0 
+	{  token.T_17: true,  token.T_18: true,  token.T_12: true,  }, // RepNameChar0x0R0 
+	{  token.T_18: true,  token.T_12: true,  token.T_17: true,  }, // RepNameChar0x0R1 
+	{  }, // RepNameChar0x0R2 
+	{  }, // RepNameChar0x1R0 
+	{  token.T_24: true,  }, // RepSAttx0x0R0 
+	{  token.T_24: true,  }, // RepSAttx0x0R1 
+	{  }, // RepSAttx0x0R2 
+	{  }, // RepSAttx0x1R0 
+	{  token.T_24: true,  }, // SAtt0R0 
+	{  token.T_10: true,  token.T_17: true,  }, // SAtt0R1 
+	{  }, // SAtt0R2 
+	{  token.T_21: true,  }, // SinCondClose0R0 
+	{  }, // SinCondClose0R1 
+	{  token.T_6: true,  token.T_2: true,  token.T_1: true,  token.T_0: true,  }, // SinCondClose1R0 
+	{  token.T_2: true,  token.T_1: true,  token.T_0: true,  token.T_21: true,  token.T_6: true,  }, // SinCondClose1R1 
+	{  }, // SinCondClose1R2 
+	{  token.T_6: true,  }, // SymRefAlts0R0 
+	{  }, // SymRefAlts0R1 
+	{  token.T_0: true,  token.T_2: true,  token.T_1: true,  }, // SymRefAlts1R0 
+	{  }, // SymRefAlts1R1 
+	{  token.T_24: true,  }, // VersionInfo0R0 
+	{  token.T_25: true,  }, // VersionInfo0R1 
+	{  token.T_19: true,  }, // VersionInfo0R2 
+	{  token.T_21: true,  token.T_13: true,  }, // VersionInfo0R3 
+	{  }, // VersionInfo0R4 
+	{  token.T_17: true,  token.T_18: true,  token.T_12: true,  }, // VersionNum0R0 
+	{  token.T_12: true,  token.T_17: true,  token.T_18: true,  }, // VersionNum0R1 
+	{  }, // VersionNum0R2 
+	{  token.T_27: true,  }, // XMLDecl0R0 
+	{  token.T_24: true,  }, // XMLDecl0R1 
+	{  token.T_19: true,  token.T_24: true,  }, // XMLDecl0R2 
+	{  token.T_19: true,  }, // XMLDecl0R3 
+	{  token.T_26: true,  }, // XMLDecl0R4 
+	{  }, // XMLDecl0R5 
+}

@@ -7,6 +7,7 @@ import(
 	"fmt"
 	
 	"Java/parser/symbols"
+	"Java/token"
 )
 
 type Label int
@@ -1307,8 +1308,25 @@ func (l Label) Symbols() symbols.Symbols {
 	return l.Slot().Symbols
 }
 
+func (l Label) IsNullable() bool {
+	return nullable[l]
+}
+
+func (l Label) FirstContains(typ token.Type) bool {
+	return firstT[l][typ]
+}
+
 func (s *Slot) EoR() bool {
 	return s.Pos >= len(s.Symbols)
+}
+
+func (s *Slot) Successor() *Slot {
+	if s.EoR() {
+		return nil
+	} else {
+		// TODO try slots[s.Label + 1]
+		return slots[slotIndex[Index{s.NT,s.Alt,s.Pos+1}]]
+	}
 }
 
 func (s *Slot) String() string {
@@ -12893,3 +12911,2460 @@ var alternates = map[symbols.NT][]Label{
 	symbols.NT_EscOrLineOrBlock:[]Label{ EscOrLineOrBlock0R0,EscOrLineOrBlock1R0,EscOrLineOrBlock2R0 },
 }
 
+var nullable = []bool { 
+	false, // AND0R0 
+	false, // AND0R1 
+	true, // AND0R2 
+	true, // AND0R3 
+	false, // ANDExpr0R0 
+	true, // ANDExpr0R1 
+	true, // ANDExpr0R2 
+	false, // AND_AND0R0 
+	true, // AND_AND0R1 
+	true, // AND_AND0R2 
+	false, // AND_EQU0R0 
+	true, // AND_EQU0R1 
+	true, // AND_EQU0R2 
+	false, // ASSERT0R0 
+	false, // ASSERT0R1 
+	true, // ASSERT0R2 
+	false, // AddAlts0R0 
+	true, // AddAlts0R1 
+	false, // AddAlts1R0 
+	true, // AddAlts1R1 
+	false, // AddExpr0R0 
+	true, // AddExpr0R1 
+	true, // AddExpr0R2 
+	false, // Any0xX0R0 
+	true, // Any0xX0R1 
+	false, // Any0xX1R0 
+	true, // Any0xX1R1 
+	false, // Any0xX2R0 
+	true, // Any0xX2R1 
+	false, // Arguments0R0 
+	false, // Arguments0R1 
+	false, // Arguments0R2 
+	true, // Arguments0R3 
+	false, // ArrayCreatorRest0R0 
+	false, // ArrayCreatorRest0R1 
+	true, // ArrayCreatorRest0R2 
+	false, // ArrayInitializer0R0 
+	false, // ArrayInitializer0R1 
+	false, // ArrayInitializer0R2 
+	true, // ArrayInitializer0R3 
+	false, // ArrayRest0R0 
+	false, // ArrayRest0R1 
+	false, // ArrayRest0R2 
+	true, // ArrayRest0R3 
+	false, // ArrayRest1R0 
+	false, // ArrayRest1R1 
+	true, // ArrayRest1R2 
+	true, // ArrayRest1R3 
+	true, // ArrayRest1R4 
+	false, // AssignOp0R0 
+	true, // AssignOp0R1 
+	false, // AssignOp1R0 
+	true, // AssignOp1R1 
+	false, // AssignOp2R0 
+	true, // AssignOp2R1 
+	false, // AssignOp3R0 
+	true, // AssignOp3R1 
+	false, // AssignOp4R0 
+	true, // AssignOp4R1 
+	false, // AssignOp5R0 
+	true, // AssignOp5R1 
+	false, // AssignOp6R0 
+	true, // AssignOp6R1 
+	false, // AssignOp7R0 
+	true, // AssignOp7R1 
+	false, // AssignOp8R0 
+	true, // AssignOp8R1 
+	false, // AssignOp9R0 
+	true, // AssignOp9R1 
+	false, // AssignOp10R0 
+	true, // AssignOp10R1 
+	false, // AssignOp11R0 
+	true, // AssignOp11R1 
+	false, // BANG0R0 
+	false, // BANG0R1 
+	true, // BANG0R2 
+	true, // BANG0R3 
+	false, // BREAK0R0 
+	false, // BREAK0R1 
+	true, // BREAK0R2 
+	false, // BSR0R0 
+	false, // BSR0R1 
+	true, // BSR0R2 
+	true, // BSR0R3 
+	false, // BSR_EQU0R0 
+	true, // BSR_EQU0R1 
+	true, // BSR_EQU0R2 
+	false, // BasicType0R0 
+	false, // BasicType0R1 
+	true, // BasicType0R2 
+	false, // BasicTypeLit0R0 
+	true, // BasicTypeLit0R1 
+	false, // BasicTypeLit1R0 
+	true, // BasicTypeLit1R1 
+	false, // BasicTypeLit2R0 
+	true, // BasicTypeLit2R1 
+	false, // BasicTypeLit3R0 
+	true, // BasicTypeLit3R1 
+	false, // BasicTypeLit4R0 
+	true, // BasicTypeLit4R1 
+	false, // BasicTypeLit5R0 
+	true, // BasicTypeLit5R1 
+	false, // BasicTypeLit6R0 
+	true, // BasicTypeLit6R1 
+	false, // BasicTypeLit7R0 
+	true, // BasicTypeLit7R1 
+	false, // Beoptfd0R0 
+	false, // Beoptfd0R1 
+	true, // Beoptfd0R2 
+	false, // Block0R0 
+	false, // Block0R1 
+	false, // Block0R2 
+	true, // Block0R3 
+	false, // BlockStmt0R0 
+	true, // BlockStmt0R1 
+	false, // BlockStmt1R0 
+	false, // BlockStmt1R1 
+	true, // BlockStmt1R2 
+	false, // BlockStmt2R0 
+	true, // BlockStmt2R1 
+	false, // CASE0R0 
+	false, // CASE0R1 
+	true, // CASE0R2 
+	false, // CATCH0R0 
+	false, // CATCH0R1 
+	true, // CATCH0R2 
+	false, // COLON0R0 
+	true, // COLON0R1 
+	true, // COLON0R2 
+	false, // COMMA0R0 
+	true, // COMMA0R1 
+	true, // COMMA0R2 
+	false, // CONTINUE0R0 
+	false, // CONTINUE0R1 
+	true, // CONTINUE0R2 
+	false, // CarrotAlts0R0 
+	true, // CarrotAlts0R1 
+	false, // CarrotAlts1R0 
+	true, // CarrotAlts1R1 
+	false, // CarrotAlts2R0 
+	true, // CarrotAlts2R1 
+	false, // Catch0R0 
+	false, // Catch0R1 
+	false, // Catch0R2 
+	false, // Catch0R3 
+	false, // Catch0R4 
+	true, // Catch0R5 
+	false, // CatchBlk0R0 
+	true, // CatchBlk0R1 
+	true, // CatchBlk0R2 
+	true, // CatchBlk0R3 
+	false, // CatchBlk1R0 
+	true, // CatchBlk1R1 
+	false, // CharLiteral0R0 
+	false, // CharLiteral0R1 
+	false, // CharLiteral0R2 
+	true, // CharLiteral0R3 
+	false, // Cls0R0 
+	false, // Cls0R1 
+	true, // Cls0R2 
+	false, // ClsBdy0R0 
+	false, // ClsBdy0R1 
+	false, // ClsBdy0R2 
+	true, // ClsBdy0R3 
+	false, // ClsBdyDecl0R0 
+	true, // ClsBdyDecl0R1 
+	false, // ClsBdyDecl1R0 
+	false, // ClsBdyDecl1R1 
+	true, // ClsBdyDecl1R2 
+	false, // ClsBdyDecl2R0 
+	false, // ClsBdyDecl2R1 
+	true, // ClsBdyDecl2R2 
+	false, // ClsCreatorRest0R0 
+	true, // ClsCreatorRest0R1 
+	true, // ClsCreatorRest0R2 
+	false, // ClsDecl0R0 
+	false, // ClsDecl0R1 
+	false, // ClsDecl0R2 
+	false, // ClsDecl0R3 
+	false, // ClsDecl0R4 
+	true, // ClsDecl0R5 
+	false, // ClsType0R0 
+	true, // ClsType0R1 
+	true, // ClsType0R2 
+	false, // ClsTypeList0R0 
+	true, // ClsTypeList0R1 
+	true, // ClsTypeList0R2 
+	true, // CompUnit0R0 
+	true, // CompUnit0R1 
+	true, // CompUnit0R2 
+	true, // CompUnit0R3 
+	true, // CompUnit0R4 
+	false, // CondANDExpr0R0 
+	true, // CondANDExpr0R1 
+	true, // CondANDExpr0R2 
+	false, // CondExpr0R0 
+	true, // CondExpr0R1 
+	true, // CondExpr0R2 
+	false, // CondORExpr0R0 
+	true, // CondORExpr0R1 
+	true, // CondORExpr0R2 
+	false, // ConstDecl0R0 
+	false, // ConstDecl0R1 
+	true, // ConstDecl0R2 
+	false, // ConstDeclRest0R0 
+	false, // ConstDeclRest0R1 
+	false, // ConstDeclRest0R2 
+	true, // ConstDeclRest0R3 
+	false, // ConstDeclsRest0R0 
+	true, // ConstDeclsRest0R1 
+	true, // ConstDeclsRest0R2 
+	false, // ConstExpr0R0 
+	true, // ConstExpr0R1 
+	false, // CreatedName0R0 
+	true, // CreatedName0R1 
+	true, // CreatedName0R2 
+	false, // Creator0R0 
+	false, // Creator0R1 
+	true, // Creator0R2 
+	false, // Creator1R0 
+	false, // Creator1R1 
+	true, // Creator1R2 
+	false, // DEC0R0 
+	true, // DEC0R1 
+	true, // DEC0R2 
+	false, // DEFAULT0R0 
+	false, // DEFAULT0R1 
+	true, // DEFAULT0R2 
+	false, // DIV0R0 
+	false, // DIV0R1 
+	true, // DIV0R2 
+	true, // DIV0R3 
+	false, // DIV_EQU0R0 
+	true, // DIV_EQU0R1 
+	true, // DIV_EQU0R2 
+	false, // DO0R0 
+	false, // DO0R1 
+	true, // DO0R2 
+	false, // DOT0R0 
+	true, // DOT0R1 
+	true, // DOT0R2 
+	false, // DecimalFloat0R0 
+	false, // DecimalFloat0R1 
+	false, // DecimalFloat0R2 
+	false, // DecimalFloat0R3 
+	false, // DecimalFloat0R4 
+	true, // DecimalFloat0R5 
+	false, // DecimalFloat1R0 
+	false, // DecimalFloat1R1 
+	true, // DecimalFloat1R2 
+	false, // DecimalFloat2R0 
+	false, // DecimalFloat2R1 
+	true, // DecimalFloat2R2 
+	false, // DecimalFloat3R0 
+	false, // DecimalFloat3R1 
+	true, // DecimalFloat3R2 
+	false, // DecimalNumeral0R0 
+	true, // DecimalNumeral0R1 
+	false, // DecimalNumeral1R0 
+	false, // DecimalNumeral1R1 
+	true, // DecimalNumeral1R2 
+	false, // DeclAlts0R0 
+	true, // DeclAlts0R1 
+	false, // DeclAlts1R0 
+	true, // DeclAlts1R1 
+	false, // Dim0R0 
+	false, // Dim0R1 
+	true, // Dim0R2 
+	false, // DimExpr0R0 
+	false, // DimExpr0R1 
+	false, // DimExpr0R2 
+	true, // DimExpr0R3 
+	false, // ELSE0R0 
+	false, // ELSE0R1 
+	true, // ELSE0R2 
+	false, // EQU0R0 
+	false, // EQU0R1 
+	true, // EQU0R2 
+	true, // EQU0R3 
+	false, // EQUAL0R0 
+	true, // EQUAL0R1 
+	true, // EQUAL0R2 
+	false, // ESInst0R0 
+	true, // ESInst0R1 
+	false, // ESInst1R0 
+	false, // ESInst1R1 
+	true, // ESInst1R2 
+	false, // EXTENDS0R0 
+	false, // EXTENDS0R1 
+	true, // EXTENDS0R2 
+	false, // EqAlts0R0 
+	true, // EqAlts0R1 
+	false, // EqAlts1R0 
+	true, // EqAlts1R1 
+	false, // EqCheck0R0 
+	true, // EqCheck0R1 
+	false, // EqCheck1R0 
+	true, // EqCheck1R1 
+	false, // EqCheck2R0 
+	true, // EqCheck2R1 
+	false, // EqCheck3R0 
+	true, // EqCheck3R1 
+	false, // EqShift0R0 
+	false, // EqShift0R1 
+	true, // EqShift0R2 
+	false, // EqualExpr0R0 
+	true, // EqualExpr0R1 
+	true, // EqualExpr0R2 
+	false, // EscOrLineOrBlock0R0 
+	true, // EscOrLineOrBlock0R1 
+	false, // EscOrLineOrBlock1R0 
+	true, // EscOrLineOrBlock1R1 
+	false, // EscOrLineOrBlock2R0 
+	true, // EscOrLineOrBlock2R1 
+	false, // EscSlash0R0 
+	true, // EscSlash0R1 
+	false, // EscSlash1R0 
+	true, // EscSlash1R1 
+	false, // EscUp0R0 
+	true, // EscUp0R1 
+	false, // EscUp1R0 
+	true, // EscUp1R1 
+	false, // EscUp2R0 
+	true, // EscUp2R1 
+	false, // Escape0R0 
+	false, // Escape0R1 
+	true, // Escape0R2 
+	false, // Escs0R0 
+	true, // Escs0R1 
+	false, // Escs1R0 
+	true, // Escs1R1 
+	false, // Escs2R0 
+	true, // Escs2R1 
+	false, // Expr0R0 
+	true, // Expr0R1 
+	true, // Expr0R2 
+	false, // FINAL0R0 
+	false, // FINAL0R1 
+	true, // FINAL0R2 
+	false, // FINALLY0R0 
+	false, // FINALLY0R1 
+	true, // FINALLY0R2 
+	false, // FOR0R0 
+	false, // FOR0R1 
+	true, // FOR0R2 
+	false, // Finally0R0 
+	false, // Finally0R1 
+	true, // Finally0R2 
+	false, // FloatLiteral0R0 
+	true, // FloatLiteral0R1 
+	false, // FloatLiteral1R0 
+	true, // FloatLiteral1R1 
+	false, // ForInit0R0 
+	false, // ForInit0R1 
+	false, // ForInit0R2 
+	true, // ForInit0R3 
+	false, // ForInit1R0 
+	true, // ForInit1R1 
+	true, // ForInit1R2 
+	false, // ForUpdate0R0 
+	true, // ForUpdate0R1 
+	true, // ForUpdate0R2 
+	false, // FormalParam0R0 
+	false, // FormalParam0R1 
+	true, // FormalParam0R2 
+	false, // FormalParamDecls0R0 
+	false, // FormalParamDecls0R1 
+	true, // FormalParamDecls0R2 
+	false, // FormalParamDeclsRest0R0 
+	true, // FormalParamDeclsRest0R1 
+	true, // FormalParamDeclsRest0R2 
+	false, // FormalParams0R0 
+	false, // FormalParams0R1 
+	false, // FormalParams0R2 
+	true, // FormalParams0R3 
+	false, // GE0R0 
+	true, // GE0R1 
+	true, // GE0R2 
+	false, // GT0R0 
+	false, // GT0R1 
+	true, // GT0R2 
+	true, // GT0R3 
+	false, // HAT0R0 
+	false, // HAT0R1 
+	true, // HAT0R2 
+	true, // HAT0R3 
+	false, // HAT_EQU0R0 
+	true, // HAT_EQU0R1 
+	true, // HAT_EQU0R2 
+	false, // HexFloat0R0 
+	false, // HexFloat0R1 
+	true, // HexFloat0R2 
+	false, // HexNumeral0R0 
+	false, // HexNumeral0R1 
+	true, // HexNumeral0R2 
+	false, // HexSignificand0R0 
+	true, // HexSignificand0R1 
+	true, // HexSignificand0R2 
+	false, // HexSignificand1R0 
+	false, // HexSignificand1R1 
+	false, // HexSignificand1R2 
+	true, // HexSignificand1R3 
+	false, // ID0R0 
+	true, // ID0R1 
+	true, // ID0R2 
+	false, // IDSuffix0R0 
+	false, // IDSuffix0R1 
+	true, // IDSuffix0R2 
+	false, // IDSuffix1R0 
+	true, // IDSuffix1R1 
+	false, // IDSuffix2R0 
+	false, // IDSuffix2R1 
+	true, // IDSuffix2R2 
+	false, // IF0R0 
+	false, // IF0R1 
+	true, // IF0R2 
+	false, // IMPLEMENTS0R0 
+	false, // IMPLEMENTS0R1 
+	true, // IMPLEMENTS0R2 
+	false, // IMPORT0R0 
+	false, // IMPORT0R1 
+	true, // IMPORT0R2 
+	false, // INC0R0 
+	true, // INC0R1 
+	true, // INC0R2 
+	false, // INSTANCEOF0R0 
+	false, // INSTANCEOF0R1 
+	true, // INSTANCEOF0R2 
+	false, // IORExpr0R0 
+	true, // IORExpr0R1 
+	true, // IORExpr0R2 
+	false, // ImportDecl0R0 
+	false, // ImportDecl0R1 
+	false, // ImportDecl0R2 
+	false, // ImportDecl0R3 
+	false, // ImportDecl0R4 
+	true, // ImportDecl0R5 
+	false, // InnerCreator0R0 
+	false, // InnerCreator0R1 
+	true, // InnerCreator0R2 
+	false, // IntegerLiteral0R0 
+	false, // IntegerLiteral0R1 
+	true, // IntegerLiteral0R2 
+	false, // Intf0R0 
+	false, // Intf0R1 
+	true, // Intf0R2 
+	false, // IntfBdy0R0 
+	false, // IntfBdy0R1 
+	false, // IntfBdy0R2 
+	true, // IntfBdy0R3 
+	false, // IntfBdyDecl0R0 
+	false, // IntfBdyDecl0R1 
+	true, // IntfBdyDecl0R2 
+	false, // IntfBdyDecl1R0 
+	true, // IntfBdyDecl1R1 
+	false, // IntfDecl0R0 
+	false, // IntfDecl0R1 
+	false, // IntfDecl0R2 
+	false, // IntfDecl0R3 
+	true, // IntfDecl0R4 
+	false, // IntfMemDecl0R0 
+	true, // IntfMemDecl0R1 
+	false, // IntfMemDecl1R0 
+	false, // IntfMemDecl1R1 
+	false, // IntfMemDecl1R2 
+	true, // IntfMemDecl1R3 
+	false, // IntfMemDecl2R0 
+	true, // IntfMemDecl2R1 
+	false, // IntfMemDecl3R0 
+	true, // IntfMemDecl3R1 
+	false, // IntfMethDeclRest0R0 
+	false, // IntfMethDeclRest0R1 
+	false, // IntfMethDeclRest0R2 
+	false, // IntfMethDeclRest0R3 
+	true, // IntfMethDeclRest0R4 
+	false, // IntfMethFieldDecl0R0 
+	false, // IntfMethFieldDecl0R1 
+	false, // IntfMethFieldDecl0R2 
+	true, // IntfMethFieldDecl0R3 
+	false, // IntfMethFieldRest0R0 
+	false, // IntfMethFieldRest0R1 
+	true, // IntfMethFieldRest0R2 
+	false, // IntfMethFieldRest1R0 
+	true, // IntfMethFieldRest1R1 
+	false, // LBRK0R0 
+	true, // LBRK0R1 
+	true, // LBRK0R2 
+	false, // LE0R0 
+	true, // LE0R1 
+	true, // LE0R2 
+	false, // LPAR0R0 
+	true, // LPAR0R1 
+	true, // LPAR0R2 
+	false, // LT0R0 
+	false, // LT0R1 
+	true, // LT0R2 
+	true, // LT0R3 
+	false, // LWING0R0 
+	true, // LWING0R1 
+	true, // LWING0R2 
+	false, // Letter0R0 
+	true, // Letter0R1 
+	true, // Letter1R0 
+	true, // Letter1R1 
+	true, // LetterLorD0R0 
+	true, // LetterLorD0R1 
+	true, // LetterLorD0R2 
+	true, // LetterLorD0R3 
+	false, // LitAlts0R0 
+	true, // LitAlts0R1 
+	false, // LitAlts1R0 
+	true, // LitAlts1R1 
+	false, // LitAlts2R0 
+	true, // LitAlts2R1 
+	false, // LitAlts3R0 
+	true, // LitAlts3R1 
+	false, // LitAlts4R0 
+	false, // LitAlts4R1 
+	true, // LitAlts4R2 
+	false, // LitAlts5R0 
+	false, // LitAlts5R1 
+	true, // LitAlts5R2 
+	false, // LitAlts6R0 
+	false, // LitAlts6R1 
+	true, // LitAlts6R2 
+	false, // Literal0R0 
+	true, // Literal0R1 
+	true, // Literal0R2 
+	false, // LocalVarDeclStmt0R0 
+	false, // LocalVarDeclStmt0R1 
+	false, // LocalVarDeclStmt0R2 
+	false, // LocalVarDeclStmt0R3 
+	true, // LocalVarDeclStmt0R4 
+	true, // LorD0R0 
+	true, // LorD0R1 
+	false, // LorD1R0 
+	true, // LorD1R1 
+	false, // MINUS0R0 
+	false, // MINUS0R1 
+	true, // MINUS0R2 
+	true, // MINUS0R3 
+	false, // MINUS_EQU0R0 
+	true, // MINUS_EQU0R1 
+	true, // MINUS_EQU0R2 
+	false, // MOD0R0 
+	false, // MOD0R1 
+	true, // MOD0R2 
+	true, // MOD0R3 
+	false, // MOD_EQU0R0 
+	true, // MOD_EQU0R1 
+	true, // MOD_EQU0R2 
+	false, // MemAlts0R0 
+	true, // MemAlts0R1 
+	false, // MemAlts1R0 
+	true, // MemAlts1R1 
+	false, // MemDecl0R0 
+	false, // MemDecl0R1 
+	false, // MemDecl0R2 
+	false, // MemDecl0R3 
+	false, // MemDecl0R4 
+	false, // MemDecl0R5 
+	true, // MemDecl0R6 
+	false, // MemDecl1R0 
+	false, // MemDecl1R1 
+	false, // MemDecl1R2 
+	false, // MemDecl1R3 
+	false, // MemDecl1R4 
+	true, // MemDecl1R5 
+	false, // MemDecl2R0 
+	false, // MemDecl2R1 
+	false, // MemDecl2R2 
+	false, // MemDecl2R3 
+	true, // MemDecl2R4 
+	false, // MemDecl3R0 
+	true, // MemDecl3R1 
+	false, // MemDecl4R0 
+	true, // MemDecl4R1 
+	false, // MemDecl5R0 
+	false, // MemDecl5R1 
+	true, // MemDecl5R2 
+	true, // MemDecl5R3 
+	false, // Modifier0R0 
+	false, // Modifier0R1 
+	true, // Modifier0R2 
+	false, // Modifs0R0 
+	true, // Modifs0R1 
+	false, // Modifs1R0 
+	true, // Modifs1R1 
+	false, // Modifs2R0 
+	true, // Modifs2R1 
+	false, // Modifs3R0 
+	true, // Modifs3R1 
+	false, // Modifs4R0 
+	true, // Modifs4R1 
+	false, // Modifs5R0 
+	true, // Modifs5R1 
+	false, // Modifs6R0 
+	true, // Modifs6R1 
+	false, // Modifs7R0 
+	true, // Modifs7R1 
+	false, // Modifs8R0 
+	true, // Modifs8R1 
+	false, // Modifs9R0 
+	true, // Modifs9R1 
+	false, // Modifs10R0 
+	true, // Modifs10R1 
+	false, // MultExpr0R0 
+	true, // MultExpr0R1 
+	true, // MultExpr0R2 
+	false, // NEW0R0 
+	false, // NEW0R1 
+	true, // NEW0R2 
+	false, // NOT_EQUAL0R0 
+	true, // NOT_EQUAL0R1 
+	true, // NOT_EQUAL0R2 
+	false, // NumeralAlts0R0 
+	true, // NumeralAlts0R1 
+	false, // NumeralAlts1R0 
+	true, // NumeralAlts1R1 
+	false, // NumeralAlts2R0 
+	true, // NumeralAlts2R1 
+	false, // OR0R0 
+	false, // OR0R1 
+	true, // OR0R2 
+	true, // OR0R3 
+	false, // ORXOR0R0 
+	false, // ORXOR0R1 
+	true, // ORXOR0R2 
+	false, // OR_EQU0R0 
+	true, // OR_EQU0R1 
+	true, // OR_EQU0R2 
+	false, // OR_OR0R0 
+	true, // OR_OR0R1 
+	true, // OR_OR0R2 
+	false, // OctalEscape0R0 
+	true, // OctalEscape0R1 
+	false, // OctalEscape1R0 
+	true, // OctalEscape1R1 
+	false, // OctalEscape2R0 
+	true, // OctalEscape2R1 
+	false, // OptArgs0R0 
+	true, // OptArgs0R1 
+	true, // OptArgs1R0 
+	false, // OptClsBdy0R0 
+	true, // OptClsBdy0R1 
+	true, // OptClsBdy1R0 
+	false, // OptColExpr0R0 
+	false, // OptColExpr0R1 
+	true, // OptColExpr0R2 
+	true, // OptColExpr1R0 
+	false, // OptCom0R0 
+	true, // OptCom0R1 
+	true, // OptCom1R0 
+	false, // OptComFormPDecl0R0 
+	false, // OptComFormPDecl0R1 
+	true, // OptComFormPDecl0R2 
+	true, // OptComFormPDecl1R0 
+	false, // OptDot0R0 
+	true, // OptDot0R1 
+	true, // OptDot1R0 
+	false, // OptDotStar0R0 
+	false, // OptDotStar0R1 
+	true, // OptDotStar0R2 
+	true, // OptDotStar1R0 
+	false, // OptElse0R0 
+	false, // OptElse0R1 
+	true, // OptElse0R2 
+	true, // OptElse1R0 
+	false, // OptEqVarInit0R0 
+	false, // OptEqVarInit0R1 
+	true, // OptEqVarInit0R2 
+	true, // OptEqVarInit1R0 
+	false, // OptEsc0R0 
+	true, // OptEsc0R1 
+	false, // OptEsc1R0 
+	true, // OptEsc1R1 
+	false, // OptExpr0R0 
+	true, // OptExpr0R1 
+	true, // OptExpr1R0 
+	false, // OptExprs0R0 
+	true, // OptExprs0R1 
+	true, // OptExprs0R2 
+	true, // OptExprs1R0 
+	false, // OptExtClsType0R0 
+	false, // OptExtClsType0R1 
+	true, // OptExtClsType0R2 
+	true, // OptExtClsType1R0 
+	false, // OptExtendsClsLis0R0 
+	false, // OptExtendsClsLis0R1 
+	true, // OptExtendsClsLis0R2 
+	true, // OptExtendsClsLis1R0 
+	false, // OptFin0R0 
+	true, // OptFin0R1 
+	true, // OptFin1R0 
+	false, // OptFinType0R0 
+	false, // OptFinType0R1 
+	true, // OptFinType0R2 
+	false, // OptForInit0R0 
+	true, // OptForInit0R1 
+	true, // OptForInit1R0 
+	false, // OptForUpd0R0 
+	true, // OptForUpd0R1 
+	true, // OptForUpd1R0 
+	false, // OptFormPDecl0R0 
+	true, // OptFormPDecl0R1 
+	true, // OptFormPDecl1R0 
+	false, // OptID0R0 
+	true, // OptID0R1 
+	true, // OptID1R0 
+	false, // OptIDSuff0R0 
+	true, // OptIDSuff0R1 
+	true, // OptIDSuff1R0 
+	false, // OptImpClsLst0R0 
+	false, // OptImpClsLst0R1 
+	true, // OptImpClsLst0R2 
+	true, // OptImpClsLst1R0 
+	false, // OptPackDecl0R0 
+	true, // OptPackDecl0R1 
+	true, // OptPackDecl1R0 
+	false, // OptStatic0R0 
+	true, // OptStatic0R1 
+	true, // OptStatic1R0 
+	false, // OptThrowClsTypLst0R0 
+	false, // OptThrowClsTypLst0R1 
+	true, // OptThrowClsTypLst0R2 
+	true, // OptThrowClsTypLst1R0 
+	false, // OptVarInit0R0 
+	true, // OptVarInit0R1 
+	true, // OptVarInit0R2 
+	true, // OptVarInit0R3 
+	true, // OptVarInit1R0 
+	false, // OtherAlts0R0 
+	true, // OtherAlts0R1 
+	false, // OtherAlts1R0 
+	true, // OtherAlts1R1 
+	false, // OtherAlts2R0 
+	false, // OtherAlts2R1 
+	true, // OtherAlts2R2 
+	false, // OtherAlts3R0 
+	false, // OtherAlts3R1 
+	true, // OtherAlts3R2 
+	false, // PACKAGE0R0 
+	false, // PACKAGE0R1 
+	true, // PACKAGE0R2 
+	false, // PLUS0R0 
+	false, // PLUS0R1 
+	true, // PLUS0R2 
+	true, // PLUS0R3 
+	false, // PLUS_EQU0R0 
+	true, // PLUS_EQU0R1 
+	true, // PLUS_EQU0R2 
+	false, // PackDecl0R0 
+	false, // PackDecl0R1 
+	false, // PackDecl0R2 
+	true, // PackDecl0R3 
+	false, // ParExpr0R0 
+	false, // ParExpr0R1 
+	false, // ParExpr0R2 
+	true, // ParExpr0R3 
+	false, // PostfixOp0R0 
+	true, // PostfixOp0R1 
+	false, // PostfixOp1R0 
+	true, // PostfixOp1R1 
+	false, // PrefixOp0R0 
+	true, // PrefixOp0R1 
+	false, // PrefixOp1R0 
+	true, // PrefixOp1R1 
+	false, // PrefixOp2R0 
+	true, // PrefixOp2R1 
+	false, // PrefixOp3R0 
+	true, // PrefixOp3R1 
+	false, // PrefixOp4R0 
+	true, // PrefixOp4R1 
+	false, // PrefixOp5R0 
+	true, // PrefixOp5R1 
+	false, // Primary0R0 
+	true, // Primary0R1 
+	false, // Primary1R0 
+	true, // Primary1R1 
+	true, // Primary1R2 
+	false, // Primary2R0 
+	false, // Primary2R1 
+	true, // Primary2R2 
+	false, // Primary3R0 
+	true, // Primary3R1 
+	false, // Primary4R0 
+	false, // Primary4R1 
+	true, // Primary4R2 
+	false, // Primary5R0 
+	true, // Primary5R1 
+	true, // Primary5R2 
+	false, // Primary6R0 
+	false, // Primary6R1 
+	false, // Primary6R2 
+	false, // Primary6R3 
+	true, // Primary6R4 
+	false, // Primary7R0 
+	false, // Primary7R1 
+	false, // Primary7R2 
+	true, // Primary7R3 
+	false, // QUERY0R0 
+	true, // QUERY0R1 
+	true, // QUERY0R2 
+	false, // QualifiedID0R0 
+	true, // QualifiedID0R1 
+	true, // QualifiedID0R2 
+	false, // RBRK0R0 
+	true, // RBRK0R1 
+	true, // RBRK0R2 
+	false, // RBRKAlts0R0 
+	false, // RBRKAlts0R1 
+	false, // RBRKAlts0R2 
+	false, // RBRKAlts0R3 
+	true, // RBRKAlts0R4 
+	false, // RBRKAlts1R0 
+	false, // RBRKAlts1R1 
+	true, // RBRKAlts1R2 
+	false, // RETURN0R0 
+	false, // RETURN0R1 
+	true, // RETURN0R2 
+	false, // RPAR0R0 
+	true, // RPAR0R1 
+	true, // RPAR0R2 
+	false, // RWING0R0 
+	true, // RWING0R1 
+	true, // RWING0R2 
+	false, // ReferenceType0R0 
+	false, // ReferenceType0R1 
+	true, // ReferenceType0R2 
+	true, // ReferenceType0R3 
+	false, // ReferenceType1R0 
+	true, // ReferenceType1R1 
+	true, // ReferenceType1R2 
+	false, // RelateExpr0R0 
+	true, // RelateExpr0R1 
+	true, // RelateExpr0R2 
+	false, // RepANDEq0x0R0 
+	false, // RepANDEq0x0R1 
+	true, // RepANDEq0x0R2 
+	true, // RepANDEq0x0R3 
+	true, // RepANDEq0x1R0 
+	false, // RepANDIOR0x0R0 
+	false, // RepANDIOR0x0R1 
+	true, // RepANDIOR0x0R2 
+	true, // RepANDIOR0x0R3 
+	true, // RepANDIOR0x1R0 
+	false, // RepAddAltsMult0x0R0 
+	false, // RepAddAltsMult0x0R1 
+	true, // RepAddAltsMult0x0R2 
+	true, // RepAddAltsMult0x1R0 
+	false, // RepAsscExpr0x0R0 
+	false, // RepAsscExpr0x0R1 
+	true, // RepAsscExpr0x0R2 
+	true, // RepAsscExpr0x0R3 
+	true, // RepAsscExpr0x1R0 
+	false, // RepBlkSt0x0R0 
+	true, // RepBlkSt0x0R1 
+	true, // RepBlkSt0x0R2 
+	true, // RepBlkSt0x1R0 
+	false, // RepCatch0x0R0 
+	true, // RepCatch0x0R1 
+	true, // RepCatch0x0R2 
+	true, // RepCatch0x1R0 
+	false, // RepClsBDecl0x0R0 
+	true, // RepClsBDecl0x0R1 
+	true, // RepClsBDecl0x0R2 
+	true, // RepClsBDecl0x1R0 
+	false, // RepComCls0x0R0 
+	false, // RepComCls0x0R1 
+	true, // RepComCls0x0R2 
+	true, // RepComCls0x0R3 
+	true, // RepComCls0x1R0 
+	false, // RepComCnstDecl0x0R0 
+	false, // RepComCnstDecl0x0R1 
+	true, // RepComCnstDecl0x0R2 
+	true, // RepComCnstDecl0x0R3 
+	true, // RepComCnstDecl0x1R0 
+	false, // RepComExp0x0R0 
+	false, // RepComExp0x0R1 
+	true, // RepComExp0x0R2 
+	true, // RepComExp0x0R3 
+	true, // RepComExp0x1R0 
+	false, // RepComInit0x0R0 
+	false, // RepComInit0x0R1 
+	true, // RepComInit0x0R2 
+	true, // RepComInit0x0R3 
+	true, // RepComInit0x1R0 
+	false, // RepComSExpr0x0R0 
+	false, // RepComSExpr0x0R1 
+	true, // RepComSExpr0x0R2 
+	true, // RepComSExpr0x0R3 
+	true, // RepComSExpr0x1R0 
+	false, // RepComVDecl0x0R0 
+	false, // RepComVDecl0x0R1 
+	true, // RepComVDecl0x0R2 
+	true, // RepComVDecl0x0R3 
+	true, // RepComVDecl0x1R0 
+	false, // RepCondition0x0R0 
+	false, // RepCondition0x0R1 
+	false, // RepCondition0x0R2 
+	false, // RepCondition0x0R3 
+	true, // RepCondition0x0R4 
+	true, // RepCondition0x0R5 
+	true, // RepCondition0x1R0 
+	false, // RepDig1xExp0R0 
+	false, // RepDig1xExp0R1 
+	true, // RepDig1xExp0R2 
+	false, // RepDig1xOptExp0R0 
+	false, // RepDig1xOptExp0R1 
+	true, // RepDig1xOptExp0R2 
+	false, // RepDim0x0R0 
+	true, // RepDim0x0R1 
+	true, // RepDim0x0R2 
+	true, // RepDim0x1R0 
+	false, // RepDimExpr0x0R0 
+	true, // RepDimExpr0x0R1 
+	true, // RepDimExpr0x0R2 
+	true, // RepDimExpr0x1R0 
+	false, // RepDotID0x0R0 
+	false, // RepDotID0x0R1 
+	true, // RepDotID0x0R2 
+	true, // RepDotID0x0R3 
+	true, // RepDotID0x1R0 
+	false, // RepESInst0x0R0 
+	true, // RepESInst0x0R1 
+	true, // RepESInst0x0R2 
+	true, // RepESInst0x1R0 
+	false, // RepEqExpr0x0R0 
+	false, // RepEqExpr0x0R1 
+	true, // RepEqExpr0x0R2 
+	true, // RepEqExpr0x0R3 
+	true, // RepEqExpr0x1R0 
+	false, // RepHatAND0x0R0 
+	false, // RepHatAND0x0R1 
+	true, // RepHatAND0x0R2 
+	true, // RepHatAND0x0R3 
+	true, // RepHatAND0x1R0 
+	false, // RepHex0xDot0R0 
+	false, // RepHex0xDot0R1 
+	false, // RepHex0xDot0R2 
+	true, // RepHex0xDot0R3 
+	false, // RepImpDecl0x0R0 
+	true, // RepImpDecl0x0R1 
+	true, // RepImpDecl0x0R2 
+	true, // RepImpDecl0x1R0 
+	false, // RepInBodDecl0x0R0 
+	true, // RepInBodDecl0x0R1 
+	true, // RepInBodDecl0x0R2 
+	true, // RepInBodDecl0x1R0 
+	true, // RepLorD0x0R0 
+	true, // RepLorD0x0R1 
+	true, // RepLorD0x0R2 
+	true, // RepLorD0x1R0 
+	false, // RepModif00R0 
+	true, // RepModif00R1 
+	true, // RepModif00R2 
+	true, // RepModif01R0 
+	false, // RepORXOR0x0R0 
+	true, // RepORXOR0x0R1 
+	true, // RepORXOR0x0R2 
+	true, // RepORXOR0x1R0 
+	false, // RepORcAND0x0R0 
+	false, // RepORcAND0x0R1 
+	true, // RepORcAND0x0R2 
+	true, // RepORcAND0x0R3 
+	true, // RepORcAND0x1R0 
+	false, // RepPfOp0x0R0 
+	true, // RepPfOp0x0R1 
+	true, // RepPfOp0x0R2 
+	true, // RepPfOp0x1R0 
+	false, // RepSDMUExpr0x0R0 
+	false, // RepSDMUExpr0x0R1 
+	true, // RepSDMUExpr0x0R2 
+	true, // RepSDMUExpr0x0R3 
+	true, // RepSDMUExpr0x1R0 
+	false, // RepSel0x0R0 
+	true, // RepSel0x0R1 
+	true, // RepSel0x0R2 
+	true, // RepSel0x1R0 
+	false, // RepSemiModDecl0x0R0 
+	true, // RepSemiModDecl0x0R1 
+	true, // RepSemiModDecl0x0R2 
+	true, // RepSemiModDecl0x1R0 
+	false, // RepSwBlkStmt0x0R0 
+	true, // RepSwBlkStmt0x0R1 
+	true, // RepSwBlkStmt0x0R2 
+	true, // RepSwBlkStmt0x1R0 
+	false, // SDM0R0 
+	true, // SDM0R1 
+	false, // SDM1R0 
+	true, // SDM1R1 
+	false, // SDM2R0 
+	true, // SDM2R1 
+	false, // SEMI0R0 
+	true, // SEMI0R1 
+	true, // SEMI0R2 
+	false, // SL0R0 
+	false, // SL0R1 
+	true, // SL0R2 
+	true, // SL0R3 
+	false, // SL_EQU0R0 
+	true, // SL_EQU0R1 
+	true, // SL_EQU0R2 
+	false, // SR0R0 
+	false, // SR0R1 
+	true, // SR0R2 
+	true, // SR0R3 
+	false, // SR_EQU0R0 
+	true, // SR_EQU0R1 
+	true, // SR_EQU0R2 
+	false, // STAR0R0 
+	false, // STAR0R1 
+	true, // STAR0R2 
+	true, // STAR0R3 
+	false, // STAR_EQU0R0 
+	true, // STAR_EQU0R1 
+	true, // STAR_EQU0R2 
+	false, // STATIC0R0 
+	false, // STATIC0R1 
+	true, // STATIC0R2 
+	false, // SUPER0R0 
+	false, // SUPER0R1 
+	true, // SUPER0R2 
+	false, // SWITCH0R0 
+	false, // SWITCH0R1 
+	true, // SWITCH0R2 
+	false, // SYNCHRONIZED0R0 
+	false, // SYNCHRONIZED0R1 
+	true, // SYNCHRONIZED0R2 
+	false, // Selector0R0 
+	false, // Selector0R1 
+	true, // Selector0R2 
+	true, // Selector0R3 
+	false, // Selector1R0 
+	false, // Selector1R1 
+	true, // Selector1R2 
+	false, // Selector2R0 
+	false, // Selector2R1 
+	false, // Selector2R2 
+	true, // Selector2R3 
+	false, // Selector3R0 
+	false, // Selector3R1 
+	false, // Selector3R2 
+	true, // Selector3R3 
+	false, // Selector4R0 
+	true, // Selector4R1 
+	false, // SemiModDecl0R0 
+	true, // SemiModDecl0R1 
+	false, // SemiModDecl1R0 
+	false, // SemiModDecl1R1 
+	true, // SemiModDecl1R2 
+	false, // ShiftAlts0R0 
+	false, // ShiftAlts0R1 
+	true, // ShiftAlts0R2 
+	true, // ShiftAlts0R3 
+	true, // ShiftAlts1R0 
+	false, // ShiftExpr0R0 
+	true, // ShiftExpr0R1 
+	true, // ShiftExpr0R2 
+	false, // Stmt0R0 
+	true, // Stmt0R1 
+	false, // Stmt1R0 
+	false, // Stmt1R1 
+	false, // Stmt1R2 
+	false, // Stmt1R3 
+	true, // Stmt1R4 
+	false, // Stmt2R0 
+	false, // Stmt2R1 
+	false, // Stmt2R2 
+	true, // Stmt2R3 
+	true, // Stmt2R4 
+	false, // Stmt3R0 
+	false, // Stmt3R1 
+	false, // Stmt3R2 
+	false, // Stmt3R3 
+	false, // Stmt3R4 
+	false, // Stmt3R5 
+	false, // Stmt3R6 
+	false, // Stmt3R7 
+	false, // Stmt3R8 
+	true, // Stmt3R9 
+	false, // Stmt4R0 
+	false, // Stmt4R1 
+	false, // Stmt4R2 
+	true, // Stmt4R3 
+	false, // Stmt5R0 
+	false, // Stmt5R1 
+	false, // Stmt5R2 
+	false, // Stmt5R3 
+	false, // Stmt5R4 
+	true, // Stmt5R5 
+	false, // Stmt6R0 
+	false, // Stmt6R1 
+	false, // Stmt6R2 
+	true, // Stmt6R3 
+	false, // Stmt7R0 
+	false, // Stmt7R1 
+	false, // Stmt7R2 
+	false, // Stmt7R3 
+	false, // Stmt7R4 
+	true, // Stmt7R5 
+	false, // Stmt8R0 
+	false, // Stmt8R1 
+	false, // Stmt8R2 
+	true, // Stmt8R3 
+	false, // Stmt9R0 
+	false, // Stmt9R1 
+	false, // Stmt9R2 
+	true, // Stmt9R3 
+	false, // Stmt10R0 
+	false, // Stmt10R1 
+	false, // Stmt10R2 
+	true, // Stmt10R3 
+	false, // Stmt11R0 
+	false, // Stmt11R1 
+	false, // Stmt11R2 
+	true, // Stmt11R3 
+	false, // Stmt12R0 
+	false, // Stmt12R1 
+	false, // Stmt12R2 
+	true, // Stmt12R3 
+	false, // Stmt13R0 
+	true, // Stmt13R1 
+	false, // Stmt14R0 
+	false, // Stmt14R1 
+	true, // Stmt14R2 
+	false, // Stmt15R0 
+	false, // Stmt15R1 
+	false, // Stmt15R2 
+	true, // Stmt15R3 
+	false, // StmtExpr0R0 
+	true, // StmtExpr0R1 
+	false, // StrClose0R0 
+	true, // StrClose0R1 
+	false, // StrClose1R0 
+	false, // StrClose1R1 
+	true, // StrClose1R2 
+	false, // StringLiteral0R0 
+	false, // StringLiteral0R1 
+	true, // StringLiteral0R2 
+	false, // SuperSuffix0R0 
+	true, // SuperSuffix0R1 
+	false, // SuperSuffix1R0 
+	false, // SuperSuffix1R1 
+	true, // SuperSuffix1R2 
+	true, // SuperSuffix1R3 
+	false, // SwitchBlockStmtGrp0R0 
+	true, // SwitchBlockStmtGrp0R1 
+	true, // SwitchBlockStmtGrp0R2 
+	false, // SwitchLabel0R0 
+	false, // SwitchLabel0R1 
+	false, // SwitchLabel0R2 
+	true, // SwitchLabel0R3 
+	false, // SwitchLabel1R0 
+	false, // SwitchLabel1R1 
+	true, // SwitchLabel1R2 
+	false, // THIS0R0 
+	false, // THIS0R1 
+	true, // THIS0R2 
+	false, // THROW0R0 
+	false, // THROW0R1 
+	true, // THROW0R2 
+	false, // THROWS0R0 
+	false, // THROWS0R1 
+	true, // THROWS0R2 
+	false, // TILDA0R0 
+	true, // TILDA0R1 
+	true, // TILDA0R2 
+	false, // TRY0R0 
+	false, // TRY0R1 
+	true, // TRY0R2 
+	false, // Type0R0 
+	true, // Type0R1 
+	true, // Type0R2 
+	false, // TypeAlts0R0 
+	true, // TypeAlts0R1 
+	false, // TypeAlts1R0 
+	true, // TypeAlts1R1 
+	false, // UnaryExpr0R0 
+	false, // UnaryExpr0R1 
+	true, // UnaryExpr0R2 
+	false, // UnaryExpr1R0 
+	false, // UnaryExpr1R1 
+	false, // UnaryExpr1R2 
+	false, // UnaryExpr1R3 
+	true, // UnaryExpr1R4 
+	false, // UnaryExpr2R0 
+	true, // UnaryExpr2R1 
+	true, // UnaryExpr2R2 
+	true, // UnaryExpr2R3 
+	false, // UnicodeEscape0R0 
+	false, // UnicodeEscape0R1 
+	false, // UnicodeEscape0R2 
+	false, // UnicodeEscape0R3 
+	false, // UnicodeEscape0R4 
+	true, // UnicodeEscape0R5 
+	false, // VOID0R0 
+	false, // VOID0R1 
+	true, // VOID0R2 
+	false, // VarDecl0R0 
+	true, // VarDecl0R1 
+	true, // VarDecl0R2 
+	true, // VarDecl0R3 
+	false, // VarDeclInit0R0 
+	true, // VarDeclInit0R1 
+	true, // VarDeclInit0R2 
+	false, // VarDelID0R0 
+	true, // VarDelID0R1 
+	true, // VarDelID0R2 
+	false, // VarInitial0R0 
+	true, // VarInitial0R1 
+	false, // VarInitial1R0 
+	true, // VarInitial1R1 
+	false, // VoidIntfMethDeclRst0R0 
+	false, // VoidIntfMethDeclRst0R1 
+	false, // VoidIntfMethDeclRst0R2 
+	true, // VoidIntfMethDeclRst0R3 
+	false, // WHILE0R0 
+	false, // WHILE0R1 
+	true, // WHILE0R2 
+	false, // WS0R0 
+	true, // WS0R1 
+	true, // WS1R0 
+	false, // XORExpr0R0 
+	true, // XORExpr0R1 
+	true, // XORExpr0R2 
+}
+
+var firstT = []map[token.Type]bool { 
+	{  token.T_4: true,  }, // AND0R0 
+	{  token.T_91: true,  }, // AND0R1 
+	{  token.T_49: true,  token.T_66: true,  token.T_85: true,  }, // AND0R2 
+	{  }, // AND0R3 
+	{  token.T_117: true,  token.T_123: true,  token.T_134: true,  token.T_56: true,  token.T_111: true,  token.T_101: true,  token.T_61: true,  token.T_86: true,  token.T_7: true,  token.T_60: true,  token.T_102: true,  token.T_15: true,  token.T_62: true,  token.T_16: true,  token.T_131: true,  token.T_120: true,  token.T_21: true,  token.T_39: true,  token.T_99: true,  token.T_135: true,  token.T_80: true,  token.T_97: true,  token.T_11: true,  token.T_89: true,  token.T_0: true,  token.T_52: true,  token.T_116: true,  token.T_70: true,  token.T_127: true,  token.T_73: true,  token.T_50: true,  token.T_141: true,  token.T_12: true,  }, // ANDExpr0R0 
+	{  token.T_4: true,  }, // ANDExpr0R1 
+	{  }, // ANDExpr0R2 
+	{  token.T_5: true,  }, // AND_AND0R0 
+	{  token.T_66: true,  token.T_85: true,  token.T_49: true,  }, // AND_AND0R1 
+	{  }, // AND_AND0R2 
+	{  token.T_6: true,  }, // AND_EQU0R0 
+	{  token.T_66: true,  token.T_85: true,  token.T_49: true,  }, // AND_EQU0R1 
+	{  }, // AND_EQU0R2 
+	{  token.T_47: true,  }, // ASSERT0R0 
+	{  token.T_98: true,  }, // ASSERT0R1 
+	{  }, // ASSERT0R2 
+	{  token.T_11: true,  }, // AddAlts0R0 
+	{  }, // AddAlts0R1 
+	{  token.T_15: true,  }, // AddAlts1R0 
+	{  }, // AddAlts1R1 
+	{  token.T_62: true,  token.T_52: true,  token.T_127: true,  token.T_99: true,  token.T_70: true,  token.T_56: true,  token.T_11: true,  token.T_97: true,  token.T_131: true,  token.T_89: true,  token.T_80: true,  token.T_141: true,  token.T_0: true,  token.T_86: true,  token.T_39: true,  token.T_60: true,  token.T_120: true,  token.T_15: true,  token.T_73: true,  token.T_50: true,  token.T_102: true,  token.T_116: true,  token.T_21: true,  token.T_111: true,  token.T_7: true,  token.T_134: true,  token.T_123: true,  token.T_61: true,  token.T_117: true,  token.T_101: true,  token.T_16: true,  token.T_135: true,  token.T_12: true,  }, // AddExpr0R0 
+	{  token.T_11: true,  token.T_15: true,  }, // AddExpr0R1 
+	{  }, // AddExpr0R2 
+	{  token.T_21: true,  }, // Any0xX0R0 
+	{  }, // Any0xX0R1 
+	{  token.T_134: true,  }, // Any0xX1R0 
+	{  }, // Any0xX1R1 
+	{  token.T_39: true,  }, // Any0xX2R0 
+	{  }, // Any0xX2R1 
+	{  token.T_7: true,  }, // Arguments0R0 
+	{  token.T_89: true,  token.T_117: true,  token.T_8: true,  token.T_131: true,  token.T_70: true,  token.T_111: true,  token.T_141: true,  token.T_123: true,  token.T_120: true,  token.T_73: true,  token.T_62: true,  token.T_12: true,  token.T_134: true,  token.T_7: true,  token.T_86: true,  token.T_61: true,  token.T_102: true,  token.T_101: true,  token.T_52: true,  token.T_135: true,  token.T_11: true,  token.T_0: true,  token.T_15: true,  token.T_97: true,  token.T_39: true,  token.T_21: true,  token.T_99: true,  token.T_50: true,  token.T_56: true,  token.T_16: true,  token.T_80: true,  token.T_116: true,  token.T_60: true,  token.T_127: true,  }, // Arguments0R1 
+	{  token.T_8: true,  }, // Arguments0R2 
+	{  }, // Arguments0R3 
+	{  token.T_40: true,  }, // ArrayCreatorRest0R0 
+	{  token.T_11: true,  token.T_61: true,  token.T_111: true,  token.T_89: true,  token.T_60: true,  token.T_39: true,  token.T_50: true,  token.T_117: true,  token.T_135: true,  token.T_73: true,  token.T_70: true,  token.T_134: true,  token.T_12: true,  token.T_101: true,  token.T_123: true,  token.T_0: true,  token.T_102: true,  token.T_141: true,  token.T_7: true,  token.T_41: true,  token.T_131: true,  token.T_116: true,  token.T_62: true,  token.T_127: true,  token.T_120: true,  token.T_56: true,  token.T_80: true,  token.T_16: true,  token.T_15: true,  token.T_52: true,  token.T_21: true,  token.T_99: true,  token.T_97: true,  token.T_86: true,  }, // ArrayCreatorRest0R1 
+	{  }, // ArrayCreatorRest0R2 
+	{  token.T_136: true,  }, // ArrayInitializer0R0 
+	{  token.T_116: true,  token.T_11: true,  token.T_131: true,  token.T_97: true,  token.T_61: true,  token.T_73: true,  token.T_134: true,  token.T_52: true,  token.T_15: true,  token.T_99: true,  token.T_50: true,  token.T_7: true,  token.T_89: true,  token.T_141: true,  token.T_0: true,  token.T_80: true,  token.T_102: true,  token.T_127: true,  token.T_39: true,  token.T_62: true,  token.T_12: true,  token.T_21: true,  token.T_136: true,  token.T_86: true,  token.T_101: true,  token.T_56: true,  token.T_117: true,  token.T_135: true,  token.T_60: true,  token.T_70: true,  token.T_120: true,  token.T_111: true,  token.T_16: true,  token.T_123: true,  token.T_140: true,  }, // ArrayInitializer0R1 
+	{  token.T_140: true,  }, // ArrayInitializer0R2 
+	{  }, // ArrayInitializer0R3 
+	{  token.T_41: true,  }, // ArrayRest0R0 
+	{  token.T_40: true,  token.T_136: true,  }, // ArrayRest0R1 
+	{  token.T_136: true,  }, // ArrayRest0R2 
+	{  }, // ArrayRest0R3 
+	{  token.T_50: true,  token.T_15: true,  token.T_97: true,  token.T_141: true,  token.T_73: true,  token.T_116: true,  token.T_99: true,  token.T_135: true,  token.T_62: true,  token.T_127: true,  token.T_89: true,  token.T_70: true,  token.T_11: true,  token.T_120: true,  token.T_7: true,  token.T_117: true,  token.T_0: true,  token.T_123: true,  token.T_21: true,  token.T_52: true,  token.T_101: true,  token.T_61: true,  token.T_39: true,  token.T_86: true,  token.T_131: true,  token.T_16: true,  token.T_56: true,  token.T_111: true,  token.T_12: true,  token.T_60: true,  token.T_134: true,  token.T_80: true,  token.T_102: true,  }, // ArrayRest1R0 
+	{  token.T_41: true,  }, // ArrayRest1R1 
+	{  token.T_40: true,  }, // ArrayRest1R2 
+	{  token.T_40: true,  }, // ArrayRest1R3 
+	{  }, // ArrayRest1R4 
+	{  token.T_28: true,  }, // AssignOp0R0 
+	{  }, // AssignOp0R1 
+	{  token.T_13: true,  }, // AssignOp1R0 
+	{  }, // AssignOp1R1 
+	{  token.T_17: true,  }, // AssignOp2R0 
+	{  }, // AssignOp2R1 
+	{  token.T_10: true,  }, // AssignOp3R0 
+	{  }, // AssignOp3R1 
+	{  token.T_20: true,  }, // AssignOp4R0 
+	{  }, // AssignOp4R1 
+	{  token.T_6: true,  }, // AssignOp5R0 
+	{  }, // AssignOp5R1 
+	{  token.T_138: true,  }, // AssignOp6R0 
+	{  }, // AssignOp6R1 
+	{  token.T_43: true,  }, // AssignOp7R0 
+	{  }, // AssignOp7R1 
+	{  token.T_3: true,  }, // AssignOp8R0 
+	{  }, // AssignOp8R1 
+	{  token.T_26: true,  }, // AssignOp9R0 
+	{  }, // AssignOp9R1 
+	{  token.T_33: true,  }, // AssignOp10R0 
+	{  }, // AssignOp10R1 
+	{  token.T_35: true,  }, // AssignOp11R0 
+	{  }, // AssignOp11R1 
+	{  token.T_0: true,  }, // BANG0R0 
+	{  token.T_87: true,  }, // BANG0R1 
+	{  token.T_49: true,  token.T_66: true,  token.T_85: true,  }, // BANG0R2 
+	{  }, // BANG0R3 
+	{  token.T_51: true,  }, // BREAK0R0 
+	{  token.T_98: true,  }, // BREAK0R1 
+	{  }, // BREAK0R2 
+	{  token.T_34: true,  }, // BSR0R0 
+	{  token.T_87: true,  }, // BSR0R1 
+	{  token.T_66: true,  token.T_85: true,  token.T_49: true,  }, // BSR0R2 
+	{  }, // BSR0R3 
+	{  token.T_35: true,  }, // BSR_EQU0R0 
+	{  token.T_85: true,  token.T_49: true,  token.T_66: true,  }, // BSR_EQU0R1 
+	{  }, // BSR_EQU0R2 
+	{  token.T_52: true,  token.T_116: true,  token.T_56: true,  token.T_80: true,  token.T_86: true,  token.T_73: true,  token.T_61: true,  token.T_50: true,  }, // BasicType0R0 
+	{  token.T_98: true,  }, // BasicType0R1 
+	{  }, // BasicType0R2 
+	{  token.T_52: true,  }, // BasicTypeLit0R0 
+	{  }, // BasicTypeLit0R1 
+	{  token.T_116: true,  }, // BasicTypeLit1R0 
+	{  }, // BasicTypeLit1R1 
+	{  token.T_56: true,  }, // BasicTypeLit2R0 
+	{  }, // BasicTypeLit2R1 
+	{  token.T_80: true,  }, // BasicTypeLit3R0 
+	{  }, // BasicTypeLit3R1 
+	{  token.T_86: true,  }, // BasicTypeLit4R0 
+	{  }, // BasicTypeLit4R1 
+	{  token.T_73: true,  }, // BasicTypeLit5R0 
+	{  }, // BasicTypeLit5R1 
+	{  token.T_61: true,  }, // BasicTypeLit6R0 
+	{  }, // BasicTypeLit6R1 
+	{  token.T_50: true,  }, // BasicTypeLit7R0 
+	{  }, // BasicTypeLit7R1 
+	{  token.T_48: true,  }, // Beoptfd0R0 
+	{  token.T_105: true,  }, // Beoptfd0R1 
+	{  }, // Beoptfd0R2 
+	{  token.T_136: true,  }, // Block0R0 
+	{  token.T_11: true,  token.T_88: true,  token.T_121: true,  token.T_37: true,  token.T_123: true,  token.T_101: true,  token.T_76: true,  token.T_39: true,  token.T_118: true,  token.T_135: true,  token.T_86: true,  token.T_47: true,  token.T_12: true,  token.T_57: true,  token.T_119: true,  token.T_15: true,  token.T_99: true,  token.T_61: true,  token.T_140: true,  token.T_134: true,  token.T_107: true,  token.T_115: true,  token.T_51: true,  token.T_50: true,  token.T_71: true,  token.T_73: true,  token.T_23: true,  token.T_116: true,  token.T_122: true,  token.T_127: true,  token.T_132: true,  token.T_108: true,  token.T_89: true,  token.T_97: true,  token.T_59: true,  token.T_128: true,  token.T_133: true,  token.T_74: true,  token.T_109: true,  token.T_102: true,  token.T_70: true,  token.T_124: true,  token.T_111: true,  token.T_56: true,  token.T_80: true,  token.T_0: true,  token.T_52: true,  token.T_117: true,  token.T_21: true,  token.T_7: true,  token.T_126: true,  token.T_141: true,  token.T_44: true,  token.T_62: true,  token.T_131: true,  token.T_16: true,  token.T_120: true,  token.T_136: true,  token.T_60: true,  }, // Block0R1 
+	{  token.T_140: true,  }, // Block0R2 
+	{  }, // Block0R3 
+	{  token.T_71: true,  }, // BlockStmt0R0 
+	{  }, // BlockStmt0R1 
+	{  token.T_132: true,  token.T_71: true,  token.T_119: true,  token.T_37: true,  token.T_88: true,  token.T_107: true,  token.T_118: true,  token.T_122: true,  token.T_109: true,  token.T_108: true,  token.T_44: true,  token.T_126: true,  }, // BlockStmt1R0 
+	{  token.T_37: true,  }, // BlockStmt1R1 
+	{  }, // BlockStmt1R2 
+	{  token.T_134: true,  token.T_61: true,  token.T_21: true,  token.T_131: true,  token.T_0: true,  token.T_16: true,  token.T_99: true,  token.T_121: true,  token.T_57: true,  token.T_47: true,  token.T_15: true,  token.T_73: true,  token.T_39: true,  token.T_97: true,  token.T_102: true,  token.T_74: true,  token.T_11: true,  token.T_70: true,  token.T_124: true,  token.T_86: true,  token.T_76: true,  token.T_115: true,  token.T_23: true,  token.T_59: true,  token.T_89: true,  token.T_122: true,  token.T_7: true,  token.T_52: true,  token.T_80: true,  token.T_141: true,  token.T_128: true,  token.T_50: true,  token.T_123: true,  token.T_135: true,  token.T_116: true,  token.T_60: true,  token.T_133: true,  token.T_56: true,  token.T_62: true,  token.T_127: true,  token.T_101: true,  token.T_120: true,  token.T_111: true,  token.T_12: true,  token.T_117: true,  token.T_136: true,  token.T_51: true,  }, // BlockStmt2R0 
+	{  }, // BlockStmt2R1 
+	{  token.T_54: true,  }, // CASE0R0 
+	{  token.T_98: true,  }, // CASE0R1 
+	{  }, // CASE0R2 
+	{  token.T_55: true,  }, // CATCH0R0 
+	{  token.T_98: true,  }, // CATCH0R1 
+	{  }, // CATCH0R2 
+	{  token.T_22: true,  }, // COLON0R0 
+	{  token.T_66: true,  token.T_85: true,  token.T_49: true,  }, // COLON0R1 
+	{  }, // COLON0R2 
+	{  token.T_14: true,  }, // COMMA0R0 
+	{  token.T_66: true,  token.T_85: true,  token.T_49: true,  }, // COMMA0R1 
+	{  }, // COMMA0R2 
+	{  token.T_57: true,  }, // CONTINUE0R0 
+	{  token.T_98: true,  }, // CONTINUE0R1 
+	{  }, // CONTINUE0R2 
+	{  token.T_25: true,  }, // CarrotAlts0R0 
+	{  }, // CarrotAlts0R1 
+	{  token.T_32: true,  }, // CarrotAlts1R0 
+	{  }, // CarrotAlts1R1 
+	{  token.T_34: true,  }, // CarrotAlts2R0 
+	{  }, // CarrotAlts2R1 
+	{  token.T_55: true,  }, // Catch0R0 
+	{  token.T_7: true,  }, // Catch0R1 
+	{  token.T_71: true,  }, // Catch0R2 
+	{  token.T_8: true,  }, // Catch0R3 
+	{  token.T_136: true,  }, // Catch0R4 
+	{  }, // Catch0R5 
+	{  token.T_55: true,  }, // CatchBlk0R0 
+	{  token.T_55: true,  token.T_71: true,  }, // CatchBlk0R1 
+	{  token.T_71: true,  }, // CatchBlk0R2 
+	{  }, // CatchBlk0R3 
+	{  token.T_72: true,  }, // CatchBlk1R0 
+	{  }, // CatchBlk1R1 
+	{  token.T_117: true,  }, // CharLiteral0R0 
+	{  token.T_42: true,  token.T_117: true,  token.T_63: true,  }, // CharLiteral0R1 
+	{  token.T_117: true,  }, // CharLiteral0R2 
+	{  }, // CharLiteral0R3 
+	{  token.T_37: true,  }, // Cls0R0 
+	{  token.T_98: true,  }, // Cls0R1 
+	{  }, // Cls0R2 
+	{  token.T_136: true,  }, // ClsBdy0R0 
+	{  token.T_131: true,  token.T_140: true,  token.T_80: true,  token.T_118: true,  token.T_38: true,  token.T_122: true,  token.T_37: true,  token.T_73: true,  token.T_52: true,  token.T_50: true,  token.T_44: true,  token.T_119: true,  token.T_109: true,  token.T_71: true,  token.T_108: true,  token.T_88: true,  token.T_132: true,  token.T_23: true,  token.T_116: true,  token.T_61: true,  token.T_86: true,  token.T_107: true,  token.T_97: true,  token.T_136: true,  token.T_56: true,  token.T_126: true,  }, // ClsBdy0R1 
+	{  token.T_140: true,  }, // ClsBdy0R2 
+	{  }, // ClsBdy0R3 
+	{  token.T_23: true,  }, // ClsBdyDecl0R0 
+	{  }, // ClsBdyDecl0R1 
+	{  token.T_118: true,  token.T_136: true,  }, // ClsBdyDecl1R0 
+	{  token.T_136: true,  }, // ClsBdyDecl1R1 
+	{  }, // ClsBdyDecl1R2 
+	{  token.T_44: true,  token.T_86: true,  token.T_131: true,  token.T_37: true,  token.T_73: true,  token.T_80: true,  token.T_126: true,  token.T_88: true,  token.T_132: true,  token.T_71: true,  token.T_119: true,  token.T_52: true,  token.T_38: true,  token.T_107: true,  token.T_118: true,  token.T_61: true,  token.T_56: true,  token.T_97: true,  token.T_116: true,  token.T_122: true,  token.T_109: true,  token.T_108: true,  token.T_50: true,  }, // ClsBdyDecl2R0 
+	{  token.T_131: true,  token.T_73: true,  token.T_116: true,  token.T_37: true,  token.T_97: true,  token.T_52: true,  token.T_86: true,  token.T_50: true,  token.T_38: true,  token.T_61: true,  token.T_56: true,  token.T_80: true,  }, // ClsBdyDecl2R1 
+	{  }, // ClsBdyDecl2R2 
+	{  token.T_7: true,  }, // ClsCreatorRest0R0 
+	{  token.T_136: true,  }, // ClsCreatorRest0R1 
+	{  }, // ClsCreatorRest0R2 
+	{  token.T_37: true,  }, // ClsDecl0R0 
+	{  token.T_97: true,  }, // ClsDecl0R1 
+	{  token.T_136: true,  token.T_68: true,  token.T_77: true,  }, // ClsDecl0R2 
+	{  token.T_77: true,  token.T_136: true,  }, // ClsDecl0R3 
+	{  token.T_136: true,  }, // ClsDecl0R4 
+	{  }, // ClsDecl0R5 
+	{  token.T_97: true,  }, // ClsType0R0 
+	{  token.T_18: true,  }, // ClsType0R1 
+	{  }, // ClsType0R2 
+	{  token.T_97: true,  }, // ClsTypeList0R0 
+	{  token.T_14: true,  }, // ClsTypeList0R1 
+	{  }, // ClsTypeList0R2 
+	{  token.T_71: true,  token.T_109: true,  token.T_44: true,  token.T_118: true,  token.T_37: true,  token.T_66: true,  token.T_85: true,  token.T_78: true,  token.T_122: true,  token.T_106: true,  token.T_108: true,  token.T_107: true,  token.T_132: true,  token.T_23: true,  token.T_49: true,  token.T_119: true,  token.T_126: true,  token.T_38: true,  token.T_88: true,  }, // CompUnit0R0 
+	{  token.T_106: true,  token.T_122: true,  token.T_71: true,  token.T_107: true,  token.T_126: true,  token.T_38: true,  token.T_132: true,  token.T_108: true,  token.T_109: true,  token.T_37: true,  token.T_88: true,  token.T_78: true,  token.T_23: true,  token.T_119: true,  token.T_44: true,  token.T_118: true,  }, // CompUnit0R1 
+	{  token.T_126: true,  token.T_108: true,  token.T_37: true,  token.T_44: true,  token.T_122: true,  token.T_88: true,  token.T_118: true,  token.T_107: true,  token.T_119: true,  token.T_132: true,  token.T_38: true,  token.T_23: true,  token.T_78: true,  token.T_71: true,  token.T_109: true,  }, // CompUnit0R2 
+	{  token.T_109: true,  token.T_122: true,  token.T_132: true,  token.T_88: true,  token.T_107: true,  token.T_44: true,  token.T_38: true,  token.T_118: true,  token.T_71: true,  token.T_108: true,  token.T_37: true,  token.T_23: true,  token.T_119: true,  token.T_126: true,  }, // CompUnit0R3 
+	{  }, // CompUnit0R4 
+	{  token.T_7: true,  token.T_89: true,  token.T_86: true,  token.T_16: true,  token.T_39: true,  token.T_73: true,  token.T_116: true,  token.T_61: true,  token.T_50: true,  token.T_56: true,  token.T_131: true,  token.T_99: true,  token.T_60: true,  token.T_12: true,  token.T_111: true,  token.T_62: true,  token.T_135: true,  token.T_141: true,  token.T_123: true,  token.T_102: true,  token.T_0: true,  token.T_52: true,  token.T_120: true,  token.T_21: true,  token.T_80: true,  token.T_11: true,  token.T_101: true,  token.T_70: true,  token.T_127: true,  token.T_97: true,  token.T_134: true,  token.T_117: true,  token.T_15: true,  }, // CondANDExpr0R0 
+	{  token.T_5: true,  }, // CondANDExpr0R1 
+	{  }, // CondANDExpr0R2 
+	{  token.T_15: true,  token.T_111: true,  token.T_70: true,  token.T_73: true,  token.T_131: true,  token.T_0: true,  token.T_50: true,  token.T_11: true,  token.T_12: true,  token.T_102: true,  token.T_99: true,  token.T_135: true,  token.T_80: true,  token.T_52: true,  token.T_39: true,  token.T_21: true,  token.T_141: true,  token.T_61: true,  token.T_97: true,  token.T_120: true,  token.T_89: true,  token.T_116: true,  token.T_127: true,  token.T_56: true,  token.T_134: true,  token.T_101: true,  token.T_60: true,  token.T_7: true,  token.T_16: true,  token.T_62: true,  token.T_117: true,  token.T_123: true,  token.T_86: true,  }, // CondExpr0R0 
+	{  token.T_36: true,  }, // CondExpr0R1 
+	{  }, // CondExpr0R2 
+	{  token.T_116: true,  token.T_135: true,  token.T_0: true,  token.T_60: true,  token.T_99: true,  token.T_111: true,  token.T_21: true,  token.T_89: true,  token.T_70: true,  token.T_50: true,  token.T_7: true,  token.T_117: true,  token.T_101: true,  token.T_62: true,  token.T_102: true,  token.T_73: true,  token.T_16: true,  token.T_56: true,  token.T_15: true,  token.T_120: true,  token.T_123: true,  token.T_12: true,  token.T_61: true,  token.T_52: true,  token.T_127: true,  token.T_86: true,  token.T_39: true,  token.T_141: true,  token.T_11: true,  token.T_80: true,  token.T_97: true,  token.T_131: true,  token.T_134: true,  }, // CondORExpr0R0 
+	{  token.T_139: true,  }, // CondORExpr0R1 
+	{  }, // CondORExpr0R2 
+	{  token.T_97: true,  }, // ConstDecl0R0 
+	{  token.T_28: true,  token.T_40: true,  }, // ConstDecl0R1 
+	{  }, // ConstDecl0R2 
+	{  token.T_28: true,  token.T_40: true,  }, // ConstDeclRest0R0 
+	{  token.T_28: true,  }, // ConstDeclRest0R1 
+	{  token.T_15: true,  token.T_70: true,  token.T_136: true,  token.T_101: true,  token.T_141: true,  token.T_12: true,  token.T_0: true,  token.T_131: true,  token.T_61: true,  token.T_102: true,  token.T_52: true,  token.T_123: true,  token.T_60: true,  token.T_21: true,  token.T_120: true,  token.T_62: true,  token.T_56: true,  token.T_97: true,  token.T_16: true,  token.T_39: true,  token.T_86: true,  token.T_89: true,  token.T_11: true,  token.T_73: true,  token.T_127: true,  token.T_99: true,  token.T_134: true,  token.T_50: true,  token.T_80: true,  token.T_116: true,  token.T_117: true,  token.T_135: true,  token.T_111: true,  token.T_7: true,  }, // ConstDeclRest0R2 
+	{  }, // ConstDeclRest0R3 
+	{  token.T_28: true,  token.T_40: true,  }, // ConstDeclsRest0R0 
+	{  token.T_14: true,  }, // ConstDeclsRest0R1 
+	{  }, // ConstDeclsRest0R2 
+	{  token.T_73: true,  token.T_123: true,  token.T_21: true,  token.T_86: true,  token.T_89: true,  token.T_97: true,  token.T_134: true,  token.T_56: true,  token.T_70: true,  token.T_61: true,  token.T_12: true,  token.T_7: true,  token.T_11: true,  token.T_141: true,  token.T_52: true,  token.T_135: true,  token.T_99: true,  token.T_116: true,  token.T_50: true,  token.T_62: true,  token.T_60: true,  token.T_120: true,  token.T_111: true,  token.T_101: true,  token.T_0: true,  token.T_15: true,  token.T_131: true,  token.T_80: true,  token.T_16: true,  token.T_117: true,  token.T_127: true,  token.T_102: true,  token.T_39: true,  }, // ConstExpr0R0 
+	{  }, // ConstExpr0R1 
+	{  token.T_97: true,  }, // CreatedName0R0 
+	{  token.T_18: true,  }, // CreatedName0R1 
+	{  }, // CreatedName0R2 
+	{  token.T_97: true,  }, // Creator0R0 
+	{  token.T_7: true,  }, // Creator0R1 
+	{  }, // Creator0R2 
+	{  token.T_86: true,  token.T_116: true,  token.T_73: true,  token.T_56: true,  token.T_80: true,  token.T_61: true,  token.T_50: true,  token.T_97: true,  token.T_52: true,  }, // Creator1R0 
+	{  token.T_40: true,  }, // Creator1R1 
+	{  }, // Creator1R2 
+	{  token.T_16: true,  }, // DEC0R0 
+	{  token.T_49: true,  token.T_66: true,  token.T_85: true,  }, // DEC0R1 
+	{  }, // DEC0R2 
+	{  token.T_58: true,  }, // DEFAULT0R0 
+	{  token.T_98: true,  }, // DEFAULT0R1 
+	{  }, // DEFAULT0R2 
+	{  token.T_19: true,  }, // DIV0R0 
+	{  token.T_87: true,  }, // DIV0R1 
+	{  token.T_85: true,  token.T_49: true,  token.T_66: true,  }, // DIV0R2 
+	{  }, // DIV0R3 
+	{  token.T_20: true,  }, // DIV_EQU0R0 
+	{  token.T_85: true,  token.T_49: true,  token.T_66: true,  }, // DIV_EQU0R1 
+	{  }, // DIV_EQU0R2 
+	{  token.T_59: true,  }, // DO0R0 
+	{  token.T_98: true,  }, // DO0R1 
+	{  }, // DO0R2 
+	{  token.T_18: true,  }, // DOT0R0 
+	{  token.T_66: true,  token.T_85: true,  token.T_49: true,  }, // DOT0R1 
+	{  }, // DOT0R2 
+	{  token.T_111: true,  }, // DecimalFloat0R0 
+	{  token.T_60: true,  }, // DecimalFloat0R1 
+	{  token.T_110: true,  }, // DecimalFloat0R2 
+	{  token.T_103: true,  }, // DecimalFloat0R3 
+	{  token.T_69: true,  }, // DecimalFloat0R4 
+	{  }, // DecimalFloat0R5 
+	{  token.T_60: true,  }, // DecimalFloat1R0 
+	{  token.T_111: true,  }, // DecimalFloat1R1 
+	{  }, // DecimalFloat1R2 
+	{  token.T_111: true,  }, // DecimalFloat2R0 
+	{  token.T_69: true,  }, // DecimalFloat2R1 
+	{  }, // DecimalFloat2R2 
+	{  token.T_111: true,  }, // DecimalFloat3R0 
+	{  token.T_69: true,  }, // DecimalFloat3R1 
+	{  }, // DecimalFloat3R2 
+	{  token.T_135: true,  }, // DecimalNumeral0R0 
+	{  }, // DecimalNumeral0R1 
+	{  token.T_102: true,  }, // DecimalNumeral1R0 
+	{  token.T_114: true,  }, // DecimalNumeral1R1 
+	{  }, // DecimalNumeral1R2 
+	{  token.T_37: true,  }, // DeclAlts0R0 
+	{  }, // DeclAlts0R1 
+	{  token.T_38: true,  }, // DeclAlts1R0 
+	{  }, // DeclAlts1R1 
+	{  token.T_40: true,  }, // Dim0R0 
+	{  token.T_41: true,  }, // Dim0R1 
+	{  }, // Dim0R2 
+	{  token.T_40: true,  }, // DimExpr0R0 
+	{  token.T_70: true,  token.T_131: true,  token.T_21: true,  token.T_116: true,  token.T_120: true,  token.T_73: true,  token.T_16: true,  token.T_39: true,  token.T_56: true,  token.T_86: true,  token.T_89: true,  token.T_123: true,  token.T_61: true,  token.T_111: true,  token.T_101: true,  token.T_62: true,  token.T_0: true,  token.T_127: true,  token.T_60: true,  token.T_80: true,  token.T_102: true,  token.T_12: true,  token.T_11: true,  token.T_97: true,  token.T_134: true,  token.T_50: true,  token.T_7: true,  token.T_15: true,  token.T_52: true,  token.T_135: true,  token.T_99: true,  token.T_141: true,  token.T_117: true,  }, // DimExpr0R1 
+	{  token.T_41: true,  }, // DimExpr0R2 
+	{  }, // DimExpr0R3 
+	{  token.T_64: true,  }, // ELSE0R0 
+	{  token.T_98: true,  }, // ELSE0R1 
+	{  }, // ELSE0R2 
+	{  token.T_28: true,  }, // EQU0R0 
+	{  token.T_87: true,  }, // EQU0R1 
+	{  token.T_85: true,  token.T_49: true,  token.T_66: true,  }, // EQU0R2 
+	{  }, // EQU0R3 
+	{  token.T_29: true,  }, // EQUAL0R0 
+	{  token.T_49: true,  token.T_66: true,  token.T_85: true,  }, // EQUAL0R1 
+	{  }, // EQUAL0R2 
+	{  token.T_27: true,  token.T_31: true,  token.T_24: true,  token.T_30: true,  }, // ESInst0R0 
+	{  }, // ESInst0R1 
+	{  token.T_79: true,  }, // ESInst1R0 
+	{  token.T_61: true,  token.T_80: true,  token.T_52: true,  token.T_116: true,  token.T_86: true,  token.T_73: true,  token.T_50: true,  token.T_97: true,  token.T_56: true,  }, // ESInst1R1 
+	{  }, // ESInst1R2 
+	{  token.T_68: true,  }, // EXTENDS0R0 
+	{  token.T_98: true,  }, // EXTENDS0R1 
+	{  }, // EXTENDS0R2 
+	{  token.T_29: true,  }, // EqAlts0R0 
+	{  }, // EqAlts0R1 
+	{  token.T_1: true,  }, // EqAlts1R0 
+	{  }, // EqAlts1R1 
+	{  token.T_27: true,  }, // EqCheck0R0 
+	{  }, // EqCheck0R1 
+	{  token.T_31: true,  }, // EqCheck1R0 
+	{  }, // EqCheck1R1 
+	{  token.T_24: true,  }, // EqCheck2R0 
+	{  }, // EqCheck2R1 
+	{  token.T_30: true,  }, // EqCheck3R0 
+	{  }, // EqCheck3R1 
+	{  token.T_30: true,  token.T_27: true,  token.T_31: true,  token.T_24: true,  }, // EqShift0R0 
+	{  token.T_11: true,  token.T_116: true,  token.T_15: true,  token.T_21: true,  token.T_86: true,  token.T_102: true,  token.T_56: true,  token.T_120: true,  token.T_99: true,  token.T_50: true,  token.T_131: true,  token.T_97: true,  token.T_89: true,  token.T_73: true,  token.T_0: true,  token.T_61: true,  token.T_12: true,  token.T_39: true,  token.T_101: true,  token.T_52: true,  token.T_80: true,  token.T_135: true,  token.T_62: true,  token.T_134: true,  token.T_60: true,  token.T_141: true,  token.T_16: true,  token.T_70: true,  token.T_123: true,  token.T_117: true,  token.T_7: true,  token.T_111: true,  token.T_127: true,  }, // EqShift0R1 
+	{  }, // EqShift0R2 
+	{  token.T_21: true,  token.T_99: true,  token.T_80: true,  token.T_141: true,  token.T_86: true,  token.T_120: true,  token.T_123: true,  token.T_61: true,  token.T_39: true,  token.T_116: true,  token.T_131: true,  token.T_60: true,  token.T_62: true,  token.T_70: true,  token.T_73: true,  token.T_12: true,  token.T_101: true,  token.T_11: true,  token.T_0: true,  token.T_50: true,  token.T_15: true,  token.T_127: true,  token.T_135: true,  token.T_7: true,  token.T_97: true,  token.T_16: true,  token.T_102: true,  token.T_89: true,  token.T_117: true,  token.T_56: true,  token.T_111: true,  token.T_52: true,  token.T_134: true,  }, // EqualExpr0R0 
+	{  token.T_1: true,  token.T_29: true,  }, // EqualExpr0R1 
+	{  }, // EqualExpr0R2 
+	{  token.T_85: true,  }, // EscOrLineOrBlock0R0 
+	{  }, // EscOrLineOrBlock0R1 
+	{  token.T_49: true,  }, // EscOrLineOrBlock1R0 
+	{  }, // EscOrLineOrBlock1R1 
+	{  token.T_66: true,  }, // EscOrLineOrBlock2R0 
+	{  }, // EscOrLineOrBlock2R1 
+	{  token.T_63: true,  }, // EscSlash0R0 
+	{  }, // EscSlash0R1 
+	{  token.T_42: true,  token.T_117: true,  token.T_63: true,  }, // EscSlash1R0 
+	{  }, // EscSlash1R1 
+	{  token.T_42: true,  }, // EscUp0R0 
+	{  }, // EscUp0R1 
+	{  token.T_117: true,  }, // EscUp1R0 
+	{  }, // EscUp1R1 
+	{  token.T_63: true,  }, // EscUp2R0 
+	{  }, // EscUp2R1 
+	{  token.T_63: true,  }, // Escape0R0 
+	{  token.T_83: true,  token.T_82: true,  token.T_129: true,  token.T_130: true,  token.T_65: true,  }, // Escape0R1 
+	{  }, // Escape0R2 
+	{  token.T_65: true,  }, // Escs0R0 
+	{  }, // Escs0R1 
+	{  token.T_129: true,  token.T_83: true,  token.T_82: true,  }, // Escs1R0 
+	{  }, // Escs1R1 
+	{  token.T_130: true,  }, // Escs2R0 
+	{  }, // Escs2R1 
+	{  token.T_16: true,  token.T_102: true,  token.T_135: true,  token.T_7: true,  token.T_120: true,  token.T_62: true,  token.T_52: true,  token.T_50: true,  token.T_56: true,  token.T_116: true,  token.T_134: true,  token.T_127: true,  token.T_117: true,  token.T_21: true,  token.T_39: true,  token.T_89: true,  token.T_70: true,  token.T_97: true,  token.T_12: true,  token.T_0: true,  token.T_73: true,  token.T_99: true,  token.T_111: true,  token.T_60: true,  token.T_86: true,  token.T_101: true,  token.T_11: true,  token.T_61: true,  token.T_15: true,  token.T_141: true,  token.T_123: true,  token.T_131: true,  token.T_80: true,  }, // Expr0R0 
+	{  token.T_35: true,  token.T_3: true,  token.T_26: true,  token.T_138: true,  token.T_17: true,  token.T_28: true,  token.T_13: true,  token.T_10: true,  token.T_20: true,  token.T_6: true,  token.T_43: true,  token.T_33: true,  }, // Expr0R1 
+	{  }, // Expr0R2 
+	{  token.T_71: true,  }, // FINAL0R0 
+	{  token.T_98: true,  }, // FINAL0R1 
+	{  }, // FINAL0R2 
+	{  token.T_72: true,  }, // FINALLY0R0 
+	{  token.T_98: true,  }, // FINALLY0R1 
+	{  }, // FINALLY0R2 
+	{  token.T_74: true,  }, // FOR0R0 
+	{  token.T_98: true,  }, // FOR0R1 
+	{  }, // FOR0R2 
+	{  token.T_72: true,  }, // Finally0R0 
+	{  token.T_136: true,  }, // Finally0R1 
+	{  }, // Finally0R2 
+	{  token.T_21: true,  token.T_134: true,  token.T_39: true,  }, // FloatLiteral0R0 
+	{  }, // FloatLiteral0R1 
+	{  token.T_60: true,  token.T_111: true,  }, // FloatLiteral1R0 
+	{  }, // FloatLiteral1R1 
+	{  token.T_71: true,  }, // ForInit0R0 
+	{  token.T_50: true,  token.T_52: true,  token.T_116: true,  token.T_80: true,  token.T_61: true,  token.T_86: true,  token.T_97: true,  token.T_56: true,  token.T_73: true,  }, // ForInit0R1 
+	{  token.T_97: true,  }, // ForInit0R2 
+	{  }, // ForInit0R3 
+	{  token.T_101: true,  token.T_141: true,  token.T_60: true,  token.T_134: true,  token.T_97: true,  token.T_21: true,  token.T_123: true,  token.T_116: true,  token.T_12: true,  token.T_11: true,  token.T_56: true,  token.T_111: true,  token.T_80: true,  token.T_39: true,  token.T_16: true,  token.T_86: true,  token.T_62: true,  token.T_50: true,  token.T_127: true,  token.T_102: true,  token.T_89: true,  token.T_99: true,  token.T_73: true,  token.T_120: true,  token.T_61: true,  token.T_131: true,  token.T_70: true,  token.T_135: true,  token.T_7: true,  token.T_15: true,  token.T_52: true,  token.T_0: true,  token.T_117: true,  }, // ForInit1R0 
+	{  token.T_14: true,  }, // ForInit1R1 
+	{  }, // ForInit1R2 
+	{  token.T_62: true,  token.T_61: true,  token.T_21: true,  token.T_11: true,  token.T_97: true,  token.T_127: true,  token.T_117: true,  token.T_116: true,  token.T_101: true,  token.T_141: true,  token.T_99: true,  token.T_73: true,  token.T_70: true,  token.T_56: true,  token.T_52: true,  token.T_50: true,  token.T_0: true,  token.T_86: true,  token.T_123: true,  token.T_16: true,  token.T_131: true,  token.T_80: true,  token.T_39: true,  token.T_120: true,  token.T_89: true,  token.T_102: true,  token.T_7: true,  token.T_134: true,  token.T_135: true,  token.T_60: true,  token.T_111: true,  token.T_15: true,  token.T_12: true,  }, // ForUpdate0R0 
+	{  token.T_14: true,  }, // ForUpdate0R1 
+	{  }, // ForUpdate0R2 
+	{  token.T_71: true,  }, // FormalParam0R0 
+	{  token.T_97: true,  }, // FormalParam0R1 
+	{  }, // FormalParam0R2 
+	{  token.T_71: true,  }, // FormalParamDecls0R0 
+	{  token.T_97: true,  }, // FormalParamDecls0R1 
+	{  }, // FormalParamDecls0R2 
+	{  token.T_97: true,  }, // FormalParamDeclsRest0R0 
+	{  token.T_14: true,  }, // FormalParamDeclsRest0R1 
+	{  }, // FormalParamDeclsRest0R2 
+	{  token.T_7: true,  }, // FormalParams0R0 
+	{  token.T_71: true,  token.T_8: true,  }, // FormalParams0R1 
+	{  token.T_8: true,  }, // FormalParams0R2 
+	{  }, // FormalParams0R3 
+	{  token.T_31: true,  }, // GE0R0 
+	{  token.T_49: true,  token.T_66: true,  token.T_85: true,  }, // GE0R1 
+	{  }, // GE0R2 
+	{  token.T_30: true,  }, // GT0R0 
+	{  token.T_92: true,  }, // GT0R1 
+	{  token.T_66: true,  token.T_85: true,  token.T_49: true,  }, // GT0R2 
+	{  }, // GT0R3 
+	{  token.T_42: true,  }, // HAT0R0 
+	{  token.T_87: true,  }, // HAT0R1 
+	{  token.T_66: true,  token.T_85: true,  token.T_49: true,  }, // HAT0R2 
+	{  }, // HAT0R3 
+	{  token.T_43: true,  }, // HAT_EQU0R0 
+	{  token.T_66: true,  token.T_85: true,  token.T_49: true,  }, // HAT_EQU0R1 
+	{  }, // HAT_EQU0R2 
+	{  token.T_134: true,  token.T_39: true,  token.T_21: true,  }, // HexFloat0R0 
+	{  token.T_48: true,  }, // HexFloat0R1 
+	{  }, // HexFloat0R2 
+	{  token.T_21: true,  token.T_134: true,  token.T_39: true,  }, // HexNumeral0R0 
+	{  token.T_113: true,  }, // HexNumeral0R1 
+	{  }, // HexNumeral0R2 
+	{  token.T_21: true,  token.T_134: true,  token.T_39: true,  }, // HexSignificand0R0 
+	{  token.T_18: true,  }, // HexSignificand0R1 
+	{  }, // HexSignificand0R2 
+	{  token.T_134: true,  token.T_39: true,  token.T_21: true,  }, // HexSignificand1R0 
+	{  token.T_75: true,  }, // HexSignificand1R1 
+	{  token.T_112: true,  }, // HexSignificand1R2 
+	{  }, // HexSignificand1R3 
+	{  token.T_97: true,  }, // ID0R0 
+	{  token.T_85: true,  token.T_49: true,  token.T_100: true,  token.T_84: true,  token.T_66: true,  }, // ID0R1 
+	{  }, // ID0R2 
+	{  token.T_40: true,  }, // IDSuffix0R0 
+	{  token.T_102: true,  token.T_56: true,  token.T_7: true,  token.T_15: true,  token.T_80: true,  token.T_117: true,  token.T_50: true,  token.T_41: true,  token.T_141: true,  token.T_101: true,  token.T_12: true,  token.T_116: true,  token.T_21: true,  token.T_39: true,  token.T_61: true,  token.T_131: true,  token.T_52: true,  token.T_135: true,  token.T_97: true,  token.T_70: true,  token.T_120: true,  token.T_111: true,  token.T_0: true,  token.T_123: true,  token.T_127: true,  token.T_73: true,  token.T_89: true,  token.T_86: true,  token.T_16: true,  token.T_11: true,  token.T_62: true,  token.T_99: true,  token.T_134: true,  token.T_60: true,  }, // IDSuffix0R1 
+	{  }, // IDSuffix0R2 
+	{  token.T_7: true,  }, // IDSuffix1R0 
+	{  }, // IDSuffix1R1 
+	{  token.T_18: true,  }, // IDSuffix2R0 
+	{  token.T_89: true,  token.T_37: true,  token.T_123: true,  token.T_120: true,  }, // IDSuffix2R1 
+	{  }, // IDSuffix2R2 
+	{  token.T_76: true,  }, // IF0R0 
+	{  token.T_98: true,  }, // IF0R1 
+	{  }, // IF0R2 
+	{  token.T_77: true,  }, // IMPLEMENTS0R0 
+	{  token.T_98: true,  }, // IMPLEMENTS0R1 
+	{  }, // IMPLEMENTS0R2 
+	{  token.T_78: true,  }, // IMPORT0R0 
+	{  token.T_98: true,  }, // IMPORT0R1 
+	{  }, // IMPORT0R2 
+	{  token.T_12: true,  }, // INC0R0 
+	{  token.T_49: true,  token.T_66: true,  token.T_85: true,  }, // INC0R1 
+	{  }, // INC0R2 
+	{  token.T_79: true,  }, // INSTANCEOF0R0 
+	{  token.T_98: true,  }, // INSTANCEOF0R1 
+	{  }, // INSTANCEOF0R2 
+	{  token.T_15: true,  token.T_134: true,  token.T_16: true,  token.T_116: true,  token.T_39: true,  token.T_127: true,  token.T_56: true,  token.T_50: true,  token.T_97: true,  token.T_61: true,  token.T_141: true,  token.T_99: true,  token.T_101: true,  token.T_21: true,  token.T_11: true,  token.T_52: true,  token.T_70: true,  token.T_111: true,  token.T_123: true,  token.T_102: true,  token.T_12: true,  token.T_135: true,  token.T_80: true,  token.T_7: true,  token.T_117: true,  token.T_86: true,  token.T_120: true,  token.T_73: true,  token.T_89: true,  token.T_0: true,  token.T_131: true,  token.T_60: true,  token.T_62: true,  }, // IORExpr0R0 
+	{  token.T_137: true,  }, // IORExpr0R1 
+	{  }, // IORExpr0R2 
+	{  token.T_78: true,  }, // ImportDecl0R0 
+	{  token.T_118: true,  token.T_97: true,  }, // ImportDecl0R1 
+	{  token.T_97: true,  }, // ImportDecl0R2 
+	{  token.T_23: true,  token.T_18: true,  }, // ImportDecl0R3 
+	{  token.T_23: true,  }, // ImportDecl0R4 
+	{  }, // ImportDecl0R5 
+	{  token.T_97: true,  }, // InnerCreator0R0 
+	{  token.T_7: true,  }, // InnerCreator0R1 
+	{  }, // InnerCreator0R2 
+	{  token.T_101: true,  token.T_135: true,  token.T_102: true,  token.T_39: true,  token.T_21: true,  token.T_134: true,  }, // IntegerLiteral0R0 
+	{  token.T_104: true,  }, // IntegerLiteral0R1 
+	{  }, // IntegerLiteral0R2 
+	{  token.T_38: true,  }, // Intf0R0 
+	{  token.T_98: true,  }, // Intf0R1 
+	{  }, // Intf0R2 
+	{  token.T_136: true,  }, // IntfBdy0R0 
+	{  token.T_119: true,  token.T_140: true,  token.T_131: true,  token.T_80: true,  token.T_116: true,  token.T_108: true,  token.T_52: true,  token.T_86: true,  token.T_109: true,  token.T_73: true,  token.T_71: true,  token.T_107: true,  token.T_56: true,  token.T_122: true,  token.T_88: true,  token.T_97: true,  token.T_132: true,  token.T_50: true,  token.T_44: true,  token.T_126: true,  token.T_61: true,  token.T_37: true,  token.T_38: true,  token.T_23: true,  token.T_118: true,  }, // IntfBdy0R1 
+	{  token.T_140: true,  }, // IntfBdy0R2 
+	{  }, // IntfBdy0R3 
+	{  token.T_86: true,  token.T_56: true,  token.T_61: true,  token.T_52: true,  token.T_132: true,  token.T_107: true,  token.T_50: true,  token.T_37: true,  token.T_97: true,  token.T_44: true,  token.T_88: true,  token.T_73: true,  token.T_118: true,  token.T_116: true,  token.T_131: true,  token.T_71: true,  token.T_122: true,  token.T_126: true,  token.T_80: true,  token.T_38: true,  token.T_109: true,  token.T_119: true,  token.T_108: true,  }, // IntfBdyDecl0R0 
+	{  token.T_38: true,  token.T_86: true,  token.T_52: true,  token.T_131: true,  token.T_97: true,  token.T_80: true,  token.T_116: true,  token.T_73: true,  token.T_50: true,  token.T_37: true,  token.T_56: true,  token.T_61: true,  }, // IntfBdyDecl0R1 
+	{  }, // IntfBdyDecl0R2 
+	{  token.T_23: true,  }, // IntfBdyDecl1R0 
+	{  }, // IntfBdyDecl1R1 
+	{  token.T_38: true,  }, // IntfDecl0R0 
+	{  token.T_97: true,  }, // IntfDecl0R1 
+	{  token.T_136: true,  token.T_68: true,  }, // IntfDecl0R2 
+	{  token.T_136: true,  }, // IntfDecl0R3 
+	{  }, // IntfDecl0R4 
+	{  token.T_80: true,  token.T_61: true,  token.T_86: true,  token.T_97: true,  token.T_116: true,  token.T_50: true,  token.T_73: true,  token.T_52: true,  token.T_56: true,  }, // IntfMemDecl0R0 
+	{  }, // IntfMemDecl0R1 
+	{  token.T_131: true,  }, // IntfMemDecl1R0 
+	{  token.T_97: true,  }, // IntfMemDecl1R1 
+	{  token.T_7: true,  }, // IntfMemDecl1R2 
+	{  }, // IntfMemDecl1R3 
+	{  token.T_38: true,  }, // IntfMemDecl2R0 
+	{  }, // IntfMemDecl2R1 
+	{  token.T_37: true,  }, // IntfMemDecl3R0 
+	{  }, // IntfMemDecl3R1 
+	{  token.T_7: true,  }, // IntfMethDeclRest0R0 
+	{  token.T_40: true,  token.T_125: true,  token.T_23: true,  }, // IntfMethDeclRest0R1 
+	{  token.T_125: true,  token.T_23: true,  }, // IntfMethDeclRest0R2 
+	{  token.T_23: true,  }, // IntfMethDeclRest0R3 
+	{  }, // IntfMethDeclRest0R4 
+	{  token.T_80: true,  token.T_61: true,  token.T_50: true,  token.T_86: true,  token.T_97: true,  token.T_52: true,  token.T_56: true,  token.T_116: true,  token.T_73: true,  }, // IntfMethFieldDecl0R0 
+	{  token.T_97: true,  }, // IntfMethFieldDecl0R1 
+	{  token.T_28: true,  token.T_7: true,  token.T_40: true,  }, // IntfMethFieldDecl0R2 
+	{  }, // IntfMethFieldDecl0R3 
+	{  token.T_40: true,  token.T_28: true,  }, // IntfMethFieldRest0R0 
+	{  token.T_23: true,  }, // IntfMethFieldRest0R1 
+	{  }, // IntfMethFieldRest0R2 
+	{  token.T_7: true,  }, // IntfMethFieldRest1R0 
+	{  }, // IntfMethFieldRest1R1 
+	{  token.T_40: true,  }, // LBRK0R0 
+	{  token.T_66: true,  token.T_85: true,  token.T_49: true,  }, // LBRK0R1 
+	{  }, // LBRK0R2 
+	{  token.T_27: true,  }, // LE0R0 
+	{  token.T_85: true,  token.T_49: true,  token.T_66: true,  }, // LE0R1 
+	{  }, // LE0R2 
+	{  token.T_7: true,  }, // LPAR0R0 
+	{  token.T_85: true,  token.T_49: true,  token.T_66: true,  }, // LPAR0R1 
+	{  }, // LPAR0R2 
+	{  token.T_24: true,  }, // LT0R0 
+	{  token.T_93: true,  }, // LT0R1 
+	{  token.T_66: true,  token.T_85: true,  token.T_49: true,  }, // LT0R2 
+	{  }, // LT0R3 
+	{  token.T_136: true,  }, // LWING0R0 
+	{  token.T_85: true,  token.T_49: true,  token.T_66: true,  }, // LWING0R1 
+	{  }, // LWING0R2 
+	{  token.T_84: true,  }, // Letter0R0 
+	{  }, // Letter0R1 
+	{  token.T_66: true,  token.T_85: true,  token.T_49: true,  }, // Letter1R0 
+	{  }, // Letter1R1 
+	{  token.T_100: true,  token.T_84: true,  token.T_66: true,  token.T_85: true,  token.T_49: true,  }, // LetterLorD0R0 
+	{  token.T_85: true,  token.T_49: true,  token.T_84: true,  token.T_100: true,  token.T_66: true,  }, // LetterLorD0R1 
+	{  token.T_66: true,  token.T_85: true,  token.T_49: true,  }, // LetterLorD0R2 
+	{  }, // LetterLorD0R3 
+	{  token.T_39: true,  token.T_21: true,  token.T_111: true,  token.T_60: true,  token.T_134: true,  }, // LitAlts0R0 
+	{  }, // LitAlts0R1 
+	{  token.T_39: true,  token.T_21: true,  token.T_134: true,  token.T_101: true,  token.T_135: true,  token.T_102: true,  }, // LitAlts1R0 
+	{  }, // LitAlts1R1 
+	{  token.T_117: true,  }, // LitAlts2R0 
+	{  }, // LitAlts2R1 
+	{  token.T_62: true,  }, // LitAlts3R0 
+	{  }, // LitAlts3R1 
+	{  token.T_127: true,  }, // LitAlts4R0 
+	{  token.T_98: true,  }, // LitAlts4R1 
+	{  }, // LitAlts4R2 
+	{  token.T_70: true,  }, // LitAlts5R0 
+	{  token.T_98: true,  }, // LitAlts5R1 
+	{  }, // LitAlts5R2 
+	{  token.T_99: true,  }, // LitAlts6R0 
+	{  token.T_98: true,  }, // LitAlts6R1 
+	{  }, // LitAlts6R2 
+	{  token.T_60: true,  token.T_21: true,  token.T_102: true,  token.T_101: true,  token.T_111: true,  token.T_39: true,  token.T_117: true,  token.T_135: true,  token.T_62: true,  token.T_127: true,  token.T_70: true,  token.T_99: true,  token.T_134: true,  }, // Literal0R0 
+	{  token.T_66: true,  token.T_85: true,  token.T_49: true,  }, // Literal0R1 
+	{  }, // Literal0R2 
+	{  token.T_71: true,  }, // LocalVarDeclStmt0R0 
+	{  token.T_97: true,  }, // LocalVarDeclStmt0R1 
+	{  token.T_14: true,  token.T_23: true,  }, // LocalVarDeclStmt0R2 
+	{  token.T_23: true,  }, // LocalVarDeclStmt0R3 
+	{  }, // LocalVarDeclStmt0R4 
+	{  token.T_49: true,  token.T_84: true,  token.T_66: true,  token.T_85: true,  }, // LorD0R0 
+	{  }, // LorD0R1 
+	{  token.T_100: true,  }, // LorD1R0 
+	{  }, // LorD1R1 
+	{  token.T_15: true,  }, // MINUS0R0 
+	{  token.T_96: true,  }, // MINUS0R1 
+	{  token.T_66: true,  token.T_85: true,  token.T_49: true,  }, // MINUS0R2 
+	{  }, // MINUS0R3 
+	{  token.T_17: true,  }, // MINUS_EQU0R0 
+	{  token.T_66: true,  token.T_85: true,  token.T_49: true,  }, // MINUS_EQU0R1 
+	{  }, // MINUS_EQU0R2 
+	{  token.T_2: true,  }, // MOD0R0 
+	{  token.T_87: true,  }, // MOD0R1 
+	{  token.T_66: true,  token.T_85: true,  token.T_49: true,  }, // MOD0R2 
+	{  }, // MOD0R3 
+	{  token.T_3: true,  }, // MOD_EQU0R0 
+	{  token.T_66: true,  token.T_85: true,  token.T_49: true,  }, // MOD_EQU0R1 
+	{  }, // MOD_EQU0R2 
+	{  token.T_23: true,  }, // MemAlts0R0 
+	{  }, // MemAlts0R1 
+	{  token.T_136: true,  }, // MemAlts1R0 
+	{  }, // MemAlts1R1 
+	{  token.T_86: true,  token.T_56: true,  token.T_61: true,  token.T_116: true,  token.T_73: true,  token.T_50: true,  token.T_97: true,  token.T_52: true,  token.T_80: true,  }, // MemDecl0R0 
+	{  token.T_97: true,  }, // MemDecl0R1 
+	{  token.T_7: true,  }, // MemDecl0R2 
+	{  token.T_40: true,  token.T_125: true,  token.T_23: true,  token.T_136: true,  }, // MemDecl0R3 
+	{  token.T_125: true,  token.T_136: true,  token.T_23: true,  }, // MemDecl0R4 
+	{  token.T_23: true,  token.T_136: true,  }, // MemDecl0R5 
+	{  }, // MemDecl0R6 
+	{  token.T_131: true,  }, // MemDecl1R0 
+	{  token.T_97: true,  }, // MemDecl1R1 
+	{  token.T_7: true,  }, // MemDecl1R2 
+	{  token.T_125: true,  token.T_136: true,  token.T_23: true,  }, // MemDecl1R3 
+	{  token.T_23: true,  token.T_136: true,  }, // MemDecl1R4 
+	{  }, // MemDecl1R5 
+	{  token.T_97: true,  }, // MemDecl2R0 
+	{  token.T_7: true,  }, // MemDecl2R1 
+	{  token.T_136: true,  token.T_125: true,  }, // MemDecl2R2 
+	{  token.T_136: true,  }, // MemDecl2R3 
+	{  }, // MemDecl2R4 
+	{  token.T_38: true,  }, // MemDecl3R0 
+	{  }, // MemDecl3R1 
+	{  token.T_37: true,  }, // MemDecl4R0 
+	{  }, // MemDecl4R1 
+	{  token.T_50: true,  token.T_52: true,  token.T_56: true,  token.T_80: true,  token.T_61: true,  token.T_86: true,  token.T_97: true,  token.T_116: true,  token.T_73: true,  }, // MemDecl5R0 
+	{  token.T_97: true,  }, // MemDecl5R1 
+	{  token.T_14: true,  }, // MemDecl5R2 
+	{  }, // MemDecl5R3 
+	{  token.T_109: true,  token.T_107: true,  token.T_44: true,  token.T_122: true,  token.T_108: true,  token.T_118: true,  token.T_88: true,  token.T_126: true,  token.T_71: true,  token.T_132: true,  token.T_119: true,  }, // Modifier0R0 
+	{  token.T_98: true,  }, // Modifier0R1 
+	{  }, // Modifier0R2 
+	{  token.T_109: true,  }, // Modifs0R0 
+	{  }, // Modifs0R1 
+	{  token.T_108: true,  }, // Modifs1R0 
+	{  }, // Modifs1R1 
+	{  token.T_107: true,  }, // Modifs2R0 
+	{  }, // Modifs2R1 
+	{  token.T_118: true,  }, // Modifs3R0 
+	{  }, // Modifs3R1 
+	{  token.T_44: true,  }, // Modifs4R0 
+	{  }, // Modifs4R1 
+	{  token.T_71: true,  }, // Modifs5R0 
+	{  }, // Modifs5R1 
+	{  token.T_88: true,  }, // Modifs6R0 
+	{  }, // Modifs6R1 
+	{  token.T_122: true,  }, // Modifs7R0 
+	{  }, // Modifs7R1 
+	{  token.T_126: true,  }, // Modifs8R0 
+	{  }, // Modifs8R1 
+	{  token.T_132: true,  }, // Modifs9R0 
+	{  }, // Modifs9R1 
+	{  token.T_119: true,  }, // Modifs10R0 
+	{  }, // Modifs10R1 
+	{  token.T_61: true,  token.T_0: true,  token.T_70: true,  token.T_134: true,  token.T_50: true,  token.T_7: true,  token.T_97: true,  token.T_39: true,  token.T_116: true,  token.T_52: true,  token.T_141: true,  token.T_21: true,  token.T_117: true,  token.T_120: true,  token.T_11: true,  token.T_89: true,  token.T_80: true,  token.T_62: true,  token.T_56: true,  token.T_99: true,  token.T_135: true,  token.T_73: true,  token.T_127: true,  token.T_16: true,  token.T_102: true,  token.T_101: true,  token.T_15: true,  token.T_123: true,  token.T_60: true,  token.T_86: true,  token.T_131: true,  token.T_12: true,  token.T_111: true,  }, // MultExpr0R0 
+	{  token.T_9: true,  token.T_19: true,  token.T_2: true,  }, // MultExpr0R1 
+	{  }, // MultExpr0R2 
+	{  token.T_89: true,  }, // NEW0R0 
+	{  token.T_98: true,  }, // NEW0R1 
+	{  }, // NEW0R2 
+	{  token.T_1: true,  }, // NOT_EQUAL0R0 
+	{  token.T_66: true,  token.T_85: true,  token.T_49: true,  }, // NOT_EQUAL0R1 
+	{  }, // NOT_EQUAL0R2 
+	{  token.T_39: true,  token.T_21: true,  token.T_134: true,  }, // NumeralAlts0R0 
+	{  }, // NumeralAlts0R1 
+	{  token.T_101: true,  }, // NumeralAlts1R0 
+	{  }, // NumeralAlts1R1 
+	{  token.T_135: true,  token.T_102: true,  }, // NumeralAlts2R0 
+	{  }, // NumeralAlts2R1 
+	{  token.T_137: true,  }, // OR0R0 
+	{  token.T_94: true,  }, // OR0R1 
+	{  token.T_66: true,  token.T_85: true,  token.T_49: true,  }, // OR0R2 
+	{  }, // OR0R3 
+	{  token.T_137: true,  }, // ORXOR0R0 
+	{  token.T_134: true,  token.T_0: true,  token.T_50: true,  token.T_16: true,  token.T_116: true,  token.T_97: true,  token.T_141: true,  token.T_89: true,  token.T_12: true,  token.T_99: true,  token.T_73: true,  token.T_39: true,  token.T_56: true,  token.T_120: true,  token.T_102: true,  token.T_111: true,  token.T_101: true,  token.T_21: true,  token.T_60: true,  token.T_127: true,  token.T_15: true,  token.T_131: true,  token.T_117: true,  token.T_80: true,  token.T_62: true,  token.T_7: true,  token.T_123: true,  token.T_61: true,  token.T_135: true,  token.T_11: true,  token.T_52: true,  token.T_86: true,  token.T_70: true,  }, // ORXOR0R1 
+	{  }, // ORXOR0R2 
+	{  token.T_138: true,  }, // OR_EQU0R0 
+	{  token.T_66: true,  token.T_85: true,  token.T_49: true,  }, // OR_EQU0R1 
+	{  }, // OR_EQU0R2 
+	{  token.T_139: true,  }, // OR_OR0R0 
+	{  token.T_85: true,  token.T_49: true,  token.T_66: true,  }, // OR_OR0R1 
+	{  }, // OR_OR0R2 
+	{  token.T_82: true,  }, // OctalEscape0R0 
+	{  }, // OctalEscape0R1 
+	{  token.T_129: true,  }, // OctalEscape1R0 
+	{  }, // OctalEscape1R1 
+	{  token.T_83: true,  }, // OctalEscape2R0 
+	{  }, // OctalEscape2R1 
+	{  token.T_7: true,  }, // OptArgs0R0 
+	{  }, // OptArgs0R1 
+	{  }, // OptArgs1R0 
+	{  token.T_136: true,  }, // OptClsBdy0R0 
+	{  }, // OptClsBdy0R1 
+	{  }, // OptClsBdy1R0 
+	{  token.T_22: true,  }, // OptColExpr0R0 
+	{  token.T_39: true,  token.T_111: true,  token.T_80: true,  token.T_135: true,  token.T_102: true,  token.T_56: true,  token.T_89: true,  token.T_70: true,  token.T_7: true,  token.T_11: true,  token.T_60: true,  token.T_123: true,  token.T_16: true,  token.T_62: true,  token.T_99: true,  token.T_12: true,  token.T_120: true,  token.T_116: true,  token.T_97: true,  token.T_134: true,  token.T_0: true,  token.T_127: true,  token.T_15: true,  token.T_141: true,  token.T_21: true,  token.T_52: true,  token.T_73: true,  token.T_50: true,  token.T_117: true,  token.T_86: true,  token.T_61: true,  token.T_101: true,  token.T_131: true,  }, // OptColExpr0R1 
+	{  }, // OptColExpr0R2 
+	{  }, // OptColExpr1R0 
+	{  token.T_14: true,  }, // OptCom0R0 
+	{  }, // OptCom0R1 
+	{  }, // OptCom1R0 
+	{  token.T_14: true,  }, // OptComFormPDecl0R0 
+	{  token.T_71: true,  }, // OptComFormPDecl0R1 
+	{  }, // OptComFormPDecl0R2 
+	{  }, // OptComFormPDecl1R0 
+	{  token.T_18: true,  }, // OptDot0R0 
+	{  }, // OptDot0R1 
+	{  }, // OptDot1R0 
+	{  token.T_18: true,  }, // OptDotStar0R0 
+	{  token.T_9: true,  }, // OptDotStar0R1 
+	{  }, // OptDotStar0R2 
+	{  }, // OptDotStar1R0 
+	{  token.T_64: true,  }, // OptElse0R0 
+	{  token.T_51: true,  token.T_80: true,  token.T_141: true,  token.T_73: true,  token.T_76: true,  token.T_70: true,  token.T_60: true,  token.T_136: true,  token.T_121: true,  token.T_124: true,  token.T_86: true,  token.T_11: true,  token.T_99: true,  token.T_59: true,  token.T_39: true,  token.T_21: true,  token.T_47: true,  token.T_56: true,  token.T_101: true,  token.T_127: true,  token.T_0: true,  token.T_111: true,  token.T_133: true,  token.T_117: true,  token.T_74: true,  token.T_128: true,  token.T_7: true,  token.T_15: true,  token.T_115: true,  token.T_102: true,  token.T_16: true,  token.T_123: true,  token.T_61: true,  token.T_120: true,  token.T_131: true,  token.T_57: true,  token.T_62: true,  token.T_122: true,  token.T_50: true,  token.T_52: true,  token.T_135: true,  token.T_116: true,  token.T_12: true,  token.T_134: true,  token.T_23: true,  token.T_89: true,  token.T_97: true,  }, // OptElse0R1 
+	{  }, // OptElse0R2 
+	{  }, // OptElse1R0 
+	{  token.T_28: true,  }, // OptEqVarInit0R0 
+	{  token.T_111: true,  token.T_7: true,  token.T_136: true,  token.T_73: true,  token.T_21: true,  token.T_116: true,  token.T_123: true,  token.T_62: true,  token.T_60: true,  token.T_102: true,  token.T_70: true,  token.T_0: true,  token.T_117: true,  token.T_101: true,  token.T_15: true,  token.T_86: true,  token.T_52: true,  token.T_11: true,  token.T_120: true,  token.T_134: true,  token.T_135: true,  token.T_89: true,  token.T_56: true,  token.T_16: true,  token.T_97: true,  token.T_61: true,  token.T_141: true,  token.T_12: true,  token.T_39: true,  token.T_127: true,  token.T_131: true,  token.T_99: true,  token.T_50: true,  token.T_80: true,  }, // OptEqVarInit0R1 
+	{  }, // OptEqVarInit0R2 
+	{  }, // OptEqVarInit1R0 
+	{  token.T_63: true,  }, // OptEsc0R0 
+	{  }, // OptEsc0R1 
+	{  token.T_46: true,  }, // OptEsc1R0 
+	{  }, // OptEsc1R1 
+	{  token.T_70: true,  token.T_127: true,  token.T_120: true,  token.T_73: true,  token.T_12: true,  token.T_62: true,  token.T_39: true,  token.T_86: true,  token.T_21: true,  token.T_101: true,  token.T_116: true,  token.T_134: true,  token.T_60: true,  token.T_11: true,  token.T_111: true,  token.T_15: true,  token.T_99: true,  token.T_7: true,  token.T_97: true,  token.T_135: true,  token.T_80: true,  token.T_61: true,  token.T_141: true,  token.T_102: true,  token.T_89: true,  token.T_0: true,  token.T_52: true,  token.T_131: true,  token.T_50: true,  token.T_56: true,  token.T_117: true,  token.T_16: true,  token.T_123: true,  }, // OptExpr0R0 
+	{  }, // OptExpr0R1 
+	{  }, // OptExpr1R0 
+	{  token.T_141: true,  token.T_73: true,  token.T_131: true,  token.T_135: true,  token.T_16: true,  token.T_21: true,  token.T_116: true,  token.T_80: true,  token.T_62: true,  token.T_61: true,  token.T_86: true,  token.T_127: true,  token.T_15: true,  token.T_52: true,  token.T_123: true,  token.T_102: true,  token.T_70: true,  token.T_7: true,  token.T_11: true,  token.T_111: true,  token.T_50: true,  token.T_99: true,  token.T_134: true,  token.T_39: true,  token.T_56: true,  token.T_60: true,  token.T_12: true,  token.T_117: true,  token.T_0: true,  token.T_89: true,  token.T_101: true,  token.T_97: true,  token.T_120: true,  }, // OptExprs0R0 
+	{  token.T_14: true,  }, // OptExprs0R1 
+	{  }, // OptExprs0R2 
+	{  }, // OptExprs1R0 
+	{  token.T_68: true,  }, // OptExtClsType0R0 
+	{  token.T_97: true,  }, // OptExtClsType0R1 
+	{  }, // OptExtClsType0R2 
+	{  }, // OptExtClsType1R0 
+	{  token.T_68: true,  }, // OptExtendsClsLis0R0 
+	{  token.T_97: true,  }, // OptExtendsClsLis0R1 
+	{  }, // OptExtendsClsLis0R2 
+	{  }, // OptExtendsClsLis1R0 
+	{  token.T_71: true,  }, // OptFin0R0 
+	{  }, // OptFin0R1 
+	{  }, // OptFin1R0 
+	{  token.T_71: true,  }, // OptFinType0R0 
+	{  token.T_80: true,  token.T_50: true,  token.T_56: true,  token.T_61: true,  token.T_116: true,  token.T_73: true,  token.T_86: true,  token.T_97: true,  token.T_52: true,  }, // OptFinType0R1 
+	{  }, // OptFinType0R2 
+	{  token.T_101: true,  token.T_12: true,  token.T_71: true,  token.T_120: true,  token.T_60: true,  token.T_141: true,  token.T_62: true,  token.T_50: true,  token.T_97: true,  token.T_7: true,  token.T_52: true,  token.T_70: true,  token.T_117: true,  token.T_127: true,  token.T_61: true,  token.T_15: true,  token.T_86: true,  token.T_80: true,  token.T_21: true,  token.T_16: true,  token.T_111: true,  token.T_99: true,  token.T_11: true,  token.T_73: true,  token.T_116: true,  token.T_102: true,  token.T_56: true,  token.T_123: true,  token.T_39: true,  token.T_134: true,  token.T_89: true,  token.T_135: true,  token.T_131: true,  token.T_0: true,  }, // OptForInit0R0 
+	{  }, // OptForInit0R1 
+	{  }, // OptForInit1R0 
+	{  token.T_7: true,  token.T_120: true,  token.T_101: true,  token.T_89: true,  token.T_0: true,  token.T_116: true,  token.T_102: true,  token.T_134: true,  token.T_127: true,  token.T_56: true,  token.T_73: true,  token.T_21: true,  token.T_86: true,  token.T_52: true,  token.T_60: true,  token.T_117: true,  token.T_39: true,  token.T_97: true,  token.T_99: true,  token.T_50: true,  token.T_131: true,  token.T_11: true,  token.T_62: true,  token.T_123: true,  token.T_61: true,  token.T_80: true,  token.T_111: true,  token.T_15: true,  token.T_141: true,  token.T_135: true,  token.T_12: true,  token.T_16: true,  token.T_70: true,  }, // OptForUpd0R0 
+	{  }, // OptForUpd0R1 
+	{  }, // OptForUpd1R0 
+	{  token.T_71: true,  }, // OptFormPDecl0R0 
+	{  }, // OptFormPDecl0R1 
+	{  }, // OptFormPDecl1R0 
+	{  token.T_97: true,  }, // OptID0R0 
+	{  }, // OptID0R1 
+	{  }, // OptID1R0 
+	{  token.T_7: true,  token.T_18: true,  token.T_40: true,  }, // OptIDSuff0R0 
+	{  }, // OptIDSuff0R1 
+	{  }, // OptIDSuff1R0 
+	{  token.T_77: true,  }, // OptImpClsLst0R0 
+	{  token.T_97: true,  }, // OptImpClsLst0R1 
+	{  }, // OptImpClsLst0R2 
+	{  }, // OptImpClsLst1R0 
+	{  token.T_106: true,  }, // OptPackDecl0R0 
+	{  }, // OptPackDecl0R1 
+	{  }, // OptPackDecl1R0 
+	{  token.T_118: true,  }, // OptStatic0R0 
+	{  }, // OptStatic0R1 
+	{  }, // OptStatic1R0 
+	{  token.T_125: true,  }, // OptThrowClsTypLst0R0 
+	{  token.T_97: true,  }, // OptThrowClsTypLst0R1 
+	{  }, // OptThrowClsTypLst0R2 
+	{  }, // OptThrowClsTypLst1R0 
+	{  token.T_101: true,  token.T_80: true,  token.T_73: true,  token.T_127: true,  token.T_111: true,  token.T_70: true,  token.T_141: true,  token.T_86: true,  token.T_7: true,  token.T_102: true,  token.T_120: true,  token.T_135: true,  token.T_62: true,  token.T_97: true,  token.T_60: true,  token.T_56: true,  token.T_50: true,  token.T_117: true,  token.T_16: true,  token.T_131: true,  token.T_0: true,  token.T_21: true,  token.T_89: true,  token.T_99: true,  token.T_116: true,  token.T_123: true,  token.T_136: true,  token.T_12: true,  token.T_52: true,  token.T_134: true,  token.T_61: true,  token.T_15: true,  token.T_39: true,  token.T_11: true,  }, // OptVarInit0R0 
+	{  token.T_14: true,  }, // OptVarInit0R1 
+	{  token.T_14: true,  }, // OptVarInit0R2 
+	{  }, // OptVarInit0R3 
+	{  }, // OptVarInit1R0 
+	{  token.T_37: true,  }, // OtherAlts0R0 
+	{  }, // OtherAlts0R1 
+	{  token.T_123: true,  }, // OtherAlts1R0 
+	{  }, // OtherAlts1R1 
+	{  token.T_120: true,  }, // OtherAlts2R0 
+	{  token.T_7: true,  }, // OtherAlts2R1 
+	{  }, // OtherAlts2R2 
+	{  token.T_89: true,  }, // OtherAlts3R0 
+	{  token.T_97: true,  }, // OtherAlts3R1 
+	{  }, // OtherAlts3R2 
+	{  token.T_106: true,  }, // PACKAGE0R0 
+	{  token.T_98: true,  }, // PACKAGE0R1 
+	{  }, // PACKAGE0R2 
+	{  token.T_11: true,  }, // PLUS0R0 
+	{  token.T_95: true,  }, // PLUS0R1 
+	{  token.T_66: true,  token.T_85: true,  token.T_49: true,  }, // PLUS0R2 
+	{  }, // PLUS0R3 
+	{  token.T_13: true,  }, // PLUS_EQU0R0 
+	{  token.T_49: true,  token.T_66: true,  token.T_85: true,  }, // PLUS_EQU0R1 
+	{  }, // PLUS_EQU0R2 
+	{  token.T_106: true,  }, // PackDecl0R0 
+	{  token.T_97: true,  }, // PackDecl0R1 
+	{  token.T_23: true,  }, // PackDecl0R2 
+	{  }, // PackDecl0R3 
+	{  token.T_7: true,  }, // ParExpr0R0 
+	{  token.T_135: true,  token.T_70: true,  token.T_60: true,  token.T_97: true,  token.T_134: true,  token.T_123: true,  token.T_62: true,  token.T_56: true,  token.T_111: true,  token.T_141: true,  token.T_89: true,  token.T_50: true,  token.T_117: true,  token.T_39: true,  token.T_73: true,  token.T_80: true,  token.T_16: true,  token.T_11: true,  token.T_99: true,  token.T_61: true,  token.T_102: true,  token.T_0: true,  token.T_15: true,  token.T_101: true,  token.T_21: true,  token.T_12: true,  token.T_7: true,  token.T_131: true,  token.T_52: true,  token.T_120: true,  token.T_116: true,  token.T_86: true,  token.T_127: true,  }, // ParExpr0R1 
+	{  token.T_8: true,  }, // ParExpr0R2 
+	{  }, // ParExpr0R3 
+	{  token.T_12: true,  }, // PostfixOp0R0 
+	{  }, // PostfixOp0R1 
+	{  token.T_16: true,  }, // PostfixOp1R0 
+	{  }, // PostfixOp1R1 
+	{  token.T_12: true,  }, // PrefixOp0R0 
+	{  }, // PrefixOp0R1 
+	{  token.T_16: true,  }, // PrefixOp1R0 
+	{  }, // PrefixOp1R1 
+	{  token.T_0: true,  }, // PrefixOp2R0 
+	{  }, // PrefixOp2R1 
+	{  token.T_141: true,  }, // PrefixOp3R0 
+	{  }, // PrefixOp3R1 
+	{  token.T_11: true,  }, // PrefixOp4R0 
+	{  }, // PrefixOp4R1 
+	{  token.T_15: true,  }, // PrefixOp5R0 
+	{  }, // PrefixOp5R1 
+	{  token.T_7: true,  }, // Primary0R0 
+	{  }, // Primary0R1 
+	{  token.T_123: true,  }, // Primary1R0 
+	{  token.T_7: true,  }, // Primary1R1 
+	{  }, // Primary1R2 
+	{  token.T_120: true,  }, // Primary2R0 
+	{  token.T_7: true,  token.T_18: true,  }, // Primary2R1 
+	{  }, // Primary2R2 
+	{  token.T_134: true,  token.T_62: true,  token.T_101: true,  token.T_99: true,  token.T_21: true,  token.T_117: true,  token.T_39: true,  token.T_127: true,  token.T_70: true,  token.T_111: true,  token.T_60: true,  token.T_135: true,  token.T_102: true,  }, // Primary3R0 
+	{  }, // Primary3R1 
+	{  token.T_89: true,  }, // Primary4R0 
+	{  token.T_73: true,  token.T_97: true,  token.T_86: true,  token.T_80: true,  token.T_116: true,  token.T_50: true,  token.T_52: true,  token.T_61: true,  token.T_56: true,  }, // Primary4R1 
+	{  }, // Primary4R2 
+	{  token.T_97: true,  }, // Primary5R0 
+	{  token.T_18: true,  token.T_40: true,  token.T_7: true,  }, // Primary5R1 
+	{  }, // Primary5R2 
+	{  token.T_61: true,  token.T_50: true,  token.T_52: true,  token.T_116: true,  token.T_56: true,  token.T_80: true,  token.T_86: true,  token.T_73: true,  }, // Primary6R0 
+	{  token.T_40: true,  token.T_18: true,  }, // Primary6R1 
+	{  token.T_18: true,  }, // Primary6R2 
+	{  token.T_37: true,  }, // Primary6R3 
+	{  }, // Primary6R4 
+	{  token.T_131: true,  }, // Primary7R0 
+	{  token.T_18: true,  }, // Primary7R1 
+	{  token.T_37: true,  }, // Primary7R2 
+	{  }, // Primary7R3 
+	{  token.T_36: true,  }, // QUERY0R0 
+	{  token.T_66: true,  token.T_85: true,  token.T_49: true,  }, // QUERY0R1 
+	{  }, // QUERY0R2 
+	{  token.T_97: true,  }, // QualifiedID0R0 
+	{  token.T_18: true,  }, // QualifiedID0R1 
+	{  }, // QualifiedID0R2 
+	{  token.T_41: true,  }, // RBRK0R0 
+	{  token.T_49: true,  token.T_66: true,  token.T_85: true,  }, // RBRK0R1 
+	{  }, // RBRK0R2 
+	{  token.T_41: true,  }, // RBRKAlts0R0 
+	{  token.T_40: true,  token.T_18: true,  }, // RBRKAlts0R1 
+	{  token.T_18: true,  }, // RBRKAlts0R2 
+	{  token.T_37: true,  }, // RBRKAlts0R3 
+	{  }, // RBRKAlts0R4 
+	{  token.T_89: true,  token.T_99: true,  token.T_21: true,  token.T_50: true,  token.T_127: true,  token.T_120: true,  token.T_39: true,  token.T_0: true,  token.T_11: true,  token.T_134: true,  token.T_123: true,  token.T_70: true,  token.T_62: true,  token.T_86: true,  token.T_131: true,  token.T_116: true,  token.T_73: true,  token.T_80: true,  token.T_12: true,  token.T_56: true,  token.T_52: true,  token.T_101: true,  token.T_97: true,  token.T_61: true,  token.T_16: true,  token.T_7: true,  token.T_111: true,  token.T_15: true,  token.T_141: true,  token.T_60: true,  token.T_102: true,  token.T_135: true,  token.T_117: true,  }, // RBRKAlts1R0 
+	{  token.T_41: true,  }, // RBRKAlts1R1 
+	{  }, // RBRKAlts1R2 
+	{  token.T_115: true,  }, // RETURN0R0 
+	{  token.T_98: true,  }, // RETURN0R1 
+	{  }, // RETURN0R2 
+	{  token.T_8: true,  }, // RPAR0R0 
+	{  token.T_66: true,  token.T_85: true,  token.T_49: true,  }, // RPAR0R1 
+	{  }, // RPAR0R2 
+	{  token.T_140: true,  }, // RWING0R0 
+	{  token.T_66: true,  token.T_85: true,  token.T_49: true,  }, // RWING0R1 
+	{  }, // RWING0R2 
+	{  token.T_73: true,  token.T_61: true,  token.T_50: true,  token.T_52: true,  token.T_116: true,  token.T_56: true,  token.T_80: true,  token.T_86: true,  }, // ReferenceType0R0 
+	{  token.T_40: true,  }, // ReferenceType0R1 
+	{  token.T_40: true,  }, // ReferenceType0R2 
+	{  }, // ReferenceType0R3 
+	{  token.T_97: true,  }, // ReferenceType1R0 
+	{  token.T_40: true,  }, // ReferenceType1R1 
+	{  }, // ReferenceType1R2 
+	{  token.T_73: true,  token.T_111: true,  token.T_99: true,  token.T_0: true,  token.T_134: true,  token.T_16: true,  token.T_39: true,  token.T_11: true,  token.T_89: true,  token.T_120: true,  token.T_15: true,  token.T_7: true,  token.T_135: true,  token.T_21: true,  token.T_86: true,  token.T_70: true,  token.T_102: true,  token.T_52: true,  token.T_80: true,  token.T_12: true,  token.T_56: true,  token.T_127: true,  token.T_50: true,  token.T_60: true,  token.T_97: true,  token.T_62: true,  token.T_101: true,  token.T_131: true,  token.T_116: true,  token.T_61: true,  token.T_141: true,  token.T_117: true,  token.T_123: true,  }, // RelateExpr0R0 
+	{  token.T_31: true,  token.T_24: true,  token.T_30: true,  token.T_79: true,  token.T_27: true,  }, // RelateExpr0R1 
+	{  }, // RelateExpr0R2 
+	{  token.T_4: true,  }, // RepANDEq0x0R0 
+	{  token.T_134: true,  token.T_123: true,  token.T_21: true,  token.T_116: true,  token.T_135: true,  token.T_73: true,  token.T_97: true,  token.T_39: true,  token.T_127: true,  token.T_56: true,  token.T_11: true,  token.T_111: true,  token.T_12: true,  token.T_99: true,  token.T_16: true,  token.T_80: true,  token.T_117: true,  token.T_62: true,  token.T_101: true,  token.T_52: true,  token.T_131: true,  token.T_50: true,  token.T_0: true,  token.T_61: true,  token.T_7: true,  token.T_120: true,  token.T_89: true,  token.T_102: true,  token.T_70: true,  token.T_141: true,  token.T_86: true,  token.T_60: true,  token.T_15: true,  }, // RepANDEq0x0R1 
+	{  token.T_4: true,  }, // RepANDEq0x0R2 
+	{  }, // RepANDEq0x0R3 
+	{  }, // RepANDEq0x1R0 
+	{  token.T_5: true,  }, // RepANDIOR0x0R0 
+	{  token.T_7: true,  token.T_52: true,  token.T_56: true,  token.T_39: true,  token.T_73: true,  token.T_70: true,  token.T_12: true,  token.T_21: true,  token.T_61: true,  token.T_50: true,  token.T_60: true,  token.T_102: true,  token.T_141: true,  token.T_97: true,  token.T_15: true,  token.T_135: true,  token.T_120: true,  token.T_11: true,  token.T_127: true,  token.T_99: true,  token.T_134: true,  token.T_62: true,  token.T_117: true,  token.T_86: true,  token.T_0: true,  token.T_16: true,  token.T_123: true,  token.T_101: true,  token.T_89: true,  token.T_116: true,  token.T_80: true,  token.T_131: true,  token.T_111: true,  }, // RepANDIOR0x0R1 
+	{  token.T_5: true,  }, // RepANDIOR0x0R2 
+	{  }, // RepANDIOR0x0R3 
+	{  }, // RepANDIOR0x1R0 
+	{  token.T_11: true,  token.T_15: true,  }, // RepAddAltsMult0x0R0 
+	{  token.T_62: true,  token.T_15: true,  token.T_80: true,  token.T_134: true,  token.T_102: true,  token.T_123: true,  token.T_131: true,  token.T_117: true,  token.T_101: true,  token.T_111: true,  token.T_73: true,  token.T_11: true,  token.T_61: true,  token.T_97: true,  token.T_50: true,  token.T_127: true,  token.T_60: true,  token.T_70: true,  token.T_39: true,  token.T_16: true,  token.T_52: true,  token.T_12: true,  token.T_56: true,  token.T_116: true,  token.T_135: true,  token.T_141: true,  token.T_99: true,  token.T_120: true,  token.T_21: true,  token.T_7: true,  token.T_86: true,  token.T_89: true,  token.T_0: true,  }, // RepAddAltsMult0x0R1 
+	{  }, // RepAddAltsMult0x0R2 
+	{  }, // RepAddAltsMult0x1R0 
+	{  token.T_17: true,  token.T_3: true,  token.T_33: true,  token.T_43: true,  token.T_28: true,  token.T_13: true,  token.T_26: true,  token.T_10: true,  token.T_20: true,  token.T_6: true,  token.T_138: true,  token.T_35: true,  }, // RepAsscExpr0x0R0 
+	{  token.T_73: true,  token.T_131: true,  token.T_89: true,  token.T_97: true,  token.T_62: true,  token.T_21: true,  token.T_60: true,  token.T_111: true,  token.T_117: true,  token.T_80: true,  token.T_15: true,  token.T_99: true,  token.T_134: true,  token.T_86: true,  token.T_101: true,  token.T_61: true,  token.T_127: true,  token.T_16: true,  token.T_39: true,  token.T_123: true,  token.T_116: true,  token.T_0: true,  token.T_56: true,  token.T_12: true,  token.T_50: true,  token.T_70: true,  token.T_11: true,  token.T_7: true,  token.T_102: true,  token.T_141: true,  token.T_120: true,  token.T_52: true,  token.T_135: true,  }, // RepAsscExpr0x0R1 
+	{  token.T_43: true,  token.T_17: true,  token.T_26: true,  token.T_138: true,  token.T_35: true,  token.T_6: true,  token.T_13: true,  token.T_10: true,  token.T_28: true,  token.T_3: true,  token.T_20: true,  token.T_33: true,  }, // RepAsscExpr0x0R2 
+	{  }, // RepAsscExpr0x0R3 
+	{  }, // RepAsscExpr0x1R0 
+	{  token.T_71: true,  token.T_135: true,  token.T_115: true,  token.T_126: true,  token.T_102: true,  token.T_52: true,  token.T_70: true,  token.T_123: true,  token.T_131: true,  token.T_39: true,  token.T_128: true,  token.T_109: true,  token.T_124: true,  token.T_107: true,  token.T_59: true,  token.T_16: true,  token.T_119: true,  token.T_116: true,  token.T_127: true,  token.T_12: true,  token.T_122: true,  token.T_23: true,  token.T_15: true,  token.T_7: true,  token.T_73: true,  token.T_80: true,  token.T_121: true,  token.T_88: true,  token.T_118: true,  token.T_57: true,  token.T_11: true,  token.T_136: true,  token.T_132: true,  token.T_89: true,  token.T_21: true,  token.T_117: true,  token.T_61: true,  token.T_101: true,  token.T_74: true,  token.T_108: true,  token.T_51: true,  token.T_56: true,  token.T_120: true,  token.T_0: true,  token.T_76: true,  token.T_60: true,  token.T_86: true,  token.T_99: true,  token.T_141: true,  token.T_97: true,  token.T_133: true,  token.T_50: true,  token.T_37: true,  token.T_111: true,  token.T_62: true,  token.T_47: true,  token.T_134: true,  token.T_44: true,  }, // RepBlkSt0x0R0 
+	{  token.T_97: true,  token.T_71: true,  token.T_102: true,  token.T_115: true,  token.T_89: true,  token.T_74: true,  token.T_11: true,  token.T_135: true,  token.T_134: true,  token.T_59: true,  token.T_124: true,  token.T_127: true,  token.T_111: true,  token.T_132: true,  token.T_12: true,  token.T_119: true,  token.T_126: true,  token.T_107: true,  token.T_70: true,  token.T_118: true,  token.T_141: true,  token.T_52: true,  token.T_133: true,  token.T_44: true,  token.T_116: true,  token.T_51: true,  token.T_80: true,  token.T_86: true,  token.T_108: true,  token.T_57: true,  token.T_39: true,  token.T_0: true,  token.T_121: true,  token.T_101: true,  token.T_60: true,  token.T_56: true,  token.T_16: true,  token.T_120: true,  token.T_136: true,  token.T_88: true,  token.T_128: true,  token.T_131: true,  token.T_50: true,  token.T_122: true,  token.T_47: true,  token.T_23: true,  token.T_73: true,  token.T_62: true,  token.T_109: true,  token.T_15: true,  token.T_37: true,  token.T_61: true,  token.T_117: true,  token.T_7: true,  token.T_21: true,  token.T_76: true,  token.T_99: true,  token.T_123: true,  }, // RepBlkSt0x0R1 
+	{  }, // RepBlkSt0x0R2 
+	{  }, // RepBlkSt0x1R0 
+	{  token.T_55: true,  }, // RepCatch0x0R0 
+	{  token.T_55: true,  }, // RepCatch0x0R1 
+	{  }, // RepCatch0x0R2 
+	{  }, // RepCatch0x1R0 
+	{  token.T_136: true,  token.T_119: true,  token.T_71: true,  token.T_52: true,  token.T_23: true,  token.T_118: true,  token.T_86: true,  token.T_56: true,  token.T_80: true,  token.T_132: true,  token.T_73: true,  token.T_97: true,  token.T_108: true,  token.T_50: true,  token.T_38: true,  token.T_61: true,  token.T_37: true,  token.T_109: true,  token.T_122: true,  token.T_116: true,  token.T_126: true,  token.T_107: true,  token.T_88: true,  token.T_131: true,  token.T_44: true,  }, // RepClsBDecl0x0R0 
+	{  token.T_126: true,  token.T_23: true,  token.T_88: true,  token.T_118: true,  token.T_116: true,  token.T_119: true,  token.T_80: true,  token.T_109: true,  token.T_132: true,  token.T_38: true,  token.T_37: true,  token.T_61: true,  token.T_108: true,  token.T_136: true,  token.T_97: true,  token.T_56: true,  token.T_73: true,  token.T_50: true,  token.T_122: true,  token.T_107: true,  token.T_86: true,  token.T_52: true,  token.T_44: true,  token.T_131: true,  token.T_71: true,  }, // RepClsBDecl0x0R1 
+	{  }, // RepClsBDecl0x0R2 
+	{  }, // RepClsBDecl0x1R0 
+	{  token.T_14: true,  }, // RepComCls0x0R0 
+	{  token.T_97: true,  }, // RepComCls0x0R1 
+	{  token.T_14: true,  }, // RepComCls0x0R2 
+	{  }, // RepComCls0x0R3 
+	{  }, // RepComCls0x1R0 
+	{  token.T_14: true,  }, // RepComCnstDecl0x0R0 
+	{  token.T_97: true,  }, // RepComCnstDecl0x0R1 
+	{  token.T_14: true,  }, // RepComCnstDecl0x0R2 
+	{  }, // RepComCnstDecl0x0R3 
+	{  }, // RepComCnstDecl0x1R0 
+	{  token.T_14: true,  }, // RepComExp0x0R0 
+	{  token.T_73: true,  token.T_134: true,  token.T_56: true,  token.T_111: true,  token.T_131: true,  token.T_117: true,  token.T_99: true,  token.T_12: true,  token.T_80: true,  token.T_102: true,  token.T_50: true,  token.T_135: true,  token.T_39: true,  token.T_11: true,  token.T_101: true,  token.T_127: true,  token.T_60: true,  token.T_70: true,  token.T_123: true,  token.T_62: true,  token.T_86: true,  token.T_120: true,  token.T_15: true,  token.T_141: true,  token.T_116: true,  token.T_97: true,  token.T_21: true,  token.T_52: true,  token.T_89: true,  token.T_61: true,  token.T_7: true,  token.T_0: true,  token.T_16: true,  }, // RepComExp0x0R1 
+	{  token.T_14: true,  }, // RepComExp0x0R2 
+	{  }, // RepComExp0x0R3 
+	{  }, // RepComExp0x1R0 
+	{  token.T_14: true,  }, // RepComInit0x0R0 
+	{  token.T_89: true,  token.T_56: true,  token.T_39: true,  token.T_116: true,  token.T_123: true,  token.T_61: true,  token.T_111: true,  token.T_11: true,  token.T_135: true,  token.T_70: true,  token.T_15: true,  token.T_141: true,  token.T_86: true,  token.T_0: true,  token.T_97: true,  token.T_73: true,  token.T_102: true,  token.T_7: true,  token.T_134: true,  token.T_60: true,  token.T_21: true,  token.T_120: true,  token.T_16: true,  token.T_101: true,  token.T_136: true,  token.T_131: true,  token.T_12: true,  token.T_127: true,  token.T_99: true,  token.T_50: true,  token.T_117: true,  token.T_52: true,  token.T_80: true,  token.T_62: true,  }, // RepComInit0x0R1 
+	{  token.T_14: true,  }, // RepComInit0x0R2 
+	{  }, // RepComInit0x0R3 
+	{  }, // RepComInit0x1R0 
+	{  token.T_14: true,  }, // RepComSExpr0x0R0 
+	{  token.T_102: true,  token.T_16: true,  token.T_21: true,  token.T_52: true,  token.T_131: true,  token.T_86: true,  token.T_135: true,  token.T_0: true,  token.T_123: true,  token.T_120: true,  token.T_12: true,  token.T_50: true,  token.T_141: true,  token.T_60: true,  token.T_127: true,  token.T_80: true,  token.T_56: true,  token.T_7: true,  token.T_111: true,  token.T_116: true,  token.T_62: true,  token.T_89: true,  token.T_99: true,  token.T_70: true,  token.T_134: true,  token.T_117: true,  token.T_73: true,  token.T_39: true,  token.T_61: true,  token.T_101: true,  token.T_15: true,  token.T_11: true,  token.T_97: true,  }, // RepComSExpr0x0R1 
+	{  token.T_14: true,  }, // RepComSExpr0x0R2 
+	{  }, // RepComSExpr0x0R3 
+	{  }, // RepComSExpr0x1R0 
+	{  token.T_14: true,  }, // RepComVDecl0x0R0 
+	{  token.T_97: true,  }, // RepComVDecl0x0R1 
+	{  token.T_14: true,  }, // RepComVDecl0x0R2 
+	{  }, // RepComVDecl0x0R3 
+	{  }, // RepComVDecl0x1R0 
+	{  token.T_36: true,  }, // RepCondition0x0R0 
+	{  token.T_120: true,  token.T_73: true,  token.T_123: true,  token.T_39: true,  token.T_52: true,  token.T_89: true,  token.T_99: true,  token.T_12: true,  token.T_111: true,  token.T_60: true,  token.T_80: true,  token.T_97: true,  token.T_61: true,  token.T_70: true,  token.T_62: true,  token.T_134: true,  token.T_102: true,  token.T_50: true,  token.T_117: true,  token.T_0: true,  token.T_11: true,  token.T_127: true,  token.T_116: true,  token.T_135: true,  token.T_16: true,  token.T_21: true,  token.T_7: true,  token.T_56: true,  token.T_86: true,  token.T_15: true,  token.T_101: true,  token.T_141: true,  token.T_131: true,  }, // RepCondition0x0R1 
+	{  token.T_22: true,  }, // RepCondition0x0R2 
+	{  token.T_7: true,  token.T_60: true,  token.T_102: true,  token.T_52: true,  token.T_135: true,  token.T_15: true,  token.T_62: true,  token.T_50: true,  token.T_131: true,  token.T_89: true,  token.T_70: true,  token.T_11: true,  token.T_101: true,  token.T_120: true,  token.T_117: true,  token.T_21: true,  token.T_61: true,  token.T_127: true,  token.T_56: true,  token.T_73: true,  token.T_86: true,  token.T_16: true,  token.T_12: true,  token.T_0: true,  token.T_80: true,  token.T_141: true,  token.T_39: true,  token.T_123: true,  token.T_111: true,  token.T_99: true,  token.T_116: true,  token.T_97: true,  token.T_134: true,  }, // RepCondition0x0R3 
+	{  token.T_36: true,  }, // RepCondition0x0R4 
+	{  }, // RepCondition0x0R5 
+	{  }, // RepCondition0x1R0 
+	{  token.T_111: true,  }, // RepDig1xExp0R0 
+	{  token.T_67: true,  }, // RepDig1xExp0R1 
+	{  }, // RepDig1xExp0R2 
+	{  token.T_111: true,  }, // RepDig1xOptExp0R0 
+	{  token.T_103: true,  }, // RepDig1xOptExp0R1 
+	{  }, // RepDig1xOptExp0R2 
+	{  token.T_40: true,  }, // RepDim0x0R0 
+	{  token.T_40: true,  }, // RepDim0x0R1 
+	{  }, // RepDim0x0R2 
+	{  }, // RepDim0x1R0 
+	{  token.T_40: true,  }, // RepDimExpr0x0R0 
+	{  token.T_40: true,  }, // RepDimExpr0x0R1 
+	{  }, // RepDimExpr0x0R2 
+	{  }, // RepDimExpr0x1R0 
+	{  token.T_18: true,  }, // RepDotID0x0R0 
+	{  token.T_97: true,  }, // RepDotID0x0R1 
+	{  token.T_18: true,  }, // RepDotID0x0R2 
+	{  }, // RepDotID0x0R3 
+	{  }, // RepDotID0x1R0 
+	{  token.T_27: true,  token.T_31: true,  token.T_24: true,  token.T_30: true,  token.T_79: true,  }, // RepESInst0x0R0 
+	{  token.T_31: true,  token.T_24: true,  token.T_30: true,  token.T_79: true,  token.T_27: true,  }, // RepESInst0x0R1 
+	{  }, // RepESInst0x0R2 
+	{  }, // RepESInst0x1R0 
+	{  token.T_29: true,  token.T_1: true,  }, // RepEqExpr0x0R0 
+	{  token.T_131: true,  token.T_56: true,  token.T_117: true,  token.T_15: true,  token.T_52: true,  token.T_123: true,  token.T_0: true,  token.T_61: true,  token.T_102: true,  token.T_39: true,  token.T_86: true,  token.T_120: true,  token.T_89: true,  token.T_116: true,  token.T_16: true,  token.T_11: true,  token.T_12: true,  token.T_111: true,  token.T_21: true,  token.T_134: true,  token.T_101: true,  token.T_141: true,  token.T_97: true,  token.T_7: true,  token.T_135: true,  token.T_80: true,  token.T_62: true,  token.T_50: true,  token.T_127: true,  token.T_70: true,  token.T_73: true,  token.T_99: true,  token.T_60: true,  }, // RepEqExpr0x0R1 
+	{  token.T_1: true,  token.T_29: true,  }, // RepEqExpr0x0R2 
+	{  }, // RepEqExpr0x0R3 
+	{  }, // RepEqExpr0x1R0 
+	{  token.T_42: true,  }, // RepHatAND0x0R0 
+	{  token.T_101: true,  token.T_56: true,  token.T_141: true,  token.T_15: true,  token.T_11: true,  token.T_21: true,  token.T_89: true,  token.T_12: true,  token.T_61: true,  token.T_50: true,  token.T_7: true,  token.T_117: true,  token.T_123: true,  token.T_127: true,  token.T_0: true,  token.T_97: true,  token.T_102: true,  token.T_62: true,  token.T_120: true,  token.T_52: true,  token.T_99: true,  token.T_39: true,  token.T_116: true,  token.T_73: true,  token.T_134: true,  token.T_111: true,  token.T_70: true,  token.T_16: true,  token.T_86: true,  token.T_80: true,  token.T_131: true,  token.T_135: true,  token.T_60: true,  }, // RepHatAND0x0R1 
+	{  token.T_42: true,  }, // RepHatAND0x0R2 
+	{  }, // RepHatAND0x0R3 
+	{  }, // RepHatAND0x1R0 
+	{  token.T_21: true,  token.T_134: true,  token.T_39: true,  }, // RepHex0xDot0R0 
+	{  token.T_112: true,  }, // RepHex0xDot0R1 
+	{  token.T_18: true,  }, // RepHex0xDot0R2 
+	{  }, // RepHex0xDot0R3 
+	{  token.T_78: true,  }, // RepImpDecl0x0R0 
+	{  token.T_78: true,  }, // RepImpDecl0x0R1 
+	{  }, // RepImpDecl0x0R2 
+	{  }, // RepImpDecl0x1R0 
+	{  token.T_119: true,  token.T_71: true,  token.T_88: true,  token.T_118: true,  token.T_97: true,  token.T_131: true,  token.T_44: true,  token.T_37: true,  token.T_86: true,  token.T_126: true,  token.T_132: true,  token.T_61: true,  token.T_56: true,  token.T_52: true,  token.T_38: true,  token.T_108: true,  token.T_122: true,  token.T_73: true,  token.T_109: true,  token.T_116: true,  token.T_23: true,  token.T_50: true,  token.T_107: true,  token.T_80: true,  }, // RepInBodDecl0x0R0 
+	{  token.T_71: true,  token.T_107: true,  token.T_86: true,  token.T_109: true,  token.T_37: true,  token.T_88: true,  token.T_131: true,  token.T_44: true,  token.T_80: true,  token.T_126: true,  token.T_118: true,  token.T_132: true,  token.T_50: true,  token.T_38: true,  token.T_61: true,  token.T_119: true,  token.T_122: true,  token.T_73: true,  token.T_116: true,  token.T_97: true,  token.T_108: true,  token.T_23: true,  token.T_56: true,  token.T_52: true,  }, // RepInBodDecl0x0R1 
+	{  }, // RepInBodDecl0x0R2 
+	{  }, // RepInBodDecl0x1R0 
+	{  token.T_66: true,  token.T_85: true,  token.T_49: true,  token.T_84: true,  token.T_100: true,  }, // RepLorD0x0R0 
+	{  token.T_84: true,  token.T_100: true,  token.T_66: true,  token.T_85: true,  token.T_49: true,  }, // RepLorD0x0R1 
+	{  }, // RepLorD0x0R2 
+	{  }, // RepLorD0x1R0 
+	{  token.T_126: true,  token.T_71: true,  token.T_108: true,  token.T_119: true,  token.T_107: true,  token.T_88: true,  token.T_109: true,  token.T_132: true,  token.T_44: true,  token.T_122: true,  token.T_118: true,  }, // RepModif00R0 
+	{  token.T_126: true,  token.T_132: true,  token.T_71: true,  token.T_119: true,  token.T_122: true,  token.T_109: true,  token.T_88: true,  token.T_107: true,  token.T_118: true,  token.T_108: true,  token.T_44: true,  }, // RepModif00R1 
+	{  }, // RepModif00R2 
+	{  }, // RepModif01R0 
+	{  token.T_137: true,  }, // RepORXOR0x0R0 
+	{  token.T_137: true,  }, // RepORXOR0x0R1 
+	{  }, // RepORXOR0x0R2 
+	{  }, // RepORXOR0x1R0 
+	{  token.T_139: true,  }, // RepORcAND0x0R0 
+	{  token.T_61: true,  token.T_123: true,  token.T_131: true,  token.T_134: true,  token.T_7: true,  token.T_116: true,  token.T_12: true,  token.T_117: true,  token.T_127: true,  token.T_15: true,  token.T_60: true,  token.T_16: true,  token.T_97: true,  token.T_89: true,  token.T_80: true,  token.T_0: true,  token.T_21: true,  token.T_102: true,  token.T_141: true,  token.T_120: true,  token.T_39: true,  token.T_70: true,  token.T_50: true,  token.T_86: true,  token.T_56: true,  token.T_111: true,  token.T_101: true,  token.T_62: true,  token.T_11: true,  token.T_73: true,  token.T_135: true,  token.T_52: true,  token.T_99: true,  }, // RepORcAND0x0R1 
+	{  token.T_139: true,  }, // RepORcAND0x0R2 
+	{  }, // RepORcAND0x0R3 
+	{  }, // RepORcAND0x1R0 
+	{  token.T_12: true,  token.T_16: true,  }, // RepPfOp0x0R0 
+	{  token.T_16: true,  token.T_12: true,  }, // RepPfOp0x0R1 
+	{  }, // RepPfOp0x0R2 
+	{  }, // RepPfOp0x1R0 
+	{  token.T_2: true,  token.T_9: true,  token.T_19: true,  }, // RepSDMUExpr0x0R0 
+	{  token.T_56: true,  token.T_16: true,  token.T_70: true,  token.T_15: true,  token.T_80: true,  token.T_39: true,  token.T_52: true,  token.T_61: true,  token.T_131: true,  token.T_12: true,  token.T_97: true,  token.T_135: true,  token.T_21: true,  token.T_123: true,  token.T_101: true,  token.T_7: true,  token.T_99: true,  token.T_111: true,  token.T_117: true,  token.T_62: true,  token.T_102: true,  token.T_141: true,  token.T_0: true,  token.T_73: true,  token.T_127: true,  token.T_60: true,  token.T_134: true,  token.T_50: true,  token.T_120: true,  token.T_116: true,  token.T_11: true,  token.T_89: true,  token.T_86: true,  }, // RepSDMUExpr0x0R1 
+	{  token.T_9: true,  token.T_19: true,  token.T_2: true,  }, // RepSDMUExpr0x0R2 
+	{  }, // RepSDMUExpr0x0R3 
+	{  }, // RepSDMUExpr0x1R0 
+	{  token.T_18: true,  token.T_40: true,  }, // RepSel0x0R0 
+	{  token.T_18: true,  token.T_40: true,  }, // RepSel0x0R1 
+	{  }, // RepSel0x0R2 
+	{  }, // RepSel0x1R0 
+	{  token.T_109: true,  token.T_107: true,  token.T_38: true,  token.T_119: true,  token.T_23: true,  token.T_37: true,  token.T_108: true,  token.T_122: true,  token.T_118: true,  token.T_132: true,  token.T_88: true,  token.T_126: true,  token.T_44: true,  token.T_71: true,  }, // RepSemiModDecl0x0R0 
+	{  token.T_119: true,  token.T_37: true,  token.T_71: true,  token.T_109: true,  token.T_107: true,  token.T_88: true,  token.T_44: true,  token.T_118: true,  token.T_132: true,  token.T_38: true,  token.T_108: true,  token.T_126: true,  token.T_23: true,  token.T_122: true,  }, // RepSemiModDecl0x0R1 
+	{  }, // RepSemiModDecl0x0R2 
+	{  }, // RepSemiModDecl0x1R0 
+	{  token.T_58: true,  token.T_54: true,  }, // RepSwBlkStmt0x0R0 
+	{  token.T_54: true,  token.T_58: true,  }, // RepSwBlkStmt0x0R1 
+	{  }, // RepSwBlkStmt0x0R2 
+	{  }, // RepSwBlkStmt0x1R0 
+	{  token.T_9: true,  }, // SDM0R0 
+	{  }, // SDM0R1 
+	{  token.T_19: true,  }, // SDM1R0 
+	{  }, // SDM1R1 
+	{  token.T_2: true,  }, // SDM2R0 
+	{  }, // SDM2R1 
+	{  token.T_23: true,  }, // SEMI0R0 
+	{  token.T_49: true,  token.T_66: true,  token.T_85: true,  }, // SEMI0R1 
+	{  }, // SEMI0R2 
+	{  token.T_25: true,  }, // SL0R0 
+	{  token.T_87: true,  }, // SL0R1 
+	{  token.T_49: true,  token.T_66: true,  token.T_85: true,  }, // SL0R2 
+	{  }, // SL0R3 
+	{  token.T_26: true,  }, // SL_EQU0R0 
+	{  token.T_66: true,  token.T_85: true,  token.T_49: true,  }, // SL_EQU0R1 
+	{  }, // SL_EQU0R2 
+	{  token.T_32: true,  }, // SR0R0 
+	{  token.T_92: true,  }, // SR0R1 
+	{  token.T_66: true,  token.T_85: true,  token.T_49: true,  }, // SR0R2 
+	{  }, // SR0R3 
+	{  token.T_33: true,  }, // SR_EQU0R0 
+	{  token.T_66: true,  token.T_85: true,  token.T_49: true,  }, // SR_EQU0R1 
+	{  }, // SR_EQU0R2 
+	{  token.T_9: true,  }, // STAR0R0 
+	{  token.T_87: true,  }, // STAR0R1 
+	{  token.T_66: true,  token.T_85: true,  token.T_49: true,  }, // STAR0R2 
+	{  }, // STAR0R3 
+	{  token.T_10: true,  }, // STAR_EQU0R0 
+	{  token.T_85: true,  token.T_49: true,  token.T_66: true,  }, // STAR_EQU0R1 
+	{  }, // STAR_EQU0R2 
+	{  token.T_118: true,  }, // STATIC0R0 
+	{  token.T_98: true,  }, // STATIC0R1 
+	{  }, // STATIC0R2 
+	{  token.T_120: true,  }, // SUPER0R0 
+	{  token.T_98: true,  }, // SUPER0R1 
+	{  }, // SUPER0R2 
+	{  token.T_121: true,  }, // SWITCH0R0 
+	{  token.T_98: true,  }, // SWITCH0R1 
+	{  }, // SWITCH0R2 
+	{  token.T_122: true,  }, // SYNCHRONIZED0R0 
+	{  token.T_98: true,  }, // SYNCHRONIZED0R1 
+	{  }, // SYNCHRONIZED0R2 
+	{  token.T_18: true,  }, // Selector0R0 
+	{  token.T_97: true,  }, // Selector0R1 
+	{  token.T_7: true,  }, // Selector0R2 
+	{  }, // Selector0R3 
+	{  token.T_18: true,  }, // Selector1R0 
+	{  token.T_123: true,  }, // Selector1R1 
+	{  }, // Selector1R2 
+	{  token.T_18: true,  }, // Selector2R0 
+	{  token.T_120: true,  }, // Selector2R1 
+	{  token.T_7: true,  token.T_18: true,  }, // Selector2R2 
+	{  }, // Selector2R3 
+	{  token.T_18: true,  }, // Selector3R0 
+	{  token.T_89: true,  }, // Selector3R1 
+	{  token.T_97: true,  }, // Selector3R2 
+	{  }, // Selector3R3 
+	{  token.T_40: true,  }, // Selector4R0 
+	{  }, // Selector4R1 
+	{  token.T_23: true,  }, // SemiModDecl0R0 
+	{  }, // SemiModDecl0R1 
+	{  token.T_108: true,  token.T_44: true,  token.T_126: true,  token.T_107: true,  token.T_132: true,  token.T_119: true,  token.T_88: true,  token.T_37: true,  token.T_122: true,  token.T_109: true,  token.T_71: true,  token.T_118: true,  token.T_38: true,  }, // SemiModDecl1R0 
+	{  token.T_37: true,  token.T_38: true,  }, // SemiModDecl1R1 
+	{  }, // SemiModDecl1R2 
+	{  token.T_32: true,  token.T_34: true,  token.T_25: true,  }, // ShiftAlts0R0 
+	{  token.T_141: true,  token.T_50: true,  token.T_52: true,  token.T_60: true,  token.T_134: true,  token.T_56: true,  token.T_123: true,  token.T_101: true,  token.T_7: true,  token.T_21: true,  token.T_61: true,  token.T_89: true,  token.T_12: true,  token.T_116: true,  token.T_102: true,  token.T_120: true,  token.T_99: true,  token.T_80: true,  token.T_73: true,  token.T_135: true,  token.T_131: true,  token.T_70: true,  token.T_111: true,  token.T_97: true,  token.T_86: true,  token.T_0: true,  token.T_15: true,  token.T_117: true,  token.T_127: true,  token.T_16: true,  token.T_39: true,  token.T_11: true,  token.T_62: true,  }, // ShiftAlts0R1 
+	{  token.T_25: true,  token.T_32: true,  token.T_34: true,  }, // ShiftAlts0R2 
+	{  }, // ShiftAlts0R3 
+	{  }, // ShiftAlts1R0 
+	{  token.T_102: true,  token.T_80: true,  token.T_99: true,  token.T_21: true,  token.T_73: true,  token.T_97: true,  token.T_141: true,  token.T_7: true,  token.T_11: true,  token.T_50: true,  token.T_60: true,  token.T_101: true,  token.T_62: true,  token.T_89: true,  token.T_12: true,  token.T_135: true,  token.T_70: true,  token.T_61: true,  token.T_134: true,  token.T_15: true,  token.T_86: true,  token.T_117: true,  token.T_116: true,  token.T_111: true,  token.T_56: true,  token.T_127: true,  token.T_39: true,  token.T_0: true,  token.T_16: true,  token.T_131: true,  token.T_120: true,  token.T_123: true,  token.T_52: true,  }, // ShiftExpr0R0 
+	{  token.T_32: true,  token.T_34: true,  token.T_25: true,  }, // ShiftExpr0R1 
+	{  }, // ShiftExpr0R2 
+	{  token.T_136: true,  }, // Stmt0R0 
+	{  }, // Stmt0R1 
+	{  token.T_47: true,  }, // Stmt1R0 
+	{  token.T_61: true,  token.T_39: true,  token.T_56: true,  token.T_11: true,  token.T_15: true,  token.T_97: true,  token.T_21: true,  token.T_89: true,  token.T_80: true,  token.T_120: true,  token.T_123: true,  token.T_52: true,  token.T_141: true,  token.T_60: true,  token.T_73: true,  token.T_99: true,  token.T_116: true,  token.T_135: true,  token.T_50: true,  token.T_86: true,  token.T_12: true,  token.T_117: true,  token.T_111: true,  token.T_102: true,  token.T_16: true,  token.T_0: true,  token.T_127: true,  token.T_101: true,  token.T_131: true,  token.T_70: true,  token.T_7: true,  token.T_62: true,  token.T_134: true,  }, // Stmt1R1 
+	{  token.T_23: true,  token.T_22: true,  }, // Stmt1R2 
+	{  token.T_23: true,  }, // Stmt1R3 
+	{  }, // Stmt1R4 
+	{  token.T_76: true,  }, // Stmt2R0 
+	{  token.T_7: true,  }, // Stmt2R1 
+	{  token.T_61: true,  token.T_21: true,  token.T_97: true,  token.T_74: true,  token.T_136: true,  token.T_123: true,  token.T_52: true,  token.T_76: true,  token.T_12: true,  token.T_134: true,  token.T_47: true,  token.T_117: true,  token.T_23: true,  token.T_128: true,  token.T_116: true,  token.T_0: true,  token.T_56: true,  token.T_16: true,  token.T_127: true,  token.T_59: true,  token.T_70: true,  token.T_131: true,  token.T_133: true,  token.T_89: true,  token.T_124: true,  token.T_99: true,  token.T_86: true,  token.T_39: true,  token.T_111: true,  token.T_57: true,  token.T_7: true,  token.T_115: true,  token.T_141: true,  token.T_101: true,  token.T_121: true,  token.T_135: true,  token.T_120: true,  token.T_122: true,  token.T_73: true,  token.T_60: true,  token.T_80: true,  token.T_15: true,  token.T_102: true,  token.T_62: true,  token.T_50: true,  token.T_51: true,  token.T_11: true,  }, // Stmt2R2 
+	{  token.T_64: true,  }, // Stmt2R3 
+	{  }, // Stmt2R4 
+	{  token.T_74: true,  }, // Stmt3R0 
+	{  token.T_7: true,  }, // Stmt3R1 
+	{  token.T_71: true,  token.T_70: true,  token.T_111: true,  token.T_101: true,  token.T_61: true,  token.T_116: true,  token.T_97: true,  token.T_86: true,  token.T_131: true,  token.T_141: true,  token.T_123: true,  token.T_60: true,  token.T_135: true,  token.T_12: true,  token.T_99: true,  token.T_11: true,  token.T_102: true,  token.T_21: true,  token.T_117: true,  token.T_7: true,  token.T_73: true,  token.T_39: true,  token.T_89: true,  token.T_52: true,  token.T_15: true,  token.T_50: true,  token.T_16: true,  token.T_56: true,  token.T_80: true,  token.T_134: true,  token.T_127: true,  token.T_62: true,  token.T_120: true,  token.T_0: true,  token.T_23: true,  }, // Stmt3R2 
+	{  token.T_23: true,  }, // Stmt3R3 
+	{  token.T_141: true,  token.T_123: true,  token.T_50: true,  token.T_62: true,  token.T_102: true,  token.T_120: true,  token.T_135: true,  token.T_116: true,  token.T_111: true,  token.T_86: true,  token.T_52: true,  token.T_134: true,  token.T_61: true,  token.T_99: true,  token.T_23: true,  token.T_11: true,  token.T_89: true,  token.T_56: true,  token.T_39: true,  token.T_21: true,  token.T_131: true,  token.T_101: true,  token.T_16: true,  token.T_117: true,  token.T_60: true,  token.T_73: true,  token.T_97: true,  token.T_127: true,  token.T_7: true,  token.T_0: true,  token.T_12: true,  token.T_70: true,  token.T_15: true,  token.T_80: true,  }, // Stmt3R4 
+	{  token.T_23: true,  }, // Stmt3R5 
+	{  token.T_101: true,  token.T_80: true,  token.T_127: true,  token.T_141: true,  token.T_123: true,  token.T_0: true,  token.T_16: true,  token.T_15: true,  token.T_7: true,  token.T_60: true,  token.T_111: true,  token.T_102: true,  token.T_61: true,  token.T_131: true,  token.T_21: true,  token.T_89: true,  token.T_70: true,  token.T_97: true,  token.T_39: true,  token.T_56: true,  token.T_73: true,  token.T_62: true,  token.T_52: true,  token.T_134: true,  token.T_135: true,  token.T_8: true,  token.T_99: true,  token.T_11: true,  token.T_50: true,  token.T_86: true,  token.T_116: true,  token.T_120: true,  token.T_12: true,  token.T_117: true,  }, // Stmt3R6 
+	{  token.T_8: true,  }, // Stmt3R7 
+	{  token.T_76: true,  token.T_11: true,  token.T_136: true,  token.T_135: true,  token.T_73: true,  token.T_134: true,  token.T_99: true,  token.T_141: true,  token.T_56: true,  token.T_101: true,  token.T_86: true,  token.T_39: true,  token.T_111: true,  token.T_15: true,  token.T_89: true,  token.T_60: true,  token.T_23: true,  token.T_102: true,  token.T_74: true,  token.T_124: true,  token.T_120: true,  token.T_133: true,  token.T_62: true,  token.T_121: true,  token.T_115: true,  token.T_16: true,  token.T_128: true,  token.T_122: true,  token.T_61: true,  token.T_57: true,  token.T_80: true,  token.T_47: true,  token.T_123: true,  token.T_0: true,  token.T_127: true,  token.T_52: true,  token.T_131: true,  token.T_12: true,  token.T_97: true,  token.T_117: true,  token.T_116: true,  token.T_7: true,  token.T_70: true,  token.T_21: true,  token.T_59: true,  token.T_50: true,  token.T_51: true,  }, // Stmt3R8 
+	{  }, // Stmt3R9 
+	{  token.T_133: true,  }, // Stmt4R0 
+	{  token.T_7: true,  }, // Stmt4R1 
+	{  token.T_70: true,  token.T_16: true,  token.T_133: true,  token.T_101: true,  token.T_128: true,  token.T_76: true,  token.T_0: true,  token.T_134: true,  token.T_15: true,  token.T_73: true,  token.T_39: true,  token.T_111: true,  token.T_50: true,  token.T_135: true,  token.T_51: true,  token.T_123: true,  token.T_120: true,  token.T_7: true,  token.T_80: true,  token.T_56: true,  token.T_124: true,  token.T_136: true,  token.T_121: true,  token.T_11: true,  token.T_57: true,  token.T_47: true,  token.T_115: true,  token.T_74: true,  token.T_122: true,  token.T_116: true,  token.T_60: true,  token.T_12: true,  token.T_141: true,  token.T_117: true,  token.T_59: true,  token.T_52: true,  token.T_21: true,  token.T_131: true,  token.T_97: true,  token.T_99: true,  token.T_127: true,  token.T_89: true,  token.T_86: true,  token.T_61: true,  token.T_102: true,  token.T_23: true,  token.T_62: true,  }, // Stmt4R2 
+	{  }, // Stmt4R3 
+	{  token.T_59: true,  }, // Stmt5R0 
+	{  token.T_23: true,  token.T_101: true,  token.T_12: true,  token.T_80: true,  token.T_115: true,  token.T_11: true,  token.T_21: true,  token.T_47: true,  token.T_16: true,  token.T_99: true,  token.T_123: true,  token.T_70: true,  token.T_57: true,  token.T_59: true,  token.T_136: true,  token.T_120: true,  token.T_141: true,  token.T_133: true,  token.T_62: true,  token.T_127: true,  token.T_74: true,  token.T_7: true,  token.T_131: true,  token.T_89: true,  token.T_124: true,  token.T_50: true,  token.T_86: true,  token.T_76: true,  token.T_39: true,  token.T_56: true,  token.T_117: true,  token.T_128: true,  token.T_121: true,  token.T_135: true,  token.T_111: true,  token.T_60: true,  token.T_15: true,  token.T_97: true,  token.T_102: true,  token.T_122: true,  token.T_73: true,  token.T_51: true,  token.T_61: true,  token.T_52: true,  token.T_116: true,  token.T_0: true,  token.T_134: true,  }, // Stmt5R1 
+	{  token.T_133: true,  }, // Stmt5R2 
+	{  token.T_7: true,  }, // Stmt5R3 
+	{  token.T_23: true,  }, // Stmt5R4 
+	{  }, // Stmt5R5 
+	{  token.T_128: true,  }, // Stmt6R0 
+	{  token.T_136: true,  }, // Stmt6R1 
+	{  token.T_72: true,  token.T_55: true,  }, // Stmt6R2 
+	{  }, // Stmt6R3 
+	{  token.T_121: true,  }, // Stmt7R0 
+	{  token.T_7: true,  }, // Stmt7R1 
+	{  token.T_136: true,  }, // Stmt7R2 
+	{  token.T_54: true,  token.T_58: true,  token.T_140: true,  }, // Stmt7R3 
+	{  token.T_140: true,  }, // Stmt7R4 
+	{  }, // Stmt7R5 
+	{  token.T_122: true,  }, // Stmt8R0 
+	{  token.T_7: true,  }, // Stmt8R1 
+	{  token.T_136: true,  }, // Stmt8R2 
+	{  }, // Stmt8R3 
+	{  token.T_115: true,  }, // Stmt9R0 
+	{  token.T_116: true,  token.T_120: true,  token.T_123: true,  token.T_12: true,  token.T_86: true,  token.T_97: true,  token.T_89: true,  token.T_141: true,  token.T_11: true,  token.T_50: true,  token.T_73: true,  token.T_135: true,  token.T_134: true,  token.T_16: true,  token.T_0: true,  token.T_131: true,  token.T_52: true,  token.T_56: true,  token.T_21: true,  token.T_111: true,  token.T_23: true,  token.T_60: true,  token.T_80: true,  token.T_99: true,  token.T_61: true,  token.T_7: true,  token.T_15: true,  token.T_62: true,  token.T_101: true,  token.T_127: true,  token.T_102: true,  token.T_39: true,  token.T_70: true,  token.T_117: true,  }, // Stmt9R1 
+	{  token.T_23: true,  }, // Stmt9R2 
+	{  }, // Stmt9R3 
+	{  token.T_124: true,  }, // Stmt10R0 
+	{  token.T_7: true,  token.T_89: true,  token.T_123: true,  token.T_70: true,  token.T_0: true,  token.T_52: true,  token.T_97: true,  token.T_62: true,  token.T_39: true,  token.T_61: true,  token.T_141: true,  token.T_60: true,  token.T_21: true,  token.T_134: true,  token.T_50: true,  token.T_117: true,  token.T_111: true,  token.T_15: true,  token.T_131: true,  token.T_80: true,  token.T_116: true,  token.T_102: true,  token.T_12: true,  token.T_11: true,  token.T_127: true,  token.T_101: true,  token.T_56: true,  token.T_120: true,  token.T_135: true,  token.T_16: true,  token.T_86: true,  token.T_73: true,  token.T_99: true,  }, // Stmt10R1 
+	{  token.T_23: true,  }, // Stmt10R2 
+	{  }, // Stmt10R3 
+	{  token.T_51: true,  }, // Stmt11R0 
+	{  token.T_97: true,  token.T_23: true,  }, // Stmt11R1 
+	{  token.T_23: true,  }, // Stmt11R2 
+	{  }, // Stmt11R3 
+	{  token.T_57: true,  }, // Stmt12R0 
+	{  token.T_23: true,  token.T_97: true,  }, // Stmt12R1 
+	{  token.T_23: true,  }, // Stmt12R2 
+	{  }, // Stmt12R3 
+	{  token.T_23: true,  }, // Stmt13R0 
+	{  }, // Stmt13R1 
+	{  token.T_111: true,  token.T_60: true,  token.T_21: true,  token.T_70: true,  token.T_97: true,  token.T_80: true,  token.T_39: true,  token.T_0: true,  token.T_11: true,  token.T_117: true,  token.T_135: true,  token.T_127: true,  token.T_116: true,  token.T_102: true,  token.T_12: true,  token.T_56: true,  token.T_7: true,  token.T_62: true,  token.T_50: true,  token.T_141: true,  token.T_99: true,  token.T_15: true,  token.T_134: true,  token.T_52: true,  token.T_101: true,  token.T_16: true,  token.T_89: true,  token.T_86: true,  token.T_73: true,  token.T_123: true,  token.T_131: true,  token.T_120: true,  token.T_61: true,  }, // Stmt14R0 
+	{  token.T_23: true,  }, // Stmt14R1 
+	{  }, // Stmt14R2 
+	{  token.T_97: true,  }, // Stmt15R0 
+	{  token.T_22: true,  }, // Stmt15R1 
+	{  token.T_76: true,  token.T_16: true,  token.T_80: true,  token.T_15: true,  token.T_102: true,  token.T_124: true,  token.T_50: true,  token.T_135: true,  token.T_51: true,  token.T_136: true,  token.T_123: true,  token.T_7: true,  token.T_39: true,  token.T_127: true,  token.T_89: true,  token.T_122: true,  token.T_101: true,  token.T_47: true,  token.T_62: true,  token.T_99: true,  token.T_73: true,  token.T_60: true,  token.T_134: true,  token.T_115: true,  token.T_59: true,  token.T_52: true,  token.T_120: true,  token.T_141: true,  token.T_117: true,  token.T_133: true,  token.T_61: true,  token.T_0: true,  token.T_111: true,  token.T_57: true,  token.T_21: true,  token.T_12: true,  token.T_56: true,  token.T_86: true,  token.T_116: true,  token.T_11: true,  token.T_70: true,  token.T_97: true,  token.T_23: true,  token.T_128: true,  token.T_74: true,  token.T_121: true,  token.T_131: true,  }, // Stmt15R2 
+	{  }, // Stmt15R3 
+	{  token.T_89: true,  token.T_131: true,  token.T_102: true,  token.T_117: true,  token.T_80: true,  token.T_62: true,  token.T_86: true,  token.T_0: true,  token.T_52: true,  token.T_60: true,  token.T_73: true,  token.T_16: true,  token.T_15: true,  token.T_101: true,  token.T_123: true,  token.T_70: true,  token.T_7: true,  token.T_39: true,  token.T_56: true,  token.T_11: true,  token.T_97: true,  token.T_134: true,  token.T_99: true,  token.T_120: true,  token.T_111: true,  token.T_135: true,  token.T_127: true,  token.T_50: true,  token.T_61: true,  token.T_12: true,  token.T_141: true,  token.T_21: true,  token.T_116: true,  }, // StmtExpr0R0 
+	{  }, // StmtExpr0R1 
+	{  token.T_62: true,  }, // StrClose0R0 
+	{  }, // StrClose0R1 
+	{  token.T_63: true,  token.T_46: true,  }, // StrClose1R0 
+	{  token.T_62: true,  token.T_63: true,  token.T_46: true,  }, // StrClose1R1 
+	{  }, // StrClose1R2 
+	{  token.T_62: true,  }, // StringLiteral0R0 
+	{  token.T_62: true,  token.T_63: true,  token.T_46: true,  }, // StringLiteral0R1 
+	{  }, // StringLiteral0R2 
+	{  token.T_7: true,  }, // SuperSuffix0R0 
+	{  }, // SuperSuffix0R1 
+	{  token.T_18: true,  }, // SuperSuffix1R0 
+	{  token.T_97: true,  }, // SuperSuffix1R1 
+	{  token.T_7: true,  }, // SuperSuffix1R2 
+	{  }, // SuperSuffix1R3 
+	{  token.T_58: true,  token.T_54: true,  }, // SwitchBlockStmtGrp0R0 
+	{  token.T_74: true,  token.T_16: true,  token.T_109: true,  token.T_88: true,  token.T_122: true,  token.T_11: true,  token.T_108: true,  token.T_70: true,  token.T_39: true,  token.T_97: true,  token.T_117: true,  token.T_135: true,  token.T_126: true,  token.T_0: true,  token.T_132: true,  token.T_47: true,  token.T_52: true,  token.T_111: true,  token.T_61: true,  token.T_57: true,  token.T_73: true,  token.T_56: true,  token.T_120: true,  token.T_102: true,  token.T_131: true,  token.T_134: true,  token.T_15: true,  token.T_86: true,  token.T_121: true,  token.T_136: true,  token.T_123: true,  token.T_119: true,  token.T_118: true,  token.T_80: true,  token.T_116: true,  token.T_21: true,  token.T_141: true,  token.T_128: true,  token.T_89: true,  token.T_37: true,  token.T_107: true,  token.T_12: true,  token.T_50: true,  token.T_115: true,  token.T_101: true,  token.T_23: true,  token.T_62: true,  token.T_51: true,  token.T_60: true,  token.T_59: true,  token.T_127: true,  token.T_71: true,  token.T_124: true,  token.T_44: true,  token.T_76: true,  token.T_7: true,  token.T_99: true,  token.T_133: true,  }, // SwitchBlockStmtGrp0R1 
+	{  }, // SwitchBlockStmtGrp0R2 
+	{  token.T_54: true,  }, // SwitchLabel0R0 
+	{  token.T_52: true,  token.T_101: true,  token.T_86: true,  token.T_62: true,  token.T_116: true,  token.T_60: true,  token.T_7: true,  token.T_99: true,  token.T_21: true,  token.T_111: true,  token.T_102: true,  token.T_135: true,  token.T_0: true,  token.T_131: true,  token.T_61: true,  token.T_117: true,  token.T_50: true,  token.T_97: true,  token.T_141: true,  token.T_123: true,  token.T_15: true,  token.T_16: true,  token.T_80: true,  token.T_11: true,  token.T_73: true,  token.T_120: true,  token.T_70: true,  token.T_12: true,  token.T_39: true,  token.T_134: true,  token.T_56: true,  token.T_89: true,  token.T_127: true,  }, // SwitchLabel0R1 
+	{  token.T_22: true,  }, // SwitchLabel0R2 
+	{  }, // SwitchLabel0R3 
+	{  token.T_58: true,  }, // SwitchLabel1R0 
+	{  token.T_22: true,  }, // SwitchLabel1R1 
+	{  }, // SwitchLabel1R2 
+	{  token.T_123: true,  }, // THIS0R0 
+	{  token.T_98: true,  }, // THIS0R1 
+	{  }, // THIS0R2 
+	{  token.T_124: true,  }, // THROW0R0 
+	{  token.T_98: true,  }, // THROW0R1 
+	{  }, // THROW0R2 
+	{  token.T_125: true,  }, // THROWS0R0 
+	{  token.T_98: true,  }, // THROWS0R1 
+	{  }, // THROWS0R2 
+	{  token.T_141: true,  }, // TILDA0R0 
+	{  token.T_49: true,  token.T_66: true,  token.T_85: true,  }, // TILDA0R1 
+	{  }, // TILDA0R2 
+	{  token.T_128: true,  }, // TRY0R0 
+	{  token.T_98: true,  }, // TRY0R1 
+	{  }, // TRY0R2 
+	{  token.T_52: true,  token.T_116: true,  token.T_97: true,  token.T_61: true,  token.T_73: true,  token.T_80: true,  token.T_86: true,  token.T_50: true,  token.T_56: true,  }, // Type0R0 
+	{  token.T_40: true,  }, // Type0R1 
+	{  }, // Type0R2 
+	{  token.T_56: true,  token.T_80: true,  token.T_86: true,  token.T_73: true,  token.T_61: true,  token.T_50: true,  token.T_52: true,  token.T_116: true,  }, // TypeAlts0R0 
+	{  }, // TypeAlts0R1 
+	{  token.T_97: true,  }, // TypeAlts1R0 
+	{  }, // TypeAlts1R1 
+	{  token.T_16: true,  token.T_0: true,  token.T_141: true,  token.T_11: true,  token.T_15: true,  token.T_12: true,  }, // UnaryExpr0R0 
+	{  token.T_21: true,  token.T_101: true,  token.T_52: true,  token.T_99: true,  token.T_61: true,  token.T_62: true,  token.T_16: true,  token.T_39: true,  token.T_116: true,  token.T_117: true,  token.T_141: true,  token.T_80: true,  token.T_102: true,  token.T_56: true,  token.T_86: true,  token.T_134: true,  token.T_131: true,  token.T_0: true,  token.T_123: true,  token.T_111: true,  token.T_11: true,  token.T_70: true,  token.T_89: true,  token.T_120: true,  token.T_127: true,  token.T_60: true,  token.T_15: true,  token.T_7: true,  token.T_97: true,  token.T_50: true,  token.T_12: true,  token.T_135: true,  token.T_73: true,  }, // UnaryExpr0R1 
+	{  }, // UnaryExpr0R2 
+	{  token.T_7: true,  }, // UnaryExpr1R0 
+	{  token.T_52: true,  token.T_56: true,  token.T_86: true,  token.T_97: true,  token.T_50: true,  token.T_116: true,  token.T_73: true,  token.T_80: true,  token.T_61: true,  }, // UnaryExpr1R1 
+	{  token.T_8: true,  }, // UnaryExpr1R2 
+	{  token.T_70: true,  token.T_134: true,  token.T_16: true,  token.T_15: true,  token.T_89: true,  token.T_52: true,  token.T_12: true,  token.T_60: true,  token.T_111: true,  token.T_127: true,  token.T_117: true,  token.T_80: true,  token.T_39: true,  token.T_21: true,  token.T_116: true,  token.T_141: true,  token.T_7: true,  token.T_0: true,  token.T_11: true,  token.T_99: true,  token.T_50: true,  token.T_131: true,  token.T_62: true,  token.T_123: true,  token.T_101: true,  token.T_86: true,  token.T_135: true,  token.T_61: true,  token.T_97: true,  token.T_102: true,  token.T_120: true,  token.T_56: true,  token.T_73: true,  }, // UnaryExpr1R3 
+	{  }, // UnaryExpr1R4 
+	{  token.T_111: true,  token.T_117: true,  token.T_7: true,  token.T_116: true,  token.T_97: true,  token.T_123: true,  token.T_56: true,  token.T_62: true,  token.T_73: true,  token.T_21: true,  token.T_120: true,  token.T_70: true,  token.T_135: true,  token.T_61: true,  token.T_134: true,  token.T_60: true,  token.T_39: true,  token.T_102: true,  token.T_52: true,  token.T_99: true,  token.T_50: true,  token.T_101: true,  token.T_127: true,  token.T_86: true,  token.T_131: true,  token.T_89: true,  token.T_80: true,  }, // UnaryExpr2R0 
+	{  token.T_16: true,  token.T_18: true,  token.T_40: true,  token.T_12: true,  }, // UnaryExpr2R1 
+	{  token.T_16: true,  token.T_12: true,  }, // UnaryExpr2R2 
+	{  }, // UnaryExpr2R3 
+	{  token.T_130: true,  }, // UnicodeEscape0R0 
+	{  token.T_75: true,  }, // UnicodeEscape0R1 
+	{  token.T_75: true,  }, // UnicodeEscape0R2 
+	{  token.T_75: true,  }, // UnicodeEscape0R3 
+	{  token.T_75: true,  }, // UnicodeEscape0R4 
+	{  }, // UnicodeEscape0R5 
+	{  token.T_131: true,  }, // VOID0R0 
+	{  token.T_98: true,  }, // VOID0R1 
+	{  }, // VOID0R2 
+	{  token.T_97: true,  }, // VarDecl0R0 
+	{  token.T_40: true,  token.T_28: true,  }, // VarDecl0R1 
+	{  token.T_28: true,  }, // VarDecl0R2 
+	{  }, // VarDecl0R3 
+	{  token.T_97: true,  }, // VarDeclInit0R0 
+	{  token.T_14: true,  }, // VarDeclInit0R1 
+	{  }, // VarDeclInit0R2 
+	{  token.T_97: true,  }, // VarDelID0R0 
+	{  token.T_40: true,  }, // VarDelID0R1 
+	{  }, // VarDelID0R2 
+	{  token.T_136: true,  }, // VarInitial0R0 
+	{  }, // VarInitial0R1 
+	{  token.T_86: true,  token.T_123: true,  token.T_134: true,  token.T_16: true,  token.T_97: true,  token.T_50: true,  token.T_56: true,  token.T_111: true,  token.T_101: true,  token.T_80: true,  token.T_73: true,  token.T_7: true,  token.T_117: true,  token.T_127: true,  token.T_116: true,  token.T_120: true,  token.T_102: true,  token.T_70: true,  token.T_39: true,  token.T_131: true,  token.T_15: true,  token.T_11: true,  token.T_60: true,  token.T_62: true,  token.T_0: true,  token.T_52: true,  token.T_12: true,  token.T_141: true,  token.T_99: true,  token.T_135: true,  token.T_61: true,  token.T_21: true,  token.T_89: true,  }, // VarInitial1R0 
+	{  }, // VarInitial1R1 
+	{  token.T_7: true,  }, // VoidIntfMethDeclRst0R0 
+	{  token.T_125: true,  token.T_23: true,  }, // VoidIntfMethDeclRst0R1 
+	{  token.T_23: true,  }, // VoidIntfMethDeclRst0R2 
+	{  }, // VoidIntfMethDeclRst0R3 
+	{  token.T_133: true,  }, // WHILE0R0 
+	{  token.T_98: true,  }, // WHILE0R1 
+	{  }, // WHILE0R2 
+	{  token.T_49: true,  token.T_66: true,  token.T_85: true,  }, // WS0R0 
+	{  }, // WS0R1 
+	{  }, // WS1R0 
+	{  token.T_70: true,  token.T_21: true,  token.T_134: true,  token.T_141: true,  token.T_99: true,  token.T_97: true,  token.T_102: true,  token.T_56: true,  token.T_123: true,  token.T_50: true,  token.T_135: true,  token.T_39: true,  token.T_11: true,  token.T_111: true,  token.T_15: true,  token.T_60: true,  token.T_61: true,  token.T_80: true,  token.T_0: true,  token.T_116: true,  token.T_73: true,  token.T_120: true,  token.T_101: true,  token.T_117: true,  token.T_127: true,  token.T_12: true,  token.T_52: true,  token.T_7: true,  token.T_86: true,  token.T_62: true,  token.T_131: true,  token.T_16: true,  token.T_89: true,  }, // XORExpr0R0 
+	{  token.T_42: true,  }, // XORExpr0R1 
+	{  }, // XORExpr0R2 
+}

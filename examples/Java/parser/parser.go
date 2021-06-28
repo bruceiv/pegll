@@ -84,11 +84,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.AND0R3, cU, p.cI)
 		case slot.AND0R3: // AND : & notEqAnd WS ∙
 
-			if p.follow(symbols.NT_AND) {
-				p.rtn(symbols.NT_AND, cU, p.cI)
-			} else {
-				p.parseError(slot.AND0R0, p.cI, followSets[symbols.NT_AND])
-			}
+			p.rtn(symbols.NT_AND, cU, p.cI)
 		case slot.ANDExpr0R0: // ANDExpr : ∙EqualExpr RepANDEq0x
 
 			p.call(slot.ANDExpr0R1, cU, p.cI)
@@ -102,11 +98,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.ANDExpr0R2, cU, p.cI)
 		case slot.ANDExpr0R2: // ANDExpr : EqualExpr RepANDEq0x ∙
 
-			if p.follow(symbols.NT_ANDExpr) {
-				p.rtn(symbols.NT_ANDExpr, cU, p.cI)
-			} else {
-				p.parseError(slot.ANDExpr0R0, p.cI, followSets[symbols.NT_ANDExpr])
-			}
+			p.rtn(symbols.NT_ANDExpr, cU, p.cI)
 		case slot.AND_AND0R0: // AND_AND : ∙&& WS
 
 			p.bsrSet.Add(slot.AND_AND0R1, cU, p.cI, p.cI+1)
@@ -119,11 +111,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.AND_AND0R2, cU, p.cI)
 		case slot.AND_AND0R2: // AND_AND : && WS ∙
 
-			if p.follow(symbols.NT_AND_AND) {
-				p.rtn(symbols.NT_AND_AND, cU, p.cI)
-			} else {
-				p.parseError(slot.AND_AND0R0, p.cI, followSets[symbols.NT_AND_AND])
-			}
+			p.rtn(symbols.NT_AND_AND, cU, p.cI)
 		case slot.AND_EQU0R0: // AND_EQU : ∙&= WS
 
 			p.bsrSet.Add(slot.AND_EQU0R1, cU, p.cI, p.cI+1)
@@ -136,11 +124,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.AND_EQU0R2, cU, p.cI)
 		case slot.AND_EQU0R2: // AND_EQU : &= WS ∙
 
-			if p.follow(symbols.NT_AND_EQU) {
-				p.rtn(symbols.NT_AND_EQU, cU, p.cI)
-			} else {
-				p.parseError(slot.AND_EQU0R0, p.cI, followSets[symbols.NT_AND_EQU])
-			}
+			p.rtn(symbols.NT_AND_EQU, cU, p.cI)
 		case slot.ASSERT0R0: // ASSERT : ∙assert notLorD
 
 			p.bsrSet.Add(slot.ASSERT0R1, cU, p.cI, p.cI+1)
@@ -152,31 +136,19 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 
 			p.bsrSet.Add(slot.ASSERT0R2, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_ASSERT) {
-				p.rtn(symbols.NT_ASSERT, cU, p.cI)
-			} else {
-				p.parseError(slot.ASSERT0R0, p.cI, followSets[symbols.NT_ASSERT])
-			}
+			p.rtn(symbols.NT_ASSERT, cU, p.cI)
 		case slot.AddAlts0R0: // AddAlts : ∙PLUS
 
 			p.call(slot.AddAlts0R1, cU, p.cI)
 		case slot.AddAlts0R1: // AddAlts : PLUS ∙
 
-			if p.follow(symbols.NT_AddAlts) {
-				p.rtn(symbols.NT_AddAlts, cU, p.cI)
-			} else {
-				p.parseError(slot.AddAlts0R0, p.cI, followSets[symbols.NT_AddAlts])
-			}
+			p.rtn(symbols.NT_AddAlts, cU, p.cI)
 		case slot.AddAlts1R0: // AddAlts : ∙MINUS
 
 			p.call(slot.AddAlts1R1, cU, p.cI)
 		case slot.AddAlts1R1: // AddAlts : MINUS ∙
 
-			if p.follow(symbols.NT_AddAlts) {
-				p.rtn(symbols.NT_AddAlts, cU, p.cI)
-			} else {
-				p.parseError(slot.AddAlts1R0, p.cI, followSets[symbols.NT_AddAlts])
-			}
+			p.rtn(symbols.NT_AddAlts, cU, p.cI)
 		case slot.AddExpr0R0: // AddExpr : ∙MultExpr RepAddAltsMult0x
 
 			p.call(slot.AddExpr0R1, cU, p.cI)
@@ -190,38 +162,22 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.AddExpr0R2, cU, p.cI)
 		case slot.AddExpr0R2: // AddExpr : MultExpr RepAddAltsMult0x ∙
 
-			if p.follow(symbols.NT_AddExpr) {
-				p.rtn(symbols.NT_AddExpr, cU, p.cI)
-			} else {
-				p.parseError(slot.AddExpr0R0, p.cI, followSets[symbols.NT_AddExpr])
-			}
+			p.rtn(symbols.NT_AddExpr, cU, p.cI)
 		case slot.Any0xX0R0: // Any0xX : ∙0
 
 			p.bsrSet.Add(slot.Any0xX0R1, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_Any0xX) {
-				p.rtn(symbols.NT_Any0xX, cU, p.cI)
-			} else {
-				p.parseError(slot.Any0xX0R0, p.cI, followSets[symbols.NT_Any0xX])
-			}
+			p.rtn(symbols.NT_Any0xX, cU, p.cI)
 		case slot.Any0xX1R0: // Any0xX : ∙x
 
 			p.bsrSet.Add(slot.Any0xX1R1, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_Any0xX) {
-				p.rtn(symbols.NT_Any0xX, cU, p.cI)
-			} else {
-				p.parseError(slot.Any0xX1R0, p.cI, followSets[symbols.NT_Any0xX])
-			}
+			p.rtn(symbols.NT_Any0xX, cU, p.cI)
 		case slot.Any0xX2R0: // Any0xX : ∙X
 
 			p.bsrSet.Add(slot.Any0xX2R1, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_Any0xX) {
-				p.rtn(symbols.NT_Any0xX, cU, p.cI)
-			} else {
-				p.parseError(slot.Any0xX2R0, p.cI, followSets[symbols.NT_Any0xX])
-			}
+			p.rtn(symbols.NT_Any0xX, cU, p.cI)
 		case slot.Arguments0R0: // Arguments : ∙LPAR OptExprs RPAR
 
 			p.call(slot.Arguments0R1, cU, p.cI)
@@ -243,11 +199,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.Arguments0R3, cU, p.cI)
 		case slot.Arguments0R3: // Arguments : LPAR OptExprs RPAR ∙
 
-			if p.follow(symbols.NT_Arguments) {
-				p.rtn(symbols.NT_Arguments, cU, p.cI)
-			} else {
-				p.parseError(slot.Arguments0R0, p.cI, followSets[symbols.NT_Arguments])
-			}
+			p.rtn(symbols.NT_Arguments, cU, p.cI)
 		case slot.ArrayCreatorRest0R0: // ArrayCreatorRest : ∙LBRK ArrayRest
 
 			p.call(slot.ArrayCreatorRest0R1, cU, p.cI)
@@ -261,11 +213,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.ArrayCreatorRest0R2, cU, p.cI)
 		case slot.ArrayCreatorRest0R2: // ArrayCreatorRest : LBRK ArrayRest ∙
 
-			if p.follow(symbols.NT_ArrayCreatorRest) {
-				p.rtn(symbols.NT_ArrayCreatorRest, cU, p.cI)
-			} else {
-				p.parseError(slot.ArrayCreatorRest0R0, p.cI, followSets[symbols.NT_ArrayCreatorRest])
-			}
+			p.rtn(symbols.NT_ArrayCreatorRest, cU, p.cI)
 		case slot.ArrayInitializer0R0: // ArrayInitializer : ∙LWING OptVarInit RWING
 
 			p.call(slot.ArrayInitializer0R1, cU, p.cI)
@@ -287,11 +235,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.ArrayInitializer0R3, cU, p.cI)
 		case slot.ArrayInitializer0R3: // ArrayInitializer : LWING OptVarInit RWING ∙
 
-			if p.follow(symbols.NT_ArrayInitializer) {
-				p.rtn(symbols.NT_ArrayInitializer, cU, p.cI)
-			} else {
-				p.parseError(slot.ArrayInitializer0R0, p.cI, followSets[symbols.NT_ArrayInitializer])
-			}
+			p.rtn(symbols.NT_ArrayInitializer, cU, p.cI)
 		case slot.ArrayRest0R0: // ArrayRest : ∙RBRK RepDim0x ArrayInitializer
 
 			p.call(slot.ArrayRest0R1, cU, p.cI)
@@ -313,11 +257,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.ArrayRest0R3, cU, p.cI)
 		case slot.ArrayRest0R3: // ArrayRest : RBRK RepDim0x ArrayInitializer ∙
 
-			if p.follow(symbols.NT_ArrayRest) {
-				p.rtn(symbols.NT_ArrayRest, cU, p.cI)
-			} else {
-				p.parseError(slot.ArrayRest0R0, p.cI, followSets[symbols.NT_ArrayRest])
-			}
+			p.rtn(symbols.NT_ArrayRest, cU, p.cI)
 		case slot.ArrayRest1R0: // ArrayRest : ∙Expr RBRK RepDimExpr0x RepDim0x
 
 			p.call(slot.ArrayRest1R1, cU, p.cI)
@@ -347,131 +287,79 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.ArrayRest1R4, cU, p.cI)
 		case slot.ArrayRest1R4: // ArrayRest : Expr RBRK RepDimExpr0x RepDim0x ∙
 
-			if p.follow(symbols.NT_ArrayRest) {
-				p.rtn(symbols.NT_ArrayRest, cU, p.cI)
-			} else {
-				p.parseError(slot.ArrayRest1R0, p.cI, followSets[symbols.NT_ArrayRest])
-			}
+			p.rtn(symbols.NT_ArrayRest, cU, p.cI)
 		case slot.AssignOp0R0: // AssignOp : ∙EQU
 
 			p.call(slot.AssignOp0R1, cU, p.cI)
 		case slot.AssignOp0R1: // AssignOp : EQU ∙
 
-			if p.follow(symbols.NT_AssignOp) {
-				p.rtn(symbols.NT_AssignOp, cU, p.cI)
-			} else {
-				p.parseError(slot.AssignOp0R0, p.cI, followSets[symbols.NT_AssignOp])
-			}
+			p.rtn(symbols.NT_AssignOp, cU, p.cI)
 		case slot.AssignOp1R0: // AssignOp : ∙PLUS_EQU
 
 			p.call(slot.AssignOp1R1, cU, p.cI)
 		case slot.AssignOp1R1: // AssignOp : PLUS_EQU ∙
 
-			if p.follow(symbols.NT_AssignOp) {
-				p.rtn(symbols.NT_AssignOp, cU, p.cI)
-			} else {
-				p.parseError(slot.AssignOp1R0, p.cI, followSets[symbols.NT_AssignOp])
-			}
+			p.rtn(symbols.NT_AssignOp, cU, p.cI)
 		case slot.AssignOp2R0: // AssignOp : ∙MINUS_EQU
 
 			p.call(slot.AssignOp2R1, cU, p.cI)
 		case slot.AssignOp2R1: // AssignOp : MINUS_EQU ∙
 
-			if p.follow(symbols.NT_AssignOp) {
-				p.rtn(symbols.NT_AssignOp, cU, p.cI)
-			} else {
-				p.parseError(slot.AssignOp2R0, p.cI, followSets[symbols.NT_AssignOp])
-			}
+			p.rtn(symbols.NT_AssignOp, cU, p.cI)
 		case slot.AssignOp3R0: // AssignOp : ∙STAR_EQU
 
 			p.call(slot.AssignOp3R1, cU, p.cI)
 		case slot.AssignOp3R1: // AssignOp : STAR_EQU ∙
 
-			if p.follow(symbols.NT_AssignOp) {
-				p.rtn(symbols.NT_AssignOp, cU, p.cI)
-			} else {
-				p.parseError(slot.AssignOp3R0, p.cI, followSets[symbols.NT_AssignOp])
-			}
+			p.rtn(symbols.NT_AssignOp, cU, p.cI)
 		case slot.AssignOp4R0: // AssignOp : ∙DIV_EQU
 
 			p.call(slot.AssignOp4R1, cU, p.cI)
 		case slot.AssignOp4R1: // AssignOp : DIV_EQU ∙
 
-			if p.follow(symbols.NT_AssignOp) {
-				p.rtn(symbols.NT_AssignOp, cU, p.cI)
-			} else {
-				p.parseError(slot.AssignOp4R0, p.cI, followSets[symbols.NT_AssignOp])
-			}
+			p.rtn(symbols.NT_AssignOp, cU, p.cI)
 		case slot.AssignOp5R0: // AssignOp : ∙AND_EQU
 
 			p.call(slot.AssignOp5R1, cU, p.cI)
 		case slot.AssignOp5R1: // AssignOp : AND_EQU ∙
 
-			if p.follow(symbols.NT_AssignOp) {
-				p.rtn(symbols.NT_AssignOp, cU, p.cI)
-			} else {
-				p.parseError(slot.AssignOp5R0, p.cI, followSets[symbols.NT_AssignOp])
-			}
+			p.rtn(symbols.NT_AssignOp, cU, p.cI)
 		case slot.AssignOp6R0: // AssignOp : ∙OR_EQU
 
 			p.call(slot.AssignOp6R1, cU, p.cI)
 		case slot.AssignOp6R1: // AssignOp : OR_EQU ∙
 
-			if p.follow(symbols.NT_AssignOp) {
-				p.rtn(symbols.NT_AssignOp, cU, p.cI)
-			} else {
-				p.parseError(slot.AssignOp6R0, p.cI, followSets[symbols.NT_AssignOp])
-			}
+			p.rtn(symbols.NT_AssignOp, cU, p.cI)
 		case slot.AssignOp7R0: // AssignOp : ∙HAT_EQU
 
 			p.call(slot.AssignOp7R1, cU, p.cI)
 		case slot.AssignOp7R1: // AssignOp : HAT_EQU ∙
 
-			if p.follow(symbols.NT_AssignOp) {
-				p.rtn(symbols.NT_AssignOp, cU, p.cI)
-			} else {
-				p.parseError(slot.AssignOp7R0, p.cI, followSets[symbols.NT_AssignOp])
-			}
+			p.rtn(symbols.NT_AssignOp, cU, p.cI)
 		case slot.AssignOp8R0: // AssignOp : ∙MOD_EQU
 
 			p.call(slot.AssignOp8R1, cU, p.cI)
 		case slot.AssignOp8R1: // AssignOp : MOD_EQU ∙
 
-			if p.follow(symbols.NT_AssignOp) {
-				p.rtn(symbols.NT_AssignOp, cU, p.cI)
-			} else {
-				p.parseError(slot.AssignOp8R0, p.cI, followSets[symbols.NT_AssignOp])
-			}
+			p.rtn(symbols.NT_AssignOp, cU, p.cI)
 		case slot.AssignOp9R0: // AssignOp : ∙SL_EQU
 
 			p.call(slot.AssignOp9R1, cU, p.cI)
 		case slot.AssignOp9R1: // AssignOp : SL_EQU ∙
 
-			if p.follow(symbols.NT_AssignOp) {
-				p.rtn(symbols.NT_AssignOp, cU, p.cI)
-			} else {
-				p.parseError(slot.AssignOp9R0, p.cI, followSets[symbols.NT_AssignOp])
-			}
+			p.rtn(symbols.NT_AssignOp, cU, p.cI)
 		case slot.AssignOp10R0: // AssignOp : ∙SR_EQU
 
 			p.call(slot.AssignOp10R1, cU, p.cI)
 		case slot.AssignOp10R1: // AssignOp : SR_EQU ∙
 
-			if p.follow(symbols.NT_AssignOp) {
-				p.rtn(symbols.NT_AssignOp, cU, p.cI)
-			} else {
-				p.parseError(slot.AssignOp10R0, p.cI, followSets[symbols.NT_AssignOp])
-			}
+			p.rtn(symbols.NT_AssignOp, cU, p.cI)
 		case slot.AssignOp11R0: // AssignOp : ∙BSR_EQU
 
 			p.call(slot.AssignOp11R1, cU, p.cI)
 		case slot.AssignOp11R1: // AssignOp : BSR_EQU ∙
 
-			if p.follow(symbols.NT_AssignOp) {
-				p.rtn(symbols.NT_AssignOp, cU, p.cI)
-			} else {
-				p.parseError(slot.AssignOp11R0, p.cI, followSets[symbols.NT_AssignOp])
-			}
+			p.rtn(symbols.NT_AssignOp, cU, p.cI)
 		case slot.BANG0R0: // BANG : ∙! nEq WS
 
 			p.bsrSet.Add(slot.BANG0R1, cU, p.cI, p.cI+1)
@@ -491,11 +379,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.BANG0R3, cU, p.cI)
 		case slot.BANG0R3: // BANG : ! nEq WS ∙
 
-			if p.follow(symbols.NT_BANG) {
-				p.rtn(symbols.NT_BANG, cU, p.cI)
-			} else {
-				p.parseError(slot.BANG0R0, p.cI, followSets[symbols.NT_BANG])
-			}
+			p.rtn(symbols.NT_BANG, cU, p.cI)
 		case slot.BREAK0R0: // BREAK : ∙break notLorD
 
 			p.bsrSet.Add(slot.BREAK0R1, cU, p.cI, p.cI+1)
@@ -507,11 +391,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 
 			p.bsrSet.Add(slot.BREAK0R2, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_BREAK) {
-				p.rtn(symbols.NT_BREAK, cU, p.cI)
-			} else {
-				p.parseError(slot.BREAK0R0, p.cI, followSets[symbols.NT_BREAK])
-			}
+			p.rtn(symbols.NT_BREAK, cU, p.cI)
 		case slot.BSR0R0: // BSR : ∙>>> nEq WS
 
 			p.bsrSet.Add(slot.BSR0R1, cU, p.cI, p.cI+1)
@@ -531,11 +411,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.BSR0R3, cU, p.cI)
 		case slot.BSR0R3: // BSR : >>> nEq WS ∙
 
-			if p.follow(symbols.NT_BSR) {
-				p.rtn(symbols.NT_BSR, cU, p.cI)
-			} else {
-				p.parseError(slot.BSR0R0, p.cI, followSets[symbols.NT_BSR])
-			}
+			p.rtn(symbols.NT_BSR, cU, p.cI)
 		case slot.BSR_EQU0R0: // BSR_EQU : ∙>>>= WS
 
 			p.bsrSet.Add(slot.BSR_EQU0R1, cU, p.cI, p.cI+1)
@@ -548,11 +424,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.BSR_EQU0R2, cU, p.cI)
 		case slot.BSR_EQU0R2: // BSR_EQU : >>>= WS ∙
 
-			if p.follow(symbols.NT_BSR_EQU) {
-				p.rtn(symbols.NT_BSR_EQU, cU, p.cI)
-			} else {
-				p.parseError(slot.BSR_EQU0R0, p.cI, followSets[symbols.NT_BSR_EQU])
-			}
+			p.rtn(symbols.NT_BSR_EQU, cU, p.cI)
 		case slot.BasicType0R0: // BasicType : ∙BasicTypeLit notLorD
 
 			p.call(slot.BasicType0R1, cU, p.cI)
@@ -565,83 +437,47 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 
 			p.bsrSet.Add(slot.BasicType0R2, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_BasicType) {
-				p.rtn(symbols.NT_BasicType, cU, p.cI)
-			} else {
-				p.parseError(slot.BasicType0R0, p.cI, followSets[symbols.NT_BasicType])
-			}
+			p.rtn(symbols.NT_BasicType, cU, p.cI)
 		case slot.BasicTypeLit0R0: // BasicTypeLit : ∙byte
 
 			p.bsrSet.Add(slot.BasicTypeLit0R1, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_BasicTypeLit) {
-				p.rtn(symbols.NT_BasicTypeLit, cU, p.cI)
-			} else {
-				p.parseError(slot.BasicTypeLit0R0, p.cI, followSets[symbols.NT_BasicTypeLit])
-			}
+			p.rtn(symbols.NT_BasicTypeLit, cU, p.cI)
 		case slot.BasicTypeLit1R0: // BasicTypeLit : ∙short
 
 			p.bsrSet.Add(slot.BasicTypeLit1R1, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_BasicTypeLit) {
-				p.rtn(symbols.NT_BasicTypeLit, cU, p.cI)
-			} else {
-				p.parseError(slot.BasicTypeLit1R0, p.cI, followSets[symbols.NT_BasicTypeLit])
-			}
+			p.rtn(symbols.NT_BasicTypeLit, cU, p.cI)
 		case slot.BasicTypeLit2R0: // BasicTypeLit : ∙char
 
 			p.bsrSet.Add(slot.BasicTypeLit2R1, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_BasicTypeLit) {
-				p.rtn(symbols.NT_BasicTypeLit, cU, p.cI)
-			} else {
-				p.parseError(slot.BasicTypeLit2R0, p.cI, followSets[symbols.NT_BasicTypeLit])
-			}
+			p.rtn(symbols.NT_BasicTypeLit, cU, p.cI)
 		case slot.BasicTypeLit3R0: // BasicTypeLit : ∙int
 
 			p.bsrSet.Add(slot.BasicTypeLit3R1, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_BasicTypeLit) {
-				p.rtn(symbols.NT_BasicTypeLit, cU, p.cI)
-			} else {
-				p.parseError(slot.BasicTypeLit3R0, p.cI, followSets[symbols.NT_BasicTypeLit])
-			}
+			p.rtn(symbols.NT_BasicTypeLit, cU, p.cI)
 		case slot.BasicTypeLit4R0: // BasicTypeLit : ∙long
 
 			p.bsrSet.Add(slot.BasicTypeLit4R1, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_BasicTypeLit) {
-				p.rtn(symbols.NT_BasicTypeLit, cU, p.cI)
-			} else {
-				p.parseError(slot.BasicTypeLit4R0, p.cI, followSets[symbols.NT_BasicTypeLit])
-			}
+			p.rtn(symbols.NT_BasicTypeLit, cU, p.cI)
 		case slot.BasicTypeLit5R0: // BasicTypeLit : ∙float
 
 			p.bsrSet.Add(slot.BasicTypeLit5R1, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_BasicTypeLit) {
-				p.rtn(symbols.NT_BasicTypeLit, cU, p.cI)
-			} else {
-				p.parseError(slot.BasicTypeLit5R0, p.cI, followSets[symbols.NT_BasicTypeLit])
-			}
+			p.rtn(symbols.NT_BasicTypeLit, cU, p.cI)
 		case slot.BasicTypeLit6R0: // BasicTypeLit : ∙double
 
 			p.bsrSet.Add(slot.BasicTypeLit6R1, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_BasicTypeLit) {
-				p.rtn(symbols.NT_BasicTypeLit, cU, p.cI)
-			} else {
-				p.parseError(slot.BasicTypeLit6R0, p.cI, followSets[symbols.NT_BasicTypeLit])
-			}
+			p.rtn(symbols.NT_BasicTypeLit, cU, p.cI)
 		case slot.BasicTypeLit7R0: // BasicTypeLit : ∙boolean
 
 			p.bsrSet.Add(slot.BasicTypeLit7R1, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_BasicTypeLit) {
-				p.rtn(symbols.NT_BasicTypeLit, cU, p.cI)
-			} else {
-				p.parseError(slot.BasicTypeLit7R0, p.cI, followSets[symbols.NT_BasicTypeLit])
-			}
+			p.rtn(symbols.NT_BasicTypeLit, cU, p.cI)
 		case slot.Beoptfd0R0: // Beoptfd : ∙binaryExponent optfFdD
 
 			p.bsrSet.Add(slot.Beoptfd0R1, cU, p.cI, p.cI+1)
@@ -653,11 +489,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 
 			p.bsrSet.Add(slot.Beoptfd0R2, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_Beoptfd) {
-				p.rtn(symbols.NT_Beoptfd, cU, p.cI)
-			} else {
-				p.parseError(slot.Beoptfd0R0, p.cI, followSets[symbols.NT_Beoptfd])
-			}
+			p.rtn(symbols.NT_Beoptfd, cU, p.cI)
 		case slot.Block0R0: // Block : ∙LWING RepBlkSt0x RWING
 
 			p.call(slot.Block0R1, cU, p.cI)
@@ -679,21 +511,13 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.Block0R3, cU, p.cI)
 		case slot.Block0R3: // Block : LWING RepBlkSt0x RWING ∙
 
-			if p.follow(symbols.NT_Block) {
-				p.rtn(symbols.NT_Block, cU, p.cI)
-			} else {
-				p.parseError(slot.Block0R0, p.cI, followSets[symbols.NT_Block])
-			}
+			p.rtn(symbols.NT_Block, cU, p.cI)
 		case slot.BlockStmt0R0: // BlockStmt : ∙LocalVarDeclStmt
 
 			p.call(slot.BlockStmt0R1, cU, p.cI)
 		case slot.BlockStmt0R1: // BlockStmt : LocalVarDeclStmt ∙
 
-			if p.follow(symbols.NT_BlockStmt) {
-				p.rtn(symbols.NT_BlockStmt, cU, p.cI)
-			} else {
-				p.parseError(slot.BlockStmt0R0, p.cI, followSets[symbols.NT_BlockStmt])
-			}
+			p.rtn(symbols.NT_BlockStmt, cU, p.cI)
 		case slot.BlockStmt1R0: // BlockStmt : ∙RepModif0 ClsDecl
 
 			p.call(slot.BlockStmt1R1, cU, p.cI)
@@ -707,21 +531,13 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.BlockStmt1R2, cU, p.cI)
 		case slot.BlockStmt1R2: // BlockStmt : RepModif0 ClsDecl ∙
 
-			if p.follow(symbols.NT_BlockStmt) {
-				p.rtn(symbols.NT_BlockStmt, cU, p.cI)
-			} else {
-				p.parseError(slot.BlockStmt1R0, p.cI, followSets[symbols.NT_BlockStmt])
-			}
+			p.rtn(symbols.NT_BlockStmt, cU, p.cI)
 		case slot.BlockStmt2R0: // BlockStmt : ∙Stmt
 
 			p.call(slot.BlockStmt2R1, cU, p.cI)
 		case slot.BlockStmt2R1: // BlockStmt : Stmt ∙
 
-			if p.follow(symbols.NT_BlockStmt) {
-				p.rtn(symbols.NT_BlockStmt, cU, p.cI)
-			} else {
-				p.parseError(slot.BlockStmt2R0, p.cI, followSets[symbols.NT_BlockStmt])
-			}
+			p.rtn(symbols.NT_BlockStmt, cU, p.cI)
 		case slot.CASE0R0: // CASE : ∙case notLorD
 
 			p.bsrSet.Add(slot.CASE0R1, cU, p.cI, p.cI+1)
@@ -733,11 +549,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 
 			p.bsrSet.Add(slot.CASE0R2, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_CASE) {
-				p.rtn(symbols.NT_CASE, cU, p.cI)
-			} else {
-				p.parseError(slot.CASE0R0, p.cI, followSets[symbols.NT_CASE])
-			}
+			p.rtn(symbols.NT_CASE, cU, p.cI)
 		case slot.CATCH0R0: // CATCH : ∙catch notLorD
 
 			p.bsrSet.Add(slot.CATCH0R1, cU, p.cI, p.cI+1)
@@ -749,11 +561,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 
 			p.bsrSet.Add(slot.CATCH0R2, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_CATCH) {
-				p.rtn(symbols.NT_CATCH, cU, p.cI)
-			} else {
-				p.parseError(slot.CATCH0R0, p.cI, followSets[symbols.NT_CATCH])
-			}
+			p.rtn(symbols.NT_CATCH, cU, p.cI)
 		case slot.COLON0R0: // COLON : ∙: WS
 
 			p.bsrSet.Add(slot.COLON0R1, cU, p.cI, p.cI+1)
@@ -766,11 +574,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.COLON0R2, cU, p.cI)
 		case slot.COLON0R2: // COLON : : WS ∙
 
-			if p.follow(symbols.NT_COLON) {
-				p.rtn(symbols.NT_COLON, cU, p.cI)
-			} else {
-				p.parseError(slot.COLON0R0, p.cI, followSets[symbols.NT_COLON])
-			}
+			p.rtn(symbols.NT_COLON, cU, p.cI)
 		case slot.COMMA0R0: // COMMA : ∙, WS
 
 			p.bsrSet.Add(slot.COMMA0R1, cU, p.cI, p.cI+1)
@@ -783,11 +587,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.COMMA0R2, cU, p.cI)
 		case slot.COMMA0R2: // COMMA : , WS ∙
 
-			if p.follow(symbols.NT_COMMA) {
-				p.rtn(symbols.NT_COMMA, cU, p.cI)
-			} else {
-				p.parseError(slot.COMMA0R0, p.cI, followSets[symbols.NT_COMMA])
-			}
+			p.rtn(symbols.NT_COMMA, cU, p.cI)
 		case slot.CONTINUE0R0: // CONTINUE : ∙continue notLorD
 
 			p.bsrSet.Add(slot.CONTINUE0R1, cU, p.cI, p.cI+1)
@@ -799,41 +599,25 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 
 			p.bsrSet.Add(slot.CONTINUE0R2, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_CONTINUE) {
-				p.rtn(symbols.NT_CONTINUE, cU, p.cI)
-			} else {
-				p.parseError(slot.CONTINUE0R0, p.cI, followSets[symbols.NT_CONTINUE])
-			}
+			p.rtn(symbols.NT_CONTINUE, cU, p.cI)
 		case slot.CarrotAlts0R0: // CarrotAlts : ∙SL
 
 			p.call(slot.CarrotAlts0R1, cU, p.cI)
 		case slot.CarrotAlts0R1: // CarrotAlts : SL ∙
 
-			if p.follow(symbols.NT_CarrotAlts) {
-				p.rtn(symbols.NT_CarrotAlts, cU, p.cI)
-			} else {
-				p.parseError(slot.CarrotAlts0R0, p.cI, followSets[symbols.NT_CarrotAlts])
-			}
+			p.rtn(symbols.NT_CarrotAlts, cU, p.cI)
 		case slot.CarrotAlts1R0: // CarrotAlts : ∙SR
 
 			p.call(slot.CarrotAlts1R1, cU, p.cI)
 		case slot.CarrotAlts1R1: // CarrotAlts : SR ∙
 
-			if p.follow(symbols.NT_CarrotAlts) {
-				p.rtn(symbols.NT_CarrotAlts, cU, p.cI)
-			} else {
-				p.parseError(slot.CarrotAlts1R0, p.cI, followSets[symbols.NT_CarrotAlts])
-			}
+			p.rtn(symbols.NT_CarrotAlts, cU, p.cI)
 		case slot.CarrotAlts2R0: // CarrotAlts : ∙BSR
 
 			p.call(slot.CarrotAlts2R1, cU, p.cI)
 		case slot.CarrotAlts2R1: // CarrotAlts : BSR ∙
 
-			if p.follow(symbols.NT_CarrotAlts) {
-				p.rtn(symbols.NT_CarrotAlts, cU, p.cI)
-			} else {
-				p.parseError(slot.CarrotAlts2R0, p.cI, followSets[symbols.NT_CarrotAlts])
-			}
+			p.rtn(symbols.NT_CarrotAlts, cU, p.cI)
 		case slot.Catch0R0: // Catch : ∙CATCH LPAR FormalParam RPAR Block
 
 			p.call(slot.Catch0R1, cU, p.cI)
@@ -871,11 +655,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.Catch0R5, cU, p.cI)
 		case slot.Catch0R5: // Catch : CATCH LPAR FormalParam RPAR Block ∙
 
-			if p.follow(symbols.NT_Catch) {
-				p.rtn(symbols.NT_Catch, cU, p.cI)
-			} else {
-				p.parseError(slot.Catch0R0, p.cI, followSets[symbols.NT_Catch])
-			}
+			p.rtn(symbols.NT_Catch, cU, p.cI)
 		case slot.CatchBlk0R0: // CatchBlk : ∙Catch RepCatch0x OptFin
 
 			p.call(slot.CatchBlk0R1, cU, p.cI)
@@ -897,21 +677,13 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.CatchBlk0R3, cU, p.cI)
 		case slot.CatchBlk0R3: // CatchBlk : Catch RepCatch0x OptFin ∙
 
-			if p.follow(symbols.NT_CatchBlk) {
-				p.rtn(symbols.NT_CatchBlk, cU, p.cI)
-			} else {
-				p.parseError(slot.CatchBlk0R0, p.cI, followSets[symbols.NT_CatchBlk])
-			}
+			p.rtn(symbols.NT_CatchBlk, cU, p.cI)
 		case slot.CatchBlk1R0: // CatchBlk : ∙Finally
 
 			p.call(slot.CatchBlk1R1, cU, p.cI)
 		case slot.CatchBlk1R1: // CatchBlk : Finally ∙
 
-			if p.follow(symbols.NT_CatchBlk) {
-				p.rtn(symbols.NT_CatchBlk, cU, p.cI)
-			} else {
-				p.parseError(slot.CatchBlk1R0, p.cI, followSets[symbols.NT_CatchBlk])
-			}
+			p.rtn(symbols.NT_CatchBlk, cU, p.cI)
 		case slot.CharLiteral0R0: // CharLiteral : ∙sinQuo EscSlash sinQuo
 
 			p.bsrSet.Add(slot.CharLiteral0R1, cU, p.cI, p.cI+1)
@@ -931,11 +703,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 
 			p.bsrSet.Add(slot.CharLiteral0R3, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_CharLiteral) {
-				p.rtn(symbols.NT_CharLiteral, cU, p.cI)
-			} else {
-				p.parseError(slot.CharLiteral0R0, p.cI, followSets[symbols.NT_CharLiteral])
-			}
+			p.rtn(symbols.NT_CharLiteral, cU, p.cI)
 		case slot.Cls0R0: // Cls : ∙Cls notLorD
 
 			p.bsrSet.Add(slot.Cls0R1, cU, p.cI, p.cI+1)
@@ -947,11 +715,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 
 			p.bsrSet.Add(slot.Cls0R2, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_Cls) {
-				p.rtn(symbols.NT_Cls, cU, p.cI)
-			} else {
-				p.parseError(slot.Cls0R0, p.cI, followSets[symbols.NT_Cls])
-			}
+			p.rtn(symbols.NT_Cls, cU, p.cI)
 		case slot.ClsBdy0R0: // ClsBdy : ∙LWING RepClsBDecl0x RWING
 
 			p.call(slot.ClsBdy0R1, cU, p.cI)
@@ -973,21 +737,13 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.ClsBdy0R3, cU, p.cI)
 		case slot.ClsBdy0R3: // ClsBdy : LWING RepClsBDecl0x RWING ∙
 
-			if p.follow(symbols.NT_ClsBdy) {
-				p.rtn(symbols.NT_ClsBdy, cU, p.cI)
-			} else {
-				p.parseError(slot.ClsBdy0R0, p.cI, followSets[symbols.NT_ClsBdy])
-			}
+			p.rtn(symbols.NT_ClsBdy, cU, p.cI)
 		case slot.ClsBdyDecl0R0: // ClsBdyDecl : ∙SEMI
 
 			p.call(slot.ClsBdyDecl0R1, cU, p.cI)
 		case slot.ClsBdyDecl0R1: // ClsBdyDecl : SEMI ∙
 
-			if p.follow(symbols.NT_ClsBdyDecl) {
-				p.rtn(symbols.NT_ClsBdyDecl, cU, p.cI)
-			} else {
-				p.parseError(slot.ClsBdyDecl0R0, p.cI, followSets[symbols.NT_ClsBdyDecl])
-			}
+			p.rtn(symbols.NT_ClsBdyDecl, cU, p.cI)
 		case slot.ClsBdyDecl1R0: // ClsBdyDecl : ∙OptStatic Block
 
 			p.call(slot.ClsBdyDecl1R1, cU, p.cI)
@@ -1001,11 +757,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.ClsBdyDecl1R2, cU, p.cI)
 		case slot.ClsBdyDecl1R2: // ClsBdyDecl : OptStatic Block ∙
 
-			if p.follow(symbols.NT_ClsBdyDecl) {
-				p.rtn(symbols.NT_ClsBdyDecl, cU, p.cI)
-			} else {
-				p.parseError(slot.ClsBdyDecl1R0, p.cI, followSets[symbols.NT_ClsBdyDecl])
-			}
+			p.rtn(symbols.NT_ClsBdyDecl, cU, p.cI)
 		case slot.ClsBdyDecl2R0: // ClsBdyDecl : ∙RepModif0 MemDecl
 
 			p.call(slot.ClsBdyDecl2R1, cU, p.cI)
@@ -1019,11 +771,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.ClsBdyDecl2R2, cU, p.cI)
 		case slot.ClsBdyDecl2R2: // ClsBdyDecl : RepModif0 MemDecl ∙
 
-			if p.follow(symbols.NT_ClsBdyDecl) {
-				p.rtn(symbols.NT_ClsBdyDecl, cU, p.cI)
-			} else {
-				p.parseError(slot.ClsBdyDecl2R0, p.cI, followSets[symbols.NT_ClsBdyDecl])
-			}
+			p.rtn(symbols.NT_ClsBdyDecl, cU, p.cI)
 		case slot.ClsCreatorRest0R0: // ClsCreatorRest : ∙Arguments OptClsBdy
 
 			p.call(slot.ClsCreatorRest0R1, cU, p.cI)
@@ -1037,11 +785,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.ClsCreatorRest0R2, cU, p.cI)
 		case slot.ClsCreatorRest0R2: // ClsCreatorRest : Arguments OptClsBdy ∙
 
-			if p.follow(symbols.NT_ClsCreatorRest) {
-				p.rtn(symbols.NT_ClsCreatorRest, cU, p.cI)
-			} else {
-				p.parseError(slot.ClsCreatorRest0R0, p.cI, followSets[symbols.NT_ClsCreatorRest])
-			}
+			p.rtn(symbols.NT_ClsCreatorRest, cU, p.cI)
 		case slot.ClsDecl0R0: // ClsDecl : ∙Cls ID OptExtClsType OptImpClsLst ClsBdy
 
 			p.bsrSet.Add(slot.ClsDecl0R1, cU, p.cI, p.cI+1)
@@ -1078,11 +822,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.ClsDecl0R5, cU, p.cI)
 		case slot.ClsDecl0R5: // ClsDecl : Cls ID OptExtClsType OptImpClsLst ClsBdy ∙
 
-			if p.follow(symbols.NT_ClsDecl) {
-				p.rtn(symbols.NT_ClsDecl, cU, p.cI)
-			} else {
-				p.parseError(slot.ClsDecl0R0, p.cI, followSets[symbols.NT_ClsDecl])
-			}
+			p.rtn(symbols.NT_ClsDecl, cU, p.cI)
 		case slot.ClsType0R0: // ClsType : ∙ID RepDotID0x
 
 			p.call(slot.ClsType0R1, cU, p.cI)
@@ -1096,11 +836,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.ClsType0R2, cU, p.cI)
 		case slot.ClsType0R2: // ClsType : ID RepDotID0x ∙
 
-			if p.follow(symbols.NT_ClsType) {
-				p.rtn(symbols.NT_ClsType, cU, p.cI)
-			} else {
-				p.parseError(slot.ClsType0R0, p.cI, followSets[symbols.NT_ClsType])
-			}
+			p.rtn(symbols.NT_ClsType, cU, p.cI)
 		case slot.ClsTypeList0R0: // ClsTypeList : ∙ClsType RepComCls0x
 
 			p.call(slot.ClsTypeList0R1, cU, p.cI)
@@ -1114,11 +850,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.ClsTypeList0R2, cU, p.cI)
 		case slot.ClsTypeList0R2: // ClsTypeList : ClsType RepComCls0x ∙
 
-			if p.follow(symbols.NT_ClsTypeList) {
-				p.rtn(symbols.NT_ClsTypeList, cU, p.cI)
-			} else {
-				p.parseError(slot.ClsTypeList0R0, p.cI, followSets[symbols.NT_ClsTypeList])
-			}
+			p.rtn(symbols.NT_ClsTypeList, cU, p.cI)
 		case slot.CompUnit0R0: // CompUnit : ∙WS OptPackDecl RepImpDecl0x RepSemiModDecl0x
 
 			p.call(slot.CompUnit0R1, cU, p.cI)
@@ -1148,11 +880,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.CompUnit0R4, cU, p.cI)
 		case slot.CompUnit0R4: // CompUnit : WS OptPackDecl RepImpDecl0x RepSemiModDecl0x ∙
 
-			if p.follow(symbols.NT_CompUnit) {
-				p.rtn(symbols.NT_CompUnit, cU, p.cI)
-			} else {
-				p.parseError(slot.CompUnit0R0, p.cI, followSets[symbols.NT_CompUnit])
-			}
+			p.rtn(symbols.NT_CompUnit, cU, p.cI)
 		case slot.CondANDExpr0R0: // CondANDExpr : ∙IORExpr RepANDIOR0x
 
 			p.call(slot.CondANDExpr0R1, cU, p.cI)
@@ -1166,11 +894,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.CondANDExpr0R2, cU, p.cI)
 		case slot.CondANDExpr0R2: // CondANDExpr : IORExpr RepANDIOR0x ∙
 
-			if p.follow(symbols.NT_CondANDExpr) {
-				p.rtn(symbols.NT_CondANDExpr, cU, p.cI)
-			} else {
-				p.parseError(slot.CondANDExpr0R0, p.cI, followSets[symbols.NT_CondANDExpr])
-			}
+			p.rtn(symbols.NT_CondANDExpr, cU, p.cI)
 		case slot.CondExpr0R0: // CondExpr : ∙CondORExpr RepCondition0x
 
 			p.call(slot.CondExpr0R1, cU, p.cI)
@@ -1184,11 +908,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.CondExpr0R2, cU, p.cI)
 		case slot.CondExpr0R2: // CondExpr : CondORExpr RepCondition0x ∙
 
-			if p.follow(symbols.NT_CondExpr) {
-				p.rtn(symbols.NT_CondExpr, cU, p.cI)
-			} else {
-				p.parseError(slot.CondExpr0R0, p.cI, followSets[symbols.NT_CondExpr])
-			}
+			p.rtn(symbols.NT_CondExpr, cU, p.cI)
 		case slot.CondORExpr0R0: // CondORExpr : ∙CondANDExpr RepORcAND0x
 
 			p.call(slot.CondORExpr0R1, cU, p.cI)
@@ -1202,11 +922,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.CondORExpr0R2, cU, p.cI)
 		case slot.CondORExpr0R2: // CondORExpr : CondANDExpr RepORcAND0x ∙
 
-			if p.follow(symbols.NT_CondORExpr) {
-				p.rtn(symbols.NT_CondORExpr, cU, p.cI)
-			} else {
-				p.parseError(slot.CondORExpr0R0, p.cI, followSets[symbols.NT_CondORExpr])
-			}
+			p.rtn(symbols.NT_CondORExpr, cU, p.cI)
 		case slot.ConstDecl0R0: // ConstDecl : ∙ID ConstDeclRest
 
 			p.call(slot.ConstDecl0R1, cU, p.cI)
@@ -1220,11 +936,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.ConstDecl0R2, cU, p.cI)
 		case slot.ConstDecl0R2: // ConstDecl : ID ConstDeclRest ∙
 
-			if p.follow(symbols.NT_ConstDecl) {
-				p.rtn(symbols.NT_ConstDecl, cU, p.cI)
-			} else {
-				p.parseError(slot.ConstDecl0R0, p.cI, followSets[symbols.NT_ConstDecl])
-			}
+			p.rtn(symbols.NT_ConstDecl, cU, p.cI)
 		case slot.ConstDeclRest0R0: // ConstDeclRest : ∙RepDim0x EQU VarInitial
 
 			p.call(slot.ConstDeclRest0R1, cU, p.cI)
@@ -1246,11 +958,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.ConstDeclRest0R3, cU, p.cI)
 		case slot.ConstDeclRest0R3: // ConstDeclRest : RepDim0x EQU VarInitial ∙
 
-			if p.follow(symbols.NT_ConstDeclRest) {
-				p.rtn(symbols.NT_ConstDeclRest, cU, p.cI)
-			} else {
-				p.parseError(slot.ConstDeclRest0R0, p.cI, followSets[symbols.NT_ConstDeclRest])
-			}
+			p.rtn(symbols.NT_ConstDeclRest, cU, p.cI)
 		case slot.ConstDeclsRest0R0: // ConstDeclsRest : ∙ConstDeclRest RepComCnstDecl0x
 
 			p.call(slot.ConstDeclsRest0R1, cU, p.cI)
@@ -1264,21 +972,13 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.ConstDeclsRest0R2, cU, p.cI)
 		case slot.ConstDeclsRest0R2: // ConstDeclsRest : ConstDeclRest RepComCnstDecl0x ∙
 
-			if p.follow(symbols.NT_ConstDeclsRest) {
-				p.rtn(symbols.NT_ConstDeclsRest, cU, p.cI)
-			} else {
-				p.parseError(slot.ConstDeclsRest0R0, p.cI, followSets[symbols.NT_ConstDeclsRest])
-			}
+			p.rtn(symbols.NT_ConstDeclsRest, cU, p.cI)
 		case slot.ConstExpr0R0: // ConstExpr : ∙Expr
 
 			p.call(slot.ConstExpr0R1, cU, p.cI)
 		case slot.ConstExpr0R1: // ConstExpr : Expr ∙
 
-			if p.follow(symbols.NT_ConstExpr) {
-				p.rtn(symbols.NT_ConstExpr, cU, p.cI)
-			} else {
-				p.parseError(slot.ConstExpr0R0, p.cI, followSets[symbols.NT_ConstExpr])
-			}
+			p.rtn(symbols.NT_ConstExpr, cU, p.cI)
 		case slot.CreatedName0R0: // CreatedName : ∙ID RepDotID0x
 
 			p.call(slot.CreatedName0R1, cU, p.cI)
@@ -1292,11 +992,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.CreatedName0R2, cU, p.cI)
 		case slot.CreatedName0R2: // CreatedName : ID RepDotID0x ∙
 
-			if p.follow(symbols.NT_CreatedName) {
-				p.rtn(symbols.NT_CreatedName, cU, p.cI)
-			} else {
-				p.parseError(slot.CreatedName0R0, p.cI, followSets[symbols.NT_CreatedName])
-			}
+			p.rtn(symbols.NT_CreatedName, cU, p.cI)
 		case slot.Creator0R0: // Creator : ∙CreatedName ClsCreatorRest
 
 			p.call(slot.Creator0R1, cU, p.cI)
@@ -1310,11 +1006,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.Creator0R2, cU, p.cI)
 		case slot.Creator0R2: // Creator : CreatedName ClsCreatorRest ∙
 
-			if p.follow(symbols.NT_Creator) {
-				p.rtn(symbols.NT_Creator, cU, p.cI)
-			} else {
-				p.parseError(slot.Creator0R0, p.cI, followSets[symbols.NT_Creator])
-			}
+			p.rtn(symbols.NT_Creator, cU, p.cI)
 		case slot.Creator1R0: // Creator : ∙TypeAlts ArrayCreatorRest
 
 			p.call(slot.Creator1R1, cU, p.cI)
@@ -1328,11 +1020,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.Creator1R2, cU, p.cI)
 		case slot.Creator1R2: // Creator : TypeAlts ArrayCreatorRest ∙
 
-			if p.follow(symbols.NT_Creator) {
-				p.rtn(symbols.NT_Creator, cU, p.cI)
-			} else {
-				p.parseError(slot.Creator1R0, p.cI, followSets[symbols.NT_Creator])
-			}
+			p.rtn(symbols.NT_Creator, cU, p.cI)
 		case slot.DEC0R0: // DEC : ∙-- WS
 
 			p.bsrSet.Add(slot.DEC0R1, cU, p.cI, p.cI+1)
@@ -1345,11 +1033,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.DEC0R2, cU, p.cI)
 		case slot.DEC0R2: // DEC : -- WS ∙
 
-			if p.follow(symbols.NT_DEC) {
-				p.rtn(symbols.NT_DEC, cU, p.cI)
-			} else {
-				p.parseError(slot.DEC0R0, p.cI, followSets[symbols.NT_DEC])
-			}
+			p.rtn(symbols.NT_DEC, cU, p.cI)
 		case slot.DEFAULT0R0: // DEFAULT : ∙default notLorD
 
 			p.bsrSet.Add(slot.DEFAULT0R1, cU, p.cI, p.cI+1)
@@ -1361,11 +1045,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 
 			p.bsrSet.Add(slot.DEFAULT0R2, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_DEFAULT) {
-				p.rtn(symbols.NT_DEFAULT, cU, p.cI)
-			} else {
-				p.parseError(slot.DEFAULT0R0, p.cI, followSets[symbols.NT_DEFAULT])
-			}
+			p.rtn(symbols.NT_DEFAULT, cU, p.cI)
 		case slot.DIV0R0: // DIV : ∙/ nEq WS
 
 			p.bsrSet.Add(slot.DIV0R1, cU, p.cI, p.cI+1)
@@ -1385,11 +1065,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.DIV0R3, cU, p.cI)
 		case slot.DIV0R3: // DIV : / nEq WS ∙
 
-			if p.follow(symbols.NT_DIV) {
-				p.rtn(symbols.NT_DIV, cU, p.cI)
-			} else {
-				p.parseError(slot.DIV0R0, p.cI, followSets[symbols.NT_DIV])
-			}
+			p.rtn(symbols.NT_DIV, cU, p.cI)
 		case slot.DIV_EQU0R0: // DIV_EQU : ∙/= WS
 
 			p.bsrSet.Add(slot.DIV_EQU0R1, cU, p.cI, p.cI+1)
@@ -1402,11 +1078,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.DIV_EQU0R2, cU, p.cI)
 		case slot.DIV_EQU0R2: // DIV_EQU : /= WS ∙
 
-			if p.follow(symbols.NT_DIV_EQU) {
-				p.rtn(symbols.NT_DIV_EQU, cU, p.cI)
-			} else {
-				p.parseError(slot.DIV_EQU0R0, p.cI, followSets[symbols.NT_DIV_EQU])
-			}
+			p.rtn(symbols.NT_DIV_EQU, cU, p.cI)
 		case slot.DO0R0: // DO : ∙do notLorD
 
 			p.bsrSet.Add(slot.DO0R1, cU, p.cI, p.cI+1)
@@ -1418,11 +1090,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 
 			p.bsrSet.Add(slot.DO0R2, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_DO) {
-				p.rtn(symbols.NT_DO, cU, p.cI)
-			} else {
-				p.parseError(slot.DO0R0, p.cI, followSets[symbols.NT_DO])
-			}
+			p.rtn(symbols.NT_DO, cU, p.cI)
 		case slot.DOT0R0: // DOT : ∙. WS
 
 			p.bsrSet.Add(slot.DOT0R1, cU, p.cI, p.cI+1)
@@ -1435,11 +1103,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.DOT0R2, cU, p.cI)
 		case slot.DOT0R2: // DOT : . WS ∙
 
-			if p.follow(symbols.NT_DOT) {
-				p.rtn(symbols.NT_DOT, cU, p.cI)
-			} else {
-				p.parseError(slot.DOT0R0, p.cI, followSets[symbols.NT_DOT])
-			}
+			p.rtn(symbols.NT_DOT, cU, p.cI)
 		case slot.DecimalFloat0R0: // DecimalFloat : ∙repDig1x dot repDig0x optExpo fF_dD
 
 			p.bsrSet.Add(slot.DecimalFloat0R1, cU, p.cI, p.cI+1)
@@ -1472,11 +1136,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 
 			p.bsrSet.Add(slot.DecimalFloat0R5, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_DecimalFloat) {
-				p.rtn(symbols.NT_DecimalFloat, cU, p.cI)
-			} else {
-				p.parseError(slot.DecimalFloat0R0, p.cI, followSets[symbols.NT_DecimalFloat])
-			}
+			p.rtn(symbols.NT_DecimalFloat, cU, p.cI)
 		case slot.DecimalFloat1R0: // DecimalFloat : ∙dot RepDig1xExp
 
 			p.bsrSet.Add(slot.DecimalFloat1R1, cU, p.cI, p.cI+1)
@@ -1489,11 +1149,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.DecimalFloat1R2, cU, p.cI)
 		case slot.DecimalFloat1R2: // DecimalFloat : dot RepDig1xExp ∙
 
-			if p.follow(symbols.NT_DecimalFloat) {
-				p.rtn(symbols.NT_DecimalFloat, cU, p.cI)
-			} else {
-				p.parseError(slot.DecimalFloat1R0, p.cI, followSets[symbols.NT_DecimalFloat])
-			}
+			p.rtn(symbols.NT_DecimalFloat, cU, p.cI)
 		case slot.DecimalFloat2R0: // DecimalFloat : ∙RepDig1xExp fF_dD
 
 			p.call(slot.DecimalFloat2R1, cU, p.cI)
@@ -1506,11 +1162,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 
 			p.bsrSet.Add(slot.DecimalFloat2R2, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_DecimalFloat) {
-				p.rtn(symbols.NT_DecimalFloat, cU, p.cI)
-			} else {
-				p.parseError(slot.DecimalFloat2R0, p.cI, followSets[symbols.NT_DecimalFloat])
-			}
+			p.rtn(symbols.NT_DecimalFloat, cU, p.cI)
 		case slot.DecimalFloat3R0: // DecimalFloat : ∙RepDig1xOptExp fF_dD
 
 			p.call(slot.DecimalFloat3R1, cU, p.cI)
@@ -1523,20 +1175,12 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 
 			p.bsrSet.Add(slot.DecimalFloat3R2, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_DecimalFloat) {
-				p.rtn(symbols.NT_DecimalFloat, cU, p.cI)
-			} else {
-				p.parseError(slot.DecimalFloat3R0, p.cI, followSets[symbols.NT_DecimalFloat])
-			}
+			p.rtn(symbols.NT_DecimalFloat, cU, p.cI)
 		case slot.DecimalNumeral0R0: // DecimalNumeral : ∙ze
 
 			p.bsrSet.Add(slot.DecimalNumeral0R1, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_DecimalNumeral) {
-				p.rtn(symbols.NT_DecimalNumeral, cU, p.cI)
-			} else {
-				p.parseError(slot.DecimalNumeral0R0, p.cI, followSets[symbols.NT_DecimalNumeral])
-			}
+			p.rtn(symbols.NT_DecimalNumeral, cU, p.cI)
 		case slot.DecimalNumeral1R0: // DecimalNumeral : ∙onenine repNumx0
 
 			p.bsrSet.Add(slot.DecimalNumeral1R1, cU, p.cI, p.cI+1)
@@ -1548,31 +1192,19 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 
 			p.bsrSet.Add(slot.DecimalNumeral1R2, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_DecimalNumeral) {
-				p.rtn(symbols.NT_DecimalNumeral, cU, p.cI)
-			} else {
-				p.parseError(slot.DecimalNumeral1R0, p.cI, followSets[symbols.NT_DecimalNumeral])
-			}
+			p.rtn(symbols.NT_DecimalNumeral, cU, p.cI)
 		case slot.DeclAlts0R0: // DeclAlts : ∙ClsDecl
 
 			p.call(slot.DeclAlts0R1, cU, p.cI)
 		case slot.DeclAlts0R1: // DeclAlts : ClsDecl ∙
 
-			if p.follow(symbols.NT_DeclAlts) {
-				p.rtn(symbols.NT_DeclAlts, cU, p.cI)
-			} else {
-				p.parseError(slot.DeclAlts0R0, p.cI, followSets[symbols.NT_DeclAlts])
-			}
+			p.rtn(symbols.NT_DeclAlts, cU, p.cI)
 		case slot.DeclAlts1R0: // DeclAlts : ∙IntfDecl
 
 			p.call(slot.DeclAlts1R1, cU, p.cI)
 		case slot.DeclAlts1R1: // DeclAlts : IntfDecl ∙
 
-			if p.follow(symbols.NT_DeclAlts) {
-				p.rtn(symbols.NT_DeclAlts, cU, p.cI)
-			} else {
-				p.parseError(slot.DeclAlts1R0, p.cI, followSets[symbols.NT_DeclAlts])
-			}
+			p.rtn(symbols.NT_DeclAlts, cU, p.cI)
 		case slot.Dim0R0: // Dim : ∙LBRK RBRK
 
 			p.call(slot.Dim0R1, cU, p.cI)
@@ -1586,11 +1218,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.Dim0R2, cU, p.cI)
 		case slot.Dim0R2: // Dim : LBRK RBRK ∙
 
-			if p.follow(symbols.NT_Dim) {
-				p.rtn(symbols.NT_Dim, cU, p.cI)
-			} else {
-				p.parseError(slot.Dim0R0, p.cI, followSets[symbols.NT_Dim])
-			}
+			p.rtn(symbols.NT_Dim, cU, p.cI)
 		case slot.DimExpr0R0: // DimExpr : ∙LBRK Expr RBRK
 
 			p.call(slot.DimExpr0R1, cU, p.cI)
@@ -1612,11 +1240,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.DimExpr0R3, cU, p.cI)
 		case slot.DimExpr0R3: // DimExpr : LBRK Expr RBRK ∙
 
-			if p.follow(symbols.NT_DimExpr) {
-				p.rtn(symbols.NT_DimExpr, cU, p.cI)
-			} else {
-				p.parseError(slot.DimExpr0R0, p.cI, followSets[symbols.NT_DimExpr])
-			}
+			p.rtn(symbols.NT_DimExpr, cU, p.cI)
 		case slot.ELSE0R0: // ELSE : ∙else notLorD
 
 			p.bsrSet.Add(slot.ELSE0R1, cU, p.cI, p.cI+1)
@@ -1628,11 +1252,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 
 			p.bsrSet.Add(slot.ELSE0R2, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_ELSE) {
-				p.rtn(symbols.NT_ELSE, cU, p.cI)
-			} else {
-				p.parseError(slot.ELSE0R0, p.cI, followSets[symbols.NT_ELSE])
-			}
+			p.rtn(symbols.NT_ELSE, cU, p.cI)
 		case slot.EQU0R0: // EQU : ∙= nEq WS
 
 			p.bsrSet.Add(slot.EQU0R1, cU, p.cI, p.cI+1)
@@ -1652,11 +1272,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.EQU0R3, cU, p.cI)
 		case slot.EQU0R3: // EQU : = nEq WS ∙
 
-			if p.follow(symbols.NT_EQU) {
-				p.rtn(symbols.NT_EQU, cU, p.cI)
-			} else {
-				p.parseError(slot.EQU0R0, p.cI, followSets[symbols.NT_EQU])
-			}
+			p.rtn(symbols.NT_EQU, cU, p.cI)
 		case slot.EQUAL0R0: // EQUAL : ∙== WS
 
 			p.bsrSet.Add(slot.EQUAL0R1, cU, p.cI, p.cI+1)
@@ -1669,21 +1285,13 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.EQUAL0R2, cU, p.cI)
 		case slot.EQUAL0R2: // EQUAL : == WS ∙
 
-			if p.follow(symbols.NT_EQUAL) {
-				p.rtn(symbols.NT_EQUAL, cU, p.cI)
-			} else {
-				p.parseError(slot.EQUAL0R0, p.cI, followSets[symbols.NT_EQUAL])
-			}
+			p.rtn(symbols.NT_EQUAL, cU, p.cI)
 		case slot.ESInst0R0: // ESInst : ∙EqShift
 
 			p.call(slot.ESInst0R1, cU, p.cI)
 		case slot.ESInst0R1: // ESInst : EqShift ∙
 
-			if p.follow(symbols.NT_ESInst) {
-				p.rtn(symbols.NT_ESInst, cU, p.cI)
-			} else {
-				p.parseError(slot.ESInst0R0, p.cI, followSets[symbols.NT_ESInst])
-			}
+			p.rtn(symbols.NT_ESInst, cU, p.cI)
 		case slot.ESInst1R0: // ESInst : ∙INSTANCEOF ReferenceType
 
 			p.call(slot.ESInst1R1, cU, p.cI)
@@ -1697,11 +1305,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.ESInst1R2, cU, p.cI)
 		case slot.ESInst1R2: // ESInst : INSTANCEOF ReferenceType ∙
 
-			if p.follow(symbols.NT_ESInst) {
-				p.rtn(symbols.NT_ESInst, cU, p.cI)
-			} else {
-				p.parseError(slot.ESInst1R0, p.cI, followSets[symbols.NT_ESInst])
-			}
+			p.rtn(symbols.NT_ESInst, cU, p.cI)
 		case slot.EXTENDS0R0: // EXTENDS : ∙extends notLorD
 
 			p.bsrSet.Add(slot.EXTENDS0R1, cU, p.cI, p.cI+1)
@@ -1713,71 +1317,43 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 
 			p.bsrSet.Add(slot.EXTENDS0R2, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_EXTENDS) {
-				p.rtn(symbols.NT_EXTENDS, cU, p.cI)
-			} else {
-				p.parseError(slot.EXTENDS0R0, p.cI, followSets[symbols.NT_EXTENDS])
-			}
+			p.rtn(symbols.NT_EXTENDS, cU, p.cI)
 		case slot.EqAlts0R0: // EqAlts : ∙EQUAL
 
 			p.call(slot.EqAlts0R1, cU, p.cI)
 		case slot.EqAlts0R1: // EqAlts : EQUAL ∙
 
-			if p.follow(symbols.NT_EqAlts) {
-				p.rtn(symbols.NT_EqAlts, cU, p.cI)
-			} else {
-				p.parseError(slot.EqAlts0R0, p.cI, followSets[symbols.NT_EqAlts])
-			}
+			p.rtn(symbols.NT_EqAlts, cU, p.cI)
 		case slot.EqAlts1R0: // EqAlts : ∙NOT_EQUAL
 
 			p.call(slot.EqAlts1R1, cU, p.cI)
 		case slot.EqAlts1R1: // EqAlts : NOT_EQUAL ∙
 
-			if p.follow(symbols.NT_EqAlts) {
-				p.rtn(symbols.NT_EqAlts, cU, p.cI)
-			} else {
-				p.parseError(slot.EqAlts1R0, p.cI, followSets[symbols.NT_EqAlts])
-			}
+			p.rtn(symbols.NT_EqAlts, cU, p.cI)
 		case slot.EqCheck0R0: // EqCheck : ∙LE
 
 			p.call(slot.EqCheck0R1, cU, p.cI)
 		case slot.EqCheck0R1: // EqCheck : LE ∙
 
-			if p.follow(symbols.NT_EqCheck) {
-				p.rtn(symbols.NT_EqCheck, cU, p.cI)
-			} else {
-				p.parseError(slot.EqCheck0R0, p.cI, followSets[symbols.NT_EqCheck])
-			}
+			p.rtn(symbols.NT_EqCheck, cU, p.cI)
 		case slot.EqCheck1R0: // EqCheck : ∙GE
 
 			p.call(slot.EqCheck1R1, cU, p.cI)
 		case slot.EqCheck1R1: // EqCheck : GE ∙
 
-			if p.follow(symbols.NT_EqCheck) {
-				p.rtn(symbols.NT_EqCheck, cU, p.cI)
-			} else {
-				p.parseError(slot.EqCheck1R0, p.cI, followSets[symbols.NT_EqCheck])
-			}
+			p.rtn(symbols.NT_EqCheck, cU, p.cI)
 		case slot.EqCheck2R0: // EqCheck : ∙LT
 
 			p.call(slot.EqCheck2R1, cU, p.cI)
 		case slot.EqCheck2R1: // EqCheck : LT ∙
 
-			if p.follow(symbols.NT_EqCheck) {
-				p.rtn(symbols.NT_EqCheck, cU, p.cI)
-			} else {
-				p.parseError(slot.EqCheck2R0, p.cI, followSets[symbols.NT_EqCheck])
-			}
+			p.rtn(symbols.NT_EqCheck, cU, p.cI)
 		case slot.EqCheck3R0: // EqCheck : ∙GT
 
 			p.call(slot.EqCheck3R1, cU, p.cI)
 		case slot.EqCheck3R1: // EqCheck : GT ∙
 
-			if p.follow(symbols.NT_EqCheck) {
-				p.rtn(symbols.NT_EqCheck, cU, p.cI)
-			} else {
-				p.parseError(slot.EqCheck3R0, p.cI, followSets[symbols.NT_EqCheck])
-			}
+			p.rtn(symbols.NT_EqCheck, cU, p.cI)
 		case slot.EqShift0R0: // EqShift : ∙EqCheck ShiftExpr
 
 			p.call(slot.EqShift0R1, cU, p.cI)
@@ -1791,11 +1367,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.EqShift0R2, cU, p.cI)
 		case slot.EqShift0R2: // EqShift : EqCheck ShiftExpr ∙
 
-			if p.follow(symbols.NT_EqShift) {
-				p.rtn(symbols.NT_EqShift, cU, p.cI)
-			} else {
-				p.parseError(slot.EqShift0R0, p.cI, followSets[symbols.NT_EqShift])
-			}
+			p.rtn(symbols.NT_EqShift, cU, p.cI)
 		case slot.EqualExpr0R0: // EqualExpr : ∙RelateExpr RepEqExpr0x
 
 			p.call(slot.EqualExpr0R1, cU, p.cI)
@@ -1809,85 +1381,49 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.EqualExpr0R2, cU, p.cI)
 		case slot.EqualExpr0R2: // EqualExpr : RelateExpr RepEqExpr0x ∙
 
-			if p.follow(symbols.NT_EqualExpr) {
-				p.rtn(symbols.NT_EqualExpr, cU, p.cI)
-			} else {
-				p.parseError(slot.EqualExpr0R0, p.cI, followSets[symbols.NT_EqualExpr])
-			}
+			p.rtn(symbols.NT_EqualExpr, cU, p.cI)
 		case slot.EscOrLineOrBlock0R0: // EscOrLineOrBlock : ∙line_comment
 
 			p.bsrSet.Add(slot.EscOrLineOrBlock0R1, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_EscOrLineOrBlock) {
-				p.rtn(symbols.NT_EscOrLineOrBlock, cU, p.cI)
-			} else {
-				p.parseError(slot.EscOrLineOrBlock0R0, p.cI, followSets[symbols.NT_EscOrLineOrBlock])
-			}
+			p.rtn(symbols.NT_EscOrLineOrBlock, cU, p.cI)
 		case slot.EscOrLineOrBlock1R0: // EscOrLineOrBlock : ∙block_comment
 
 			p.bsrSet.Add(slot.EscOrLineOrBlock1R1, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_EscOrLineOrBlock) {
-				p.rtn(symbols.NT_EscOrLineOrBlock, cU, p.cI)
-			} else {
-				p.parseError(slot.EscOrLineOrBlock1R0, p.cI, followSets[symbols.NT_EscOrLineOrBlock])
-			}
+			p.rtn(symbols.NT_EscOrLineOrBlock, cU, p.cI)
 		case slot.EscOrLineOrBlock2R0: // EscOrLineOrBlock : ∙escCharSp
 
 			p.bsrSet.Add(slot.EscOrLineOrBlock2R1, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_EscOrLineOrBlock) {
-				p.rtn(symbols.NT_EscOrLineOrBlock, cU, p.cI)
-			} else {
-				p.parseError(slot.EscOrLineOrBlock2R0, p.cI, followSets[symbols.NT_EscOrLineOrBlock])
-			}
+			p.rtn(symbols.NT_EscOrLineOrBlock, cU, p.cI)
 		case slot.EscSlash0R0: // EscSlash : ∙Escape
 
 			p.call(slot.EscSlash0R1, cU, p.cI)
 		case slot.EscSlash0R1: // EscSlash : Escape ∙
 
-			if p.follow(symbols.NT_EscSlash) {
-				p.rtn(symbols.NT_EscSlash, cU, p.cI)
-			} else {
-				p.parseError(slot.EscSlash0R0, p.cI, followSets[symbols.NT_EscSlash])
-			}
+			p.rtn(symbols.NT_EscSlash, cU, p.cI)
 		case slot.EscSlash1R0: // EscSlash : ∙EscUp
 
 			p.call(slot.EscSlash1R1, cU, p.cI)
 		case slot.EscSlash1R1: // EscSlash : EscUp ∙
 
-			if p.follow(symbols.NT_EscSlash) {
-				p.rtn(symbols.NT_EscSlash, cU, p.cI)
-			} else {
-				p.parseError(slot.EscSlash1R0, p.cI, followSets[symbols.NT_EscSlash])
-			}
+			p.rtn(symbols.NT_EscSlash, cU, p.cI)
 		case slot.EscUp0R0: // EscUp : ∙^
 
 			p.bsrSet.Add(slot.EscUp0R1, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_EscUp) {
-				p.rtn(symbols.NT_EscUp, cU, p.cI)
-			} else {
-				p.parseError(slot.EscUp0R0, p.cI, followSets[symbols.NT_EscUp])
-			}
+			p.rtn(symbols.NT_EscUp, cU, p.cI)
 		case slot.EscUp1R0: // EscUp : ∙sinQuo
 
 			p.bsrSet.Add(slot.EscUp1R1, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_EscUp) {
-				p.rtn(symbols.NT_EscUp, cU, p.cI)
-			} else {
-				p.parseError(slot.EscUp1R0, p.cI, followSets[symbols.NT_EscUp])
-			}
+			p.rtn(symbols.NT_EscUp, cU, p.cI)
 		case slot.EscUp2R0: // EscUp : ∙dubSlash
 
 			p.bsrSet.Add(slot.EscUp2R1, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_EscUp) {
-				p.rtn(symbols.NT_EscUp, cU, p.cI)
-			} else {
-				p.parseError(slot.EscUp2R0, p.cI, followSets[symbols.NT_EscUp])
-			}
+			p.rtn(symbols.NT_EscUp, cU, p.cI)
 		case slot.Escape0R0: // Escape : ∙dubSlash Escs
 
 			p.bsrSet.Add(slot.Escape0R1, cU, p.cI, p.cI+1)
@@ -1900,40 +1436,24 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.Escape0R2, cU, p.cI)
 		case slot.Escape0R2: // Escape : dubSlash Escs ∙
 
-			if p.follow(symbols.NT_Escape) {
-				p.rtn(symbols.NT_Escape, cU, p.cI)
-			} else {
-				p.parseError(slot.Escape0R0, p.cI, followSets[symbols.NT_Escape])
-			}
+			p.rtn(symbols.NT_Escape, cU, p.cI)
 		case slot.Escs0R0: // Escs : ∙esc
 
 			p.bsrSet.Add(slot.Escs0R1, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_Escs) {
-				p.rtn(symbols.NT_Escs, cU, p.cI)
-			} else {
-				p.parseError(slot.Escs0R0, p.cI, followSets[symbols.NT_Escs])
-			}
+			p.rtn(symbols.NT_Escs, cU, p.cI)
 		case slot.Escs1R0: // Escs : ∙OctalEscape
 
 			p.call(slot.Escs1R1, cU, p.cI)
 		case slot.Escs1R1: // Escs : OctalEscape ∙
 
-			if p.follow(symbols.NT_Escs) {
-				p.rtn(symbols.NT_Escs, cU, p.cI)
-			} else {
-				p.parseError(slot.Escs1R0, p.cI, followSets[symbols.NT_Escs])
-			}
+			p.rtn(symbols.NT_Escs, cU, p.cI)
 		case slot.Escs2R0: // Escs : ∙UnicodeEscape
 
 			p.call(slot.Escs2R1, cU, p.cI)
 		case slot.Escs2R1: // Escs : UnicodeEscape ∙
 
-			if p.follow(symbols.NT_Escs) {
-				p.rtn(symbols.NT_Escs, cU, p.cI)
-			} else {
-				p.parseError(slot.Escs2R0, p.cI, followSets[symbols.NT_Escs])
-			}
+			p.rtn(symbols.NT_Escs, cU, p.cI)
 		case slot.Expr0R0: // Expr : ∙CondExpr RepAsscExpr0x
 
 			p.call(slot.Expr0R1, cU, p.cI)
@@ -1947,11 +1467,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.Expr0R2, cU, p.cI)
 		case slot.Expr0R2: // Expr : CondExpr RepAsscExpr0x ∙
 
-			if p.follow(symbols.NT_Expr) {
-				p.rtn(symbols.NT_Expr, cU, p.cI)
-			} else {
-				p.parseError(slot.Expr0R0, p.cI, followSets[symbols.NT_Expr])
-			}
+			p.rtn(symbols.NT_Expr, cU, p.cI)
 		case slot.FINAL0R0: // FINAL : ∙final notLorD
 
 			p.bsrSet.Add(slot.FINAL0R1, cU, p.cI, p.cI+1)
@@ -1963,11 +1479,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 
 			p.bsrSet.Add(slot.FINAL0R2, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_FINAL) {
-				p.rtn(symbols.NT_FINAL, cU, p.cI)
-			} else {
-				p.parseError(slot.FINAL0R0, p.cI, followSets[symbols.NT_FINAL])
-			}
+			p.rtn(symbols.NT_FINAL, cU, p.cI)
 		case slot.FINALLY0R0: // FINALLY : ∙finally notLorD
 
 			p.bsrSet.Add(slot.FINALLY0R1, cU, p.cI, p.cI+1)
@@ -1979,11 +1491,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 
 			p.bsrSet.Add(slot.FINALLY0R2, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_FINALLY) {
-				p.rtn(symbols.NT_FINALLY, cU, p.cI)
-			} else {
-				p.parseError(slot.FINALLY0R0, p.cI, followSets[symbols.NT_FINALLY])
-			}
+			p.rtn(symbols.NT_FINALLY, cU, p.cI)
 		case slot.FOR0R0: // FOR : ∙for notLorD
 
 			p.bsrSet.Add(slot.FOR0R1, cU, p.cI, p.cI+1)
@@ -1995,11 +1503,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 
 			p.bsrSet.Add(slot.FOR0R2, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_FOR) {
-				p.rtn(symbols.NT_FOR, cU, p.cI)
-			} else {
-				p.parseError(slot.FOR0R0, p.cI, followSets[symbols.NT_FOR])
-			}
+			p.rtn(symbols.NT_FOR, cU, p.cI)
 		case slot.Finally0R0: // Finally : ∙FINALLY Block
 
 			p.call(slot.Finally0R1, cU, p.cI)
@@ -2013,31 +1517,19 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.Finally0R2, cU, p.cI)
 		case slot.Finally0R2: // Finally : FINALLY Block ∙
 
-			if p.follow(symbols.NT_Finally) {
-				p.rtn(symbols.NT_Finally, cU, p.cI)
-			} else {
-				p.parseError(slot.Finally0R0, p.cI, followSets[symbols.NT_Finally])
-			}
+			p.rtn(symbols.NT_Finally, cU, p.cI)
 		case slot.FloatLiteral0R0: // FloatLiteral : ∙HexFloat
 
 			p.call(slot.FloatLiteral0R1, cU, p.cI)
 		case slot.FloatLiteral0R1: // FloatLiteral : HexFloat ∙
 
-			if p.follow(symbols.NT_FloatLiteral) {
-				p.rtn(symbols.NT_FloatLiteral, cU, p.cI)
-			} else {
-				p.parseError(slot.FloatLiteral0R0, p.cI, followSets[symbols.NT_FloatLiteral])
-			}
+			p.rtn(symbols.NT_FloatLiteral, cU, p.cI)
 		case slot.FloatLiteral1R0: // FloatLiteral : ∙DecimalFloat
 
 			p.call(slot.FloatLiteral1R1, cU, p.cI)
 		case slot.FloatLiteral1R1: // FloatLiteral : DecimalFloat ∙
 
-			if p.follow(symbols.NT_FloatLiteral) {
-				p.rtn(symbols.NT_FloatLiteral, cU, p.cI)
-			} else {
-				p.parseError(slot.FloatLiteral1R0, p.cI, followSets[symbols.NT_FloatLiteral])
-			}
+			p.rtn(symbols.NT_FloatLiteral, cU, p.cI)
 		case slot.ForInit0R0: // ForInit : ∙OptFinType Type VarDeclInit
 
 			p.call(slot.ForInit0R1, cU, p.cI)
@@ -2059,11 +1551,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.ForInit0R3, cU, p.cI)
 		case slot.ForInit0R3: // ForInit : OptFinType Type VarDeclInit ∙
 
-			if p.follow(symbols.NT_ForInit) {
-				p.rtn(symbols.NT_ForInit, cU, p.cI)
-			} else {
-				p.parseError(slot.ForInit0R0, p.cI, followSets[symbols.NT_ForInit])
-			}
+			p.rtn(symbols.NT_ForInit, cU, p.cI)
 		case slot.ForInit1R0: // ForInit : ∙StmtExpr RepComSExpr0x
 
 			p.call(slot.ForInit1R1, cU, p.cI)
@@ -2077,11 +1565,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.ForInit1R2, cU, p.cI)
 		case slot.ForInit1R2: // ForInit : StmtExpr RepComSExpr0x ∙
 
-			if p.follow(symbols.NT_ForInit) {
-				p.rtn(symbols.NT_ForInit, cU, p.cI)
-			} else {
-				p.parseError(slot.ForInit1R0, p.cI, followSets[symbols.NT_ForInit])
-			}
+			p.rtn(symbols.NT_ForInit, cU, p.cI)
 		case slot.ForUpdate0R0: // ForUpdate : ∙StmtExpr RepComSExpr0x
 
 			p.call(slot.ForUpdate0R1, cU, p.cI)
@@ -2095,11 +1579,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.ForUpdate0R2, cU, p.cI)
 		case slot.ForUpdate0R2: // ForUpdate : StmtExpr RepComSExpr0x ∙
 
-			if p.follow(symbols.NT_ForUpdate) {
-				p.rtn(symbols.NT_ForUpdate, cU, p.cI)
-			} else {
-				p.parseError(slot.ForUpdate0R0, p.cI, followSets[symbols.NT_ForUpdate])
-			}
+			p.rtn(symbols.NT_ForUpdate, cU, p.cI)
 		case slot.FormalParam0R0: // FormalParam : ∙OptFinType VarDelID
 
 			p.call(slot.FormalParam0R1, cU, p.cI)
@@ -2113,11 +1593,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.FormalParam0R2, cU, p.cI)
 		case slot.FormalParam0R2: // FormalParam : OptFinType VarDelID ∙
 
-			if p.follow(symbols.NT_FormalParam) {
-				p.rtn(symbols.NT_FormalParam, cU, p.cI)
-			} else {
-				p.parseError(slot.FormalParam0R0, p.cI, followSets[symbols.NT_FormalParam])
-			}
+			p.rtn(symbols.NT_FormalParam, cU, p.cI)
 		case slot.FormalParamDecls0R0: // FormalParamDecls : ∙OptFinType FormalParamDeclsRest
 
 			p.call(slot.FormalParamDecls0R1, cU, p.cI)
@@ -2131,11 +1607,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.FormalParamDecls0R2, cU, p.cI)
 		case slot.FormalParamDecls0R2: // FormalParamDecls : OptFinType FormalParamDeclsRest ∙
 
-			if p.follow(symbols.NT_FormalParamDecls) {
-				p.rtn(symbols.NT_FormalParamDecls, cU, p.cI)
-			} else {
-				p.parseError(slot.FormalParamDecls0R0, p.cI, followSets[symbols.NT_FormalParamDecls])
-			}
+			p.rtn(symbols.NT_FormalParamDecls, cU, p.cI)
 		case slot.FormalParamDeclsRest0R0: // FormalParamDeclsRest : ∙VarDelID OptComFormPDecl
 
 			p.call(slot.FormalParamDeclsRest0R1, cU, p.cI)
@@ -2149,11 +1621,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.FormalParamDeclsRest0R2, cU, p.cI)
 		case slot.FormalParamDeclsRest0R2: // FormalParamDeclsRest : VarDelID OptComFormPDecl ∙
 
-			if p.follow(symbols.NT_FormalParamDeclsRest) {
-				p.rtn(symbols.NT_FormalParamDeclsRest, cU, p.cI)
-			} else {
-				p.parseError(slot.FormalParamDeclsRest0R0, p.cI, followSets[symbols.NT_FormalParamDeclsRest])
-			}
+			p.rtn(symbols.NT_FormalParamDeclsRest, cU, p.cI)
 		case slot.FormalParams0R0: // FormalParams : ∙LPAR OptFormPDecl RPAR
 
 			p.call(slot.FormalParams0R1, cU, p.cI)
@@ -2175,11 +1643,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.FormalParams0R3, cU, p.cI)
 		case slot.FormalParams0R3: // FormalParams : LPAR OptFormPDecl RPAR ∙
 
-			if p.follow(symbols.NT_FormalParams) {
-				p.rtn(symbols.NT_FormalParams, cU, p.cI)
-			} else {
-				p.parseError(slot.FormalParams0R0, p.cI, followSets[symbols.NT_FormalParams])
-			}
+			p.rtn(symbols.NT_FormalParams, cU, p.cI)
 		case slot.GE0R0: // GE : ∙>= WS
 
 			p.bsrSet.Add(slot.GE0R1, cU, p.cI, p.cI+1)
@@ -2192,11 +1656,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.GE0R2, cU, p.cI)
 		case slot.GE0R2: // GE : >= WS ∙
 
-			if p.follow(symbols.NT_GE) {
-				p.rtn(symbols.NT_GE, cU, p.cI)
-			} else {
-				p.parseError(slot.GE0R0, p.cI, followSets[symbols.NT_GE])
-			}
+			p.rtn(symbols.NT_GE, cU, p.cI)
 		case slot.GT0R0: // GT : ∙> notEqCar WS
 
 			p.bsrSet.Add(slot.GT0R1, cU, p.cI, p.cI+1)
@@ -2216,11 +1676,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.GT0R3, cU, p.cI)
 		case slot.GT0R3: // GT : > notEqCar WS ∙
 
-			if p.follow(symbols.NT_GT) {
-				p.rtn(symbols.NT_GT, cU, p.cI)
-			} else {
-				p.parseError(slot.GT0R0, p.cI, followSets[symbols.NT_GT])
-			}
+			p.rtn(symbols.NT_GT, cU, p.cI)
 		case slot.HAT0R0: // HAT : ∙^ nEq WS
 
 			p.bsrSet.Add(slot.HAT0R1, cU, p.cI, p.cI+1)
@@ -2240,11 +1696,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.HAT0R3, cU, p.cI)
 		case slot.HAT0R3: // HAT : ^ nEq WS ∙
 
-			if p.follow(symbols.NT_HAT) {
-				p.rtn(symbols.NT_HAT, cU, p.cI)
-			} else {
-				p.parseError(slot.HAT0R0, p.cI, followSets[symbols.NT_HAT])
-			}
+			p.rtn(symbols.NT_HAT, cU, p.cI)
 		case slot.HAT_EQU0R0: // HAT_EQU : ∙^= WS
 
 			p.bsrSet.Add(slot.HAT_EQU0R1, cU, p.cI, p.cI+1)
@@ -2257,11 +1709,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.HAT_EQU0R2, cU, p.cI)
 		case slot.HAT_EQU0R2: // HAT_EQU : ^= WS ∙
 
-			if p.follow(symbols.NT_HAT_EQU) {
-				p.rtn(symbols.NT_HAT_EQU, cU, p.cI)
-			} else {
-				p.parseError(slot.HAT_EQU0R0, p.cI, followSets[symbols.NT_HAT_EQU])
-			}
+			p.rtn(symbols.NT_HAT_EQU, cU, p.cI)
 		case slot.HexFloat0R0: // HexFloat : ∙HexSignificand Beoptfd
 
 			p.call(slot.HexFloat0R1, cU, p.cI)
@@ -2275,11 +1723,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.HexFloat0R2, cU, p.cI)
 		case slot.HexFloat0R2: // HexFloat : HexSignificand Beoptfd ∙
 
-			if p.follow(symbols.NT_HexFloat) {
-				p.rtn(symbols.NT_HexFloat, cU, p.cI)
-			} else {
-				p.parseError(slot.HexFloat0R0, p.cI, followSets[symbols.NT_HexFloat])
-			}
+			p.rtn(symbols.NT_HexFloat, cU, p.cI)
 		case slot.HexNumeral0R0: // HexNumeral : ∙Any0xX repHex1x
 
 			p.call(slot.HexNumeral0R1, cU, p.cI)
@@ -2292,11 +1736,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 
 			p.bsrSet.Add(slot.HexNumeral0R2, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_HexNumeral) {
-				p.rtn(symbols.NT_HexNumeral, cU, p.cI)
-			} else {
-				p.parseError(slot.HexNumeral0R0, p.cI, followSets[symbols.NT_HexNumeral])
-			}
+			p.rtn(symbols.NT_HexNumeral, cU, p.cI)
 		case slot.HexSignificand0R0: // HexSignificand : ∙HexNumeral OptDot
 
 			p.call(slot.HexSignificand0R1, cU, p.cI)
@@ -2310,11 +1750,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.HexSignificand0R2, cU, p.cI)
 		case slot.HexSignificand0R2: // HexSignificand : HexNumeral OptDot ∙
 
-			if p.follow(symbols.NT_HexSignificand) {
-				p.rtn(symbols.NT_HexSignificand, cU, p.cI)
-			} else {
-				p.parseError(slot.HexSignificand0R0, p.cI, followSets[symbols.NT_HexSignificand])
-			}
+			p.rtn(symbols.NT_HexSignificand, cU, p.cI)
 		case slot.HexSignificand1R0: // HexSignificand : ∙RepHex0xDot hexDigit repHex0x
 
 			p.call(slot.HexSignificand1R1, cU, p.cI)
@@ -2334,11 +1770,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 
 			p.bsrSet.Add(slot.HexSignificand1R3, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_HexSignificand) {
-				p.rtn(symbols.NT_HexSignificand, cU, p.cI)
-			} else {
-				p.parseError(slot.HexSignificand1R0, p.cI, followSets[symbols.NT_HexSignificand])
-			}
+			p.rtn(symbols.NT_HexSignificand, cU, p.cI)
 		case slot.ID0R0: // ID : ∙notKeyword LetterLorD
 
 			p.bsrSet.Add(slot.ID0R1, cU, p.cI, p.cI+1)
@@ -2351,11 +1783,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.ID0R2, cU, p.cI)
 		case slot.ID0R2: // ID : notKeyword LetterLorD ∙
 
-			if p.follow(symbols.NT_ID) {
-				p.rtn(symbols.NT_ID, cU, p.cI)
-			} else {
-				p.parseError(slot.ID0R0, p.cI, followSets[symbols.NT_ID])
-			}
+			p.rtn(symbols.NT_ID, cU, p.cI)
 		case slot.IDSuffix0R0: // IDSuffix : ∙LBRK RBRKAlts
 
 			p.call(slot.IDSuffix0R1, cU, p.cI)
@@ -2369,21 +1797,13 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.IDSuffix0R2, cU, p.cI)
 		case slot.IDSuffix0R2: // IDSuffix : LBRK RBRKAlts ∙
 
-			if p.follow(symbols.NT_IDSuffix) {
-				p.rtn(symbols.NT_IDSuffix, cU, p.cI)
-			} else {
-				p.parseError(slot.IDSuffix0R0, p.cI, followSets[symbols.NT_IDSuffix])
-			}
+			p.rtn(symbols.NT_IDSuffix, cU, p.cI)
 		case slot.IDSuffix1R0: // IDSuffix : ∙Arguments
 
 			p.call(slot.IDSuffix1R1, cU, p.cI)
 		case slot.IDSuffix1R1: // IDSuffix : Arguments ∙
 
-			if p.follow(symbols.NT_IDSuffix) {
-				p.rtn(symbols.NT_IDSuffix, cU, p.cI)
-			} else {
-				p.parseError(slot.IDSuffix1R0, p.cI, followSets[symbols.NT_IDSuffix])
-			}
+			p.rtn(symbols.NT_IDSuffix, cU, p.cI)
 		case slot.IDSuffix2R0: // IDSuffix : ∙DOT OtherAlts
 
 			p.call(slot.IDSuffix2R1, cU, p.cI)
@@ -2397,11 +1817,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.IDSuffix2R2, cU, p.cI)
 		case slot.IDSuffix2R2: // IDSuffix : DOT OtherAlts ∙
 
-			if p.follow(symbols.NT_IDSuffix) {
-				p.rtn(symbols.NT_IDSuffix, cU, p.cI)
-			} else {
-				p.parseError(slot.IDSuffix2R0, p.cI, followSets[symbols.NT_IDSuffix])
-			}
+			p.rtn(symbols.NT_IDSuffix, cU, p.cI)
 		case slot.IF0R0: // IF : ∙if notLorD
 
 			p.bsrSet.Add(slot.IF0R1, cU, p.cI, p.cI+1)
@@ -2413,11 +1829,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 
 			p.bsrSet.Add(slot.IF0R2, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_IF) {
-				p.rtn(symbols.NT_IF, cU, p.cI)
-			} else {
-				p.parseError(slot.IF0R0, p.cI, followSets[symbols.NT_IF])
-			}
+			p.rtn(symbols.NT_IF, cU, p.cI)
 		case slot.IMPLEMENTS0R0: // IMPLEMENTS : ∙implements notLorD
 
 			p.bsrSet.Add(slot.IMPLEMENTS0R1, cU, p.cI, p.cI+1)
@@ -2429,11 +1841,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 
 			p.bsrSet.Add(slot.IMPLEMENTS0R2, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_IMPLEMENTS) {
-				p.rtn(symbols.NT_IMPLEMENTS, cU, p.cI)
-			} else {
-				p.parseError(slot.IMPLEMENTS0R0, p.cI, followSets[symbols.NT_IMPLEMENTS])
-			}
+			p.rtn(symbols.NT_IMPLEMENTS, cU, p.cI)
 		case slot.IMPORT0R0: // IMPORT : ∙import notLorD
 
 			p.bsrSet.Add(slot.IMPORT0R1, cU, p.cI, p.cI+1)
@@ -2445,11 +1853,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 
 			p.bsrSet.Add(slot.IMPORT0R2, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_IMPORT) {
-				p.rtn(symbols.NT_IMPORT, cU, p.cI)
-			} else {
-				p.parseError(slot.IMPORT0R0, p.cI, followSets[symbols.NT_IMPORT])
-			}
+			p.rtn(symbols.NT_IMPORT, cU, p.cI)
 		case slot.INC0R0: // INC : ∙++ WS
 
 			p.bsrSet.Add(slot.INC0R1, cU, p.cI, p.cI+1)
@@ -2462,11 +1866,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.INC0R2, cU, p.cI)
 		case slot.INC0R2: // INC : ++ WS ∙
 
-			if p.follow(symbols.NT_INC) {
-				p.rtn(symbols.NT_INC, cU, p.cI)
-			} else {
-				p.parseError(slot.INC0R0, p.cI, followSets[symbols.NT_INC])
-			}
+			p.rtn(symbols.NT_INC, cU, p.cI)
 		case slot.INSTANCEOF0R0: // INSTANCEOF : ∙instanceof notLorD
 
 			p.bsrSet.Add(slot.INSTANCEOF0R1, cU, p.cI, p.cI+1)
@@ -2478,11 +1878,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 
 			p.bsrSet.Add(slot.INSTANCEOF0R2, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_INSTANCEOF) {
-				p.rtn(symbols.NT_INSTANCEOF, cU, p.cI)
-			} else {
-				p.parseError(slot.INSTANCEOF0R0, p.cI, followSets[symbols.NT_INSTANCEOF])
-			}
+			p.rtn(symbols.NT_INSTANCEOF, cU, p.cI)
 		case slot.IORExpr0R0: // IORExpr : ∙XORExpr RepORXOR0x
 
 			p.call(slot.IORExpr0R1, cU, p.cI)
@@ -2496,11 +1892,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.IORExpr0R2, cU, p.cI)
 		case slot.IORExpr0R2: // IORExpr : XORExpr RepORXOR0x ∙
 
-			if p.follow(symbols.NT_IORExpr) {
-				p.rtn(symbols.NT_IORExpr, cU, p.cI)
-			} else {
-				p.parseError(slot.IORExpr0R0, p.cI, followSets[symbols.NT_IORExpr])
-			}
+			p.rtn(symbols.NT_IORExpr, cU, p.cI)
 		case slot.ImportDecl0R0: // ImportDecl : ∙IMPORT OptStatic QualifiedID OptDotStar SEMI
 
 			p.call(slot.ImportDecl0R1, cU, p.cI)
@@ -2538,11 +1930,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.ImportDecl0R5, cU, p.cI)
 		case slot.ImportDecl0R5: // ImportDecl : IMPORT OptStatic QualifiedID OptDotStar SEMI ∙
 
-			if p.follow(symbols.NT_ImportDecl) {
-				p.rtn(symbols.NT_ImportDecl, cU, p.cI)
-			} else {
-				p.parseError(slot.ImportDecl0R0, p.cI, followSets[symbols.NT_ImportDecl])
-			}
+			p.rtn(symbols.NT_ImportDecl, cU, p.cI)
 		case slot.InnerCreator0R0: // InnerCreator : ∙ID ClsCreatorRest
 
 			p.call(slot.InnerCreator0R1, cU, p.cI)
@@ -2556,11 +1944,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.InnerCreator0R2, cU, p.cI)
 		case slot.InnerCreator0R2: // InnerCreator : ID ClsCreatorRest ∙
 
-			if p.follow(symbols.NT_InnerCreator) {
-				p.rtn(symbols.NT_InnerCreator, cU, p.cI)
-			} else {
-				p.parseError(slot.InnerCreator0R0, p.cI, followSets[symbols.NT_InnerCreator])
-			}
+			p.rtn(symbols.NT_InnerCreator, cU, p.cI)
 		case slot.IntegerLiteral0R0: // IntegerLiteral : ∙NumeralAlts optOneL
 
 			p.call(slot.IntegerLiteral0R1, cU, p.cI)
@@ -2573,11 +1957,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 
 			p.bsrSet.Add(slot.IntegerLiteral0R2, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_IntegerLiteral) {
-				p.rtn(symbols.NT_IntegerLiteral, cU, p.cI)
-			} else {
-				p.parseError(slot.IntegerLiteral0R0, p.cI, followSets[symbols.NT_IntegerLiteral])
-			}
+			p.rtn(symbols.NT_IntegerLiteral, cU, p.cI)
 		case slot.Intf0R0: // Intf : ∙Intf notLorD
 
 			p.bsrSet.Add(slot.Intf0R1, cU, p.cI, p.cI+1)
@@ -2589,11 +1969,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 
 			p.bsrSet.Add(slot.Intf0R2, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_Intf) {
-				p.rtn(symbols.NT_Intf, cU, p.cI)
-			} else {
-				p.parseError(slot.Intf0R0, p.cI, followSets[symbols.NT_Intf])
-			}
+			p.rtn(symbols.NT_Intf, cU, p.cI)
 		case slot.IntfBdy0R0: // IntfBdy : ∙LWING RepInBodDecl0x RWING
 
 			p.call(slot.IntfBdy0R1, cU, p.cI)
@@ -2615,11 +1991,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.IntfBdy0R3, cU, p.cI)
 		case slot.IntfBdy0R3: // IntfBdy : LWING RepInBodDecl0x RWING ∙
 
-			if p.follow(symbols.NT_IntfBdy) {
-				p.rtn(symbols.NT_IntfBdy, cU, p.cI)
-			} else {
-				p.parseError(slot.IntfBdy0R0, p.cI, followSets[symbols.NT_IntfBdy])
-			}
+			p.rtn(symbols.NT_IntfBdy, cU, p.cI)
 		case slot.IntfBdyDecl0R0: // IntfBdyDecl : ∙RepModif0 IntfMemDecl
 
 			p.call(slot.IntfBdyDecl0R1, cU, p.cI)
@@ -2633,21 +2005,13 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.IntfBdyDecl0R2, cU, p.cI)
 		case slot.IntfBdyDecl0R2: // IntfBdyDecl : RepModif0 IntfMemDecl ∙
 
-			if p.follow(symbols.NT_IntfBdyDecl) {
-				p.rtn(symbols.NT_IntfBdyDecl, cU, p.cI)
-			} else {
-				p.parseError(slot.IntfBdyDecl0R0, p.cI, followSets[symbols.NT_IntfBdyDecl])
-			}
+			p.rtn(symbols.NT_IntfBdyDecl, cU, p.cI)
 		case slot.IntfBdyDecl1R0: // IntfBdyDecl : ∙SEMI
 
 			p.call(slot.IntfBdyDecl1R1, cU, p.cI)
 		case slot.IntfBdyDecl1R1: // IntfBdyDecl : SEMI ∙
 
-			if p.follow(symbols.NT_IntfBdyDecl) {
-				p.rtn(symbols.NT_IntfBdyDecl, cU, p.cI)
-			} else {
-				p.parseError(slot.IntfBdyDecl1R0, p.cI, followSets[symbols.NT_IntfBdyDecl])
-			}
+			p.rtn(symbols.NT_IntfBdyDecl, cU, p.cI)
 		case slot.IntfDecl0R0: // IntfDecl : ∙Intf ID OptExtendsClsLis IntfBdy
 
 			p.bsrSet.Add(slot.IntfDecl0R1, cU, p.cI, p.cI+1)
@@ -2676,21 +2040,13 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.IntfDecl0R4, cU, p.cI)
 		case slot.IntfDecl0R4: // IntfDecl : Intf ID OptExtendsClsLis IntfBdy ∙
 
-			if p.follow(symbols.NT_IntfDecl) {
-				p.rtn(symbols.NT_IntfDecl, cU, p.cI)
-			} else {
-				p.parseError(slot.IntfDecl0R0, p.cI, followSets[symbols.NT_IntfDecl])
-			}
+			p.rtn(symbols.NT_IntfDecl, cU, p.cI)
 		case slot.IntfMemDecl0R0: // IntfMemDecl : ∙IntfMethFieldDecl
 
 			p.call(slot.IntfMemDecl0R1, cU, p.cI)
 		case slot.IntfMemDecl0R1: // IntfMemDecl : IntfMethFieldDecl ∙
 
-			if p.follow(symbols.NT_IntfMemDecl) {
-				p.rtn(symbols.NT_IntfMemDecl, cU, p.cI)
-			} else {
-				p.parseError(slot.IntfMemDecl0R0, p.cI, followSets[symbols.NT_IntfMemDecl])
-			}
+			p.rtn(symbols.NT_IntfMemDecl, cU, p.cI)
 		case slot.IntfMemDecl1R0: // IntfMemDecl : ∙VOID ID VoidIntfMethDeclRst
 
 			p.call(slot.IntfMemDecl1R1, cU, p.cI)
@@ -2712,31 +2068,19 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.IntfMemDecl1R3, cU, p.cI)
 		case slot.IntfMemDecl1R3: // IntfMemDecl : VOID ID VoidIntfMethDeclRst ∙
 
-			if p.follow(symbols.NT_IntfMemDecl) {
-				p.rtn(symbols.NT_IntfMemDecl, cU, p.cI)
-			} else {
-				p.parseError(slot.IntfMemDecl1R0, p.cI, followSets[symbols.NT_IntfMemDecl])
-			}
+			p.rtn(symbols.NT_IntfMemDecl, cU, p.cI)
 		case slot.IntfMemDecl2R0: // IntfMemDecl : ∙IntfDecl
 
 			p.call(slot.IntfMemDecl2R1, cU, p.cI)
 		case slot.IntfMemDecl2R1: // IntfMemDecl : IntfDecl ∙
 
-			if p.follow(symbols.NT_IntfMemDecl) {
-				p.rtn(symbols.NT_IntfMemDecl, cU, p.cI)
-			} else {
-				p.parseError(slot.IntfMemDecl2R0, p.cI, followSets[symbols.NT_IntfMemDecl])
-			}
+			p.rtn(symbols.NT_IntfMemDecl, cU, p.cI)
 		case slot.IntfMemDecl3R0: // IntfMemDecl : ∙ClsDecl
 
 			p.call(slot.IntfMemDecl3R1, cU, p.cI)
 		case slot.IntfMemDecl3R1: // IntfMemDecl : ClsDecl ∙
 
-			if p.follow(symbols.NT_IntfMemDecl) {
-				p.rtn(symbols.NT_IntfMemDecl, cU, p.cI)
-			} else {
-				p.parseError(slot.IntfMemDecl3R0, p.cI, followSets[symbols.NT_IntfMemDecl])
-			}
+			p.rtn(symbols.NT_IntfMemDecl, cU, p.cI)
 		case slot.IntfMethDeclRest0R0: // IntfMethDeclRest : ∙FormalParams RepDim0x OptThrowClsTypLst SEMI
 
 			p.call(slot.IntfMethDeclRest0R1, cU, p.cI)
@@ -2766,11 +2110,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.IntfMethDeclRest0R4, cU, p.cI)
 		case slot.IntfMethDeclRest0R4: // IntfMethDeclRest : FormalParams RepDim0x OptThrowClsTypLst SEMI ∙
 
-			if p.follow(symbols.NT_IntfMethDeclRest) {
-				p.rtn(symbols.NT_IntfMethDeclRest, cU, p.cI)
-			} else {
-				p.parseError(slot.IntfMethDeclRest0R0, p.cI, followSets[symbols.NT_IntfMethDeclRest])
-			}
+			p.rtn(symbols.NT_IntfMethDeclRest, cU, p.cI)
 		case slot.IntfMethFieldDecl0R0: // IntfMethFieldDecl : ∙Type ID IntfMethFieldRest
 
 			p.call(slot.IntfMethFieldDecl0R1, cU, p.cI)
@@ -2792,11 +2132,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.IntfMethFieldDecl0R3, cU, p.cI)
 		case slot.IntfMethFieldDecl0R3: // IntfMethFieldDecl : Type ID IntfMethFieldRest ∙
 
-			if p.follow(symbols.NT_IntfMethFieldDecl) {
-				p.rtn(symbols.NT_IntfMethFieldDecl, cU, p.cI)
-			} else {
-				p.parseError(slot.IntfMethFieldDecl0R0, p.cI, followSets[symbols.NT_IntfMethFieldDecl])
-			}
+			p.rtn(symbols.NT_IntfMethFieldDecl, cU, p.cI)
 		case slot.IntfMethFieldRest0R0: // IntfMethFieldRest : ∙ConstDeclsRest SEMI
 
 			p.call(slot.IntfMethFieldRest0R1, cU, p.cI)
@@ -2810,21 +2146,13 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.IntfMethFieldRest0R2, cU, p.cI)
 		case slot.IntfMethFieldRest0R2: // IntfMethFieldRest : ConstDeclsRest SEMI ∙
 
-			if p.follow(symbols.NT_IntfMethFieldRest) {
-				p.rtn(symbols.NT_IntfMethFieldRest, cU, p.cI)
-			} else {
-				p.parseError(slot.IntfMethFieldRest0R0, p.cI, followSets[symbols.NT_IntfMethFieldRest])
-			}
+			p.rtn(symbols.NT_IntfMethFieldRest, cU, p.cI)
 		case slot.IntfMethFieldRest1R0: // IntfMethFieldRest : ∙IntfMethDeclRest
 
 			p.call(slot.IntfMethFieldRest1R1, cU, p.cI)
 		case slot.IntfMethFieldRest1R1: // IntfMethFieldRest : IntfMethDeclRest ∙
 
-			if p.follow(symbols.NT_IntfMethFieldRest) {
-				p.rtn(symbols.NT_IntfMethFieldRest, cU, p.cI)
-			} else {
-				p.parseError(slot.IntfMethFieldRest1R0, p.cI, followSets[symbols.NT_IntfMethFieldRest])
-			}
+			p.rtn(symbols.NT_IntfMethFieldRest, cU, p.cI)
 		case slot.LBRK0R0: // LBRK : ∙[ WS
 
 			p.bsrSet.Add(slot.LBRK0R1, cU, p.cI, p.cI+1)
@@ -2837,11 +2165,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.LBRK0R2, cU, p.cI)
 		case slot.LBRK0R2: // LBRK : [ WS ∙
 
-			if p.follow(symbols.NT_LBRK) {
-				p.rtn(symbols.NT_LBRK, cU, p.cI)
-			} else {
-				p.parseError(slot.LBRK0R0, p.cI, followSets[symbols.NT_LBRK])
-			}
+			p.rtn(symbols.NT_LBRK, cU, p.cI)
 		case slot.LE0R0: // LE : ∙<= WS
 
 			p.bsrSet.Add(slot.LE0R1, cU, p.cI, p.cI+1)
@@ -2854,11 +2178,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.LE0R2, cU, p.cI)
 		case slot.LE0R2: // LE : <= WS ∙
 
-			if p.follow(symbols.NT_LE) {
-				p.rtn(symbols.NT_LE, cU, p.cI)
-			} else {
-				p.parseError(slot.LE0R0, p.cI, followSets[symbols.NT_LE])
-			}
+			p.rtn(symbols.NT_LE, cU, p.cI)
 		case slot.LPAR0R0: // LPAR : ∙( WS
 
 			p.bsrSet.Add(slot.LPAR0R1, cU, p.cI, p.cI+1)
@@ -2871,11 +2191,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.LPAR0R2, cU, p.cI)
 		case slot.LPAR0R2: // LPAR : ( WS ∙
 
-			if p.follow(symbols.NT_LPAR) {
-				p.rtn(symbols.NT_LPAR, cU, p.cI)
-			} else {
-				p.parseError(slot.LPAR0R0, p.cI, followSets[symbols.NT_LPAR])
-			}
+			p.rtn(symbols.NT_LPAR, cU, p.cI)
 		case slot.LT0R0: // LT : ∙< notEqCar2 WS
 
 			p.bsrSet.Add(slot.LT0R1, cU, p.cI, p.cI+1)
@@ -2895,11 +2211,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.LT0R3, cU, p.cI)
 		case slot.LT0R3: // LT : < notEqCar2 WS ∙
 
-			if p.follow(symbols.NT_LT) {
-				p.rtn(symbols.NT_LT, cU, p.cI)
-			} else {
-				p.parseError(slot.LT0R0, p.cI, followSets[symbols.NT_LT])
-			}
+			p.rtn(symbols.NT_LT, cU, p.cI)
 		case slot.LWING0R0: // LWING : ∙{ WS
 
 			p.bsrSet.Add(slot.LWING0R1, cU, p.cI, p.cI+1)
@@ -2912,30 +2224,18 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.LWING0R2, cU, p.cI)
 		case slot.LWING0R2: // LWING : { WS ∙
 
-			if p.follow(symbols.NT_LWING) {
-				p.rtn(symbols.NT_LWING, cU, p.cI)
-			} else {
-				p.parseError(slot.LWING0R0, p.cI, followSets[symbols.NT_LWING])
-			}
+			p.rtn(symbols.NT_LWING, cU, p.cI)
 		case slot.Letter0R0: // Letter : ∙let
 
 			p.bsrSet.Add(slot.Letter0R1, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_Letter) {
-				p.rtn(symbols.NT_Letter, cU, p.cI)
-			} else {
-				p.parseError(slot.Letter0R0, p.cI, followSets[symbols.NT_Letter])
-			}
+			p.rtn(symbols.NT_Letter, cU, p.cI)
 		case slot.Letter1R0: // Letter : ∙WS
 
 			p.call(slot.Letter1R1, cU, p.cI)
 		case slot.Letter1R1: // Letter : WS ∙
 
-			if p.follow(symbols.NT_Letter) {
-				p.rtn(symbols.NT_Letter, cU, p.cI)
-			} else {
-				p.parseError(slot.Letter1R0, p.cI, followSets[symbols.NT_Letter])
-			}
+			p.rtn(symbols.NT_Letter, cU, p.cI)
 		case slot.LetterLorD0R0: // LetterLorD : ∙Letter RepLorD0x WS
 
 			p.call(slot.LetterLorD0R1, cU, p.cI)
@@ -2957,51 +2257,31 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.LetterLorD0R3, cU, p.cI)
 		case slot.LetterLorD0R3: // LetterLorD : Letter RepLorD0x WS ∙
 
-			if p.follow(symbols.NT_LetterLorD) {
-				p.rtn(symbols.NT_LetterLorD, cU, p.cI)
-			} else {
-				p.parseError(slot.LetterLorD0R0, p.cI, followSets[symbols.NT_LetterLorD])
-			}
+			p.rtn(symbols.NT_LetterLorD, cU, p.cI)
 		case slot.LitAlts0R0: // LitAlts : ∙FloatLiteral
 
 			p.call(slot.LitAlts0R1, cU, p.cI)
 		case slot.LitAlts0R1: // LitAlts : FloatLiteral ∙
 
-			if p.follow(symbols.NT_LitAlts) {
-				p.rtn(symbols.NT_LitAlts, cU, p.cI)
-			} else {
-				p.parseError(slot.LitAlts0R0, p.cI, followSets[symbols.NT_LitAlts])
-			}
+			p.rtn(symbols.NT_LitAlts, cU, p.cI)
 		case slot.LitAlts1R0: // LitAlts : ∙IntegerLiteral
 
 			p.call(slot.LitAlts1R1, cU, p.cI)
 		case slot.LitAlts1R1: // LitAlts : IntegerLiteral ∙
 
-			if p.follow(symbols.NT_LitAlts) {
-				p.rtn(symbols.NT_LitAlts, cU, p.cI)
-			} else {
-				p.parseError(slot.LitAlts1R0, p.cI, followSets[symbols.NT_LitAlts])
-			}
+			p.rtn(symbols.NT_LitAlts, cU, p.cI)
 		case slot.LitAlts2R0: // LitAlts : ∙CharLiteral
 
 			p.call(slot.LitAlts2R1, cU, p.cI)
 		case slot.LitAlts2R1: // LitAlts : CharLiteral ∙
 
-			if p.follow(symbols.NT_LitAlts) {
-				p.rtn(symbols.NT_LitAlts, cU, p.cI)
-			} else {
-				p.parseError(slot.LitAlts2R0, p.cI, followSets[symbols.NT_LitAlts])
-			}
+			p.rtn(symbols.NT_LitAlts, cU, p.cI)
 		case slot.LitAlts3R0: // LitAlts : ∙StringLiteral
 
 			p.call(slot.LitAlts3R1, cU, p.cI)
 		case slot.LitAlts3R1: // LitAlts : StringLiteral ∙
 
-			if p.follow(symbols.NT_LitAlts) {
-				p.rtn(symbols.NT_LitAlts, cU, p.cI)
-			} else {
-				p.parseError(slot.LitAlts3R0, p.cI, followSets[symbols.NT_LitAlts])
-			}
+			p.rtn(symbols.NT_LitAlts, cU, p.cI)
 		case slot.LitAlts4R0: // LitAlts : ∙true notLorD
 
 			p.bsrSet.Add(slot.LitAlts4R1, cU, p.cI, p.cI+1)
@@ -3013,11 +2293,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 
 			p.bsrSet.Add(slot.LitAlts4R2, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_LitAlts) {
-				p.rtn(symbols.NT_LitAlts, cU, p.cI)
-			} else {
-				p.parseError(slot.LitAlts4R0, p.cI, followSets[symbols.NT_LitAlts])
-			}
+			p.rtn(symbols.NT_LitAlts, cU, p.cI)
 		case slot.LitAlts5R0: // LitAlts : ∙false notLorD
 
 			p.bsrSet.Add(slot.LitAlts5R1, cU, p.cI, p.cI+1)
@@ -3029,11 +2305,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 
 			p.bsrSet.Add(slot.LitAlts5R2, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_LitAlts) {
-				p.rtn(symbols.NT_LitAlts, cU, p.cI)
-			} else {
-				p.parseError(slot.LitAlts5R0, p.cI, followSets[symbols.NT_LitAlts])
-			}
+			p.rtn(symbols.NT_LitAlts, cU, p.cI)
 		case slot.LitAlts6R0: // LitAlts : ∙null notLorD
 
 			p.bsrSet.Add(slot.LitAlts6R1, cU, p.cI, p.cI+1)
@@ -3045,11 +2317,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 
 			p.bsrSet.Add(slot.LitAlts6R2, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_LitAlts) {
-				p.rtn(symbols.NT_LitAlts, cU, p.cI)
-			} else {
-				p.parseError(slot.LitAlts6R0, p.cI, followSets[symbols.NT_LitAlts])
-			}
+			p.rtn(symbols.NT_LitAlts, cU, p.cI)
 		case slot.Literal0R0: // Literal : ∙LitAlts WS
 
 			p.call(slot.Literal0R1, cU, p.cI)
@@ -3063,11 +2331,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.Literal0R2, cU, p.cI)
 		case slot.Literal0R2: // Literal : LitAlts WS ∙
 
-			if p.follow(symbols.NT_Literal) {
-				p.rtn(symbols.NT_Literal, cU, p.cI)
-			} else {
-				p.parseError(slot.Literal0R0, p.cI, followSets[symbols.NT_Literal])
-			}
+			p.rtn(symbols.NT_Literal, cU, p.cI)
 		case slot.LocalVarDeclStmt0R0: // LocalVarDeclStmt : ∙OptFinType VarDecl RepComVDecl0x SEMI
 
 			p.call(slot.LocalVarDeclStmt0R1, cU, p.cI)
@@ -3097,30 +2361,18 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.LocalVarDeclStmt0R4, cU, p.cI)
 		case slot.LocalVarDeclStmt0R4: // LocalVarDeclStmt : OptFinType VarDecl RepComVDecl0x SEMI ∙
 
-			if p.follow(symbols.NT_LocalVarDeclStmt) {
-				p.rtn(symbols.NT_LocalVarDeclStmt, cU, p.cI)
-			} else {
-				p.parseError(slot.LocalVarDeclStmt0R0, p.cI, followSets[symbols.NT_LocalVarDeclStmt])
-			}
+			p.rtn(symbols.NT_LocalVarDeclStmt, cU, p.cI)
 		case slot.LorD0R0: // LorD : ∙Letter
 
 			p.call(slot.LorD0R1, cU, p.cI)
 		case slot.LorD0R1: // LorD : Letter ∙
 
-			if p.follow(symbols.NT_LorD) {
-				p.rtn(symbols.NT_LorD, cU, p.cI)
-			} else {
-				p.parseError(slot.LorD0R0, p.cI, followSets[symbols.NT_LorD])
-			}
+			p.rtn(symbols.NT_LorD, cU, p.cI)
 		case slot.LorD1R0: // LorD : ∙num
 
 			p.bsrSet.Add(slot.LorD1R1, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_LorD) {
-				p.rtn(symbols.NT_LorD, cU, p.cI)
-			} else {
-				p.parseError(slot.LorD1R0, p.cI, followSets[symbols.NT_LorD])
-			}
+			p.rtn(symbols.NT_LorD, cU, p.cI)
 		case slot.MINUS0R0: // MINUS : ∙- notEqSlDash WS
 
 			p.bsrSet.Add(slot.MINUS0R1, cU, p.cI, p.cI+1)
@@ -3140,11 +2392,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.MINUS0R3, cU, p.cI)
 		case slot.MINUS0R3: // MINUS : - notEqSlDash WS ∙
 
-			if p.follow(symbols.NT_MINUS) {
-				p.rtn(symbols.NT_MINUS, cU, p.cI)
-			} else {
-				p.parseError(slot.MINUS0R0, p.cI, followSets[symbols.NT_MINUS])
-			}
+			p.rtn(symbols.NT_MINUS, cU, p.cI)
 		case slot.MINUS_EQU0R0: // MINUS_EQU : ∙-= WS
 
 			p.bsrSet.Add(slot.MINUS_EQU0R1, cU, p.cI, p.cI+1)
@@ -3157,11 +2405,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.MINUS_EQU0R2, cU, p.cI)
 		case slot.MINUS_EQU0R2: // MINUS_EQU : -= WS ∙
 
-			if p.follow(symbols.NT_MINUS_EQU) {
-				p.rtn(symbols.NT_MINUS_EQU, cU, p.cI)
-			} else {
-				p.parseError(slot.MINUS_EQU0R0, p.cI, followSets[symbols.NT_MINUS_EQU])
-			}
+			p.rtn(symbols.NT_MINUS_EQU, cU, p.cI)
 		case slot.MOD0R0: // MOD : ∙% nEq WS
 
 			p.bsrSet.Add(slot.MOD0R1, cU, p.cI, p.cI+1)
@@ -3181,11 +2425,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.MOD0R3, cU, p.cI)
 		case slot.MOD0R3: // MOD : % nEq WS ∙
 
-			if p.follow(symbols.NT_MOD) {
-				p.rtn(symbols.NT_MOD, cU, p.cI)
-			} else {
-				p.parseError(slot.MOD0R0, p.cI, followSets[symbols.NT_MOD])
-			}
+			p.rtn(symbols.NT_MOD, cU, p.cI)
 		case slot.MOD_EQU0R0: // MOD_EQU : ∙%= WS
 
 			p.bsrSet.Add(slot.MOD_EQU0R1, cU, p.cI, p.cI+1)
@@ -3198,31 +2438,19 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.MOD_EQU0R2, cU, p.cI)
 		case slot.MOD_EQU0R2: // MOD_EQU : %= WS ∙
 
-			if p.follow(symbols.NT_MOD_EQU) {
-				p.rtn(symbols.NT_MOD_EQU, cU, p.cI)
-			} else {
-				p.parseError(slot.MOD_EQU0R0, p.cI, followSets[symbols.NT_MOD_EQU])
-			}
+			p.rtn(symbols.NT_MOD_EQU, cU, p.cI)
 		case slot.MemAlts0R0: // MemAlts : ∙SEMI
 
 			p.call(slot.MemAlts0R1, cU, p.cI)
 		case slot.MemAlts0R1: // MemAlts : SEMI ∙
 
-			if p.follow(symbols.NT_MemAlts) {
-				p.rtn(symbols.NT_MemAlts, cU, p.cI)
-			} else {
-				p.parseError(slot.MemAlts0R0, p.cI, followSets[symbols.NT_MemAlts])
-			}
+			p.rtn(symbols.NT_MemAlts, cU, p.cI)
 		case slot.MemAlts1R0: // MemAlts : ∙Block
 
 			p.call(slot.MemAlts1R1, cU, p.cI)
 		case slot.MemAlts1R1: // MemAlts : Block ∙
 
-			if p.follow(symbols.NT_MemAlts) {
-				p.rtn(symbols.NT_MemAlts, cU, p.cI)
-			} else {
-				p.parseError(slot.MemAlts1R0, p.cI, followSets[symbols.NT_MemAlts])
-			}
+			p.rtn(symbols.NT_MemAlts, cU, p.cI)
 		case slot.MemDecl0R0: // MemDecl : ∙Type ID FormalParams RepDim0x OptThrowClsTypLst MemAlts
 
 			p.call(slot.MemDecl0R1, cU, p.cI)
@@ -3268,11 +2496,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.MemDecl0R6, cU, p.cI)
 		case slot.MemDecl0R6: // MemDecl : Type ID FormalParams RepDim0x OptThrowClsTypLst MemAlts ∙
 
-			if p.follow(symbols.NT_MemDecl) {
-				p.rtn(symbols.NT_MemDecl, cU, p.cI)
-			} else {
-				p.parseError(slot.MemDecl0R0, p.cI, followSets[symbols.NT_MemDecl])
-			}
+			p.rtn(symbols.NT_MemDecl, cU, p.cI)
 		case slot.MemDecl1R0: // MemDecl : ∙VOID ID FormalParams OptThrowClsTypLst MemAlts
 
 			p.call(slot.MemDecl1R1, cU, p.cI)
@@ -3310,11 +2534,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.MemDecl1R5, cU, p.cI)
 		case slot.MemDecl1R5: // MemDecl : VOID ID FormalParams OptThrowClsTypLst MemAlts ∙
 
-			if p.follow(symbols.NT_MemDecl) {
-				p.rtn(symbols.NT_MemDecl, cU, p.cI)
-			} else {
-				p.parseError(slot.MemDecl1R0, p.cI, followSets[symbols.NT_MemDecl])
-			}
+			p.rtn(symbols.NT_MemDecl, cU, p.cI)
 		case slot.MemDecl2R0: // MemDecl : ∙ID FormalParams OptThrowClsTypLst Block
 
 			p.call(slot.MemDecl2R1, cU, p.cI)
@@ -3344,31 +2564,19 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.MemDecl2R4, cU, p.cI)
 		case slot.MemDecl2R4: // MemDecl : ID FormalParams OptThrowClsTypLst Block ∙
 
-			if p.follow(symbols.NT_MemDecl) {
-				p.rtn(symbols.NT_MemDecl, cU, p.cI)
-			} else {
-				p.parseError(slot.MemDecl2R0, p.cI, followSets[symbols.NT_MemDecl])
-			}
+			p.rtn(symbols.NT_MemDecl, cU, p.cI)
 		case slot.MemDecl3R0: // MemDecl : ∙IntfDecl
 
 			p.call(slot.MemDecl3R1, cU, p.cI)
 		case slot.MemDecl3R1: // MemDecl : IntfDecl ∙
 
-			if p.follow(symbols.NT_MemDecl) {
-				p.rtn(symbols.NT_MemDecl, cU, p.cI)
-			} else {
-				p.parseError(slot.MemDecl3R0, p.cI, followSets[symbols.NT_MemDecl])
-			}
+			p.rtn(symbols.NT_MemDecl, cU, p.cI)
 		case slot.MemDecl4R0: // MemDecl : ∙ClsDecl
 
 			p.call(slot.MemDecl4R1, cU, p.cI)
 		case slot.MemDecl4R1: // MemDecl : ClsDecl ∙
 
-			if p.follow(symbols.NT_MemDecl) {
-				p.rtn(symbols.NT_MemDecl, cU, p.cI)
-			} else {
-				p.parseError(slot.MemDecl4R0, p.cI, followSets[symbols.NT_MemDecl])
-			}
+			p.rtn(symbols.NT_MemDecl, cU, p.cI)
 		case slot.MemDecl5R0: // MemDecl : ∙Type VarDecl RepComVDecl0x
 
 			p.call(slot.MemDecl5R1, cU, p.cI)
@@ -3390,11 +2598,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.MemDecl5R3, cU, p.cI)
 		case slot.MemDecl5R3: // MemDecl : Type VarDecl RepComVDecl0x ∙
 
-			if p.follow(symbols.NT_MemDecl) {
-				p.rtn(symbols.NT_MemDecl, cU, p.cI)
-			} else {
-				p.parseError(slot.MemDecl5R0, p.cI, followSets[symbols.NT_MemDecl])
-			}
+			p.rtn(symbols.NT_MemDecl, cU, p.cI)
 		case slot.Modifier0R0: // Modifier : ∙Modifs notLorD
 
 			p.call(slot.Modifier0R1, cU, p.cI)
@@ -3407,110 +2611,62 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 
 			p.bsrSet.Add(slot.Modifier0R2, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_Modifier) {
-				p.rtn(symbols.NT_Modifier, cU, p.cI)
-			} else {
-				p.parseError(slot.Modifier0R0, p.cI, followSets[symbols.NT_Modifier])
-			}
+			p.rtn(symbols.NT_Modifier, cU, p.cI)
 		case slot.Modifs0R0: // Modifs : ∙public
 
 			p.bsrSet.Add(slot.Modifs0R1, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_Modifs) {
-				p.rtn(symbols.NT_Modifs, cU, p.cI)
-			} else {
-				p.parseError(slot.Modifs0R0, p.cI, followSets[symbols.NT_Modifs])
-			}
+			p.rtn(symbols.NT_Modifs, cU, p.cI)
 		case slot.Modifs1R0: // Modifs : ∙protected
 
 			p.bsrSet.Add(slot.Modifs1R1, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_Modifs) {
-				p.rtn(symbols.NT_Modifs, cU, p.cI)
-			} else {
-				p.parseError(slot.Modifs1R0, p.cI, followSets[symbols.NT_Modifs])
-			}
+			p.rtn(symbols.NT_Modifs, cU, p.cI)
 		case slot.Modifs2R0: // Modifs : ∙private
 
 			p.bsrSet.Add(slot.Modifs2R1, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_Modifs) {
-				p.rtn(symbols.NT_Modifs, cU, p.cI)
-			} else {
-				p.parseError(slot.Modifs2R0, p.cI, followSets[symbols.NT_Modifs])
-			}
+			p.rtn(symbols.NT_Modifs, cU, p.cI)
 		case slot.Modifs3R0: // Modifs : ∙static
 
 			p.bsrSet.Add(slot.Modifs3R1, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_Modifs) {
-				p.rtn(symbols.NT_Modifs, cU, p.cI)
-			} else {
-				p.parseError(slot.Modifs3R0, p.cI, followSets[symbols.NT_Modifs])
-			}
+			p.rtn(symbols.NT_Modifs, cU, p.cI)
 		case slot.Modifs4R0: // Modifs : ∙abstract
 
 			p.bsrSet.Add(slot.Modifs4R1, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_Modifs) {
-				p.rtn(symbols.NT_Modifs, cU, p.cI)
-			} else {
-				p.parseError(slot.Modifs4R0, p.cI, followSets[symbols.NT_Modifs])
-			}
+			p.rtn(symbols.NT_Modifs, cU, p.cI)
 		case slot.Modifs5R0: // Modifs : ∙final
 
 			p.bsrSet.Add(slot.Modifs5R1, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_Modifs) {
-				p.rtn(symbols.NT_Modifs, cU, p.cI)
-			} else {
-				p.parseError(slot.Modifs5R0, p.cI, followSets[symbols.NT_Modifs])
-			}
+			p.rtn(symbols.NT_Modifs, cU, p.cI)
 		case slot.Modifs6R0: // Modifs : ∙native
 
 			p.bsrSet.Add(slot.Modifs6R1, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_Modifs) {
-				p.rtn(symbols.NT_Modifs, cU, p.cI)
-			} else {
-				p.parseError(slot.Modifs6R0, p.cI, followSets[symbols.NT_Modifs])
-			}
+			p.rtn(symbols.NT_Modifs, cU, p.cI)
 		case slot.Modifs7R0: // Modifs : ∙synchronized
 
 			p.bsrSet.Add(slot.Modifs7R1, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_Modifs) {
-				p.rtn(symbols.NT_Modifs, cU, p.cI)
-			} else {
-				p.parseError(slot.Modifs7R0, p.cI, followSets[symbols.NT_Modifs])
-			}
+			p.rtn(symbols.NT_Modifs, cU, p.cI)
 		case slot.Modifs8R0: // Modifs : ∙transient
 
 			p.bsrSet.Add(slot.Modifs8R1, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_Modifs) {
-				p.rtn(symbols.NT_Modifs, cU, p.cI)
-			} else {
-				p.parseError(slot.Modifs8R0, p.cI, followSets[symbols.NT_Modifs])
-			}
+			p.rtn(symbols.NT_Modifs, cU, p.cI)
 		case slot.Modifs9R0: // Modifs : ∙volatile
 
 			p.bsrSet.Add(slot.Modifs9R1, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_Modifs) {
-				p.rtn(symbols.NT_Modifs, cU, p.cI)
-			} else {
-				p.parseError(slot.Modifs9R0, p.cI, followSets[symbols.NT_Modifs])
-			}
+			p.rtn(symbols.NT_Modifs, cU, p.cI)
 		case slot.Modifs10R0: // Modifs : ∙strictfp
 
 			p.bsrSet.Add(slot.Modifs10R1, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_Modifs) {
-				p.rtn(symbols.NT_Modifs, cU, p.cI)
-			} else {
-				p.parseError(slot.Modifs10R0, p.cI, followSets[symbols.NT_Modifs])
-			}
+			p.rtn(symbols.NT_Modifs, cU, p.cI)
 		case slot.MultExpr0R0: // MultExpr : ∙UnaryExpr RepSDMUExpr0x
 
 			p.call(slot.MultExpr0R1, cU, p.cI)
@@ -3524,11 +2680,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.MultExpr0R2, cU, p.cI)
 		case slot.MultExpr0R2: // MultExpr : UnaryExpr RepSDMUExpr0x ∙
 
-			if p.follow(symbols.NT_MultExpr) {
-				p.rtn(symbols.NT_MultExpr, cU, p.cI)
-			} else {
-				p.parseError(slot.MultExpr0R0, p.cI, followSets[symbols.NT_MultExpr])
-			}
+			p.rtn(symbols.NT_MultExpr, cU, p.cI)
 		case slot.NEW0R0: // NEW : ∙new notLorD
 
 			p.bsrSet.Add(slot.NEW0R1, cU, p.cI, p.cI+1)
@@ -3540,11 +2692,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 
 			p.bsrSet.Add(slot.NEW0R2, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_NEW) {
-				p.rtn(symbols.NT_NEW, cU, p.cI)
-			} else {
-				p.parseError(slot.NEW0R0, p.cI, followSets[symbols.NT_NEW])
-			}
+			p.rtn(symbols.NT_NEW, cU, p.cI)
 		case slot.NOT_EQUAL0R0: // NOT_EQUAL : ∙!= WS
 
 			p.bsrSet.Add(slot.NOT_EQUAL0R1, cU, p.cI, p.cI+1)
@@ -3557,40 +2705,24 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.NOT_EQUAL0R2, cU, p.cI)
 		case slot.NOT_EQUAL0R2: // NOT_EQUAL : != WS ∙
 
-			if p.follow(symbols.NT_NOT_EQUAL) {
-				p.rtn(symbols.NT_NOT_EQUAL, cU, p.cI)
-			} else {
-				p.parseError(slot.NOT_EQUAL0R0, p.cI, followSets[symbols.NT_NOT_EQUAL])
-			}
+			p.rtn(symbols.NT_NOT_EQUAL, cU, p.cI)
 		case slot.NumeralAlts0R0: // NumeralAlts : ∙HexNumeral
 
 			p.call(slot.NumeralAlts0R1, cU, p.cI)
 		case slot.NumeralAlts0R1: // NumeralAlts : HexNumeral ∙
 
-			if p.follow(symbols.NT_NumeralAlts) {
-				p.rtn(symbols.NT_NumeralAlts, cU, p.cI)
-			} else {
-				p.parseError(slot.NumeralAlts0R0, p.cI, followSets[symbols.NT_NumeralAlts])
-			}
+			p.rtn(symbols.NT_NumeralAlts, cU, p.cI)
 		case slot.NumeralAlts1R0: // NumeralAlts : ∙octalNumeral
 
 			p.bsrSet.Add(slot.NumeralAlts1R1, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_NumeralAlts) {
-				p.rtn(symbols.NT_NumeralAlts, cU, p.cI)
-			} else {
-				p.parseError(slot.NumeralAlts1R0, p.cI, followSets[symbols.NT_NumeralAlts])
-			}
+			p.rtn(symbols.NT_NumeralAlts, cU, p.cI)
 		case slot.NumeralAlts2R0: // NumeralAlts : ∙DecimalNumeral
 
 			p.call(slot.NumeralAlts2R1, cU, p.cI)
 		case slot.NumeralAlts2R1: // NumeralAlts : DecimalNumeral ∙
 
-			if p.follow(symbols.NT_NumeralAlts) {
-				p.rtn(symbols.NT_NumeralAlts, cU, p.cI)
-			} else {
-				p.parseError(slot.NumeralAlts2R0, p.cI, followSets[symbols.NT_NumeralAlts])
-			}
+			p.rtn(symbols.NT_NumeralAlts, cU, p.cI)
 		case slot.OR0R0: // OR : ∙| notEqPipe WS
 
 			p.bsrSet.Add(slot.OR0R1, cU, p.cI, p.cI+1)
@@ -3610,11 +2742,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.OR0R3, cU, p.cI)
 		case slot.OR0R3: // OR : | notEqPipe WS ∙
 
-			if p.follow(symbols.NT_OR) {
-				p.rtn(symbols.NT_OR, cU, p.cI)
-			} else {
-				p.parseError(slot.OR0R0, p.cI, followSets[symbols.NT_OR])
-			}
+			p.rtn(symbols.NT_OR, cU, p.cI)
 		case slot.ORXOR0R0: // ORXOR : ∙OR XORExpr
 
 			p.call(slot.ORXOR0R1, cU, p.cI)
@@ -3628,11 +2756,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.ORXOR0R2, cU, p.cI)
 		case slot.ORXOR0R2: // ORXOR : OR XORExpr ∙
 
-			if p.follow(symbols.NT_ORXOR) {
-				p.rtn(symbols.NT_ORXOR, cU, p.cI)
-			} else {
-				p.parseError(slot.ORXOR0R0, p.cI, followSets[symbols.NT_ORXOR])
-			}
+			p.rtn(symbols.NT_ORXOR, cU, p.cI)
 		case slot.OR_EQU0R0: // OR_EQU : ∙|= WS
 
 			p.bsrSet.Add(slot.OR_EQU0R1, cU, p.cI, p.cI+1)
@@ -3645,11 +2769,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.OR_EQU0R2, cU, p.cI)
 		case slot.OR_EQU0R2: // OR_EQU : |= WS ∙
 
-			if p.follow(symbols.NT_OR_EQU) {
-				p.rtn(symbols.NT_OR_EQU, cU, p.cI)
-			} else {
-				p.parseError(slot.OR_EQU0R0, p.cI, followSets[symbols.NT_OR_EQU])
-			}
+			p.rtn(symbols.NT_OR_EQU, cU, p.cI)
 		case slot.OR_OR0R0: // OR_OR : ∙|| WS
 
 			p.bsrSet.Add(slot.OR_OR0R1, cU, p.cI, p.cI+1)
@@ -3662,74 +2782,42 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.OR_OR0R2, cU, p.cI)
 		case slot.OR_OR0R2: // OR_OR : || WS ∙
 
-			if p.follow(symbols.NT_OR_OR) {
-				p.rtn(symbols.NT_OR_OR, cU, p.cI)
-			} else {
-				p.parseError(slot.OR_OR0R0, p.cI, followSets[symbols.NT_OR_OR])
-			}
+			p.rtn(symbols.NT_OR_OR, cU, p.cI)
 		case slot.OctalEscape0R0: // OctalEscape : ∙int03Two07
 
 			p.bsrSet.Add(slot.OctalEscape0R1, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_OctalEscape) {
-				p.rtn(symbols.NT_OctalEscape, cU, p.cI)
-			} else {
-				p.parseError(slot.OctalEscape0R0, p.cI, followSets[symbols.NT_OctalEscape])
-			}
+			p.rtn(symbols.NT_OctalEscape, cU, p.cI)
 		case slot.OctalEscape1R0: // OctalEscape : ∙two07
 
 			p.bsrSet.Add(slot.OctalEscape1R1, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_OctalEscape) {
-				p.rtn(symbols.NT_OctalEscape, cU, p.cI)
-			} else {
-				p.parseError(slot.OctalEscape1R0, p.cI, followSets[symbols.NT_OctalEscape])
-			}
+			p.rtn(symbols.NT_OctalEscape, cU, p.cI)
 		case slot.OctalEscape2R0: // OctalEscape : ∙int07
 
 			p.bsrSet.Add(slot.OctalEscape2R1, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_OctalEscape) {
-				p.rtn(symbols.NT_OctalEscape, cU, p.cI)
-			} else {
-				p.parseError(slot.OctalEscape2R0, p.cI, followSets[symbols.NT_OctalEscape])
-			}
+			p.rtn(symbols.NT_OctalEscape, cU, p.cI)
 		case slot.OptArgs0R0: // OptArgs : ∙Arguments
 
 			p.call(slot.OptArgs0R1, cU, p.cI)
 		case slot.OptArgs0R1: // OptArgs : Arguments ∙
 
-			if p.follow(symbols.NT_OptArgs) {
-				p.rtn(symbols.NT_OptArgs, cU, p.cI)
-			} else {
-				p.parseError(slot.OptArgs0R0, p.cI, followSets[symbols.NT_OptArgs])
-			}
+			p.rtn(symbols.NT_OptArgs, cU, p.cI)
 		case slot.OptArgs1R0: // OptArgs : ∙
 			p.bsrSet.AddEmpty(slot.OptArgs1R0, p.cI)
 
-			if p.follow(symbols.NT_OptArgs) {
-				p.rtn(symbols.NT_OptArgs, cU, p.cI)
-			} else {
-				p.parseError(slot.OptArgs1R0, p.cI, followSets[symbols.NT_OptArgs])
-			}
+			p.rtn(symbols.NT_OptArgs, cU, p.cI)
 		case slot.OptClsBdy0R0: // OptClsBdy : ∙ClsBdy
 
 			p.call(slot.OptClsBdy0R1, cU, p.cI)
 		case slot.OptClsBdy0R1: // OptClsBdy : ClsBdy ∙
 
-			if p.follow(symbols.NT_OptClsBdy) {
-				p.rtn(symbols.NT_OptClsBdy, cU, p.cI)
-			} else {
-				p.parseError(slot.OptClsBdy0R0, p.cI, followSets[symbols.NT_OptClsBdy])
-			}
+			p.rtn(symbols.NT_OptClsBdy, cU, p.cI)
 		case slot.OptClsBdy1R0: // OptClsBdy : ∙
 			p.bsrSet.AddEmpty(slot.OptClsBdy1R0, p.cI)
 
-			if p.follow(symbols.NT_OptClsBdy) {
-				p.rtn(symbols.NT_OptClsBdy, cU, p.cI)
-			} else {
-				p.parseError(slot.OptClsBdy1R0, p.cI, followSets[symbols.NT_OptClsBdy])
-			}
+			p.rtn(symbols.NT_OptClsBdy, cU, p.cI)
 		case slot.OptColExpr0R0: // OptColExpr : ∙COLON Expr
 
 			p.call(slot.OptColExpr0R1, cU, p.cI)
@@ -3743,37 +2831,21 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.OptColExpr0R2, cU, p.cI)
 		case slot.OptColExpr0R2: // OptColExpr : COLON Expr ∙
 
-			if p.follow(symbols.NT_OptColExpr) {
-				p.rtn(symbols.NT_OptColExpr, cU, p.cI)
-			} else {
-				p.parseError(slot.OptColExpr0R0, p.cI, followSets[symbols.NT_OptColExpr])
-			}
+			p.rtn(symbols.NT_OptColExpr, cU, p.cI)
 		case slot.OptColExpr1R0: // OptColExpr : ∙
 			p.bsrSet.AddEmpty(slot.OptColExpr1R0, p.cI)
 
-			if p.follow(symbols.NT_OptColExpr) {
-				p.rtn(symbols.NT_OptColExpr, cU, p.cI)
-			} else {
-				p.parseError(slot.OptColExpr1R0, p.cI, followSets[symbols.NT_OptColExpr])
-			}
+			p.rtn(symbols.NT_OptColExpr, cU, p.cI)
 		case slot.OptCom0R0: // OptCom : ∙COMMA
 
 			p.call(slot.OptCom0R1, cU, p.cI)
 		case slot.OptCom0R1: // OptCom : COMMA ∙
 
-			if p.follow(symbols.NT_OptCom) {
-				p.rtn(symbols.NT_OptCom, cU, p.cI)
-			} else {
-				p.parseError(slot.OptCom0R0, p.cI, followSets[symbols.NT_OptCom])
-			}
+			p.rtn(symbols.NT_OptCom, cU, p.cI)
 		case slot.OptCom1R0: // OptCom : ∙
 			p.bsrSet.AddEmpty(slot.OptCom1R0, p.cI)
 
-			if p.follow(symbols.NT_OptCom) {
-				p.rtn(symbols.NT_OptCom, cU, p.cI)
-			} else {
-				p.parseError(slot.OptCom1R0, p.cI, followSets[symbols.NT_OptCom])
-			}
+			p.rtn(symbols.NT_OptCom, cU, p.cI)
 		case slot.OptComFormPDecl0R0: // OptComFormPDecl : ∙COMMA FormalParamDecls
 
 			p.call(slot.OptComFormPDecl0R1, cU, p.cI)
@@ -3787,36 +2859,20 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.OptComFormPDecl0R2, cU, p.cI)
 		case slot.OptComFormPDecl0R2: // OptComFormPDecl : COMMA FormalParamDecls ∙
 
-			if p.follow(symbols.NT_OptComFormPDecl) {
-				p.rtn(symbols.NT_OptComFormPDecl, cU, p.cI)
-			} else {
-				p.parseError(slot.OptComFormPDecl0R0, p.cI, followSets[symbols.NT_OptComFormPDecl])
-			}
+			p.rtn(symbols.NT_OptComFormPDecl, cU, p.cI)
 		case slot.OptComFormPDecl1R0: // OptComFormPDecl : ∙
 			p.bsrSet.AddEmpty(slot.OptComFormPDecl1R0, p.cI)
 
-			if p.follow(symbols.NT_OptComFormPDecl) {
-				p.rtn(symbols.NT_OptComFormPDecl, cU, p.cI)
-			} else {
-				p.parseError(slot.OptComFormPDecl1R0, p.cI, followSets[symbols.NT_OptComFormPDecl])
-			}
+			p.rtn(symbols.NT_OptComFormPDecl, cU, p.cI)
 		case slot.OptDot0R0: // OptDot : ∙.
 
 			p.bsrSet.Add(slot.OptDot0R1, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_OptDot) {
-				p.rtn(symbols.NT_OptDot, cU, p.cI)
-			} else {
-				p.parseError(slot.OptDot0R0, p.cI, followSets[symbols.NT_OptDot])
-			}
+			p.rtn(symbols.NT_OptDot, cU, p.cI)
 		case slot.OptDot1R0: // OptDot : ∙
 			p.bsrSet.AddEmpty(slot.OptDot1R0, p.cI)
 
-			if p.follow(symbols.NT_OptDot) {
-				p.rtn(symbols.NT_OptDot, cU, p.cI)
-			} else {
-				p.parseError(slot.OptDot1R0, p.cI, followSets[symbols.NT_OptDot])
-			}
+			p.rtn(symbols.NT_OptDot, cU, p.cI)
 		case slot.OptDotStar0R0: // OptDotStar : ∙DOT STAR
 
 			p.call(slot.OptDotStar0R1, cU, p.cI)
@@ -3830,19 +2886,11 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.OptDotStar0R2, cU, p.cI)
 		case slot.OptDotStar0R2: // OptDotStar : DOT STAR ∙
 
-			if p.follow(symbols.NT_OptDotStar) {
-				p.rtn(symbols.NT_OptDotStar, cU, p.cI)
-			} else {
-				p.parseError(slot.OptDotStar0R0, p.cI, followSets[symbols.NT_OptDotStar])
-			}
+			p.rtn(symbols.NT_OptDotStar, cU, p.cI)
 		case slot.OptDotStar1R0: // OptDotStar : ∙
 			p.bsrSet.AddEmpty(slot.OptDotStar1R0, p.cI)
 
-			if p.follow(symbols.NT_OptDotStar) {
-				p.rtn(symbols.NT_OptDotStar, cU, p.cI)
-			} else {
-				p.parseError(slot.OptDotStar1R0, p.cI, followSets[symbols.NT_OptDotStar])
-			}
+			p.rtn(symbols.NT_OptDotStar, cU, p.cI)
 		case slot.OptElse0R0: // OptElse : ∙ELSE Stmt
 
 			p.call(slot.OptElse0R1, cU, p.cI)
@@ -3856,19 +2904,11 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.OptElse0R2, cU, p.cI)
 		case slot.OptElse0R2: // OptElse : ELSE Stmt ∙
 
-			if p.follow(symbols.NT_OptElse) {
-				p.rtn(symbols.NT_OptElse, cU, p.cI)
-			} else {
-				p.parseError(slot.OptElse0R0, p.cI, followSets[symbols.NT_OptElse])
-			}
+			p.rtn(symbols.NT_OptElse, cU, p.cI)
 		case slot.OptElse1R0: // OptElse : ∙
 			p.bsrSet.AddEmpty(slot.OptElse1R0, p.cI)
 
-			if p.follow(symbols.NT_OptElse) {
-				p.rtn(symbols.NT_OptElse, cU, p.cI)
-			} else {
-				p.parseError(slot.OptElse1R0, p.cI, followSets[symbols.NT_OptElse])
-			}
+			p.rtn(symbols.NT_OptElse, cU, p.cI)
 		case slot.OptEqVarInit0R0: // OptEqVarInit : ∙EQU VarInitial
 
 			p.call(slot.OptEqVarInit0R1, cU, p.cI)
@@ -3882,56 +2922,32 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.OptEqVarInit0R2, cU, p.cI)
 		case slot.OptEqVarInit0R2: // OptEqVarInit : EQU VarInitial ∙
 
-			if p.follow(symbols.NT_OptEqVarInit) {
-				p.rtn(symbols.NT_OptEqVarInit, cU, p.cI)
-			} else {
-				p.parseError(slot.OptEqVarInit0R0, p.cI, followSets[symbols.NT_OptEqVarInit])
-			}
+			p.rtn(symbols.NT_OptEqVarInit, cU, p.cI)
 		case slot.OptEqVarInit1R0: // OptEqVarInit : ∙
 			p.bsrSet.AddEmpty(slot.OptEqVarInit1R0, p.cI)
 
-			if p.follow(symbols.NT_OptEqVarInit) {
-				p.rtn(symbols.NT_OptEqVarInit, cU, p.cI)
-			} else {
-				p.parseError(slot.OptEqVarInit1R0, p.cI, followSets[symbols.NT_OptEqVarInit])
-			}
+			p.rtn(symbols.NT_OptEqVarInit, cU, p.cI)
 		case slot.OptEsc0R0: // OptEsc : ∙Escape
 
 			p.call(slot.OptEsc0R1, cU, p.cI)
 		case slot.OptEsc0R1: // OptEsc : Escape ∙
 
-			if p.follow(symbols.NT_OptEsc) {
-				p.rtn(symbols.NT_OptEsc, cU, p.cI)
-			} else {
-				p.parseError(slot.OptEsc0R0, p.cI, followSets[symbols.NT_OptEsc])
-			}
+			p.rtn(symbols.NT_OptEsc, cU, p.cI)
 		case slot.OptEsc1R0: // OptEsc : ∙anyCarSl
 
 			p.bsrSet.Add(slot.OptEsc1R1, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_OptEsc) {
-				p.rtn(symbols.NT_OptEsc, cU, p.cI)
-			} else {
-				p.parseError(slot.OptEsc1R0, p.cI, followSets[symbols.NT_OptEsc])
-			}
+			p.rtn(symbols.NT_OptEsc, cU, p.cI)
 		case slot.OptExpr0R0: // OptExpr : ∙Expr
 
 			p.call(slot.OptExpr0R1, cU, p.cI)
 		case slot.OptExpr0R1: // OptExpr : Expr ∙
 
-			if p.follow(symbols.NT_OptExpr) {
-				p.rtn(symbols.NT_OptExpr, cU, p.cI)
-			} else {
-				p.parseError(slot.OptExpr0R0, p.cI, followSets[symbols.NT_OptExpr])
-			}
+			p.rtn(symbols.NT_OptExpr, cU, p.cI)
 		case slot.OptExpr1R0: // OptExpr : ∙
 			p.bsrSet.AddEmpty(slot.OptExpr1R0, p.cI)
 
-			if p.follow(symbols.NT_OptExpr) {
-				p.rtn(symbols.NT_OptExpr, cU, p.cI)
-			} else {
-				p.parseError(slot.OptExpr1R0, p.cI, followSets[symbols.NT_OptExpr])
-			}
+			p.rtn(symbols.NT_OptExpr, cU, p.cI)
 		case slot.OptExprs0R0: // OptExprs : ∙Expr RepComExp0x
 
 			p.call(slot.OptExprs0R1, cU, p.cI)
@@ -3945,19 +2961,11 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.OptExprs0R2, cU, p.cI)
 		case slot.OptExprs0R2: // OptExprs : Expr RepComExp0x ∙
 
-			if p.follow(symbols.NT_OptExprs) {
-				p.rtn(symbols.NT_OptExprs, cU, p.cI)
-			} else {
-				p.parseError(slot.OptExprs0R0, p.cI, followSets[symbols.NT_OptExprs])
-			}
+			p.rtn(symbols.NT_OptExprs, cU, p.cI)
 		case slot.OptExprs1R0: // OptExprs : ∙
 			p.bsrSet.AddEmpty(slot.OptExprs1R0, p.cI)
 
-			if p.follow(symbols.NT_OptExprs) {
-				p.rtn(symbols.NT_OptExprs, cU, p.cI)
-			} else {
-				p.parseError(slot.OptExprs1R0, p.cI, followSets[symbols.NT_OptExprs])
-			}
+			p.rtn(symbols.NT_OptExprs, cU, p.cI)
 		case slot.OptExtClsType0R0: // OptExtClsType : ∙EXTENDS ClsType
 
 			p.call(slot.OptExtClsType0R1, cU, p.cI)
@@ -3971,19 +2979,11 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.OptExtClsType0R2, cU, p.cI)
 		case slot.OptExtClsType0R2: // OptExtClsType : EXTENDS ClsType ∙
 
-			if p.follow(symbols.NT_OptExtClsType) {
-				p.rtn(symbols.NT_OptExtClsType, cU, p.cI)
-			} else {
-				p.parseError(slot.OptExtClsType0R0, p.cI, followSets[symbols.NT_OptExtClsType])
-			}
+			p.rtn(symbols.NT_OptExtClsType, cU, p.cI)
 		case slot.OptExtClsType1R0: // OptExtClsType : ∙
 			p.bsrSet.AddEmpty(slot.OptExtClsType1R0, p.cI)
 
-			if p.follow(symbols.NT_OptExtClsType) {
-				p.rtn(symbols.NT_OptExtClsType, cU, p.cI)
-			} else {
-				p.parseError(slot.OptExtClsType1R0, p.cI, followSets[symbols.NT_OptExtClsType])
-			}
+			p.rtn(symbols.NT_OptExtClsType, cU, p.cI)
 		case slot.OptExtendsClsLis0R0: // OptExtendsClsLis : ∙EXTENDS ClsTypeList
 
 			p.call(slot.OptExtendsClsLis0R1, cU, p.cI)
@@ -3997,37 +2997,21 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.OptExtendsClsLis0R2, cU, p.cI)
 		case slot.OptExtendsClsLis0R2: // OptExtendsClsLis : EXTENDS ClsTypeList ∙
 
-			if p.follow(symbols.NT_OptExtendsClsLis) {
-				p.rtn(symbols.NT_OptExtendsClsLis, cU, p.cI)
-			} else {
-				p.parseError(slot.OptExtendsClsLis0R0, p.cI, followSets[symbols.NT_OptExtendsClsLis])
-			}
+			p.rtn(symbols.NT_OptExtendsClsLis, cU, p.cI)
 		case slot.OptExtendsClsLis1R0: // OptExtendsClsLis : ∙
 			p.bsrSet.AddEmpty(slot.OptExtendsClsLis1R0, p.cI)
 
-			if p.follow(symbols.NT_OptExtendsClsLis) {
-				p.rtn(symbols.NT_OptExtendsClsLis, cU, p.cI)
-			} else {
-				p.parseError(slot.OptExtendsClsLis1R0, p.cI, followSets[symbols.NT_OptExtendsClsLis])
-			}
+			p.rtn(symbols.NT_OptExtendsClsLis, cU, p.cI)
 		case slot.OptFin0R0: // OptFin : ∙FINAL
 
 			p.call(slot.OptFin0R1, cU, p.cI)
 		case slot.OptFin0R1: // OptFin : FINAL ∙
 
-			if p.follow(symbols.NT_OptFin) {
-				p.rtn(symbols.NT_OptFin, cU, p.cI)
-			} else {
-				p.parseError(slot.OptFin0R0, p.cI, followSets[symbols.NT_OptFin])
-			}
+			p.rtn(symbols.NT_OptFin, cU, p.cI)
 		case slot.OptFin1R0: // OptFin : ∙
 			p.bsrSet.AddEmpty(slot.OptFin1R0, p.cI)
 
-			if p.follow(symbols.NT_OptFin) {
-				p.rtn(symbols.NT_OptFin, cU, p.cI)
-			} else {
-				p.parseError(slot.OptFin1R0, p.cI, followSets[symbols.NT_OptFin])
-			}
+			p.rtn(symbols.NT_OptFin, cU, p.cI)
 		case slot.OptFinType0R0: // OptFinType : ∙FINAL Type
 
 			p.call(slot.OptFinType0R1, cU, p.cI)
@@ -4041,101 +3025,57 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.OptFinType0R2, cU, p.cI)
 		case slot.OptFinType0R2: // OptFinType : FINAL Type ∙
 
-			if p.follow(symbols.NT_OptFinType) {
-				p.rtn(symbols.NT_OptFinType, cU, p.cI)
-			} else {
-				p.parseError(slot.OptFinType0R0, p.cI, followSets[symbols.NT_OptFinType])
-			}
+			p.rtn(symbols.NT_OptFinType, cU, p.cI)
 		case slot.OptForInit0R0: // OptForInit : ∙ForInit
 
 			p.call(slot.OptForInit0R1, cU, p.cI)
 		case slot.OptForInit0R1: // OptForInit : ForInit ∙
 
-			if p.follow(symbols.NT_OptForInit) {
-				p.rtn(symbols.NT_OptForInit, cU, p.cI)
-			} else {
-				p.parseError(slot.OptForInit0R0, p.cI, followSets[symbols.NT_OptForInit])
-			}
+			p.rtn(symbols.NT_OptForInit, cU, p.cI)
 		case slot.OptForInit1R0: // OptForInit : ∙
 			p.bsrSet.AddEmpty(slot.OptForInit1R0, p.cI)
 
-			if p.follow(symbols.NT_OptForInit) {
-				p.rtn(symbols.NT_OptForInit, cU, p.cI)
-			} else {
-				p.parseError(slot.OptForInit1R0, p.cI, followSets[symbols.NT_OptForInit])
-			}
+			p.rtn(symbols.NT_OptForInit, cU, p.cI)
 		case slot.OptForUpd0R0: // OptForUpd : ∙ForUpdate
 
 			p.call(slot.OptForUpd0R1, cU, p.cI)
 		case slot.OptForUpd0R1: // OptForUpd : ForUpdate ∙
 
-			if p.follow(symbols.NT_OptForUpd) {
-				p.rtn(symbols.NT_OptForUpd, cU, p.cI)
-			} else {
-				p.parseError(slot.OptForUpd0R0, p.cI, followSets[symbols.NT_OptForUpd])
-			}
+			p.rtn(symbols.NT_OptForUpd, cU, p.cI)
 		case slot.OptForUpd1R0: // OptForUpd : ∙
 			p.bsrSet.AddEmpty(slot.OptForUpd1R0, p.cI)
 
-			if p.follow(symbols.NT_OptForUpd) {
-				p.rtn(symbols.NT_OptForUpd, cU, p.cI)
-			} else {
-				p.parseError(slot.OptForUpd1R0, p.cI, followSets[symbols.NT_OptForUpd])
-			}
+			p.rtn(symbols.NT_OptForUpd, cU, p.cI)
 		case slot.OptFormPDecl0R0: // OptFormPDecl : ∙FormalParamDecls
 
 			p.call(slot.OptFormPDecl0R1, cU, p.cI)
 		case slot.OptFormPDecl0R1: // OptFormPDecl : FormalParamDecls ∙
 
-			if p.follow(symbols.NT_OptFormPDecl) {
-				p.rtn(symbols.NT_OptFormPDecl, cU, p.cI)
-			} else {
-				p.parseError(slot.OptFormPDecl0R0, p.cI, followSets[symbols.NT_OptFormPDecl])
-			}
+			p.rtn(symbols.NT_OptFormPDecl, cU, p.cI)
 		case slot.OptFormPDecl1R0: // OptFormPDecl : ∙
 			p.bsrSet.AddEmpty(slot.OptFormPDecl1R0, p.cI)
 
-			if p.follow(symbols.NT_OptFormPDecl) {
-				p.rtn(symbols.NT_OptFormPDecl, cU, p.cI)
-			} else {
-				p.parseError(slot.OptFormPDecl1R0, p.cI, followSets[symbols.NT_OptFormPDecl])
-			}
+			p.rtn(symbols.NT_OptFormPDecl, cU, p.cI)
 		case slot.OptID0R0: // OptID : ∙ID
 
 			p.call(slot.OptID0R1, cU, p.cI)
 		case slot.OptID0R1: // OptID : ID ∙
 
-			if p.follow(symbols.NT_OptID) {
-				p.rtn(symbols.NT_OptID, cU, p.cI)
-			} else {
-				p.parseError(slot.OptID0R0, p.cI, followSets[symbols.NT_OptID])
-			}
+			p.rtn(symbols.NT_OptID, cU, p.cI)
 		case slot.OptID1R0: // OptID : ∙
 			p.bsrSet.AddEmpty(slot.OptID1R0, p.cI)
 
-			if p.follow(symbols.NT_OptID) {
-				p.rtn(symbols.NT_OptID, cU, p.cI)
-			} else {
-				p.parseError(slot.OptID1R0, p.cI, followSets[symbols.NT_OptID])
-			}
+			p.rtn(symbols.NT_OptID, cU, p.cI)
 		case slot.OptIDSuff0R0: // OptIDSuff : ∙IDSuffix
 
 			p.call(slot.OptIDSuff0R1, cU, p.cI)
 		case slot.OptIDSuff0R1: // OptIDSuff : IDSuffix ∙
 
-			if p.follow(symbols.NT_OptIDSuff) {
-				p.rtn(symbols.NT_OptIDSuff, cU, p.cI)
-			} else {
-				p.parseError(slot.OptIDSuff0R0, p.cI, followSets[symbols.NT_OptIDSuff])
-			}
+			p.rtn(symbols.NT_OptIDSuff, cU, p.cI)
 		case slot.OptIDSuff1R0: // OptIDSuff : ∙
 			p.bsrSet.AddEmpty(slot.OptIDSuff1R0, p.cI)
 
-			if p.follow(symbols.NT_OptIDSuff) {
-				p.rtn(symbols.NT_OptIDSuff, cU, p.cI)
-			} else {
-				p.parseError(slot.OptIDSuff1R0, p.cI, followSets[symbols.NT_OptIDSuff])
-			}
+			p.rtn(symbols.NT_OptIDSuff, cU, p.cI)
 		case slot.OptImpClsLst0R0: // OptImpClsLst : ∙IMPLEMENTS ClsTypeList
 
 			p.call(slot.OptImpClsLst0R1, cU, p.cI)
@@ -4149,55 +3089,31 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.OptImpClsLst0R2, cU, p.cI)
 		case slot.OptImpClsLst0R2: // OptImpClsLst : IMPLEMENTS ClsTypeList ∙
 
-			if p.follow(symbols.NT_OptImpClsLst) {
-				p.rtn(symbols.NT_OptImpClsLst, cU, p.cI)
-			} else {
-				p.parseError(slot.OptImpClsLst0R0, p.cI, followSets[symbols.NT_OptImpClsLst])
-			}
+			p.rtn(symbols.NT_OptImpClsLst, cU, p.cI)
 		case slot.OptImpClsLst1R0: // OptImpClsLst : ∙
 			p.bsrSet.AddEmpty(slot.OptImpClsLst1R0, p.cI)
 
-			if p.follow(symbols.NT_OptImpClsLst) {
-				p.rtn(symbols.NT_OptImpClsLst, cU, p.cI)
-			} else {
-				p.parseError(slot.OptImpClsLst1R0, p.cI, followSets[symbols.NT_OptImpClsLst])
-			}
+			p.rtn(symbols.NT_OptImpClsLst, cU, p.cI)
 		case slot.OptPackDecl0R0: // OptPackDecl : ∙PackDecl
 
 			p.call(slot.OptPackDecl0R1, cU, p.cI)
 		case slot.OptPackDecl0R1: // OptPackDecl : PackDecl ∙
 
-			if p.follow(symbols.NT_OptPackDecl) {
-				p.rtn(symbols.NT_OptPackDecl, cU, p.cI)
-			} else {
-				p.parseError(slot.OptPackDecl0R0, p.cI, followSets[symbols.NT_OptPackDecl])
-			}
+			p.rtn(symbols.NT_OptPackDecl, cU, p.cI)
 		case slot.OptPackDecl1R0: // OptPackDecl : ∙
 			p.bsrSet.AddEmpty(slot.OptPackDecl1R0, p.cI)
 
-			if p.follow(symbols.NT_OptPackDecl) {
-				p.rtn(symbols.NT_OptPackDecl, cU, p.cI)
-			} else {
-				p.parseError(slot.OptPackDecl1R0, p.cI, followSets[symbols.NT_OptPackDecl])
-			}
+			p.rtn(symbols.NT_OptPackDecl, cU, p.cI)
 		case slot.OptStatic0R0: // OptStatic : ∙STATIC
 
 			p.call(slot.OptStatic0R1, cU, p.cI)
 		case slot.OptStatic0R1: // OptStatic : STATIC ∙
 
-			if p.follow(symbols.NT_OptStatic) {
-				p.rtn(symbols.NT_OptStatic, cU, p.cI)
-			} else {
-				p.parseError(slot.OptStatic0R0, p.cI, followSets[symbols.NT_OptStatic])
-			}
+			p.rtn(symbols.NT_OptStatic, cU, p.cI)
 		case slot.OptStatic1R0: // OptStatic : ∙
 			p.bsrSet.AddEmpty(slot.OptStatic1R0, p.cI)
 
-			if p.follow(symbols.NT_OptStatic) {
-				p.rtn(symbols.NT_OptStatic, cU, p.cI)
-			} else {
-				p.parseError(slot.OptStatic1R0, p.cI, followSets[symbols.NT_OptStatic])
-			}
+			p.rtn(symbols.NT_OptStatic, cU, p.cI)
 		case slot.OptThrowClsTypLst0R0: // OptThrowClsTypLst : ∙THROWS ClsTypeList
 
 			p.call(slot.OptThrowClsTypLst0R1, cU, p.cI)
@@ -4211,19 +3127,11 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.OptThrowClsTypLst0R2, cU, p.cI)
 		case slot.OptThrowClsTypLst0R2: // OptThrowClsTypLst : THROWS ClsTypeList ∙
 
-			if p.follow(symbols.NT_OptThrowClsTypLst) {
-				p.rtn(symbols.NT_OptThrowClsTypLst, cU, p.cI)
-			} else {
-				p.parseError(slot.OptThrowClsTypLst0R0, p.cI, followSets[symbols.NT_OptThrowClsTypLst])
-			}
+			p.rtn(symbols.NT_OptThrowClsTypLst, cU, p.cI)
 		case slot.OptThrowClsTypLst1R0: // OptThrowClsTypLst : ∙
 			p.bsrSet.AddEmpty(slot.OptThrowClsTypLst1R0, p.cI)
 
-			if p.follow(symbols.NT_OptThrowClsTypLst) {
-				p.rtn(symbols.NT_OptThrowClsTypLst, cU, p.cI)
-			} else {
-				p.parseError(slot.OptThrowClsTypLst1R0, p.cI, followSets[symbols.NT_OptThrowClsTypLst])
-			}
+			p.rtn(symbols.NT_OptThrowClsTypLst, cU, p.cI)
 		case slot.OptVarInit0R0: // OptVarInit : ∙VarInitial RepComInit0x OptCom
 
 			p.call(slot.OptVarInit0R1, cU, p.cI)
@@ -4245,38 +3153,22 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.OptVarInit0R3, cU, p.cI)
 		case slot.OptVarInit0R3: // OptVarInit : VarInitial RepComInit0x OptCom ∙
 
-			if p.follow(symbols.NT_OptVarInit) {
-				p.rtn(symbols.NT_OptVarInit, cU, p.cI)
-			} else {
-				p.parseError(slot.OptVarInit0R0, p.cI, followSets[symbols.NT_OptVarInit])
-			}
+			p.rtn(symbols.NT_OptVarInit, cU, p.cI)
 		case slot.OptVarInit1R0: // OptVarInit : ∙
 			p.bsrSet.AddEmpty(slot.OptVarInit1R0, p.cI)
 
-			if p.follow(symbols.NT_OptVarInit) {
-				p.rtn(symbols.NT_OptVarInit, cU, p.cI)
-			} else {
-				p.parseError(slot.OptVarInit1R0, p.cI, followSets[symbols.NT_OptVarInit])
-			}
+			p.rtn(symbols.NT_OptVarInit, cU, p.cI)
 		case slot.OtherAlts0R0: // OtherAlts : ∙Cls
 
 			p.bsrSet.Add(slot.OtherAlts0R1, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_OtherAlts) {
-				p.rtn(symbols.NT_OtherAlts, cU, p.cI)
-			} else {
-				p.parseError(slot.OtherAlts0R0, p.cI, followSets[symbols.NT_OtherAlts])
-			}
+			p.rtn(symbols.NT_OtherAlts, cU, p.cI)
 		case slot.OtherAlts1R0: // OtherAlts : ∙THIS
 
 			p.call(slot.OtherAlts1R1, cU, p.cI)
 		case slot.OtherAlts1R1: // OtherAlts : THIS ∙
 
-			if p.follow(symbols.NT_OtherAlts) {
-				p.rtn(symbols.NT_OtherAlts, cU, p.cI)
-			} else {
-				p.parseError(slot.OtherAlts1R0, p.cI, followSets[symbols.NT_OtherAlts])
-			}
+			p.rtn(symbols.NT_OtherAlts, cU, p.cI)
 		case slot.OtherAlts2R0: // OtherAlts : ∙SUPER Arguments
 
 			p.call(slot.OtherAlts2R1, cU, p.cI)
@@ -4290,11 +3182,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.OtherAlts2R2, cU, p.cI)
 		case slot.OtherAlts2R2: // OtherAlts : SUPER Arguments ∙
 
-			if p.follow(symbols.NT_OtherAlts) {
-				p.rtn(symbols.NT_OtherAlts, cU, p.cI)
-			} else {
-				p.parseError(slot.OtherAlts2R0, p.cI, followSets[symbols.NT_OtherAlts])
-			}
+			p.rtn(symbols.NT_OtherAlts, cU, p.cI)
 		case slot.OtherAlts3R0: // OtherAlts : ∙NEW InnerCreator
 
 			p.call(slot.OtherAlts3R1, cU, p.cI)
@@ -4308,11 +3196,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.OtherAlts3R2, cU, p.cI)
 		case slot.OtherAlts3R2: // OtherAlts : NEW InnerCreator ∙
 
-			if p.follow(symbols.NT_OtherAlts) {
-				p.rtn(symbols.NT_OtherAlts, cU, p.cI)
-			} else {
-				p.parseError(slot.OtherAlts3R0, p.cI, followSets[symbols.NT_OtherAlts])
-			}
+			p.rtn(symbols.NT_OtherAlts, cU, p.cI)
 		case slot.PACKAGE0R0: // PACKAGE : ∙package notLorD
 
 			p.bsrSet.Add(slot.PACKAGE0R1, cU, p.cI, p.cI+1)
@@ -4324,11 +3208,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 
 			p.bsrSet.Add(slot.PACKAGE0R2, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_PACKAGE) {
-				p.rtn(symbols.NT_PACKAGE, cU, p.cI)
-			} else {
-				p.parseError(slot.PACKAGE0R0, p.cI, followSets[symbols.NT_PACKAGE])
-			}
+			p.rtn(symbols.NT_PACKAGE, cU, p.cI)
 		case slot.PLUS0R0: // PLUS : ∙+ notEqPlus WS
 
 			p.bsrSet.Add(slot.PLUS0R1, cU, p.cI, p.cI+1)
@@ -4348,11 +3228,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.PLUS0R3, cU, p.cI)
 		case slot.PLUS0R3: // PLUS : + notEqPlus WS ∙
 
-			if p.follow(symbols.NT_PLUS) {
-				p.rtn(symbols.NT_PLUS, cU, p.cI)
-			} else {
-				p.parseError(slot.PLUS0R0, p.cI, followSets[symbols.NT_PLUS])
-			}
+			p.rtn(symbols.NT_PLUS, cU, p.cI)
 		case slot.PLUS_EQU0R0: // PLUS_EQU : ∙+= WS
 
 			p.bsrSet.Add(slot.PLUS_EQU0R1, cU, p.cI, p.cI+1)
@@ -4365,11 +3241,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.PLUS_EQU0R2, cU, p.cI)
 		case slot.PLUS_EQU0R2: // PLUS_EQU : += WS ∙
 
-			if p.follow(symbols.NT_PLUS_EQU) {
-				p.rtn(symbols.NT_PLUS_EQU, cU, p.cI)
-			} else {
-				p.parseError(slot.PLUS_EQU0R0, p.cI, followSets[symbols.NT_PLUS_EQU])
-			}
+			p.rtn(symbols.NT_PLUS_EQU, cU, p.cI)
 		case slot.PackDecl0R0: // PackDecl : ∙PACKAGE QualifiedID SEMI
 
 			p.call(slot.PackDecl0R1, cU, p.cI)
@@ -4391,11 +3263,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.PackDecl0R3, cU, p.cI)
 		case slot.PackDecl0R3: // PackDecl : PACKAGE QualifiedID SEMI ∙
 
-			if p.follow(symbols.NT_PackDecl) {
-				p.rtn(symbols.NT_PackDecl, cU, p.cI)
-			} else {
-				p.parseError(slot.PackDecl0R0, p.cI, followSets[symbols.NT_PackDecl])
-			}
+			p.rtn(symbols.NT_PackDecl, cU, p.cI)
 		case slot.ParExpr0R0: // ParExpr : ∙LPAR Expr RPAR
 
 			p.call(slot.ParExpr0R1, cU, p.cI)
@@ -4417,101 +3285,61 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.ParExpr0R3, cU, p.cI)
 		case slot.ParExpr0R3: // ParExpr : LPAR Expr RPAR ∙
 
-			if p.follow(symbols.NT_ParExpr) {
-				p.rtn(symbols.NT_ParExpr, cU, p.cI)
-			} else {
-				p.parseError(slot.ParExpr0R0, p.cI, followSets[symbols.NT_ParExpr])
-			}
+			p.rtn(symbols.NT_ParExpr, cU, p.cI)
 		case slot.PostfixOp0R0: // PostfixOp : ∙INC
 
 			p.call(slot.PostfixOp0R1, cU, p.cI)
 		case slot.PostfixOp0R1: // PostfixOp : INC ∙
 
-			if p.follow(symbols.NT_PostfixOp) {
-				p.rtn(symbols.NT_PostfixOp, cU, p.cI)
-			} else {
-				p.parseError(slot.PostfixOp0R0, p.cI, followSets[symbols.NT_PostfixOp])
-			}
+			p.rtn(symbols.NT_PostfixOp, cU, p.cI)
 		case slot.PostfixOp1R0: // PostfixOp : ∙DEC
 
 			p.call(slot.PostfixOp1R1, cU, p.cI)
 		case slot.PostfixOp1R1: // PostfixOp : DEC ∙
 
-			if p.follow(symbols.NT_PostfixOp) {
-				p.rtn(symbols.NT_PostfixOp, cU, p.cI)
-			} else {
-				p.parseError(slot.PostfixOp1R0, p.cI, followSets[symbols.NT_PostfixOp])
-			}
+			p.rtn(symbols.NT_PostfixOp, cU, p.cI)
 		case slot.PrefixOp0R0: // PrefixOp : ∙INC
 
 			p.call(slot.PrefixOp0R1, cU, p.cI)
 		case slot.PrefixOp0R1: // PrefixOp : INC ∙
 
-			if p.follow(symbols.NT_PrefixOp) {
-				p.rtn(symbols.NT_PrefixOp, cU, p.cI)
-			} else {
-				p.parseError(slot.PrefixOp0R0, p.cI, followSets[symbols.NT_PrefixOp])
-			}
+			p.rtn(symbols.NT_PrefixOp, cU, p.cI)
 		case slot.PrefixOp1R0: // PrefixOp : ∙DEC
 
 			p.call(slot.PrefixOp1R1, cU, p.cI)
 		case slot.PrefixOp1R1: // PrefixOp : DEC ∙
 
-			if p.follow(symbols.NT_PrefixOp) {
-				p.rtn(symbols.NT_PrefixOp, cU, p.cI)
-			} else {
-				p.parseError(slot.PrefixOp1R0, p.cI, followSets[symbols.NT_PrefixOp])
-			}
+			p.rtn(symbols.NT_PrefixOp, cU, p.cI)
 		case slot.PrefixOp2R0: // PrefixOp : ∙BANG
 
 			p.call(slot.PrefixOp2R1, cU, p.cI)
 		case slot.PrefixOp2R1: // PrefixOp : BANG ∙
 
-			if p.follow(symbols.NT_PrefixOp) {
-				p.rtn(symbols.NT_PrefixOp, cU, p.cI)
-			} else {
-				p.parseError(slot.PrefixOp2R0, p.cI, followSets[symbols.NT_PrefixOp])
-			}
+			p.rtn(symbols.NT_PrefixOp, cU, p.cI)
 		case slot.PrefixOp3R0: // PrefixOp : ∙TILDA
 
 			p.call(slot.PrefixOp3R1, cU, p.cI)
 		case slot.PrefixOp3R1: // PrefixOp : TILDA ∙
 
-			if p.follow(symbols.NT_PrefixOp) {
-				p.rtn(symbols.NT_PrefixOp, cU, p.cI)
-			} else {
-				p.parseError(slot.PrefixOp3R0, p.cI, followSets[symbols.NT_PrefixOp])
-			}
+			p.rtn(symbols.NT_PrefixOp, cU, p.cI)
 		case slot.PrefixOp4R0: // PrefixOp : ∙PLUS
 
 			p.call(slot.PrefixOp4R1, cU, p.cI)
 		case slot.PrefixOp4R1: // PrefixOp : PLUS ∙
 
-			if p.follow(symbols.NT_PrefixOp) {
-				p.rtn(symbols.NT_PrefixOp, cU, p.cI)
-			} else {
-				p.parseError(slot.PrefixOp4R0, p.cI, followSets[symbols.NT_PrefixOp])
-			}
+			p.rtn(symbols.NT_PrefixOp, cU, p.cI)
 		case slot.PrefixOp5R0: // PrefixOp : ∙MINUS
 
 			p.call(slot.PrefixOp5R1, cU, p.cI)
 		case slot.PrefixOp5R1: // PrefixOp : MINUS ∙
 
-			if p.follow(symbols.NT_PrefixOp) {
-				p.rtn(symbols.NT_PrefixOp, cU, p.cI)
-			} else {
-				p.parseError(slot.PrefixOp5R0, p.cI, followSets[symbols.NT_PrefixOp])
-			}
+			p.rtn(symbols.NT_PrefixOp, cU, p.cI)
 		case slot.Primary0R0: // Primary : ∙ParExpr
 
 			p.call(slot.Primary0R1, cU, p.cI)
 		case slot.Primary0R1: // Primary : ParExpr ∙
 
-			if p.follow(symbols.NT_Primary) {
-				p.rtn(symbols.NT_Primary, cU, p.cI)
-			} else {
-				p.parseError(slot.Primary0R0, p.cI, followSets[symbols.NT_Primary])
-			}
+			p.rtn(symbols.NT_Primary, cU, p.cI)
 		case slot.Primary1R0: // Primary : ∙THIS OptArgs
 
 			p.call(slot.Primary1R1, cU, p.cI)
@@ -4525,11 +3353,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.Primary1R2, cU, p.cI)
 		case slot.Primary1R2: // Primary : THIS OptArgs ∙
 
-			if p.follow(symbols.NT_Primary) {
-				p.rtn(symbols.NT_Primary, cU, p.cI)
-			} else {
-				p.parseError(slot.Primary1R0, p.cI, followSets[symbols.NT_Primary])
-			}
+			p.rtn(symbols.NT_Primary, cU, p.cI)
 		case slot.Primary2R0: // Primary : ∙SUPER SuperSuffix
 
 			p.call(slot.Primary2R1, cU, p.cI)
@@ -4543,21 +3367,13 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.Primary2R2, cU, p.cI)
 		case slot.Primary2R2: // Primary : SUPER SuperSuffix ∙
 
-			if p.follow(symbols.NT_Primary) {
-				p.rtn(symbols.NT_Primary, cU, p.cI)
-			} else {
-				p.parseError(slot.Primary2R0, p.cI, followSets[symbols.NT_Primary])
-			}
+			p.rtn(symbols.NT_Primary, cU, p.cI)
 		case slot.Primary3R0: // Primary : ∙Literal
 
 			p.call(slot.Primary3R1, cU, p.cI)
 		case slot.Primary3R1: // Primary : Literal ∙
 
-			if p.follow(symbols.NT_Primary) {
-				p.rtn(symbols.NT_Primary, cU, p.cI)
-			} else {
-				p.parseError(slot.Primary3R0, p.cI, followSets[symbols.NT_Primary])
-			}
+			p.rtn(symbols.NT_Primary, cU, p.cI)
 		case slot.Primary4R0: // Primary : ∙NEW Creator
 
 			p.call(slot.Primary4R1, cU, p.cI)
@@ -4571,11 +3387,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.Primary4R2, cU, p.cI)
 		case slot.Primary4R2: // Primary : NEW Creator ∙
 
-			if p.follow(symbols.NT_Primary) {
-				p.rtn(symbols.NT_Primary, cU, p.cI)
-			} else {
-				p.parseError(slot.Primary4R0, p.cI, followSets[symbols.NT_Primary])
-			}
+			p.rtn(symbols.NT_Primary, cU, p.cI)
 		case slot.Primary5R0: // Primary : ∙QualifiedID OptIDSuff
 
 			p.call(slot.Primary5R1, cU, p.cI)
@@ -4589,11 +3401,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.Primary5R2, cU, p.cI)
 		case slot.Primary5R2: // Primary : QualifiedID OptIDSuff ∙
 
-			if p.follow(symbols.NT_Primary) {
-				p.rtn(symbols.NT_Primary, cU, p.cI)
-			} else {
-				p.parseError(slot.Primary5R0, p.cI, followSets[symbols.NT_Primary])
-			}
+			p.rtn(symbols.NT_Primary, cU, p.cI)
 		case slot.Primary6R0: // Primary : ∙BasicType RepDim0x DOT Cls
 
 			p.call(slot.Primary6R1, cU, p.cI)
@@ -4622,11 +3430,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 
 			p.bsrSet.Add(slot.Primary6R4, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_Primary) {
-				p.rtn(symbols.NT_Primary, cU, p.cI)
-			} else {
-				p.parseError(slot.Primary6R0, p.cI, followSets[symbols.NT_Primary])
-			}
+			p.rtn(symbols.NT_Primary, cU, p.cI)
 		case slot.Primary7R0: // Primary : ∙VOID DOT Cls
 
 			p.call(slot.Primary7R1, cU, p.cI)
@@ -4647,11 +3451,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 
 			p.bsrSet.Add(slot.Primary7R3, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_Primary) {
-				p.rtn(symbols.NT_Primary, cU, p.cI)
-			} else {
-				p.parseError(slot.Primary7R0, p.cI, followSets[symbols.NT_Primary])
-			}
+			p.rtn(symbols.NT_Primary, cU, p.cI)
 		case slot.QUERY0R0: // QUERY : ∙? WS
 
 			p.bsrSet.Add(slot.QUERY0R1, cU, p.cI, p.cI+1)
@@ -4664,11 +3464,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.QUERY0R2, cU, p.cI)
 		case slot.QUERY0R2: // QUERY : ? WS ∙
 
-			if p.follow(symbols.NT_QUERY) {
-				p.rtn(symbols.NT_QUERY, cU, p.cI)
-			} else {
-				p.parseError(slot.QUERY0R0, p.cI, followSets[symbols.NT_QUERY])
-			}
+			p.rtn(symbols.NT_QUERY, cU, p.cI)
 		case slot.QualifiedID0R0: // QualifiedID : ∙ID RepDotID0x
 
 			p.call(slot.QualifiedID0R1, cU, p.cI)
@@ -4682,11 +3478,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.QualifiedID0R2, cU, p.cI)
 		case slot.QualifiedID0R2: // QualifiedID : ID RepDotID0x ∙
 
-			if p.follow(symbols.NT_QualifiedID) {
-				p.rtn(symbols.NT_QualifiedID, cU, p.cI)
-			} else {
-				p.parseError(slot.QualifiedID0R0, p.cI, followSets[symbols.NT_QualifiedID])
-			}
+			p.rtn(symbols.NT_QualifiedID, cU, p.cI)
 		case slot.RBRK0R0: // RBRK : ∙] WS
 
 			p.bsrSet.Add(slot.RBRK0R1, cU, p.cI, p.cI+1)
@@ -4699,11 +3491,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.RBRK0R2, cU, p.cI)
 		case slot.RBRK0R2: // RBRK : ] WS ∙
 
-			if p.follow(symbols.NT_RBRK) {
-				p.rtn(symbols.NT_RBRK, cU, p.cI)
-			} else {
-				p.parseError(slot.RBRK0R0, p.cI, followSets[symbols.NT_RBRK])
-			}
+			p.rtn(symbols.NT_RBRK, cU, p.cI)
 		case slot.RBRKAlts0R0: // RBRKAlts : ∙RBRK RepDim0x DOT Cls
 
 			p.call(slot.RBRKAlts0R1, cU, p.cI)
@@ -4732,11 +3520,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 
 			p.bsrSet.Add(slot.RBRKAlts0R4, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_RBRKAlts) {
-				p.rtn(symbols.NT_RBRKAlts, cU, p.cI)
-			} else {
-				p.parseError(slot.RBRKAlts0R0, p.cI, followSets[symbols.NT_RBRKAlts])
-			}
+			p.rtn(symbols.NT_RBRKAlts, cU, p.cI)
 		case slot.RBRKAlts1R0: // RBRKAlts : ∙Expr RBRK
 
 			p.call(slot.RBRKAlts1R1, cU, p.cI)
@@ -4750,11 +3534,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.RBRKAlts1R2, cU, p.cI)
 		case slot.RBRKAlts1R2: // RBRKAlts : Expr RBRK ∙
 
-			if p.follow(symbols.NT_RBRKAlts) {
-				p.rtn(symbols.NT_RBRKAlts, cU, p.cI)
-			} else {
-				p.parseError(slot.RBRKAlts1R0, p.cI, followSets[symbols.NT_RBRKAlts])
-			}
+			p.rtn(symbols.NT_RBRKAlts, cU, p.cI)
 		case slot.RETURN0R0: // RETURN : ∙return notLorD
 
 			p.bsrSet.Add(slot.RETURN0R1, cU, p.cI, p.cI+1)
@@ -4766,11 +3546,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 
 			p.bsrSet.Add(slot.RETURN0R2, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_RETURN) {
-				p.rtn(symbols.NT_RETURN, cU, p.cI)
-			} else {
-				p.parseError(slot.RETURN0R0, p.cI, followSets[symbols.NT_RETURN])
-			}
+			p.rtn(symbols.NT_RETURN, cU, p.cI)
 		case slot.RPAR0R0: // RPAR : ∙) WS
 
 			p.bsrSet.Add(slot.RPAR0R1, cU, p.cI, p.cI+1)
@@ -4783,11 +3559,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.RPAR0R2, cU, p.cI)
 		case slot.RPAR0R2: // RPAR : ) WS ∙
 
-			if p.follow(symbols.NT_RPAR) {
-				p.rtn(symbols.NT_RPAR, cU, p.cI)
-			} else {
-				p.parseError(slot.RPAR0R0, p.cI, followSets[symbols.NT_RPAR])
-			}
+			p.rtn(symbols.NT_RPAR, cU, p.cI)
 		case slot.RWING0R0: // RWING : ∙} WS
 
 			p.bsrSet.Add(slot.RWING0R1, cU, p.cI, p.cI+1)
@@ -4800,11 +3572,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.RWING0R2, cU, p.cI)
 		case slot.RWING0R2: // RWING : } WS ∙
 
-			if p.follow(symbols.NT_RWING) {
-				p.rtn(symbols.NT_RWING, cU, p.cI)
-			} else {
-				p.parseError(slot.RWING0R0, p.cI, followSets[symbols.NT_RWING])
-			}
+			p.rtn(symbols.NT_RWING, cU, p.cI)
 		case slot.ReferenceType0R0: // ReferenceType : ∙BasicType Dim RepDim0x
 
 			p.call(slot.ReferenceType0R1, cU, p.cI)
@@ -4826,11 +3594,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.ReferenceType0R3, cU, p.cI)
 		case slot.ReferenceType0R3: // ReferenceType : BasicType Dim RepDim0x ∙
 
-			if p.follow(symbols.NT_ReferenceType) {
-				p.rtn(symbols.NT_ReferenceType, cU, p.cI)
-			} else {
-				p.parseError(slot.ReferenceType0R0, p.cI, followSets[symbols.NT_ReferenceType])
-			}
+			p.rtn(symbols.NT_ReferenceType, cU, p.cI)
 		case slot.ReferenceType1R0: // ReferenceType : ∙ClsType RepDim0x
 
 			p.call(slot.ReferenceType1R1, cU, p.cI)
@@ -4844,11 +3608,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.ReferenceType1R2, cU, p.cI)
 		case slot.ReferenceType1R2: // ReferenceType : ClsType RepDim0x ∙
 
-			if p.follow(symbols.NT_ReferenceType) {
-				p.rtn(symbols.NT_ReferenceType, cU, p.cI)
-			} else {
-				p.parseError(slot.ReferenceType1R0, p.cI, followSets[symbols.NT_ReferenceType])
-			}
+			p.rtn(symbols.NT_ReferenceType, cU, p.cI)
 		case slot.RelateExpr0R0: // RelateExpr : ∙ShiftExpr RepESInst0x
 
 			p.call(slot.RelateExpr0R1, cU, p.cI)
@@ -4862,11 +3622,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.RelateExpr0R2, cU, p.cI)
 		case slot.RelateExpr0R2: // RelateExpr : ShiftExpr RepESInst0x ∙
 
-			if p.follow(symbols.NT_RelateExpr) {
-				p.rtn(symbols.NT_RelateExpr, cU, p.cI)
-			} else {
-				p.parseError(slot.RelateExpr0R0, p.cI, followSets[symbols.NT_RelateExpr])
-			}
+			p.rtn(symbols.NT_RelateExpr, cU, p.cI)
 		case slot.RepANDEq0x0R0: // RepANDEq0x : ∙AND EqualExpr RepANDEq0x
 
 			p.call(slot.RepANDEq0x0R1, cU, p.cI)
@@ -4888,19 +3644,11 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.RepANDEq0x0R3, cU, p.cI)
 		case slot.RepANDEq0x0R3: // RepANDEq0x : AND EqualExpr RepANDEq0x ∙
 
-			if p.follow(symbols.NT_RepANDEq0x) {
-				p.rtn(symbols.NT_RepANDEq0x, cU, p.cI)
-			} else {
-				p.parseError(slot.RepANDEq0x0R0, p.cI, followSets[symbols.NT_RepANDEq0x])
-			}
+			p.rtn(symbols.NT_RepANDEq0x, cU, p.cI)
 		case slot.RepANDEq0x1R0: // RepANDEq0x : ∙
 			p.bsrSet.AddEmpty(slot.RepANDEq0x1R0, p.cI)
 
-			if p.follow(symbols.NT_RepANDEq0x) {
-				p.rtn(symbols.NT_RepANDEq0x, cU, p.cI)
-			} else {
-				p.parseError(slot.RepANDEq0x1R0, p.cI, followSets[symbols.NT_RepANDEq0x])
-			}
+			p.rtn(symbols.NT_RepANDEq0x, cU, p.cI)
 		case slot.RepANDIOR0x0R0: // RepANDIOR0x : ∙AND_AND IORExpr RepANDIOR0x
 
 			p.call(slot.RepANDIOR0x0R1, cU, p.cI)
@@ -4922,19 +3670,11 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.RepANDIOR0x0R3, cU, p.cI)
 		case slot.RepANDIOR0x0R3: // RepANDIOR0x : AND_AND IORExpr RepANDIOR0x ∙
 
-			if p.follow(symbols.NT_RepANDIOR0x) {
-				p.rtn(symbols.NT_RepANDIOR0x, cU, p.cI)
-			} else {
-				p.parseError(slot.RepANDIOR0x0R0, p.cI, followSets[symbols.NT_RepANDIOR0x])
-			}
+			p.rtn(symbols.NT_RepANDIOR0x, cU, p.cI)
 		case slot.RepANDIOR0x1R0: // RepANDIOR0x : ∙
 			p.bsrSet.AddEmpty(slot.RepANDIOR0x1R0, p.cI)
 
-			if p.follow(symbols.NT_RepANDIOR0x) {
-				p.rtn(symbols.NT_RepANDIOR0x, cU, p.cI)
-			} else {
-				p.parseError(slot.RepANDIOR0x1R0, p.cI, followSets[symbols.NT_RepANDIOR0x])
-			}
+			p.rtn(symbols.NT_RepANDIOR0x, cU, p.cI)
 		case slot.RepAddAltsMult0x0R0: // RepAddAltsMult0x : ∙AddAlts MultExpr
 
 			p.call(slot.RepAddAltsMult0x0R1, cU, p.cI)
@@ -4948,19 +3688,11 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.RepAddAltsMult0x0R2, cU, p.cI)
 		case slot.RepAddAltsMult0x0R2: // RepAddAltsMult0x : AddAlts MultExpr ∙
 
-			if p.follow(symbols.NT_RepAddAltsMult0x) {
-				p.rtn(symbols.NT_RepAddAltsMult0x, cU, p.cI)
-			} else {
-				p.parseError(slot.RepAddAltsMult0x0R0, p.cI, followSets[symbols.NT_RepAddAltsMult0x])
-			}
+			p.rtn(symbols.NT_RepAddAltsMult0x, cU, p.cI)
 		case slot.RepAddAltsMult0x1R0: // RepAddAltsMult0x : ∙
 			p.bsrSet.AddEmpty(slot.RepAddAltsMult0x1R0, p.cI)
 
-			if p.follow(symbols.NT_RepAddAltsMult0x) {
-				p.rtn(symbols.NT_RepAddAltsMult0x, cU, p.cI)
-			} else {
-				p.parseError(slot.RepAddAltsMult0x1R0, p.cI, followSets[symbols.NT_RepAddAltsMult0x])
-			}
+			p.rtn(symbols.NT_RepAddAltsMult0x, cU, p.cI)
 		case slot.RepAsscExpr0x0R0: // RepAsscExpr0x : ∙AssignOp CondExpr RepAsscExpr0x
 
 			p.call(slot.RepAsscExpr0x0R1, cU, p.cI)
@@ -4982,19 +3714,11 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.RepAsscExpr0x0R3, cU, p.cI)
 		case slot.RepAsscExpr0x0R3: // RepAsscExpr0x : AssignOp CondExpr RepAsscExpr0x ∙
 
-			if p.follow(symbols.NT_RepAsscExpr0x) {
-				p.rtn(symbols.NT_RepAsscExpr0x, cU, p.cI)
-			} else {
-				p.parseError(slot.RepAsscExpr0x0R0, p.cI, followSets[symbols.NT_RepAsscExpr0x])
-			}
+			p.rtn(symbols.NT_RepAsscExpr0x, cU, p.cI)
 		case slot.RepAsscExpr0x1R0: // RepAsscExpr0x : ∙
 			p.bsrSet.AddEmpty(slot.RepAsscExpr0x1R0, p.cI)
 
-			if p.follow(symbols.NT_RepAsscExpr0x) {
-				p.rtn(symbols.NT_RepAsscExpr0x, cU, p.cI)
-			} else {
-				p.parseError(slot.RepAsscExpr0x1R0, p.cI, followSets[symbols.NT_RepAsscExpr0x])
-			}
+			p.rtn(symbols.NT_RepAsscExpr0x, cU, p.cI)
 		case slot.RepBlkSt0x0R0: // RepBlkSt0x : ∙BlockStmt RepBlkSt0x
 
 			p.call(slot.RepBlkSt0x0R1, cU, p.cI)
@@ -5008,19 +3732,11 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.RepBlkSt0x0R2, cU, p.cI)
 		case slot.RepBlkSt0x0R2: // RepBlkSt0x : BlockStmt RepBlkSt0x ∙
 
-			if p.follow(symbols.NT_RepBlkSt0x) {
-				p.rtn(symbols.NT_RepBlkSt0x, cU, p.cI)
-			} else {
-				p.parseError(slot.RepBlkSt0x0R0, p.cI, followSets[symbols.NT_RepBlkSt0x])
-			}
+			p.rtn(symbols.NT_RepBlkSt0x, cU, p.cI)
 		case slot.RepBlkSt0x1R0: // RepBlkSt0x : ∙
 			p.bsrSet.AddEmpty(slot.RepBlkSt0x1R0, p.cI)
 
-			if p.follow(symbols.NT_RepBlkSt0x) {
-				p.rtn(symbols.NT_RepBlkSt0x, cU, p.cI)
-			} else {
-				p.parseError(slot.RepBlkSt0x1R0, p.cI, followSets[symbols.NT_RepBlkSt0x])
-			}
+			p.rtn(symbols.NT_RepBlkSt0x, cU, p.cI)
 		case slot.RepCatch0x0R0: // RepCatch0x : ∙Catch RepCatch0x
 
 			p.call(slot.RepCatch0x0R1, cU, p.cI)
@@ -5034,19 +3750,11 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.RepCatch0x0R2, cU, p.cI)
 		case slot.RepCatch0x0R2: // RepCatch0x : Catch RepCatch0x ∙
 
-			if p.follow(symbols.NT_RepCatch0x) {
-				p.rtn(symbols.NT_RepCatch0x, cU, p.cI)
-			} else {
-				p.parseError(slot.RepCatch0x0R0, p.cI, followSets[symbols.NT_RepCatch0x])
-			}
+			p.rtn(symbols.NT_RepCatch0x, cU, p.cI)
 		case slot.RepCatch0x1R0: // RepCatch0x : ∙
 			p.bsrSet.AddEmpty(slot.RepCatch0x1R0, p.cI)
 
-			if p.follow(symbols.NT_RepCatch0x) {
-				p.rtn(symbols.NT_RepCatch0x, cU, p.cI)
-			} else {
-				p.parseError(slot.RepCatch0x1R0, p.cI, followSets[symbols.NT_RepCatch0x])
-			}
+			p.rtn(symbols.NT_RepCatch0x, cU, p.cI)
 		case slot.RepClsBDecl0x0R0: // RepClsBDecl0x : ∙ClsBdyDecl RepClsBDecl0x
 
 			p.call(slot.RepClsBDecl0x0R1, cU, p.cI)
@@ -5060,19 +3768,11 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.RepClsBDecl0x0R2, cU, p.cI)
 		case slot.RepClsBDecl0x0R2: // RepClsBDecl0x : ClsBdyDecl RepClsBDecl0x ∙
 
-			if p.follow(symbols.NT_RepClsBDecl0x) {
-				p.rtn(symbols.NT_RepClsBDecl0x, cU, p.cI)
-			} else {
-				p.parseError(slot.RepClsBDecl0x0R0, p.cI, followSets[symbols.NT_RepClsBDecl0x])
-			}
+			p.rtn(symbols.NT_RepClsBDecl0x, cU, p.cI)
 		case slot.RepClsBDecl0x1R0: // RepClsBDecl0x : ∙
 			p.bsrSet.AddEmpty(slot.RepClsBDecl0x1R0, p.cI)
 
-			if p.follow(symbols.NT_RepClsBDecl0x) {
-				p.rtn(symbols.NT_RepClsBDecl0x, cU, p.cI)
-			} else {
-				p.parseError(slot.RepClsBDecl0x1R0, p.cI, followSets[symbols.NT_RepClsBDecl0x])
-			}
+			p.rtn(symbols.NT_RepClsBDecl0x, cU, p.cI)
 		case slot.RepComCls0x0R0: // RepComCls0x : ∙COMMA ClsType RepComCls0x
 
 			p.call(slot.RepComCls0x0R1, cU, p.cI)
@@ -5094,19 +3794,11 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.RepComCls0x0R3, cU, p.cI)
 		case slot.RepComCls0x0R3: // RepComCls0x : COMMA ClsType RepComCls0x ∙
 
-			if p.follow(symbols.NT_RepComCls0x) {
-				p.rtn(symbols.NT_RepComCls0x, cU, p.cI)
-			} else {
-				p.parseError(slot.RepComCls0x0R0, p.cI, followSets[symbols.NT_RepComCls0x])
-			}
+			p.rtn(symbols.NT_RepComCls0x, cU, p.cI)
 		case slot.RepComCls0x1R0: // RepComCls0x : ∙
 			p.bsrSet.AddEmpty(slot.RepComCls0x1R0, p.cI)
 
-			if p.follow(symbols.NT_RepComCls0x) {
-				p.rtn(symbols.NT_RepComCls0x, cU, p.cI)
-			} else {
-				p.parseError(slot.RepComCls0x1R0, p.cI, followSets[symbols.NT_RepComCls0x])
-			}
+			p.rtn(symbols.NT_RepComCls0x, cU, p.cI)
 		case slot.RepComCnstDecl0x0R0: // RepComCnstDecl0x : ∙COMMA ConstDecl RepComCnstDecl0x
 
 			p.call(slot.RepComCnstDecl0x0R1, cU, p.cI)
@@ -5128,19 +3820,11 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.RepComCnstDecl0x0R3, cU, p.cI)
 		case slot.RepComCnstDecl0x0R3: // RepComCnstDecl0x : COMMA ConstDecl RepComCnstDecl0x ∙
 
-			if p.follow(symbols.NT_RepComCnstDecl0x) {
-				p.rtn(symbols.NT_RepComCnstDecl0x, cU, p.cI)
-			} else {
-				p.parseError(slot.RepComCnstDecl0x0R0, p.cI, followSets[symbols.NT_RepComCnstDecl0x])
-			}
+			p.rtn(symbols.NT_RepComCnstDecl0x, cU, p.cI)
 		case slot.RepComCnstDecl0x1R0: // RepComCnstDecl0x : ∙
 			p.bsrSet.AddEmpty(slot.RepComCnstDecl0x1R0, p.cI)
 
-			if p.follow(symbols.NT_RepComCnstDecl0x) {
-				p.rtn(symbols.NT_RepComCnstDecl0x, cU, p.cI)
-			} else {
-				p.parseError(slot.RepComCnstDecl0x1R0, p.cI, followSets[symbols.NT_RepComCnstDecl0x])
-			}
+			p.rtn(symbols.NT_RepComCnstDecl0x, cU, p.cI)
 		case slot.RepComExp0x0R0: // RepComExp0x : ∙COMMA Expr RepComExp0x
 
 			p.call(slot.RepComExp0x0R1, cU, p.cI)
@@ -5162,19 +3846,11 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.RepComExp0x0R3, cU, p.cI)
 		case slot.RepComExp0x0R3: // RepComExp0x : COMMA Expr RepComExp0x ∙
 
-			if p.follow(symbols.NT_RepComExp0x) {
-				p.rtn(symbols.NT_RepComExp0x, cU, p.cI)
-			} else {
-				p.parseError(slot.RepComExp0x0R0, p.cI, followSets[symbols.NT_RepComExp0x])
-			}
+			p.rtn(symbols.NT_RepComExp0x, cU, p.cI)
 		case slot.RepComExp0x1R0: // RepComExp0x : ∙
 			p.bsrSet.AddEmpty(slot.RepComExp0x1R0, p.cI)
 
-			if p.follow(symbols.NT_RepComExp0x) {
-				p.rtn(symbols.NT_RepComExp0x, cU, p.cI)
-			} else {
-				p.parseError(slot.RepComExp0x1R0, p.cI, followSets[symbols.NT_RepComExp0x])
-			}
+			p.rtn(symbols.NT_RepComExp0x, cU, p.cI)
 		case slot.RepComInit0x0R0: // RepComInit0x : ∙COMMA VarInitial RepComInit0x
 
 			p.call(slot.RepComInit0x0R1, cU, p.cI)
@@ -5196,19 +3872,11 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.RepComInit0x0R3, cU, p.cI)
 		case slot.RepComInit0x0R3: // RepComInit0x : COMMA VarInitial RepComInit0x ∙
 
-			if p.follow(symbols.NT_RepComInit0x) {
-				p.rtn(symbols.NT_RepComInit0x, cU, p.cI)
-			} else {
-				p.parseError(slot.RepComInit0x0R0, p.cI, followSets[symbols.NT_RepComInit0x])
-			}
+			p.rtn(symbols.NT_RepComInit0x, cU, p.cI)
 		case slot.RepComInit0x1R0: // RepComInit0x : ∙
 			p.bsrSet.AddEmpty(slot.RepComInit0x1R0, p.cI)
 
-			if p.follow(symbols.NT_RepComInit0x) {
-				p.rtn(symbols.NT_RepComInit0x, cU, p.cI)
-			} else {
-				p.parseError(slot.RepComInit0x1R0, p.cI, followSets[symbols.NT_RepComInit0x])
-			}
+			p.rtn(symbols.NT_RepComInit0x, cU, p.cI)
 		case slot.RepComSExpr0x0R0: // RepComSExpr0x : ∙COMMA StmtExpr RepComSExpr0x
 
 			p.call(slot.RepComSExpr0x0R1, cU, p.cI)
@@ -5230,19 +3898,11 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.RepComSExpr0x0R3, cU, p.cI)
 		case slot.RepComSExpr0x0R3: // RepComSExpr0x : COMMA StmtExpr RepComSExpr0x ∙
 
-			if p.follow(symbols.NT_RepComSExpr0x) {
-				p.rtn(symbols.NT_RepComSExpr0x, cU, p.cI)
-			} else {
-				p.parseError(slot.RepComSExpr0x0R0, p.cI, followSets[symbols.NT_RepComSExpr0x])
-			}
+			p.rtn(symbols.NT_RepComSExpr0x, cU, p.cI)
 		case slot.RepComSExpr0x1R0: // RepComSExpr0x : ∙
 			p.bsrSet.AddEmpty(slot.RepComSExpr0x1R0, p.cI)
 
-			if p.follow(symbols.NT_RepComSExpr0x) {
-				p.rtn(symbols.NT_RepComSExpr0x, cU, p.cI)
-			} else {
-				p.parseError(slot.RepComSExpr0x1R0, p.cI, followSets[symbols.NT_RepComSExpr0x])
-			}
+			p.rtn(symbols.NT_RepComSExpr0x, cU, p.cI)
 		case slot.RepComVDecl0x0R0: // RepComVDecl0x : ∙COMMA VarDecl RepComVDecl0x
 
 			p.call(slot.RepComVDecl0x0R1, cU, p.cI)
@@ -5264,19 +3924,11 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.RepComVDecl0x0R3, cU, p.cI)
 		case slot.RepComVDecl0x0R3: // RepComVDecl0x : COMMA VarDecl RepComVDecl0x ∙
 
-			if p.follow(symbols.NT_RepComVDecl0x) {
-				p.rtn(symbols.NT_RepComVDecl0x, cU, p.cI)
-			} else {
-				p.parseError(slot.RepComVDecl0x0R0, p.cI, followSets[symbols.NT_RepComVDecl0x])
-			}
+			p.rtn(symbols.NT_RepComVDecl0x, cU, p.cI)
 		case slot.RepComVDecl0x1R0: // RepComVDecl0x : ∙
 			p.bsrSet.AddEmpty(slot.RepComVDecl0x1R0, p.cI)
 
-			if p.follow(symbols.NT_RepComVDecl0x) {
-				p.rtn(symbols.NT_RepComVDecl0x, cU, p.cI)
-			} else {
-				p.parseError(slot.RepComVDecl0x1R0, p.cI, followSets[symbols.NT_RepComVDecl0x])
-			}
+			p.rtn(symbols.NT_RepComVDecl0x, cU, p.cI)
 		case slot.RepCondition0x0R0: // RepCondition0x : ∙QUERY Expr COLON CondORExpr RepCondition0x
 
 			p.call(slot.RepCondition0x0R1, cU, p.cI)
@@ -5314,19 +3966,11 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.RepCondition0x0R5, cU, p.cI)
 		case slot.RepCondition0x0R5: // RepCondition0x : QUERY Expr COLON CondORExpr RepCondition0x ∙
 
-			if p.follow(symbols.NT_RepCondition0x) {
-				p.rtn(symbols.NT_RepCondition0x, cU, p.cI)
-			} else {
-				p.parseError(slot.RepCondition0x0R0, p.cI, followSets[symbols.NT_RepCondition0x])
-			}
+			p.rtn(symbols.NT_RepCondition0x, cU, p.cI)
 		case slot.RepCondition0x1R0: // RepCondition0x : ∙
 			p.bsrSet.AddEmpty(slot.RepCondition0x1R0, p.cI)
 
-			if p.follow(symbols.NT_RepCondition0x) {
-				p.rtn(symbols.NT_RepCondition0x, cU, p.cI)
-			} else {
-				p.parseError(slot.RepCondition0x1R0, p.cI, followSets[symbols.NT_RepCondition0x])
-			}
+			p.rtn(symbols.NT_RepCondition0x, cU, p.cI)
 		case slot.RepDig1xExp0R0: // RepDig1xExp : ∙repDig1x exponent
 
 			p.bsrSet.Add(slot.RepDig1xExp0R1, cU, p.cI, p.cI+1)
@@ -5338,11 +3982,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 
 			p.bsrSet.Add(slot.RepDig1xExp0R2, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_RepDig1xExp) {
-				p.rtn(symbols.NT_RepDig1xExp, cU, p.cI)
-			} else {
-				p.parseError(slot.RepDig1xExp0R0, p.cI, followSets[symbols.NT_RepDig1xExp])
-			}
+			p.rtn(symbols.NT_RepDig1xExp, cU, p.cI)
 		case slot.RepDig1xOptExp0R0: // RepDig1xOptExp : ∙repDig1x optExpo
 
 			p.bsrSet.Add(slot.RepDig1xOptExp0R1, cU, p.cI, p.cI+1)
@@ -5354,11 +3994,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 
 			p.bsrSet.Add(slot.RepDig1xOptExp0R2, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_RepDig1xOptExp) {
-				p.rtn(symbols.NT_RepDig1xOptExp, cU, p.cI)
-			} else {
-				p.parseError(slot.RepDig1xOptExp0R0, p.cI, followSets[symbols.NT_RepDig1xOptExp])
-			}
+			p.rtn(symbols.NT_RepDig1xOptExp, cU, p.cI)
 		case slot.RepDim0x0R0: // RepDim0x : ∙Dim RepDim0x
 
 			p.call(slot.RepDim0x0R1, cU, p.cI)
@@ -5372,19 +4008,11 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.RepDim0x0R2, cU, p.cI)
 		case slot.RepDim0x0R2: // RepDim0x : Dim RepDim0x ∙
 
-			if p.follow(symbols.NT_RepDim0x) {
-				p.rtn(symbols.NT_RepDim0x, cU, p.cI)
-			} else {
-				p.parseError(slot.RepDim0x0R0, p.cI, followSets[symbols.NT_RepDim0x])
-			}
+			p.rtn(symbols.NT_RepDim0x, cU, p.cI)
 		case slot.RepDim0x1R0: // RepDim0x : ∙
 			p.bsrSet.AddEmpty(slot.RepDim0x1R0, p.cI)
 
-			if p.follow(symbols.NT_RepDim0x) {
-				p.rtn(symbols.NT_RepDim0x, cU, p.cI)
-			} else {
-				p.parseError(slot.RepDim0x1R0, p.cI, followSets[symbols.NT_RepDim0x])
-			}
+			p.rtn(symbols.NT_RepDim0x, cU, p.cI)
 		case slot.RepDimExpr0x0R0: // RepDimExpr0x : ∙DimExpr RepDimExpr0x
 
 			p.call(slot.RepDimExpr0x0R1, cU, p.cI)
@@ -5398,19 +4026,11 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.RepDimExpr0x0R2, cU, p.cI)
 		case slot.RepDimExpr0x0R2: // RepDimExpr0x : DimExpr RepDimExpr0x ∙
 
-			if p.follow(symbols.NT_RepDimExpr0x) {
-				p.rtn(symbols.NT_RepDimExpr0x, cU, p.cI)
-			} else {
-				p.parseError(slot.RepDimExpr0x0R0, p.cI, followSets[symbols.NT_RepDimExpr0x])
-			}
+			p.rtn(symbols.NT_RepDimExpr0x, cU, p.cI)
 		case slot.RepDimExpr0x1R0: // RepDimExpr0x : ∙
 			p.bsrSet.AddEmpty(slot.RepDimExpr0x1R0, p.cI)
 
-			if p.follow(symbols.NT_RepDimExpr0x) {
-				p.rtn(symbols.NT_RepDimExpr0x, cU, p.cI)
-			} else {
-				p.parseError(slot.RepDimExpr0x1R0, p.cI, followSets[symbols.NT_RepDimExpr0x])
-			}
+			p.rtn(symbols.NT_RepDimExpr0x, cU, p.cI)
 		case slot.RepDotID0x0R0: // RepDotID0x : ∙DOT ID RepDotID0x
 
 			p.call(slot.RepDotID0x0R1, cU, p.cI)
@@ -5432,19 +4052,11 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.RepDotID0x0R3, cU, p.cI)
 		case slot.RepDotID0x0R3: // RepDotID0x : DOT ID RepDotID0x ∙
 
-			if p.follow(symbols.NT_RepDotID0x) {
-				p.rtn(symbols.NT_RepDotID0x, cU, p.cI)
-			} else {
-				p.parseError(slot.RepDotID0x0R0, p.cI, followSets[symbols.NT_RepDotID0x])
-			}
+			p.rtn(symbols.NT_RepDotID0x, cU, p.cI)
 		case slot.RepDotID0x1R0: // RepDotID0x : ∙
 			p.bsrSet.AddEmpty(slot.RepDotID0x1R0, p.cI)
 
-			if p.follow(symbols.NT_RepDotID0x) {
-				p.rtn(symbols.NT_RepDotID0x, cU, p.cI)
-			} else {
-				p.parseError(slot.RepDotID0x1R0, p.cI, followSets[symbols.NT_RepDotID0x])
-			}
+			p.rtn(symbols.NT_RepDotID0x, cU, p.cI)
 		case slot.RepESInst0x0R0: // RepESInst0x : ∙ESInst RepESInst0x
 
 			p.call(slot.RepESInst0x0R1, cU, p.cI)
@@ -5458,19 +4070,11 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.RepESInst0x0R2, cU, p.cI)
 		case slot.RepESInst0x0R2: // RepESInst0x : ESInst RepESInst0x ∙
 
-			if p.follow(symbols.NT_RepESInst0x) {
-				p.rtn(symbols.NT_RepESInst0x, cU, p.cI)
-			} else {
-				p.parseError(slot.RepESInst0x0R0, p.cI, followSets[symbols.NT_RepESInst0x])
-			}
+			p.rtn(symbols.NT_RepESInst0x, cU, p.cI)
 		case slot.RepESInst0x1R0: // RepESInst0x : ∙
 			p.bsrSet.AddEmpty(slot.RepESInst0x1R0, p.cI)
 
-			if p.follow(symbols.NT_RepESInst0x) {
-				p.rtn(symbols.NT_RepESInst0x, cU, p.cI)
-			} else {
-				p.parseError(slot.RepESInst0x1R0, p.cI, followSets[symbols.NT_RepESInst0x])
-			}
+			p.rtn(symbols.NT_RepESInst0x, cU, p.cI)
 		case slot.RepEqExpr0x0R0: // RepEqExpr0x : ∙EqAlts RelateExpr RepEqExpr0x
 
 			p.call(slot.RepEqExpr0x0R1, cU, p.cI)
@@ -5492,19 +4096,11 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.RepEqExpr0x0R3, cU, p.cI)
 		case slot.RepEqExpr0x0R3: // RepEqExpr0x : EqAlts RelateExpr RepEqExpr0x ∙
 
-			if p.follow(symbols.NT_RepEqExpr0x) {
-				p.rtn(symbols.NT_RepEqExpr0x, cU, p.cI)
-			} else {
-				p.parseError(slot.RepEqExpr0x0R0, p.cI, followSets[symbols.NT_RepEqExpr0x])
-			}
+			p.rtn(symbols.NT_RepEqExpr0x, cU, p.cI)
 		case slot.RepEqExpr0x1R0: // RepEqExpr0x : ∙
 			p.bsrSet.AddEmpty(slot.RepEqExpr0x1R0, p.cI)
 
-			if p.follow(symbols.NT_RepEqExpr0x) {
-				p.rtn(symbols.NT_RepEqExpr0x, cU, p.cI)
-			} else {
-				p.parseError(slot.RepEqExpr0x1R0, p.cI, followSets[symbols.NT_RepEqExpr0x])
-			}
+			p.rtn(symbols.NT_RepEqExpr0x, cU, p.cI)
 		case slot.RepHatAND0x0R0: // RepHatAND0x : ∙HAT ANDExpr RepHatAND0x
 
 			p.call(slot.RepHatAND0x0R1, cU, p.cI)
@@ -5526,19 +4122,11 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.RepHatAND0x0R3, cU, p.cI)
 		case slot.RepHatAND0x0R3: // RepHatAND0x : HAT ANDExpr RepHatAND0x ∙
 
-			if p.follow(symbols.NT_RepHatAND0x) {
-				p.rtn(symbols.NT_RepHatAND0x, cU, p.cI)
-			} else {
-				p.parseError(slot.RepHatAND0x0R0, p.cI, followSets[symbols.NT_RepHatAND0x])
-			}
+			p.rtn(symbols.NT_RepHatAND0x, cU, p.cI)
 		case slot.RepHatAND0x1R0: // RepHatAND0x : ∙
 			p.bsrSet.AddEmpty(slot.RepHatAND0x1R0, p.cI)
 
-			if p.follow(symbols.NT_RepHatAND0x) {
-				p.rtn(symbols.NT_RepHatAND0x, cU, p.cI)
-			} else {
-				p.parseError(slot.RepHatAND0x1R0, p.cI, followSets[symbols.NT_RepHatAND0x])
-			}
+			p.rtn(symbols.NT_RepHatAND0x, cU, p.cI)
 		case slot.RepHex0xDot0R0: // RepHex0xDot : ∙Any0xX repHex0x .
 
 			p.call(slot.RepHex0xDot0R1, cU, p.cI)
@@ -5558,11 +4146,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 
 			p.bsrSet.Add(slot.RepHex0xDot0R3, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_RepHex0xDot) {
-				p.rtn(symbols.NT_RepHex0xDot, cU, p.cI)
-			} else {
-				p.parseError(slot.RepHex0xDot0R0, p.cI, followSets[symbols.NT_RepHex0xDot])
-			}
+			p.rtn(symbols.NT_RepHex0xDot, cU, p.cI)
 		case slot.RepImpDecl0x0R0: // RepImpDecl0x : ∙ImportDecl RepImpDecl0x
 
 			p.call(slot.RepImpDecl0x0R1, cU, p.cI)
@@ -5576,19 +4160,11 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.RepImpDecl0x0R2, cU, p.cI)
 		case slot.RepImpDecl0x0R2: // RepImpDecl0x : ImportDecl RepImpDecl0x ∙
 
-			if p.follow(symbols.NT_RepImpDecl0x) {
-				p.rtn(symbols.NT_RepImpDecl0x, cU, p.cI)
-			} else {
-				p.parseError(slot.RepImpDecl0x0R0, p.cI, followSets[symbols.NT_RepImpDecl0x])
-			}
+			p.rtn(symbols.NT_RepImpDecl0x, cU, p.cI)
 		case slot.RepImpDecl0x1R0: // RepImpDecl0x : ∙
 			p.bsrSet.AddEmpty(slot.RepImpDecl0x1R0, p.cI)
 
-			if p.follow(symbols.NT_RepImpDecl0x) {
-				p.rtn(symbols.NT_RepImpDecl0x, cU, p.cI)
-			} else {
-				p.parseError(slot.RepImpDecl0x1R0, p.cI, followSets[symbols.NT_RepImpDecl0x])
-			}
+			p.rtn(symbols.NT_RepImpDecl0x, cU, p.cI)
 		case slot.RepInBodDecl0x0R0: // RepInBodDecl0x : ∙IntfBdyDecl RepInBodDecl0x
 
 			p.call(slot.RepInBodDecl0x0R1, cU, p.cI)
@@ -5602,19 +4178,11 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.RepInBodDecl0x0R2, cU, p.cI)
 		case slot.RepInBodDecl0x0R2: // RepInBodDecl0x : IntfBdyDecl RepInBodDecl0x ∙
 
-			if p.follow(symbols.NT_RepInBodDecl0x) {
-				p.rtn(symbols.NT_RepInBodDecl0x, cU, p.cI)
-			} else {
-				p.parseError(slot.RepInBodDecl0x0R0, p.cI, followSets[symbols.NT_RepInBodDecl0x])
-			}
+			p.rtn(symbols.NT_RepInBodDecl0x, cU, p.cI)
 		case slot.RepInBodDecl0x1R0: // RepInBodDecl0x : ∙
 			p.bsrSet.AddEmpty(slot.RepInBodDecl0x1R0, p.cI)
 
-			if p.follow(symbols.NT_RepInBodDecl0x) {
-				p.rtn(symbols.NT_RepInBodDecl0x, cU, p.cI)
-			} else {
-				p.parseError(slot.RepInBodDecl0x1R0, p.cI, followSets[symbols.NT_RepInBodDecl0x])
-			}
+			p.rtn(symbols.NT_RepInBodDecl0x, cU, p.cI)
 		case slot.RepLorD0x0R0: // RepLorD0x : ∙LorD RepLorD0x
 
 			p.call(slot.RepLorD0x0R1, cU, p.cI)
@@ -5628,19 +4196,11 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.RepLorD0x0R2, cU, p.cI)
 		case slot.RepLorD0x0R2: // RepLorD0x : LorD RepLorD0x ∙
 
-			if p.follow(symbols.NT_RepLorD0x) {
-				p.rtn(symbols.NT_RepLorD0x, cU, p.cI)
-			} else {
-				p.parseError(slot.RepLorD0x0R0, p.cI, followSets[symbols.NT_RepLorD0x])
-			}
+			p.rtn(symbols.NT_RepLorD0x, cU, p.cI)
 		case slot.RepLorD0x1R0: // RepLorD0x : ∙
 			p.bsrSet.AddEmpty(slot.RepLorD0x1R0, p.cI)
 
-			if p.follow(symbols.NT_RepLorD0x) {
-				p.rtn(symbols.NT_RepLorD0x, cU, p.cI)
-			} else {
-				p.parseError(slot.RepLorD0x1R0, p.cI, followSets[symbols.NT_RepLorD0x])
-			}
+			p.rtn(symbols.NT_RepLorD0x, cU, p.cI)
 		case slot.RepModif00R0: // RepModif0 : ∙Modifier RepModif0
 
 			p.call(slot.RepModif00R1, cU, p.cI)
@@ -5654,19 +4214,11 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.RepModif00R2, cU, p.cI)
 		case slot.RepModif00R2: // RepModif0 : Modifier RepModif0 ∙
 
-			if p.follow(symbols.NT_RepModif0) {
-				p.rtn(symbols.NT_RepModif0, cU, p.cI)
-			} else {
-				p.parseError(slot.RepModif00R0, p.cI, followSets[symbols.NT_RepModif0])
-			}
+			p.rtn(symbols.NT_RepModif0, cU, p.cI)
 		case slot.RepModif01R0: // RepModif0 : ∙
 			p.bsrSet.AddEmpty(slot.RepModif01R0, p.cI)
 
-			if p.follow(symbols.NT_RepModif0) {
-				p.rtn(symbols.NT_RepModif0, cU, p.cI)
-			} else {
-				p.parseError(slot.RepModif01R0, p.cI, followSets[symbols.NT_RepModif0])
-			}
+			p.rtn(symbols.NT_RepModif0, cU, p.cI)
 		case slot.RepORXOR0x0R0: // RepORXOR0x : ∙ORXOR RepORXOR0x
 
 			p.call(slot.RepORXOR0x0R1, cU, p.cI)
@@ -5680,19 +4232,11 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.RepORXOR0x0R2, cU, p.cI)
 		case slot.RepORXOR0x0R2: // RepORXOR0x : ORXOR RepORXOR0x ∙
 
-			if p.follow(symbols.NT_RepORXOR0x) {
-				p.rtn(symbols.NT_RepORXOR0x, cU, p.cI)
-			} else {
-				p.parseError(slot.RepORXOR0x0R0, p.cI, followSets[symbols.NT_RepORXOR0x])
-			}
+			p.rtn(symbols.NT_RepORXOR0x, cU, p.cI)
 		case slot.RepORXOR0x1R0: // RepORXOR0x : ∙
 			p.bsrSet.AddEmpty(slot.RepORXOR0x1R0, p.cI)
 
-			if p.follow(symbols.NT_RepORXOR0x) {
-				p.rtn(symbols.NT_RepORXOR0x, cU, p.cI)
-			} else {
-				p.parseError(slot.RepORXOR0x1R0, p.cI, followSets[symbols.NT_RepORXOR0x])
-			}
+			p.rtn(symbols.NT_RepORXOR0x, cU, p.cI)
 		case slot.RepORcAND0x0R0: // RepORcAND0x : ∙OR_OR CondANDExpr RepORcAND0x
 
 			p.call(slot.RepORcAND0x0R1, cU, p.cI)
@@ -5714,19 +4258,11 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.RepORcAND0x0R3, cU, p.cI)
 		case slot.RepORcAND0x0R3: // RepORcAND0x : OR_OR CondANDExpr RepORcAND0x ∙
 
-			if p.follow(symbols.NT_RepORcAND0x) {
-				p.rtn(symbols.NT_RepORcAND0x, cU, p.cI)
-			} else {
-				p.parseError(slot.RepORcAND0x0R0, p.cI, followSets[symbols.NT_RepORcAND0x])
-			}
+			p.rtn(symbols.NT_RepORcAND0x, cU, p.cI)
 		case slot.RepORcAND0x1R0: // RepORcAND0x : ∙
 			p.bsrSet.AddEmpty(slot.RepORcAND0x1R0, p.cI)
 
-			if p.follow(symbols.NT_RepORcAND0x) {
-				p.rtn(symbols.NT_RepORcAND0x, cU, p.cI)
-			} else {
-				p.parseError(slot.RepORcAND0x1R0, p.cI, followSets[symbols.NT_RepORcAND0x])
-			}
+			p.rtn(symbols.NT_RepORcAND0x, cU, p.cI)
 		case slot.RepPfOp0x0R0: // RepPfOp0x : ∙PostfixOp RepPfOp0x
 
 			p.call(slot.RepPfOp0x0R1, cU, p.cI)
@@ -5740,19 +4276,11 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.RepPfOp0x0R2, cU, p.cI)
 		case slot.RepPfOp0x0R2: // RepPfOp0x : PostfixOp RepPfOp0x ∙
 
-			if p.follow(symbols.NT_RepPfOp0x) {
-				p.rtn(symbols.NT_RepPfOp0x, cU, p.cI)
-			} else {
-				p.parseError(slot.RepPfOp0x0R0, p.cI, followSets[symbols.NT_RepPfOp0x])
-			}
+			p.rtn(symbols.NT_RepPfOp0x, cU, p.cI)
 		case slot.RepPfOp0x1R0: // RepPfOp0x : ∙
 			p.bsrSet.AddEmpty(slot.RepPfOp0x1R0, p.cI)
 
-			if p.follow(symbols.NT_RepPfOp0x) {
-				p.rtn(symbols.NT_RepPfOp0x, cU, p.cI)
-			} else {
-				p.parseError(slot.RepPfOp0x1R0, p.cI, followSets[symbols.NT_RepPfOp0x])
-			}
+			p.rtn(symbols.NT_RepPfOp0x, cU, p.cI)
 		case slot.RepSDMUExpr0x0R0: // RepSDMUExpr0x : ∙SDM UnaryExpr RepSDMUExpr0x
 
 			p.call(slot.RepSDMUExpr0x0R1, cU, p.cI)
@@ -5774,19 +4302,11 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.RepSDMUExpr0x0R3, cU, p.cI)
 		case slot.RepSDMUExpr0x0R3: // RepSDMUExpr0x : SDM UnaryExpr RepSDMUExpr0x ∙
 
-			if p.follow(symbols.NT_RepSDMUExpr0x) {
-				p.rtn(symbols.NT_RepSDMUExpr0x, cU, p.cI)
-			} else {
-				p.parseError(slot.RepSDMUExpr0x0R0, p.cI, followSets[symbols.NT_RepSDMUExpr0x])
-			}
+			p.rtn(symbols.NT_RepSDMUExpr0x, cU, p.cI)
 		case slot.RepSDMUExpr0x1R0: // RepSDMUExpr0x : ∙
 			p.bsrSet.AddEmpty(slot.RepSDMUExpr0x1R0, p.cI)
 
-			if p.follow(symbols.NT_RepSDMUExpr0x) {
-				p.rtn(symbols.NT_RepSDMUExpr0x, cU, p.cI)
-			} else {
-				p.parseError(slot.RepSDMUExpr0x1R0, p.cI, followSets[symbols.NT_RepSDMUExpr0x])
-			}
+			p.rtn(symbols.NT_RepSDMUExpr0x, cU, p.cI)
 		case slot.RepSel0x0R0: // RepSel0x : ∙Selector RepSel0x
 
 			p.call(slot.RepSel0x0R1, cU, p.cI)
@@ -5800,19 +4320,11 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.RepSel0x0R2, cU, p.cI)
 		case slot.RepSel0x0R2: // RepSel0x : Selector RepSel0x ∙
 
-			if p.follow(symbols.NT_RepSel0x) {
-				p.rtn(symbols.NT_RepSel0x, cU, p.cI)
-			} else {
-				p.parseError(slot.RepSel0x0R0, p.cI, followSets[symbols.NT_RepSel0x])
-			}
+			p.rtn(symbols.NT_RepSel0x, cU, p.cI)
 		case slot.RepSel0x1R0: // RepSel0x : ∙
 			p.bsrSet.AddEmpty(slot.RepSel0x1R0, p.cI)
 
-			if p.follow(symbols.NT_RepSel0x) {
-				p.rtn(symbols.NT_RepSel0x, cU, p.cI)
-			} else {
-				p.parseError(slot.RepSel0x1R0, p.cI, followSets[symbols.NT_RepSel0x])
-			}
+			p.rtn(symbols.NT_RepSel0x, cU, p.cI)
 		case slot.RepSemiModDecl0x0R0: // RepSemiModDecl0x : ∙SemiModDecl RepSemiModDecl0x
 
 			p.call(slot.RepSemiModDecl0x0R1, cU, p.cI)
@@ -5826,19 +4338,11 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.RepSemiModDecl0x0R2, cU, p.cI)
 		case slot.RepSemiModDecl0x0R2: // RepSemiModDecl0x : SemiModDecl RepSemiModDecl0x ∙
 
-			if p.follow(symbols.NT_RepSemiModDecl0x) {
-				p.rtn(symbols.NT_RepSemiModDecl0x, cU, p.cI)
-			} else {
-				p.parseError(slot.RepSemiModDecl0x0R0, p.cI, followSets[symbols.NT_RepSemiModDecl0x])
-			}
+			p.rtn(symbols.NT_RepSemiModDecl0x, cU, p.cI)
 		case slot.RepSemiModDecl0x1R0: // RepSemiModDecl0x : ∙
 			p.bsrSet.AddEmpty(slot.RepSemiModDecl0x1R0, p.cI)
 
-			if p.follow(symbols.NT_RepSemiModDecl0x) {
-				p.rtn(symbols.NT_RepSemiModDecl0x, cU, p.cI)
-			} else {
-				p.parseError(slot.RepSemiModDecl0x1R0, p.cI, followSets[symbols.NT_RepSemiModDecl0x])
-			}
+			p.rtn(symbols.NT_RepSemiModDecl0x, cU, p.cI)
 		case slot.RepSwBlkStmt0x0R0: // RepSwBlkStmt0x : ∙SwitchBlockStmtGrp RepSwBlkStmt0x
 
 			p.call(slot.RepSwBlkStmt0x0R1, cU, p.cI)
@@ -5852,49 +4356,29 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.RepSwBlkStmt0x0R2, cU, p.cI)
 		case slot.RepSwBlkStmt0x0R2: // RepSwBlkStmt0x : SwitchBlockStmtGrp RepSwBlkStmt0x ∙
 
-			if p.follow(symbols.NT_RepSwBlkStmt0x) {
-				p.rtn(symbols.NT_RepSwBlkStmt0x, cU, p.cI)
-			} else {
-				p.parseError(slot.RepSwBlkStmt0x0R0, p.cI, followSets[symbols.NT_RepSwBlkStmt0x])
-			}
+			p.rtn(symbols.NT_RepSwBlkStmt0x, cU, p.cI)
 		case slot.RepSwBlkStmt0x1R0: // RepSwBlkStmt0x : ∙
 			p.bsrSet.AddEmpty(slot.RepSwBlkStmt0x1R0, p.cI)
 
-			if p.follow(symbols.NT_RepSwBlkStmt0x) {
-				p.rtn(symbols.NT_RepSwBlkStmt0x, cU, p.cI)
-			} else {
-				p.parseError(slot.RepSwBlkStmt0x1R0, p.cI, followSets[symbols.NT_RepSwBlkStmt0x])
-			}
+			p.rtn(symbols.NT_RepSwBlkStmt0x, cU, p.cI)
 		case slot.SDM0R0: // SDM : ∙STAR
 
 			p.call(slot.SDM0R1, cU, p.cI)
 		case slot.SDM0R1: // SDM : STAR ∙
 
-			if p.follow(symbols.NT_SDM) {
-				p.rtn(symbols.NT_SDM, cU, p.cI)
-			} else {
-				p.parseError(slot.SDM0R0, p.cI, followSets[symbols.NT_SDM])
-			}
+			p.rtn(symbols.NT_SDM, cU, p.cI)
 		case slot.SDM1R0: // SDM : ∙DIV
 
 			p.call(slot.SDM1R1, cU, p.cI)
 		case slot.SDM1R1: // SDM : DIV ∙
 
-			if p.follow(symbols.NT_SDM) {
-				p.rtn(symbols.NT_SDM, cU, p.cI)
-			} else {
-				p.parseError(slot.SDM1R0, p.cI, followSets[symbols.NT_SDM])
-			}
+			p.rtn(symbols.NT_SDM, cU, p.cI)
 		case slot.SDM2R0: // SDM : ∙MOD
 
 			p.call(slot.SDM2R1, cU, p.cI)
 		case slot.SDM2R1: // SDM : MOD ∙
 
-			if p.follow(symbols.NT_SDM) {
-				p.rtn(symbols.NT_SDM, cU, p.cI)
-			} else {
-				p.parseError(slot.SDM2R0, p.cI, followSets[symbols.NT_SDM])
-			}
+			p.rtn(symbols.NT_SDM, cU, p.cI)
 		case slot.SEMI0R0: // SEMI : ∙; WS
 
 			p.bsrSet.Add(slot.SEMI0R1, cU, p.cI, p.cI+1)
@@ -5907,11 +4391,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.SEMI0R2, cU, p.cI)
 		case slot.SEMI0R2: // SEMI : ; WS ∙
 
-			if p.follow(symbols.NT_SEMI) {
-				p.rtn(symbols.NT_SEMI, cU, p.cI)
-			} else {
-				p.parseError(slot.SEMI0R0, p.cI, followSets[symbols.NT_SEMI])
-			}
+			p.rtn(symbols.NT_SEMI, cU, p.cI)
 		case slot.SL0R0: // SL : ∙<< nEq WS
 
 			p.bsrSet.Add(slot.SL0R1, cU, p.cI, p.cI+1)
@@ -5931,11 +4411,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.SL0R3, cU, p.cI)
 		case slot.SL0R3: // SL : << nEq WS ∙
 
-			if p.follow(symbols.NT_SL) {
-				p.rtn(symbols.NT_SL, cU, p.cI)
-			} else {
-				p.parseError(slot.SL0R0, p.cI, followSets[symbols.NT_SL])
-			}
+			p.rtn(symbols.NT_SL, cU, p.cI)
 		case slot.SL_EQU0R0: // SL_EQU : ∙<<= WS
 
 			p.bsrSet.Add(slot.SL_EQU0R1, cU, p.cI, p.cI+1)
@@ -5948,11 +4424,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.SL_EQU0R2, cU, p.cI)
 		case slot.SL_EQU0R2: // SL_EQU : <<= WS ∙
 
-			if p.follow(symbols.NT_SL_EQU) {
-				p.rtn(symbols.NT_SL_EQU, cU, p.cI)
-			} else {
-				p.parseError(slot.SL_EQU0R0, p.cI, followSets[symbols.NT_SL_EQU])
-			}
+			p.rtn(symbols.NT_SL_EQU, cU, p.cI)
 		case slot.SR0R0: // SR : ∙>> notEqCar WS
 
 			p.bsrSet.Add(slot.SR0R1, cU, p.cI, p.cI+1)
@@ -5972,11 +4444,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.SR0R3, cU, p.cI)
 		case slot.SR0R3: // SR : >> notEqCar WS ∙
 
-			if p.follow(symbols.NT_SR) {
-				p.rtn(symbols.NT_SR, cU, p.cI)
-			} else {
-				p.parseError(slot.SR0R0, p.cI, followSets[symbols.NT_SR])
-			}
+			p.rtn(symbols.NT_SR, cU, p.cI)
 		case slot.SR_EQU0R0: // SR_EQU : ∙>>= WS
 
 			p.bsrSet.Add(slot.SR_EQU0R1, cU, p.cI, p.cI+1)
@@ -5989,11 +4457,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.SR_EQU0R2, cU, p.cI)
 		case slot.SR_EQU0R2: // SR_EQU : >>= WS ∙
 
-			if p.follow(symbols.NT_SR_EQU) {
-				p.rtn(symbols.NT_SR_EQU, cU, p.cI)
-			} else {
-				p.parseError(slot.SR_EQU0R0, p.cI, followSets[symbols.NT_SR_EQU])
-			}
+			p.rtn(symbols.NT_SR_EQU, cU, p.cI)
 		case slot.STAR0R0: // STAR : ∙* nEq WS
 
 			p.bsrSet.Add(slot.STAR0R1, cU, p.cI, p.cI+1)
@@ -6013,11 +4477,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.STAR0R3, cU, p.cI)
 		case slot.STAR0R3: // STAR : * nEq WS ∙
 
-			if p.follow(symbols.NT_STAR) {
-				p.rtn(symbols.NT_STAR, cU, p.cI)
-			} else {
-				p.parseError(slot.STAR0R0, p.cI, followSets[symbols.NT_STAR])
-			}
+			p.rtn(symbols.NT_STAR, cU, p.cI)
 		case slot.STAR_EQU0R0: // STAR_EQU : ∙*= WS
 
 			p.bsrSet.Add(slot.STAR_EQU0R1, cU, p.cI, p.cI+1)
@@ -6030,11 +4490,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.STAR_EQU0R2, cU, p.cI)
 		case slot.STAR_EQU0R2: // STAR_EQU : *= WS ∙
 
-			if p.follow(symbols.NT_STAR_EQU) {
-				p.rtn(symbols.NT_STAR_EQU, cU, p.cI)
-			} else {
-				p.parseError(slot.STAR_EQU0R0, p.cI, followSets[symbols.NT_STAR_EQU])
-			}
+			p.rtn(symbols.NT_STAR_EQU, cU, p.cI)
 		case slot.STATIC0R0: // STATIC : ∙static notLorD
 
 			p.bsrSet.Add(slot.STATIC0R1, cU, p.cI, p.cI+1)
@@ -6046,11 +4502,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 
 			p.bsrSet.Add(slot.STATIC0R2, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_STATIC) {
-				p.rtn(symbols.NT_STATIC, cU, p.cI)
-			} else {
-				p.parseError(slot.STATIC0R0, p.cI, followSets[symbols.NT_STATIC])
-			}
+			p.rtn(symbols.NT_STATIC, cU, p.cI)
 		case slot.SUPER0R0: // SUPER : ∙super notLorD
 
 			p.bsrSet.Add(slot.SUPER0R1, cU, p.cI, p.cI+1)
@@ -6062,11 +4514,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 
 			p.bsrSet.Add(slot.SUPER0R2, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_SUPER) {
-				p.rtn(symbols.NT_SUPER, cU, p.cI)
-			} else {
-				p.parseError(slot.SUPER0R0, p.cI, followSets[symbols.NT_SUPER])
-			}
+			p.rtn(symbols.NT_SUPER, cU, p.cI)
 		case slot.SWITCH0R0: // SWITCH : ∙switch notLorD
 
 			p.bsrSet.Add(slot.SWITCH0R1, cU, p.cI, p.cI+1)
@@ -6078,11 +4526,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 
 			p.bsrSet.Add(slot.SWITCH0R2, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_SWITCH) {
-				p.rtn(symbols.NT_SWITCH, cU, p.cI)
-			} else {
-				p.parseError(slot.SWITCH0R0, p.cI, followSets[symbols.NT_SWITCH])
-			}
+			p.rtn(symbols.NT_SWITCH, cU, p.cI)
 		case slot.SYNCHRONIZED0R0: // SYNCHRONIZED : ∙synchronized notLorD
 
 			p.bsrSet.Add(slot.SYNCHRONIZED0R1, cU, p.cI, p.cI+1)
@@ -6094,11 +4538,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 
 			p.bsrSet.Add(slot.SYNCHRONIZED0R2, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_SYNCHRONIZED) {
-				p.rtn(symbols.NT_SYNCHRONIZED, cU, p.cI)
-			} else {
-				p.parseError(slot.SYNCHRONIZED0R0, p.cI, followSets[symbols.NT_SYNCHRONIZED])
-			}
+			p.rtn(symbols.NT_SYNCHRONIZED, cU, p.cI)
 		case slot.Selector0R0: // Selector : ∙DOT ID OptArgs
 
 			p.call(slot.Selector0R1, cU, p.cI)
@@ -6120,11 +4560,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.Selector0R3, cU, p.cI)
 		case slot.Selector0R3: // Selector : DOT ID OptArgs ∙
 
-			if p.follow(symbols.NT_Selector) {
-				p.rtn(symbols.NT_Selector, cU, p.cI)
-			} else {
-				p.parseError(slot.Selector0R0, p.cI, followSets[symbols.NT_Selector])
-			}
+			p.rtn(symbols.NT_Selector, cU, p.cI)
 		case slot.Selector1R0: // Selector : ∙DOT THIS
 
 			p.call(slot.Selector1R1, cU, p.cI)
@@ -6138,11 +4574,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.Selector1R2, cU, p.cI)
 		case slot.Selector1R2: // Selector : DOT THIS ∙
 
-			if p.follow(symbols.NT_Selector) {
-				p.rtn(symbols.NT_Selector, cU, p.cI)
-			} else {
-				p.parseError(slot.Selector1R0, p.cI, followSets[symbols.NT_Selector])
-			}
+			p.rtn(symbols.NT_Selector, cU, p.cI)
 		case slot.Selector2R0: // Selector : ∙DOT SUPER SuperSuffix
 
 			p.call(slot.Selector2R1, cU, p.cI)
@@ -6164,11 +4596,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.Selector2R3, cU, p.cI)
 		case slot.Selector2R3: // Selector : DOT SUPER SuperSuffix ∙
 
-			if p.follow(symbols.NT_Selector) {
-				p.rtn(symbols.NT_Selector, cU, p.cI)
-			} else {
-				p.parseError(slot.Selector2R0, p.cI, followSets[symbols.NT_Selector])
-			}
+			p.rtn(symbols.NT_Selector, cU, p.cI)
 		case slot.Selector3R0: // Selector : ∙DOT NEW InnerCreator
 
 			p.call(slot.Selector3R1, cU, p.cI)
@@ -6190,31 +4618,19 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.Selector3R3, cU, p.cI)
 		case slot.Selector3R3: // Selector : DOT NEW InnerCreator ∙
 
-			if p.follow(symbols.NT_Selector) {
-				p.rtn(symbols.NT_Selector, cU, p.cI)
-			} else {
-				p.parseError(slot.Selector3R0, p.cI, followSets[symbols.NT_Selector])
-			}
+			p.rtn(symbols.NT_Selector, cU, p.cI)
 		case slot.Selector4R0: // Selector : ∙DimExpr
 
 			p.call(slot.Selector4R1, cU, p.cI)
 		case slot.Selector4R1: // Selector : DimExpr ∙
 
-			if p.follow(symbols.NT_Selector) {
-				p.rtn(symbols.NT_Selector, cU, p.cI)
-			} else {
-				p.parseError(slot.Selector4R0, p.cI, followSets[symbols.NT_Selector])
-			}
+			p.rtn(symbols.NT_Selector, cU, p.cI)
 		case slot.SemiModDecl0R0: // SemiModDecl : ∙SEMI
 
 			p.call(slot.SemiModDecl0R1, cU, p.cI)
 		case slot.SemiModDecl0R1: // SemiModDecl : SEMI ∙
 
-			if p.follow(symbols.NT_SemiModDecl) {
-				p.rtn(symbols.NT_SemiModDecl, cU, p.cI)
-			} else {
-				p.parseError(slot.SemiModDecl0R0, p.cI, followSets[symbols.NT_SemiModDecl])
-			}
+			p.rtn(symbols.NT_SemiModDecl, cU, p.cI)
 		case slot.SemiModDecl1R0: // SemiModDecl : ∙RepModif0 DeclAlts
 
 			p.call(slot.SemiModDecl1R1, cU, p.cI)
@@ -6228,11 +4644,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.SemiModDecl1R2, cU, p.cI)
 		case slot.SemiModDecl1R2: // SemiModDecl : RepModif0 DeclAlts ∙
 
-			if p.follow(symbols.NT_SemiModDecl) {
-				p.rtn(symbols.NT_SemiModDecl, cU, p.cI)
-			} else {
-				p.parseError(slot.SemiModDecl1R0, p.cI, followSets[symbols.NT_SemiModDecl])
-			}
+			p.rtn(symbols.NT_SemiModDecl, cU, p.cI)
 		case slot.ShiftAlts0R0: // ShiftAlts : ∙CarrotAlts AddExpr ShiftAlts
 
 			p.call(slot.ShiftAlts0R1, cU, p.cI)
@@ -6254,19 +4666,11 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.ShiftAlts0R3, cU, p.cI)
 		case slot.ShiftAlts0R3: // ShiftAlts : CarrotAlts AddExpr ShiftAlts ∙
 
-			if p.follow(symbols.NT_ShiftAlts) {
-				p.rtn(symbols.NT_ShiftAlts, cU, p.cI)
-			} else {
-				p.parseError(slot.ShiftAlts0R0, p.cI, followSets[symbols.NT_ShiftAlts])
-			}
+			p.rtn(symbols.NT_ShiftAlts, cU, p.cI)
 		case slot.ShiftAlts1R0: // ShiftAlts : ∙
 			p.bsrSet.AddEmpty(slot.ShiftAlts1R0, p.cI)
 
-			if p.follow(symbols.NT_ShiftAlts) {
-				p.rtn(symbols.NT_ShiftAlts, cU, p.cI)
-			} else {
-				p.parseError(slot.ShiftAlts1R0, p.cI, followSets[symbols.NT_ShiftAlts])
-			}
+			p.rtn(symbols.NT_ShiftAlts, cU, p.cI)
 		case slot.ShiftExpr0R0: // ShiftExpr : ∙AddExpr ShiftAlts
 
 			p.call(slot.ShiftExpr0R1, cU, p.cI)
@@ -6280,21 +4684,13 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.ShiftExpr0R2, cU, p.cI)
 		case slot.ShiftExpr0R2: // ShiftExpr : AddExpr ShiftAlts ∙
 
-			if p.follow(symbols.NT_ShiftExpr) {
-				p.rtn(symbols.NT_ShiftExpr, cU, p.cI)
-			} else {
-				p.parseError(slot.ShiftExpr0R0, p.cI, followSets[symbols.NT_ShiftExpr])
-			}
+			p.rtn(symbols.NT_ShiftExpr, cU, p.cI)
 		case slot.Stmt0R0: // Stmt : ∙Block
 
 			p.call(slot.Stmt0R1, cU, p.cI)
 		case slot.Stmt0R1: // Stmt : Block ∙
 
-			if p.follow(symbols.NT_Stmt) {
-				p.rtn(symbols.NT_Stmt, cU, p.cI)
-			} else {
-				p.parseError(slot.Stmt0R0, p.cI, followSets[symbols.NT_Stmt])
-			}
+			p.rtn(symbols.NT_Stmt, cU, p.cI)
 		case slot.Stmt1R0: // Stmt : ∙ASSERT Expr OptColExpr SEMI
 
 			p.call(slot.Stmt1R1, cU, p.cI)
@@ -6324,11 +4720,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.Stmt1R4, cU, p.cI)
 		case slot.Stmt1R4: // Stmt : ASSERT Expr OptColExpr SEMI ∙
 
-			if p.follow(symbols.NT_Stmt) {
-				p.rtn(symbols.NT_Stmt, cU, p.cI)
-			} else {
-				p.parseError(slot.Stmt1R0, p.cI, followSets[symbols.NT_Stmt])
-			}
+			p.rtn(symbols.NT_Stmt, cU, p.cI)
 		case slot.Stmt2R0: // Stmt : ∙IF ParExpr Stmt OptElse
 
 			p.call(slot.Stmt2R1, cU, p.cI)
@@ -6358,11 +4750,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.Stmt2R4, cU, p.cI)
 		case slot.Stmt2R4: // Stmt : IF ParExpr Stmt OptElse ∙
 
-			if p.follow(symbols.NT_Stmt) {
-				p.rtn(symbols.NT_Stmt, cU, p.cI)
-			} else {
-				p.parseError(slot.Stmt2R0, p.cI, followSets[symbols.NT_Stmt])
-			}
+			p.rtn(symbols.NT_Stmt, cU, p.cI)
 		case slot.Stmt3R0: // Stmt : ∙FOR LPAR OptForInit SEMI OptExpr SEMI OptForUpd RPAR Stmt
 
 			p.call(slot.Stmt3R1, cU, p.cI)
@@ -6432,11 +4820,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.Stmt3R9, cU, p.cI)
 		case slot.Stmt3R9: // Stmt : FOR LPAR OptForInit SEMI OptExpr SEMI OptForUpd RPAR Stmt ∙
 
-			if p.follow(symbols.NT_Stmt) {
-				p.rtn(symbols.NT_Stmt, cU, p.cI)
-			} else {
-				p.parseError(slot.Stmt3R0, p.cI, followSets[symbols.NT_Stmt])
-			}
+			p.rtn(symbols.NT_Stmt, cU, p.cI)
 		case slot.Stmt4R0: // Stmt : ∙WHILE ParExpr Stmt
 
 			p.call(slot.Stmt4R1, cU, p.cI)
@@ -6458,11 +4842,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.Stmt4R3, cU, p.cI)
 		case slot.Stmt4R3: // Stmt : WHILE ParExpr Stmt ∙
 
-			if p.follow(symbols.NT_Stmt) {
-				p.rtn(symbols.NT_Stmt, cU, p.cI)
-			} else {
-				p.parseError(slot.Stmt4R0, p.cI, followSets[symbols.NT_Stmt])
-			}
+			p.rtn(symbols.NT_Stmt, cU, p.cI)
 		case slot.Stmt5R0: // Stmt : ∙DO Stmt WHILE ParExpr SEMI
 
 			p.call(slot.Stmt5R1, cU, p.cI)
@@ -6500,11 +4880,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.Stmt5R5, cU, p.cI)
 		case slot.Stmt5R5: // Stmt : DO Stmt WHILE ParExpr SEMI ∙
 
-			if p.follow(symbols.NT_Stmt) {
-				p.rtn(symbols.NT_Stmt, cU, p.cI)
-			} else {
-				p.parseError(slot.Stmt5R0, p.cI, followSets[symbols.NT_Stmt])
-			}
+			p.rtn(symbols.NT_Stmt, cU, p.cI)
 		case slot.Stmt6R0: // Stmt : ∙TRY Block CatchBlk
 
 			p.call(slot.Stmt6R1, cU, p.cI)
@@ -6526,11 +4902,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.Stmt6R3, cU, p.cI)
 		case slot.Stmt6R3: // Stmt : TRY Block CatchBlk ∙
 
-			if p.follow(symbols.NT_Stmt) {
-				p.rtn(symbols.NT_Stmt, cU, p.cI)
-			} else {
-				p.parseError(slot.Stmt6R0, p.cI, followSets[symbols.NT_Stmt])
-			}
+			p.rtn(symbols.NT_Stmt, cU, p.cI)
 		case slot.Stmt7R0: // Stmt : ∙SWITCH ParExpr LWING RepSwBlkStmt0x RWING
 
 			p.call(slot.Stmt7R1, cU, p.cI)
@@ -6568,11 +4940,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.Stmt7R5, cU, p.cI)
 		case slot.Stmt7R5: // Stmt : SWITCH ParExpr LWING RepSwBlkStmt0x RWING ∙
 
-			if p.follow(symbols.NT_Stmt) {
-				p.rtn(symbols.NT_Stmt, cU, p.cI)
-			} else {
-				p.parseError(slot.Stmt7R0, p.cI, followSets[symbols.NT_Stmt])
-			}
+			p.rtn(symbols.NT_Stmt, cU, p.cI)
 		case slot.Stmt8R0: // Stmt : ∙SYNCHRONIZED ParExpr Block
 
 			p.call(slot.Stmt8R1, cU, p.cI)
@@ -6594,11 +4962,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.Stmt8R3, cU, p.cI)
 		case slot.Stmt8R3: // Stmt : SYNCHRONIZED ParExpr Block ∙
 
-			if p.follow(symbols.NT_Stmt) {
-				p.rtn(symbols.NT_Stmt, cU, p.cI)
-			} else {
-				p.parseError(slot.Stmt8R0, p.cI, followSets[symbols.NT_Stmt])
-			}
+			p.rtn(symbols.NT_Stmt, cU, p.cI)
 		case slot.Stmt9R0: // Stmt : ∙RETURN OptExpr SEMI
 
 			p.call(slot.Stmt9R1, cU, p.cI)
@@ -6620,11 +4984,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.Stmt9R3, cU, p.cI)
 		case slot.Stmt9R3: // Stmt : RETURN OptExpr SEMI ∙
 
-			if p.follow(symbols.NT_Stmt) {
-				p.rtn(symbols.NT_Stmt, cU, p.cI)
-			} else {
-				p.parseError(slot.Stmt9R0, p.cI, followSets[symbols.NT_Stmt])
-			}
+			p.rtn(symbols.NT_Stmt, cU, p.cI)
 		case slot.Stmt10R0: // Stmt : ∙THROW Expr SEMI
 
 			p.call(slot.Stmt10R1, cU, p.cI)
@@ -6646,11 +5006,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.Stmt10R3, cU, p.cI)
 		case slot.Stmt10R3: // Stmt : THROW Expr SEMI ∙
 
-			if p.follow(symbols.NT_Stmt) {
-				p.rtn(symbols.NT_Stmt, cU, p.cI)
-			} else {
-				p.parseError(slot.Stmt10R0, p.cI, followSets[symbols.NT_Stmt])
-			}
+			p.rtn(symbols.NT_Stmt, cU, p.cI)
 		case slot.Stmt11R0: // Stmt : ∙BREAK OptID SEMI
 
 			p.call(slot.Stmt11R1, cU, p.cI)
@@ -6672,11 +5028,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.Stmt11R3, cU, p.cI)
 		case slot.Stmt11R3: // Stmt : BREAK OptID SEMI ∙
 
-			if p.follow(symbols.NT_Stmt) {
-				p.rtn(symbols.NT_Stmt, cU, p.cI)
-			} else {
-				p.parseError(slot.Stmt11R0, p.cI, followSets[symbols.NT_Stmt])
-			}
+			p.rtn(symbols.NT_Stmt, cU, p.cI)
 		case slot.Stmt12R0: // Stmt : ∙CONTINUE OptID SEMI
 
 			p.call(slot.Stmt12R1, cU, p.cI)
@@ -6698,21 +5050,13 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.Stmt12R3, cU, p.cI)
 		case slot.Stmt12R3: // Stmt : CONTINUE OptID SEMI ∙
 
-			if p.follow(symbols.NT_Stmt) {
-				p.rtn(symbols.NT_Stmt, cU, p.cI)
-			} else {
-				p.parseError(slot.Stmt12R0, p.cI, followSets[symbols.NT_Stmt])
-			}
+			p.rtn(symbols.NT_Stmt, cU, p.cI)
 		case slot.Stmt13R0: // Stmt : ∙SEMI
 
 			p.call(slot.Stmt13R1, cU, p.cI)
 		case slot.Stmt13R1: // Stmt : SEMI ∙
 
-			if p.follow(symbols.NT_Stmt) {
-				p.rtn(symbols.NT_Stmt, cU, p.cI)
-			} else {
-				p.parseError(slot.Stmt13R0, p.cI, followSets[symbols.NT_Stmt])
-			}
+			p.rtn(symbols.NT_Stmt, cU, p.cI)
 		case slot.Stmt14R0: // Stmt : ∙StmtExpr SEMI
 
 			p.call(slot.Stmt14R1, cU, p.cI)
@@ -6726,11 +5070,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.Stmt14R2, cU, p.cI)
 		case slot.Stmt14R2: // Stmt : StmtExpr SEMI ∙
 
-			if p.follow(symbols.NT_Stmt) {
-				p.rtn(symbols.NT_Stmt, cU, p.cI)
-			} else {
-				p.parseError(slot.Stmt14R0, p.cI, followSets[symbols.NT_Stmt])
-			}
+			p.rtn(symbols.NT_Stmt, cU, p.cI)
 		case slot.Stmt15R0: // Stmt : ∙ID COLON Stmt
 
 			p.call(slot.Stmt15R1, cU, p.cI)
@@ -6752,30 +5092,18 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.Stmt15R3, cU, p.cI)
 		case slot.Stmt15R3: // Stmt : ID COLON Stmt ∙
 
-			if p.follow(symbols.NT_Stmt) {
-				p.rtn(symbols.NT_Stmt, cU, p.cI)
-			} else {
-				p.parseError(slot.Stmt15R0, p.cI, followSets[symbols.NT_Stmt])
-			}
+			p.rtn(symbols.NT_Stmt, cU, p.cI)
 		case slot.StmtExpr0R0: // StmtExpr : ∙Expr
 
 			p.call(slot.StmtExpr0R1, cU, p.cI)
 		case slot.StmtExpr0R1: // StmtExpr : Expr ∙
 
-			if p.follow(symbols.NT_StmtExpr) {
-				p.rtn(symbols.NT_StmtExpr, cU, p.cI)
-			} else {
-				p.parseError(slot.StmtExpr0R0, p.cI, followSets[symbols.NT_StmtExpr])
-			}
+			p.rtn(symbols.NT_StmtExpr, cU, p.cI)
 		case slot.StrClose0R0: // StrClose : ∙dubQuo
 
 			p.bsrSet.Add(slot.StrClose0R1, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_StrClose) {
-				p.rtn(symbols.NT_StrClose, cU, p.cI)
-			} else {
-				p.parseError(slot.StrClose0R0, p.cI, followSets[symbols.NT_StrClose])
-			}
+			p.rtn(symbols.NT_StrClose, cU, p.cI)
 		case slot.StrClose1R0: // StrClose : ∙OptEsc StrClose
 
 			p.call(slot.StrClose1R1, cU, p.cI)
@@ -6789,11 +5117,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.StrClose1R2, cU, p.cI)
 		case slot.StrClose1R2: // StrClose : OptEsc StrClose ∙
 
-			if p.follow(symbols.NT_StrClose) {
-				p.rtn(symbols.NT_StrClose, cU, p.cI)
-			} else {
-				p.parseError(slot.StrClose1R0, p.cI, followSets[symbols.NT_StrClose])
-			}
+			p.rtn(symbols.NT_StrClose, cU, p.cI)
 		case slot.StringLiteral0R0: // StringLiteral : ∙dubQuo StrClose
 
 			p.bsrSet.Add(slot.StringLiteral0R1, cU, p.cI, p.cI+1)
@@ -6806,21 +5130,13 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.StringLiteral0R2, cU, p.cI)
 		case slot.StringLiteral0R2: // StringLiteral : dubQuo StrClose ∙
 
-			if p.follow(symbols.NT_StringLiteral) {
-				p.rtn(symbols.NT_StringLiteral, cU, p.cI)
-			} else {
-				p.parseError(slot.StringLiteral0R0, p.cI, followSets[symbols.NT_StringLiteral])
-			}
+			p.rtn(symbols.NT_StringLiteral, cU, p.cI)
 		case slot.SuperSuffix0R0: // SuperSuffix : ∙Arguments
 
 			p.call(slot.SuperSuffix0R1, cU, p.cI)
 		case slot.SuperSuffix0R1: // SuperSuffix : Arguments ∙
 
-			if p.follow(symbols.NT_SuperSuffix) {
-				p.rtn(symbols.NT_SuperSuffix, cU, p.cI)
-			} else {
-				p.parseError(slot.SuperSuffix0R0, p.cI, followSets[symbols.NT_SuperSuffix])
-			}
+			p.rtn(symbols.NT_SuperSuffix, cU, p.cI)
 		case slot.SuperSuffix1R0: // SuperSuffix : ∙DOT ID OptArgs
 
 			p.call(slot.SuperSuffix1R1, cU, p.cI)
@@ -6842,11 +5158,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.SuperSuffix1R3, cU, p.cI)
 		case slot.SuperSuffix1R3: // SuperSuffix : DOT ID OptArgs ∙
 
-			if p.follow(symbols.NT_SuperSuffix) {
-				p.rtn(symbols.NT_SuperSuffix, cU, p.cI)
-			} else {
-				p.parseError(slot.SuperSuffix1R0, p.cI, followSets[symbols.NT_SuperSuffix])
-			}
+			p.rtn(symbols.NT_SuperSuffix, cU, p.cI)
 		case slot.SwitchBlockStmtGrp0R0: // SwitchBlockStmtGrp : ∙SwitchLabel RepBlkSt0x
 
 			p.call(slot.SwitchBlockStmtGrp0R1, cU, p.cI)
@@ -6860,11 +5172,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.SwitchBlockStmtGrp0R2, cU, p.cI)
 		case slot.SwitchBlockStmtGrp0R2: // SwitchBlockStmtGrp : SwitchLabel RepBlkSt0x ∙
 
-			if p.follow(symbols.NT_SwitchBlockStmtGrp) {
-				p.rtn(symbols.NT_SwitchBlockStmtGrp, cU, p.cI)
-			} else {
-				p.parseError(slot.SwitchBlockStmtGrp0R0, p.cI, followSets[symbols.NT_SwitchBlockStmtGrp])
-			}
+			p.rtn(symbols.NT_SwitchBlockStmtGrp, cU, p.cI)
 		case slot.SwitchLabel0R0: // SwitchLabel : ∙CASE ConstExpr COLON
 
 			p.call(slot.SwitchLabel0R1, cU, p.cI)
@@ -6886,11 +5194,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.SwitchLabel0R3, cU, p.cI)
 		case slot.SwitchLabel0R3: // SwitchLabel : CASE ConstExpr COLON ∙
 
-			if p.follow(symbols.NT_SwitchLabel) {
-				p.rtn(symbols.NT_SwitchLabel, cU, p.cI)
-			} else {
-				p.parseError(slot.SwitchLabel0R0, p.cI, followSets[symbols.NT_SwitchLabel])
-			}
+			p.rtn(symbols.NT_SwitchLabel, cU, p.cI)
 		case slot.SwitchLabel1R0: // SwitchLabel : ∙DEFAULT COLON
 
 			p.call(slot.SwitchLabel1R1, cU, p.cI)
@@ -6904,11 +5208,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.SwitchLabel1R2, cU, p.cI)
 		case slot.SwitchLabel1R2: // SwitchLabel : DEFAULT COLON ∙
 
-			if p.follow(symbols.NT_SwitchLabel) {
-				p.rtn(symbols.NT_SwitchLabel, cU, p.cI)
-			} else {
-				p.parseError(slot.SwitchLabel1R0, p.cI, followSets[symbols.NT_SwitchLabel])
-			}
+			p.rtn(symbols.NT_SwitchLabel, cU, p.cI)
 		case slot.THIS0R0: // THIS : ∙this notLorD
 
 			p.bsrSet.Add(slot.THIS0R1, cU, p.cI, p.cI+1)
@@ -6920,11 +5220,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 
 			p.bsrSet.Add(slot.THIS0R2, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_THIS) {
-				p.rtn(symbols.NT_THIS, cU, p.cI)
-			} else {
-				p.parseError(slot.THIS0R0, p.cI, followSets[symbols.NT_THIS])
-			}
+			p.rtn(symbols.NT_THIS, cU, p.cI)
 		case slot.THROW0R0: // THROW : ∙throw notLorD
 
 			p.bsrSet.Add(slot.THROW0R1, cU, p.cI, p.cI+1)
@@ -6936,11 +5232,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 
 			p.bsrSet.Add(slot.THROW0R2, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_THROW) {
-				p.rtn(symbols.NT_THROW, cU, p.cI)
-			} else {
-				p.parseError(slot.THROW0R0, p.cI, followSets[symbols.NT_THROW])
-			}
+			p.rtn(symbols.NT_THROW, cU, p.cI)
 		case slot.THROWS0R0: // THROWS : ∙throws notLorD
 
 			p.bsrSet.Add(slot.THROWS0R1, cU, p.cI, p.cI+1)
@@ -6952,11 +5244,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 
 			p.bsrSet.Add(slot.THROWS0R2, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_THROWS) {
-				p.rtn(symbols.NT_THROWS, cU, p.cI)
-			} else {
-				p.parseError(slot.THROWS0R0, p.cI, followSets[symbols.NT_THROWS])
-			}
+			p.rtn(symbols.NT_THROWS, cU, p.cI)
 		case slot.TILDA0R0: // TILDA : ∙~ WS
 
 			p.bsrSet.Add(slot.TILDA0R1, cU, p.cI, p.cI+1)
@@ -6969,11 +5257,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.TILDA0R2, cU, p.cI)
 		case slot.TILDA0R2: // TILDA : ~ WS ∙
 
-			if p.follow(symbols.NT_TILDA) {
-				p.rtn(symbols.NT_TILDA, cU, p.cI)
-			} else {
-				p.parseError(slot.TILDA0R0, p.cI, followSets[symbols.NT_TILDA])
-			}
+			p.rtn(symbols.NT_TILDA, cU, p.cI)
 		case slot.TRY0R0: // TRY : ∙try notLorD
 
 			p.bsrSet.Add(slot.TRY0R1, cU, p.cI, p.cI+1)
@@ -6985,11 +5269,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 
 			p.bsrSet.Add(slot.TRY0R2, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_TRY) {
-				p.rtn(symbols.NT_TRY, cU, p.cI)
-			} else {
-				p.parseError(slot.TRY0R0, p.cI, followSets[symbols.NT_TRY])
-			}
+			p.rtn(symbols.NT_TRY, cU, p.cI)
 		case slot.Type0R0: // Type : ∙TypeAlts RepDim0x
 
 			p.call(slot.Type0R1, cU, p.cI)
@@ -7003,31 +5283,19 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.Type0R2, cU, p.cI)
 		case slot.Type0R2: // Type : TypeAlts RepDim0x ∙
 
-			if p.follow(symbols.NT_Type) {
-				p.rtn(symbols.NT_Type, cU, p.cI)
-			} else {
-				p.parseError(slot.Type0R0, p.cI, followSets[symbols.NT_Type])
-			}
+			p.rtn(symbols.NT_Type, cU, p.cI)
 		case slot.TypeAlts0R0: // TypeAlts : ∙BasicType
 
 			p.call(slot.TypeAlts0R1, cU, p.cI)
 		case slot.TypeAlts0R1: // TypeAlts : BasicType ∙
 
-			if p.follow(symbols.NT_TypeAlts) {
-				p.rtn(symbols.NT_TypeAlts, cU, p.cI)
-			} else {
-				p.parseError(slot.TypeAlts0R0, p.cI, followSets[symbols.NT_TypeAlts])
-			}
+			p.rtn(symbols.NT_TypeAlts, cU, p.cI)
 		case slot.TypeAlts1R0: // TypeAlts : ∙ClsType
 
 			p.call(slot.TypeAlts1R1, cU, p.cI)
 		case slot.TypeAlts1R1: // TypeAlts : ClsType ∙
 
-			if p.follow(symbols.NT_TypeAlts) {
-				p.rtn(symbols.NT_TypeAlts, cU, p.cI)
-			} else {
-				p.parseError(slot.TypeAlts1R0, p.cI, followSets[symbols.NT_TypeAlts])
-			}
+			p.rtn(symbols.NT_TypeAlts, cU, p.cI)
 		case slot.UnaryExpr0R0: // UnaryExpr : ∙PrefixOp UnaryExpr
 
 			p.call(slot.UnaryExpr0R1, cU, p.cI)
@@ -7041,11 +5309,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.UnaryExpr0R2, cU, p.cI)
 		case slot.UnaryExpr0R2: // UnaryExpr : PrefixOp UnaryExpr ∙
 
-			if p.follow(symbols.NT_UnaryExpr) {
-				p.rtn(symbols.NT_UnaryExpr, cU, p.cI)
-			} else {
-				p.parseError(slot.UnaryExpr0R0, p.cI, followSets[symbols.NT_UnaryExpr])
-			}
+			p.rtn(symbols.NT_UnaryExpr, cU, p.cI)
 		case slot.UnaryExpr1R0: // UnaryExpr : ∙LPAR Type RPAR UnaryExpr
 
 			p.call(slot.UnaryExpr1R1, cU, p.cI)
@@ -7075,11 +5339,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.UnaryExpr1R4, cU, p.cI)
 		case slot.UnaryExpr1R4: // UnaryExpr : LPAR Type RPAR UnaryExpr ∙
 
-			if p.follow(symbols.NT_UnaryExpr) {
-				p.rtn(symbols.NT_UnaryExpr, cU, p.cI)
-			} else {
-				p.parseError(slot.UnaryExpr1R0, p.cI, followSets[symbols.NT_UnaryExpr])
-			}
+			p.rtn(symbols.NT_UnaryExpr, cU, p.cI)
 		case slot.UnaryExpr2R0: // UnaryExpr : ∙Primary RepSel0x RepPfOp0x
 
 			p.call(slot.UnaryExpr2R1, cU, p.cI)
@@ -7101,11 +5361,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.UnaryExpr2R3, cU, p.cI)
 		case slot.UnaryExpr2R3: // UnaryExpr : Primary RepSel0x RepPfOp0x ∙
 
-			if p.follow(symbols.NT_UnaryExpr) {
-				p.rtn(symbols.NT_UnaryExpr, cU, p.cI)
-			} else {
-				p.parseError(slot.UnaryExpr2R0, p.cI, followSets[symbols.NT_UnaryExpr])
-			}
+			p.rtn(symbols.NT_UnaryExpr, cU, p.cI)
 		case slot.UnicodeEscape0R0: // UnicodeEscape : ∙u hexDigit hexDigit hexDigit hexDigit
 
 			p.bsrSet.Add(slot.UnicodeEscape0R1, cU, p.cI, p.cI+1)
@@ -7138,11 +5394,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 
 			p.bsrSet.Add(slot.UnicodeEscape0R5, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_UnicodeEscape) {
-				p.rtn(symbols.NT_UnicodeEscape, cU, p.cI)
-			} else {
-				p.parseError(slot.UnicodeEscape0R0, p.cI, followSets[symbols.NT_UnicodeEscape])
-			}
+			p.rtn(symbols.NT_UnicodeEscape, cU, p.cI)
 		case slot.VOID0R0: // VOID : ∙void notLorD
 
 			p.bsrSet.Add(slot.VOID0R1, cU, p.cI, p.cI+1)
@@ -7154,11 +5406,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 
 			p.bsrSet.Add(slot.VOID0R2, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_VOID) {
-				p.rtn(symbols.NT_VOID, cU, p.cI)
-			} else {
-				p.parseError(slot.VOID0R0, p.cI, followSets[symbols.NT_VOID])
-			}
+			p.rtn(symbols.NT_VOID, cU, p.cI)
 		case slot.VarDecl0R0: // VarDecl : ∙ID RepDim0x OptEqVarInit
 
 			p.call(slot.VarDecl0R1, cU, p.cI)
@@ -7180,11 +5428,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.VarDecl0R3, cU, p.cI)
 		case slot.VarDecl0R3: // VarDecl : ID RepDim0x OptEqVarInit ∙
 
-			if p.follow(symbols.NT_VarDecl) {
-				p.rtn(symbols.NT_VarDecl, cU, p.cI)
-			} else {
-				p.parseError(slot.VarDecl0R0, p.cI, followSets[symbols.NT_VarDecl])
-			}
+			p.rtn(symbols.NT_VarDecl, cU, p.cI)
 		case slot.VarDeclInit0R0: // VarDeclInit : ∙VarDecl RepComVDecl0x
 
 			p.call(slot.VarDeclInit0R1, cU, p.cI)
@@ -7198,11 +5442,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.VarDeclInit0R2, cU, p.cI)
 		case slot.VarDeclInit0R2: // VarDeclInit : VarDecl RepComVDecl0x ∙
 
-			if p.follow(symbols.NT_VarDeclInit) {
-				p.rtn(symbols.NT_VarDeclInit, cU, p.cI)
-			} else {
-				p.parseError(slot.VarDeclInit0R0, p.cI, followSets[symbols.NT_VarDeclInit])
-			}
+			p.rtn(symbols.NT_VarDeclInit, cU, p.cI)
 		case slot.VarDelID0R0: // VarDelID : ∙ID RepDim0x
 
 			p.call(slot.VarDelID0R1, cU, p.cI)
@@ -7216,31 +5456,19 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.VarDelID0R2, cU, p.cI)
 		case slot.VarDelID0R2: // VarDelID : ID RepDim0x ∙
 
-			if p.follow(symbols.NT_VarDelID) {
-				p.rtn(symbols.NT_VarDelID, cU, p.cI)
-			} else {
-				p.parseError(slot.VarDelID0R0, p.cI, followSets[symbols.NT_VarDelID])
-			}
+			p.rtn(symbols.NT_VarDelID, cU, p.cI)
 		case slot.VarInitial0R0: // VarInitial : ∙ArrayInitializer
 
 			p.call(slot.VarInitial0R1, cU, p.cI)
 		case slot.VarInitial0R1: // VarInitial : ArrayInitializer ∙
 
-			if p.follow(symbols.NT_VarInitial) {
-				p.rtn(symbols.NT_VarInitial, cU, p.cI)
-			} else {
-				p.parseError(slot.VarInitial0R0, p.cI, followSets[symbols.NT_VarInitial])
-			}
+			p.rtn(symbols.NT_VarInitial, cU, p.cI)
 		case slot.VarInitial1R0: // VarInitial : ∙Expr
 
 			p.call(slot.VarInitial1R1, cU, p.cI)
 		case slot.VarInitial1R1: // VarInitial : Expr ∙
 
-			if p.follow(symbols.NT_VarInitial) {
-				p.rtn(symbols.NT_VarInitial, cU, p.cI)
-			} else {
-				p.parseError(slot.VarInitial1R0, p.cI, followSets[symbols.NT_VarInitial])
-			}
+			p.rtn(symbols.NT_VarInitial, cU, p.cI)
 		case slot.VoidIntfMethDeclRst0R0: // VoidIntfMethDeclRst : ∙FormalParams OptThrowClsTypLst SEMI
 
 			p.call(slot.VoidIntfMethDeclRst0R1, cU, p.cI)
@@ -7262,11 +5490,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.VoidIntfMethDeclRst0R3, cU, p.cI)
 		case slot.VoidIntfMethDeclRst0R3: // VoidIntfMethDeclRst : FormalParams OptThrowClsTypLst SEMI ∙
 
-			if p.follow(symbols.NT_VoidIntfMethDeclRst) {
-				p.rtn(symbols.NT_VoidIntfMethDeclRst, cU, p.cI)
-			} else {
-				p.parseError(slot.VoidIntfMethDeclRst0R0, p.cI, followSets[symbols.NT_VoidIntfMethDeclRst])
-			}
+			p.rtn(symbols.NT_VoidIntfMethDeclRst, cU, p.cI)
 		case slot.WHILE0R0: // WHILE : ∙while notLorD
 
 			p.bsrSet.Add(slot.WHILE0R1, cU, p.cI, p.cI+1)
@@ -7278,29 +5502,17 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 
 			p.bsrSet.Add(slot.WHILE0R2, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_WHILE) {
-				p.rtn(symbols.NT_WHILE, cU, p.cI)
-			} else {
-				p.parseError(slot.WHILE0R0, p.cI, followSets[symbols.NT_WHILE])
-			}
+			p.rtn(symbols.NT_WHILE, cU, p.cI)
 		case slot.WS0R0: // WS : ∙EscOrLineOrBlock
 
 			p.call(slot.WS0R1, cU, p.cI)
 		case slot.WS0R1: // WS : EscOrLineOrBlock ∙
 
-			if p.follow(symbols.NT_WS) {
-				p.rtn(symbols.NT_WS, cU, p.cI)
-			} else {
-				p.parseError(slot.WS0R0, p.cI, followSets[symbols.NT_WS])
-			}
+			p.rtn(symbols.NT_WS, cU, p.cI)
 		case slot.WS1R0: // WS : ∙
 			p.bsrSet.AddEmpty(slot.WS1R0, p.cI)
 
-			if p.follow(symbols.NT_WS) {
-				p.rtn(symbols.NT_WS, cU, p.cI)
-			} else {
-				p.parseError(slot.WS1R0, p.cI, followSets[symbols.NT_WS])
-			}
+			p.rtn(symbols.NT_WS, cU, p.cI)
 		case slot.XORExpr0R0: // XORExpr : ∙ANDExpr RepHatAND0x
 
 			p.call(slot.XORExpr0R1, cU, p.cI)
@@ -7314,11 +5526,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.XORExpr0R2, cU, p.cI)
 		case slot.XORExpr0R2: // XORExpr : ANDExpr RepHatAND0x ∙
 
-			if p.follow(symbols.NT_XORExpr) {
-				p.rtn(symbols.NT_XORExpr, cU, p.cI)
-			} else {
-				p.parseError(slot.XORExpr0R0, p.cI, followSets[symbols.NT_XORExpr])
-			}
+			p.rtn(symbols.NT_XORExpr, cU, p.cI)
 
 		default:
 			panic("This must not happen")
@@ -7555,9 +5763,9 @@ func (p *parser) follow(nt symbols.NT) bool {
 }
 
 func (p *parser) testSelect(l slot.Label) bool {
-	_, exist := first[l][p.lex.Tokens[p.cI].Type()]
-	// fmt.Printf("testSelect(%s) = %t\n", l, exist)
-	return exist
+	return l.IsNullable() || l.FirstContains(p.lex.Tokens[p.cI].Type())
+	// _, exist := first[l][p.lex.Tokens[p.cI].Type()]
+	// return exist
 }
 
 var first = []map[token.Type]string{
@@ -7571,9 +5779,6 @@ var first = []map[token.Type]string{
 	},
 	// AND : & notEqAnd ∙WS
 	{
-		token.T_49:  "block_comment",
-		token.T_66:  "escCharSp",
-		token.T_85:  "line_comment",
 		token.T_0:   "!",
 		token.T_7:   "(",
 		token.T_11:  "+",
@@ -7582,15 +5787,18 @@ var first = []map[token.Type]string{
 		token.T_16:  "--",
 		token.T_21:  "0",
 		token.T_39:  "X",
+		token.T_49:  "block_comment",
 		token.T_50:  "boolean",
 		token.T_52:  "byte",
 		token.T_56:  "char",
 		token.T_60:  "dot",
 		token.T_61:  "double",
 		token.T_62:  "dubQuo",
+		token.T_66:  "escCharSp",
 		token.T_70:  "false",
 		token.T_73:  "float",
 		token.T_80:  "int",
+		token.T_85:  "line_comment",
 		token.T_86:  "long",
 		token.T_89:  "new",
 		token.T_97:  "notKeyword",
@@ -7682,8 +5890,8 @@ var first = []map[token.Type]string{
 	},
 	// ANDExpr : EqualExpr ∙RepANDEq0x
 	{
-		token.T_4:   "&",
 		token.T_3:   "%=",
+		token.T_4:   "&",
 		token.T_5:   "&&",
 		token.T_6:   "&=",
 		token.T_8:   ")",
@@ -7787,9 +5995,6 @@ var first = []map[token.Type]string{
 	},
 	// AND_AND : && ∙WS
 	{
-		token.T_49:  "block_comment",
-		token.T_66:  "escCharSp",
-		token.T_85:  "line_comment",
 		token.T_0:   "!",
 		token.T_7:   "(",
 		token.T_11:  "+",
@@ -7798,15 +6003,18 @@ var first = []map[token.Type]string{
 		token.T_16:  "--",
 		token.T_21:  "0",
 		token.T_39:  "X",
+		token.T_49:  "block_comment",
 		token.T_50:  "boolean",
 		token.T_52:  "byte",
 		token.T_56:  "char",
 		token.T_60:  "dot",
 		token.T_61:  "double",
 		token.T_62:  "dubQuo",
+		token.T_66:  "escCharSp",
 		token.T_70:  "false",
 		token.T_73:  "float",
 		token.T_80:  "int",
+		token.T_85:  "line_comment",
 		token.T_86:  "long",
 		token.T_89:  "new",
 		token.T_97:  "notKeyword",
@@ -7866,9 +6074,6 @@ var first = []map[token.Type]string{
 	},
 	// AND_EQU : &= ∙WS
 	{
-		token.T_49:  "block_comment",
-		token.T_66:  "escCharSp",
-		token.T_85:  "line_comment",
 		token.T_0:   "!",
 		token.T_7:   "(",
 		token.T_11:  "+",
@@ -7877,15 +6082,18 @@ var first = []map[token.Type]string{
 		token.T_16:  "--",
 		token.T_21:  "0",
 		token.T_39:  "X",
+		token.T_49:  "block_comment",
 		token.T_50:  "boolean",
 		token.T_52:  "byte",
 		token.T_56:  "char",
 		token.T_60:  "dot",
 		token.T_61:  "double",
 		token.T_62:  "dubQuo",
+		token.T_66:  "escCharSp",
 		token.T_70:  "false",
 		token.T_73:  "float",
 		token.T_80:  "int",
+		token.T_85:  "line_comment",
 		token.T_86:  "long",
 		token.T_89:  "new",
 		token.T_97:  "notKeyword",
@@ -8101,8 +6309,6 @@ var first = []map[token.Type]string{
 	},
 	// AddExpr : MultExpr ∙RepAddAltsMult0x
 	{
-		token.T_11:  "+",
-		token.T_15:  "-",
 		token.T_1:   "!=",
 		token.T_3:   "%=",
 		token.T_4:   "&",
@@ -8110,8 +6316,10 @@ var first = []map[token.Type]string{
 		token.T_6:   "&=",
 		token.T_8:   ")",
 		token.T_10:  "*=",
+		token.T_11:  "+",
 		token.T_13:  "+=",
 		token.T_14:  ",",
+		token.T_15:  "-",
 		token.T_17:  "-=",
 		token.T_20:  "/=",
 		token.T_22:  ":",
@@ -8717,7 +6925,6 @@ var first = []map[token.Type]string{
 	},
 	// ArrayRest : Expr RBRK ∙RepDimExpr0x RepDim0x
 	{
-		token.T_40:  "[",
 		token.T_1:   "!=",
 		token.T_2:   "%",
 		token.T_3:   "%=",
@@ -8788,7 +6995,6 @@ var first = []map[token.Type]string{
 	},
 	// ArrayRest : Expr RBRK RepDimExpr0x ∙RepDim0x
 	{
-		token.T_40:  "[",
 		token.T_1:   "!=",
 		token.T_2:   "%",
 		token.T_3:   "%=",
@@ -9417,9 +7623,6 @@ var first = []map[token.Type]string{
 	},
 	// BANG : ! nEq ∙WS
 	{
-		token.T_49:  "block_comment",
-		token.T_66:  "escCharSp",
-		token.T_85:  "line_comment",
 		token.T_0:   "!",
 		token.T_7:   "(",
 		token.T_11:  "+",
@@ -9428,15 +7631,18 @@ var first = []map[token.Type]string{
 		token.T_16:  "--",
 		token.T_21:  "0",
 		token.T_39:  "X",
+		token.T_49:  "block_comment",
 		token.T_50:  "boolean",
 		token.T_52:  "byte",
 		token.T_56:  "char",
 		token.T_60:  "dot",
 		token.T_61:  "double",
 		token.T_62:  "dubQuo",
+		token.T_66:  "escCharSp",
 		token.T_70:  "false",
 		token.T_73:  "float",
 		token.T_80:  "int",
+		token.T_85:  "line_comment",
 		token.T_86:  "long",
 		token.T_89:  "new",
 		token.T_97:  "notKeyword",
@@ -9513,9 +7719,6 @@ var first = []map[token.Type]string{
 	},
 	// BSR : >>> nEq ∙WS
 	{
-		token.T_49:  "block_comment",
-		token.T_66:  "escCharSp",
-		token.T_85:  "line_comment",
 		token.T_0:   "!",
 		token.T_7:   "(",
 		token.T_11:  "+",
@@ -9524,15 +7727,18 @@ var first = []map[token.Type]string{
 		token.T_16:  "--",
 		token.T_21:  "0",
 		token.T_39:  "X",
+		token.T_49:  "block_comment",
 		token.T_50:  "boolean",
 		token.T_52:  "byte",
 		token.T_56:  "char",
 		token.T_60:  "dot",
 		token.T_61:  "double",
 		token.T_62:  "dubQuo",
+		token.T_66:  "escCharSp",
 		token.T_70:  "false",
 		token.T_73:  "float",
 		token.T_80:  "int",
+		token.T_85:  "line_comment",
 		token.T_86:  "long",
 		token.T_89:  "new",
 		token.T_97:  "notKeyword",
@@ -9592,9 +7798,6 @@ var first = []map[token.Type]string{
 	},
 	// BSR_EQU : >>>= ∙WS
 	{
-		token.T_49:  "block_comment",
-		token.T_66:  "escCharSp",
-		token.T_85:  "line_comment",
 		token.T_0:   "!",
 		token.T_7:   "(",
 		token.T_11:  "+",
@@ -9603,15 +7806,18 @@ var first = []map[token.Type]string{
 		token.T_16:  "--",
 		token.T_21:  "0",
 		token.T_39:  "X",
+		token.T_49:  "block_comment",
 		token.T_50:  "boolean",
 		token.T_52:  "byte",
 		token.T_56:  "char",
 		token.T_60:  "dot",
 		token.T_61:  "double",
 		token.T_62:  "dubQuo",
+		token.T_66:  "escCharSp",
 		token.T_70:  "false",
 		token.T_73:  "float",
 		token.T_80:  "int",
+		token.T_85:  "line_comment",
 		token.T_86:  "long",
 		token.T_89:  "new",
 		token.T_97:  "notKeyword",
@@ -10305,9 +8511,6 @@ var first = []map[token.Type]string{
 	},
 	// COLON : : ∙WS
 	{
-		token.T_49:  "block_comment",
-		token.T_66:  "escCharSp",
-		token.T_85:  "line_comment",
 		token.T_0:   "!",
 		token.T_7:   "(",
 		token.T_11:  "+",
@@ -10320,6 +8523,7 @@ var first = []map[token.Type]string{
 		token.T_39:  "X",
 		token.T_44:  "abstract",
 		token.T_47:  "assert",
+		token.T_49:  "block_comment",
 		token.T_50:  "boolean",
 		token.T_51:  "break",
 		token.T_52:  "byte",
@@ -10331,12 +8535,14 @@ var first = []map[token.Type]string{
 		token.T_60:  "dot",
 		token.T_61:  "double",
 		token.T_62:  "dubQuo",
+		token.T_66:  "escCharSp",
 		token.T_70:  "false",
 		token.T_71:  "final",
 		token.T_73:  "float",
 		token.T_74:  "for",
 		token.T_76:  "if",
 		token.T_80:  "int",
+		token.T_85:  "line_comment",
 		token.T_86:  "long",
 		token.T_88:  "native",
 		token.T_89:  "new",
@@ -10440,9 +8646,6 @@ var first = []map[token.Type]string{
 	},
 	// COMMA : , ∙WS
 	{
-		token.T_49:  "block_comment",
-		token.T_66:  "escCharSp",
-		token.T_85:  "line_comment",
 		token.T_0:   "!",
 		token.T_7:   "(",
 		token.T_11:  "+",
@@ -10451,16 +8654,19 @@ var first = []map[token.Type]string{
 		token.T_16:  "--",
 		token.T_21:  "0",
 		token.T_39:  "X",
+		token.T_49:  "block_comment",
 		token.T_50:  "boolean",
 		token.T_52:  "byte",
 		token.T_56:  "char",
 		token.T_60:  "dot",
 		token.T_61:  "double",
 		token.T_62:  "dubQuo",
+		token.T_66:  "escCharSp",
 		token.T_70:  "false",
 		token.T_71:  "final",
 		token.T_73:  "float",
 		token.T_80:  "int",
+		token.T_85:  "line_comment",
 		token.T_86:  "long",
 		token.T_89:  "new",
 		token.T_97:  "notKeyword",
@@ -10744,8 +8950,6 @@ var first = []map[token.Type]string{
 	},
 	// CatchBlk : Catch ∙RepCatch0x OptFin
 	{
-		token.T_55:  "catch",
-		token.T_71:  "final",
 		token.T_0:   "!",
 		token.T_7:   "(",
 		token.T_11:  "+",
@@ -10762,6 +8966,7 @@ var first = []map[token.Type]string{
 		token.T_51:  "break",
 		token.T_52:  "byte",
 		token.T_54:  "case",
+		token.T_55:  "catch",
 		token.T_56:  "char",
 		token.T_57:  "continue",
 		token.T_58:  "default",
@@ -10811,7 +9016,6 @@ var first = []map[token.Type]string{
 	},
 	// CatchBlk : Catch RepCatch0x ∙OptFin
 	{
-		token.T_71:  "final",
 		token.T_0:   "!",
 		token.T_7:   "(",
 		token.T_11:  "+",
@@ -11462,7 +9666,6 @@ var first = []map[token.Type]string{
 	},
 	// ClsCreatorRest : Arguments ∙OptClsBdy
 	{
-		token.T_136: "{",
 		token.T_1:   "!=",
 		token.T_2:   "%",
 		token.T_3:   "%=",
@@ -11696,7 +9899,6 @@ var first = []map[token.Type]string{
 	},
 	// ClsType : ID ∙RepDotID0x
 	{
-		token.T_18:  ".",
 		token.T_1:   "!=",
 		token.T_3:   "%=",
 		token.T_4:   "&",
@@ -11707,6 +9909,7 @@ var first = []map[token.Type]string{
 		token.T_13:  "+=",
 		token.T_14:  ",",
 		token.T_17:  "-=",
+		token.T_18:  ".",
 		token.T_20:  "/=",
 		token.T_22:  ":",
 		token.T_23:  ";",
@@ -11832,6 +10035,7 @@ var first = []map[token.Type]string{
 	},
 	// CompUnit : ∙WS OptPackDecl RepImpDecl0x RepSemiModDecl0x
 	{
+		token.EOF:   "$",
 		token.T_23:  ";",
 		token.T_37:  "Cls",
 		token.T_38:  "Intf",
@@ -11851,10 +10055,10 @@ var first = []map[token.Type]string{
 		token.T_122: "synchronized",
 		token.T_126: "transient",
 		token.T_132: "volatile",
-		token.EOF:   "$",
 	},
 	// CompUnit : WS ∙OptPackDecl RepImpDecl0x RepSemiModDecl0x
 	{
+		token.EOF:   "$",
 		token.T_23:  ";",
 		token.T_37:  "Cls",
 		token.T_38:  "Intf",
@@ -11871,10 +10075,10 @@ var first = []map[token.Type]string{
 		token.T_122: "synchronized",
 		token.T_126: "transient",
 		token.T_132: "volatile",
-		token.EOF:   "$",
 	},
 	// CompUnit : WS OptPackDecl ∙RepImpDecl0x RepSemiModDecl0x
 	{
+		token.EOF:   "$",
 		token.T_23:  ";",
 		token.T_37:  "Cls",
 		token.T_38:  "Intf",
@@ -11890,10 +10094,10 @@ var first = []map[token.Type]string{
 		token.T_122: "synchronized",
 		token.T_126: "transient",
 		token.T_132: "volatile",
-		token.EOF:   "$",
 	},
 	// CompUnit : WS OptPackDecl RepImpDecl0x ∙RepSemiModDecl0x
 	{
+		token.EOF:   "$",
 		token.T_23:  ";",
 		token.T_37:  "Cls",
 		token.T_38:  "Intf",
@@ -11908,7 +10112,6 @@ var first = []map[token.Type]string{
 		token.T_122: "synchronized",
 		token.T_126: "transient",
 		token.T_132: "volatile",
-		token.EOF:   "$",
 	},
 	// CompUnit : WS OptPackDecl RepImpDecl0x RepSemiModDecl0x ∙
 	{
@@ -11952,8 +10155,8 @@ var first = []map[token.Type]string{
 	},
 	// CondANDExpr : IORExpr ∙RepANDIOR0x
 	{
-		token.T_5:   "&&",
 		token.T_3:   "%=",
+		token.T_5:   "&&",
 		token.T_6:   "&=",
 		token.T_8:   ")",
 		token.T_10:  "*=",
@@ -12083,7 +10286,6 @@ var first = []map[token.Type]string{
 	},
 	// CondExpr : CondORExpr ∙RepCondition0x
 	{
-		token.T_36:  "?",
 		token.T_3:   "%=",
 		token.T_6:   "&=",
 		token.T_8:   ")",
@@ -12098,6 +10300,7 @@ var first = []map[token.Type]string{
 		token.T_28:  "=",
 		token.T_33:  ">>=",
 		token.T_35:  ">>>=",
+		token.T_36:  "?",
 		token.T_37:  "Cls",
 		token.T_38:  "Intf",
 		token.T_41:  "]",
@@ -12210,7 +10413,6 @@ var first = []map[token.Type]string{
 	},
 	// CondORExpr : CondANDExpr ∙RepORcAND0x
 	{
-		token.T_139: "||",
 		token.T_3:   "%=",
 		token.T_6:   "&=",
 		token.T_8:   ")",
@@ -12253,6 +10455,7 @@ var first = []map[token.Type]string{
 		token.T_132: "volatile",
 		token.T_136: "{",
 		token.T_138: "|=",
+		token.T_139: "||",
 		token.T_140: "}",
 	},
 	// CondORExpr : CondANDExpr RepORcAND0x ∙
@@ -12426,8 +10629,8 @@ var first = []map[token.Type]string{
 	},
 	// CreatedName : ID ∙RepDotID0x
 	{
-		token.T_18: ".",
 		token.T_7:  "(",
+		token.T_18: ".",
 	},
 	// CreatedName : ID RepDotID0x ∙
 	{
@@ -12603,9 +10806,6 @@ var first = []map[token.Type]string{
 	},
 	// DEC : -- ∙WS
 	{
-		token.T_49:  "block_comment",
-		token.T_66:  "escCharSp",
-		token.T_85:  "line_comment",
 		token.T_0:   "!",
 		token.T_1:   "!=",
 		token.T_2:   "%",
@@ -12649,17 +10849,20 @@ var first = []map[token.Type]string{
 		token.T_42:  "^",
 		token.T_43:  "^=",
 		token.T_44:  "abstract",
+		token.T_49:  "block_comment",
 		token.T_50:  "boolean",
 		token.T_52:  "byte",
 		token.T_56:  "char",
 		token.T_60:  "dot",
 		token.T_61:  "double",
 		token.T_62:  "dubQuo",
+		token.T_66:  "escCharSp",
 		token.T_70:  "false",
 		token.T_71:  "final",
 		token.T_73:  "float",
 		token.T_79:  "instanceof",
 		token.T_80:  "int",
+		token.T_85:  "line_comment",
 		token.T_86:  "long",
 		token.T_88:  "native",
 		token.T_89:  "new",
@@ -12800,9 +11003,6 @@ var first = []map[token.Type]string{
 	},
 	// DIV : / nEq ∙WS
 	{
-		token.T_49:  "block_comment",
-		token.T_66:  "escCharSp",
-		token.T_85:  "line_comment",
 		token.T_0:   "!",
 		token.T_7:   "(",
 		token.T_11:  "+",
@@ -12811,15 +11011,18 @@ var first = []map[token.Type]string{
 		token.T_16:  "--",
 		token.T_21:  "0",
 		token.T_39:  "X",
+		token.T_49:  "block_comment",
 		token.T_50:  "boolean",
 		token.T_52:  "byte",
 		token.T_56:  "char",
 		token.T_60:  "dot",
 		token.T_61:  "double",
 		token.T_62:  "dubQuo",
+		token.T_66:  "escCharSp",
 		token.T_70:  "false",
 		token.T_73:  "float",
 		token.T_80:  "int",
+		token.T_85:  "line_comment",
 		token.T_86:  "long",
 		token.T_89:  "new",
 		token.T_97:  "notKeyword",
@@ -12879,9 +11082,6 @@ var first = []map[token.Type]string{
 	},
 	// DIV_EQU : /= ∙WS
 	{
-		token.T_49:  "block_comment",
-		token.T_66:  "escCharSp",
-		token.T_85:  "line_comment",
 		token.T_0:   "!",
 		token.T_7:   "(",
 		token.T_11:  "+",
@@ -12890,15 +11090,18 @@ var first = []map[token.Type]string{
 		token.T_16:  "--",
 		token.T_21:  "0",
 		token.T_39:  "X",
+		token.T_49:  "block_comment",
 		token.T_50:  "boolean",
 		token.T_52:  "byte",
 		token.T_56:  "char",
 		token.T_60:  "dot",
 		token.T_61:  "double",
 		token.T_62:  "dubQuo",
+		token.T_66:  "escCharSp",
 		token.T_70:  "false",
 		token.T_73:  "float",
 		token.T_80:  "int",
+		token.T_85:  "line_comment",
 		token.T_86:  "long",
 		token.T_89:  "new",
 		token.T_97:  "notKeyword",
@@ -13016,11 +11219,11 @@ var first = []map[token.Type]string{
 	},
 	// DOT : . ∙WS
 	{
+		token.T_9:   "*",
+		token.T_37:  "Cls",
 		token.T_49:  "block_comment",
 		token.T_66:  "escCharSp",
 		token.T_85:  "line_comment",
-		token.T_9:   "*",
-		token.T_37:  "Cls",
 		token.T_89:  "new",
 		token.T_97:  "notKeyword",
 		token.T_120: "super",
@@ -13696,9 +11899,6 @@ var first = []map[token.Type]string{
 	},
 	// EQU : = nEq ∙WS
 	{
-		token.T_49:  "block_comment",
-		token.T_66:  "escCharSp",
-		token.T_85:  "line_comment",
 		token.T_0:   "!",
 		token.T_7:   "(",
 		token.T_11:  "+",
@@ -13707,15 +11907,18 @@ var first = []map[token.Type]string{
 		token.T_16:  "--",
 		token.T_21:  "0",
 		token.T_39:  "X",
+		token.T_49:  "block_comment",
 		token.T_50:  "boolean",
 		token.T_52:  "byte",
 		token.T_56:  "char",
 		token.T_60:  "dot",
 		token.T_61:  "double",
 		token.T_62:  "dubQuo",
+		token.T_66:  "escCharSp",
 		token.T_70:  "false",
 		token.T_73:  "float",
 		token.T_80:  "int",
+		token.T_85:  "line_comment",
 		token.T_86:  "long",
 		token.T_89:  "new",
 		token.T_97:  "notKeyword",
@@ -13777,9 +11980,6 @@ var first = []map[token.Type]string{
 	},
 	// EQUAL : == ∙WS
 	{
-		token.T_49:  "block_comment",
-		token.T_66:  "escCharSp",
-		token.T_85:  "line_comment",
 		token.T_0:   "!",
 		token.T_7:   "(",
 		token.T_11:  "+",
@@ -13788,15 +11988,18 @@ var first = []map[token.Type]string{
 		token.T_16:  "--",
 		token.T_21:  "0",
 		token.T_39:  "X",
+		token.T_49:  "block_comment",
 		token.T_50:  "boolean",
 		token.T_52:  "byte",
 		token.T_56:  "char",
 		token.T_60:  "dot",
 		token.T_61:  "double",
 		token.T_62:  "dubQuo",
+		token.T_66:  "escCharSp",
 		token.T_70:  "false",
 		token.T_73:  "float",
 		token.T_80:  "int",
+		token.T_85:  "line_comment",
 		token.T_86:  "long",
 		token.T_89:  "new",
 		token.T_97:  "notKeyword",
@@ -14381,7 +12584,6 @@ var first = []map[token.Type]string{
 	// EqualExpr : RelateExpr ∙RepEqExpr0x
 	{
 		token.T_1:   "!=",
-		token.T_29:  "==",
 		token.T_3:   "%=",
 		token.T_4:   "&",
 		token.T_5:   "&&",
@@ -14396,6 +12598,7 @@ var first = []map[token.Type]string{
 		token.T_23:  ";",
 		token.T_26:  "<<=",
 		token.T_28:  "=",
+		token.T_29:  "==",
 		token.T_33:  ">>=",
 		token.T_35:  ">>>=",
 		token.T_36:  "?",
@@ -14978,23 +13181,22 @@ var first = []map[token.Type]string{
 	{
 		token.T_3:   "%=",
 		token.T_6:   "&=",
+		token.T_8:   ")",
 		token.T_10:  "*=",
 		token.T_13:  "+=",
+		token.T_14:  ",",
 		token.T_17:  "-=",
 		token.T_20:  "/=",
+		token.T_22:  ":",
+		token.T_23:  ";",
 		token.T_26:  "<<=",
 		token.T_28:  "=",
 		token.T_33:  ">>=",
 		token.T_35:  ">>>=",
-		token.T_43:  "^=",
-		token.T_138: "|=",
-		token.T_8:   ")",
-		token.T_14:  ",",
-		token.T_22:  ":",
-		token.T_23:  ";",
 		token.T_37:  "Cls",
 		token.T_38:  "Intf",
 		token.T_41:  "]",
+		token.T_43:  "^=",
 		token.T_44:  "abstract",
 		token.T_50:  "boolean",
 		token.T_52:  "byte",
@@ -15017,6 +13219,7 @@ var first = []map[token.Type]string{
 		token.T_131: "void",
 		token.T_132: "volatile",
 		token.T_136: "{",
+		token.T_138: "|=",
 		token.T_140: "}",
 	},
 	// Expr : CondExpr RepAsscExpr0x ∙
@@ -15486,8 +13689,8 @@ var first = []map[token.Type]string{
 	},
 	// ForUpdate : StmtExpr ∙RepComSExpr0x
 	{
-		token.T_14: ",",
 		token.T_8:  ")",
+		token.T_14: ",",
 	},
 	// ForUpdate : StmtExpr RepComSExpr0x ∙
 	{
@@ -15523,8 +13726,8 @@ var first = []map[token.Type]string{
 	},
 	// FormalParamDeclsRest : VarDelID ∙OptComFormPDecl
 	{
-		token.T_14: ",",
 		token.T_8:  ")",
+		token.T_14: ",",
 	},
 	// FormalParamDeclsRest : VarDelID OptComFormPDecl ∙
 	{
@@ -15556,9 +13759,6 @@ var first = []map[token.Type]string{
 	},
 	// GE : >= ∙WS
 	{
-		token.T_49:  "block_comment",
-		token.T_66:  "escCharSp",
-		token.T_85:  "line_comment",
 		token.T_0:   "!",
 		token.T_7:   "(",
 		token.T_11:  "+",
@@ -15567,15 +13767,18 @@ var first = []map[token.Type]string{
 		token.T_16:  "--",
 		token.T_21:  "0",
 		token.T_39:  "X",
+		token.T_49:  "block_comment",
 		token.T_50:  "boolean",
 		token.T_52:  "byte",
 		token.T_56:  "char",
 		token.T_60:  "dot",
 		token.T_61:  "double",
 		token.T_62:  "dubQuo",
+		token.T_66:  "escCharSp",
 		token.T_70:  "false",
 		token.T_73:  "float",
 		token.T_80:  "int",
+		token.T_85:  "line_comment",
 		token.T_86:  "long",
 		token.T_89:  "new",
 		token.T_97:  "notKeyword",
@@ -15639,9 +13842,6 @@ var first = []map[token.Type]string{
 	},
 	// GT : > notEqCar ∙WS
 	{
-		token.T_49:  "block_comment",
-		token.T_66:  "escCharSp",
-		token.T_85:  "line_comment",
 		token.T_0:   "!",
 		token.T_7:   "(",
 		token.T_11:  "+",
@@ -15650,15 +13850,18 @@ var first = []map[token.Type]string{
 		token.T_16:  "--",
 		token.T_21:  "0",
 		token.T_39:  "X",
+		token.T_49:  "block_comment",
 		token.T_50:  "boolean",
 		token.T_52:  "byte",
 		token.T_56:  "char",
 		token.T_60:  "dot",
 		token.T_61:  "double",
 		token.T_62:  "dubQuo",
+		token.T_66:  "escCharSp",
 		token.T_70:  "false",
 		token.T_73:  "float",
 		token.T_80:  "int",
+		token.T_85:  "line_comment",
 		token.T_86:  "long",
 		token.T_89:  "new",
 		token.T_97:  "notKeyword",
@@ -15722,9 +13925,6 @@ var first = []map[token.Type]string{
 	},
 	// HAT : ^ nEq ∙WS
 	{
-		token.T_49:  "block_comment",
-		token.T_66:  "escCharSp",
-		token.T_85:  "line_comment",
 		token.T_0:   "!",
 		token.T_7:   "(",
 		token.T_11:  "+",
@@ -15733,15 +13933,18 @@ var first = []map[token.Type]string{
 		token.T_16:  "--",
 		token.T_21:  "0",
 		token.T_39:  "X",
+		token.T_49:  "block_comment",
 		token.T_50:  "boolean",
 		token.T_52:  "byte",
 		token.T_56:  "char",
 		token.T_60:  "dot",
 		token.T_61:  "double",
 		token.T_62:  "dubQuo",
+		token.T_66:  "escCharSp",
 		token.T_70:  "false",
 		token.T_73:  "float",
 		token.T_80:  "int",
+		token.T_85:  "line_comment",
 		token.T_86:  "long",
 		token.T_89:  "new",
 		token.T_97:  "notKeyword",
@@ -15801,9 +14004,6 @@ var first = []map[token.Type]string{
 	},
 	// HAT_EQU : ^= ∙WS
 	{
-		token.T_49:  "block_comment",
-		token.T_66:  "escCharSp",
-		token.T_85:  "line_comment",
 		token.T_0:   "!",
 		token.T_7:   "(",
 		token.T_11:  "+",
@@ -15812,15 +14012,18 @@ var first = []map[token.Type]string{
 		token.T_16:  "--",
 		token.T_21:  "0",
 		token.T_39:  "X",
+		token.T_49:  "block_comment",
 		token.T_50:  "boolean",
 		token.T_52:  "byte",
 		token.T_56:  "char",
 		token.T_60:  "dot",
 		token.T_61:  "double",
 		token.T_62:  "dubQuo",
+		token.T_66:  "escCharSp",
 		token.T_70:  "false",
 		token.T_73:  "float",
 		token.T_80:  "int",
+		token.T_85:  "line_comment",
 		token.T_86:  "long",
 		token.T_89:  "new",
 		token.T_97:  "notKeyword",
@@ -16012,11 +14215,6 @@ var first = []map[token.Type]string{
 	},
 	// ID : notKeyword ∙LetterLorD
 	{
-		token.T_49:  "block_comment",
-		token.T_66:  "escCharSp",
-		token.T_84:  "let",
-		token.T_85:  "line_comment",
-		token.T_100: "num",
 		token.T_1:   "!=",
 		token.T_2:   "%",
 		token.T_3:   "%=",
@@ -16059,19 +14257,24 @@ var first = []map[token.Type]string{
 		token.T_42:  "^",
 		token.T_43:  "^=",
 		token.T_44:  "abstract",
+		token.T_49:  "block_comment",
 		token.T_50:  "boolean",
 		token.T_52:  "byte",
 		token.T_56:  "char",
 		token.T_61:  "double",
+		token.T_66:  "escCharSp",
 		token.T_68:  "extends",
 		token.T_71:  "final",
 		token.T_73:  "float",
 		token.T_77:  "implements",
 		token.T_79:  "instanceof",
 		token.T_80:  "int",
+		token.T_84:  "let",
+		token.T_85:  "line_comment",
 		token.T_86:  "long",
 		token.T_88:  "native",
 		token.T_97:  "notKeyword",
+		token.T_100: "num",
 		token.T_107: "private",
 		token.T_108: "protected",
 		token.T_109: "public",
@@ -16470,9 +14673,6 @@ var first = []map[token.Type]string{
 	},
 	// INC : ++ ∙WS
 	{
-		token.T_49:  "block_comment",
-		token.T_66:  "escCharSp",
-		token.T_85:  "line_comment",
 		token.T_0:   "!",
 		token.T_1:   "!=",
 		token.T_2:   "%",
@@ -16516,17 +14716,20 @@ var first = []map[token.Type]string{
 		token.T_42:  "^",
 		token.T_43:  "^=",
 		token.T_44:  "abstract",
+		token.T_49:  "block_comment",
 		token.T_50:  "boolean",
 		token.T_52:  "byte",
 		token.T_56:  "char",
 		token.T_60:  "dot",
 		token.T_61:  "double",
 		token.T_62:  "dubQuo",
+		token.T_66:  "escCharSp",
 		token.T_70:  "false",
 		token.T_71:  "final",
 		token.T_73:  "float",
 		token.T_79:  "instanceof",
 		token.T_80:  "int",
+		token.T_85:  "line_comment",
 		token.T_86:  "long",
 		token.T_88:  "native",
 		token.T_89:  "new",
@@ -16703,7 +14906,6 @@ var first = []map[token.Type]string{
 	},
 	// IORExpr : XORExpr ∙RepORXOR0x
 	{
-		token.T_137: "|",
 		token.T_3:   "%=",
 		token.T_5:   "&&",
 		token.T_6:   "&=",
@@ -16746,6 +14948,7 @@ var first = []map[token.Type]string{
 		token.T_131: "void",
 		token.T_132: "volatile",
 		token.T_136: "{",
+		token.T_137: "|",
 		token.T_138: "|=",
 		token.T_139: "||",
 		token.T_140: "}",
@@ -17546,9 +15749,6 @@ var first = []map[token.Type]string{
 	},
 	// LBRK : [ ∙WS
 	{
-		token.T_49:  "block_comment",
-		token.T_66:  "escCharSp",
-		token.T_85:  "line_comment",
 		token.T_0:   "!",
 		token.T_7:   "(",
 		token.T_11:  "+",
@@ -17558,15 +15758,18 @@ var first = []map[token.Type]string{
 		token.T_21:  "0",
 		token.T_39:  "X",
 		token.T_41:  "]",
+		token.T_49:  "block_comment",
 		token.T_50:  "boolean",
 		token.T_52:  "byte",
 		token.T_56:  "char",
 		token.T_60:  "dot",
 		token.T_61:  "double",
 		token.T_62:  "dubQuo",
+		token.T_66:  "escCharSp",
 		token.T_70:  "false",
 		token.T_73:  "float",
 		token.T_80:  "int",
+		token.T_85:  "line_comment",
 		token.T_86:  "long",
 		token.T_89:  "new",
 		token.T_97:  "notKeyword",
@@ -17627,9 +15830,6 @@ var first = []map[token.Type]string{
 	},
 	// LE : <= ∙WS
 	{
-		token.T_49:  "block_comment",
-		token.T_66:  "escCharSp",
-		token.T_85:  "line_comment",
 		token.T_0:   "!",
 		token.T_7:   "(",
 		token.T_11:  "+",
@@ -17638,15 +15838,18 @@ var first = []map[token.Type]string{
 		token.T_16:  "--",
 		token.T_21:  "0",
 		token.T_39:  "X",
+		token.T_49:  "block_comment",
 		token.T_50:  "boolean",
 		token.T_52:  "byte",
 		token.T_56:  "char",
 		token.T_60:  "dot",
 		token.T_61:  "double",
 		token.T_62:  "dubQuo",
+		token.T_66:  "escCharSp",
 		token.T_70:  "false",
 		token.T_73:  "float",
 		token.T_80:  "int",
+		token.T_85:  "line_comment",
 		token.T_86:  "long",
 		token.T_89:  "new",
 		token.T_97:  "notKeyword",
@@ -17706,9 +15909,6 @@ var first = []map[token.Type]string{
 	},
 	// LPAR : ( ∙WS
 	{
-		token.T_49:  "block_comment",
-		token.T_66:  "escCharSp",
-		token.T_85:  "line_comment",
 		token.T_0:   "!",
 		token.T_7:   "(",
 		token.T_8:   ")",
@@ -17719,16 +15919,19 @@ var first = []map[token.Type]string{
 		token.T_21:  "0",
 		token.T_23:  ";",
 		token.T_39:  "X",
+		token.T_49:  "block_comment",
 		token.T_50:  "boolean",
 		token.T_52:  "byte",
 		token.T_56:  "char",
 		token.T_60:  "dot",
 		token.T_61:  "double",
 		token.T_62:  "dubQuo",
+		token.T_66:  "escCharSp",
 		token.T_70:  "false",
 		token.T_71:  "final",
 		token.T_73:  "float",
 		token.T_80:  "int",
+		token.T_85:  "line_comment",
 		token.T_86:  "long",
 		token.T_89:  "new",
 		token.T_97:  "notKeyword",
@@ -17795,9 +15998,6 @@ var first = []map[token.Type]string{
 	},
 	// LT : < notEqCar2 ∙WS
 	{
-		token.T_49:  "block_comment",
-		token.T_66:  "escCharSp",
-		token.T_85:  "line_comment",
 		token.T_0:   "!",
 		token.T_7:   "(",
 		token.T_11:  "+",
@@ -17806,15 +16006,18 @@ var first = []map[token.Type]string{
 		token.T_16:  "--",
 		token.T_21:  "0",
 		token.T_39:  "X",
+		token.T_49:  "block_comment",
 		token.T_50:  "boolean",
 		token.T_52:  "byte",
 		token.T_56:  "char",
 		token.T_60:  "dot",
 		token.T_61:  "double",
 		token.T_62:  "dubQuo",
+		token.T_66:  "escCharSp",
 		token.T_70:  "false",
 		token.T_73:  "float",
 		token.T_80:  "int",
+		token.T_85:  "line_comment",
 		token.T_86:  "long",
 		token.T_89:  "new",
 		token.T_97:  "notKeyword",
@@ -17874,9 +16077,6 @@ var first = []map[token.Type]string{
 	},
 	// LWING : { ∙WS
 	{
-		token.T_49:  "block_comment",
-		token.T_66:  "escCharSp",
-		token.T_85:  "line_comment",
 		token.T_0:   "!",
 		token.T_7:   "(",
 		token.T_11:  "+",
@@ -17890,6 +16090,7 @@ var first = []map[token.Type]string{
 		token.T_39:  "X",
 		token.T_44:  "abstract",
 		token.T_47:  "assert",
+		token.T_49:  "block_comment",
 		token.T_50:  "boolean",
 		token.T_51:  "break",
 		token.T_52:  "byte",
@@ -17901,12 +16102,14 @@ var first = []map[token.Type]string{
 		token.T_60:  "dot",
 		token.T_61:  "double",
 		token.T_62:  "dubQuo",
+		token.T_66:  "escCharSp",
 		token.T_70:  "false",
 		token.T_71:  "final",
 		token.T_73:  "float",
 		token.T_74:  "for",
 		token.T_76:  "if",
 		token.T_80:  "int",
+		token.T_85:  "line_comment",
 		token.T_86:  "long",
 		token.T_88:  "native",
 		token.T_89:  "new",
@@ -18089,9 +16292,6 @@ var first = []map[token.Type]string{
 	},
 	// Letter : ∙WS
 	{
-		token.T_49:  "block_comment",
-		token.T_66:  "escCharSp",
-		token.T_85:  "line_comment",
 		token.T_1:   "!=",
 		token.T_2:   "%",
 		token.T_3:   "%=",
@@ -18248,11 +16448,6 @@ var first = []map[token.Type]string{
 	},
 	// LetterLorD : ∙Letter RepLorD0x WS
 	{
-		token.T_49:  "block_comment",
-		token.T_66:  "escCharSp",
-		token.T_84:  "let",
-		token.T_85:  "line_comment",
-		token.T_100: "num",
 		token.T_1:   "!=",
 		token.T_2:   "%",
 		token.T_3:   "%=",
@@ -18295,19 +16490,24 @@ var first = []map[token.Type]string{
 		token.T_42:  "^",
 		token.T_43:  "^=",
 		token.T_44:  "abstract",
+		token.T_49:  "block_comment",
 		token.T_50:  "boolean",
 		token.T_52:  "byte",
 		token.T_56:  "char",
 		token.T_61:  "double",
+		token.T_66:  "escCharSp",
 		token.T_68:  "extends",
 		token.T_71:  "final",
 		token.T_73:  "float",
 		token.T_77:  "implements",
 		token.T_79:  "instanceof",
 		token.T_80:  "int",
+		token.T_84:  "let",
+		token.T_85:  "line_comment",
 		token.T_86:  "long",
 		token.T_88:  "native",
 		token.T_97:  "notKeyword",
+		token.T_100: "num",
 		token.T_107: "private",
 		token.T_108: "protected",
 		token.T_109: "public",
@@ -18326,11 +16526,6 @@ var first = []map[token.Type]string{
 	},
 	// LetterLorD : Letter ∙RepLorD0x WS
 	{
-		token.T_49:  "block_comment",
-		token.T_66:  "escCharSp",
-		token.T_84:  "let",
-		token.T_85:  "line_comment",
-		token.T_100: "num",
 		token.T_1:   "!=",
 		token.T_2:   "%",
 		token.T_3:   "%=",
@@ -18373,19 +16568,24 @@ var first = []map[token.Type]string{
 		token.T_42:  "^",
 		token.T_43:  "^=",
 		token.T_44:  "abstract",
+		token.T_49:  "block_comment",
 		token.T_50:  "boolean",
 		token.T_52:  "byte",
 		token.T_56:  "char",
 		token.T_61:  "double",
+		token.T_66:  "escCharSp",
 		token.T_68:  "extends",
 		token.T_71:  "final",
 		token.T_73:  "float",
 		token.T_77:  "implements",
 		token.T_79:  "instanceof",
 		token.T_80:  "int",
+		token.T_84:  "let",
+		token.T_85:  "line_comment",
 		token.T_86:  "long",
 		token.T_88:  "native",
 		token.T_97:  "notKeyword",
+		token.T_100: "num",
 		token.T_107: "private",
 		token.T_108: "protected",
 		token.T_109: "public",
@@ -18404,9 +16604,6 @@ var first = []map[token.Type]string{
 	},
 	// LetterLorD : Letter RepLorD0x ∙WS
 	{
-		token.T_49:  "block_comment",
-		token.T_66:  "escCharSp",
-		token.T_85:  "line_comment",
 		token.T_1:   "!=",
 		token.T_2:   "%",
 		token.T_3:   "%=",
@@ -18449,16 +16646,19 @@ var first = []map[token.Type]string{
 		token.T_42:  "^",
 		token.T_43:  "^=",
 		token.T_44:  "abstract",
+		token.T_49:  "block_comment",
 		token.T_50:  "boolean",
 		token.T_52:  "byte",
 		token.T_56:  "char",
 		token.T_61:  "double",
+		token.T_66:  "escCharSp",
 		token.T_68:  "extends",
 		token.T_71:  "final",
 		token.T_73:  "float",
 		token.T_77:  "implements",
 		token.T_79:  "instanceof",
 		token.T_80:  "int",
+		token.T_85:  "line_comment",
 		token.T_86:  "long",
 		token.T_88:  "native",
 		token.T_97:  "notKeyword",
@@ -19129,9 +17329,6 @@ var first = []map[token.Type]string{
 	},
 	// Literal : LitAlts ∙WS
 	{
-		token.T_49:  "block_comment",
-		token.T_66:  "escCharSp",
-		token.T_85:  "line_comment",
 		token.T_1:   "!=",
 		token.T_2:   "%",
 		token.T_3:   "%=",
@@ -19173,14 +17370,17 @@ var first = []map[token.Type]string{
 		token.T_42:  "^",
 		token.T_43:  "^=",
 		token.T_44:  "abstract",
+		token.T_49:  "block_comment",
 		token.T_50:  "boolean",
 		token.T_52:  "byte",
 		token.T_56:  "char",
 		token.T_61:  "double",
+		token.T_66:  "escCharSp",
 		token.T_71:  "final",
 		token.T_73:  "float",
 		token.T_79:  "instanceof",
 		token.T_80:  "int",
+		token.T_85:  "line_comment",
 		token.T_86:  "long",
 		token.T_88:  "native",
 		token.T_97:  "notKeyword",
@@ -19353,10 +17553,6 @@ var first = []map[token.Type]string{
 	},
 	// LorD : ∙Letter
 	{
-		token.T_49:  "block_comment",
-		token.T_66:  "escCharSp",
-		token.T_84:  "let",
-		token.T_85:  "line_comment",
 		token.T_1:   "!=",
 		token.T_2:   "%",
 		token.T_3:   "%=",
@@ -19603,9 +17799,6 @@ var first = []map[token.Type]string{
 	},
 	// MINUS : - notEqSlDash ∙WS
 	{
-		token.T_49:  "block_comment",
-		token.T_66:  "escCharSp",
-		token.T_85:  "line_comment",
 		token.T_0:   "!",
 		token.T_7:   "(",
 		token.T_11:  "+",
@@ -19614,15 +17807,18 @@ var first = []map[token.Type]string{
 		token.T_16:  "--",
 		token.T_21:  "0",
 		token.T_39:  "X",
+		token.T_49:  "block_comment",
 		token.T_50:  "boolean",
 		token.T_52:  "byte",
 		token.T_56:  "char",
 		token.T_60:  "dot",
 		token.T_61:  "double",
 		token.T_62:  "dubQuo",
+		token.T_66:  "escCharSp",
 		token.T_70:  "false",
 		token.T_73:  "float",
 		token.T_80:  "int",
+		token.T_85:  "line_comment",
 		token.T_86:  "long",
 		token.T_89:  "new",
 		token.T_97:  "notKeyword",
@@ -19682,9 +17878,6 @@ var first = []map[token.Type]string{
 	},
 	// MINUS_EQU : -= ∙WS
 	{
-		token.T_49:  "block_comment",
-		token.T_66:  "escCharSp",
-		token.T_85:  "line_comment",
 		token.T_0:   "!",
 		token.T_7:   "(",
 		token.T_11:  "+",
@@ -19693,15 +17886,18 @@ var first = []map[token.Type]string{
 		token.T_16:  "--",
 		token.T_21:  "0",
 		token.T_39:  "X",
+		token.T_49:  "block_comment",
 		token.T_50:  "boolean",
 		token.T_52:  "byte",
 		token.T_56:  "char",
 		token.T_60:  "dot",
 		token.T_61:  "double",
 		token.T_62:  "dubQuo",
+		token.T_66:  "escCharSp",
 		token.T_70:  "false",
 		token.T_73:  "float",
 		token.T_80:  "int",
+		token.T_85:  "line_comment",
 		token.T_86:  "long",
 		token.T_89:  "new",
 		token.T_97:  "notKeyword",
@@ -19765,9 +17961,6 @@ var first = []map[token.Type]string{
 	},
 	// MOD : % nEq ∙WS
 	{
-		token.T_49:  "block_comment",
-		token.T_66:  "escCharSp",
-		token.T_85:  "line_comment",
 		token.T_0:   "!",
 		token.T_7:   "(",
 		token.T_11:  "+",
@@ -19776,15 +17969,18 @@ var first = []map[token.Type]string{
 		token.T_16:  "--",
 		token.T_21:  "0",
 		token.T_39:  "X",
+		token.T_49:  "block_comment",
 		token.T_50:  "boolean",
 		token.T_52:  "byte",
 		token.T_56:  "char",
 		token.T_60:  "dot",
 		token.T_61:  "double",
 		token.T_62:  "dubQuo",
+		token.T_66:  "escCharSp",
 		token.T_70:  "false",
 		token.T_73:  "float",
 		token.T_80:  "int",
+		token.T_85:  "line_comment",
 		token.T_86:  "long",
 		token.T_89:  "new",
 		token.T_97:  "notKeyword",
@@ -19844,9 +18040,6 @@ var first = []map[token.Type]string{
 	},
 	// MOD_EQU : %= ∙WS
 	{
-		token.T_49:  "block_comment",
-		token.T_66:  "escCharSp",
-		token.T_85:  "line_comment",
 		token.T_0:   "!",
 		token.T_7:   "(",
 		token.T_11:  "+",
@@ -19855,15 +18048,18 @@ var first = []map[token.Type]string{
 		token.T_16:  "--",
 		token.T_21:  "0",
 		token.T_39:  "X",
+		token.T_49:  "block_comment",
 		token.T_50:  "boolean",
 		token.T_52:  "byte",
 		token.T_56:  "char",
 		token.T_60:  "dot",
 		token.T_61:  "double",
 		token.T_62:  "dubQuo",
+		token.T_66:  "escCharSp",
 		token.T_70:  "false",
 		token.T_73:  "float",
 		token.T_80:  "int",
+		token.T_85:  "line_comment",
 		token.T_86:  "long",
 		token.T_89:  "new",
 		token.T_97:  "notKeyword",
@@ -20459,21 +18655,21 @@ var first = []map[token.Type]string{
 	},
 	// MultExpr : UnaryExpr ∙RepSDMUExpr0x
 	{
-		token.T_2:   "%",
-		token.T_9:   "*",
-		token.T_19:  "/",
 		token.T_1:   "!=",
+		token.T_2:   "%",
 		token.T_3:   "%=",
 		token.T_4:   "&",
 		token.T_5:   "&&",
 		token.T_6:   "&=",
 		token.T_8:   ")",
+		token.T_9:   "*",
 		token.T_10:  "*=",
 		token.T_11:  "+",
 		token.T_13:  "+=",
 		token.T_14:  ",",
 		token.T_15:  "-",
 		token.T_17:  "-=",
+		token.T_19:  "/",
 		token.T_20:  "/=",
 		token.T_22:  ":",
 		token.T_23:  ";",
@@ -20612,9 +18808,6 @@ var first = []map[token.Type]string{
 	},
 	// NOT_EQUAL : != ∙WS
 	{
-		token.T_49:  "block_comment",
-		token.T_66:  "escCharSp",
-		token.T_85:  "line_comment",
 		token.T_0:   "!",
 		token.T_7:   "(",
 		token.T_11:  "+",
@@ -20623,15 +18816,18 @@ var first = []map[token.Type]string{
 		token.T_16:  "--",
 		token.T_21:  "0",
 		token.T_39:  "X",
+		token.T_49:  "block_comment",
 		token.T_50:  "boolean",
 		token.T_52:  "byte",
 		token.T_56:  "char",
 		token.T_60:  "dot",
 		token.T_61:  "double",
 		token.T_62:  "dubQuo",
+		token.T_66:  "escCharSp",
 		token.T_70:  "false",
 		token.T_73:  "float",
 		token.T_80:  "int",
+		token.T_85:  "line_comment",
 		token.T_86:  "long",
 		token.T_89:  "new",
 		token.T_97:  "notKeyword",
@@ -20722,9 +18918,6 @@ var first = []map[token.Type]string{
 	},
 	// OR : | notEqPipe ∙WS
 	{
-		token.T_49:  "block_comment",
-		token.T_66:  "escCharSp",
-		token.T_85:  "line_comment",
 		token.T_0:   "!",
 		token.T_7:   "(",
 		token.T_11:  "+",
@@ -20733,15 +18926,18 @@ var first = []map[token.Type]string{
 		token.T_16:  "--",
 		token.T_21:  "0",
 		token.T_39:  "X",
+		token.T_49:  "block_comment",
 		token.T_50:  "boolean",
 		token.T_52:  "byte",
 		token.T_56:  "char",
 		token.T_60:  "dot",
 		token.T_61:  "double",
 		token.T_62:  "dubQuo",
+		token.T_66:  "escCharSp",
 		token.T_70:  "false",
 		token.T_73:  "float",
 		token.T_80:  "int",
+		token.T_85:  "line_comment",
 		token.T_86:  "long",
 		token.T_89:  "new",
 		token.T_97:  "notKeyword",
@@ -20890,9 +19086,6 @@ var first = []map[token.Type]string{
 	},
 	// OR_EQU : |= ∙WS
 	{
-		token.T_49:  "block_comment",
-		token.T_66:  "escCharSp",
-		token.T_85:  "line_comment",
 		token.T_0:   "!",
 		token.T_7:   "(",
 		token.T_11:  "+",
@@ -20901,15 +19094,18 @@ var first = []map[token.Type]string{
 		token.T_16:  "--",
 		token.T_21:  "0",
 		token.T_39:  "X",
+		token.T_49:  "block_comment",
 		token.T_50:  "boolean",
 		token.T_52:  "byte",
 		token.T_56:  "char",
 		token.T_60:  "dot",
 		token.T_61:  "double",
 		token.T_62:  "dubQuo",
+		token.T_66:  "escCharSp",
 		token.T_70:  "false",
 		token.T_73:  "float",
 		token.T_80:  "int",
+		token.T_85:  "line_comment",
 		token.T_86:  "long",
 		token.T_89:  "new",
 		token.T_97:  "notKeyword",
@@ -20969,9 +19165,6 @@ var first = []map[token.Type]string{
 	},
 	// OR_OR : || ∙WS
 	{
-		token.T_49:  "block_comment",
-		token.T_66:  "escCharSp",
-		token.T_85:  "line_comment",
 		token.T_0:   "!",
 		token.T_7:   "(",
 		token.T_11:  "+",
@@ -20980,15 +19173,18 @@ var first = []map[token.Type]string{
 		token.T_16:  "--",
 		token.T_21:  "0",
 		token.T_39:  "X",
+		token.T_49:  "block_comment",
 		token.T_50:  "boolean",
 		token.T_52:  "byte",
 		token.T_56:  "char",
 		token.T_60:  "dot",
 		token.T_61:  "double",
 		token.T_62:  "dubQuo",
+		token.T_66:  "escCharSp",
 		token.T_70:  "false",
 		token.T_73:  "float",
 		token.T_80:  "int",
+		token.T_85:  "line_comment",
 		token.T_86:  "long",
 		token.T_89:  "new",
 		token.T_97:  "notKeyword",
@@ -21854,8 +20050,8 @@ var first = []map[token.Type]string{
 	},
 	// OptExprs : Expr ∙RepComExp0x
 	{
-		token.T_14: ",",
 		token.T_8:  ")",
+		token.T_14: ",",
 	},
 	// OptExprs : Expr RepComExp0x ∙
 	{
@@ -22791,9 +20987,6 @@ var first = []map[token.Type]string{
 	},
 	// PLUS : + notEqPlus ∙WS
 	{
-		token.T_49:  "block_comment",
-		token.T_66:  "escCharSp",
-		token.T_85:  "line_comment",
 		token.T_0:   "!",
 		token.T_7:   "(",
 		token.T_11:  "+",
@@ -22802,15 +20995,18 @@ var first = []map[token.Type]string{
 		token.T_16:  "--",
 		token.T_21:  "0",
 		token.T_39:  "X",
+		token.T_49:  "block_comment",
 		token.T_50:  "boolean",
 		token.T_52:  "byte",
 		token.T_56:  "char",
 		token.T_60:  "dot",
 		token.T_61:  "double",
 		token.T_62:  "dubQuo",
+		token.T_66:  "escCharSp",
 		token.T_70:  "false",
 		token.T_73:  "float",
 		token.T_80:  "int",
+		token.T_85:  "line_comment",
 		token.T_86:  "long",
 		token.T_89:  "new",
 		token.T_97:  "notKeyword",
@@ -22870,9 +21066,6 @@ var first = []map[token.Type]string{
 	},
 	// PLUS_EQU : += ∙WS
 	{
-		token.T_49:  "block_comment",
-		token.T_66:  "escCharSp",
-		token.T_85:  "line_comment",
 		token.T_0:   "!",
 		token.T_7:   "(",
 		token.T_11:  "+",
@@ -22881,15 +21074,18 @@ var first = []map[token.Type]string{
 		token.T_16:  "--",
 		token.T_21:  "0",
 		token.T_39:  "X",
+		token.T_49:  "block_comment",
 		token.T_50:  "boolean",
 		token.T_52:  "byte",
 		token.T_56:  "char",
 		token.T_60:  "dot",
 		token.T_61:  "double",
 		token.T_62:  "dubQuo",
+		token.T_66:  "escCharSp",
 		token.T_70:  "false",
 		token.T_73:  "float",
 		token.T_80:  "int",
+		token.T_85:  "line_comment",
 		token.T_86:  "long",
 		token.T_89:  "new",
 		token.T_97:  "notKeyword",
@@ -23582,13 +21778,13 @@ var first = []map[token.Type]string{
 	},
 	// Primary : THIS ∙OptArgs
 	{
-		token.T_7:   "(",
 		token.T_1:   "!=",
 		token.T_2:   "%",
 		token.T_3:   "%=",
 		token.T_4:   "&",
 		token.T_5:   "&&",
 		token.T_6:   "&=",
+		token.T_7:   "(",
 		token.T_8:   ")",
 		token.T_9:   "*",
 		token.T_10:  "*=",
@@ -23978,15 +22174,13 @@ var first = []map[token.Type]string{
 	},
 	// Primary : QualifiedID ∙OptIDSuff
 	{
-		token.T_7:   "(",
-		token.T_18:  ".",
-		token.T_40:  "[",
 		token.T_1:   "!=",
 		token.T_2:   "%",
 		token.T_3:   "%=",
 		token.T_4:   "&",
 		token.T_5:   "&&",
 		token.T_6:   "&=",
+		token.T_7:   "(",
 		token.T_8:   ")",
 		token.T_9:   "*",
 		token.T_10:  "*=",
@@ -24301,9 +22495,6 @@ var first = []map[token.Type]string{
 	},
 	// QUERY : ? ∙WS
 	{
-		token.T_49:  "block_comment",
-		token.T_66:  "escCharSp",
-		token.T_85:  "line_comment",
 		token.T_0:   "!",
 		token.T_7:   "(",
 		token.T_11:  "+",
@@ -24312,15 +22503,18 @@ var first = []map[token.Type]string{
 		token.T_16:  "--",
 		token.T_21:  "0",
 		token.T_39:  "X",
+		token.T_49:  "block_comment",
 		token.T_50:  "boolean",
 		token.T_52:  "byte",
 		token.T_56:  "char",
 		token.T_60:  "dot",
 		token.T_61:  "double",
 		token.T_62:  "dubQuo",
+		token.T_66:  "escCharSp",
 		token.T_70:  "false",
 		token.T_73:  "float",
 		token.T_80:  "int",
+		token.T_85:  "line_comment",
 		token.T_86:  "long",
 		token.T_89:  "new",
 		token.T_97:  "notKeyword",
@@ -24380,7 +22574,6 @@ var first = []map[token.Type]string{
 	},
 	// QualifiedID : ID ∙RepDotID0x
 	{
-		token.T_18:  ".",
 		token.T_1:   "!=",
 		token.T_2:   "%",
 		token.T_3:   "%=",
@@ -24527,9 +22720,6 @@ var first = []map[token.Type]string{
 	},
 	// RBRK : ] ∙WS
 	{
-		token.T_49:  "block_comment",
-		token.T_66:  "escCharSp",
-		token.T_85:  "line_comment",
 		token.T_1:   "!=",
 		token.T_2:   "%",
 		token.T_3:   "%=",
@@ -24571,14 +22761,17 @@ var first = []map[token.Type]string{
 		token.T_42:  "^",
 		token.T_43:  "^=",
 		token.T_44:  "abstract",
+		token.T_49:  "block_comment",
 		token.T_50:  "boolean",
 		token.T_52:  "byte",
 		token.T_56:  "char",
 		token.T_61:  "double",
+		token.T_66:  "escCharSp",
 		token.T_71:  "final",
 		token.T_73:  "float",
 		token.T_79:  "instanceof",
 		token.T_80:  "int",
+		token.T_85:  "line_comment",
 		token.T_86:  "long",
 		token.T_88:  "native",
 		token.T_97:  "notKeyword",
@@ -24918,9 +23111,6 @@ var first = []map[token.Type]string{
 	},
 	// RPAR : ) ∙WS
 	{
-		token.T_49:  "block_comment",
-		token.T_66:  "escCharSp",
-		token.T_85:  "line_comment",
 		token.T_0:   "!",
 		token.T_1:   "!=",
 		token.T_2:   "%",
@@ -24967,6 +23157,7 @@ var first = []map[token.Type]string{
 		token.T_43:  "^=",
 		token.T_44:  "abstract",
 		token.T_47:  "assert",
+		token.T_49:  "block_comment",
 		token.T_50:  "boolean",
 		token.T_51:  "break",
 		token.T_52:  "byte",
@@ -24976,6 +23167,7 @@ var first = []map[token.Type]string{
 		token.T_60:  "dot",
 		token.T_61:  "double",
 		token.T_62:  "dubQuo",
+		token.T_66:  "escCharSp",
 		token.T_70:  "false",
 		token.T_71:  "final",
 		token.T_73:  "float",
@@ -24983,6 +23175,7 @@ var first = []map[token.Type]string{
 		token.T_76:  "if",
 		token.T_79:  "instanceof",
 		token.T_80:  "int",
+		token.T_85:  "line_comment",
 		token.T_86:  "long",
 		token.T_88:  "native",
 		token.T_89:  "new",
@@ -25127,9 +23320,6 @@ var first = []map[token.Type]string{
 	},
 	// RWING : } ∙WS
 	{
-		token.T_49:  "block_comment",
-		token.T_66:  "escCharSp",
-		token.T_85:  "line_comment",
 		token.T_0:   "!",
 		token.T_1:   "!=",
 		token.EOF:   "$",
@@ -25177,6 +23367,7 @@ var first = []map[token.Type]string{
 		token.T_43:  "^=",
 		token.T_44:  "abstract",
 		token.T_47:  "assert",
+		token.T_49:  "block_comment",
 		token.T_50:  "boolean",
 		token.T_51:  "break",
 		token.T_52:  "byte",
@@ -25190,6 +23381,7 @@ var first = []map[token.Type]string{
 		token.T_61:  "double",
 		token.T_62:  "dubQuo",
 		token.T_64:  "else",
+		token.T_66:  "escCharSp",
 		token.T_70:  "false",
 		token.T_71:  "final",
 		token.T_72:  "finally",
@@ -25198,6 +23390,7 @@ var first = []map[token.Type]string{
 		token.T_76:  "if",
 		token.T_79:  "instanceof",
 		token.T_80:  "int",
+		token.T_85:  "line_comment",
 		token.T_86:  "long",
 		token.T_88:  "native",
 		token.T_89:  "new",
@@ -25357,7 +23550,6 @@ var first = []map[token.Type]string{
 	},
 	// ReferenceType : BasicType Dim ∙RepDim0x
 	{
-		token.T_40:  "[",
 		token.T_1:   "!=",
 		token.T_3:   "%=",
 		token.T_4:   "&",
@@ -25383,6 +23575,7 @@ var first = []map[token.Type]string{
 		token.T_36:  "?",
 		token.T_37:  "Cls",
 		token.T_38:  "Intf",
+		token.T_40:  "[",
 		token.T_41:  "]",
 		token.T_42:  "^",
 		token.T_43:  "^=",
@@ -25478,7 +23671,6 @@ var first = []map[token.Type]string{
 	},
 	// ReferenceType : ClsType ∙RepDim0x
 	{
-		token.T_40:  "[",
 		token.T_1:   "!=",
 		token.T_3:   "%=",
 		token.T_4:   "&",
@@ -25504,6 +23696,7 @@ var first = []map[token.Type]string{
 		token.T_36:  "?",
 		token.T_37:  "Cls",
 		token.T_38:  "Intf",
+		token.T_40:  "[",
 		token.T_41:  "]",
 		token.T_42:  "^",
 		token.T_43:  "^=",
@@ -25631,11 +23824,6 @@ var first = []map[token.Type]string{
 	},
 	// RelateExpr : ShiftExpr ∙RepESInst0x
 	{
-		token.T_24:  "<",
-		token.T_27:  "<=",
-		token.T_30:  ">",
-		token.T_31:  ">=",
-		token.T_79:  "instanceof",
 		token.T_1:   "!=",
 		token.T_3:   "%=",
 		token.T_4:   "&",
@@ -25649,9 +23837,13 @@ var first = []map[token.Type]string{
 		token.T_20:  "/=",
 		token.T_22:  ":",
 		token.T_23:  ";",
+		token.T_24:  "<",
 		token.T_26:  "<<=",
+		token.T_27:  "<=",
 		token.T_28:  "=",
 		token.T_29:  "==",
+		token.T_30:  ">",
+		token.T_31:  ">=",
 		token.T_33:  ">>=",
 		token.T_35:  ">>>=",
 		token.T_36:  "?",
@@ -25667,6 +23859,7 @@ var first = []map[token.Type]string{
 		token.T_61:  "double",
 		token.T_71:  "final",
 		token.T_73:  "float",
+		token.T_79:  "instanceof",
 		token.T_80:  "int",
 		token.T_86:  "long",
 		token.T_88:  "native",
@@ -25782,8 +23975,8 @@ var first = []map[token.Type]string{
 	},
 	// RepANDEq0x : AND EqualExpr ∙RepANDEq0x
 	{
-		token.T_4:   "&",
 		token.T_3:   "%=",
+		token.T_4:   "&",
 		token.T_5:   "&&",
 		token.T_6:   "&=",
 		token.T_8:   ")",
@@ -25973,8 +24166,8 @@ var first = []map[token.Type]string{
 	},
 	// RepANDIOR0x : AND_AND IORExpr ∙RepANDIOR0x
 	{
-		token.T_5:   "&&",
 		token.T_3:   "%=",
+		token.T_5:   "&&",
 		token.T_6:   "&=",
 		token.T_8:   ")",
 		token.T_10:  "*=",
@@ -26331,23 +24524,22 @@ var first = []map[token.Type]string{
 	{
 		token.T_3:   "%=",
 		token.T_6:   "&=",
+		token.T_8:   ")",
 		token.T_10:  "*=",
 		token.T_13:  "+=",
+		token.T_14:  ",",
 		token.T_17:  "-=",
 		token.T_20:  "/=",
+		token.T_22:  ":",
+		token.T_23:  ";",
 		token.T_26:  "<<=",
 		token.T_28:  "=",
 		token.T_33:  ">>=",
 		token.T_35:  ">>>=",
-		token.T_43:  "^=",
-		token.T_138: "|=",
-		token.T_8:   ")",
-		token.T_14:  ",",
-		token.T_22:  ":",
-		token.T_23:  ";",
 		token.T_37:  "Cls",
 		token.T_38:  "Intf",
 		token.T_41:  "]",
+		token.T_43:  "^=",
 		token.T_44:  "abstract",
 		token.T_50:  "boolean",
 		token.T_52:  "byte",
@@ -26370,6 +24562,7 @@ var first = []map[token.Type]string{
 		token.T_131: "void",
 		token.T_132: "volatile",
 		token.T_136: "{",
+		token.T_138: "|=",
 		token.T_140: "}",
 	},
 	// RepAsscExpr0x : AssignOp CondExpr RepAsscExpr0x ∙
@@ -26516,8 +24709,10 @@ var first = []map[token.Type]string{
 		token.T_50:  "boolean",
 		token.T_51:  "break",
 		token.T_52:  "byte",
+		token.T_54:  "case",
 		token.T_56:  "char",
 		token.T_57:  "continue",
+		token.T_58:  "default",
 		token.T_59:  "do",
 		token.T_60:  "dot",
 		token.T_61:  "double",
@@ -26558,10 +24753,8 @@ var first = []map[token.Type]string{
 		token.T_134: "x",
 		token.T_135: "ze",
 		token.T_136: "{",
-		token.T_141: "~",
-		token.T_54:  "case",
-		token.T_58:  "default",
 		token.T_140: "}",
+		token.T_141: "~",
 	},
 	// RepBlkSt0x : BlockStmt RepBlkSt0x ∙
 	{
@@ -26581,7 +24774,6 @@ var first = []map[token.Type]string{
 	},
 	// RepCatch0x : Catch ∙RepCatch0x
 	{
-		token.T_55:  "catch",
 		token.T_0:   "!",
 		token.T_7:   "(",
 		token.T_11:  "+",
@@ -26598,6 +24790,7 @@ var first = []map[token.Type]string{
 		token.T_51:  "break",
 		token.T_52:  "byte",
 		token.T_54:  "case",
+		token.T_55:  "catch",
 		token.T_56:  "char",
 		token.T_57:  "continue",
 		token.T_58:  "default",
@@ -26927,8 +25120,8 @@ var first = []map[token.Type]string{
 	},
 	// RepComExp0x : COMMA Expr ∙RepComExp0x
 	{
-		token.T_14: ",",
 		token.T_8:  ")",
+		token.T_14: ",",
 	},
 	// RepComExp0x : COMMA Expr RepComExp0x ∙
 	{
@@ -26981,7 +25174,6 @@ var first = []map[token.Type]string{
 	},
 	// RepComInit0x : COMMA VarInitial ∙RepComInit0x
 	{
-		token.T_14:  ",",
 		token.T_14:  ",",
 		token.T_140: "}",
 	},
@@ -27037,8 +25229,8 @@ var first = []map[token.Type]string{
 	},
 	// RepComSExpr0x : COMMA StmtExpr ∙RepComSExpr0x
 	{
-		token.T_14: ",",
 		token.T_8:  ")",
+		token.T_14: ",",
 		token.T_23: ";",
 	},
 	// RepComSExpr0x : COMMA StmtExpr RepComSExpr0x ∙
@@ -27229,7 +25421,6 @@ var first = []map[token.Type]string{
 	},
 	// RepCondition0x : QUERY Expr COLON CondORExpr ∙RepCondition0x
 	{
-		token.T_36:  "?",
 		token.T_3:   "%=",
 		token.T_6:   "&=",
 		token.T_8:   ")",
@@ -27244,6 +25435,7 @@ var first = []map[token.Type]string{
 		token.T_28:  "=",
 		token.T_33:  ">>=",
 		token.T_35:  ">>>=",
+		token.T_36:  "?",
 		token.T_37:  "Cls",
 		token.T_38:  "Intf",
 		token.T_41:  "]",
@@ -27463,7 +25655,6 @@ var first = []map[token.Type]string{
 	},
 	// RepDim0x : Dim ∙RepDim0x
 	{
-		token.T_40:  "[",
 		token.T_1:   "!=",
 		token.T_2:   "%",
 		token.T_3:   "%=",
@@ -27681,7 +25872,6 @@ var first = []map[token.Type]string{
 	},
 	// RepDimExpr0x : DimExpr ∙RepDimExpr0x
 	{
-		token.T_40:  "[",
 		token.T_1:   "!=",
 		token.T_2:   "%",
 		token.T_3:   "%=",
@@ -27900,7 +26090,6 @@ var first = []map[token.Type]string{
 	},
 	// RepDotID0x : DOT ID ∙RepDotID0x
 	{
-		token.T_18:  ".",
 		token.T_1:   "!=",
 		token.T_2:   "%",
 		token.T_3:   "%=",
@@ -28125,11 +26314,6 @@ var first = []map[token.Type]string{
 	},
 	// RepESInst0x : ESInst ∙RepESInst0x
 	{
-		token.T_24:  "<",
-		token.T_27:  "<=",
-		token.T_30:  ">",
-		token.T_31:  ">=",
-		token.T_79:  "instanceof",
 		token.T_1:   "!=",
 		token.T_3:   "%=",
 		token.T_4:   "&",
@@ -28143,9 +26327,13 @@ var first = []map[token.Type]string{
 		token.T_20:  "/=",
 		token.T_22:  ":",
 		token.T_23:  ";",
+		token.T_24:  "<",
 		token.T_26:  "<<=",
+		token.T_27:  "<=",
 		token.T_28:  "=",
 		token.T_29:  "==",
+		token.T_30:  ">",
+		token.T_31:  ">=",
 		token.T_33:  ">>=",
 		token.T_35:  ">>>=",
 		token.T_36:  "?",
@@ -28161,6 +26349,7 @@ var first = []map[token.Type]string{
 		token.T_61:  "double",
 		token.T_71:  "final",
 		token.T_73:  "float",
+		token.T_79:  "instanceof",
 		token.T_80:  "int",
 		token.T_86:  "long",
 		token.T_88:  "native",
@@ -28331,7 +26520,6 @@ var first = []map[token.Type]string{
 	// RepEqExpr0x : EqAlts RelateExpr ∙RepEqExpr0x
 	{
 		token.T_1:   "!=",
-		token.T_29:  "==",
 		token.T_3:   "%=",
 		token.T_4:   "&",
 		token.T_5:   "&&",
@@ -28346,6 +26534,7 @@ var first = []map[token.Type]string{
 		token.T_23:  ";",
 		token.T_26:  "<<=",
 		token.T_28:  "=",
+		token.T_29:  "==",
 		token.T_33:  ">>=",
 		token.T_35:  ">>>=",
 		token.T_36:  "?",
@@ -28525,7 +26714,6 @@ var first = []map[token.Type]string{
 	},
 	// RepHatAND0x : HAT ANDExpr ∙RepHatAND0x
 	{
-		token.T_42:  "^",
 		token.T_3:   "%=",
 		token.T_5:   "&&",
 		token.T_6:   "&=",
@@ -28545,6 +26733,7 @@ var first = []map[token.Type]string{
 		token.T_37:  "Cls",
 		token.T_38:  "Intf",
 		token.T_41:  "]",
+		token.T_42:  "^",
 		token.T_43:  "^=",
 		token.T_44:  "abstract",
 		token.T_50:  "boolean",
@@ -28695,13 +26884,13 @@ var first = []map[token.Type]string{
 	},
 	// RepImpDecl0x : ImportDecl ∙RepImpDecl0x
 	{
-		token.T_78:  "import",
 		token.EOF:   "$",
 		token.T_23:  ";",
 		token.T_37:  "Cls",
 		token.T_38:  "Intf",
 		token.T_44:  "abstract",
 		token.T_71:  "final",
+		token.T_78:  "import",
 		token.T_88:  "native",
 		token.T_107: "private",
 		token.T_108: "protected",
@@ -28813,11 +27002,6 @@ var first = []map[token.Type]string{
 	},
 	// RepLorD0x : ∙LorD RepLorD0x
 	{
-		token.T_49:  "block_comment",
-		token.T_66:  "escCharSp",
-		token.T_84:  "let",
-		token.T_85:  "line_comment",
-		token.T_100: "num",
 		token.T_1:   "!=",
 		token.T_2:   "%",
 		token.T_3:   "%=",
@@ -28872,10 +27056,12 @@ var first = []map[token.Type]string{
 		token.T_77:  "implements",
 		token.T_79:  "instanceof",
 		token.T_80:  "int",
+		token.T_84:  "let",
 		token.T_85:  "line_comment",
 		token.T_86:  "long",
 		token.T_88:  "native",
 		token.T_97:  "notKeyword",
+		token.T_100: "num",
 		token.T_107: "private",
 		token.T_108: "protected",
 		token.T_109: "public",
@@ -28894,11 +27080,6 @@ var first = []map[token.Type]string{
 	},
 	// RepLorD0x : LorD ∙RepLorD0x
 	{
-		token.T_49:  "block_comment",
-		token.T_66:  "escCharSp",
-		token.T_84:  "let",
-		token.T_85:  "line_comment",
-		token.T_100: "num",
 		token.T_1:   "!=",
 		token.T_2:   "%",
 		token.T_3:   "%=",
@@ -28953,10 +27134,12 @@ var first = []map[token.Type]string{
 		token.T_77:  "implements",
 		token.T_79:  "instanceof",
 		token.T_80:  "int",
+		token.T_84:  "let",
 		token.T_85:  "line_comment",
 		token.T_86:  "long",
 		token.T_88:  "native",
 		token.T_97:  "notKeyword",
+		token.T_100: "num",
 		token.T_107: "private",
 		token.T_108: "protected",
 		token.T_109: "public",
@@ -29141,29 +27324,29 @@ var first = []map[token.Type]string{
 	},
 	// RepModif0 : Modifier ∙RepModif0
 	{
-		token.T_44:  "abstract",
-		token.T_71:  "final",
-		token.T_88:  "native",
-		token.T_107: "private",
-		token.T_108: "protected",
-		token.T_109: "public",
-		token.T_118: "static",
-		token.T_119: "strictfp",
-		token.T_122: "synchronized",
-		token.T_126: "transient",
-		token.T_132: "volatile",
 		token.T_37:  "Cls",
 		token.T_38:  "Intf",
+		token.T_44:  "abstract",
 		token.T_50:  "boolean",
 		token.T_52:  "byte",
 		token.T_56:  "char",
 		token.T_61:  "double",
+		token.T_71:  "final",
 		token.T_73:  "float",
 		token.T_80:  "int",
 		token.T_86:  "long",
+		token.T_88:  "native",
 		token.T_97:  "notKeyword",
+		token.T_107: "private",
+		token.T_108: "protected",
+		token.T_109: "public",
 		token.T_116: "short",
+		token.T_118: "static",
+		token.T_119: "strictfp",
+		token.T_122: "synchronized",
+		token.T_126: "transient",
 		token.T_131: "void",
+		token.T_132: "volatile",
 	},
 	// RepModif0 : Modifier RepModif0 ∙
 	{
@@ -29201,7 +27384,6 @@ var first = []map[token.Type]string{
 	},
 	// RepORXOR0x : ORXOR ∙RepORXOR0x
 	{
-		token.T_137: "|",
 		token.T_3:   "%=",
 		token.T_5:   "&&",
 		token.T_6:   "&=",
@@ -29244,6 +27426,7 @@ var first = []map[token.Type]string{
 		token.T_131: "void",
 		token.T_132: "volatile",
 		token.T_136: "{",
+		token.T_137: "|",
 		token.T_138: "|=",
 		token.T_139: "||",
 		token.T_140: "}",
@@ -29386,7 +27569,6 @@ var first = []map[token.Type]string{
 	},
 	// RepORcAND0x : OR_OR CondANDExpr ∙RepORcAND0x
 	{
-		token.T_139: "||",
 		token.T_3:   "%=",
 		token.T_6:   "&=",
 		token.T_8:   ")",
@@ -29429,6 +27611,7 @@ var first = []map[token.Type]string{
 		token.T_132: "volatile",
 		token.T_136: "{",
 		token.T_138: "|=",
+		token.T_139: "||",
 		token.T_140: "}",
 	},
 	// RepORcAND0x : OR_OR CondANDExpr RepORcAND0x ∙
@@ -29530,8 +27713,6 @@ var first = []map[token.Type]string{
 	},
 	// RepPfOp0x : PostfixOp ∙RepPfOp0x
 	{
-		token.T_12:  "++",
-		token.T_16:  "--",
 		token.T_1:   "!=",
 		token.T_2:   "%",
 		token.T_3:   "%=",
@@ -29542,9 +27723,11 @@ var first = []map[token.Type]string{
 		token.T_9:   "*",
 		token.T_10:  "*=",
 		token.T_11:  "+",
+		token.T_12:  "++",
 		token.T_13:  "+=",
 		token.T_14:  ",",
 		token.T_15:  "-",
+		token.T_16:  "--",
 		token.T_17:  "-=",
 		token.T_19:  "/",
 		token.T_20:  "/=",
@@ -29772,21 +27955,21 @@ var first = []map[token.Type]string{
 	},
 	// RepSDMUExpr0x : SDM UnaryExpr ∙RepSDMUExpr0x
 	{
-		token.T_2:   "%",
-		token.T_9:   "*",
-		token.T_19:  "/",
 		token.T_1:   "!=",
+		token.T_2:   "%",
 		token.T_3:   "%=",
 		token.T_4:   "&",
 		token.T_5:   "&&",
 		token.T_6:   "&=",
 		token.T_8:   ")",
+		token.T_9:   "*",
 		token.T_10:  "*=",
 		token.T_11:  "+",
 		token.T_13:  "+=",
 		token.T_14:  ",",
 		token.T_15:  "-",
 		token.T_17:  "-=",
+		token.T_19:  "/",
 		token.T_20:  "/=",
 		token.T_22:  ":",
 		token.T_23:  ";",
@@ -29969,8 +28152,6 @@ var first = []map[token.Type]string{
 	},
 	// RepSel0x : Selector ∙RepSel0x
 	{
-		token.T_18:  ".",
-		token.T_40:  "[",
 		token.T_1:   "!=",
 		token.T_2:   "%",
 		token.T_3:   "%=",
@@ -29987,6 +28168,7 @@ var first = []map[token.Type]string{
 		token.T_15:  "-",
 		token.T_16:  "--",
 		token.T_17:  "-=",
+		token.T_18:  ".",
 		token.T_19:  "/",
 		token.T_20:  "/=",
 		token.T_22:  ":",
@@ -30006,6 +28188,7 @@ var first = []map[token.Type]string{
 		token.T_36:  "?",
 		token.T_37:  "Cls",
 		token.T_38:  "Intf",
+		token.T_40:  "[",
 		token.T_41:  "]",
 		token.T_42:  "^",
 		token.T_43:  "^=",
@@ -30192,6 +28375,7 @@ var first = []map[token.Type]string{
 	},
 	// RepSemiModDecl0x : SemiModDecl ∙RepSemiModDecl0x
 	{
+		token.EOF:   "$",
 		token.T_23:  ";",
 		token.T_37:  "Cls",
 		token.T_38:  "Intf",
@@ -30206,7 +28390,6 @@ var first = []map[token.Type]string{
 		token.T_122: "synchronized",
 		token.T_126: "transient",
 		token.T_132: "volatile",
-		token.EOF:   "$",
 	},
 	// RepSemiModDecl0x : SemiModDecl RepSemiModDecl0x ∙
 	{
@@ -30361,9 +28544,6 @@ var first = []map[token.Type]string{
 	},
 	// SEMI : ; ∙WS
 	{
-		token.T_49:  "block_comment",
-		token.T_66:  "escCharSp",
-		token.T_85:  "line_comment",
 		token.T_0:   "!",
 		token.EOF:   "$",
 		token.T_7:   "(",
@@ -30379,6 +28559,7 @@ var first = []map[token.Type]string{
 		token.T_39:  "X",
 		token.T_44:  "abstract",
 		token.T_47:  "assert",
+		token.T_49:  "block_comment",
 		token.T_50:  "boolean",
 		token.T_51:  "break",
 		token.T_52:  "byte",
@@ -30391,6 +28572,7 @@ var first = []map[token.Type]string{
 		token.T_61:  "double",
 		token.T_62:  "dubQuo",
 		token.T_64:  "else",
+		token.T_66:  "escCharSp",
 		token.T_70:  "false",
 		token.T_71:  "final",
 		token.T_73:  "float",
@@ -30398,6 +28580,7 @@ var first = []map[token.Type]string{
 		token.T_76:  "if",
 		token.T_78:  "import",
 		token.T_80:  "int",
+		token.T_85:  "line_comment",
 		token.T_86:  "long",
 		token.T_88:  "native",
 		token.T_89:  "new",
@@ -30510,9 +28693,6 @@ var first = []map[token.Type]string{
 	},
 	// SL : << nEq ∙WS
 	{
-		token.T_49:  "block_comment",
-		token.T_66:  "escCharSp",
-		token.T_85:  "line_comment",
 		token.T_0:   "!",
 		token.T_7:   "(",
 		token.T_11:  "+",
@@ -30521,15 +28701,18 @@ var first = []map[token.Type]string{
 		token.T_16:  "--",
 		token.T_21:  "0",
 		token.T_39:  "X",
+		token.T_49:  "block_comment",
 		token.T_50:  "boolean",
 		token.T_52:  "byte",
 		token.T_56:  "char",
 		token.T_60:  "dot",
 		token.T_61:  "double",
 		token.T_62:  "dubQuo",
+		token.T_66:  "escCharSp",
 		token.T_70:  "false",
 		token.T_73:  "float",
 		token.T_80:  "int",
+		token.T_85:  "line_comment",
 		token.T_86:  "long",
 		token.T_89:  "new",
 		token.T_97:  "notKeyword",
@@ -30589,9 +28772,6 @@ var first = []map[token.Type]string{
 	},
 	// SL_EQU : <<= ∙WS
 	{
-		token.T_49:  "block_comment",
-		token.T_66:  "escCharSp",
-		token.T_85:  "line_comment",
 		token.T_0:   "!",
 		token.T_7:   "(",
 		token.T_11:  "+",
@@ -30600,15 +28780,18 @@ var first = []map[token.Type]string{
 		token.T_16:  "--",
 		token.T_21:  "0",
 		token.T_39:  "X",
+		token.T_49:  "block_comment",
 		token.T_50:  "boolean",
 		token.T_52:  "byte",
 		token.T_56:  "char",
 		token.T_60:  "dot",
 		token.T_61:  "double",
 		token.T_62:  "dubQuo",
+		token.T_66:  "escCharSp",
 		token.T_70:  "false",
 		token.T_73:  "float",
 		token.T_80:  "int",
+		token.T_85:  "line_comment",
 		token.T_86:  "long",
 		token.T_89:  "new",
 		token.T_97:  "notKeyword",
@@ -30672,9 +28855,6 @@ var first = []map[token.Type]string{
 	},
 	// SR : >> notEqCar ∙WS
 	{
-		token.T_49:  "block_comment",
-		token.T_66:  "escCharSp",
-		token.T_85:  "line_comment",
 		token.T_0:   "!",
 		token.T_7:   "(",
 		token.T_11:  "+",
@@ -30683,15 +28863,18 @@ var first = []map[token.Type]string{
 		token.T_16:  "--",
 		token.T_21:  "0",
 		token.T_39:  "X",
+		token.T_49:  "block_comment",
 		token.T_50:  "boolean",
 		token.T_52:  "byte",
 		token.T_56:  "char",
 		token.T_60:  "dot",
 		token.T_61:  "double",
 		token.T_62:  "dubQuo",
+		token.T_66:  "escCharSp",
 		token.T_70:  "false",
 		token.T_73:  "float",
 		token.T_80:  "int",
+		token.T_85:  "line_comment",
 		token.T_86:  "long",
 		token.T_89:  "new",
 		token.T_97:  "notKeyword",
@@ -30751,9 +28934,6 @@ var first = []map[token.Type]string{
 	},
 	// SR_EQU : >>= ∙WS
 	{
-		token.T_49:  "block_comment",
-		token.T_66:  "escCharSp",
-		token.T_85:  "line_comment",
 		token.T_0:   "!",
 		token.T_7:   "(",
 		token.T_11:  "+",
@@ -30762,15 +28942,18 @@ var first = []map[token.Type]string{
 		token.T_16:  "--",
 		token.T_21:  "0",
 		token.T_39:  "X",
+		token.T_49:  "block_comment",
 		token.T_50:  "boolean",
 		token.T_52:  "byte",
 		token.T_56:  "char",
 		token.T_60:  "dot",
 		token.T_61:  "double",
 		token.T_62:  "dubQuo",
+		token.T_66:  "escCharSp",
 		token.T_70:  "false",
 		token.T_73:  "float",
 		token.T_80:  "int",
+		token.T_85:  "line_comment",
 		token.T_86:  "long",
 		token.T_89:  "new",
 		token.T_97:  "notKeyword",
@@ -30834,9 +29017,6 @@ var first = []map[token.Type]string{
 	},
 	// STAR : * nEq ∙WS
 	{
-		token.T_49:  "block_comment",
-		token.T_66:  "escCharSp",
-		token.T_85:  "line_comment",
 		token.T_0:   "!",
 		token.T_7:   "(",
 		token.T_11:  "+",
@@ -30846,15 +29026,18 @@ var first = []map[token.Type]string{
 		token.T_21:  "0",
 		token.T_23:  ";",
 		token.T_39:  "X",
+		token.T_49:  "block_comment",
 		token.T_50:  "boolean",
 		token.T_52:  "byte",
 		token.T_56:  "char",
 		token.T_60:  "dot",
 		token.T_61:  "double",
 		token.T_62:  "dubQuo",
+		token.T_66:  "escCharSp",
 		token.T_70:  "false",
 		token.T_73:  "float",
 		token.T_80:  "int",
+		token.T_85:  "line_comment",
 		token.T_86:  "long",
 		token.T_89:  "new",
 		token.T_97:  "notKeyword",
@@ -30915,9 +29098,6 @@ var first = []map[token.Type]string{
 	},
 	// STAR_EQU : *= ∙WS
 	{
-		token.T_49:  "block_comment",
-		token.T_66:  "escCharSp",
-		token.T_85:  "line_comment",
 		token.T_0:   "!",
 		token.T_7:   "(",
 		token.T_11:  "+",
@@ -30926,15 +29106,18 @@ var first = []map[token.Type]string{
 		token.T_16:  "--",
 		token.T_21:  "0",
 		token.T_39:  "X",
+		token.T_49:  "block_comment",
 		token.T_50:  "boolean",
 		token.T_52:  "byte",
 		token.T_56:  "char",
 		token.T_60:  "dot",
 		token.T_61:  "double",
 		token.T_62:  "dubQuo",
+		token.T_66:  "escCharSp",
 		token.T_70:  "false",
 		token.T_73:  "float",
 		token.T_80:  "int",
+		token.T_85:  "line_comment",
 		token.T_86:  "long",
 		token.T_89:  "new",
 		token.T_97:  "notKeyword",
@@ -31048,13 +29231,13 @@ var first = []map[token.Type]string{
 	},
 	// Selector : DOT ID ∙OptArgs
 	{
-		token.T_7:   "(",
 		token.T_1:   "!=",
 		token.T_2:   "%",
 		token.T_3:   "%=",
 		token.T_4:   "&",
 		token.T_5:   "&&",
 		token.T_6:   "&=",
+		token.T_7:   "(",
 		token.T_8:   ")",
 		token.T_9:   "*",
 		token.T_10:  "*=",
@@ -31609,9 +29792,6 @@ var first = []map[token.Type]string{
 	},
 	// ShiftAlts : CarrotAlts AddExpr ∙ShiftAlts
 	{
-		token.T_25:  "<<",
-		token.T_32:  ">>",
-		token.T_34:  ">>>",
 		token.T_1:   "!=",
 		token.T_3:   "%=",
 		token.T_4:   "&",
@@ -31626,13 +29806,16 @@ var first = []map[token.Type]string{
 		token.T_22:  ":",
 		token.T_23:  ";",
 		token.T_24:  "<",
+		token.T_25:  "<<",
 		token.T_26:  "<<=",
 		token.T_27:  "<=",
 		token.T_28:  "=",
 		token.T_29:  "==",
 		token.T_30:  ">",
 		token.T_31:  ">=",
+		token.T_32:  ">>",
 		token.T_33:  ">>=",
+		token.T_34:  ">>>",
 		token.T_35:  ">>>=",
 		token.T_36:  "?",
 		token.T_37:  "Cls",
@@ -31822,9 +30005,6 @@ var first = []map[token.Type]string{
 	},
 	// ShiftExpr : AddExpr ∙ShiftAlts
 	{
-		token.T_25:  "<<",
-		token.T_32:  ">>",
-		token.T_34:  ">>>",
 		token.T_1:   "!=",
 		token.T_3:   "%=",
 		token.T_4:   "&",
@@ -31839,13 +30019,16 @@ var first = []map[token.Type]string{
 		token.T_22:  ":",
 		token.T_23:  ";",
 		token.T_24:  "<",
+		token.T_25:  "<<",
 		token.T_26:  "<<=",
 		token.T_27:  "<=",
 		token.T_28:  "=",
 		token.T_29:  "==",
 		token.T_30:  ">",
 		token.T_31:  ">=",
+		token.T_32:  ">>",
 		token.T_33:  ">>=",
+		token.T_34:  ">>>",
 		token.T_35:  ">>>=",
 		token.T_36:  "?",
 		token.T_37:  "Cls",
@@ -32182,7 +30365,6 @@ var first = []map[token.Type]string{
 	},
 	// Stmt : IF ParExpr Stmt ∙OptElse
 	{
-		token.T_64:  "else",
 		token.T_0:   "!",
 		token.T_7:   "(",
 		token.T_11:  "+",
@@ -34096,13 +32278,13 @@ var first = []map[token.Type]string{
 	},
 	// SuperSuffix : DOT ID ∙OptArgs
 	{
-		token.T_7:   "(",
 		token.T_1:   "!=",
 		token.T_2:   "%",
 		token.T_3:   "%=",
 		token.T_4:   "&",
 		token.T_5:   "&&",
 		token.T_6:   "&=",
+		token.T_7:   "(",
 		token.T_8:   ")",
 		token.T_9:   "*",
 		token.T_10:  "*=",
@@ -34257,8 +32439,10 @@ var first = []map[token.Type]string{
 		token.T_50:  "boolean",
 		token.T_51:  "break",
 		token.T_52:  "byte",
+		token.T_54:  "case",
 		token.T_56:  "char",
 		token.T_57:  "continue",
+		token.T_58:  "default",
 		token.T_59:  "do",
 		token.T_60:  "dot",
 		token.T_61:  "double",
@@ -34299,10 +32483,8 @@ var first = []map[token.Type]string{
 		token.T_134: "x",
 		token.T_135: "ze",
 		token.T_136: "{",
-		token.T_141: "~",
-		token.T_54:  "case",
-		token.T_58:  "default",
 		token.T_140: "}",
+		token.T_141: "~",
 	},
 	// SwitchBlockStmtGrp : SwitchLabel RepBlkSt0x ∙
 	{
@@ -34631,9 +32813,6 @@ var first = []map[token.Type]string{
 	},
 	// TILDA : ~ ∙WS
 	{
-		token.T_49:  "block_comment",
-		token.T_66:  "escCharSp",
-		token.T_85:  "line_comment",
 		token.T_0:   "!",
 		token.T_7:   "(",
 		token.T_11:  "+",
@@ -34642,15 +32821,18 @@ var first = []map[token.Type]string{
 		token.T_16:  "--",
 		token.T_21:  "0",
 		token.T_39:  "X",
+		token.T_49:  "block_comment",
 		token.T_50:  "boolean",
 		token.T_52:  "byte",
 		token.T_56:  "char",
 		token.T_60:  "dot",
 		token.T_61:  "double",
 		token.T_62:  "dubQuo",
+		token.T_66:  "escCharSp",
 		token.T_70:  "false",
 		token.T_73:  "float",
 		token.T_80:  "int",
+		token.T_85:  "line_comment",
 		token.T_86:  "long",
 		token.T_89:  "new",
 		token.T_97:  "notKeyword",
@@ -34730,8 +32912,8 @@ var first = []map[token.Type]string{
 	},
 	// Type : TypeAlts ∙RepDim0x
 	{
-		token.T_40:  "[",
 		token.T_8:   ")",
+		token.T_40:  "[",
 		token.T_50:  "boolean",
 		token.T_52:  "byte",
 		token.T_56:  "char",
@@ -35063,10 +33245,6 @@ var first = []map[token.Type]string{
 	},
 	// UnaryExpr : Primary ∙RepSel0x RepPfOp0x
 	{
-		token.T_12:  "++",
-		token.T_16:  "--",
-		token.T_18:  ".",
-		token.T_40:  "[",
 		token.T_1:   "!=",
 		token.T_2:   "%",
 		token.T_3:   "%=",
@@ -35077,10 +33255,13 @@ var first = []map[token.Type]string{
 		token.T_9:   "*",
 		token.T_10:  "*=",
 		token.T_11:  "+",
+		token.T_12:  "++",
 		token.T_13:  "+=",
 		token.T_14:  ",",
 		token.T_15:  "-",
+		token.T_16:  "--",
 		token.T_17:  "-=",
+		token.T_18:  ".",
 		token.T_19:  "/",
 		token.T_20:  "/=",
 		token.T_22:  ":",
@@ -35100,6 +33281,7 @@ var first = []map[token.Type]string{
 		token.T_36:  "?",
 		token.T_37:  "Cls",
 		token.T_38:  "Intf",
+		token.T_40:  "[",
 		token.T_41:  "]",
 		token.T_42:  "^",
 		token.T_43:  "^=",
@@ -35133,8 +33315,6 @@ var first = []map[token.Type]string{
 	},
 	// UnaryExpr : Primary RepSel0x ∙RepPfOp0x
 	{
-		token.T_12:  "++",
-		token.T_16:  "--",
 		token.T_1:   "!=",
 		token.T_2:   "%",
 		token.T_3:   "%=",
@@ -35145,9 +33325,11 @@ var first = []map[token.Type]string{
 		token.T_9:   "*",
 		token.T_10:  "*=",
 		token.T_11:  "+",
+		token.T_12:  "++",
 		token.T_13:  "+=",
 		token.T_14:  ",",
 		token.T_15:  "-",
+		token.T_16:  "--",
 		token.T_17:  "-=",
 		token.T_19:  "/",
 		token.T_20:  "/=",
@@ -35311,12 +33493,12 @@ var first = []map[token.Type]string{
 	},
 	// VarDecl : ID ∙RepDim0x OptEqVarInit
 	{
-		token.T_28:  "=",
-		token.T_40:  "[",
 		token.T_14:  ",",
 		token.T_23:  ";",
+		token.T_28:  "=",
 		token.T_37:  "Cls",
 		token.T_38:  "Intf",
+		token.T_40:  "[",
 		token.T_44:  "abstract",
 		token.T_50:  "boolean",
 		token.T_52:  "byte",
@@ -35343,9 +33525,9 @@ var first = []map[token.Type]string{
 	},
 	// VarDecl : ID RepDim0x ∙OptEqVarInit
 	{
-		token.T_28:  "=",
 		token.T_14:  ",",
 		token.T_23:  ";",
+		token.T_28:  "=",
 		token.T_37:  "Cls",
 		token.T_38:  "Intf",
 		token.T_44:  "abstract",
@@ -35421,9 +33603,9 @@ var first = []map[token.Type]string{
 	},
 	// VarDelID : ID ∙RepDim0x
 	{
-		token.T_40: "[",
 		token.T_8:  ")",
 		token.T_14: ",",
+		token.T_40: "[",
 	},
 	// VarDelID : ID RepDim0x ∙
 	{
@@ -35859,7 +34041,6 @@ var first = []map[token.Type]string{
 	},
 	// XORExpr : ANDExpr ∙RepHatAND0x
 	{
-		token.T_42:  "^",
 		token.T_3:   "%=",
 		token.T_5:   "&&",
 		token.T_6:   "&=",
@@ -35879,6 +34060,7 @@ var first = []map[token.Type]string{
 		token.T_37:  "Cls",
 		token.T_38:  "Intf",
 		token.T_41:  "]",
+		token.T_42:  "^",
 		token.T_43:  "^=",
 		token.T_44:  "abstract",
 		token.T_50:  "boolean",

@@ -7,7 +7,7 @@ import (
 )
 
 // Should match
-const ab = "A=B C=D"
+const ab = "
 
 const ri = "R = I O E E = I N"
 
@@ -22,7 +22,7 @@ func parse(s []rune) bool {
 		return false
 	}
 	// check that root covers whole input
-	root := bsrSet.GetRoots()
+	root := bsrSet.GetRoot()
 	return root.RightExtent() == bsrSet.GetRightExtent()
 }
 

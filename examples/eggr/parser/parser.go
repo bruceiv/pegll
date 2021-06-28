@@ -131,15 +131,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.CharClass0R4, cU, p.cI)
 		case slot.CharClass0R4: // CharClass : [ UnclosedChars ] WS ∙
 
-<<<<<<< HEAD
-			if p.follow(symbols.NT_CharClass) {
-				p.rtn(symbols.NT_CharClass, cU, p.cI)
-			} else {
-				p.parseError(slot.CharClass0R0, p.cI, followSets[symbols.NT_CharClass])
-			}
-=======
 			p.rtn(symbols.NT_CharClass, cU, p.cI)
->>>>>>> 564748ec1ab5add9adf49a316621b27087a81d71
 		case slot.CharLiteral0R0: // CharLiteral : ∙sQuote Character sQuote
 
 			p.bsrSet.Add(slot.CharLiteral0R1, cU, p.cI, p.cI+1)
@@ -1344,26 +1336,15 @@ var first = []map[token.Type]string{
 	},
 	// Expression : Primary ∙OptStarPlus
 	{
-<<<<<<< HEAD
-		token.T_3:  "*",
-		token.T_4:  "+",
-		token.T_8:  "?",
-=======
->>>>>>> 564748ec1ab5add9adf49a316621b27087a81d71
 		token.T_0:  "!",
 		token.EOF:  "$",
 		token.T_1:  "&",
 		token.T_2:  "(",
-<<<<<<< HEAD
-		token.T_5:  ".",
-		token.T_6:  ";",
-=======
 		token.T_3:  "*",
 		token.T_4:  "+",
 		token.T_5:  ".",
 		token.T_6:  ";",
 		token.T_8:  "?",
->>>>>>> 564748ec1ab5add9adf49a316621b27087a81d71
 		token.T_9:  "[",
 		token.T_11: "blockComment",
 		token.T_12: "dQuote",
@@ -1407,14 +1388,6 @@ var first = []map[token.Type]string{
 	},
 	// Grammar : WS Rule ∙RepRule0x
 	{
-<<<<<<< HEAD
-		token.T_6:  ";",
-		token.T_11: "blockComment",
-		token.T_15: "let",
-		token.T_16: "lineComment",
-		token.T_22: "space",
-=======
->>>>>>> 564748ec1ab5add9adf49a316621b27087a81d71
 		token.EOF:  "$",
 		token.T_6:  ";",
 		token.T_11: "blockComment",
@@ -2040,25 +2013,6 @@ var first = []map[token.Type]string{
 	// RepExpr0x : Expression ∙RepExpr0x
 	{
 		token.T_0:  "!",
-<<<<<<< HEAD
-		token.T_1:  "&",
-		token.T_2:  "(",
-		token.T_5:  ".",
-		token.T_6:  ";",
-		token.T_9:  "[",
-		token.T_11: "blockComment",
-		token.T_12: "dQuote",
-		token.T_15: "let",
-		token.T_16: "lineComment",
-		token.T_21: "sQuote",
-		token.T_22: "space",
-		token.EOF:  "$",
-		token.T_2:  "(",
-		token.T_6:  ";",
-		token.T_11: "blockComment",
-		token.T_15: "let",
-		token.T_16: "lineComment",
-=======
 		token.EOF:  "$",
 		token.T_1:  "&",
 		token.T_2:  "(",
@@ -2070,7 +2024,6 @@ var first = []map[token.Type]string{
 		token.T_15: "let",
 		token.T_16: "lineComment",
 		token.T_21: "sQuote",
->>>>>>> 564748ec1ab5add9adf49a316621b27087a81d71
 		token.T_22: "space",
 		token.T_23: "|",
 	},
@@ -2156,14 +2109,6 @@ var first = []map[token.Type]string{
 	},
 	// RepRule0x : Rule ∙RepRule0x
 	{
-<<<<<<< HEAD
-		token.T_6:  ";",
-		token.T_11: "blockComment",
-		token.T_15: "let",
-		token.T_16: "lineComment",
-		token.T_22: "space",
-=======
->>>>>>> 564748ec1ab5add9adf49a316621b27087a81d71
 		token.EOF:  "$",
 		token.T_6:  ";",
 		token.T_11: "blockComment",
@@ -2261,25 +2206,6 @@ var first = []map[token.Type]string{
 	// Sequence : Expression ∙RepExpr0x
 	{
 		token.T_0:  "!",
-<<<<<<< HEAD
-		token.T_1:  "&",
-		token.T_2:  "(",
-		token.T_5:  ".",
-		token.T_6:  ";",
-		token.T_9:  "[",
-		token.T_11: "blockComment",
-		token.T_12: "dQuote",
-		token.T_15: "let",
-		token.T_16: "lineComment",
-		token.T_21: "sQuote",
-		token.T_22: "space",
-		token.EOF:  "$",
-		token.T_2:  "(",
-		token.T_6:  ";",
-		token.T_11: "blockComment",
-		token.T_15: "let",
-		token.T_16: "lineComment",
-=======
 		token.EOF:  "$",
 		token.T_1:  "&",
 		token.T_2:  "(",
@@ -2291,7 +2217,6 @@ var first = []map[token.Type]string{
 		token.T_15: "let",
 		token.T_16: "lineComment",
 		token.T_21: "sQuote",
->>>>>>> 564748ec1ab5add9adf49a316621b27087a81d71
 		token.T_22: "space",
 		token.T_23: "|",
 	},
@@ -2336,15 +2261,9 @@ var first = []map[token.Type]string{
 	},
 	// String : Character ∙String
 	{
-<<<<<<< HEAD
-		token.T_14: "esc",
-		token.T_18: "notQuotesEsc",
-		token.T_12: "dQuote",
-=======
 		token.T_12: "dQuote",
 		token.T_14: "esc",
 		token.T_18: "notQuotesEsc",
->>>>>>> 564748ec1ab5add9adf49a316621b27087a81d71
 	},
 	// String : Character String ∙
 	{
@@ -2415,13 +2334,8 @@ var first = []map[token.Type]string{
 	},
 	// UnclosedChars : UnclosedChar ∙UnclosedChars
 	{
-<<<<<<< HEAD
-		token.T_19: "notSqBk",
-		token.T_10: "]",
-=======
 		token.T_10: "]",
 		token.T_19: "notSqBk",
->>>>>>> 564748ec1ab5add9adf49a316621b27087a81d71
 	},
 	// UnclosedChars : UnclosedChar UnclosedChars ∙
 	{

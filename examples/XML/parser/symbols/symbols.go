@@ -58,6 +58,10 @@ const(
 	NT_XMLDecl 
 )
 
+const NumNTs = 42
+
+type NTs []NT
+
 // T is the type of terminals symbols
 type T int
 const( 
@@ -115,6 +119,10 @@ func (nt NT) String() string {
 
 func (t T) String() string {
 	return tToString[t]
+}
+
+func (nt NT) LeftRec() NTs {
+	return leftRec[nt]
 }
 
 var ntToString = []string { 
@@ -236,4 +244,49 @@ var stringNT = map[string]NT{
 	"VersionInfo":NT_VersionInfo,
 	"VersionNum":NT_VersionNum,
 	"XMLDecl":NT_XMLDecl,
+}
+
+var leftRec = map[NT]NTs { 
+	NT_ATT_VALUE: NTs {  },
+	NT_Attribute: NTs {  NT_NAME,  NT_LetColonAlts,  },
+	NT_CHAR_REF: NTs {  },
+	NT_COMMENT: NTs {  NT_ComStart,  },
+	NT_ComEnterior: NTs {  NT_DubDash,  },
+	NT_ComStart: NTs {  },
+	NT_Content: NTs {  NT_ComStart,  NT_Element,  NT_REFERENCE,  NT_ENTITY_REF,  NT_CHAR_REF,  NT_ContentAlts,  NT_COMMENT,  },
+	NT_ContentAlts: NTs {  NT_ComStart,  NT_Element,  NT_REFERENCE,  NT_ENTITY_REF,  NT_CHAR_REF,  NT_COMMENT,  },
+	NT_Document: NTs {  NT_Misc,  NT_COMMENT,  NT_ComStart,  NT_OptXMLDecl,  NT_XMLDecl,  NT_RepMisc0x,  NT_Element,  NT_Prolog,  },
+	NT_DubCondClose: NTs {  NT_SymRefAlts,  NT_REFERENCE,  NT_ENTITY_REF,  NT_CHAR_REF,  },
+	NT_DubDash: NTs {  },
+	NT_ENTITY_REF: NTs {  },
+	NT_ElemCloseAlts: NTs {  },
+	NT_Element: NTs {  },
+	NT_EncName: NTs {  },
+	NT_EncodingDecl: NTs {  },
+	NT_Eq: NTs {  },
+	NT_Hex: NTs {  NT_HexAlts,  },
+	NT_HexAlts: NTs {  },
+	NT_LetColonAlts: NTs {  },
+	NT_LetDigSymAlts: NTs {  },
+	NT_Misc: NTs {  NT_COMMENT,  NT_ComStart,  },
+	NT_NAME: NTs {  NT_LetColonAlts,  },
+	NT_NAME_CHAR: NTs {  },
+	NT_NameCharRep: NTs {  NT_NAME_CHAR,  },
+	NT_OptEncodDecl: NTs {  NT_EncodingDecl,  },
+	NT_OptXMLDecl: NTs {  NT_XMLDecl,  },
+	NT_Prolog: NTs {  NT_XMLDecl,  NT_RepMisc0x,  NT_Misc,  NT_COMMENT,  NT_ComStart,  NT_OptXMLDecl,  },
+	NT_QuoEncNam: NTs {  },
+	NT_QuoVerNum: NTs {  },
+	NT_REFERENCE: NTs {  NT_ENTITY_REF,  NT_CHAR_REF,  },
+	NT_RepHexAlts0x: NTs {  NT_HexAlts,  },
+	NT_RepLDSAlts0x: NTs {  NT_LetDigSymAlts,  },
+	NT_RepMisc0x: NTs {  NT_Misc,  NT_COMMENT,  NT_ComStart,  },
+	NT_RepNameChar0x: NTs {  NT_NAME_CHAR,  },
+	NT_RepSAttx0x: NTs {  NT_SAtt,  },
+	NT_SAtt: NTs {  },
+	NT_SinCondClose: NTs {  NT_SymRefAlts,  NT_REFERENCE,  NT_ENTITY_REF,  NT_CHAR_REF,  },
+	NT_SymRefAlts: NTs {  NT_ENTITY_REF,  NT_CHAR_REF,  NT_REFERENCE,  },
+	NT_VersionInfo: NTs {  },
+	NT_VersionNum: NTs {  NT_NAME_CHAR,  },
+	NT_XMLDecl: NTs {  },
 }
