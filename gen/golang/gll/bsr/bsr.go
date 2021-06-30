@@ -683,7 +683,6 @@ func (s *Set) FilterByOrderedChoice() {
 		// keep going over the list of nonterminals until all of them are
 		// finished for this input index
 		// TODO should pre-generate a topologically-sorted slice
-		// TODO don't filter unordered nonterminals
 		finished := make(map[symbols.NT]bool)
 		for len(finished) < symbols.NumNTs {
 			for ni := 0; ni < symbols.NumNTs; ni++ {
