@@ -61,6 +61,10 @@ func (nt NT) LeftRec() NTs {
 	return leftRec[nt]
 }
 
+func (nt NT) IsOrdered() bool {
+	return ordered[nt]
+}
+
 var ntToString = []string { 
 	"AorB", /* NT_AorB */
 	"AxBC", /* NT_AxBC */
@@ -83,4 +87,9 @@ var leftRec = map[NT]NTs {
 	NT_AorB: NTs {  NT_Repa0x,  },
 	NT_AxBC: NTs {  NT_AorB,  NT_Repa0x,  },
 	NT_Repa0x: NTs {  },
+}
+
+var ordered = map[NT]bool { 
+	NT_AorB:true,
+	NT_Repa0x:true,
 }

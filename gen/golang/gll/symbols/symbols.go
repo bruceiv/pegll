@@ -21,14 +21,15 @@ import (
 	"text/template"
 
 	"github.com/goccmack/gogll/ast"
-	"github.com/goccmack/goutil/ioutil"
 	"github.com/goccmack/gogll/frstflw"
+	"github.com/goccmack/goutil/ioutil"
 )
 
 type Data struct {
 	NonTerminals []string
 	Terminals    []string
 	LeftRec      map[string][]string
+	Ordered      map[string]bool
 }
 
 func Gen(fname string, g *ast.GoGLL, ff *frstflw.FF) {
@@ -54,10 +55,18 @@ func getData(g *ast.GoGLL, ff *frstflw.FF) *Data {
 		lrs[nt] = ff.LeftRec(nt).Elements()
 	}
 
+	nto := make(map[string]bool)
+	for _, r := range g.SyntaxRules {
+		if r.IsOrdered {
+			nto[r.ID()] = true
+		}
+	}
+
 	return &Data{
 		NonTerminals: nts,
 		Terminals:    ts,
 		LeftRec:      lrs,
+		Ordered:      nto,
 	}
 }
 
@@ -124,6 +133,10 @@ func (nt NT) LeftRec() NTs {
 	return leftRec[nt]
 }
 
+func (nt NT) IsOrdered() bool {
+	return ordered[nt]
+}
+
 var ntToString = []string { {{range $nt := .NonTerminals}}
 	"{{$nt}}", /* NT_{{$nt}} */{{end}} 
 }
@@ -138,5 +151,9 @@ var stringNT = map[string]NT{ {{range $i, $sym := .NonTerminals}}
 
 var leftRec = map[NT]NTs { {{range $sym, $lrs := .LeftRec}}
 	NT_{{$sym}}: NTs { {{range $i, $l := $lrs}} NT_{{$l}}, {{end}} },{{end}}
+}
+
+var ordered = map[NT]bool { {{range $sym, $ord := .Ordered}}
+	NT_{{$sym}}:{{$ord}},{{end}}
 }
 `
