@@ -17,6 +17,10 @@ limitations under the License.
 
 package ast
 
+import (
+	"github.com/goccmack/gogll/token"
+)
+
 // The syntax part of the AST
 
 type SyntaxAlternate struct {
@@ -41,11 +45,37 @@ type SyntaxSymbol interface {
 	String() string
 }
 
-func (*NT) isSyntaxSymbol() {}
+// A lookahead expression
+type Lookahead struct {
+	// operator for expression
+	Op *token.Token
+	// operator subexpression. (should not be lookahead)
+	Expr SyntaxSymbol
+}
+
+func (*NT) isSyntaxSymbol()        {}
+func (*Lookahead) isSyntaxSymbol() {}
 
 // Terminals
 func (*TokID) isSyntaxSymbol()     {}
 func (*StringLit) isSyntaxSymbol() {}
+
+func (e *Lookahead) Lext() int {
+	return e.Op.Lext()
+}
+
+func (e *Lookahead) ID() string {
+	return e.Op.LiteralString() + e.Expr.ID()
+}
+
+func (e *Lookahead) String() string {
+	return e.Op.LiteralString() + e.Expr.String()
+}
+
+// true for positive (&) lookahead, false for negative (!) lookahead
+func (e *Lookahead) Positive() bool {
+	return e.Op.LiteralString() == "&"
+}
 
 func (a *SyntaxAlternate) GetSymbols() []string {
 	symbols := make([]string, len(a.Symbols))

@@ -390,8 +390,26 @@ func (bld *builder) syntaxRule(b bsr.BSR) brule {
 	}
 }
 
-// SyntaxSymbol : nt | tokid | string_lit ;
+// SyntaxSymbol
+//     : "&" SyntaxAtom
+//     | "!" SyntaxAtom
+//     | SyntaxAtom
+//     ;
 func (bld *builder) symbol(b bsr.BSR) SyntaxSymbol {
+	switch b.Alternate() {
+	case 0, 1:
+		return &Lookahead{
+			Op:   b.GetTChildI(0),
+			Expr: bld.atom(b.GetNTChildI(1)),
+		}
+	case 2:
+		return bld.atom(b.GetNTChildI(0))
+	}
+	panic(fmt.Sprintf("invalid alternate %d", b.Alternate()))
+}
+
+// SyntaxAtom : nt | tokid | string_lit ;
+func (bld *builder) atom(b bsr.BSR) SyntaxSymbol {
 	switch b.Alternate() {
 	case 0:
 		return bld.nt(b.GetTChildI(0))
@@ -403,7 +421,7 @@ func (bld *builder) symbol(b bsr.BSR) SyntaxSymbol {
 	panic(fmt.Sprintf("invalid alternate %d", b.Alternate()))
 }
 
-// SyntaxSyntaxSymbols
+// SyntaxSymbols
 //     :   SyntaxSymbol
 //     |   SyntaxSymbol SyntaxSymbols
 //     ;
