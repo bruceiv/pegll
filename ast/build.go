@@ -55,6 +55,7 @@ func Build(root bsr.BSR, l *lexer.Lexer) *GoGLL {
 	gogll.NonTerminals = bld.nonTerminals(gogll.SyntaxRules)
 	gogll.StringLiterals = bld.getStringLiterals(gogll.SyntaxRules)
 	gogll.Terminals = bld.terminals(gogll, gogll.GetStringLiterals())
+	gogll.Lookaheads = bld.lookaheads(gogll)
 	return gogll
 }
 
@@ -120,6 +121,20 @@ func (bld *builder) terminals(g *GoGLL, stringLiterals []string) *stringset.Stri
 	terminals := bld.getLexRuleIDs(g.LexRules)
 	terminals.Add(stringLiterals...)
 	return terminals
+}
+
+func (bld *builder) lookaheads(g *GoGLL) *stringset.StringSet {
+	ls := stringset.New()
+	for _, r := range g.SyntaxRules {
+		for _, a := range r.Alternates {
+			for _, s := range a.Symbols {
+				if l, ok := s.(*Lookahead); ok {
+					ls.Add(l.ID())
+				}
+			}
+		}
+	}
+	return ls
 }
 
 func (bld *builder) getLexRuleIDs(rules []*LexRule) *stringset.StringSet {

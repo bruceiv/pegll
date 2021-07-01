@@ -30,6 +30,7 @@ type GoGLL struct {
 	SyntaxRules    []*SyntaxRule
 	Terminals      *stringset.StringSet
 	NonTerminals   *stringset.StringSet
+	Lookaheads     *stringset.StringSet
 	StringLiterals map[string]*StringLit
 }
 
@@ -85,7 +86,10 @@ func (g *GoGLL) GetSyntaxRule(nt string) *SyntaxRule {
 }
 
 func (g *GoGLL) GetSymbols() []string {
-	return append(g.Terminals.Elements(), g.NonTerminals.Elements()...)
+	syms := make([]string, 0, g.Terminals.Len()+g.NonTerminals.Len()+g.Lookaheads.Len())
+	syms = append(syms, g.Terminals.Elements()...)
+	syms = append(syms, g.NonTerminals.Elements()...)
+	return append(syms, g.Lookaheads.Elements()...)
 }
 
 func (g *GoGLL) StartSymbol() string {
