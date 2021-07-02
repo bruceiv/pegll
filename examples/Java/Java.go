@@ -8,14 +8,14 @@ import (
 )
 
 //Should match
-const t1 = "class HelloWorld {
+const t1 = `class HelloWorld {
     public static void main(String[] args) {
         System.out.println("Hello, World!"); 
     }
-}"
+}`
 
 //Should fail to match
-const t2 = "println("Hello")"
+const t2 = `println("Hello")`
 
 func parse(s []rune) bool {
 	// run GLL parser
@@ -25,7 +25,7 @@ func parse(s []rune) bool {
 		return false
 	}
 	// check that root covers whole input
-	root := bsrSet.GetOrderedRoot()
+	root := bsrSet.GetRoot()
 	return root.RightExtent() == bsrSet.GetRightExtent()
 }
 

@@ -7,6 +7,7 @@ import(
 	"fmt"
 	
 	"JSON/parser/symbols"
+	"JSON/token"
 )
 
 type Label int
@@ -215,8 +216,25 @@ func (l Label) Symbols() symbols.Symbols {
 	return l.Slot().Symbols
 }
 
+func (l Label) IsNullable() bool {
+	return nullable[l]
+}
+
+func (l Label) FirstContains(typ token.Type) bool {
+	return firstT[l][typ]
+}
+
 func (s *Slot) EoR() bool {
 	return s.Pos >= len(s.Symbols)
+}
+
+func (s *Slot) Successor() *Slot {
+	if s.EoR() {
+		return nil
+	} else {
+		// TODO try slots[s.Label + 1]
+		return slots[slotIndex[Index{s.NT,s.Alt,s.Pos+1}]]
+	}
 }
 
 func (s *Slot) String() string {
@@ -1482,3 +1500,276 @@ var alternates = map[symbols.NT][]Label{
 	symbols.NT_LineOrBlock:[]Label{ LineOrBlock0R0,LineOrBlock1R0 },
 }
 
+var nullable = []bool { 
+	false, // Array0R0 
+	false, // Array0R1 
+	false, // Array0R2 
+	true, // Array0R3 
+	false, // CHAR0R0 
+	true, // CHAR0R1 
+	false, // CHAR1R0 
+	false, // CHAR1R1 
+	true, // CHAR1R2 
+	false, // COLON0R0 
+	true, // COLON0R1 
+	true, // COLON0R2 
+	false, // COMMA0R0 
+	true, // COMMA0R1 
+	true, // COMMA0R2 
+	false, // CharCode0R0 
+	true, // CharCode0R1 
+	false, // CharCode1R0 
+	false, // CharCode1R1 
+	false, // CharCode1R2 
+	false, // CharCode1R3 
+	false, // CharCode1R4 
+	true, // CharCode1R5 
+	false, // Elements0R0 
+	true, // Elements0R1 
+	true, // Elements0R2 
+	false, // EscOrComment0R0 
+	true, // EscOrComment0R1 
+	false, // EscOrComment1R0 
+	true, // EscOrComment1R1 
+	false, // FALSE0R0 
+	true, // FALSE0R1 
+	true, // FALSE0R2 
+	false, // HEX0R0 
+	true, // HEX0R1 
+	false, // HEX1R0 
+	true, // HEX1R1 
+	false, // INT0R0 
+	false, // INT0R1 
+	true, // INT0R2 
+	false, // Integers0R0 
+	true, // Integers0R1 
+	false, // Integers1R0 
+	true, // Integers1R1 
+	false, // JSON0R0 
+	false, // JSON0R1 
+	true, // JSON0R2 
+	false, // LBRACE0R0 
+	true, // LBRACE0R1 
+	true, // LBRACE0R2 
+	false, // LBRACKET0R0 
+	true, // LBRACKET0R1 
+	true, // LBRACKET0R2 
+	false, // LineOrBlock0R0 
+	true, // LineOrBlock0R1 
+	false, // LineOrBlock1R0 
+	true, // LineOrBlock1R1 
+	false, // Members0R0 
+	true, // Members0R1 
+	true, // Members0R2 
+	false, // NUL0R0 
+	true, // NUL0R1 
+	true, // NUL0R2 
+	false, // Number0R0 
+	true, // Number0R1 
+	true, // Number0R2 
+	true, // Number0R3 
+	true, // Number0R4 
+	false, // Object0R0 
+	false, // Object0R1 
+	false, // Object0R2 
+	true, // Object0R3 
+	false, // OptElem0R0 
+	true, // OptElem0R1 
+	true, // OptElem1R0 
+	false, // OptExp0R0 
+	true, // OptExp0R1 
+	true, // OptExp1R0 
+	false, // OptFrac0R0 
+	true, // OptFrac0R1 
+	true, // OptFrac1R0 
+	false, // OptMems0R0 
+	true, // OptMems0R1 
+	true, // OptMems1R0 
+	false, // Pair0R0 
+	false, // Pair0R1 
+	false, // Pair0R2 
+	true, // Pair0R3 
+	false, // RBRACE0R0 
+	true, // RBRACE0R1 
+	true, // RBRACE0R2 
+	false, // RBRACKET0R0 
+	true, // RBRACKET0R1 
+	true, // RBRACKET0R2 
+	false, // RepChar0x0R0 
+	true, // RepChar0x0R1 
+	true, // RepChar0x0R2 
+	true, // RepChar0x1R0 
+	false, // RepComPair0x0R0 
+	false, // RepComPair0x0R1 
+	true, // RepComPair0x0R2 
+	true, // RepComPair0x0R3 
+	true, // RepComPair0x1R0 
+	false, // RepComVal0x0R0 
+	false, // RepComVal0x0R1 
+	true, // RepComVal0x0R2 
+	true, // RepComVal0x0R3 
+	true, // RepComVal0x1R0 
+	false, // String0R0 
+	false, // String0R1 
+	false, // String0R2 
+	true, // String0R3 
+	true, // String0R4 
+	false, // TRUE0R0 
+	true, // TRUE0R1 
+	true, // TRUE0R2 
+	false, // Value0R0 
+	true, // Value0R1 
+	false, // Value1R0 
+	true, // Value1R1 
+	false, // Value2R0 
+	true, // Value2R1 
+	false, // Value3R0 
+	true, // Value3R1 
+	false, // Value4R0 
+	true, // Value4R1 
+	false, // Value5R0 
+	true, // Value5R1 
+	false, // Value6R0 
+	true, // Value6R1 
+	false, // WS0R0 
+	true, // WS0R1 
+	true, // WS0R2 
+	true, // WS1R0 
+}
+
+var firstT = []map[token.Type]bool { 
+	{  token.T_2: true,  }, // Array0R0 
+	{  token.T_20: true,  token.T_18: true,  token.T_19: true,  token.T_2: true,  token.T_13: true,  token.T_8: true,  token.T_23: true,  token.T_3: true,  }, // Array0R1 
+	{  token.T_3: true,  }, // Array0R2 
+	{  }, // Array0R3 
+	{  token.T_7: true,  }, // CHAR0R0 
+	{  }, // CHAR0R1 
+	{  token.T_5: true,  }, // CHAR1R0 
+	{  token.T_9: true,  token.T_21: true,  }, // CHAR1R1 
+	{  }, // CHAR1R2 
+	{  token.T_1: true,  }, // COLON0R0 
+	{  token.T_10: true,  token.T_16: true,  token.T_6: true,  }, // COLON0R1 
+	{  }, // COLON0R2 
+	{  token.T_0: true,  }, // COMMA0R0 
+	{  token.T_10: true,  token.T_16: true,  token.T_6: true,  }, // COMMA0R1 
+	{  }, // COMMA0R2 
+	{  token.T_9: true,  }, // CharCode0R0 
+	{  }, // CharCode0R1 
+	{  token.T_21: true,  }, // CharCode1R0 
+	{  token.T_19: true,  token.T_4: true,  }, // CharCode1R1 
+	{  token.T_19: true,  token.T_4: true,  }, // CharCode1R2 
+	{  token.T_4: true,  token.T_19: true,  }, // CharCode1R3 
+	{  token.T_19: true,  token.T_4: true,  }, // CharCode1R4 
+	{  }, // CharCode1R5 
+	{  token.T_18: true,  token.T_8: true,  token.T_19: true,  token.T_23: true,  token.T_2: true,  token.T_20: true,  token.T_13: true,  }, // Elements0R0 
+	{  token.T_0: true,  }, // Elements0R1 
+	{  }, // Elements0R2 
+	{  token.T_10: true,  }, // EscOrComment0R0 
+	{  }, // EscOrComment0R1 
+	{  token.T_16: true,  token.T_6: true,  }, // EscOrComment1R0 
+	{  }, // EscOrComment1R1 
+	{  token.T_13: true,  }, // FALSE0R0 
+	{  token.T_16: true,  token.T_6: true,  token.T_10: true,  }, // FALSE0R1 
+	{  }, // FALSE0R2 
+	{  token.T_19: true,  }, // HEX0R0 
+	{  }, // HEX0R1 
+	{  token.T_4: true,  }, // HEX1R0 
+	{  }, // HEX1R1 
+	{  token.T_19: true,  }, // INT0R0 
+	{  token.T_15: true,  token.T_22: true,  }, // INT0R1 
+	{  }, // INT0R2 
+	{  token.T_15: true,  }, // Integers0R0 
+	{  }, // Integers0R1 
+	{  token.T_22: true,  }, // Integers1R0 
+	{  }, // Integers1R1 
+	{  token.T_6: true,  token.T_10: true,  token.T_16: true,  token.T_23: true,  }, // JSON0R0 
+	{  token.T_23: true,  }, // JSON0R1 
+	{  }, // JSON0R2 
+	{  token.T_23: true,  }, // LBRACE0R0 
+	{  token.T_10: true,  token.T_16: true,  token.T_6: true,  }, // LBRACE0R1 
+	{  }, // LBRACE0R2 
+	{  token.T_2: true,  }, // LBRACKET0R0 
+	{  token.T_6: true,  token.T_10: true,  token.T_16: true,  }, // LBRACKET0R1 
+	{  }, // LBRACKET0R2 
+	{  token.T_16: true,  }, // LineOrBlock0R0 
+	{  }, // LineOrBlock0R1 
+	{  token.T_6: true,  }, // LineOrBlock1R0 
+	{  }, // LineOrBlock1R1 
+	{  token.T_8: true,  }, // Members0R0 
+	{  token.T_0: true,  }, // Members0R1 
+	{  }, // Members0R2 
+	{  token.T_18: true,  }, // NUL0R0 
+	{  token.T_10: true,  token.T_16: true,  token.T_6: true,  }, // NUL0R1 
+	{  }, // NUL0R2 
+	{  token.T_19: true,  }, // Number0R0 
+	{  token.T_12: true,  token.T_10: true,  token.T_16: true,  token.T_6: true,  token.T_14: true,  }, // Number0R1 
+	{  token.T_10: true,  token.T_16: true,  token.T_6: true,  token.T_12: true,  }, // Number0R2 
+	{  token.T_16: true,  token.T_6: true,  token.T_10: true,  }, // Number0R3 
+	{  }, // Number0R4 
+	{  token.T_23: true,  }, // Object0R0 
+	{  token.T_8: true,  token.T_24: true,  }, // Object0R1 
+	{  token.T_24: true,  }, // Object0R2 
+	{  }, // Object0R3 
+	{  token.T_2: true,  token.T_20: true,  token.T_13: true,  token.T_18: true,  token.T_8: true,  token.T_19: true,  token.T_23: true,  }, // OptElem0R0 
+	{  }, // OptElem0R1 
+	{  }, // OptElem1R0 
+	{  token.T_12: true,  }, // OptExp0R0 
+	{  }, // OptExp0R1 
+	{  }, // OptExp1R0 
+	{  token.T_14: true,  }, // OptFrac0R0 
+	{  }, // OptFrac0R1 
+	{  }, // OptFrac1R0 
+	{  token.T_8: true,  }, // OptMems0R0 
+	{  }, // OptMems0R1 
+	{  }, // OptMems1R0 
+	{  token.T_8: true,  }, // Pair0R0 
+	{  token.T_1: true,  }, // Pair0R1 
+	{  token.T_23: true,  token.T_2: true,  token.T_20: true,  token.T_13: true,  token.T_18: true,  token.T_8: true,  token.T_19: true,  }, // Pair0R2 
+	{  }, // Pair0R3 
+	{  token.T_24: true,  }, // RBRACE0R0 
+	{  token.T_16: true,  token.T_6: true,  token.T_10: true,  }, // RBRACE0R1 
+	{  }, // RBRACE0R2 
+	{  token.T_3: true,  }, // RBRACKET0R0 
+	{  token.T_6: true,  token.T_10: true,  token.T_16: true,  }, // RBRACKET0R1 
+	{  }, // RBRACKET0R2 
+	{  token.T_7: true,  token.T_5: true,  }, // RepChar0x0R0 
+	{  token.T_5: true,  token.T_7: true,  }, // RepChar0x0R1 
+	{  }, // RepChar0x0R2 
+	{  }, // RepChar0x1R0 
+	{  token.T_0: true,  }, // RepComPair0x0R0 
+	{  token.T_8: true,  }, // RepComPair0x0R1 
+	{  token.T_0: true,  }, // RepComPair0x0R2 
+	{  }, // RepComPair0x0R3 
+	{  }, // RepComPair0x1R0 
+	{  token.T_0: true,  }, // RepComVal0x0R0 
+	{  token.T_18: true,  token.T_8: true,  token.T_19: true,  token.T_23: true,  token.T_2: true,  token.T_20: true,  token.T_13: true,  }, // RepComVal0x0R1 
+	{  token.T_0: true,  }, // RepComVal0x0R2 
+	{  }, // RepComVal0x0R3 
+	{  }, // RepComVal0x1R0 
+	{  token.T_8: true,  }, // String0R0 
+	{  token.T_5: true,  token.T_8: true,  token.T_7: true,  }, // String0R1 
+	{  token.T_8: true,  }, // String0R2 
+	{  token.T_10: true,  token.T_16: true,  token.T_6: true,  }, // String0R3 
+	{  }, // String0R4 
+	{  token.T_20: true,  }, // TRUE0R0 
+	{  token.T_16: true,  token.T_6: true,  token.T_10: true,  }, // TRUE0R1 
+	{  }, // TRUE0R2 
+	{  token.T_8: true,  }, // Value0R0 
+	{  }, // Value0R1 
+	{  token.T_19: true,  }, // Value1R0 
+	{  }, // Value1R1 
+	{  token.T_23: true,  }, // Value2R0 
+	{  }, // Value2R1 
+	{  token.T_2: true,  }, // Value3R0 
+	{  }, // Value3R1 
+	{  token.T_20: true,  }, // Value4R0 
+	{  }, // Value4R1 
+	{  token.T_13: true,  }, // Value5R0 
+	{  }, // Value5R1 
+	{  token.T_18: true,  }, // Value6R0 
+	{  }, // Value6R1 
+	{  token.T_6: true,  token.T_10: true,  token.T_16: true,  }, // WS0R0 
+	{  token.T_16: true,  token.T_6: true,  token.T_10: true,  }, // WS0R1 
+	{  }, // WS0R2 
+	{  }, // WS1R0 
+}

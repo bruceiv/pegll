@@ -31,6 +31,7 @@ const(
 	CharLiteral0R1
 	CharLiteral0R2
 	CharLiteral0R3
+	CharLiteral0R4
 	Character0R0
 	Character0R1
 	Character1R0
@@ -403,7 +404,8 @@ var slots = map[Label]*Slot{
 		symbols.Symbols{  
 			symbols.T_21, 
 			symbols.NT_Character, 
-			symbols.T_21,
+			symbols.T_21, 
+			symbols.NT_WS,
 		}, 
 		CharLiteral0R0, 
 	},
@@ -412,7 +414,8 @@ var slots = map[Label]*Slot{
 		symbols.Symbols{  
 			symbols.T_21, 
 			symbols.NT_Character, 
-			symbols.T_21,
+			symbols.T_21, 
+			symbols.NT_WS,
 		}, 
 		CharLiteral0R1, 
 	},
@@ -421,7 +424,8 @@ var slots = map[Label]*Slot{
 		symbols.Symbols{  
 			symbols.T_21, 
 			symbols.NT_Character, 
-			symbols.T_21,
+			symbols.T_21, 
+			symbols.NT_WS,
 		}, 
 		CharLiteral0R2, 
 	},
@@ -430,35 +434,46 @@ var slots = map[Label]*Slot{
 		symbols.Symbols{  
 			symbols.T_21, 
 			symbols.NT_Character, 
-			symbols.T_21,
+			symbols.T_21, 
+			symbols.NT_WS,
 		}, 
 		CharLiteral0R3, 
+	},
+	CharLiteral0R4: {
+		symbols.NT_CharLiteral, 0, 4, 
+		symbols.Symbols{  
+			symbols.T_21, 
+			symbols.NT_Character, 
+			symbols.T_21, 
+			symbols.NT_WS,
+		}, 
+		CharLiteral0R4, 
 	},
 	Character0R0: {
 		symbols.NT_Character, 0, 0, 
 		symbols.Symbols{  
-			symbols.T_18,
+			symbols.T_14,
 		}, 
 		Character0R0, 
 	},
 	Character0R1: {
 		symbols.NT_Character, 0, 1, 
 		symbols.Symbols{  
-			symbols.T_18,
+			symbols.T_14,
 		}, 
 		Character0R1, 
 	},
 	Character1R0: {
 		symbols.NT_Character, 1, 0, 
 		symbols.Symbols{  
-			symbols.T_14,
+			symbols.T_18,
 		}, 
 		Character1R0, 
 	},
 	Character1R1: {
 		symbols.NT_Character, 1, 1, 
 		symbols.Symbols{  
-			symbols.T_14,
+			symbols.T_18,
 		}, 
 		Character1R1, 
 	},
@@ -1543,6 +1558,7 @@ var slotIndex = map[Index]Label {
 	Index{ symbols.NT_CharLiteral,0,1 }: CharLiteral0R1,
 	Index{ symbols.NT_CharLiteral,0,2 }: CharLiteral0R2,
 	Index{ symbols.NT_CharLiteral,0,3 }: CharLiteral0R3,
+	Index{ symbols.NT_CharLiteral,0,4 }: CharLiteral0R4,
 	Index{ symbols.NT_Character,0,0 }: Character0R0,
 	Index{ symbols.NT_Character,0,1 }: Character0R1,
 	Index{ symbols.NT_Character,1,0 }: Character1R0,
@@ -1741,7 +1757,8 @@ var nullable = []bool {
 	false, // CharLiteral0R0 
 	false, // CharLiteral0R1 
 	false, // CharLiteral0R2 
-	true, // CharLiteral0R3 
+	false, // CharLiteral0R3 
+	true, // CharLiteral0R4 
 	false, // Character0R0 
 	true, // Character0R1 
 	false, // Character1R0 
@@ -1885,83 +1902,84 @@ var nullable = []bool {
 
 var firstT = []map[token.Type]bool { 
 	{  token.T_1: true,  }, // AND0R0 
-	{  token.T_11: true,  token.T_16: true,  token.T_6: true,  token.T_22: true,  }, // AND0R1 
+	{  token.T_22: true,  token.T_16: true,  token.T_11: true,  token.T_6: true,  }, // AND0R1 
 	{  }, // AND0R2 
 	{  token.T_5: true,  }, // ANY0R0 
-	{  token.T_6: true,  token.T_22: true,  token.T_11: true,  token.T_16: true,  }, // ANY0R1 
+	{  token.T_22: true,  token.T_16: true,  token.T_11: true,  token.T_6: true,  }, // ANY0R1 
 	{  }, // ANY0R2 
 	{  token.T_2: true,  }, // CLOSE0R0 
-	{  token.T_6: true,  token.T_22: true,  token.T_11: true,  token.T_16: true,  }, // CLOSE0R1 
+	{  token.T_22: true,  token.T_16: true,  token.T_11: true,  token.T_6: true,  }, // CLOSE0R1 
 	{  }, // CLOSE0R2 
 	{  token.T_9: true,  }, // CharClass0R0 
 	{  token.T_19: true,  token.T_10: true,  }, // CharClass0R1 
 	{  token.T_10: true,  }, // CharClass0R2 
-	{  token.T_6: true,  token.T_22: true,  token.T_11: true,  token.T_16: true,  }, // CharClass0R3 
+	{  token.T_16: true,  token.T_11: true,  token.T_6: true,  token.T_22: true,  }, // CharClass0R3 
 	{  }, // CharClass0R4 
 	{  token.T_21: true,  }, // CharLiteral0R0 
-	{  token.T_18: true,  token.T_14: true,  }, // CharLiteral0R1 
+	{  token.T_14: true,  token.T_18: true,  }, // CharLiteral0R1 
 	{  token.T_21: true,  }, // CharLiteral0R2 
-	{  }, // CharLiteral0R3 
-	{  token.T_18: true,  }, // Character0R0 
+	{  token.T_11: true,  token.T_6: true,  token.T_22: true,  token.T_16: true,  }, // CharLiteral0R3 
+	{  }, // CharLiteral0R4 
+	{  token.T_14: true,  }, // Character0R0 
 	{  }, // Character0R1 
-	{  token.T_14: true,  }, // Character1R0 
+	{  token.T_18: true,  }, // Character1R0 
 	{  }, // Character1R1 
-	{  token.T_5: true,  token.T_11: true,  token.T_9: true,  token.T_21: true,  token.T_2: true,  token.T_16: true,  token.T_6: true,  token.T_1: true,  token.T_15: true,  token.T_22: true,  token.T_12: true,  token.T_0: true,  }, // Choice0R0 
+	{  token.T_9: true,  token.T_15: true,  token.T_2: true,  token.T_1: true,  token.T_6: true,  token.T_0: true,  token.T_22: true,  token.T_5: true,  token.T_11: true,  token.T_21: true,  token.T_12: true,  token.T_16: true,  }, // Choice0R0 
 	{  token.T_23: true,  }, // Choice0R1 
 	{  }, // Choice0R2 
 	{  token.T_6: true,  }, // EMPTY0R0 
-	{  token.T_6: true,  token.T_22: true,  token.T_11: true,  token.T_16: true,  }, // EMPTY0R1 
+	{  token.T_16: true,  token.T_11: true,  token.T_6: true,  token.T_22: true,  }, // EMPTY0R1 
 	{  }, // EMPTY0R2 
 	{  token.T_7: true,  }, // EQUAL0R0 
-	{  token.T_22: true,  token.T_11: true,  token.T_16: true,  token.T_6: true,  }, // EQUAL0R1 
+	{  token.T_22: true,  token.T_16: true,  token.T_11: true,  token.T_6: true,  }, // EQUAL0R1 
 	{  }, // EQUAL0R2 
 	{  token.T_1: true,  }, // Expression0R0 
-	{  token.T_15: true,  token.T_12: true,  token.T_21: true,  token.T_22: true,  token.T_2: true,  token.T_9: true,  token.T_5: true,  token.T_16: true,  token.T_6: true,  token.T_11: true,  }, // Expression0R1 
+	{  token.T_15: true,  token.T_21: true,  token.T_6: true,  token.T_2: true,  token.T_12: true,  token.T_11: true,  token.T_22: true,  token.T_16: true,  token.T_9: true,  token.T_5: true,  }, // Expression0R1 
 	{  }, // Expression0R2 
 	{  token.T_0: true,  }, // Expression1R0 
-	{  token.T_15: true,  token.T_2: true,  token.T_5: true,  token.T_22: true,  token.T_12: true,  token.T_16: true,  token.T_6: true,  token.T_9: true,  token.T_11: true,  token.T_21: true,  }, // Expression1R1 
+	{  token.T_9: true,  token.T_11: true,  token.T_6: true,  token.T_22: true,  token.T_12: true,  token.T_21: true,  token.T_16: true,  token.T_5: true,  token.T_15: true,  token.T_2: true,  }, // Expression1R1 
 	{  }, // Expression1R2 
-	{  token.T_11: true,  token.T_2: true,  token.T_16: true,  token.T_12: true,  token.T_21: true,  token.T_9: true,  token.T_5: true,  token.T_15: true,  token.T_22: true,  token.T_6: true,  }, // Expression2R0 
+	{  token.T_12: true,  token.T_21: true,  token.T_11: true,  token.T_6: true,  token.T_22: true,  token.T_9: true,  token.T_2: true,  token.T_15: true,  token.T_16: true,  token.T_5: true,  }, // Expression2R0 
 	{  token.T_8: true,  token.T_3: true,  token.T_4: true,  }, // Expression2R1 
 	{  }, // Expression2R2 
-	{  token.T_6: true,  token.T_22: true,  token.T_11: true,  token.T_16: true,  }, // Grammar0R0 
-	{  token.T_15: true,  token.T_22: true,  token.T_11: true,  token.T_16: true,  token.T_6: true,  }, // Grammar0R1 
-	{  token.T_22: true,  token.T_11: true,  token.T_16: true,  token.T_6: true,  token.T_15: true,  }, // Grammar0R2 
+	{  token.T_22: true,  token.T_16: true,  token.T_11: true,  token.T_6: true,  }, // Grammar0R0 
+	{  token.T_11: true,  token.T_6: true,  token.T_22: true,  token.T_15: true,  token.T_16: true,  }, // Grammar0R1 
+	{  token.T_15: true,  token.T_16: true,  token.T_11: true,  token.T_6: true,  token.T_22: true,  }, // Grammar0R2 
 	{  }, // Grammar0R3 
-	{  token.T_6: true,  token.T_15: true,  token.T_22: true,  token.T_11: true,  token.T_16: true,  }, // Identifier0R0 
-	{  token.T_22: true,  token.T_15: true,  token.T_20: true,  token.T_11: true,  token.T_16: true,  token.T_6: true,  }, // Identifier0R1 
-	{  token.T_22: true,  token.T_11: true,  token.T_16: true,  token.T_6: true,  }, // Identifier0R2 
+	{  token.T_11: true,  token.T_6: true,  token.T_22: true,  token.T_15: true,  token.T_16: true,  }, // Identifier0R0 
+	{  token.T_6: true,  token.T_22: true,  token.T_15: true,  token.T_20: true,  token.T_16: true,  token.T_11: true,  }, // Identifier0R1 
+	{  token.T_16: true,  token.T_11: true,  token.T_6: true,  token.T_22: true,  }, // Identifier0R2 
 	{  }, // Identifier0R3 
 	{  token.T_15: true,  }, // LetOrNum0R0 
 	{  }, // LetOrNum0R1 
 	{  token.T_20: true,  }, // LetOrNum1R0 
 	{  }, // LetOrNum1R1 
-	{  token.T_22: true,  token.T_11: true,  token.T_16: true,  token.T_6: true,  }, // LetOrNum2R0 
+	{  token.T_22: true,  token.T_16: true,  token.T_11: true,  token.T_6: true,  }, // LetOrNum2R0 
 	{  }, // LetOrNum2R1 
-	{  token.T_11: true,  token.T_16: true,  token.T_6: true,  token.T_22: true,  token.T_15: true,  token.T_20: true,  }, // LetOrNum0x0R0 
-	{  token.T_20: true,  token.T_11: true,  token.T_16: true,  token.T_6: true,  token.T_22: true,  token.T_15: true,  }, // LetOrNum0x0R1 
+	{  token.T_6: true,  token.T_22: true,  token.T_15: true,  token.T_20: true,  token.T_16: true,  token.T_11: true,  }, // LetOrNum0x0R0 
+	{  token.T_6: true,  token.T_22: true,  token.T_15: true,  token.T_20: true,  token.T_16: true,  token.T_11: true,  }, // LetOrNum0x0R1 
 	{  }, // LetOrNum0x0R2 
 	{  token.T_6: true,  }, // LetOrNum0x1R0 
 	{  }, // LetOrNum0x1R1 
 	{  token.T_15: true,  }, // LetWS0R0 
 	{  }, // LetWS0R1 
-	{  token.T_11: true,  token.T_16: true,  token.T_6: true,  token.T_22: true,  }, // LetWS1R0 
+	{  token.T_11: true,  token.T_6: true,  token.T_22: true,  token.T_16: true,  }, // LetWS1R0 
 	{  }, // LetWS1R1 
 	{  token.T_16: true,  }, // LineOrBlock0R0 
 	{  }, // LineOrBlock0R1 
 	{  token.T_11: true,  }, // LineOrBlock1R0 
 	{  }, // LineOrBlock1R1 
 	{  token.T_17: true,  }, // NEQUAL0R0 
-	{  token.T_11: true,  token.T_16: true,  token.T_6: true,  token.T_22: true,  }, // NEQUAL0R1 
+	{  token.T_6: true,  token.T_22: true,  token.T_16: true,  token.T_11: true,  }, // NEQUAL0R1 
 	{  }, // NEQUAL0R2 
 	{  token.T_0: true,  }, // NOT0R0 
-	{  token.T_11: true,  token.T_16: true,  token.T_6: true,  token.T_22: true,  }, // NOT0R1 
+	{  token.T_22: true,  token.T_16: true,  token.T_11: true,  token.T_6: true,  }, // NOT0R1 
 	{  }, // NOT0R2 
 	{  token.T_2: true,  }, // OPEN0R0 
-	{  token.T_22: true,  token.T_11: true,  token.T_16: true,  token.T_6: true,  }, // OPEN0R1 
+	{  token.T_11: true,  token.T_6: true,  token.T_22: true,  token.T_16: true,  }, // OPEN0R1 
 	{  }, // OPEN0R2 
 	{  token.T_8: true,  }, // OPT0R0 
-	{  token.T_16: true,  token.T_6: true,  token.T_22: true,  token.T_11: true,  }, // OPT0R1 
+	{  token.T_22: true,  token.T_16: true,  token.T_11: true,  token.T_6: true,  }, // OPT0R1 
 	{  }, // OPT0R2 
 	{  token.T_8: true,  }, // OptStarPlus0R0 
 	{  }, // OptStarPlus0R1 
@@ -1971,16 +1989,16 @@ var firstT = []map[token.Type]bool {
 	{  }, // OptStarPlus2R1 
 	{  }, // OptStarPlus3R0 
 	{  token.T_23: true,  }, // PIPE0R0 
-	{  token.T_22: true,  token.T_11: true,  token.T_16: true,  token.T_6: true,  }, // PIPE0R1 
+	{  token.T_11: true,  token.T_6: true,  token.T_22: true,  token.T_16: true,  }, // PIPE0R1 
 	{  }, // PIPE0R2 
 	{  token.T_4: true,  }, // PLUS0R0 
-	{  token.T_22: true,  token.T_11: true,  token.T_16: true,  token.T_6: true,  }, // PLUS0R1 
+	{  token.T_6: true,  token.T_22: true,  token.T_16: true,  token.T_11: true,  }, // PLUS0R1 
 	{  }, // PLUS0R2 
-	{  token.T_22: true,  token.T_11: true,  token.T_16: true,  token.T_6: true,  token.T_15: true,  }, // Primary0R0 
+	{  token.T_22: true,  token.T_15: true,  token.T_16: true,  token.T_11: true,  token.T_6: true,  }, // Primary0R0 
 	{  token.T_17: true,  }, // Primary0R1 
 	{  }, // Primary0R2 
 	{  token.T_2: true,  }, // Primary1R0 
-	{  token.T_2: true,  token.T_0: true,  token.T_6: true,  token.T_21: true,  token.T_12: true,  token.T_9: true,  token.T_5: true,  token.T_1: true,  token.T_22: true,  token.T_15: true,  token.T_11: true,  token.T_16: true,  }, // Primary1R1 
+	{  token.T_22: true,  token.T_5: true,  token.T_11: true,  token.T_21: true,  token.T_6: true,  token.T_9: true,  token.T_2: true,  token.T_0: true,  token.T_1: true,  token.T_16: true,  token.T_12: true,  token.T_15: true,  }, // Primary1R1 
 	{  token.T_2: true,  }, // Primary1R2 
 	{  }, // Primary1R3 
 	{  token.T_12: true,  }, // Primary2R0 
@@ -1993,41 +2011,41 @@ var firstT = []map[token.Type]bool {
 	{  }, // Primary5R1 
 	{  token.T_6: true,  }, // Primary6R0 
 	{  }, // Primary6R1 
-	{  token.T_15: true,  token.T_9: true,  token.T_6: true,  token.T_12: true,  token.T_16: true,  token.T_11: true,  token.T_22: true,  token.T_21: true,  token.T_5: true,  token.T_1: true,  token.T_0: true,  token.T_2: true,  }, // RepExpr0x0R0 
-	{  token.T_22: true,  token.T_9: true,  token.T_0: true,  token.T_6: true,  token.T_12: true,  token.T_2: true,  token.T_16: true,  token.T_1: true,  token.T_5: true,  token.T_15: true,  token.T_21: true,  token.T_11: true,  }, // RepExpr0x0R1 
+	{  token.T_0: true,  token.T_11: true,  token.T_22: true,  token.T_9: true,  token.T_1: true,  token.T_15: true,  token.T_5: true,  token.T_2: true,  token.T_21: true,  token.T_12: true,  token.T_16: true,  token.T_6: true,  }, // RepExpr0x0R0 
+	{  token.T_16: true,  token.T_12: true,  token.T_15: true,  token.T_2: true,  token.T_11: true,  token.T_22: true,  token.T_21: true,  token.T_0: true,  token.T_9: true,  token.T_1: true,  token.T_6: true,  token.T_5: true,  }, // RepExpr0x0R1 
 	{  }, // RepExpr0x0R2 
 	{  }, // RepExpr0x1R0 
 	{  token.T_23: true,  }, // RepPipedSeq0x0R0 
-	{  token.T_15: true,  token.T_6: true,  token.T_9: true,  token.T_22: true,  token.T_5: true,  token.T_11: true,  token.T_12: true,  token.T_0: true,  token.T_16: true,  token.T_1: true,  token.T_21: true,  token.T_2: true,  }, // RepPipedSeq0x0R1 
+	{  token.T_22: true,  token.T_5: true,  token.T_1: true,  token.T_0: true,  token.T_15: true,  token.T_2: true,  token.T_6: true,  token.T_16: true,  token.T_11: true,  token.T_21: true,  token.T_9: true,  token.T_12: true,  }, // RepPipedSeq0x0R1 
 	{  token.T_23: true,  }, // RepPipedSeq0x0R2 
 	{  }, // RepPipedSeq0x0R3 
 	{  }, // RepPipedSeq0x1R0 
-	{  token.T_15: true,  token.T_22: true,  token.T_11: true,  token.T_16: true,  token.T_6: true,  }, // RepRule0x0R0 
-	{  token.T_11: true,  token.T_16: true,  token.T_6: true,  token.T_15: true,  token.T_22: true,  }, // RepRule0x0R1 
+	{  token.T_11: true,  token.T_6: true,  token.T_22: true,  token.T_15: true,  token.T_16: true,  }, // RepRule0x0R0 
+	{  token.T_6: true,  token.T_22: true,  token.T_15: true,  token.T_16: true,  token.T_11: true,  }, // RepRule0x0R1 
 	{  }, // RepRule0x0R2 
 	{  }, // RepRule0x1R0 
-	{  token.T_11: true,  token.T_16: true,  token.T_6: true,  token.T_15: true,  token.T_22: true,  }, // Rule0R0 
+	{  token.T_16: true,  token.T_11: true,  token.T_6: true,  token.T_22: true,  token.T_15: true,  }, // Rule0R0 
 	{  token.T_7: true,  }, // Rule0R1 
-	{  token.T_5: true,  token.T_15: true,  token.T_9: true,  token.T_22: true,  token.T_0: true,  token.T_1: true,  token.T_2: true,  token.T_11: true,  token.T_12: true,  token.T_16: true,  token.T_21: true,  token.T_6: true,  }, // Rule0R2 
+	{  token.T_2: true,  token.T_0: true,  token.T_1: true,  token.T_16: true,  token.T_12: true,  token.T_21: true,  token.T_6: true,  token.T_5: true,  token.T_11: true,  token.T_15: true,  token.T_22: true,  token.T_9: true,  }, // Rule0R2 
 	{  }, // Rule0R3 
 	{  token.T_3: true,  }, // STAR0R0 
-	{  token.T_16: true,  token.T_6: true,  token.T_22: true,  token.T_11: true,  }, // STAR0R1 
+	{  token.T_22: true,  token.T_16: true,  token.T_11: true,  token.T_6: true,  }, // STAR0R1 
 	{  }, // STAR0R2 
-	{  token.T_15: true,  token.T_2: true,  token.T_11: true,  token.T_5: true,  token.T_1: true,  token.T_22: true,  token.T_16: true,  token.T_0: true,  token.T_9: true,  token.T_6: true,  token.T_12: true,  token.T_21: true,  }, // Sequence0R0 
-	{  token.T_11: true,  token.T_9: true,  token.T_12: true,  token.T_2: true,  token.T_16: true,  token.T_1: true,  token.T_21: true,  token.T_5: true,  token.T_22: true,  token.T_6: true,  token.T_0: true,  token.T_15: true,  }, // Sequence0R1 
+	{  token.T_9: true,  token.T_2: true,  token.T_0: true,  token.T_16: true,  token.T_15: true,  token.T_1: true,  token.T_11: true,  token.T_22: true,  token.T_21: true,  token.T_12: true,  token.T_6: true,  token.T_5: true,  }, // Sequence0R0 
+	{  token.T_6: true,  token.T_21: true,  token.T_5: true,  token.T_22: true,  token.T_2: true,  token.T_11: true,  token.T_12: true,  token.T_15: true,  token.T_16: true,  token.T_0: true,  token.T_9: true,  token.T_1: true,  }, // Sequence0R1 
 	{  }, // Sequence0R2 
 	{  token.T_22: true,  }, // SpaceOrComment0R0 
 	{  }, // SpaceOrComment0R1 
 	{  token.T_16: true,  token.T_11: true,  }, // SpaceOrComment1R0 
 	{  }, // SpaceOrComment1R1 
 	{  token.T_14: true,  token.T_18: true,  }, // String0R0 
-	{  token.T_18: true,  token.T_14: true,  }, // String0R1 
+	{  token.T_14: true,  token.T_18: true,  }, // String0R1 
 	{  }, // String0R2 
 	{  }, // String1R0 
 	{  token.T_12: true,  }, // StringLiteral0R0 
-	{  token.T_12: true,  token.T_18: true,  token.T_14: true,  }, // StringLiteral0R1 
+	{  token.T_18: true,  token.T_14: true,  token.T_12: true,  }, // StringLiteral0R1 
 	{  token.T_12: true,  }, // StringLiteral0R2 
-	{  token.T_16: true,  token.T_6: true,  token.T_22: true,  token.T_11: true,  }, // StringLiteral0R3 
+	{  token.T_6: true,  token.T_22: true,  token.T_16: true,  token.T_11: true,  }, // StringLiteral0R3 
 	{  }, // StringLiteral0R4 
 	{  token.T_19: true,  }, // UnclosedChar0R0 
 	{  token.T_14: true,  token.T_18: true,  }, // UnclosedChar0R1 
@@ -2036,8 +2054,8 @@ var firstT = []map[token.Type]bool {
 	{  token.T_19: true,  }, // UnclosedChars0R1 
 	{  }, // UnclosedChars0R2 
 	{  }, // UnclosedChars1R0 
-	{  token.T_11: true,  token.T_16: true,  token.T_22: true,  }, // WS0R0 
-	{  token.T_6: true,  token.T_22: true,  token.T_11: true,  token.T_16: true,  }, // WS0R1 
+	{  token.T_22: true,  token.T_16: true,  token.T_11: true,  }, // WS0R0 
+	{  token.T_16: true,  token.T_11: true,  token.T_6: true,  token.T_22: true,  }, // WS0R1 
 	{  }, // WS0R2 
 	{  token.T_6: true,  }, // WS1R0 
 	{  }, // WS1R1 

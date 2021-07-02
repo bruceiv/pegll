@@ -1,13 +1,13 @@
-cd// NEED TO IMPLEMENT
+// NEED TO IMPLEMENT
 package main
 
 import (
 	"fmt"
 	"os"
-	"testing"
 
 	"calc/lexer"
 	"calc/parser"
+	"testing"
 )
 
 //Should match

@@ -8,12 +8,14 @@ import (
 )
 
 //Should match
-const t1 = `<note>
-<to>Tove</to>
-<from>Jani</from>
-<heading>Reminder</heading>
-<body>Don't forget me this weekend!</body>
+const t1 = `<?xml version="1.0" encoding="UTF-8"?> 
+<note>
+<to> & Tove ; </to>
+<from> & Jani ; </from>
+<heading> & Reminder ; </heading>
+<body> & Don't forget me this weekend! ; </body>
 </note>`
+const t3 = `<?xml version="1.0" encoding="UTF-8"?> <note> & name ; </note>`
 
 //Should fail to match
 const t2 = `not XML ~~` //Infinite loop
@@ -41,4 +43,5 @@ func parseAndPrint(s string) {
 func main() {
 	parseAndPrint(t1)
 	//parseAndPrint(t2)
+	parseAndPrint(t3)
 }

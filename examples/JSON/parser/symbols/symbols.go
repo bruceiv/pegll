@@ -49,6 +49,10 @@ const(
 	NT_WS 
 )
 
+const NumNTs = 33
+
+type NTs []NT
+
 // T is the type of terminals symbols
 type T int
 const( 
@@ -103,6 +107,10 @@ func (nt NT) String() string {
 
 func (t T) String() string {
 	return tToString[t]
+}
+
+func (nt NT) LeftRec() NTs {
+	return leftRec[nt]
 }
 
 var ntToString = []string { 
@@ -203,4 +211,40 @@ var stringNT = map[string]NT{
 	"TRUE":NT_TRUE,
 	"Value":NT_Value,
 	"WS":NT_WS,
+}
+
+var leftRec = map[NT]NTs { 
+	NT_Array: NTs {  NT_LBRACKET,  },
+	NT_CHAR: NTs {  },
+	NT_COLON: NTs {  },
+	NT_COMMA: NTs {  },
+	NT_CharCode: NTs {  },
+	NT_Elements: NTs {  NT_Value,  NT_INT,  NT_LBRACKET,  NT_FALSE,  NT_NUL,  NT_Number,  NT_LBRACE,  NT_Object,  NT_Array,  NT_TRUE,  NT_String,  },
+	NT_EscOrComment: NTs {  NT_LineOrBlock,  },
+	NT_FALSE: NTs {  },
+	NT_HEX: NTs {  NT_Number,  NT_INT,  },
+	NT_INT: NTs {  },
+	NT_Integers: NTs {  },
+	NT_JSON: NTs {  NT_Object,  NT_LBRACE,  NT_WS,  NT_EscOrComment,  NT_LineOrBlock,  },
+	NT_LBRACE: NTs {  },
+	NT_LBRACKET: NTs {  },
+	NT_LineOrBlock: NTs {  },
+	NT_Members: NTs {  NT_Pair,  NT_String,  },
+	NT_NUL: NTs {  },
+	NT_Number: NTs {  NT_INT,  },
+	NT_Object: NTs {  NT_LBRACE,  },
+	NT_OptElem: NTs {  NT_Elements,  NT_Value,  NT_INT,  NT_LBRACKET,  NT_Number,  NT_String,  NT_LBRACE,  NT_FALSE,  NT_NUL,  NT_Object,  NT_Array,  NT_TRUE,  },
+	NT_OptExp: NTs {  },
+	NT_OptFrac: NTs {  },
+	NT_OptMems: NTs {  NT_Members,  NT_Pair,  NT_String,  },
+	NT_Pair: NTs {  NT_String,  },
+	NT_RBRACE: NTs {  },
+	NT_RBRACKET: NTs {  },
+	NT_RepChar0x: NTs {  NT_CHAR,  },
+	NT_RepComPair0x: NTs {  NT_COMMA,  },
+	NT_RepComVal0x: NTs {  NT_COMMA,  },
+	NT_String: NTs {  },
+	NT_TRUE: NTs {  },
+	NT_Value: NTs {  NT_Number,  NT_LBRACE,  NT_Array,  NT_TRUE,  NT_FALSE,  NT_NUL,  NT_String,  NT_Object,  NT_LBRACKET,  NT_INT,  },
+	NT_WS: NTs {  NT_EscOrComment,  NT_LineOrBlock,  },
 }

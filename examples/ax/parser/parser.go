@@ -69,11 +69,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 
 			p.bsrSet.Add(slot.Repa0x0R1, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_Repa0x) {
-				p.rtn(symbols.NT_Repa0x, cU, p.cI)
-			} else {
-				p.parseError(slot.Repa0x0R0, p.cI, followSets[symbols.NT_Repa0x])
-			}
+			p.rtn(symbols.NT_Repa0x, cU, p.cI)
 
 		default:
 			panic("This must not happen")
@@ -310,9 +306,9 @@ func (p *parser) follow(nt symbols.NT) bool {
 }
 
 func (p *parser) testSelect(l slot.Label) bool {
-	_, exist := first[l][p.lex.Tokens[p.cI].Type()]
-	// fmt.Printf("testSelect(%s) = %t\n", l, exist)
-	return exist
+	return l.IsNullable() || l.FirstContains(p.lex.Tokens[p.cI].Type())
+	// _, exist := first[l][p.lex.Tokens[p.cI].Type()]
+	// return exist
 }
 
 var first = []map[token.Type]string{
