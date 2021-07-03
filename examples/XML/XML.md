@@ -47,7 +47,7 @@ EncodingDecl            : spaceEsc "encoding" Eq QuoEncNam      ;
 sinQu isn't necessary but there is an error in the lexer if it is not there
 ```
 ATT_VALUE               : dubQu DubConClose 
-                        | "'" SinConClose                       ;
+                        | sinQu SinConClose                       ;
         SinConClose     : "'"
                         / SymRefAlts SinConClose                ;
         DubConClose     : dubQu 
@@ -74,45 +74,49 @@ CHAR_REF                : "&#x" Hex ";"
         aA_fF           : any "abcdefABCDEF"                    ;
 ```
 #### ***Commenting, Elements, and Attributes***
+- issue with element - says accepts multiple strings if put in "<" instead of left angle token
+- infinite loop if exclamation is removed even though it is never called? 
+- tried making optional space or escape using ordered choice to empty got duplicate token error 
+comment                 : ComStart ComEnd ">"               ;
+        ComStart        : "<!--"                                ;
+        DubDash         : "--"                                  ;
+        ComEnd          : DubDash 
+                        / let ComEnd                            ; 
 ```
 Content                 : ContentAlts Content
                         / empty                                 ;
-        ContentAlts     : COMMENT 
+        ContentAlts     : comment 
                         | Element 
                         | REFERENCE 
                         | charData                              ;
-Misc                    : COMMENT 
+Misc                    : comment 
                         | spaceEsc                              ; 
         RepMisc0x       : Misc RepMisc0x 
                         / empty                                 ;
 
-COMMENT                 : ComStart ComEnterior angRBrk          ;
-        ComStart        : angLBrk exclamation DubDash           ;
-        DubDash         : "--"                                  ;
-        ComEnterior     : DubDash 
-                        / let ComEnterior                       ;
+!comment                : '<''!''-''-'
+                        { not "-->"
+                        | '-' not "->"
+                        | '-''-' not ">"
+                        } '-''-''>'                           ;  
 
 
 Element                 : angLBrk NAME RepSAttx0x optSpaceEsc 
-                        ElemCloseAlts                           ;
+                         ElemCloseAlts                           ;
         SAtt            : spaceEsc Attribute                    ;      
         RepSAttx0x      : SAtt RepSAttx0x  
                         / empty                                 ;
-        ElemCloseAlts   : angRBrk Content slashAngLBrk NAME optSpaceEsc angRBrk 
-                        | slashAngRBrk                          ;
+        ElemCloseAlts   : ">" Content "</" NAME optSpaceEsc ">" 
+                        | "</"                                  ;
         angLBrk         : '<'                                   ;
-        slashAngLBrk    : '<' '/'                               ;
-        angRBrk         : '>'                                   ;
-        slashAngRBrk    : '/' '>'                               ;
         exclamation     : '!'                                   ;
 
-Attribute               : NAME optSpaceEsc eq optSpaceEsc 
-                        ATT_VALUE                               ;
-        Eq              : optSpaceEsc eq optSpaceEsc            ;
-        optSpaceEsc     : [ < any " \t\r\n" > ]                 ;
+Attribute               : NAME optSpaceEsc "=" optSpaceEsc 
+                         ATT_VALUE                               ;
+        Eq              : optSpaceEsc "=" optSpaceEsc           ;
+        optSpaceEsc     : [ any " \t\r\n" ]                     ;
         spaceEsc        : < any " \t\r\n" >                     ;
-        charData        :  < any "^<&" >                        ;
-        eq              : '='                                   ;
+        charData        : < any "^<&" >                         ;
 ```
 #### ***Names, Encoding, and (Whitespace/Escape) Characters***
 ```
@@ -120,7 +124,7 @@ NAME                    : LetColonAlts RepNameChar0x            ;
         LetColonAlts    : let 
                         | ":"
                         | "_"                                   ;
-        RepNameChar0x   :  NAME_CHAR RepNameChar0x 
+        RepNameChar0x   : NAME_CHAR RepNameChar0x 
                         / empty                                 ; 
 
 NAME_CHAR               : let 
@@ -136,7 +140,7 @@ EncName                 : let RepLDSAlts0x                      ;
                         | num
                         | "_"
                         | dot_BSlashDash                        ;       
-        dot_BSlashDash  : any ".\\-"                           ;
+        dot_BSlashDash  : any ".\\-"                            ;
         let             : letter                                ;
         num             : number                                ;
 

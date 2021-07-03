@@ -15,6 +15,7 @@ const t1 = `<?xml version="1.0" encoding="UTF-8"?>
 <heading> & Reminder ; </heading>
 <body> & Don't forget me this weekend! ; </body>
 </note>`
+const comment = `<!--Students grades are uploaded by months-->`
 const t3 = `<?xml version="1.0" encoding="UTF-8"?> <note> & name ; </note>`
 
 //Should fail to match
@@ -41,7 +42,8 @@ func parseAndPrint(s string) {
 }
 
 func main() {
-	parseAndPrint(t1)
+	//parseAndPrint(t1)
 	//parseAndPrint(t2)
-	parseAndPrint(t3)
+	//parseAndPrint(t3)
+	parseAndPrint(comment)
 }

@@ -17,14 +17,10 @@ const(
 	NT_ATT_VALUE NT = iota
 	NT_Attribute 
 	NT_CHAR_REF 
-	NT_COMMENT 
-	NT_ComEnterior 
-	NT_ComStart 
 	NT_Content 
 	NT_ContentAlts 
 	NT_Document 
 	NT_DubConClose 
-	NT_DubDash 
 	NT_ENTITY_REF 
 	NT_ElemCloseAlts 
 	NT_Element 
@@ -64,28 +60,28 @@ const(
 	T_1  // &# 
 	T_2  // &#x 
 	T_3  // ' 
-	T_4  // -- 
-	T_5  // : 
-	T_6  // ; 
+	T_4  // : 
+	T_5  // ; 
+	T_6  // </ 
 	T_7  // <?xml 
-	T_8  // ?> 
-	T_9  // _ 
-	T_10  // aA_fF 
-	T_11  // andCars 
-	T_12  // angLBrk 
-	T_13  // angRBrk 
-	T_14  // charData 
-	T_15  // dot_BSlashDash 
-	T_16  // dubQu 
-	T_17  // encoding 
-	T_18  // eq 
-	T_19  // exclamation 
-	T_20  // let 
-	T_21  // num 
-	T_22  // optSpaceEsc 
-	T_23  // repNum1x 
-	T_24  // slashAngLBrk 
-	T_25  // slashAngRBrk 
+	T_8  // = 
+	T_9  // > 
+	T_10  // ?> 
+	T_11  // _ 
+	T_12  // aA_fF 
+	T_13  // andCars 
+	T_14  // angLBrk 
+	T_15  // charData 
+	T_16  // comment 
+	T_17  // dot_BSlashDash 
+	T_18  // dubQu 
+	T_19  // encoding 
+	T_20  // exclamation 
+	T_21  // let 
+	T_22  // num 
+	T_23  // optSpaceEsc 
+	T_24  // repNum1x 
+	T_25  // sinQu 
 	T_26  // spaceEsc 
 	T_27  // version 
 )
@@ -120,14 +116,10 @@ var ntToString = []string {
 	"ATT_VALUE", /* NT_ATT_VALUE */
 	"Attribute", /* NT_Attribute */
 	"CHAR_REF", /* NT_CHAR_REF */
-	"COMMENT", /* NT_COMMENT */
-	"ComEnterior", /* NT_ComEnterior */
-	"ComStart", /* NT_ComStart */
 	"Content", /* NT_Content */
 	"ContentAlts", /* NT_ContentAlts */
 	"Document", /* NT_Document */
 	"DubConClose", /* NT_DubConClose */
-	"DubDash", /* NT_DubDash */
 	"ENTITY_REF", /* NT_ENTITY_REF */
 	"ElemCloseAlts", /* NT_ElemCloseAlts */
 	"Element", /* NT_Element */
@@ -165,28 +157,28 @@ var tToString = []string {
 	"&#", /* T_1 */
 	"&#x", /* T_2 */
 	"'", /* T_3 */
-	"--", /* T_4 */
-	":", /* T_5 */
-	";", /* T_6 */
+	":", /* T_4 */
+	";", /* T_5 */
+	"</", /* T_6 */
 	"<?xml", /* T_7 */
-	"?>", /* T_8 */
-	"_", /* T_9 */
-	"aA_fF", /* T_10 */
-	"andCars", /* T_11 */
-	"angLBrk", /* T_12 */
-	"angRBrk", /* T_13 */
-	"charData", /* T_14 */
-	"dot_BSlashDash", /* T_15 */
-	"dubQu", /* T_16 */
-	"encoding", /* T_17 */
-	"eq", /* T_18 */
-	"exclamation", /* T_19 */
-	"let", /* T_20 */
-	"num", /* T_21 */
-	"optSpaceEsc", /* T_22 */
-	"repNum1x", /* T_23 */
-	"slashAngLBrk", /* T_24 */
-	"slashAngRBrk", /* T_25 */
+	"=", /* T_8 */
+	">", /* T_9 */
+	"?>", /* T_10 */
+	"_", /* T_11 */
+	"aA_fF", /* T_12 */
+	"andCars", /* T_13 */
+	"angLBrk", /* T_14 */
+	"charData", /* T_15 */
+	"comment", /* T_16 */
+	"dot_BSlashDash", /* T_17 */
+	"dubQu", /* T_18 */
+	"encoding", /* T_19 */
+	"exclamation", /* T_20 */
+	"let", /* T_21 */
+	"num", /* T_22 */
+	"optSpaceEsc", /* T_23 */
+	"repNum1x", /* T_24 */
+	"sinQu", /* T_25 */
 	"spaceEsc", /* T_26 */
 	"version", /* T_27 */ 
 }
@@ -195,14 +187,10 @@ var stringNT = map[string]NT{
 	"ATT_VALUE":NT_ATT_VALUE,
 	"Attribute":NT_Attribute,
 	"CHAR_REF":NT_CHAR_REF,
-	"COMMENT":NT_COMMENT,
-	"ComEnterior":NT_ComEnterior,
-	"ComStart":NT_ComStart,
 	"Content":NT_Content,
 	"ContentAlts":NT_ContentAlts,
 	"Document":NT_Document,
 	"DubConClose":NT_DubConClose,
-	"DubDash":NT_DubDash,
 	"ENTITY_REF":NT_ENTITY_REF,
 	"ElemCloseAlts":NT_ElemCloseAlts,
 	"Element":NT_Element,

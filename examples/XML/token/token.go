@@ -110,28 +110,28 @@ const(
     T_1  // &# 
     T_2  // &#x 
     T_3  // ' 
-    T_4  // -- 
-    T_5  // : 
-    T_6  // ; 
+    T_4  // : 
+    T_5  // ; 
+    T_6  // </ 
     T_7  // <?xml 
-    T_8  // ?> 
-    T_9  // _ 
-    T_10  // aA_fF 
-    T_11  // andCars 
-    T_12  // angLBrk 
-    T_13  // angRBrk 
-    T_14  // charData 
-    T_15  // dot_BSlashDash 
-    T_16  // dubQu 
-    T_17  // encoding 
-    T_18  // eq 
-    T_19  // exclamation 
-    T_20  // let 
-    T_21  // num 
-    T_22  // optSpaceEsc 
-    T_23  // repNum1x 
-    T_24  // slashAngLBrk 
-    T_25  // slashAngRBrk 
+    T_8  // = 
+    T_9  // > 
+    T_10  // ?> 
+    T_11  // _ 
+    T_12  // aA_fF 
+    T_13  // andCars 
+    T_14  // angLBrk 
+    T_15  // charData 
+    T_16  // comment 
+    T_17  // dot_BSlashDash 
+    T_18  // dubQu 
+    T_19  // encoding 
+    T_20  // exclamation 
+    T_21  // let 
+    T_22  // num 
+    T_23  // optSpaceEsc 
+    T_24  // repNum1x 
+    T_25  // sinQu 
     T_26  // spaceEsc 
     T_27  // version 
 )
@@ -209,28 +209,28 @@ var TypeToID = []string {
     "&#", 
     "&#x", 
     "'", 
-    "--", 
     ":", 
     ";", 
+    "</", 
     "<?xml", 
+    "=", 
+    ">", 
     "?>", 
     "_", 
     "aA_fF", 
     "andCars", 
     "angLBrk", 
-    "angRBrk", 
     "charData", 
+    "comment", 
     "dot_BSlashDash", 
     "dubQu", 
     "encoding", 
-    "eq", 
     "exclamation", 
     "let", 
     "num", 
     "optSpaceEsc", 
     "repNum1x", 
-    "slashAngLBrk", 
-    "slashAngRBrk", 
+    "sinQu", 
     "spaceEsc", 
     "version", 
 }
@@ -254,7 +254,7 @@ var Suppress = []bool {
     false, 
     false, 
     false, 
-    false, 
+    true, 
     false, 
     false, 
     false, 
