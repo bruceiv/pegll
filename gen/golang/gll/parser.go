@@ -25,13 +25,13 @@ import (
 	"path/filepath"
 	"text/template"
 
-	"github.com/goccmack/gogll/ast"
-	"github.com/goccmack/gogll/cfg"
-	"github.com/goccmack/gogll/frstflw"
-	"github.com/goccmack/gogll/gen/golang/gll/bsr"
-	"github.com/goccmack/gogll/gen/golang/gll/slots"
-	"github.com/goccmack/gogll/gen/golang/gll/symbols"
-	"github.com/goccmack/gogll/gslot"
+	"github.com/bruceiv/pegll/ast"
+	"github.com/bruceiv/pegll/cfg"
+	"github.com/bruceiv/pegll/frstflw"
+	"github.com/bruceiv/pegll/gen/golang/gll/bsr"
+	"github.com/bruceiv/pegll/gen/golang/gll/slots"
+	"github.com/bruceiv/pegll/gen/golang/gll/symbols"
+	"github.com/bruceiv/pegll/gslot"
 	"github.com/goccmack/goutil/ioutil"
 )
 

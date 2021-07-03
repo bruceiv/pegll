@@ -18,7 +18,7 @@ limitations under the License.
 package ast
 
 import (
-	"github.com/goccmack/gogll/token"
+	"github.com/bruceiv/pegll/token"
 )
 
 // The syntax part of the AST

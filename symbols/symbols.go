@@ -21,7 +21,7 @@ package symbols
 import (
 	"fmt"
 
-	"github.com/goccmack/gogll/ast"
+	"github.com/bruceiv/pegll/ast"
 )
 
 // Symbol is T or NT

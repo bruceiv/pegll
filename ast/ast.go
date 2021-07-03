@@ -20,7 +20,7 @@ package ast
 import (
 	"sort"
 
-	"github.com/goccmack/gogll/token"
+	"github.com/bruceiv/pegll/token"
 	"github.com/goccmack/goutil/stringset"
 )
 

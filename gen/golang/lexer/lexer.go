@@ -23,10 +23,10 @@ import (
 	"path/filepath"
 	"text/template"
 
-	"github.com/goccmack/gogll/ast"
-	"github.com/goccmack/gogll/cfg"
-	"github.com/goccmack/gogll/lex/items"
-	"github.com/goccmack/gogll/symbols"
+	"github.com/bruceiv/pegll/ast"
+	"github.com/bruceiv/pegll/cfg"
+	"github.com/bruceiv/pegll/lex/items"
+	"github.com/bruceiv/pegll/symbols"
 	"github.com/goccmack/goutil/ioutil"
 	"github.com/goccmack/goutil/stringset"
 )

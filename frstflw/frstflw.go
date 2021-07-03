@@ -16,7 +16,7 @@
 package frstflw
 
 import (
-	"github.com/goccmack/gogll/ast"
+	"github.com/bruceiv/pegll/ast"
 	"github.com/goccmack/goutil/stringset"
 	"github.com/goccmack/goutil/stringslice"
 )

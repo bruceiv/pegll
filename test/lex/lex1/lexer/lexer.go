@@ -9,7 +9,7 @@ import (
 
 	"github.com/goccmack/goutil/md"
 
-	"github.com/goccmack/gogll/test/lex/lex1/token"
+	"github.com/bruceiv/pegll/test/lex/lex1/token"
 )
 
 type state int

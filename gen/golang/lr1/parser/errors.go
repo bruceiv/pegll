@@ -19,7 +19,7 @@ import (
 	"path"
 	"text/template"
 
-	"github.com/goccmack/gogll/cfg"
+	"github.com/bruceiv/pegll/cfg"
 	"github.com/goccmack/goutil/ioutil"
 )
 

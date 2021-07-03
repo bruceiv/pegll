@@ -20,8 +20,8 @@ import (
 	"bytes"
 	"text/template"
 
-	"github.com/goccmack/gogll/ast"
-	"github.com/goccmack/gogll/frstflw"
+	"github.com/bruceiv/pegll/ast"
+	"github.com/bruceiv/pegll/frstflw"
 	"github.com/goccmack/goutil/ioutil"
 )
 

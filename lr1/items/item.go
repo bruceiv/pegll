@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"fmt"
 
-	"github.com/goccmack/gogll/ast"
+	"github.com/bruceiv/pegll/ast"
 )
 
 /*
