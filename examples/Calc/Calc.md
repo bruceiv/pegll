@@ -23,7 +23,7 @@ package "calc"
 ```
 `EXPR` represents the starting rule for the grammar being a semantic rule composed of a space followed by a `SUM`.
 ```
-EXPR             : space SUM                     ;
+EXPR             : WS SUM                     ;
 ```
 The following section is composed of `SUM`, `RepPLUSorMINUS0x`, and `PLUSorMINUS`, where:
 - `SUM` is a semantic rule matched with `PRODUCT` followed by `RepPLUSorMINUS0x`;
@@ -55,7 +55,7 @@ For more information about the `number` reserved word, see the [grammar for deta
 ```       
 ELEMENT          : OPEN SUM CLOSE 
                  | Number                        ;
-Number           : repNumber1x space             ;
+Number           : repNumber1x WS             ;
 repNumber1x      : < number >                    ;
 ```
 The following section is composed of `PLUS`, `MINUS`, `TIMES`, `DIVIDE`, `OPEN`, and `CLOSE`, where:
@@ -66,16 +66,19 @@ The following section is composed of `PLUS`, `MINUS`, `TIMES`, `DIVIDE`, `OPEN`,
 - `OPEN` is a semantic rule matched with a '(' character followed by a space;
 - `CLOSE` is a semantic rule matched with a ')' character followed by a space.
 ```
-PLUS             : "+" space                     ;
-MINUS            : "-" space                     ;
-TIMES            : "*" space                     ;
-DIVIDE           : "/" space                     ;
-OPEN             : "(" space                     ;                
-CLOSE            : ")" space                     ;
+PLUS             : "+" WS                     ;
+MINUS            : "-" WS                     ;
+TIMES            : "*" WS                     ;
+DIVIDE           : "/" WS                     ;
+OPEN             : "(" WS                     ;                
+CLOSE            : ")" WS                     ;
 ```
+NEEDS TO BE EDITED
 `space` is a lexical rule matched through the whitespace characters ' ' and '\t'. It may be repeated zero or more times as defined by the bracketed expression `{}` in the GoGLL grammar. See the [grammar for details.](../../gogll.md)
 ```
-space            : { ' ' | '\t' }                ;
+WS               : sp
+                 / empty                       ;
+sp               : any " \t"                   ;
 ```
 #
 ### **COPYRIGHT AND LICENSING INFORMATION**

@@ -126,6 +126,7 @@ func (s *Set) FlatDump() {
 }
 
 func (s *Set) dump(b BSR, level int) {
+	fmt.Print(level)
 	fmt.Print(indent(level, " "))
 	fmt.Println(b)
 	for _, cn := range b.GetAllNTChildren() {

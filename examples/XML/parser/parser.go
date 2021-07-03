@@ -56,13 +56,13 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 	var L slot.Label
 	m, cU := len(p.lex.Tokens)-1, 0
 	p.ntAdd(symbols.NT_Document, 0)
-	// p.DumpDescriptors()
+	p.DumpDescriptors()
 	for !p.R.empty() {
 		L, cU, p.cI = p.R.remove()
 
-		// fmt.Println()
-		// fmt.Printf("L:%s, cI:%d, I[p.cI]:%s, cU:%d\n", L, p.cI, p.lex.Tokens[p.cI], cU)
-		// p.DumpDescriptors()
+		fmt.Println()
+		fmt.Printf("L:%s, cI:%d, I[p.cI]:%s, cU:%d\n", L, p.cI, p.lex.Tokens[p.cI], cU)
+		p.DumpDescriptors()
 
 		switch L {
 		case slot.ATT_VALUE0R0: // ATT_VALUE : ∙dubQu DubCondClose
@@ -91,18 +91,19 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 		case slot.ATT_VALUE1R2: // ATT_VALUE : sinQu SinCondClose ∙
 
 			p.rtn(symbols.NT_ATT_VALUE, cU, p.cI)
-		case slot.Attribute0R0: // Attribute : ∙NAME optSpaceEsc eq optSpaceEsc ATT_VALUE
+		case slot.Attribute0R0: // Attribute : ∙NAME OptSpaceEsc eq OptSpaceEsc ATT_VALUE
 
 			p.call(slot.Attribute0R1, cU, p.cI)
-		case slot.Attribute0R1: // Attribute : NAME ∙optSpaceEsc eq optSpaceEsc ATT_VALUE
+		case slot.Attribute0R1: // Attribute : NAME ∙OptSpaceEsc eq OptSpaceEsc ATT_VALUE
 
 			if !p.testSelect(slot.Attribute0R1) {
 				p.parseError(slot.Attribute0R1, p.cI, first[slot.Attribute0R1])
 				break
 			}
 
-			p.bsrSet.Add(slot.Attribute0R2, cU, p.cI, p.cI+1)
-			p.cI++
+			p.call(slot.Attribute0R2, cU, p.cI)
+		case slot.Attribute0R2: // Attribute : NAME OptSpaceEsc ∙eq OptSpaceEsc ATT_VALUE
+
 			if !p.testSelect(slot.Attribute0R2) {
 				p.parseError(slot.Attribute0R2, p.cI, first[slot.Attribute0R2])
 				break
@@ -115,15 +116,16 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 				break
 			}
 
-			p.bsrSet.Add(slot.Attribute0R4, cU, p.cI, p.cI+1)
-			p.cI++
+			p.call(slot.Attribute0R4, cU, p.cI)
+		case slot.Attribute0R4: // Attribute : NAME OptSpaceEsc eq OptSpaceEsc ∙ATT_VALUE
+
 			if !p.testSelect(slot.Attribute0R4) {
 				p.parseError(slot.Attribute0R4, p.cI, first[slot.Attribute0R4])
 				break
 			}
 
 			p.call(slot.Attribute0R5, cU, p.cI)
-		case slot.Attribute0R5: // Attribute : NAME optSpaceEsc eq optSpaceEsc ATT_VALUE ∙
+		case slot.Attribute0R5: // Attribute : NAME OptSpaceEsc eq OptSpaceEsc ATT_VALUE ∙
 
 			p.rtn(symbols.NT_Attribute, cU, p.cI)
 		case slot.CHAR_REF0R0: // CHAR_REF : ∙&#x Hex ;
@@ -332,7 +334,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.bsrSet.Add(slot.ENTITY_REF0R3, cU, p.cI, p.cI+1)
 			p.cI++
 			p.rtn(symbols.NT_ENTITY_REF, cU, p.cI)
-		case slot.ElemCloseAlts0R0: // ElemCloseAlts : ∙angRBrk Content slashAngLBrk NAME optSpaceEsc angRBrk
+		case slot.ElemCloseAlts0R0: // ElemCloseAlts : ∙angRBrk Content slashAngLBrk NAME OptSpaceEsc angRBrk
 
 			p.bsrSet.Add(slot.ElemCloseAlts0R1, cU, p.cI, p.cI+1)
 			p.cI++
@@ -342,7 +344,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			}
 
 			p.call(slot.ElemCloseAlts0R2, cU, p.cI)
-		case slot.ElemCloseAlts0R2: // ElemCloseAlts : angRBrk Content ∙slashAngLBrk NAME optSpaceEsc angRBrk
+		case slot.ElemCloseAlts0R2: // ElemCloseAlts : angRBrk Content ∙slashAngLBrk NAME OptSpaceEsc angRBrk
 
 			if !p.testSelect(slot.ElemCloseAlts0R2) {
 				p.parseError(slot.ElemCloseAlts0R2, p.cI, first[slot.ElemCloseAlts0R2])
@@ -357,15 +359,16 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			}
 
 			p.call(slot.ElemCloseAlts0R4, cU, p.cI)
-		case slot.ElemCloseAlts0R4: // ElemCloseAlts : angRBrk Content slashAngLBrk NAME ∙optSpaceEsc angRBrk
+		case slot.ElemCloseAlts0R4: // ElemCloseAlts : angRBrk Content slashAngLBrk NAME ∙OptSpaceEsc angRBrk
 
 			if !p.testSelect(slot.ElemCloseAlts0R4) {
 				p.parseError(slot.ElemCloseAlts0R4, p.cI, first[slot.ElemCloseAlts0R4])
 				break
 			}
 
-			p.bsrSet.Add(slot.ElemCloseAlts0R5, cU, p.cI, p.cI+1)
-			p.cI++
+			p.call(slot.ElemCloseAlts0R5, cU, p.cI)
+		case slot.ElemCloseAlts0R5: // ElemCloseAlts : angRBrk Content slashAngLBrk NAME OptSpaceEsc ∙angRBrk
+
 			if !p.testSelect(slot.ElemCloseAlts0R5) {
 				p.parseError(slot.ElemCloseAlts0R5, p.cI, first[slot.ElemCloseAlts0R5])
 				break
@@ -379,7 +382,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.bsrSet.Add(slot.ElemCloseAlts1R1, cU, p.cI, p.cI+1)
 			p.cI++
 			p.rtn(symbols.NT_ElemCloseAlts, cU, p.cI)
-		case slot.Element0R0: // Element : ∙angLBrk NAME RepSAttx0x optSpaceEsc ElemCloseAlts
+		case slot.Element0R0: // Element : ∙angLBrk NAME RepSAttx0x OptSpaceEsc ElemCloseAlts
 
 			p.bsrSet.Add(slot.Element0R1, cU, p.cI, p.cI+1)
 			p.cI++
@@ -389,7 +392,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			}
 
 			p.call(slot.Element0R2, cU, p.cI)
-		case slot.Element0R2: // Element : angLBrk NAME ∙RepSAttx0x optSpaceEsc ElemCloseAlts
+		case slot.Element0R2: // Element : angLBrk NAME ∙RepSAttx0x OptSpaceEsc ElemCloseAlts
 
 			if !p.testSelect(slot.Element0R2) {
 				p.parseError(slot.Element0R2, p.cI, first[slot.Element0R2])
@@ -397,22 +400,23 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			}
 
 			p.call(slot.Element0R3, cU, p.cI)
-		case slot.Element0R3: // Element : angLBrk NAME RepSAttx0x ∙optSpaceEsc ElemCloseAlts
+		case slot.Element0R3: // Element : angLBrk NAME RepSAttx0x ∙OptSpaceEsc ElemCloseAlts
 
 			if !p.testSelect(slot.Element0R3) {
 				p.parseError(slot.Element0R3, p.cI, first[slot.Element0R3])
 				break
 			}
 
-			p.bsrSet.Add(slot.Element0R4, cU, p.cI, p.cI+1)
-			p.cI++
+			p.call(slot.Element0R4, cU, p.cI)
+		case slot.Element0R4: // Element : angLBrk NAME RepSAttx0x OptSpaceEsc ∙ElemCloseAlts
+
 			if !p.testSelect(slot.Element0R4) {
 				p.parseError(slot.Element0R4, p.cI, first[slot.Element0R4])
 				break
 			}
 
 			p.call(slot.Element0R5, cU, p.cI)
-		case slot.Element0R5: // Element : angLBrk NAME RepSAttx0x optSpaceEsc ElemCloseAlts ∙
+		case slot.Element0R5: // Element : angLBrk NAME RepSAttx0x OptSpaceEsc ElemCloseAlts ∙
 
 			p.rtn(symbols.NT_Element, cU, p.cI)
 		case slot.EncName0R0: // EncName : ∙let RepLDSAlts0x
@@ -428,38 +432,38 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 		case slot.EncName0R2: // EncName : let RepLDSAlts0x ∙
 
 			p.rtn(symbols.NT_EncName, cU, p.cI)
-		case slot.EncodingDecl0R0: // EncodingDecl : ∙spaceEsc encoding Eq QuoEncNam
+		case slot.Encoding0R0: // Encoding : ∙encoding
 
-			p.bsrSet.Add(slot.EncodingDecl0R1, cU, p.cI, p.cI+1)
+			p.bsrSet.Add(slot.Encoding0R1, cU, p.cI, p.cI+1)
 			p.cI++
+			p.rtn(symbols.NT_Encoding, cU, p.cI)
+		case slot.EncodingDecl0R0: // EncodingDecl : ∙Encoding Eq QuoEncNam
+
+			p.call(slot.EncodingDecl0R1, cU, p.cI)
+		case slot.EncodingDecl0R1: // EncodingDecl : Encoding ∙Eq QuoEncNam
+
 			if !p.testSelect(slot.EncodingDecl0R1) {
 				p.parseError(slot.EncodingDecl0R1, p.cI, first[slot.EncodingDecl0R1])
 				break
 			}
 
-			p.bsrSet.Add(slot.EncodingDecl0R2, cU, p.cI, p.cI+1)
-			p.cI++
+			p.call(slot.EncodingDecl0R2, cU, p.cI)
+		case slot.EncodingDecl0R2: // EncodingDecl : Encoding Eq ∙QuoEncNam
+
 			if !p.testSelect(slot.EncodingDecl0R2) {
 				p.parseError(slot.EncodingDecl0R2, p.cI, first[slot.EncodingDecl0R2])
 				break
 			}
 
 			p.call(slot.EncodingDecl0R3, cU, p.cI)
-		case slot.EncodingDecl0R3: // EncodingDecl : spaceEsc encoding Eq ∙QuoEncNam
-
-			if !p.testSelect(slot.EncodingDecl0R3) {
-				p.parseError(slot.EncodingDecl0R3, p.cI, first[slot.EncodingDecl0R3])
-				break
-			}
-
-			p.call(slot.EncodingDecl0R4, cU, p.cI)
-		case slot.EncodingDecl0R4: // EncodingDecl : spaceEsc encoding Eq QuoEncNam ∙
+		case slot.EncodingDecl0R3: // EncodingDecl : Encoding Eq QuoEncNam ∙
 
 			p.rtn(symbols.NT_EncodingDecl, cU, p.cI)
-		case slot.Eq0R0: // Eq : ∙optSpaceEsc eq optSpaceEsc
+		case slot.Eq0R0: // Eq : ∙OptSpaceEsc eq OptSpaceEsc
 
-			p.bsrSet.Add(slot.Eq0R1, cU, p.cI, p.cI+1)
-			p.cI++
+			p.call(slot.Eq0R1, cU, p.cI)
+		case slot.Eq0R1: // Eq : OptSpaceEsc ∙eq OptSpaceEsc
+
 			if !p.testSelect(slot.Eq0R1) {
 				p.parseError(slot.Eq0R1, p.cI, first[slot.Eq0R1])
 				break
@@ -472,8 +476,9 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 				break
 			}
 
-			p.bsrSet.Add(slot.Eq0R3, cU, p.cI, p.cI+1)
-			p.cI++
+			p.call(slot.Eq0R3, cU, p.cI)
+		case slot.Eq0R3: // Eq : OptSpaceEsc eq OptSpaceEsc ∙
+
 			p.rtn(symbols.NT_Eq, cU, p.cI)
 		case slot.Hex0R0: // Hex : ∙HexAlts RepHexAlts0x
 
@@ -592,6 +597,15 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.bsrSet.AddEmpty(slot.OptEncodDecl1R0, p.cI)
 
 			p.rtn(symbols.NT_OptEncodDecl, cU, p.cI)
+		case slot.OptSpaceEsc0R0: // OptSpaceEsc : ∙spaceEsc
+
+			p.bsrSet.Add(slot.OptSpaceEsc0R1, cU, p.cI, p.cI+1)
+			p.cI++
+			p.rtn(symbols.NT_OptSpaceEsc, cU, p.cI)
+		case slot.OptSpaceEsc1R0: // OptSpaceEsc : ∙
+			p.bsrSet.AddEmpty(slot.OptSpaceEsc1R0, p.cI)
+
+			p.rtn(symbols.NT_OptSpaceEsc, cU, p.cI)
 		case slot.OptXMLDecl0R0: // OptXMLDecl : ∙XMLDecl
 
 			p.call(slot.OptXMLDecl0R1, cU, p.cI)
@@ -841,10 +855,16 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 		case slot.SymRefAlts1R1: // SymRefAlts : REFERENCE ∙
 
 			p.rtn(symbols.NT_SymRefAlts, cU, p.cI)
-		case slot.VersionInfo0R0: // VersionInfo : ∙spaceEsc version Eq QuoVerNum
+		case slot.Version0R0: // Version : ∙version
 
-			p.bsrSet.Add(slot.VersionInfo0R1, cU, p.cI, p.cI+1)
+			p.bsrSet.Add(slot.Version0R1, cU, p.cI, p.cI+1)
 			p.cI++
+			p.rtn(symbols.NT_Version, cU, p.cI)
+		case slot.VersionInfo0R0: // VersionInfo : ∙Version = QuoVerNum
+
+			p.call(slot.VersionInfo0R1, cU, p.cI)
+		case slot.VersionInfo0R1: // VersionInfo : Version ∙= QuoVerNum
+
 			if !p.testSelect(slot.VersionInfo0R1) {
 				p.parseError(slot.VersionInfo0R1, p.cI, first[slot.VersionInfo0R1])
 				break
@@ -858,15 +878,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			}
 
 			p.call(slot.VersionInfo0R3, cU, p.cI)
-		case slot.VersionInfo0R3: // VersionInfo : spaceEsc version Eq ∙QuoVerNum
-
-			if !p.testSelect(slot.VersionInfo0R3) {
-				p.parseError(slot.VersionInfo0R3, p.cI, first[slot.VersionInfo0R3])
-				break
-			}
-
-			p.call(slot.VersionInfo0R4, cU, p.cI)
-		case slot.VersionInfo0R4: // VersionInfo : spaceEsc version Eq QuoVerNum ∙
+		case slot.VersionInfo0R3: // VersionInfo : Version = QuoVerNum ∙
 
 			p.rtn(symbols.NT_VersionInfo, cU, p.cI)
 		case slot.VersionNum0R0: // VersionNum : ∙NAME_CHAR NameCharRep
@@ -883,17 +895,18 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 		case slot.VersionNum0R2: // VersionNum : NAME_CHAR NameCharRep ∙
 
 			p.rtn(symbols.NT_VersionNum, cU, p.cI)
-		case slot.XMLDecl0R0: // XMLDecl : ∙xmlDeclStart VersionInfo OptEncodDecl optSpaceEsc xmlDeclEnd
+		case slot.XMLDecl0R0: // XMLDecl : ∙XmlDeclStart VersionInfo OptEncodDecl OptSpaceEsc XmlDeclEnd
 
-			p.bsrSet.Add(slot.XMLDecl0R1, cU, p.cI, p.cI+1)
-			p.cI++
+			p.call(slot.XMLDecl0R1, cU, p.cI)
+		case slot.XMLDecl0R1: // XMLDecl : XmlDeclStart ∙VersionInfo OptEncodDecl OptSpaceEsc XmlDeclEnd
+
 			if !p.testSelect(slot.XMLDecl0R1) {
 				p.parseError(slot.XMLDecl0R1, p.cI, first[slot.XMLDecl0R1])
 				break
 			}
 
 			p.call(slot.XMLDecl0R2, cU, p.cI)
-		case slot.XMLDecl0R2: // XMLDecl : xmlDeclStart VersionInfo ∙OptEncodDecl optSpaceEsc xmlDeclEnd
+		case slot.XMLDecl0R2: // XMLDecl : XmlDeclStart VersionInfo ∙OptEncodDecl OptSpaceEsc XmlDeclEnd
 
 			if !p.testSelect(slot.XMLDecl0R2) {
 				p.parseError(slot.XMLDecl0R2, p.cI, first[slot.XMLDecl0R2])
@@ -901,23 +914,35 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			}
 
 			p.call(slot.XMLDecl0R3, cU, p.cI)
-		case slot.XMLDecl0R3: // XMLDecl : xmlDeclStart VersionInfo OptEncodDecl ∙optSpaceEsc xmlDeclEnd
+		case slot.XMLDecl0R3: // XMLDecl : XmlDeclStart VersionInfo OptEncodDecl ∙OptSpaceEsc XmlDeclEnd
 
 			if !p.testSelect(slot.XMLDecl0R3) {
 				p.parseError(slot.XMLDecl0R3, p.cI, first[slot.XMLDecl0R3])
 				break
 			}
 
-			p.bsrSet.Add(slot.XMLDecl0R4, cU, p.cI, p.cI+1)
-			p.cI++
+			p.call(slot.XMLDecl0R4, cU, p.cI)
+		case slot.XMLDecl0R4: // XMLDecl : XmlDeclStart VersionInfo OptEncodDecl OptSpaceEsc ∙XmlDeclEnd
+
 			if !p.testSelect(slot.XMLDecl0R4) {
 				p.parseError(slot.XMLDecl0R4, p.cI, first[slot.XMLDecl0R4])
 				break
 			}
 
-			p.bsrSet.Add(slot.XMLDecl0R5, cU, p.cI, p.cI+1)
-			p.cI++
+			p.call(slot.XMLDecl0R5, cU, p.cI)
+		case slot.XMLDecl0R5: // XMLDecl : XmlDeclStart VersionInfo OptEncodDecl OptSpaceEsc XmlDeclEnd ∙
+
 			p.rtn(symbols.NT_XMLDecl, cU, p.cI)
+		case slot.XmlDeclEnd0R0: // XmlDeclEnd : ∙?>
+
+			p.bsrSet.Add(slot.XmlDeclEnd0R1, cU, p.cI, p.cI+1)
+			p.cI++
+			p.rtn(symbols.NT_XmlDeclEnd, cU, p.cI)
+		case slot.XmlDeclStart0R0: // XmlDeclStart : ∙<?xml
+
+			p.bsrSet.Add(slot.XmlDeclStart0R1, cU, p.cI, p.cI+1)
+			p.cI++
+			p.rtn(symbols.NT_XmlDeclStart, cU, p.cI)
 
 		default:
 			panic("This must not happen")
@@ -1162,64 +1187,70 @@ func (p *parser) testSelect(l slot.Label) bool {
 var first = []map[token.Type]string{
 	// ATT_VALUE : ∙dubQu DubCondClose
 	{
-		token.T_13: "dubQu",
+		token.T_16: "dubQu",
 	},
 	// ATT_VALUE : dubQu ∙DubCondClose
 	{
 		token.T_0:  "&",
 		token.T_1:  "&#",
 		token.T_2:  "&#x",
-		token.T_6:  "andCarrs",
-		token.T_13: "dubQu",
+		token.T_9:  "andCarrs",
+		token.T_16: "dubQu",
 	},
 	// ATT_VALUE : dubQu DubCondClose ∙
 	{
-		token.T_19: "optSpaceEsc",
-		token.T_24: "spaceEsc",
+		token.T_11: "angRBrk",
+		token.T_25: "slashAngRBrk",
+		token.T_26: "spaceEsc",
 	},
 	// ATT_VALUE : ∙sinQu SinCondClose
 	{
-		token.T_21: "sinQu",
+		token.T_23: "sinQu",
 	},
 	// ATT_VALUE : sinQu ∙SinCondClose
 	{
 		token.T_0:  "&",
 		token.T_1:  "&#",
 		token.T_2:  "&#x",
-		token.T_6:  "andCarrs",
-		token.T_21: "sinQu",
+		token.T_9:  "andCarrs",
+		token.T_23: "sinQu",
 	},
 	// ATT_VALUE : sinQu SinCondClose ∙
 	{
-		token.T_19: "optSpaceEsc",
-		token.T_24: "spaceEsc",
+		token.T_11: "angRBrk",
+		token.T_25: "slashAngRBrk",
+		token.T_26: "spaceEsc",
 	},
-	// Attribute : ∙NAME optSpaceEsc eq optSpaceEsc ATT_VALUE
+	// Attribute : ∙NAME OptSpaceEsc eq OptSpaceEsc ATT_VALUE
 	{
-		token.T_10: "col_",
-		token.T_17: "let",
+		token.T_13: "col_",
+		token.T_20: "let",
 	},
-	// Attribute : NAME ∙optSpaceEsc eq optSpaceEsc ATT_VALUE
+	// Attribute : NAME ∙OptSpaceEsc eq OptSpaceEsc ATT_VALUE
 	{
-		token.T_19: "optSpaceEsc",
+		token.T_18: "eq",
+		token.T_26: "spaceEsc",
 	},
-	// Attribute : NAME optSpaceEsc ∙eq optSpaceEsc ATT_VALUE
+	// Attribute : NAME OptSpaceEsc ∙eq OptSpaceEsc ATT_VALUE
 	{
-		token.T_15: "eq",
+		token.T_18: "eq",
 	},
-	// Attribute : NAME optSpaceEsc eq ∙optSpaceEsc ATT_VALUE
+	// Attribute : NAME OptSpaceEsc eq ∙OptSpaceEsc ATT_VALUE
 	{
-		token.T_19: "optSpaceEsc",
+		token.T_16: "dubQu",
+		token.T_23: "sinQu",
+		token.T_26: "spaceEsc",
 	},
-	// Attribute : NAME optSpaceEsc eq optSpaceEsc ∙ATT_VALUE
+	// Attribute : NAME OptSpaceEsc eq OptSpaceEsc ∙ATT_VALUE
 	{
-		token.T_13: "dubQu",
-		token.T_21: "sinQu",
+		token.T_16: "dubQu",
+		token.T_23: "sinQu",
 	},
-	// Attribute : NAME optSpaceEsc eq optSpaceEsc ATT_VALUE ∙
+	// Attribute : NAME OptSpaceEsc eq OptSpaceEsc ATT_VALUE ∙
 	{
-		token.T_19: "optSpaceEsc",
-		token.T_24: "spaceEsc",
+		token.T_11: "angRBrk",
+		token.T_25: "slashAngRBrk",
+		token.T_26: "spaceEsc",
 	},
 	// CHAR_REF : ∙&#x Hex ;
 	{
@@ -1227,8 +1258,8 @@ var first = []map[token.Type]string{
 	},
 	// CHAR_REF : &#x ∙Hex ;
 	{
-		token.T_5:  "aA_fF",
-		token.T_18: "num",
+		token.T_8:  "aA_fF",
+		token.T_21: "num",
 	},
 	// CHAR_REF : &#x Hex ∙;
 	{
@@ -1239,12 +1270,12 @@ var first = []map[token.Type]string{
 		token.T_0:  "&",
 		token.T_1:  "&#",
 		token.T_2:  "&#x",
-		token.T_6:  "andCarrs",
-		token.T_7:  "angLBrk",
-		token.T_9:  "charData",
-		token.T_13: "dubQu",
-		token.T_21: "sinQu",
-		token.T_22: "slashAngLBrk",
+		token.T_9:  "andCarrs",
+		token.T_10: "angLBrk",
+		token.T_12: "charData",
+		token.T_16: "dubQu",
+		token.T_23: "sinQu",
+		token.T_24: "slashAngLBrk",
 	},
 	// CHAR_REF : ∙&# repNum1x ;
 	{
@@ -1252,7 +1283,7 @@ var first = []map[token.Type]string{
 	},
 	// CHAR_REF : &# ∙repNum1x ;
 	{
-		token.T_20: "repNum1x",
+		token.T_22: "repNum1x",
 	},
 	// CHAR_REF : &# repNum1x ∙;
 	{
@@ -1263,25 +1294,25 @@ var first = []map[token.Type]string{
 		token.T_0:  "&",
 		token.T_1:  "&#",
 		token.T_2:  "&#x",
-		token.T_6:  "andCarrs",
-		token.T_7:  "angLBrk",
-		token.T_9:  "charData",
-		token.T_13: "dubQu",
-		token.T_21: "sinQu",
-		token.T_22: "slashAngLBrk",
+		token.T_9:  "andCarrs",
+		token.T_10: "angLBrk",
+		token.T_12: "charData",
+		token.T_16: "dubQu",
+		token.T_23: "sinQu",
+		token.T_24: "slashAngLBrk",
 	},
 	// COMMENT : ∙ComStart ComEnterior angRBrk
 	{
-		token.T_7: "angLBrk",
+		token.T_10: "angLBrk",
 	},
 	// COMMENT : ComStart ∙ComEnterior angRBrk
 	{
 		token.T_3:  "--",
-		token.T_17: "let",
+		token.T_20: "let",
 	},
 	// COMMENT : ComStart ComEnterior ∙angRBrk
 	{
-		token.T_8: "angRBrk",
+		token.T_11: "angRBrk",
 	},
 	// COMMENT : ComStart ComEnterior angRBrk ∙
 	{
@@ -1289,10 +1320,10 @@ var first = []map[token.Type]string{
 		token.T_0:  "&",
 		token.T_1:  "&#",
 		token.T_2:  "&#x",
-		token.T_7:  "angLBrk",
-		token.T_9:  "charData",
-		token.T_22: "slashAngLBrk",
-		token.T_24: "spaceEsc",
+		token.T_10: "angLBrk",
+		token.T_12: "charData",
+		token.T_24: "slashAngLBrk",
+		token.T_26: "spaceEsc",
 	},
 	// ComEnterior : ∙DubDash
 	{
@@ -1300,28 +1331,28 @@ var first = []map[token.Type]string{
 	},
 	// ComEnterior : DubDash ∙
 	{
-		token.T_8: "angRBrk",
+		token.T_11: "angRBrk",
 	},
 	// ComEnterior : ∙let ComEnterior
 	{
-		token.T_17: "let",
+		token.T_20: "let",
 	},
 	// ComEnterior : let ∙ComEnterior
 	{
 		token.T_3:  "--",
-		token.T_17: "let",
+		token.T_20: "let",
 	},
 	// ComEnterior : let ComEnterior ∙
 	{
-		token.T_8: "angRBrk",
+		token.T_11: "angRBrk",
 	},
 	// ComStart : ∙angLBrk exclamation DubDash
 	{
-		token.T_7: "angLBrk",
+		token.T_10: "angLBrk",
 	},
 	// ComStart : angLBrk ∙exclamation DubDash
 	{
-		token.T_16: "exclamation",
+		token.T_19: "exclamation",
 	},
 	// ComStart : angLBrk exclamation ∙DubDash
 	{
@@ -1330,58 +1361,58 @@ var first = []map[token.Type]string{
 	// ComStart : angLBrk exclamation DubDash ∙
 	{
 		token.T_3:  "--",
-		token.T_17: "let",
+		token.T_20: "let",
 	},
 	// Content : ∙ContentAlts Content
 	{
-		token.T_0: "&",
-		token.T_1: "&#",
-		token.T_2: "&#x",
-		token.T_7: "angLBrk",
-		token.T_9: "charData",
+		token.T_0:  "&",
+		token.T_1:  "&#",
+		token.T_2:  "&#x",
+		token.T_10: "angLBrk",
+		token.T_12: "charData",
 	},
 	// Content : ContentAlts ∙Content
 	{
 		token.T_0:  "&",
 		token.T_1:  "&#",
 		token.T_2:  "&#x",
-		token.T_7:  "angLBrk",
-		token.T_9:  "charData",
-		token.T_22: "slashAngLBrk",
+		token.T_10: "angLBrk",
+		token.T_12: "charData",
+		token.T_24: "slashAngLBrk",
 	},
 	// Content : ContentAlts Content ∙
 	{
-		token.T_22: "slashAngLBrk",
+		token.T_24: "slashAngLBrk",
 	},
 	// Content : ∙
 	{
-		token.T_22: "slashAngLBrk",
+		token.T_24: "slashAngLBrk",
 	},
 	// ContentAlts : ∙COMMENT
 	{
-		token.T_7: "angLBrk",
+		token.T_10: "angLBrk",
 	},
 	// ContentAlts : COMMENT ∙
 	{
 		token.T_0:  "&",
 		token.T_1:  "&#",
 		token.T_2:  "&#x",
-		token.T_7:  "angLBrk",
-		token.T_9:  "charData",
-		token.T_22: "slashAngLBrk",
+		token.T_10: "angLBrk",
+		token.T_12: "charData",
+		token.T_24: "slashAngLBrk",
 	},
 	// ContentAlts : ∙Element
 	{
-		token.T_7: "angLBrk",
+		token.T_10: "angLBrk",
 	},
 	// ContentAlts : Element ∙
 	{
 		token.T_0:  "&",
 		token.T_1:  "&#",
 		token.T_2:  "&#x",
-		token.T_7:  "angLBrk",
-		token.T_9:  "charData",
-		token.T_22: "slashAngLBrk",
+		token.T_10: "angLBrk",
+		token.T_12: "charData",
+		token.T_24: "slashAngLBrk",
 	},
 	// ContentAlts : ∙REFERENCE
 	{
@@ -1394,38 +1425,38 @@ var first = []map[token.Type]string{
 		token.T_0:  "&",
 		token.T_1:  "&#",
 		token.T_2:  "&#x",
-		token.T_7:  "angLBrk",
-		token.T_9:  "charData",
-		token.T_22: "slashAngLBrk",
+		token.T_10: "angLBrk",
+		token.T_12: "charData",
+		token.T_24: "slashAngLBrk",
 	},
 	// ContentAlts : ∙charData
 	{
-		token.T_9: "charData",
+		token.T_12: "charData",
 	},
 	// ContentAlts : charData ∙
 	{
 		token.T_0:  "&",
 		token.T_1:  "&#",
 		token.T_2:  "&#x",
-		token.T_7:  "angLBrk",
-		token.T_9:  "charData",
-		token.T_22: "slashAngLBrk",
+		token.T_10: "angLBrk",
+		token.T_12: "charData",
+		token.T_24: "slashAngLBrk",
 	},
 	// Document : ∙Prolog Element RepMisc0x
 	{
-		token.T_7:  "angLBrk",
-		token.T_24: "spaceEsc",
-		token.T_27: "xmlDeclStart",
+		token.T_5:  "<?xml",
+		token.T_10: "angLBrk",
+		token.T_26: "spaceEsc",
 	},
 	// Document : Prolog ∙Element RepMisc0x
 	{
-		token.T_7: "angLBrk",
+		token.T_10: "angLBrk",
 	},
 	// Document : Prolog Element ∙RepMisc0x
 	{
 		token.EOF:  "$",
-		token.T_7:  "angLBrk",
-		token.T_24: "spaceEsc",
+		token.T_10: "angLBrk",
+		token.T_26: "spaceEsc",
 	},
 	// Document : Prolog Element RepMisc0x ∙
 	{
@@ -1433,32 +1464,34 @@ var first = []map[token.Type]string{
 	},
 	// DubCondClose : ∙dubQu
 	{
-		token.T_13: "dubQu",
+		token.T_16: "dubQu",
 	},
 	// DubCondClose : dubQu ∙
 	{
-		token.T_19: "optSpaceEsc",
-		token.T_24: "spaceEsc",
+		token.T_11: "angRBrk",
+		token.T_25: "slashAngRBrk",
+		token.T_26: "spaceEsc",
 	},
 	// DubCondClose : ∙SymRefAlts DubCondClose
 	{
 		token.T_0: "&",
 		token.T_1: "&#",
 		token.T_2: "&#x",
-		token.T_6: "andCarrs",
+		token.T_9: "andCarrs",
 	},
 	// DubCondClose : SymRefAlts ∙DubCondClose
 	{
 		token.T_0:  "&",
 		token.T_1:  "&#",
 		token.T_2:  "&#x",
-		token.T_6:  "andCarrs",
-		token.T_13: "dubQu",
+		token.T_9:  "andCarrs",
+		token.T_16: "dubQu",
 	},
 	// DubCondClose : SymRefAlts DubCondClose ∙
 	{
-		token.T_19: "optSpaceEsc",
-		token.T_24: "spaceEsc",
+		token.T_11: "angRBrk",
+		token.T_25: "slashAngRBrk",
+		token.T_26: "spaceEsc",
 	},
 	// DubDash : ∙--
 	{
@@ -1467,8 +1500,8 @@ var first = []map[token.Type]string{
 	// DubDash : -- ∙
 	{
 		token.T_3:  "--",
-		token.T_8:  "angRBrk",
-		token.T_17: "let",
+		token.T_11: "angRBrk",
+		token.T_20: "let",
 	},
 	// ENTITY_REF : ∙& NAME ;
 	{
@@ -1476,8 +1509,8 @@ var first = []map[token.Type]string{
 	},
 	// ENTITY_REF : & ∙NAME ;
 	{
-		token.T_10: "col_",
-		token.T_17: "let",
+		token.T_13: "col_",
+		token.T_20: "let",
 	},
 	// ENTITY_REF : & NAME ∙;
 	{
@@ -1488,57 +1521,58 @@ var first = []map[token.Type]string{
 		token.T_0:  "&",
 		token.T_1:  "&#",
 		token.T_2:  "&#x",
-		token.T_6:  "andCarrs",
-		token.T_7:  "angLBrk",
-		token.T_9:  "charData",
-		token.T_13: "dubQu",
-		token.T_21: "sinQu",
-		token.T_22: "slashAngLBrk",
+		token.T_9:  "andCarrs",
+		token.T_10: "angLBrk",
+		token.T_12: "charData",
+		token.T_16: "dubQu",
+		token.T_23: "sinQu",
+		token.T_24: "slashAngLBrk",
 	},
-	// ElemCloseAlts : ∙angRBrk Content slashAngLBrk NAME optSpaceEsc angRBrk
+	// ElemCloseAlts : ∙angRBrk Content slashAngLBrk NAME OptSpaceEsc angRBrk
 	{
-		token.T_8: "angRBrk",
+		token.T_11: "angRBrk",
 	},
-	// ElemCloseAlts : angRBrk ∙Content slashAngLBrk NAME optSpaceEsc angRBrk
+	// ElemCloseAlts : angRBrk ∙Content slashAngLBrk NAME OptSpaceEsc angRBrk
 	{
 		token.T_0:  "&",
 		token.T_1:  "&#",
 		token.T_2:  "&#x",
-		token.T_7:  "angLBrk",
-		token.T_9:  "charData",
-		token.T_22: "slashAngLBrk",
+		token.T_10: "angLBrk",
+		token.T_12: "charData",
+		token.T_24: "slashAngLBrk",
 	},
-	// ElemCloseAlts : angRBrk Content ∙slashAngLBrk NAME optSpaceEsc angRBrk
+	// ElemCloseAlts : angRBrk Content ∙slashAngLBrk NAME OptSpaceEsc angRBrk
 	{
-		token.T_22: "slashAngLBrk",
+		token.T_24: "slashAngLBrk",
 	},
-	// ElemCloseAlts : angRBrk Content slashAngLBrk ∙NAME optSpaceEsc angRBrk
+	// ElemCloseAlts : angRBrk Content slashAngLBrk ∙NAME OptSpaceEsc angRBrk
 	{
-		token.T_10: "col_",
-		token.T_17: "let",
+		token.T_13: "col_",
+		token.T_20: "let",
 	},
-	// ElemCloseAlts : angRBrk Content slashAngLBrk NAME ∙optSpaceEsc angRBrk
+	// ElemCloseAlts : angRBrk Content slashAngLBrk NAME ∙OptSpaceEsc angRBrk
 	{
-		token.T_19: "optSpaceEsc",
+		token.T_11: "angRBrk",
+		token.T_26: "spaceEsc",
 	},
-	// ElemCloseAlts : angRBrk Content slashAngLBrk NAME optSpaceEsc ∙angRBrk
+	// ElemCloseAlts : angRBrk Content slashAngLBrk NAME OptSpaceEsc ∙angRBrk
 	{
-		token.T_8: "angRBrk",
+		token.T_11: "angRBrk",
 	},
-	// ElemCloseAlts : angRBrk Content slashAngLBrk NAME optSpaceEsc angRBrk ∙
+	// ElemCloseAlts : angRBrk Content slashAngLBrk NAME OptSpaceEsc angRBrk ∙
 	{
 		token.EOF:  "$",
 		token.T_0:  "&",
 		token.T_1:  "&#",
 		token.T_2:  "&#x",
-		token.T_7:  "angLBrk",
-		token.T_9:  "charData",
-		token.T_22: "slashAngLBrk",
-		token.T_24: "spaceEsc",
+		token.T_10: "angLBrk",
+		token.T_12: "charData",
+		token.T_24: "slashAngLBrk",
+		token.T_26: "spaceEsc",
 	},
 	// ElemCloseAlts : ∙slashAngRBrk
 	{
-		token.T_23: "slashAngRBrk",
+		token.T_25: "slashAngRBrk",
 	},
 	// ElemCloseAlts : slashAngRBrk ∙
 	{
@@ -1546,110 +1580,123 @@ var first = []map[token.Type]string{
 		token.T_0:  "&",
 		token.T_1:  "&#",
 		token.T_2:  "&#x",
-		token.T_7:  "angLBrk",
-		token.T_9:  "charData",
-		token.T_22: "slashAngLBrk",
-		token.T_24: "spaceEsc",
+		token.T_10: "angLBrk",
+		token.T_12: "charData",
+		token.T_24: "slashAngLBrk",
+		token.T_26: "spaceEsc",
 	},
-	// Element : ∙angLBrk NAME RepSAttx0x optSpaceEsc ElemCloseAlts
+	// Element : ∙angLBrk NAME RepSAttx0x OptSpaceEsc ElemCloseAlts
 	{
-		token.T_7: "angLBrk",
+		token.T_10: "angLBrk",
 	},
-	// Element : angLBrk ∙NAME RepSAttx0x optSpaceEsc ElemCloseAlts
+	// Element : angLBrk ∙NAME RepSAttx0x OptSpaceEsc ElemCloseAlts
 	{
-		token.T_10: "col_",
-		token.T_17: "let",
+		token.T_13: "col_",
+		token.T_20: "let",
 	},
-	// Element : angLBrk NAME ∙RepSAttx0x optSpaceEsc ElemCloseAlts
+	// Element : angLBrk NAME ∙RepSAttx0x OptSpaceEsc ElemCloseAlts
 	{
-		token.T_19: "optSpaceEsc",
-		token.T_24: "spaceEsc",
+		token.T_11: "angRBrk",
+		token.T_25: "slashAngRBrk",
+		token.T_26: "spaceEsc",
 	},
-	// Element : angLBrk NAME RepSAttx0x ∙optSpaceEsc ElemCloseAlts
+	// Element : angLBrk NAME RepSAttx0x ∙OptSpaceEsc ElemCloseAlts
 	{
-		token.T_19: "optSpaceEsc",
+		token.T_11: "angRBrk",
+		token.T_25: "slashAngRBrk",
+		token.T_26: "spaceEsc",
 	},
-	// Element : angLBrk NAME RepSAttx0x optSpaceEsc ∙ElemCloseAlts
+	// Element : angLBrk NAME RepSAttx0x OptSpaceEsc ∙ElemCloseAlts
 	{
-		token.T_8:  "angRBrk",
-		token.T_23: "slashAngRBrk",
+		token.T_11: "angRBrk",
+		token.T_25: "slashAngRBrk",
 	},
-	// Element : angLBrk NAME RepSAttx0x optSpaceEsc ElemCloseAlts ∙
+	// Element : angLBrk NAME RepSAttx0x OptSpaceEsc ElemCloseAlts ∙
 	{
 		token.EOF:  "$",
 		token.T_0:  "&",
 		token.T_1:  "&#",
 		token.T_2:  "&#x",
-		token.T_7:  "angLBrk",
-		token.T_9:  "charData",
-		token.T_22: "slashAngLBrk",
-		token.T_24: "spaceEsc",
+		token.T_10: "angLBrk",
+		token.T_12: "charData",
+		token.T_24: "slashAngLBrk",
+		token.T_26: "spaceEsc",
 	},
 	// EncName : ∙let RepLDSAlts0x
 	{
-		token.T_17: "let",
+		token.T_20: "let",
 	},
 	// EncName : let ∙RepLDSAlts0x
 	{
-		token.T_11: "dot_BSlashDash",
-		token.T_13: "dubQu",
-		token.T_17: "let",
-		token.T_18: "num",
-		token.T_21: "sinQu",
+		token.T_14: "dot_BSlashDash",
+		token.T_16: "dubQu",
+		token.T_20: "let",
+		token.T_21: "num",
+		token.T_23: "sinQu",
 	},
 	// EncName : let RepLDSAlts0x ∙
 	{
-		token.T_13: "dubQu",
-		token.T_21: "sinQu",
+		token.T_16: "dubQu",
+		token.T_23: "sinQu",
 	},
-	// EncodingDecl : ∙spaceEsc encoding Eq QuoEncNam
+	// Encoding : ∙encoding
 	{
-		token.T_24: "spaceEsc",
+		token.T_17: "encoding",
 	},
-	// EncodingDecl : spaceEsc ∙encoding Eq QuoEncNam
+	// Encoding : encoding ∙
 	{
-		token.T_14: "encoding",
+		token.T_18: "eq",
+		token.T_26: "spaceEsc",
 	},
-	// EncodingDecl : spaceEsc encoding ∙Eq QuoEncNam
+	// EncodingDecl : ∙Encoding Eq QuoEncNam
 	{
-		token.T_19: "optSpaceEsc",
+		token.T_17: "encoding",
 	},
-	// EncodingDecl : spaceEsc encoding Eq ∙QuoEncNam
+	// EncodingDecl : Encoding ∙Eq QuoEncNam
 	{
-		token.T_13: "dubQu",
-		token.T_21: "sinQu",
+		token.T_18: "eq",
+		token.T_26: "spaceEsc",
 	},
-	// EncodingDecl : spaceEsc encoding Eq QuoEncNam ∙
+	// EncodingDecl : Encoding Eq ∙QuoEncNam
 	{
-		token.T_19: "optSpaceEsc",
+		token.T_16: "dubQu",
+		token.T_23: "sinQu",
 	},
-	// Eq : ∙optSpaceEsc eq optSpaceEsc
+	// EncodingDecl : Encoding Eq QuoEncNam ∙
 	{
-		token.T_19: "optSpaceEsc",
+		token.T_7:  "?>",
+		token.T_26: "spaceEsc",
 	},
-	// Eq : optSpaceEsc ∙eq optSpaceEsc
+	// Eq : ∙OptSpaceEsc eq OptSpaceEsc
 	{
-		token.T_15: "eq",
+		token.T_18: "eq",
+		token.T_26: "spaceEsc",
 	},
-	// Eq : optSpaceEsc eq ∙optSpaceEsc
+	// Eq : OptSpaceEsc ∙eq OptSpaceEsc
 	{
-		token.T_19: "optSpaceEsc",
+		token.T_18: "eq",
 	},
-	// Eq : optSpaceEsc eq optSpaceEsc ∙
+	// Eq : OptSpaceEsc eq ∙OptSpaceEsc
 	{
-		token.T_13: "dubQu",
-		token.T_21: "sinQu",
+		token.T_16: "dubQu",
+		token.T_23: "sinQu",
+		token.T_26: "spaceEsc",
+	},
+	// Eq : OptSpaceEsc eq OptSpaceEsc ∙
+	{
+		token.T_16: "dubQu",
+		token.T_23: "sinQu",
 	},
 	// Hex : ∙HexAlts RepHexAlts0x
 	{
-		token.T_5:  "aA_fF",
-		token.T_18: "num",
+		token.T_8:  "aA_fF",
+		token.T_21: "num",
 	},
 	// Hex : HexAlts ∙RepHexAlts0x
 	{
 		token.T_4:  ";",
-		token.T_5:  "aA_fF",
-		token.T_18: "num",
+		token.T_8:  "aA_fF",
+		token.T_21: "num",
 	},
 	// Hex : HexAlts RepHexAlts0x ∙
 	{
@@ -1657,305 +1704,347 @@ var first = []map[token.Type]string{
 	},
 	// HexAlts : ∙num
 	{
-		token.T_18: "num",
+		token.T_21: "num",
 	},
 	// HexAlts : num ∙
 	{
 		token.T_4:  ";",
-		token.T_5:  "aA_fF",
-		token.T_18: "num",
+		token.T_8:  "aA_fF",
+		token.T_21: "num",
 	},
 	// HexAlts : ∙aA_fF
 	{
-		token.T_5: "aA_fF",
+		token.T_8: "aA_fF",
 	},
 	// HexAlts : aA_fF ∙
 	{
 		token.T_4:  ";",
-		token.T_5:  "aA_fF",
-		token.T_18: "num",
+		token.T_8:  "aA_fF",
+		token.T_21: "num",
 	},
 	// LetColonAlts : ∙let
 	{
-		token.T_17: "let",
+		token.T_20: "let",
 	},
 	// LetColonAlts : let ∙
 	{
 		token.T_4:  ";",
-		token.T_12: "dot_BSlashDashCol",
-		token.T_17: "let",
-		token.T_18: "num",
-		token.T_19: "optSpaceEsc",
-		token.T_24: "spaceEsc",
+		token.T_11: "angRBrk",
+		token.T_15: "dot_BSlashDashCol",
+		token.T_18: "eq",
+		token.T_20: "let",
+		token.T_21: "num",
+		token.T_25: "slashAngRBrk",
+		token.T_26: "spaceEsc",
 	},
 	// LetColonAlts : ∙col_
 	{
-		token.T_10: "col_",
+		token.T_13: "col_",
 	},
 	// LetColonAlts : col_ ∙
 	{
 		token.T_4:  ";",
-		token.T_12: "dot_BSlashDashCol",
-		token.T_17: "let",
-		token.T_18: "num",
-		token.T_19: "optSpaceEsc",
-		token.T_24: "spaceEsc",
+		token.T_11: "angRBrk",
+		token.T_15: "dot_BSlashDashCol",
+		token.T_18: "eq",
+		token.T_20: "let",
+		token.T_21: "num",
+		token.T_25: "slashAngRBrk",
+		token.T_26: "spaceEsc",
 	},
 	// LetDigSymAlts : ∙let
 	{
-		token.T_17: "let",
+		token.T_20: "let",
 	},
 	// LetDigSymAlts : let ∙
 	{
-		token.T_11: "dot_BSlashDash",
-		token.T_13: "dubQu",
-		token.T_17: "let",
-		token.T_18: "num",
-		token.T_21: "sinQu",
+		token.T_14: "dot_BSlashDash",
+		token.T_16: "dubQu",
+		token.T_20: "let",
+		token.T_21: "num",
+		token.T_23: "sinQu",
 	},
 	// LetDigSymAlts : ∙num
 	{
-		token.T_18: "num",
+		token.T_21: "num",
 	},
 	// LetDigSymAlts : num ∙
 	{
-		token.T_11: "dot_BSlashDash",
-		token.T_13: "dubQu",
-		token.T_17: "let",
-		token.T_18: "num",
-		token.T_21: "sinQu",
+		token.T_14: "dot_BSlashDash",
+		token.T_16: "dubQu",
+		token.T_20: "let",
+		token.T_21: "num",
+		token.T_23: "sinQu",
 	},
 	// LetDigSymAlts : ∙dot_BSlashDash
 	{
-		token.T_11: "dot_BSlashDash",
+		token.T_14: "dot_BSlashDash",
 	},
 	// LetDigSymAlts : dot_BSlashDash ∙
 	{
-		token.T_11: "dot_BSlashDash",
-		token.T_13: "dubQu",
-		token.T_17: "let",
-		token.T_18: "num",
-		token.T_21: "sinQu",
+		token.T_14: "dot_BSlashDash",
+		token.T_16: "dubQu",
+		token.T_20: "let",
+		token.T_21: "num",
+		token.T_23: "sinQu",
 	},
 	// Misc : ∙COMMENT
 	{
-		token.T_7: "angLBrk",
+		token.T_10: "angLBrk",
 	},
 	// Misc : COMMENT ∙
 	{
 		token.EOF:  "$",
-		token.T_7:  "angLBrk",
-		token.T_24: "spaceEsc",
+		token.T_10: "angLBrk",
+		token.T_26: "spaceEsc",
 	},
 	// Misc : ∙spaceEsc
 	{
-		token.T_24: "spaceEsc",
+		token.T_26: "spaceEsc",
 	},
 	// Misc : spaceEsc ∙
 	{
 		token.EOF:  "$",
-		token.T_7:  "angLBrk",
-		token.T_24: "spaceEsc",
+		token.T_10: "angLBrk",
+		token.T_26: "spaceEsc",
 	},
 	// NAME : ∙LetColonAlts RepNameChar0x
 	{
-		token.T_10: "col_",
-		token.T_17: "let",
+		token.T_13: "col_",
+		token.T_20: "let",
 	},
 	// NAME : LetColonAlts ∙RepNameChar0x
 	{
 		token.T_4:  ";",
-		token.T_12: "dot_BSlashDashCol",
-		token.T_17: "let",
-		token.T_18: "num",
-		token.T_19: "optSpaceEsc",
-		token.T_24: "spaceEsc",
+		token.T_11: "angRBrk",
+		token.T_15: "dot_BSlashDashCol",
+		token.T_18: "eq",
+		token.T_20: "let",
+		token.T_21: "num",
+		token.T_25: "slashAngRBrk",
+		token.T_26: "spaceEsc",
 	},
 	// NAME : LetColonAlts RepNameChar0x ∙
 	{
 		token.T_4:  ";",
-		token.T_19: "optSpaceEsc",
-		token.T_24: "spaceEsc",
+		token.T_11: "angRBrk",
+		token.T_18: "eq",
+		token.T_25: "slashAngRBrk",
+		token.T_26: "spaceEsc",
 	},
 	// NAME_CHAR : ∙let
 	{
-		token.T_17: "let",
+		token.T_20: "let",
 	},
 	// NAME_CHAR : let ∙
 	{
 		token.T_4:  ";",
-		token.T_12: "dot_BSlashDashCol",
-		token.T_13: "dubQu",
-		token.T_17: "let",
-		token.T_18: "num",
-		token.T_19: "optSpaceEsc",
-		token.T_21: "sinQu",
-		token.T_24: "spaceEsc",
+		token.T_11: "angRBrk",
+		token.T_15: "dot_BSlashDashCol",
+		token.T_16: "dubQu",
+		token.T_18: "eq",
+		token.T_20: "let",
+		token.T_21: "num",
+		token.T_23: "sinQu",
+		token.T_25: "slashAngRBrk",
+		token.T_26: "spaceEsc",
 	},
 	// NAME_CHAR : ∙num
 	{
-		token.T_18: "num",
+		token.T_21: "num",
 	},
 	// NAME_CHAR : num ∙
 	{
 		token.T_4:  ";",
-		token.T_12: "dot_BSlashDashCol",
-		token.T_13: "dubQu",
-		token.T_17: "let",
-		token.T_18: "num",
-		token.T_19: "optSpaceEsc",
-		token.T_21: "sinQu",
-		token.T_24: "spaceEsc",
+		token.T_11: "angRBrk",
+		token.T_15: "dot_BSlashDashCol",
+		token.T_16: "dubQu",
+		token.T_18: "eq",
+		token.T_20: "let",
+		token.T_21: "num",
+		token.T_23: "sinQu",
+		token.T_25: "slashAngRBrk",
+		token.T_26: "spaceEsc",
 	},
 	// NAME_CHAR : ∙dot_BSlashDashCol
 	{
-		token.T_12: "dot_BSlashDashCol",
+		token.T_15: "dot_BSlashDashCol",
 	},
 	// NAME_CHAR : dot_BSlashDashCol ∙
 	{
 		token.T_4:  ";",
-		token.T_12: "dot_BSlashDashCol",
-		token.T_13: "dubQu",
-		token.T_17: "let",
-		token.T_18: "num",
-		token.T_19: "optSpaceEsc",
-		token.T_21: "sinQu",
-		token.T_24: "spaceEsc",
+		token.T_11: "angRBrk",
+		token.T_15: "dot_BSlashDashCol",
+		token.T_16: "dubQu",
+		token.T_18: "eq",
+		token.T_20: "let",
+		token.T_21: "num",
+		token.T_23: "sinQu",
+		token.T_25: "slashAngRBrk",
+		token.T_26: "spaceEsc",
 	},
 	// NameCharRep : ∙NAME_CHAR NameCharRep
 	{
-		token.T_12: "dot_BSlashDashCol",
-		token.T_17: "let",
-		token.T_18: "num",
+		token.T_15: "dot_BSlashDashCol",
+		token.T_20: "let",
+		token.T_21: "num",
 	},
 	// NameCharRep : NAME_CHAR ∙NameCharRep
 	{
-		token.T_12: "dot_BSlashDashCol",
-		token.T_13: "dubQu",
-		token.T_17: "let",
-		token.T_18: "num",
-		token.T_21: "sinQu",
+		token.T_15: "dot_BSlashDashCol",
+		token.T_16: "dubQu",
+		token.T_20: "let",
+		token.T_21: "num",
+		token.T_23: "sinQu",
 	},
 	// NameCharRep : NAME_CHAR NameCharRep ∙
 	{
-		token.T_13: "dubQu",
-		token.T_21: "sinQu",
+		token.T_16: "dubQu",
+		token.T_23: "sinQu",
 	},
 	// NameCharRep : ∙
 	{
-		token.T_13: "dubQu",
-		token.T_21: "sinQu",
+		token.T_16: "dubQu",
+		token.T_23: "sinQu",
 	},
 	// OptEncodDecl : ∙EncodingDecl
 	{
-		token.T_24: "spaceEsc",
+		token.T_17: "encoding",
 	},
 	// OptEncodDecl : EncodingDecl ∙
 	{
-		token.T_19: "optSpaceEsc",
+		token.T_7:  "?>",
+		token.T_26: "spaceEsc",
 	},
 	// OptEncodDecl : ∙
 	{
-		token.T_19: "optSpaceEsc",
+		token.T_7:  "?>",
+		token.T_26: "spaceEsc",
+	},
+	// OptSpaceEsc : ∙spaceEsc
+	{
+		token.T_26: "spaceEsc",
+	},
+	// OptSpaceEsc : spaceEsc ∙
+	{
+		token.T_7:  "?>",
+		token.T_11: "angRBrk",
+		token.T_16: "dubQu",
+		token.T_18: "eq",
+		token.T_23: "sinQu",
+		token.T_25: "slashAngRBrk",
+	},
+	// OptSpaceEsc : ∙
+	{
+		token.T_7:  "?>",
+		token.T_11: "angRBrk",
+		token.T_16: "dubQu",
+		token.T_18: "eq",
+		token.T_23: "sinQu",
+		token.T_25: "slashAngRBrk",
 	},
 	// OptXMLDecl : ∙XMLDecl
 	{
-		token.T_27: "xmlDeclStart",
+		token.T_5: "<?xml",
 	},
 	// OptXMLDecl : XMLDecl ∙
 	{
-		token.T_7:  "angLBrk",
-		token.T_24: "spaceEsc",
+		token.T_10: "angLBrk",
+		token.T_26: "spaceEsc",
 	},
 	// OptXMLDecl : ∙
 	{
-		token.T_7:  "angLBrk",
-		token.T_24: "spaceEsc",
+		token.T_10: "angLBrk",
+		token.T_26: "spaceEsc",
 	},
 	// Prolog : ∙OptXMLDecl RepMisc0x
 	{
-		token.T_7:  "angLBrk",
-		token.T_24: "spaceEsc",
-		token.T_27: "xmlDeclStart",
+		token.T_5:  "<?xml",
+		token.T_10: "angLBrk",
+		token.T_26: "spaceEsc",
 	},
 	// Prolog : OptXMLDecl ∙RepMisc0x
 	{
-		token.T_7:  "angLBrk",
-		token.T_24: "spaceEsc",
+		token.T_10: "angLBrk",
+		token.T_26: "spaceEsc",
 	},
 	// Prolog : OptXMLDecl RepMisc0x ∙
 	{
-		token.T_7: "angLBrk",
+		token.T_10: "angLBrk",
 	},
 	// QuoEncNam : ∙sinQu EncName sinQu
 	{
-		token.T_21: "sinQu",
+		token.T_23: "sinQu",
 	},
 	// QuoEncNam : sinQu ∙EncName sinQu
 	{
-		token.T_17: "let",
+		token.T_20: "let",
 	},
 	// QuoEncNam : sinQu EncName ∙sinQu
 	{
-		token.T_21: "sinQu",
+		token.T_23: "sinQu",
 	},
 	// QuoEncNam : sinQu EncName sinQu ∙
 	{
-		token.T_19: "optSpaceEsc",
+		token.T_7:  "?>",
+		token.T_26: "spaceEsc",
 	},
 	// QuoEncNam : ∙dubQu EncName dubQu
 	{
-		token.T_13: "dubQu",
+		token.T_16: "dubQu",
 	},
 	// QuoEncNam : dubQu ∙EncName dubQu
 	{
-		token.T_17: "let",
+		token.T_20: "let",
 	},
 	// QuoEncNam : dubQu EncName ∙dubQu
 	{
-		token.T_13: "dubQu",
+		token.T_16: "dubQu",
 	},
 	// QuoEncNam : dubQu EncName dubQu ∙
 	{
-		token.T_19: "optSpaceEsc",
+		token.T_7:  "?>",
+		token.T_26: "spaceEsc",
 	},
 	// QuoVerNum : ∙sinQu VersionNum sinQu
 	{
-		token.T_21: "sinQu",
+		token.T_23: "sinQu",
 	},
 	// QuoVerNum : sinQu ∙VersionNum sinQu
 	{
-		token.T_12: "dot_BSlashDashCol",
-		token.T_17: "let",
-		token.T_18: "num",
+		token.T_15: "dot_BSlashDashCol",
+		token.T_20: "let",
+		token.T_21: "num",
 	},
 	// QuoVerNum : sinQu VersionNum ∙sinQu
 	{
-		token.T_21: "sinQu",
+		token.T_23: "sinQu",
 	},
 	// QuoVerNum : sinQu VersionNum sinQu ∙
 	{
-		token.T_19: "optSpaceEsc",
-		token.T_24: "spaceEsc",
+		token.T_7:  "?>",
+		token.T_17: "encoding",
+		token.T_26: "spaceEsc",
 	},
 	// QuoVerNum : ∙dubQu VersionNum dubQu
 	{
-		token.T_13: "dubQu",
+		token.T_16: "dubQu",
 	},
 	// QuoVerNum : dubQu ∙VersionNum dubQu
 	{
-		token.T_12: "dot_BSlashDashCol",
-		token.T_17: "let",
-		token.T_18: "num",
+		token.T_15: "dot_BSlashDashCol",
+		token.T_20: "let",
+		token.T_21: "num",
 	},
 	// QuoVerNum : dubQu VersionNum ∙dubQu
 	{
-		token.T_13: "dubQu",
+		token.T_16: "dubQu",
 	},
 	// QuoVerNum : dubQu VersionNum dubQu ∙
 	{
-		token.T_19: "optSpaceEsc",
-		token.T_24: "spaceEsc",
+		token.T_7:  "?>",
+		token.T_17: "encoding",
+		token.T_26: "spaceEsc",
 	},
 	// REFERENCE : ∙ENTITY_REF
 	{
@@ -1966,12 +2055,12 @@ var first = []map[token.Type]string{
 		token.T_0:  "&",
 		token.T_1:  "&#",
 		token.T_2:  "&#x",
-		token.T_6:  "andCarrs",
-		token.T_7:  "angLBrk",
-		token.T_9:  "charData",
-		token.T_13: "dubQu",
-		token.T_21: "sinQu",
-		token.T_22: "slashAngLBrk",
+		token.T_9:  "andCarrs",
+		token.T_10: "angLBrk",
+		token.T_12: "charData",
+		token.T_16: "dubQu",
+		token.T_23: "sinQu",
+		token.T_24: "slashAngLBrk",
 	},
 	// REFERENCE : ∙CHAR_REF
 	{
@@ -1983,22 +2072,22 @@ var first = []map[token.Type]string{
 		token.T_0:  "&",
 		token.T_1:  "&#",
 		token.T_2:  "&#x",
-		token.T_6:  "andCarrs",
-		token.T_7:  "angLBrk",
-		token.T_9:  "charData",
-		token.T_13: "dubQu",
-		token.T_21: "sinQu",
-		token.T_22: "slashAngLBrk",
+		token.T_9:  "andCarrs",
+		token.T_10: "angLBrk",
+		token.T_12: "charData",
+		token.T_16: "dubQu",
+		token.T_23: "sinQu",
+		token.T_24: "slashAngLBrk",
 	},
 	// RepHexAlts0x : ∙HexAlts Hex
 	{
-		token.T_5:  "aA_fF",
-		token.T_18: "num",
+		token.T_8:  "aA_fF",
+		token.T_21: "num",
 	},
 	// RepHexAlts0x : HexAlts ∙Hex
 	{
-		token.T_5:  "aA_fF",
-		token.T_18: "num",
+		token.T_8:  "aA_fF",
+		token.T_21: "num",
 	},
 	// RepHexAlts0x : HexAlts Hex ∙
 	{
@@ -2010,148 +2099,162 @@ var first = []map[token.Type]string{
 	},
 	// RepLDSAlts0x : ∙LetDigSymAlts RepLDSAlts0x
 	{
-		token.T_11: "dot_BSlashDash",
-		token.T_17: "let",
-		token.T_18: "num",
+		token.T_14: "dot_BSlashDash",
+		token.T_20: "let",
+		token.T_21: "num",
 	},
 	// RepLDSAlts0x : LetDigSymAlts ∙RepLDSAlts0x
 	{
-		token.T_11: "dot_BSlashDash",
-		token.T_13: "dubQu",
-		token.T_17: "let",
-		token.T_18: "num",
-		token.T_21: "sinQu",
+		token.T_14: "dot_BSlashDash",
+		token.T_16: "dubQu",
+		token.T_20: "let",
+		token.T_21: "num",
+		token.T_23: "sinQu",
 	},
 	// RepLDSAlts0x : LetDigSymAlts RepLDSAlts0x ∙
 	{
-		token.T_13: "dubQu",
-		token.T_21: "sinQu",
+		token.T_16: "dubQu",
+		token.T_23: "sinQu",
 	},
 	// RepLDSAlts0x : ∙
 	{
-		token.T_13: "dubQu",
-		token.T_21: "sinQu",
+		token.T_16: "dubQu",
+		token.T_23: "sinQu",
 	},
 	// RepMisc0x : ∙Misc RepMisc0x
 	{
-		token.T_7:  "angLBrk",
-		token.T_24: "spaceEsc",
+		token.T_10: "angLBrk",
+		token.T_26: "spaceEsc",
 	},
 	// RepMisc0x : Misc ∙RepMisc0x
 	{
 		token.EOF:  "$",
-		token.T_7:  "angLBrk",
-		token.T_24: "spaceEsc",
+		token.T_10: "angLBrk",
+		token.T_26: "spaceEsc",
 	},
 	// RepMisc0x : Misc RepMisc0x ∙
 	{
-		token.EOF: "$",
-		token.T_7: "angLBrk",
+		token.EOF:  "$",
+		token.T_10: "angLBrk",
 	},
 	// RepMisc0x : ∙
 	{
-		token.EOF: "$",
-		token.T_7: "angLBrk",
+		token.EOF:  "$",
+		token.T_10: "angLBrk",
 	},
 	// RepNameChar0x : ∙NAME_CHAR RepNameChar0x
 	{
-		token.T_12: "dot_BSlashDashCol",
-		token.T_17: "let",
-		token.T_18: "num",
+		token.T_15: "dot_BSlashDashCol",
+		token.T_20: "let",
+		token.T_21: "num",
 	},
 	// RepNameChar0x : NAME_CHAR ∙RepNameChar0x
 	{
 		token.T_4:  ";",
-		token.T_12: "dot_BSlashDashCol",
-		token.T_17: "let",
-		token.T_18: "num",
-		token.T_19: "optSpaceEsc",
-		token.T_24: "spaceEsc",
+		token.T_11: "angRBrk",
+		token.T_15: "dot_BSlashDashCol",
+		token.T_18: "eq",
+		token.T_20: "let",
+		token.T_21: "num",
+		token.T_25: "slashAngRBrk",
+		token.T_26: "spaceEsc",
 	},
 	// RepNameChar0x : NAME_CHAR RepNameChar0x ∙
 	{
 		token.T_4:  ";",
-		token.T_19: "optSpaceEsc",
-		token.T_24: "spaceEsc",
+		token.T_11: "angRBrk",
+		token.T_18: "eq",
+		token.T_25: "slashAngRBrk",
+		token.T_26: "spaceEsc",
 	},
 	// RepNameChar0x : ∙
 	{
 		token.T_4:  ";",
-		token.T_19: "optSpaceEsc",
-		token.T_24: "spaceEsc",
+		token.T_11: "angRBrk",
+		token.T_18: "eq",
+		token.T_25: "slashAngRBrk",
+		token.T_26: "spaceEsc",
 	},
 	// RepSAttx0x : ∙SAtt RepSAttx0x
 	{
-		token.T_24: "spaceEsc",
+		token.T_26: "spaceEsc",
 	},
 	// RepSAttx0x : SAtt ∙RepSAttx0x
 	{
-		token.T_19: "optSpaceEsc",
-		token.T_24: "spaceEsc",
+		token.T_11: "angRBrk",
+		token.T_25: "slashAngRBrk",
+		token.T_26: "spaceEsc",
 	},
 	// RepSAttx0x : SAtt RepSAttx0x ∙
 	{
-		token.T_19: "optSpaceEsc",
+		token.T_11: "angRBrk",
+		token.T_25: "slashAngRBrk",
+		token.T_26: "spaceEsc",
 	},
 	// RepSAttx0x : ∙
 	{
-		token.T_19: "optSpaceEsc",
+		token.T_11: "angRBrk",
+		token.T_25: "slashAngRBrk",
+		token.T_26: "spaceEsc",
 	},
 	// SAtt : ∙spaceEsc Attribute
 	{
-		token.T_24: "spaceEsc",
+		token.T_26: "spaceEsc",
 	},
 	// SAtt : spaceEsc ∙Attribute
 	{
-		token.T_10: "col_",
-		token.T_17: "let",
+		token.T_13: "col_",
+		token.T_20: "let",
 	},
 	// SAtt : spaceEsc Attribute ∙
 	{
-		token.T_19: "optSpaceEsc",
-		token.T_24: "spaceEsc",
+		token.T_11: "angRBrk",
+		token.T_25: "slashAngRBrk",
+		token.T_26: "spaceEsc",
 	},
 	// SinCondClose : ∙sinQu
 	{
-		token.T_21: "sinQu",
+		token.T_23: "sinQu",
 	},
 	// SinCondClose : sinQu ∙
 	{
-		token.T_19: "optSpaceEsc",
-		token.T_24: "spaceEsc",
+		token.T_11: "angRBrk",
+		token.T_25: "slashAngRBrk",
+		token.T_26: "spaceEsc",
 	},
 	// SinCondClose : ∙SymRefAlts SinCondClose
 	{
 		token.T_0: "&",
 		token.T_1: "&#",
 		token.T_2: "&#x",
-		token.T_6: "andCarrs",
+		token.T_9: "andCarrs",
 	},
 	// SinCondClose : SymRefAlts ∙SinCondClose
 	{
 		token.T_0:  "&",
 		token.T_1:  "&#",
 		token.T_2:  "&#x",
-		token.T_6:  "andCarrs",
-		token.T_21: "sinQu",
+		token.T_9:  "andCarrs",
+		token.T_23: "sinQu",
 	},
 	// SinCondClose : SymRefAlts SinCondClose ∙
 	{
-		token.T_19: "optSpaceEsc",
-		token.T_24: "spaceEsc",
+		token.T_11: "angRBrk",
+		token.T_25: "slashAngRBrk",
+		token.T_26: "spaceEsc",
 	},
 	// SymRefAlts : ∙andCarrs
 	{
-		token.T_6: "andCarrs",
+		token.T_9: "andCarrs",
 	},
 	// SymRefAlts : andCarrs ∙
 	{
 		token.T_0:  "&",
 		token.T_1:  "&#",
 		token.T_2:  "&#x",
-		token.T_6:  "andCarrs",
-		token.T_13: "dubQu",
-		token.T_21: "sinQu",
+		token.T_9:  "andCarrs",
+		token.T_16: "dubQu",
+		token.T_23: "sinQu",
 	},
 	// SymRefAlts : ∙REFERENCE
 	{
@@ -2164,101 +2267,127 @@ var first = []map[token.Type]string{
 		token.T_0:  "&",
 		token.T_1:  "&#",
 		token.T_2:  "&#x",
-		token.T_6:  "andCarrs",
-		token.T_13: "dubQu",
-		token.T_21: "sinQu",
+		token.T_9:  "andCarrs",
+		token.T_16: "dubQu",
+		token.T_23: "sinQu",
 	},
-	// VersionInfo : ∙spaceEsc version Eq QuoVerNum
+	// Version : ∙version
 	{
-		token.T_24: "spaceEsc",
+		token.T_27: "version",
 	},
-	// VersionInfo : spaceEsc ∙version Eq QuoVerNum
+	// Version : version ∙
 	{
-		token.T_25: "version",
+		token.T_6: "=",
 	},
-	// VersionInfo : spaceEsc version ∙Eq QuoVerNum
+	// VersionInfo : ∙Version = QuoVerNum
 	{
-		token.T_19: "optSpaceEsc",
+		token.T_27: "version",
 	},
-	// VersionInfo : spaceEsc version Eq ∙QuoVerNum
+	// VersionInfo : Version ∙= QuoVerNum
 	{
-		token.T_13: "dubQu",
-		token.T_21: "sinQu",
+		token.T_6: "=",
 	},
-	// VersionInfo : spaceEsc version Eq QuoVerNum ∙
+	// VersionInfo : Version = ∙QuoVerNum
 	{
-		token.T_19: "optSpaceEsc",
-		token.T_24: "spaceEsc",
+		token.T_16: "dubQu",
+		token.T_23: "sinQu",
+	},
+	// VersionInfo : Version = QuoVerNum ∙
+	{
+		token.T_7:  "?>",
+		token.T_17: "encoding",
+		token.T_26: "spaceEsc",
 	},
 	// VersionNum : ∙NAME_CHAR NameCharRep
 	{
-		token.T_12: "dot_BSlashDashCol",
-		token.T_17: "let",
-		token.T_18: "num",
+		token.T_15: "dot_BSlashDashCol",
+		token.T_20: "let",
+		token.T_21: "num",
 	},
 	// VersionNum : NAME_CHAR ∙NameCharRep
 	{
-		token.T_12: "dot_BSlashDashCol",
-		token.T_13: "dubQu",
-		token.T_17: "let",
-		token.T_18: "num",
-		token.T_21: "sinQu",
+		token.T_15: "dot_BSlashDashCol",
+		token.T_16: "dubQu",
+		token.T_20: "let",
+		token.T_21: "num",
+		token.T_23: "sinQu",
 	},
 	// VersionNum : NAME_CHAR NameCharRep ∙
 	{
-		token.T_13: "dubQu",
-		token.T_21: "sinQu",
+		token.T_16: "dubQu",
+		token.T_23: "sinQu",
 	},
-	// XMLDecl : ∙xmlDeclStart VersionInfo OptEncodDecl optSpaceEsc xmlDeclEnd
+	// XMLDecl : ∙XmlDeclStart VersionInfo OptEncodDecl OptSpaceEsc XmlDeclEnd
 	{
-		token.T_27: "xmlDeclStart",
+		token.T_5: "<?xml",
 	},
-	// XMLDecl : xmlDeclStart ∙VersionInfo OptEncodDecl optSpaceEsc xmlDeclEnd
+	// XMLDecl : XmlDeclStart ∙VersionInfo OptEncodDecl OptSpaceEsc XmlDeclEnd
 	{
-		token.T_24: "spaceEsc",
+		token.T_27: "version",
 	},
-	// XMLDecl : xmlDeclStart VersionInfo ∙OptEncodDecl optSpaceEsc xmlDeclEnd
+	// XMLDecl : XmlDeclStart VersionInfo ∙OptEncodDecl OptSpaceEsc XmlDeclEnd
 	{
-		token.T_19: "optSpaceEsc",
-		token.T_24: "spaceEsc",
+		token.T_7:  "?>",
+		token.T_17: "encoding",
+		token.T_26: "spaceEsc",
 	},
-	// XMLDecl : xmlDeclStart VersionInfo OptEncodDecl ∙optSpaceEsc xmlDeclEnd
+	// XMLDecl : XmlDeclStart VersionInfo OptEncodDecl ∙OptSpaceEsc XmlDeclEnd
 	{
-		token.T_19: "optSpaceEsc",
+		token.T_7:  "?>",
+		token.T_26: "spaceEsc",
 	},
-	// XMLDecl : xmlDeclStart VersionInfo OptEncodDecl optSpaceEsc ∙xmlDeclEnd
+	// XMLDecl : XmlDeclStart VersionInfo OptEncodDecl OptSpaceEsc ∙XmlDeclEnd
 	{
-		token.T_26: "xmlDeclEnd",
+		token.T_7: "?>",
 	},
-	// XMLDecl : xmlDeclStart VersionInfo OptEncodDecl optSpaceEsc xmlDeclEnd ∙
+	// XMLDecl : XmlDeclStart VersionInfo OptEncodDecl OptSpaceEsc XmlDeclEnd ∙
 	{
-		token.T_7:  "angLBrk",
-		token.T_24: "spaceEsc",
+		token.T_10: "angLBrk",
+		token.T_26: "spaceEsc",
+	},
+	// XmlDeclEnd : ∙?>
+	{
+		token.T_7: "?>",
+	},
+	// XmlDeclEnd : ?> ∙
+	{
+		token.T_10: "angLBrk",
+		token.T_26: "spaceEsc",
+	},
+	// XmlDeclStart : ∙<?xml
+	{
+		token.T_5: "<?xml",
+	},
+	// XmlDeclStart : <?xml ∙
+	{
+		token.T_27: "version",
 	},
 }
 
 var followSets = []map[token.Type]string{
 	// ATT_VALUE
 	{
-		token.T_19: "optSpaceEsc",
-		token.T_24: "spaceEsc",
+		token.T_11: "angRBrk",
+		token.T_25: "slashAngRBrk",
+		token.T_26: "spaceEsc",
 	},
 	// Attribute
 	{
-		token.T_19: "optSpaceEsc",
-		token.T_24: "spaceEsc",
+		token.T_11: "angRBrk",
+		token.T_25: "slashAngRBrk",
+		token.T_26: "spaceEsc",
 	},
 	// CHAR_REF
 	{
 		token.T_0:  "&",
 		token.T_1:  "&#",
 		token.T_2:  "&#x",
-		token.T_6:  "andCarrs",
-		token.T_7:  "angLBrk",
-		token.T_9:  "charData",
-		token.T_13: "dubQu",
-		token.T_21: "sinQu",
-		token.T_22: "slashAngLBrk",
+		token.T_9:  "andCarrs",
+		token.T_10: "angLBrk",
+		token.T_12: "charData",
+		token.T_16: "dubQu",
+		token.T_23: "sinQu",
+		token.T_24: "slashAngLBrk",
 	},
 	// COMMENT
 	{
@@ -2266,32 +2395,32 @@ var followSets = []map[token.Type]string{
 		token.T_0:  "&",
 		token.T_1:  "&#",
 		token.T_2:  "&#x",
-		token.T_7:  "angLBrk",
-		token.T_9:  "charData",
-		token.T_22: "slashAngLBrk",
-		token.T_24: "spaceEsc",
+		token.T_10: "angLBrk",
+		token.T_12: "charData",
+		token.T_24: "slashAngLBrk",
+		token.T_26: "spaceEsc",
 	},
 	// ComEnterior
 	{
-		token.T_8: "angRBrk",
+		token.T_11: "angRBrk",
 	},
 	// ComStart
 	{
 		token.T_3:  "--",
-		token.T_17: "let",
+		token.T_20: "let",
 	},
 	// Content
 	{
-		token.T_22: "slashAngLBrk",
+		token.T_24: "slashAngLBrk",
 	},
 	// ContentAlts
 	{
 		token.T_0:  "&",
 		token.T_1:  "&#",
 		token.T_2:  "&#x",
-		token.T_7:  "angLBrk",
-		token.T_9:  "charData",
-		token.T_22: "slashAngLBrk",
+		token.T_10: "angLBrk",
+		token.T_12: "charData",
+		token.T_24: "slashAngLBrk",
 	},
 	// Document
 	{
@@ -2299,26 +2428,27 @@ var followSets = []map[token.Type]string{
 	},
 	// DubCondClose
 	{
-		token.T_19: "optSpaceEsc",
-		token.T_24: "spaceEsc",
+		token.T_11: "angRBrk",
+		token.T_25: "slashAngRBrk",
+		token.T_26: "spaceEsc",
 	},
 	// DubDash
 	{
 		token.T_3:  "--",
-		token.T_8:  "angRBrk",
-		token.T_17: "let",
+		token.T_11: "angRBrk",
+		token.T_20: "let",
 	},
 	// ENTITY_REF
 	{
 		token.T_0:  "&",
 		token.T_1:  "&#",
 		token.T_2:  "&#x",
-		token.T_6:  "andCarrs",
-		token.T_7:  "angLBrk",
-		token.T_9:  "charData",
-		token.T_13: "dubQu",
-		token.T_21: "sinQu",
-		token.T_22: "slashAngLBrk",
+		token.T_9:  "andCarrs",
+		token.T_10: "angLBrk",
+		token.T_12: "charData",
+		token.T_16: "dubQu",
+		token.T_23: "sinQu",
+		token.T_24: "slashAngLBrk",
 	},
 	// ElemCloseAlts
 	{
@@ -2326,10 +2456,10 @@ var followSets = []map[token.Type]string{
 		token.T_0:  "&",
 		token.T_1:  "&#",
 		token.T_2:  "&#x",
-		token.T_7:  "angLBrk",
-		token.T_9:  "charData",
-		token.T_22: "slashAngLBrk",
-		token.T_24: "spaceEsc",
+		token.T_10: "angLBrk",
+		token.T_12: "charData",
+		token.T_24: "slashAngLBrk",
+		token.T_26: "spaceEsc",
 	},
 	// Element
 	{
@@ -2337,24 +2467,30 @@ var followSets = []map[token.Type]string{
 		token.T_0:  "&",
 		token.T_1:  "&#",
 		token.T_2:  "&#x",
-		token.T_7:  "angLBrk",
-		token.T_9:  "charData",
-		token.T_22: "slashAngLBrk",
-		token.T_24: "spaceEsc",
+		token.T_10: "angLBrk",
+		token.T_12: "charData",
+		token.T_24: "slashAngLBrk",
+		token.T_26: "spaceEsc",
 	},
 	// EncName
 	{
-		token.T_13: "dubQu",
-		token.T_21: "sinQu",
+		token.T_16: "dubQu",
+		token.T_23: "sinQu",
+	},
+	// Encoding
+	{
+		token.T_18: "eq",
+		token.T_26: "spaceEsc",
 	},
 	// EncodingDecl
 	{
-		token.T_19: "optSpaceEsc",
+		token.T_7:  "?>",
+		token.T_26: "spaceEsc",
 	},
 	// Eq
 	{
-		token.T_13: "dubQu",
-		token.T_21: "sinQu",
+		token.T_16: "dubQu",
+		token.T_23: "sinQu",
 	},
 	// Hex
 	{
@@ -2363,87 +2499,105 @@ var followSets = []map[token.Type]string{
 	// HexAlts
 	{
 		token.T_4:  ";",
-		token.T_5:  "aA_fF",
-		token.T_18: "num",
+		token.T_8:  "aA_fF",
+		token.T_21: "num",
 	},
 	// LetColonAlts
 	{
 		token.T_4:  ";",
-		token.T_12: "dot_BSlashDashCol",
-		token.T_17: "let",
-		token.T_18: "num",
-		token.T_19: "optSpaceEsc",
-		token.T_24: "spaceEsc",
+		token.T_11: "angRBrk",
+		token.T_15: "dot_BSlashDashCol",
+		token.T_18: "eq",
+		token.T_20: "let",
+		token.T_21: "num",
+		token.T_25: "slashAngRBrk",
+		token.T_26: "spaceEsc",
 	},
 	// LetDigSymAlts
 	{
-		token.T_11: "dot_BSlashDash",
-		token.T_13: "dubQu",
-		token.T_17: "let",
-		token.T_18: "num",
-		token.T_21: "sinQu",
+		token.T_14: "dot_BSlashDash",
+		token.T_16: "dubQu",
+		token.T_20: "let",
+		token.T_21: "num",
+		token.T_23: "sinQu",
 	},
 	// Misc
 	{
 		token.EOF:  "$",
-		token.T_7:  "angLBrk",
-		token.T_24: "spaceEsc",
+		token.T_10: "angLBrk",
+		token.T_26: "spaceEsc",
 	},
 	// NAME
 	{
 		token.T_4:  ";",
-		token.T_19: "optSpaceEsc",
-		token.T_24: "spaceEsc",
+		token.T_11: "angRBrk",
+		token.T_18: "eq",
+		token.T_25: "slashAngRBrk",
+		token.T_26: "spaceEsc",
 	},
 	// NAME_CHAR
 	{
 		token.T_4:  ";",
-		token.T_12: "dot_BSlashDashCol",
-		token.T_13: "dubQu",
-		token.T_17: "let",
-		token.T_18: "num",
-		token.T_19: "optSpaceEsc",
-		token.T_21: "sinQu",
-		token.T_24: "spaceEsc",
+		token.T_11: "angRBrk",
+		token.T_15: "dot_BSlashDashCol",
+		token.T_16: "dubQu",
+		token.T_18: "eq",
+		token.T_20: "let",
+		token.T_21: "num",
+		token.T_23: "sinQu",
+		token.T_25: "slashAngRBrk",
+		token.T_26: "spaceEsc",
 	},
 	// NameCharRep
 	{
-		token.T_13: "dubQu",
-		token.T_21: "sinQu",
+		token.T_16: "dubQu",
+		token.T_23: "sinQu",
 	},
 	// OptEncodDecl
 	{
-		token.T_19: "optSpaceEsc",
+		token.T_7:  "?>",
+		token.T_26: "spaceEsc",
+	},
+	// OptSpaceEsc
+	{
+		token.T_7:  "?>",
+		token.T_11: "angRBrk",
+		token.T_16: "dubQu",
+		token.T_18: "eq",
+		token.T_23: "sinQu",
+		token.T_25: "slashAngRBrk",
 	},
 	// OptXMLDecl
 	{
-		token.T_7:  "angLBrk",
-		token.T_24: "spaceEsc",
+		token.T_10: "angLBrk",
+		token.T_26: "spaceEsc",
 	},
 	// Prolog
 	{
-		token.T_7: "angLBrk",
+		token.T_10: "angLBrk",
 	},
 	// QuoEncNam
 	{
-		token.T_19: "optSpaceEsc",
+		token.T_7:  "?>",
+		token.T_26: "spaceEsc",
 	},
 	// QuoVerNum
 	{
-		token.T_19: "optSpaceEsc",
-		token.T_24: "spaceEsc",
+		token.T_7:  "?>",
+		token.T_17: "encoding",
+		token.T_26: "spaceEsc",
 	},
 	// REFERENCE
 	{
 		token.T_0:  "&",
 		token.T_1:  "&#",
 		token.T_2:  "&#x",
-		token.T_6:  "andCarrs",
-		token.T_7:  "angLBrk",
-		token.T_9:  "charData",
-		token.T_13: "dubQu",
-		token.T_21: "sinQu",
-		token.T_22: "slashAngLBrk",
+		token.T_9:  "andCarrs",
+		token.T_10: "angLBrk",
+		token.T_12: "charData",
+		token.T_16: "dubQu",
+		token.T_23: "sinQu",
+		token.T_24: "slashAngLBrk",
 	},
 	// RepHexAlts0x
 	{
@@ -2451,57 +2605,77 @@ var followSets = []map[token.Type]string{
 	},
 	// RepLDSAlts0x
 	{
-		token.T_13: "dubQu",
-		token.T_21: "sinQu",
+		token.T_16: "dubQu",
+		token.T_23: "sinQu",
 	},
 	// RepMisc0x
 	{
-		token.EOF: "$",
-		token.T_7: "angLBrk",
+		token.EOF:  "$",
+		token.T_10: "angLBrk",
 	},
 	// RepNameChar0x
 	{
 		token.T_4:  ";",
-		token.T_19: "optSpaceEsc",
-		token.T_24: "spaceEsc",
+		token.T_11: "angRBrk",
+		token.T_18: "eq",
+		token.T_25: "slashAngRBrk",
+		token.T_26: "spaceEsc",
 	},
 	// RepSAttx0x
 	{
-		token.T_19: "optSpaceEsc",
+		token.T_11: "angRBrk",
+		token.T_25: "slashAngRBrk",
+		token.T_26: "spaceEsc",
 	},
 	// SAtt
 	{
-		token.T_19: "optSpaceEsc",
-		token.T_24: "spaceEsc",
+		token.T_11: "angRBrk",
+		token.T_25: "slashAngRBrk",
+		token.T_26: "spaceEsc",
 	},
 	// SinCondClose
 	{
-		token.T_19: "optSpaceEsc",
-		token.T_24: "spaceEsc",
+		token.T_11: "angRBrk",
+		token.T_25: "slashAngRBrk",
+		token.T_26: "spaceEsc",
 	},
 	// SymRefAlts
 	{
 		token.T_0:  "&",
 		token.T_1:  "&#",
 		token.T_2:  "&#x",
-		token.T_6:  "andCarrs",
-		token.T_13: "dubQu",
-		token.T_21: "sinQu",
+		token.T_9:  "andCarrs",
+		token.T_16: "dubQu",
+		token.T_23: "sinQu",
+	},
+	// Version
+	{
+		token.T_6: "=",
 	},
 	// VersionInfo
 	{
-		token.T_19: "optSpaceEsc",
-		token.T_24: "spaceEsc",
+		token.T_7:  "?>",
+		token.T_17: "encoding",
+		token.T_26: "spaceEsc",
 	},
 	// VersionNum
 	{
-		token.T_13: "dubQu",
-		token.T_21: "sinQu",
+		token.T_16: "dubQu",
+		token.T_23: "sinQu",
 	},
 	// XMLDecl
 	{
-		token.T_7:  "angLBrk",
-		token.T_24: "spaceEsc",
+		token.T_10: "angLBrk",
+		token.T_26: "spaceEsc",
+	},
+	// XmlDeclEnd
+	{
+		token.T_10: "angLBrk",
+		token.T_26: "spaceEsc",
+	},
+	// XmlDeclStart
+	{
+		token.T_27: "version",
 	},
 }
 

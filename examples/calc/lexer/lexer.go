@@ -191,8 +191,7 @@ func not(r rune, set []rune) bool {
 }
 
 var accept = []token.Type{ 
-	token.T_7, 
-	token.T_7, 
+	token.Error, 
 	token.T_0, 
 	token.T_1, 
 	token.T_2, 
@@ -200,29 +199,28 @@ var accept = []token.Type{
 	token.T_4, 
 	token.T_5, 
 	token.T_6, 
+	token.T_7, 
 }
 
 var nextState = []func(r rune) state{ 
 	// Set0
 	func(r rune) state {
 		switch { 
-		case r == '\t':
-			return 1 
-		case r == ' ':
-			return 1 
 		case r == '(':
-			return 2 
+			return 1 
 		case r == ')':
-			return 3 
+			return 2 
 		case r == '*':
-			return 4 
+			return 3 
 		case r == '+':
-			return 5 
+			return 4 
 		case r == '-':
-			return 6 
+			return 5 
 		case r == '/':
-			return 7 
+			return 6 
 		case unicode.IsNumber(r):
+			return 7 
+		case any(r, []rune{'\t',' '}):
 			return 8 
 		}
 		return nullState
@@ -230,10 +228,6 @@ var nextState = []func(r rune) state{
 	// Set1
 	func(r rune) state {
 		switch { 
-		case r == '\t':
-			return 1 
-		case r == ' ':
-			return 1 
 		}
 		return nullState
 	}, 
@@ -270,14 +264,14 @@ var nextState = []func(r rune) state{
 	// Set7
 	func(r rune) state {
 		switch { 
+		case unicode.IsNumber(r):
+			return 7 
 		}
 		return nullState
 	}, 
 	// Set8
 	func(r rune) state {
 		switch { 
-		case unicode.IsNumber(r):
-			return 8 
 		}
 		return nullState
 	}, 

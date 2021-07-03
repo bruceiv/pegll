@@ -7,6 +7,7 @@ import(
 	"fmt"
 	
 	"nested/parser/symbols"
+	"nested/token"
 )
 
 type Label int
@@ -95,8 +96,25 @@ func (l Label) Symbols() symbols.Symbols {
 	return l.Slot().Symbols
 }
 
+func (l Label) IsNullable() bool {
+	return nullable[l]
+}
+
+func (l Label) FirstContains(typ token.Type) bool {
+	return firstT[l][typ]
+}
+
 func (s *Slot) EoR() bool {
 	return s.Pos >= len(s.Symbols)
+}
+
+func (s *Slot) Successor() *Slot {
+	if s.EoR() {
+		return nil
+	} else {
+		// TODO try slots[s.Label + 1]
+		return slots[slotIndex[Index{s.NT,s.Alt,s.Pos+1}]]
+	}
 }
 
 func (s *Slot) String() string {
@@ -249,3 +267,36 @@ var alternates = map[symbols.NT][]Label{
 	symbols.NT_ParensOrChar:[]Label{ ParensOrChar0R0,ParensOrChar1R0 },
 }
 
+var nullable = []bool { 
+	false, // Content0R0 
+	true, // Content0R1 
+	true, // Content0R2 
+	true, // Content1R0 
+	false, // Parens0R0 
+	false, // Parens0R1 
+	false, // Parens0R2 
+	true, // Parens0R3 
+	false, // ParensOrChar0R0 
+	true, // ParensOrChar0R1 
+	false, // ParensOrChar1R0 
+	true, // ParensOrChar1R1 
+	true, // String0R0 
+	true, // String0R1 
+}
+
+var firstT = []map[token.Type]bool { 
+	{  token.T_2: true,  token.T_0: true,  }, // Content0R0 
+	{  token.T_0: true,  token.T_2: true,  }, // Content0R1 
+	{  }, // Content0R2 
+	{  }, // Content1R0 
+	{  token.T_2: true,  }, // Parens0R0 
+	{  token.T_2: true,  token.T_0: true,  token.T_1: true,  }, // Parens0R1 
+	{  token.T_1: true,  }, // Parens0R2 
+	{  }, // Parens0R3 
+	{  token.T_2: true,  }, // ParensOrChar0R0 
+	{  }, // ParensOrChar0R1 
+	{  token.T_0: true,  }, // ParensOrChar1R0 
+	{  }, // ParensOrChar1R1 
+	{  token.T_2: true,  token.T_0: true,  }, // String0R0 
+	{  }, // String0R1 
+}

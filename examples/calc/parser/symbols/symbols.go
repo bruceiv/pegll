@@ -29,9 +29,10 @@ const(
 	NT_SUM 
 	NT_TIMES 
 	NT_TIMESorDIVIDE 
+	NT_WS 
 )
 
-const NumNTs = 15
+const NumNTs = 16
 
 type NTs []NT
 
@@ -45,7 +46,7 @@ const(
 	T_4  // - 
 	T_5  // / 
 	T_6  // repNumber1x 
-	T_7  // space 
+	T_7  // sp 
 )
 
 type Symbols []Symbol
@@ -93,7 +94,8 @@ var ntToString = []string {
 	"RepTIMESorDIV0x", /* NT_RepTIMESorDIV0x */
 	"SUM", /* NT_SUM */
 	"TIMES", /* NT_TIMES */
-	"TIMESorDIVIDE", /* NT_TIMESorDIVIDE */ 
+	"TIMESorDIVIDE", /* NT_TIMESorDIVIDE */
+	"WS", /* NT_WS */ 
 }
 
 var tToString = []string { 
@@ -104,7 +106,7 @@ var tToString = []string {
 	"-", /* T_4 */
 	"/", /* T_5 */
 	"repNumber1x", /* T_6 */
-	"space", /* T_7 */ 
+	"sp", /* T_7 */ 
 }
 
 var stringNT = map[string]NT{ 
@@ -123,22 +125,24 @@ var stringNT = map[string]NT{
 	"SUM":NT_SUM,
 	"TIMES":NT_TIMES,
 	"TIMESorDIVIDE":NT_TIMESorDIVIDE,
+	"WS":NT_WS,
 }
 
 var leftRec = map[NT]NTs { 
 	NT_CLOSE: NTs {  },
 	NT_DIVIDE: NTs {  },
 	NT_ELEMENT: NTs {  NT_OPEN,  NT_Number,  },
-	NT_EXPR: NTs {  },
+	NT_EXPR: NTs {  NT_SUM,  NT_PRODUCT,  NT_ELEMENT,  NT_Number,  NT_OPEN,  NT_WS,  },
 	NT_MINUS: NTs {  },
 	NT_Number: NTs {  },
 	NT_OPEN: NTs {  },
 	NT_PLUS: NTs {  },
-	NT_PLUSorMINUS: NTs {  NT_PLUS,  NT_MINUS,  },
-	NT_PRODUCT: NTs {  NT_ELEMENT,  NT_OPEN,  NT_Number,  },
+	NT_PLUSorMINUS: NTs {  NT_MINUS,  NT_PLUS,  },
+	NT_PRODUCT: NTs {  NT_ELEMENT,  NT_Number,  NT_OPEN,  },
 	NT_RepPLUSorMINUS0x: NTs {  NT_PLUSorMINUS,  NT_PLUS,  NT_MINUS,  },
 	NT_RepTIMESorDIV0x: NTs {  NT_TIMESorDIVIDE,  NT_TIMES,  NT_DIVIDE,  },
-	NT_SUM: NTs {  NT_Number,  NT_ELEMENT,  NT_PRODUCT,  NT_OPEN,  },
+	NT_SUM: NTs {  NT_PRODUCT,  NT_ELEMENT,  NT_Number,  NT_OPEN,  },
 	NT_TIMES: NTs {  },
 	NT_TIMESorDIVIDE: NTs {  NT_TIMES,  NT_DIVIDE,  },
+	NT_WS: NTs {  },
 }

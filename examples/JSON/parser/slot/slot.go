@@ -1639,13 +1639,13 @@ var nullable = []bool {
 
 var firstT = []map[token.Type]bool { 
 	{  token.T_2: true,  }, // Array0R0 
-	{  token.T_20: true,  token.T_18: true,  token.T_19: true,  token.T_2: true,  token.T_13: true,  token.T_8: true,  token.T_23: true,  token.T_3: true,  }, // Array0R1 
+	{  token.T_20: true,  token.T_13: true,  token.T_23: true,  token.T_19: true,  token.T_2: true,  token.T_18: true,  token.T_3: true,  token.T_8: true,  }, // Array0R1 
 	{  token.T_3: true,  }, // Array0R2 
 	{  }, // Array0R3 
 	{  token.T_7: true,  }, // CHAR0R0 
 	{  }, // CHAR0R1 
 	{  token.T_5: true,  }, // CHAR1R0 
-	{  token.T_9: true,  token.T_21: true,  }, // CHAR1R1 
+	{  token.T_21: true,  token.T_9: true,  }, // CHAR1R1 
 	{  }, // CHAR1R2 
 	{  token.T_1: true,  }, // COLON0R0 
 	{  token.T_10: true,  token.T_16: true,  token.T_6: true,  }, // COLON0R1 
@@ -1658,10 +1658,10 @@ var firstT = []map[token.Type]bool {
 	{  token.T_21: true,  }, // CharCode1R0 
 	{  token.T_19: true,  token.T_4: true,  }, // CharCode1R1 
 	{  token.T_19: true,  token.T_4: true,  }, // CharCode1R2 
-	{  token.T_4: true,  token.T_19: true,  }, // CharCode1R3 
-	{  token.T_19: true,  token.T_4: true,  }, // CharCode1R4 
+	{  token.T_19: true,  token.T_4: true,  }, // CharCode1R3 
+	{  token.T_4: true,  token.T_19: true,  }, // CharCode1R4 
 	{  }, // CharCode1R5 
-	{  token.T_18: true,  token.T_8: true,  token.T_19: true,  token.T_23: true,  token.T_2: true,  token.T_20: true,  token.T_13: true,  }, // Elements0R0 
+	{  token.T_23: true,  token.T_2: true,  token.T_20: true,  token.T_13: true,  token.T_18: true,  token.T_8: true,  token.T_19: true,  }, // Elements0R0 
 	{  token.T_0: true,  }, // Elements0R1 
 	{  }, // Elements0R2 
 	{  token.T_10: true,  }, // EscOrComment0R0 
@@ -1669,7 +1669,7 @@ var firstT = []map[token.Type]bool {
 	{  token.T_16: true,  token.T_6: true,  }, // EscOrComment1R0 
 	{  }, // EscOrComment1R1 
 	{  token.T_13: true,  }, // FALSE0R0 
-	{  token.T_16: true,  token.T_6: true,  token.T_10: true,  }, // FALSE0R1 
+	{  token.T_10: true,  token.T_16: true,  token.T_6: true,  }, // FALSE0R1 
 	{  }, // FALSE0R2 
 	{  token.T_19: true,  }, // HEX0R0 
 	{  }, // HEX0R1 
@@ -1682,14 +1682,14 @@ var firstT = []map[token.Type]bool {
 	{  }, // Integers0R1 
 	{  token.T_22: true,  }, // Integers1R0 
 	{  }, // Integers1R1 
-	{  token.T_6: true,  token.T_10: true,  token.T_16: true,  token.T_23: true,  }, // JSON0R0 
+	{  token.T_23: true,  token.T_10: true,  token.T_16: true,  token.T_6: true,  }, // JSON0R0 
 	{  token.T_23: true,  }, // JSON0R1 
 	{  }, // JSON0R2 
 	{  token.T_23: true,  }, // LBRACE0R0 
 	{  token.T_10: true,  token.T_16: true,  token.T_6: true,  }, // LBRACE0R1 
 	{  }, // LBRACE0R2 
 	{  token.T_2: true,  }, // LBRACKET0R0 
-	{  token.T_6: true,  token.T_10: true,  token.T_16: true,  }, // LBRACKET0R1 
+	{  token.T_16: true,  token.T_6: true,  token.T_10: true,  }, // LBRACKET0R1 
 	{  }, // LBRACKET0R2 
 	{  token.T_16: true,  }, // LineOrBlock0R0 
 	{  }, // LineOrBlock0R1 
@@ -1702,15 +1702,15 @@ var firstT = []map[token.Type]bool {
 	{  token.T_10: true,  token.T_16: true,  token.T_6: true,  }, // NUL0R1 
 	{  }, // NUL0R2 
 	{  token.T_19: true,  }, // Number0R0 
-	{  token.T_12: true,  token.T_10: true,  token.T_16: true,  token.T_6: true,  token.T_14: true,  }, // Number0R1 
-	{  token.T_10: true,  token.T_16: true,  token.T_6: true,  token.T_12: true,  }, // Number0R2 
-	{  token.T_16: true,  token.T_6: true,  token.T_10: true,  }, // Number0R3 
+	{  token.T_10: true,  token.T_16: true,  token.T_14: true,  token.T_12: true,  token.T_6: true,  }, // Number0R1 
+	{  token.T_12: true,  token.T_10: true,  token.T_16: true,  token.T_6: true,  }, // Number0R2 
+	{  token.T_6: true,  token.T_10: true,  token.T_16: true,  }, // Number0R3 
 	{  }, // Number0R4 
 	{  token.T_23: true,  }, // Object0R0 
-	{  token.T_8: true,  token.T_24: true,  }, // Object0R1 
+	{  token.T_24: true,  token.T_8: true,  }, // Object0R1 
 	{  token.T_24: true,  }, // Object0R2 
 	{  }, // Object0R3 
-	{  token.T_2: true,  token.T_20: true,  token.T_13: true,  token.T_18: true,  token.T_8: true,  token.T_19: true,  token.T_23: true,  }, // OptElem0R0 
+	{  token.T_13: true,  token.T_18: true,  token.T_8: true,  token.T_19: true,  token.T_23: true,  token.T_2: true,  token.T_20: true,  }, // OptElem0R0 
 	{  }, // OptElem0R1 
 	{  }, // OptElem1R0 
 	{  token.T_12: true,  }, // OptExp0R0 
@@ -1724,16 +1724,16 @@ var firstT = []map[token.Type]bool {
 	{  }, // OptMems1R0 
 	{  token.T_8: true,  }, // Pair0R0 
 	{  token.T_1: true,  }, // Pair0R1 
-	{  token.T_23: true,  token.T_2: true,  token.T_20: true,  token.T_13: true,  token.T_18: true,  token.T_8: true,  token.T_19: true,  }, // Pair0R2 
+	{  token.T_2: true,  token.T_20: true,  token.T_13: true,  token.T_18: true,  token.T_8: true,  token.T_19: true,  token.T_23: true,  }, // Pair0R2 
 	{  }, // Pair0R3 
 	{  token.T_24: true,  }, // RBRACE0R0 
 	{  token.T_16: true,  token.T_6: true,  token.T_10: true,  }, // RBRACE0R1 
 	{  }, // RBRACE0R2 
 	{  token.T_3: true,  }, // RBRACKET0R0 
-	{  token.T_6: true,  token.T_10: true,  token.T_16: true,  }, // RBRACKET0R1 
+	{  token.T_10: true,  token.T_16: true,  token.T_6: true,  }, // RBRACKET0R1 
 	{  }, // RBRACKET0R2 
 	{  token.T_7: true,  token.T_5: true,  }, // RepChar0x0R0 
-	{  token.T_5: true,  token.T_7: true,  }, // RepChar0x0R1 
+	{  token.T_7: true,  token.T_5: true,  }, // RepChar0x0R1 
 	{  }, // RepChar0x0R2 
 	{  }, // RepChar0x1R0 
 	{  token.T_0: true,  }, // RepComPair0x0R0 
@@ -1742,17 +1742,17 @@ var firstT = []map[token.Type]bool {
 	{  }, // RepComPair0x0R3 
 	{  }, // RepComPair0x1R0 
 	{  token.T_0: true,  }, // RepComVal0x0R0 
-	{  token.T_18: true,  token.T_8: true,  token.T_19: true,  token.T_23: true,  token.T_2: true,  token.T_20: true,  token.T_13: true,  }, // RepComVal0x0R1 
+	{  token.T_8: true,  token.T_19: true,  token.T_23: true,  token.T_2: true,  token.T_20: true,  token.T_13: true,  token.T_18: true,  }, // RepComVal0x0R1 
 	{  token.T_0: true,  }, // RepComVal0x0R2 
 	{  }, // RepComVal0x0R3 
 	{  }, // RepComVal0x1R0 
 	{  token.T_8: true,  }, // String0R0 
-	{  token.T_5: true,  token.T_8: true,  token.T_7: true,  }, // String0R1 
+	{  token.T_7: true,  token.T_5: true,  token.T_8: true,  }, // String0R1 
 	{  token.T_8: true,  }, // String0R2 
 	{  token.T_10: true,  token.T_16: true,  token.T_6: true,  }, // String0R3 
 	{  }, // String0R4 
 	{  token.T_20: true,  }, // TRUE0R0 
-	{  token.T_16: true,  token.T_6: true,  token.T_10: true,  }, // TRUE0R1 
+	{  token.T_10: true,  token.T_16: true,  token.T_6: true,  }, // TRUE0R1 
 	{  }, // TRUE0R2 
 	{  token.T_8: true,  }, // Value0R0 
 	{  }, // Value0R1 
@@ -1768,7 +1768,7 @@ var firstT = []map[token.Type]bool {
 	{  }, // Value5R1 
 	{  token.T_18: true,  }, // Value6R0 
 	{  }, // Value6R1 
-	{  token.T_6: true,  token.T_10: true,  token.T_16: true,  }, // WS0R0 
+	{  token.T_10: true,  token.T_16: true,  token.T_6: true,  }, // WS0R0 
 	{  token.T_16: true,  token.T_6: true,  token.T_10: true,  }, // WS0R1 
 	{  }, // WS0R2 
 	{  }, // WS1R0 

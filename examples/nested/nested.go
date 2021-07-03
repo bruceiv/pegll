@@ -11,6 +11,7 @@ import (
 const abcd = `abcd`
 const parens = `()`
 const nested_parens = `( a ( b ( c ) ) )`
+const nested_parens_ns = `(a(b(c)))`
 
 //Doesn't Match
 const unclosed = `((`
@@ -19,11 +20,20 @@ const nested_parens2 = `( a ( 1 ( 2 ) ) )` //  doesn't match numbers based on gr
 
 func parse(s []rune) bool {
 	// run GLL parser
+
 	bsrSet, _ := parser.Parse(lexer.New(s))
 	// quit early if parse fails
 	if bsrSet == nil {
 		return false
 	}
+
+	bsrSet.Dump()
+	// print tree in pre-order
+	//bsrSet.FlatDump()
+	//bsrSet.FilterByOrderedChoice()
+	//fmt.Println("=====")
+
+	fmt.Println("=====")
 	// check that root covers whole input
 	root := bsrSet.GetRoot()
 	return root.RightExtent() == bsrSet.GetRightExtent()
@@ -38,10 +48,13 @@ func parseAndPrint(s string) {
 }
 
 func main() {
-	parseAndPrint(abcd)
-	parseAndPrint(parens)
-	parseAndPrint(nested_parens)
+	//parseAndPrint(abcd)
+	//parseAndPrint(parens)
+	//parseAndPrint(nested_parens)
+	//parseAndPrint(nested_parens_ns)
+
 	parseAndPrint(unclosed)
-	parseAndPrint(nums)
-	parseAndPrint(nested_parens2)
+	//parseAndPrint(nums)
+	//parseAndPrint(nested_parens2)
+
 }

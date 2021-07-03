@@ -111,29 +111,29 @@ const(
     T_2  // &#x 
     T_3  // -- 
     T_4  // ; 
-    T_5  // aA_fF 
-    T_6  // andCarrs 
-    T_7  // angLBrk 
-    T_8  // angRBrk 
-    T_9  // charData 
-    T_10  // col_ 
-    T_11  // dot_BSlashDash 
-    T_12  // dot_BSlashDashCol 
-    T_13  // dubQu 
-    T_14  // encoding 
-    T_15  // eq 
-    T_16  // exclamation 
-    T_17  // let 
-    T_18  // num 
-    T_19  // optSpaceEsc 
-    T_20  // repNum1x 
-    T_21  // sinQu 
-    T_22  // slashAngLBrk 
-    T_23  // slashAngRBrk 
-    T_24  // spaceEsc 
-    T_25  // version 
-    T_26  // xmlDeclEnd 
-    T_27  // xmlDeclStart 
+    T_5  // <?xml 
+    T_6  // = 
+    T_7  // ?> 
+    T_8  // aA_fF 
+    T_9  // andCarrs 
+    T_10  // angLBrk 
+    T_11  // angRBrk 
+    T_12  // charData 
+    T_13  // col_ 
+    T_14  // dot_BSlashDash 
+    T_15  // dot_BSlashDashCol 
+    T_16  // dubQu 
+    T_17  // encoding 
+    T_18  // eq 
+    T_19  // exclamation 
+    T_20  // let 
+    T_21  // num 
+    T_22  // repNum1x 
+    T_23  // sinQu 
+    T_24  // slashAngLBrk 
+    T_25  // slashAngRBrk 
+    T_26  // spaceEsc 
+    T_27  // version 
 )
 
 var TypeToString = []string{ 
@@ -210,6 +210,9 @@ var TypeToID = []string {
     "&#x", 
     "--", 
     ";", 
+    "<?xml", 
+    "=", 
+    "?>", 
     "aA_fF", 
     "andCarrs", 
     "angLBrk", 
@@ -224,15 +227,12 @@ var TypeToID = []string {
     "exclamation", 
     "let", 
     "num", 
-    "optSpaceEsc", 
     "repNum1x", 
     "sinQu", 
     "slashAngLBrk", 
     "slashAngRBrk", 
     "spaceEsc", 
     "version", 
-    "xmlDeclEnd", 
-    "xmlDeclStart", 
 }
 
 var Suppress = []bool { 

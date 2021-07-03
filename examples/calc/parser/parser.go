@@ -65,7 +65,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 		// p.DumpDescriptors()
 
 		switch L {
-		case slot.CLOSE0R0: // CLOSE : ∙) space
+		case slot.CLOSE0R0: // CLOSE : ∙) WS
 
 			p.bsrSet.Add(slot.CLOSE0R1, cU, p.cI, p.cI+1)
 			p.cI++
@@ -74,10 +74,11 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 				break
 			}
 
-			p.bsrSet.Add(slot.CLOSE0R2, cU, p.cI, p.cI+1)
-			p.cI++
+			p.call(slot.CLOSE0R2, cU, p.cI)
+		case slot.CLOSE0R2: // CLOSE : ) WS ∙
+
 			p.rtn(symbols.NT_CLOSE, cU, p.cI)
-		case slot.DIVIDE0R0: // DIVIDE : ∙/ space
+		case slot.DIVIDE0R0: // DIVIDE : ∙/ WS
 
 			p.bsrSet.Add(slot.DIVIDE0R1, cU, p.cI, p.cI+1)
 			p.cI++
@@ -86,8 +87,9 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 				break
 			}
 
-			p.bsrSet.Add(slot.DIVIDE0R2, cU, p.cI, p.cI+1)
-			p.cI++
+			p.call(slot.DIVIDE0R2, cU, p.cI)
+		case slot.DIVIDE0R2: // DIVIDE : / WS ∙
+
 			p.rtn(symbols.NT_DIVIDE, cU, p.cI)
 		case slot.ELEMENT0R0: // ELEMENT : ∙OPEN SUM CLOSE
 
@@ -117,20 +119,21 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 		case slot.ELEMENT1R1: // ELEMENT : Number ∙
 
 			p.rtn(symbols.NT_ELEMENT, cU, p.cI)
-		case slot.EXPR0R0: // EXPR : ∙space SUM
+		case slot.EXPR0R0: // EXPR : ∙WS SUM
 
-			p.bsrSet.Add(slot.EXPR0R1, cU, p.cI, p.cI+1)
-			p.cI++
+			p.call(slot.EXPR0R1, cU, p.cI)
+		case slot.EXPR0R1: // EXPR : WS ∙SUM
+
 			if !p.testSelect(slot.EXPR0R1) {
 				p.parseError(slot.EXPR0R1, p.cI, first[slot.EXPR0R1])
 				break
 			}
 
 			p.call(slot.EXPR0R2, cU, p.cI)
-		case slot.EXPR0R2: // EXPR : space SUM ∙
+		case slot.EXPR0R2: // EXPR : WS SUM ∙
 
 			p.rtn(symbols.NT_EXPR, cU, p.cI)
-		case slot.MINUS0R0: // MINUS : ∙- space
+		case slot.MINUS0R0: // MINUS : ∙- WS
 
 			p.bsrSet.Add(slot.MINUS0R1, cU, p.cI, p.cI+1)
 			p.cI++
@@ -139,10 +142,11 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 				break
 			}
 
-			p.bsrSet.Add(slot.MINUS0R2, cU, p.cI, p.cI+1)
-			p.cI++
+			p.call(slot.MINUS0R2, cU, p.cI)
+		case slot.MINUS0R2: // MINUS : - WS ∙
+
 			p.rtn(symbols.NT_MINUS, cU, p.cI)
-		case slot.Number0R0: // Number : ∙repNumber1x space
+		case slot.Number0R0: // Number : ∙repNumber1x WS
 
 			p.bsrSet.Add(slot.Number0R1, cU, p.cI, p.cI+1)
 			p.cI++
@@ -151,10 +155,11 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 				break
 			}
 
-			p.bsrSet.Add(slot.Number0R2, cU, p.cI, p.cI+1)
-			p.cI++
+			p.call(slot.Number0R2, cU, p.cI)
+		case slot.Number0R2: // Number : repNumber1x WS ∙
+
 			p.rtn(symbols.NT_Number, cU, p.cI)
-		case slot.OPEN0R0: // OPEN : ∙( space
+		case slot.OPEN0R0: // OPEN : ∙( WS
 
 			p.bsrSet.Add(slot.OPEN0R1, cU, p.cI, p.cI+1)
 			p.cI++
@@ -163,10 +168,11 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 				break
 			}
 
-			p.bsrSet.Add(slot.OPEN0R2, cU, p.cI, p.cI+1)
-			p.cI++
+			p.call(slot.OPEN0R2, cU, p.cI)
+		case slot.OPEN0R2: // OPEN : ( WS ∙
+
 			p.rtn(symbols.NT_OPEN, cU, p.cI)
-		case slot.PLUS0R0: // PLUS : ∙+ space
+		case slot.PLUS0R0: // PLUS : ∙+ WS
 
 			p.bsrSet.Add(slot.PLUS0R1, cU, p.cI, p.cI+1)
 			p.cI++
@@ -175,8 +181,9 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 				break
 			}
 
-			p.bsrSet.Add(slot.PLUS0R2, cU, p.cI, p.cI+1)
-			p.cI++
+			p.call(slot.PLUS0R2, cU, p.cI)
+		case slot.PLUS0R2: // PLUS : + WS ∙
+
 			p.rtn(symbols.NT_PLUS, cU, p.cI)
 		case slot.PLUSorMINUS0R0: // PLUSorMINUS : ∙PLUS PRODUCT
 
@@ -270,7 +277,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 		case slot.SUM0R2: // SUM : PRODUCT RepPLUSorMINUS0x ∙
 
 			p.rtn(symbols.NT_SUM, cU, p.cI)
-		case slot.TIMES0R0: // TIMES : ∙* space
+		case slot.TIMES0R0: // TIMES : ∙* WS
 
 			p.bsrSet.Add(slot.TIMES0R1, cU, p.cI, p.cI+1)
 			p.cI++
@@ -279,8 +286,9 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 				break
 			}
 
-			p.bsrSet.Add(slot.TIMES0R2, cU, p.cI, p.cI+1)
-			p.cI++
+			p.call(slot.TIMES0R2, cU, p.cI)
+		case slot.TIMES0R2: // TIMES : * WS ∙
+
 			p.rtn(symbols.NT_TIMES, cU, p.cI)
 		case slot.TIMESorDIVIDE0R0: // TIMESorDIVIDE : ∙TIMES ELEMENT
 
@@ -310,6 +318,15 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 		case slot.TIMESorDIVIDE1R2: // TIMESorDIVIDE : DIVIDE ELEMENT ∙
 
 			p.rtn(symbols.NT_TIMESorDIVIDE, cU, p.cI)
+		case slot.WS0R0: // WS : ∙sp
+
+			p.bsrSet.Add(slot.WS0R1, cU, p.cI, p.cI+1)
+			p.cI++
+			p.rtn(symbols.NT_WS, cU, p.cI)
+		case slot.WS1R0: // WS : ∙
+			p.bsrSet.AddEmpty(slot.WS1R0, p.cI)
+
+			p.rtn(symbols.NT_WS, cU, p.cI)
 
 		default:
 			panic("This must not happen")
@@ -552,15 +569,21 @@ func (p *parser) testSelect(l slot.Label) bool {
 }
 
 var first = []map[token.Type]string{
-	// CLOSE : ∙) space
+	// CLOSE : ∙) WS
 	{
 		token.T_1: ")",
 	},
-	// CLOSE : ) ∙space
+	// CLOSE : ) ∙WS
 	{
-		token.T_7: "space",
+		token.EOF: "$",
+		token.T_1: ")",
+		token.T_2: "*",
+		token.T_3: "+",
+		token.T_4: "-",
+		token.T_5: "/",
+		token.T_7: "sp",
 	},
-	// CLOSE : ) space ∙
+	// CLOSE : ) WS ∙
 	{
 		token.EOF: "$",
 		token.T_1: ")",
@@ -569,15 +592,17 @@ var first = []map[token.Type]string{
 		token.T_4: "-",
 		token.T_5: "/",
 	},
-	// DIVIDE : ∙/ space
+	// DIVIDE : ∙/ WS
 	{
 		token.T_5: "/",
 	},
-	// DIVIDE : / ∙space
+	// DIVIDE : / ∙WS
 	{
-		token.T_7: "space",
+		token.T_0: "(",
+		token.T_6: "repNumber1x",
+		token.T_7: "sp",
 	},
-	// DIVIDE : / space ∙
+	// DIVIDE : / WS ∙
 	{
 		token.T_0: "(",
 		token.T_6: "repNumber1x",
@@ -617,41 +642,51 @@ var first = []map[token.Type]string{
 		token.T_4: "-",
 		token.T_5: "/",
 	},
-	// EXPR : ∙space SUM
+	// EXPR : ∙WS SUM
 	{
-		token.T_7: "space",
+		token.T_0: "(",
+		token.T_6: "repNumber1x",
+		token.T_7: "sp",
 	},
-	// EXPR : space ∙SUM
+	// EXPR : WS ∙SUM
 	{
 		token.T_0: "(",
 		token.T_6: "repNumber1x",
 	},
-	// EXPR : space SUM ∙
+	// EXPR : WS SUM ∙
 	{
 		token.EOF: "$",
 	},
-	// MINUS : ∙- space
+	// MINUS : ∙- WS
 	{
 		token.T_4: "-",
 	},
-	// MINUS : - ∙space
+	// MINUS : - ∙WS
 	{
-		token.T_7: "space",
+		token.T_0: "(",
+		token.T_6: "repNumber1x",
+		token.T_7: "sp",
 	},
-	// MINUS : - space ∙
+	// MINUS : - WS ∙
 	{
 		token.T_0: "(",
 		token.T_6: "repNumber1x",
 	},
-	// Number : ∙repNumber1x space
+	// Number : ∙repNumber1x WS
 	{
 		token.T_6: "repNumber1x",
 	},
-	// Number : repNumber1x ∙space
+	// Number : repNumber1x ∙WS
 	{
-		token.T_7: "space",
+		token.EOF: "$",
+		token.T_1: ")",
+		token.T_2: "*",
+		token.T_3: "+",
+		token.T_4: "-",
+		token.T_5: "/",
+		token.T_7: "sp",
 	},
-	// Number : repNumber1x space ∙
+	// Number : repNumber1x WS ∙
 	{
 		token.EOF: "$",
 		token.T_1: ")",
@@ -660,28 +695,32 @@ var first = []map[token.Type]string{
 		token.T_4: "-",
 		token.T_5: "/",
 	},
-	// OPEN : ∙( space
+	// OPEN : ∙( WS
 	{
 		token.T_0: "(",
 	},
-	// OPEN : ( ∙space
+	// OPEN : ( ∙WS
 	{
-		token.T_7: "space",
+		token.T_0: "(",
+		token.T_6: "repNumber1x",
+		token.T_7: "sp",
 	},
-	// OPEN : ( space ∙
+	// OPEN : ( WS ∙
 	{
 		token.T_0: "(",
 		token.T_6: "repNumber1x",
 	},
-	// PLUS : ∙+ space
+	// PLUS : ∙+ WS
 	{
 		token.T_3: "+",
 	},
-	// PLUS : + ∙space
+	// PLUS : + ∙WS
 	{
-		token.T_7: "space",
+		token.T_0: "(",
+		token.T_6: "repNumber1x",
+		token.T_7: "sp",
 	},
-	// PLUS : + space ∙
+	// PLUS : + WS ∙
 	{
 		token.T_0: "(",
 		token.T_6: "repNumber1x",
@@ -806,15 +845,17 @@ var first = []map[token.Type]string{
 		token.EOF: "$",
 		token.T_1: ")",
 	},
-	// TIMES : ∙* space
+	// TIMES : ∙* WS
 	{
 		token.T_2: "*",
 	},
-	// TIMES : * ∙space
+	// TIMES : * ∙WS
 	{
-		token.T_7: "space",
+		token.T_0: "(",
+		token.T_6: "repNumber1x",
+		token.T_7: "sp",
 	},
-	// TIMES : * space ∙
+	// TIMES : * WS ∙
 	{
 		token.T_0: "(",
 		token.T_6: "repNumber1x",
@@ -854,6 +895,32 @@ var first = []map[token.Type]string{
 		token.T_3: "+",
 		token.T_4: "-",
 		token.T_5: "/",
+	},
+	// WS : ∙sp
+	{
+		token.T_7: "sp",
+	},
+	// WS : sp ∙
+	{
+		token.EOF: "$",
+		token.T_0: "(",
+		token.T_1: ")",
+		token.T_2: "*",
+		token.T_3: "+",
+		token.T_4: "-",
+		token.T_5: "/",
+		token.T_6: "repNumber1x",
+	},
+	// WS : ∙
+	{
+		token.EOF: "$",
+		token.T_0: "(",
+		token.T_1: ")",
+		token.T_2: "*",
+		token.T_3: "+",
+		token.T_4: "-",
+		token.T_5: "/",
+		token.T_6: "repNumber1x",
 	},
 }
 
@@ -953,6 +1020,17 @@ var followSets = []map[token.Type]string{
 		token.T_3: "+",
 		token.T_4: "-",
 		token.T_5: "/",
+	},
+	// WS
+	{
+		token.EOF: "$",
+		token.T_0: "(",
+		token.T_1: ")",
+		token.T_2: "*",
+		token.T_3: "+",
+		token.T_4: "-",
+		token.T_5: "/",
+		token.T_6: "repNumber1x",
 	},
 }
 

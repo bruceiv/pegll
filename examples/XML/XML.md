@@ -25,14 +25,14 @@ package "XML"
 Document                : Prolog Element RepMisc0x              ;
 
 Prolog 	                : OptXMLDecl RepMisc0x                  ;
-XMLDecl                 : xmlDeclStart VersionInfo OptEncodDecl 
-                        optSpaceEsc xmlDeclEnd                  ;
+XMLDecl                 : XmlDeclStart VersionInfo OptEncodDecl 
+                        OptSpaceEsc XmlDeclEnd                  ;
         OptXMLDecl      : XMLDecl 
                         / empty                                 ;
-        xmlDeclStart    : '<' '?' 'x' 'm' 'l'                   ;
-        xmlDeclEnd      :  '?' '>'                              ;
+        XmlDeclStart    : "<?xml"                               ;
+        XmlDeclEnd      :  "?>"                                 ;
 
-        VersionInfo     : spaceEsc version Eq QuoVerNum         ;
+        VersionInfo     : Version "=" QuoVerNum                 ;
         QuoVerNum       : sinQu VersionNum sinQu  
                         | dubQu VersionNum dubQu                ;
 
@@ -40,13 +40,13 @@ VersionNum              : NAME_CHAR NameCharRep                 ;
         NameCharRep     : NAME_CHAR NameCharRep
                         / empty                                 ;
 
-EncodingDecl            : spaceEsc encoding Eq QuoEncNam        ;
+EncodingDecl            : Encoding Eq QuoEncNam                 ;
         QuoEncNam       : sinQu EncName sinQu  
                         | dubQu EncName dubQu                   ;
         OptEncodDecl    : EncodingDecl 
                         / empty                                 ;
-        encoding        : 'e' 'n' 'c' 'o' 'd' 'i' 'n' 'g'       ;
-        version         : 'v' 'e' 'r' 's' 'i' 'o' 'n'           ;
+        Encoding        : "encoding"                            ;
+        Version         : "version"                             ;
 ```
 #### ***Values and References***
 ```
@@ -97,12 +97,12 @@ COMMENT                 : ComStart ComEnterior angRBrk          ;
                         / let ComEnterior                       ;
 
 
-Element                 : angLBrk NAME RepSAttx0x optSpaceEsc 
+Element                 : angLBrk NAME RepSAttx0x OptSpaceEsc 
                         ElemCloseAlts                           ;
         SAtt            : spaceEsc Attribute                    ;      
         RepSAttx0x      : SAtt RepSAttx0x  
                         / empty                                 ;
-        ElemCloseAlts   : angRBrk Content slashAngLBrk NAME optSpaceEsc angRBrk 
+        ElemCloseAlts   : angRBrk Content slashAngLBrk NAME OptSpaceEsc angRBrk 
                         | slashAngRBrk                          ;
         angLBrk         : '<'                                   ;
         slashAngLBrk    : '<' '/'                               ;
@@ -110,10 +110,11 @@ Element                 : angLBrk NAME RepSAttx0x optSpaceEsc
         slashAngRBrk    : '/' '>'                               ;
         exclamation     : '!'                                   ;
 
-Attribute               : NAME optSpaceEsc eq optSpaceEsc 
+Attribute               : NAME OptSpaceEsc eq OptSpaceEsc 
                         ATT_VALUE                               ;
-        Eq              : optSpaceEsc eq optSpaceEsc            ;
-        optSpaceEsc     : [ < any " \t\r\n" > ]                 ;
+        Eq              : OptSpaceEsc eq OptSpaceEsc            ;
+        OptSpaceEsc     : spaceEsc
+                        / empty                                 ;
         spaceEsc        : < any " \t\r\n" >                     ;
         charData        :  < any "^<&" >                        ;
         eq              : '='                                   ;

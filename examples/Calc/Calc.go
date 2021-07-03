@@ -10,7 +10,7 @@ import (
 )
 
 //Should match
-const a = "1 + 2 * 3"
+const a = "908 + 9999999 * 912341"
 
 //Should fail to match
 const f = "12 +"
@@ -41,10 +41,12 @@ func calculate( /*bsr node I think*/ ) int {
 	//same for element, Sum
 
 	//Ooooorrrr
+	/// get the number and convert to a string
+
 	//interelate the functions for each important NT to call eachother
 	//sum calls product calls element (sometimes) calls sum
 	//This is a better idea I think
-	sum := b.GetNTChildI(1) //sum
+	//sum := b.GetNTChildI(1) //sum
 
 	return 0 //Temp, will return calculation
 }
@@ -69,8 +71,8 @@ func parse(s []rune) bool {
 		return false
 	}
 
-	calculate(bsrSet)
-
+	//calculate(bsrSet)
+	bsrSet.Dump()
 	// check that root covers whole input
 	root := bsrSet.GetRoot()
 	return root.RightExtent() == bsrSet.GetRightExtent()

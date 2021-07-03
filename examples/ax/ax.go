@@ -31,6 +31,12 @@ func parse(s []rune) bool {
 	if bsrSet == nil {
 		return false
 	}
+	// print tree in pre-order
+	//bsrSet.FlatDump()
+	//bsrSet.FilterByOrderedChoice()
+	//fmt.Println("=====")
+	//bsrSet.FlatDump()
+	//fmt.Println("=====")
 	// check that root covers whole input
 	root := bsrSet.GetRoot()
 	return root.RightExtent() == bsrSet.GetRightExtent()

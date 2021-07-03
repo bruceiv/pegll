@@ -51,6 +51,8 @@ Value           : String
 ```  
 #### ***String and Character Literals***
 The following are the GoGLL representations of the JSON string and character literals.
+- NOTE: `char` is likely what is causing the issue with not matching repeated characters 
+        - Likey due to `not` consuming a character
 ```
 String          : dQuote RepChar0x dQuote WS            ;
       RepChar0x : CHAR RepChar0x
