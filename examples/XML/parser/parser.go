@@ -82,7 +82,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			} else {
 				p.parseError(slot.ATT_VALUE0R0, p.cI, followSets[symbols.NT_ATT_VALUE])
 			}
-		case slot.ATT_VALUE1R0: // ATT_VALUE : ∙sinQu SinConClose
+		case slot.ATT_VALUE1R0: // ATT_VALUE : ∙' SinConClose
 
 			p.bsrSet.Add(slot.ATT_VALUE1R1, cU, p.cI, p.cI+1)
 			p.cI++
@@ -92,7 +92,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			}
 
 			p.call(slot.ATT_VALUE1R2, cU, p.cI)
-		case slot.ATT_VALUE1R2: // ATT_VALUE : sinQu SinConClose ∙
+		case slot.ATT_VALUE1R2: // ATT_VALUE : ' SinConClose ∙
 
 			if p.follow(symbols.NT_ATT_VALUE) {
 				p.rtn(symbols.NT_ATT_VALUE, cU, p.cI)
@@ -1384,11 +1384,11 @@ var first = []map[token.Type]string{
 		token.T_23: "optSpaceEsc",
 		token.T_26: "spaceEsc",
 	},
-	// ATT_VALUE : ∙sinQu SinConClose
+	// ATT_VALUE : ∙' SinConClose
 	{
-		token.T_25: "sinQu",
+		token.T_3: "'",
 	},
-	// ATT_VALUE : sinQu ∙SinConClose
+	// ATT_VALUE : ' ∙SinConClose
 	{
 		token.T_0:  "&",
 		token.T_1:  "&#",
@@ -1396,7 +1396,7 @@ var first = []map[token.Type]string{
 		token.T_3:  "'",
 		token.T_13: "andCars",
 	},
-	// ATT_VALUE : sinQu SinConClose ∙
+	// ATT_VALUE : ' SinConClose ∙
 	{
 		token.T_23: "optSpaceEsc",
 		token.T_26: "spaceEsc",
@@ -1421,8 +1421,8 @@ var first = []map[token.Type]string{
 	},
 	// Attribute : NAME optSpaceEsc = optSpaceEsc ∙ATT_VALUE
 	{
+		token.T_3:  "'",
 		token.T_18: "dubQu",
-		token.T_25: "sinQu",
 	},
 	// Attribute : NAME optSpaceEsc = optSpaceEsc ATT_VALUE ∙
 	{

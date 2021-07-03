@@ -39,7 +39,7 @@ VersionNum              : NAME_CHAR RepNameChar0x               ;
 EncodingDecl            : spaceEsc "encoding" Eq QuoEncNam      ;
         QuoEncNam       : "'" EncName "'"  
                         | dubQu EncName dubQu                   ;
-        OptEncDecl    : EncodingDecl 
+        OptEncDecl      : EncodingDecl 
                         / empty                                 ;
         
 ```
@@ -47,7 +47,7 @@ EncodingDecl            : spaceEsc "encoding" Eq QuoEncNam      ;
 sinQu isn't necessary but there is an error in the lexer if it is not there
 ```
 ATT_VALUE               : dubQu DubConClose 
-                        | sinQu SinConClose                       ;
+                        | "'" SinConClose                       ;
         SinConClose     : "'"
                         / SymRefAlts SinConClose                ;
         DubConClose     : dubQu 
@@ -77,7 +77,8 @@ CHAR_REF                : "&#x" Hex ";"
 - issue with element - says accepts multiple strings if put in "<" instead of left angle token
 - infinite loop if exclamation is removed even though it is never called? 
 - tried making optional space or escape using ordered choice to empty got duplicate token error 
-comment                 : ComStart ComEnd ">"               ;
+modified from this version of comment - not sure if broken by earlier issues or this grammar (NOTE: neither version works)
+COMMENT                 : ComStart ComEnd ">"               ;
         ComStart        : "<!--"                                ;
         DubDash         : "--"                                  ;
         ComEnd          : DubDash 

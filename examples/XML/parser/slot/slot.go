@@ -313,7 +313,7 @@ var slots = map[Label]*Slot{
 	ATT_VALUE1R0: {
 		symbols.NT_ATT_VALUE, 1, 0, 
 		symbols.Symbols{  
-			symbols.T_25, 
+			symbols.T_3, 
 			symbols.NT_SinConClose,
 		}, 
 		ATT_VALUE1R0, 
@@ -321,7 +321,7 @@ var slots = map[Label]*Slot{
 	ATT_VALUE1R1: {
 		symbols.NT_ATT_VALUE, 1, 1, 
 		symbols.Symbols{  
-			symbols.T_25, 
+			symbols.T_3, 
 			symbols.NT_SinConClose,
 		}, 
 		ATT_VALUE1R1, 
@@ -329,7 +329,7 @@ var slots = map[Label]*Slot{
 	ATT_VALUE1R2: {
 		symbols.NT_ATT_VALUE, 1, 2, 
 		symbols.Symbols{  
-			symbols.T_25, 
+			symbols.T_3, 
 			symbols.NT_SinConClose,
 		}, 
 		ATT_VALUE1R2, 
