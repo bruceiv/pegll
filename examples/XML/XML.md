@@ -25,40 +25,35 @@ package "XML"
 Document                : Prolog Element RepMisc0x              ;
 
 Prolog 	                : OptXMLDecl RepMisc0x                  ;
-XMLDecl                 : xmlDeclStart VersionInfo OptEncodDecl 
-                        optSpaceEsc xmlDeclEnd                  ;
+XMLDecl                 : "<?xml" VersionInfo OptEncDecl 
+                         optSpaceEsc "?>"                       ;     
         OptXMLDecl      : XMLDecl 
                         / empty                                 ;
-        xmlDeclStart    : '<' '?' 'x' 'm' 'l'                   ;
-        xmlDeclEnd      :  '?' '>'                              ;
 
-        VersionInfo     : spaceEsc version Eq QuoVerNum         ;
-        QuoVerNum       : sinQu VersionNum sinQu  
+        VersionInfo     : spaceEsc "version" Eq QuoVerNum       ;
+        QuoVerNum       : "'" VersionNum "'"  
                         | dubQu VersionNum dubQu                ;
 
-VersionNum              : NAME_CHAR NameCharRep                 ;
-        NameCharRep     : NAME_CHAR NameCharRep
-                        / empty                                 ;
+VersionNum              : NAME_CHAR RepNameChar0x               ;
 
-EncodingDecl            : spaceEsc encoding Eq QuoEncNam        ;
-        QuoEncNam       : sinQu EncName sinQu  
+EncodingDecl            : spaceEsc "encoding" Eq QuoEncNam      ;
+        QuoEncNam       : "'" EncName "'"  
                         | dubQu EncName dubQu                   ;
-        OptEncodDecl    : EncodingDecl 
+        OptEncDecl    : EncodingDecl 
                         / empty                                 ;
-        encoding        : 'e' 'n' 'c' 'o' 'd' 'i' 'n' 'g'       ;
-        version         : 'v' 'e' 'r' 's' 'i' 'o' 'n'           ;
+        
 ```
 #### ***Values and References***
 ```
-ATT_VALUE               : dubQu DubCondClose 
-                        | sinQu SinCondClose                    ;
-        SinCondClose    : sinQu
-                        / SymRefAlts SinCondClose               ;
-        DubCondClose    : dubQu 
-                        / SymRefAlts DubCondClose               ;
-        SymRefAlts      : andCarrs
+ATT_VALUE               : dubQu DubConClose 
+                        | sinQu SinConClose                     ;
+        SinConClose     : "'"
+                        / SymRefAlts SinConClose                ;
+        DubConClose     : dubQu 
+                        / SymRefAlts DubConClose                ;
+        SymRefAlts      : andCars
                         | REFERENCE                             ;
-        andCarrs        : any "^<&"                             ;
+        andCars         : any "^<&"                             ;
         dubQu           : '"'                                   ;
         sinQu           : '\''                                  ;
 
@@ -122,23 +117,25 @@ Attribute               : NAME optSpaceEsc eq optSpaceEsc
 ```
 NAME                    : LetColonAlts RepNameChar0x            ;
         LetColonAlts    : let 
-                        | col_                                  ;
+                        | ":"
+                        | "_"                                   ;
         RepNameChar0x   :  NAME_CHAR RepNameChar0x 
-                        / empty                                 ;
-        col_            : any "_:"                              ; 
+                        / empty                                 ; 
 
 NAME_CHAR               : let 
                         | num
-                        | dot_BSlashDashCol                     ;
-      dot_BSlashDashCol : any "\\-._:"                          ;
+                        | ":"
+                        | "_"
+                        | dot_BSlashDash                        ;
 
 EncName                 : let RepLDSAlts0x                      ;
         RepLDSAlts0x    : LetDigSymAlts RepLDSAlts0x
                         / empty                                 ;
         LetDigSymAlts   : let   
                         | num
+                        | "_"
                         | dot_BSlashDash                        ;       
-        dot_BSlashDash  : any "._\\-"                           ;
+        dot_BSlashDash  : any ".\\-"                           ;
         let             : letter                                ;
         num             : number                                ;
 

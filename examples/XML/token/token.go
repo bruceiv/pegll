@@ -109,31 +109,32 @@ const(
     T_0  // & 
     T_1  // &# 
     T_2  // &#x 
-    T_3  // -- 
-    T_4  // ; 
-    T_5  // aA_fF 
-    T_6  // andCarrs 
-    T_7  // angLBrk 
-    T_8  // angRBrk 
-    T_9  // charData 
-    T_10  // col_ 
-    T_11  // dot_BSlashDash 
-    T_12  // dot_BSlashDashCol 
-    T_13  // dubQu 
-    T_14  // encoding 
-    T_15  // eq 
-    T_16  // exclamation 
-    T_17  // let 
-    T_18  // num 
-    T_19  // optSpaceEsc 
-    T_20  // repNum1x 
-    T_21  // sinQu 
-    T_22  // slashAngLBrk 
-    T_23  // slashAngRBrk 
-    T_24  // spaceEsc 
-    T_25  // version 
-    T_26  // xmlDeclEnd 
-    T_27  // xmlDeclStart 
+    T_3  // ' 
+    T_4  // -- 
+    T_5  // : 
+    T_6  // ; 
+    T_7  // <?xml 
+    T_8  // ?> 
+    T_9  // _ 
+    T_10  // aA_fF 
+    T_11  // andCars 
+    T_12  // angLBrk 
+    T_13  // angRBrk 
+    T_14  // charData 
+    T_15  // dot_BSlashDash 
+    T_16  // dubQu 
+    T_17  // encoding 
+    T_18  // eq 
+    T_19  // exclamation 
+    T_20  // let 
+    T_21  // num 
+    T_22  // optSpaceEsc 
+    T_23  // repNum1x 
+    T_24  // sinQu 
+    T_25  // slashAngLBrk 
+    T_26  // slashAngRBrk 
+    T_27  // spaceEsc 
+    T_28  // version 
 )
 
 var TypeToString = []string{ 
@@ -167,6 +168,7 @@ var TypeToString = []string{
     "T_25",
     "T_26",
     "T_27",
+    "T_28",
 }
 
 var StringToType = map[string] Type { 
@@ -200,6 +202,7 @@ var StringToType = map[string] Type {
     "T_25" : T_25, 
     "T_26" : T_26, 
     "T_27" : T_27, 
+    "T_28" : T_28, 
 }
 
 var TypeToID = []string { 
@@ -208,16 +211,19 @@ var TypeToID = []string {
     "&", 
     "&#", 
     "&#x", 
+    "'", 
     "--", 
+    ":", 
     ";", 
+    "<?xml", 
+    "?>", 
+    "_", 
     "aA_fF", 
-    "andCarrs", 
+    "andCars", 
     "angLBrk", 
     "angRBrk", 
     "charData", 
-    "col_", 
     "dot_BSlashDash", 
-    "dot_BSlashDashCol", 
     "dubQu", 
     "encoding", 
     "eq", 
@@ -231,11 +237,10 @@ var TypeToID = []string {
     "slashAngRBrk", 
     "spaceEsc", 
     "version", 
-    "xmlDeclEnd", 
-    "xmlDeclStart", 
 }
 
 var Suppress = []bool { 
+    false, 
     false, 
     false, 
     false, 
