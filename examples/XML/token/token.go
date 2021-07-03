@@ -130,11 +130,10 @@ const(
     T_21  // num 
     T_22  // optSpaceEsc 
     T_23  // repNum1x 
-    T_24  // sinQu 
-    T_25  // slashAngLBrk 
-    T_26  // slashAngRBrk 
-    T_27  // spaceEsc 
-    T_28  // version 
+    T_24  // slashAngLBrk 
+    T_25  // slashAngRBrk 
+    T_26  // spaceEsc 
+    T_27  // version 
 )
 
 var TypeToString = []string{ 
@@ -168,7 +167,6 @@ var TypeToString = []string{
     "T_25",
     "T_26",
     "T_27",
-    "T_28",
 }
 
 var StringToType = map[string] Type { 
@@ -202,7 +200,6 @@ var StringToType = map[string] Type {
     "T_25" : T_25, 
     "T_26" : T_26, 
     "T_27" : T_27, 
-    "T_28" : T_28, 
 }
 
 var TypeToID = []string { 
@@ -232,7 +229,6 @@ var TypeToID = []string {
     "num", 
     "optSpaceEsc", 
     "repNum1x", 
-    "sinQu", 
     "slashAngLBrk", 
     "slashAngRBrk", 
     "spaceEsc", 
@@ -240,7 +236,6 @@ var TypeToID = []string {
 }
 
 var Suppress = []bool { 
-    false, 
     false, 
     false, 
     false, 

@@ -328,7 +328,7 @@ var slots = map[Label]*Slot{
 	ATT_VALUE1R0: {
 		symbols.NT_ATT_VALUE, 1, 0, 
 		symbols.Symbols{  
-			symbols.T_24, 
+			symbols.T_3, 
 			symbols.NT_SinConClose,
 		}, 
 		ATT_VALUE1R0, 
@@ -336,7 +336,7 @@ var slots = map[Label]*Slot{
 	ATT_VALUE1R1: {
 		symbols.NT_ATT_VALUE, 1, 1, 
 		symbols.Symbols{  
-			symbols.T_24, 
+			symbols.T_3, 
 			symbols.NT_SinConClose,
 		}, 
 		ATT_VALUE1R1, 
@@ -344,7 +344,7 @@ var slots = map[Label]*Slot{
 	ATT_VALUE1R2: {
 		symbols.NT_ATT_VALUE, 1, 2, 
 		symbols.Symbols{  
-			symbols.T_24, 
+			symbols.T_3, 
 			symbols.NT_SinConClose,
 		}, 
 		ATT_VALUE1R2, 
@@ -812,7 +812,7 @@ var slots = map[Label]*Slot{
 		symbols.Symbols{  
 			symbols.T_13, 
 			symbols.NT_Content, 
-			symbols.T_25, 
+			symbols.T_24, 
 			symbols.NT_NAME, 
 			symbols.T_22, 
 			symbols.T_13,
@@ -824,7 +824,7 @@ var slots = map[Label]*Slot{
 		symbols.Symbols{  
 			symbols.T_13, 
 			symbols.NT_Content, 
-			symbols.T_25, 
+			symbols.T_24, 
 			symbols.NT_NAME, 
 			symbols.T_22, 
 			symbols.T_13,
@@ -836,7 +836,7 @@ var slots = map[Label]*Slot{
 		symbols.Symbols{  
 			symbols.T_13, 
 			symbols.NT_Content, 
-			symbols.T_25, 
+			symbols.T_24, 
 			symbols.NT_NAME, 
 			symbols.T_22, 
 			symbols.T_13,
@@ -848,7 +848,7 @@ var slots = map[Label]*Slot{
 		symbols.Symbols{  
 			symbols.T_13, 
 			symbols.NT_Content, 
-			symbols.T_25, 
+			symbols.T_24, 
 			symbols.NT_NAME, 
 			symbols.T_22, 
 			symbols.T_13,
@@ -860,7 +860,7 @@ var slots = map[Label]*Slot{
 		symbols.Symbols{  
 			symbols.T_13, 
 			symbols.NT_Content, 
-			symbols.T_25, 
+			symbols.T_24, 
 			symbols.NT_NAME, 
 			symbols.T_22, 
 			symbols.T_13,
@@ -872,7 +872,7 @@ var slots = map[Label]*Slot{
 		symbols.Symbols{  
 			symbols.T_13, 
 			symbols.NT_Content, 
-			symbols.T_25, 
+			symbols.T_24, 
 			symbols.NT_NAME, 
 			symbols.T_22, 
 			symbols.T_13,
@@ -884,7 +884,7 @@ var slots = map[Label]*Slot{
 		symbols.Symbols{  
 			symbols.T_13, 
 			symbols.NT_Content, 
-			symbols.T_25, 
+			symbols.T_24, 
 			symbols.NT_NAME, 
 			symbols.T_22, 
 			symbols.T_13,
@@ -894,14 +894,14 @@ var slots = map[Label]*Slot{
 	ElemCloseAlts1R0: {
 		symbols.NT_ElemCloseAlts, 1, 0, 
 		symbols.Symbols{  
-			symbols.T_26,
+			symbols.T_25,
 		}, 
 		ElemCloseAlts1R0, 
 	},
 	ElemCloseAlts1R1: {
 		symbols.NT_ElemCloseAlts, 1, 1, 
 		symbols.Symbols{  
-			symbols.T_26,
+			symbols.T_25,
 		}, 
 		ElemCloseAlts1R1, 
 	},
@@ -998,7 +998,7 @@ var slots = map[Label]*Slot{
 	EncodingDecl0R0: {
 		symbols.NT_EncodingDecl, 0, 0, 
 		symbols.Symbols{  
-			symbols.T_27, 
+			symbols.T_26, 
 			symbols.T_17, 
 			symbols.NT_Eq, 
 			symbols.NT_QuoEncNam,
@@ -1008,7 +1008,7 @@ var slots = map[Label]*Slot{
 	EncodingDecl0R1: {
 		symbols.NT_EncodingDecl, 0, 1, 
 		symbols.Symbols{  
-			symbols.T_27, 
+			symbols.T_26, 
 			symbols.T_17, 
 			symbols.NT_Eq, 
 			symbols.NT_QuoEncNam,
@@ -1018,7 +1018,7 @@ var slots = map[Label]*Slot{
 	EncodingDecl0R2: {
 		symbols.NT_EncodingDecl, 0, 2, 
 		symbols.Symbols{  
-			symbols.T_27, 
+			symbols.T_26, 
 			symbols.T_17, 
 			symbols.NT_Eq, 
 			symbols.NT_QuoEncNam,
@@ -1028,7 +1028,7 @@ var slots = map[Label]*Slot{
 	EncodingDecl0R3: {
 		symbols.NT_EncodingDecl, 0, 3, 
 		symbols.Symbols{  
-			symbols.T_27, 
+			symbols.T_26, 
 			symbols.T_17, 
 			symbols.NT_Eq, 
 			symbols.NT_QuoEncNam,
@@ -1038,7 +1038,7 @@ var slots = map[Label]*Slot{
 	EncodingDecl0R4: {
 		symbols.NT_EncodingDecl, 0, 4, 
 		symbols.Symbols{  
-			symbols.T_27, 
+			symbols.T_26, 
 			symbols.T_17, 
 			symbols.NT_Eq, 
 			symbols.NT_QuoEncNam,
@@ -1248,14 +1248,14 @@ var slots = map[Label]*Slot{
 	Misc1R0: {
 		symbols.NT_Misc, 1, 0, 
 		symbols.Symbols{  
-			symbols.T_27,
+			symbols.T_26,
 		}, 
 		Misc1R0, 
 	},
 	Misc1R1: {
 		symbols.NT_Misc, 1, 1, 
 		symbols.Symbols{  
-			symbols.T_27,
+			symbols.T_26,
 		}, 
 		Misc1R1, 
 	},
@@ -1742,7 +1742,7 @@ var slots = map[Label]*Slot{
 	SAtt0R0: {
 		symbols.NT_SAtt, 0, 0, 
 		symbols.Symbols{  
-			symbols.T_27, 
+			symbols.T_26, 
 			symbols.NT_Attribute,
 		}, 
 		SAtt0R0, 
@@ -1750,7 +1750,7 @@ var slots = map[Label]*Slot{
 	SAtt0R1: {
 		symbols.NT_SAtt, 0, 1, 
 		symbols.Symbols{  
-			symbols.T_27, 
+			symbols.T_26, 
 			symbols.NT_Attribute,
 		}, 
 		SAtt0R1, 
@@ -1758,7 +1758,7 @@ var slots = map[Label]*Slot{
 	SAtt0R2: {
 		symbols.NT_SAtt, 0, 2, 
 		symbols.Symbols{  
-			symbols.T_27, 
+			symbols.T_26, 
 			symbols.NT_Attribute,
 		}, 
 		SAtt0R2, 
@@ -1832,8 +1832,8 @@ var slots = map[Label]*Slot{
 	VersionInfo0R0: {
 		symbols.NT_VersionInfo, 0, 0, 
 		symbols.Symbols{  
+			symbols.T_26, 
 			symbols.T_27, 
-			symbols.T_28, 
 			symbols.NT_Eq, 
 			symbols.NT_QuoVerNum,
 		}, 
@@ -1842,8 +1842,8 @@ var slots = map[Label]*Slot{
 	VersionInfo0R1: {
 		symbols.NT_VersionInfo, 0, 1, 
 		symbols.Symbols{  
+			symbols.T_26, 
 			symbols.T_27, 
-			symbols.T_28, 
 			symbols.NT_Eq, 
 			symbols.NT_QuoVerNum,
 		}, 
@@ -1852,8 +1852,8 @@ var slots = map[Label]*Slot{
 	VersionInfo0R2: {
 		symbols.NT_VersionInfo, 0, 2, 
 		symbols.Symbols{  
+			symbols.T_26, 
 			symbols.T_27, 
-			symbols.T_28, 
 			symbols.NT_Eq, 
 			symbols.NT_QuoVerNum,
 		}, 
@@ -1862,8 +1862,8 @@ var slots = map[Label]*Slot{
 	VersionInfo0R3: {
 		symbols.NT_VersionInfo, 0, 3, 
 		symbols.Symbols{  
+			symbols.T_26, 
 			symbols.T_27, 
-			symbols.T_28, 
 			symbols.NT_Eq, 
 			symbols.NT_QuoVerNum,
 		}, 
@@ -1872,8 +1872,8 @@ var slots = map[Label]*Slot{
 	VersionInfo0R4: {
 		symbols.NT_VersionInfo, 0, 4, 
 		symbols.Symbols{  
+			symbols.T_26, 
 			symbols.T_27, 
-			symbols.T_28, 
 			symbols.NT_Eq, 
 			symbols.NT_QuoVerNum,
 		}, 

@@ -84,11 +84,10 @@ const(
 	T_21  // num 
 	T_22  // optSpaceEsc 
 	T_23  // repNum1x 
-	T_24  // sinQu 
-	T_25  // slashAngLBrk 
-	T_26  // slashAngRBrk 
-	T_27  // spaceEsc 
-	T_28  // version 
+	T_24  // slashAngLBrk 
+	T_25  // slashAngRBrk 
+	T_26  // spaceEsc 
+	T_27  // version 
 )
 
 type Symbols []Symbol
@@ -186,11 +185,10 @@ var tToString = []string {
 	"num", /* T_21 */
 	"optSpaceEsc", /* T_22 */
 	"repNum1x", /* T_23 */
-	"sinQu", /* T_24 */
-	"slashAngLBrk", /* T_25 */
-	"slashAngRBrk", /* T_26 */
-	"spaceEsc", /* T_27 */
-	"version", /* T_28 */ 
+	"slashAngLBrk", /* T_24 */
+	"slashAngRBrk", /* T_25 */
+	"spaceEsc", /* T_26 */
+	"version", /* T_27 */ 
 }
 
 var stringNT = map[string]NT{ 

@@ -44,9 +44,10 @@ EncodingDecl            : spaceEsc "encoding" Eq QuoEncNam      ;
         
 ```
 #### ***Values and References***
+sinQu isn't necessary but there is an error in the lexer if it is not there
 ```
 ATT_VALUE               : dubQu DubConClose 
-                        | sinQu SinConClose                     ;
+                        | "'" SinConClose                       ;
         SinConClose     : "'"
                         / SymRefAlts SinConClose                ;
         DubConClose     : dubQu 

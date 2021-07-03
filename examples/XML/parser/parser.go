@@ -82,7 +82,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			} else {
 				p.parseError(slot.ATT_VALUE0R0, p.cI, followSets[symbols.NT_ATT_VALUE])
 			}
-		case slot.ATT_VALUE1R0: // ATT_VALUE : ∙sinQu SinConClose
+		case slot.ATT_VALUE1R0: // ATT_VALUE : ∙' SinConClose
 
 			p.bsrSet.Add(slot.ATT_VALUE1R1, cU, p.cI, p.cI+1)
 			p.cI++
@@ -92,7 +92,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			}
 
 			p.call(slot.ATT_VALUE1R2, cU, p.cI)
-		case slot.ATT_VALUE1R2: // ATT_VALUE : sinQu SinConClose ∙
+		case slot.ATT_VALUE1R2: // ATT_VALUE : ' SinConClose ∙
 
 			if p.follow(symbols.NT_ATT_VALUE) {
 				p.rtn(symbols.NT_ATT_VALUE, cU, p.cI)
@@ -1469,13 +1469,13 @@ var first = []map[token.Type]string{
 	// ATT_VALUE : dubQu DubConClose ∙
 	{
 		token.T_22: "optSpaceEsc",
-		token.T_27: "spaceEsc",
+		token.T_26: "spaceEsc",
 	},
-	// ATT_VALUE : ∙sinQu SinConClose
+	// ATT_VALUE : ∙' SinConClose
 	{
-		token.T_24: "sinQu",
+		token.T_3: "'",
 	},
-	// ATT_VALUE : sinQu ∙SinConClose
+	// ATT_VALUE : ' ∙SinConClose
 	{
 		token.T_0:  "&",
 		token.T_1:  "&#",
@@ -1483,10 +1483,10 @@ var first = []map[token.Type]string{
 		token.T_3:  "'",
 		token.T_11: "andCars",
 	},
-	// ATT_VALUE : sinQu SinConClose ∙
+	// ATT_VALUE : ' SinConClose ∙
 	{
 		token.T_22: "optSpaceEsc",
-		token.T_27: "spaceEsc",
+		token.T_26: "spaceEsc",
 	},
 	// Attribute : ∙NAME optSpaceEsc eq optSpaceEsc ATT_VALUE
 	{
@@ -1508,13 +1508,13 @@ var first = []map[token.Type]string{
 	},
 	// Attribute : NAME optSpaceEsc eq optSpaceEsc ∙ATT_VALUE
 	{
+		token.T_3:  "'",
 		token.T_16: "dubQu",
-		token.T_24: "sinQu",
 	},
 	// Attribute : NAME optSpaceEsc eq optSpaceEsc ATT_VALUE ∙
 	{
 		token.T_22: "optSpaceEsc",
-		token.T_27: "spaceEsc",
+		token.T_26: "spaceEsc",
 	},
 	// CHAR_REF : ∙&#x Hex ;
 	{
@@ -1539,7 +1539,7 @@ var first = []map[token.Type]string{
 		token.T_12: "angLBrk",
 		token.T_14: "charData",
 		token.T_16: "dubQu",
-		token.T_25: "slashAngLBrk",
+		token.T_24: "slashAngLBrk",
 	},
 	// CHAR_REF : ∙&# repNum1x ;
 	{
@@ -1563,7 +1563,7 @@ var first = []map[token.Type]string{
 		token.T_12: "angLBrk",
 		token.T_14: "charData",
 		token.T_16: "dubQu",
-		token.T_25: "slashAngLBrk",
+		token.T_24: "slashAngLBrk",
 	},
 	// COMMENT : ∙ComStart ComEnterior angRBrk
 	{
@@ -1586,8 +1586,8 @@ var first = []map[token.Type]string{
 		token.T_2:  "&#x",
 		token.T_12: "angLBrk",
 		token.T_14: "charData",
-		token.T_25: "slashAngLBrk",
-		token.T_27: "spaceEsc",
+		token.T_24: "slashAngLBrk",
+		token.T_26: "spaceEsc",
 	},
 	// ComEnterior : ∙DubDash
 	{
@@ -1642,15 +1642,15 @@ var first = []map[token.Type]string{
 		token.T_2:  "&#x",
 		token.T_12: "angLBrk",
 		token.T_14: "charData",
-		token.T_25: "slashAngLBrk",
+		token.T_24: "slashAngLBrk",
 	},
 	// Content : ContentAlts Content ∙
 	{
-		token.T_25: "slashAngLBrk",
+		token.T_24: "slashAngLBrk",
 	},
 	// Content : ∙
 	{
-		token.T_25: "slashAngLBrk",
+		token.T_24: "slashAngLBrk",
 	},
 	// ContentAlts : ∙COMMENT
 	{
@@ -1663,7 +1663,7 @@ var first = []map[token.Type]string{
 		token.T_2:  "&#x",
 		token.T_12: "angLBrk",
 		token.T_14: "charData",
-		token.T_25: "slashAngLBrk",
+		token.T_24: "slashAngLBrk",
 	},
 	// ContentAlts : ∙Element
 	{
@@ -1676,7 +1676,7 @@ var first = []map[token.Type]string{
 		token.T_2:  "&#x",
 		token.T_12: "angLBrk",
 		token.T_14: "charData",
-		token.T_25: "slashAngLBrk",
+		token.T_24: "slashAngLBrk",
 	},
 	// ContentAlts : ∙REFERENCE
 	{
@@ -1691,7 +1691,7 @@ var first = []map[token.Type]string{
 		token.T_2:  "&#x",
 		token.T_12: "angLBrk",
 		token.T_14: "charData",
-		token.T_25: "slashAngLBrk",
+		token.T_24: "slashAngLBrk",
 	},
 	// ContentAlts : ∙charData
 	{
@@ -1704,13 +1704,13 @@ var first = []map[token.Type]string{
 		token.T_2:  "&#x",
 		token.T_12: "angLBrk",
 		token.T_14: "charData",
-		token.T_25: "slashAngLBrk",
+		token.T_24: "slashAngLBrk",
 	},
 	// Document : ∙Prolog Element RepMisc0x
 	{
 		token.T_7:  "<?xml",
 		token.T_12: "angLBrk",
-		token.T_27: "spaceEsc",
+		token.T_26: "spaceEsc",
 	},
 	// Document : Prolog ∙Element RepMisc0x
 	{
@@ -1719,7 +1719,7 @@ var first = []map[token.Type]string{
 	// Document : Prolog Element ∙RepMisc0x
 	{
 		token.T_12: "angLBrk",
-		token.T_27: "spaceEsc",
+		token.T_26: "spaceEsc",
 		token.EOF:  "$",
 	},
 	// Document : Prolog Element RepMisc0x ∙
@@ -1733,7 +1733,7 @@ var first = []map[token.Type]string{
 	// DubConClose : dubQu ∙
 	{
 		token.T_22: "optSpaceEsc",
-		token.T_27: "spaceEsc",
+		token.T_26: "spaceEsc",
 	},
 	// DubConClose : ∙SymRefAlts DubConClose
 	{
@@ -1753,7 +1753,7 @@ var first = []map[token.Type]string{
 	// DubConClose : SymRefAlts DubConClose ∙
 	{
 		token.T_22: "optSpaceEsc",
-		token.T_27: "spaceEsc",
+		token.T_26: "spaceEsc",
 	},
 	// DubDash : ∙--
 	{
@@ -1789,7 +1789,7 @@ var first = []map[token.Type]string{
 		token.T_12: "angLBrk",
 		token.T_14: "charData",
 		token.T_16: "dubQu",
-		token.T_25: "slashAngLBrk",
+		token.T_24: "slashAngLBrk",
 	},
 	// ElemCloseAlts : ∙angRBrk Content slashAngLBrk NAME optSpaceEsc angRBrk
 	{
@@ -1802,11 +1802,11 @@ var first = []map[token.Type]string{
 		token.T_2:  "&#x",
 		token.T_12: "angLBrk",
 		token.T_14: "charData",
-		token.T_25: "slashAngLBrk",
+		token.T_24: "slashAngLBrk",
 	},
 	// ElemCloseAlts : angRBrk Content ∙slashAngLBrk NAME optSpaceEsc angRBrk
 	{
-		token.T_25: "slashAngLBrk",
+		token.T_24: "slashAngLBrk",
 	},
 	// ElemCloseAlts : angRBrk Content slashAngLBrk ∙NAME optSpaceEsc angRBrk
 	{
@@ -1830,12 +1830,12 @@ var first = []map[token.Type]string{
 		token.T_2:  "&#x",
 		token.T_12: "angLBrk",
 		token.T_14: "charData",
-		token.T_25: "slashAngLBrk",
-		token.T_27: "spaceEsc",
+		token.T_24: "slashAngLBrk",
+		token.T_26: "spaceEsc",
 	},
 	// ElemCloseAlts : ∙slashAngRBrk
 	{
-		token.T_26: "slashAngRBrk",
+		token.T_25: "slashAngRBrk",
 	},
 	// ElemCloseAlts : slashAngRBrk ∙
 	{
@@ -1845,8 +1845,8 @@ var first = []map[token.Type]string{
 		token.T_2:  "&#x",
 		token.T_12: "angLBrk",
 		token.T_14: "charData",
-		token.T_25: "slashAngLBrk",
-		token.T_27: "spaceEsc",
+		token.T_24: "slashAngLBrk",
+		token.T_26: "spaceEsc",
 	},
 	// Element : ∙angLBrk NAME RepSAttx0x optSpaceEsc ElemCloseAlts
 	{
@@ -1861,7 +1861,7 @@ var first = []map[token.Type]string{
 	// Element : angLBrk NAME ∙RepSAttx0x optSpaceEsc ElemCloseAlts
 	{
 		token.T_22: "optSpaceEsc",
-		token.T_27: "spaceEsc",
+		token.T_26: "spaceEsc",
 	},
 	// Element : angLBrk NAME RepSAttx0x ∙optSpaceEsc ElemCloseAlts
 	{
@@ -1870,7 +1870,7 @@ var first = []map[token.Type]string{
 	// Element : angLBrk NAME RepSAttx0x optSpaceEsc ∙ElemCloseAlts
 	{
 		token.T_13: "angRBrk",
-		token.T_26: "slashAngRBrk",
+		token.T_25: "slashAngRBrk",
 	},
 	// Element : angLBrk NAME RepSAttx0x optSpaceEsc ElemCloseAlts ∙
 	{
@@ -1880,8 +1880,8 @@ var first = []map[token.Type]string{
 		token.T_2:  "&#x",
 		token.T_12: "angLBrk",
 		token.T_14: "charData",
-		token.T_25: "slashAngLBrk",
-		token.T_27: "spaceEsc",
+		token.T_24: "slashAngLBrk",
+		token.T_26: "spaceEsc",
 	},
 	// EncName : ∙let RepLDSAlts0x
 	{
@@ -1903,7 +1903,7 @@ var first = []map[token.Type]string{
 	},
 	// EncodingDecl : ∙spaceEsc encoding Eq QuoEncNam
 	{
-		token.T_27: "spaceEsc",
+		token.T_26: "spaceEsc",
 	},
 	// EncodingDecl : spaceEsc ∙encoding Eq QuoEncNam
 	{
@@ -1987,7 +1987,7 @@ var first = []map[token.Type]string{
 		token.T_20: "let",
 		token.T_21: "num",
 		token.T_22: "optSpaceEsc",
-		token.T_27: "spaceEsc",
+		token.T_26: "spaceEsc",
 	},
 	// LetColonAlts : ∙:
 	{
@@ -2002,7 +2002,7 @@ var first = []map[token.Type]string{
 		token.T_20: "let",
 		token.T_21: "num",
 		token.T_22: "optSpaceEsc",
-		token.T_27: "spaceEsc",
+		token.T_26: "spaceEsc",
 	},
 	// LetColonAlts : ∙_
 	{
@@ -2017,7 +2017,7 @@ var first = []map[token.Type]string{
 		token.T_20: "let",
 		token.T_21: "num",
 		token.T_22: "optSpaceEsc",
-		token.T_27: "spaceEsc",
+		token.T_26: "spaceEsc",
 	},
 	// LetDigSymAlts : ∙let
 	{
@@ -2079,17 +2079,17 @@ var first = []map[token.Type]string{
 	{
 		token.EOF:  "$",
 		token.T_12: "angLBrk",
-		token.T_27: "spaceEsc",
+		token.T_26: "spaceEsc",
 	},
 	// Misc : ∙spaceEsc
 	{
-		token.T_27: "spaceEsc",
+		token.T_26: "spaceEsc",
 	},
 	// Misc : spaceEsc ∙
 	{
 		token.EOF:  "$",
 		token.T_12: "angLBrk",
-		token.T_27: "spaceEsc",
+		token.T_26: "spaceEsc",
 	},
 	// NAME : ∙LetColonAlts RepNameChar0x
 	{
@@ -2106,13 +2106,13 @@ var first = []map[token.Type]string{
 		token.T_21: "num",
 		token.T_6:  ";",
 		token.T_22: "optSpaceEsc",
-		token.T_27: "spaceEsc",
+		token.T_26: "spaceEsc",
 	},
 	// NAME : LetColonAlts RepNameChar0x ∙
 	{
 		token.T_6:  ";",
 		token.T_22: "optSpaceEsc",
-		token.T_27: "spaceEsc",
+		token.T_26: "spaceEsc",
 	},
 	// NAME_CHAR : ∙let
 	{
@@ -2129,7 +2129,7 @@ var first = []map[token.Type]string{
 		token.T_20: "let",
 		token.T_21: "num",
 		token.T_22: "optSpaceEsc",
-		token.T_27: "spaceEsc",
+		token.T_26: "spaceEsc",
 	},
 	// NAME_CHAR : ∙num
 	{
@@ -2146,7 +2146,7 @@ var first = []map[token.Type]string{
 		token.T_20: "let",
 		token.T_21: "num",
 		token.T_22: "optSpaceEsc",
-		token.T_27: "spaceEsc",
+		token.T_26: "spaceEsc",
 	},
 	// NAME_CHAR : ∙:
 	{
@@ -2163,7 +2163,7 @@ var first = []map[token.Type]string{
 		token.T_20: "let",
 		token.T_21: "num",
 		token.T_22: "optSpaceEsc",
-		token.T_27: "spaceEsc",
+		token.T_26: "spaceEsc",
 	},
 	// NAME_CHAR : ∙_
 	{
@@ -2180,7 +2180,7 @@ var first = []map[token.Type]string{
 		token.T_20: "let",
 		token.T_21: "num",
 		token.T_22: "optSpaceEsc",
-		token.T_27: "spaceEsc",
+		token.T_26: "spaceEsc",
 	},
 	// NAME_CHAR : ∙dot_BSlashDash
 	{
@@ -2197,11 +2197,11 @@ var first = []map[token.Type]string{
 		token.T_20: "let",
 		token.T_21: "num",
 		token.T_22: "optSpaceEsc",
-		token.T_27: "spaceEsc",
+		token.T_26: "spaceEsc",
 	},
 	// OptEncDecl : ∙EncodingDecl
 	{
-		token.T_27: "spaceEsc",
+		token.T_26: "spaceEsc",
 	},
 	// OptEncDecl : EncodingDecl ∙
 	{
@@ -2218,24 +2218,24 @@ var first = []map[token.Type]string{
 	// OptXMLDecl : XMLDecl ∙
 	{
 		token.T_12: "angLBrk",
-		token.T_27: "spaceEsc",
+		token.T_26: "spaceEsc",
 	},
 	// OptXMLDecl : ∙
 	{
 		token.T_12: "angLBrk",
-		token.T_27: "spaceEsc",
+		token.T_26: "spaceEsc",
 	},
 	// Prolog : ∙OptXMLDecl RepMisc0x
 	{
 		token.T_7:  "<?xml",
 		token.T_12: "angLBrk",
-		token.T_27: "spaceEsc",
+		token.T_26: "spaceEsc",
 		token.T_12: "angLBrk",
 	},
 	// Prolog : OptXMLDecl ∙RepMisc0x
 	{
 		token.T_12: "angLBrk",
-		token.T_27: "spaceEsc",
+		token.T_26: "spaceEsc",
 		token.T_12: "angLBrk",
 	},
 	// Prolog : OptXMLDecl RepMisc0x ∙
@@ -2293,7 +2293,7 @@ var first = []map[token.Type]string{
 	// QuoVerNum : ' VersionNum ' ∙
 	{
 		token.T_22: "optSpaceEsc",
-		token.T_27: "spaceEsc",
+		token.T_26: "spaceEsc",
 	},
 	// QuoVerNum : ∙dubQu VersionNum dubQu
 	{
@@ -2314,7 +2314,7 @@ var first = []map[token.Type]string{
 	// QuoVerNum : dubQu VersionNum dubQu ∙
 	{
 		token.T_22: "optSpaceEsc",
-		token.T_27: "spaceEsc",
+		token.T_26: "spaceEsc",
 	},
 	// REFERENCE : ∙ENTITY_REF
 	{
@@ -2330,7 +2330,7 @@ var first = []map[token.Type]string{
 		token.T_12: "angLBrk",
 		token.T_14: "charData",
 		token.T_16: "dubQu",
-		token.T_25: "slashAngLBrk",
+		token.T_24: "slashAngLBrk",
 	},
 	// REFERENCE : ∙CHAR_REF
 	{
@@ -2347,7 +2347,7 @@ var first = []map[token.Type]string{
 		token.T_12: "angLBrk",
 		token.T_14: "charData",
 		token.T_16: "dubQu",
-		token.T_25: "slashAngLBrk",
+		token.T_24: "slashAngLBrk",
 	},
 	// RepHexAlts0x : ∙HexAlts Hex
 	{
@@ -2396,12 +2396,12 @@ var first = []map[token.Type]string{
 	// RepMisc0x : ∙Misc RepMisc0x
 	{
 		token.T_12: "angLBrk",
-		token.T_27: "spaceEsc",
+		token.T_26: "spaceEsc",
 	},
 	// RepMisc0x : Misc ∙RepMisc0x
 	{
 		token.T_12: "angLBrk",
-		token.T_27: "spaceEsc",
+		token.T_26: "spaceEsc",
 		token.EOF:  "$",
 		token.T_12: "angLBrk",
 	},
@@ -2434,7 +2434,7 @@ var first = []map[token.Type]string{
 		token.T_6:  ";",
 		token.T_16: "dubQu",
 		token.T_22: "optSpaceEsc",
-		token.T_27: "spaceEsc",
+		token.T_26: "spaceEsc",
 	},
 	// RepNameChar0x : NAME_CHAR RepNameChar0x ∙
 	{
@@ -2442,7 +2442,7 @@ var first = []map[token.Type]string{
 		token.T_6:  ";",
 		token.T_16: "dubQu",
 		token.T_22: "optSpaceEsc",
-		token.T_27: "spaceEsc",
+		token.T_26: "spaceEsc",
 	},
 	// RepNameChar0x : ∙
 	{
@@ -2450,15 +2450,15 @@ var first = []map[token.Type]string{
 		token.T_6:  ";",
 		token.T_16: "dubQu",
 		token.T_22: "optSpaceEsc",
-		token.T_27: "spaceEsc",
+		token.T_26: "spaceEsc",
 	},
 	// RepSAttx0x : ∙SAtt RepSAttx0x
 	{
-		token.T_27: "spaceEsc",
+		token.T_26: "spaceEsc",
 	},
 	// RepSAttx0x : SAtt ∙RepSAttx0x
 	{
-		token.T_27: "spaceEsc",
+		token.T_26: "spaceEsc",
 		token.T_22: "optSpaceEsc",
 	},
 	// RepSAttx0x : SAtt RepSAttx0x ∙
@@ -2471,7 +2471,7 @@ var first = []map[token.Type]string{
 	},
 	// SAtt : ∙spaceEsc Attribute
 	{
-		token.T_27: "spaceEsc",
+		token.T_26: "spaceEsc",
 	},
 	// SAtt : spaceEsc ∙Attribute
 	{
@@ -2482,7 +2482,7 @@ var first = []map[token.Type]string{
 	// SAtt : spaceEsc Attribute ∙
 	{
 		token.T_22: "optSpaceEsc",
-		token.T_27: "spaceEsc",
+		token.T_26: "spaceEsc",
 	},
 	// SinConClose : ∙'
 	{
@@ -2491,7 +2491,7 @@ var first = []map[token.Type]string{
 	// SinConClose : ' ∙
 	{
 		token.T_22: "optSpaceEsc",
-		token.T_27: "spaceEsc",
+		token.T_26: "spaceEsc",
 	},
 	// SinConClose : ∙SymRefAlts SinConClose
 	{
@@ -2511,7 +2511,7 @@ var first = []map[token.Type]string{
 	// SinConClose : SymRefAlts SinConClose ∙
 	{
 		token.T_22: "optSpaceEsc",
-		token.T_27: "spaceEsc",
+		token.T_26: "spaceEsc",
 	},
 	// SymRefAlts : ∙andCars
 	{
@@ -2543,11 +2543,11 @@ var first = []map[token.Type]string{
 	},
 	// VersionInfo : ∙spaceEsc version Eq QuoVerNum
 	{
-		token.T_27: "spaceEsc",
+		token.T_26: "spaceEsc",
 	},
 	// VersionInfo : spaceEsc ∙version Eq QuoVerNum
 	{
-		token.T_28: "version",
+		token.T_27: "version",
 	},
 	// VersionInfo : spaceEsc version ∙Eq QuoVerNum
 	{
@@ -2561,7 +2561,7 @@ var first = []map[token.Type]string{
 	// VersionInfo : spaceEsc version Eq QuoVerNum ∙
 	{
 		token.T_22: "optSpaceEsc",
-		token.T_27: "spaceEsc",
+		token.T_26: "spaceEsc",
 	},
 	// VersionNum : ∙NAME_CHAR RepNameChar0x
 	{
@@ -2592,12 +2592,12 @@ var first = []map[token.Type]string{
 	},
 	// XMLDecl : <?xml ∙VersionInfo OptEncDecl optSpaceEsc ?>
 	{
-		token.T_27: "spaceEsc",
+		token.T_26: "spaceEsc",
 	},
 	// XMLDecl : <?xml VersionInfo ∙OptEncDecl optSpaceEsc ?>
 	{
 		token.T_22: "optSpaceEsc",
-		token.T_27: "spaceEsc",
+		token.T_26: "spaceEsc",
 	},
 	// XMLDecl : <?xml VersionInfo OptEncDecl ∙optSpaceEsc ?>
 	{
@@ -2610,7 +2610,7 @@ var first = []map[token.Type]string{
 	// XMLDecl : <?xml VersionInfo OptEncDecl optSpaceEsc ?> ∙
 	{
 		token.T_12: "angLBrk",
-		token.T_27: "spaceEsc",
+		token.T_26: "spaceEsc",
 	},
 }
 
@@ -2618,12 +2618,12 @@ var followSets = []map[token.Type]string{
 	// ATT_VALUE
 	{
 		token.T_22: "optSpaceEsc",
-		token.T_27: "spaceEsc",
+		token.T_26: "spaceEsc",
 	},
 	// Attribute
 	{
 		token.T_22: "optSpaceEsc",
-		token.T_27: "spaceEsc",
+		token.T_26: "spaceEsc",
 	},
 	// CHAR_REF
 	{
@@ -2635,7 +2635,7 @@ var followSets = []map[token.Type]string{
 		token.T_12: "angLBrk",
 		token.T_14: "charData",
 		token.T_16: "dubQu",
-		token.T_25: "slashAngLBrk",
+		token.T_24: "slashAngLBrk",
 	},
 	// COMMENT
 	{
@@ -2645,8 +2645,8 @@ var followSets = []map[token.Type]string{
 		token.T_2:  "&#x",
 		token.T_12: "angLBrk",
 		token.T_14: "charData",
-		token.T_25: "slashAngLBrk",
-		token.T_27: "spaceEsc",
+		token.T_24: "slashAngLBrk",
+		token.T_26: "spaceEsc",
 	},
 	// ComEnterior
 	{
@@ -2659,7 +2659,7 @@ var followSets = []map[token.Type]string{
 	},
 	// Content
 	{
-		token.T_25: "slashAngLBrk",
+		token.T_24: "slashAngLBrk",
 	},
 	// ContentAlts
 	{
@@ -2668,7 +2668,7 @@ var followSets = []map[token.Type]string{
 		token.T_2:  "&#x",
 		token.T_12: "angLBrk",
 		token.T_14: "charData",
-		token.T_25: "slashAngLBrk",
+		token.T_24: "slashAngLBrk",
 	},
 	// Document
 	{
@@ -2677,7 +2677,7 @@ var followSets = []map[token.Type]string{
 	// DubConClose
 	{
 		token.T_22: "optSpaceEsc",
-		token.T_27: "spaceEsc",
+		token.T_26: "spaceEsc",
 	},
 	// DubDash
 	{
@@ -2695,7 +2695,7 @@ var followSets = []map[token.Type]string{
 		token.T_12: "angLBrk",
 		token.T_14: "charData",
 		token.T_16: "dubQu",
-		token.T_25: "slashAngLBrk",
+		token.T_24: "slashAngLBrk",
 	},
 	// ElemCloseAlts
 	{
@@ -2705,8 +2705,8 @@ var followSets = []map[token.Type]string{
 		token.T_2:  "&#x",
 		token.T_12: "angLBrk",
 		token.T_14: "charData",
-		token.T_25: "slashAngLBrk",
-		token.T_27: "spaceEsc",
+		token.T_24: "slashAngLBrk",
+		token.T_26: "spaceEsc",
 	},
 	// Element
 	{
@@ -2716,8 +2716,8 @@ var followSets = []map[token.Type]string{
 		token.T_2:  "&#x",
 		token.T_12: "angLBrk",
 		token.T_14: "charData",
-		token.T_25: "slashAngLBrk",
-		token.T_27: "spaceEsc",
+		token.T_24: "slashAngLBrk",
+		token.T_26: "spaceEsc",
 	},
 	// EncName
 	{
@@ -2752,7 +2752,7 @@ var followSets = []map[token.Type]string{
 		token.T_20: "let",
 		token.T_21: "num",
 		token.T_22: "optSpaceEsc",
-		token.T_27: "spaceEsc",
+		token.T_26: "spaceEsc",
 	},
 	// LetDigSymAlts
 	{
@@ -2767,13 +2767,13 @@ var followSets = []map[token.Type]string{
 	{
 		token.EOF:  "$",
 		token.T_12: "angLBrk",
-		token.T_27: "spaceEsc",
+		token.T_26: "spaceEsc",
 	},
 	// NAME
 	{
 		token.T_6:  ";",
 		token.T_22: "optSpaceEsc",
-		token.T_27: "spaceEsc",
+		token.T_26: "spaceEsc",
 	},
 	// NAME_CHAR
 	{
@@ -2786,7 +2786,7 @@ var followSets = []map[token.Type]string{
 		token.T_20: "let",
 		token.T_21: "num",
 		token.T_22: "optSpaceEsc",
-		token.T_27: "spaceEsc",
+		token.T_26: "spaceEsc",
 	},
 	// OptEncDecl
 	{
@@ -2795,7 +2795,7 @@ var followSets = []map[token.Type]string{
 	// OptXMLDecl
 	{
 		token.T_12: "angLBrk",
-		token.T_27: "spaceEsc",
+		token.T_26: "spaceEsc",
 	},
 	// Prolog
 	{
@@ -2808,7 +2808,7 @@ var followSets = []map[token.Type]string{
 	// QuoVerNum
 	{
 		token.T_22: "optSpaceEsc",
-		token.T_27: "spaceEsc",
+		token.T_26: "spaceEsc",
 	},
 	// REFERENCE
 	{
@@ -2820,7 +2820,7 @@ var followSets = []map[token.Type]string{
 		token.T_12: "angLBrk",
 		token.T_14: "charData",
 		token.T_16: "dubQu",
-		token.T_25: "slashAngLBrk",
+		token.T_24: "slashAngLBrk",
 	},
 	// RepHexAlts0x
 	{
@@ -2842,7 +2842,7 @@ var followSets = []map[token.Type]string{
 		token.T_6:  ";",
 		token.T_16: "dubQu",
 		token.T_22: "optSpaceEsc",
-		token.T_27: "spaceEsc",
+		token.T_26: "spaceEsc",
 	},
 	// RepSAttx0x
 	{
@@ -2851,12 +2851,12 @@ var followSets = []map[token.Type]string{
 	// SAtt
 	{
 		token.T_22: "optSpaceEsc",
-		token.T_27: "spaceEsc",
+		token.T_26: "spaceEsc",
 	},
 	// SinConClose
 	{
 		token.T_22: "optSpaceEsc",
-		token.T_27: "spaceEsc",
+		token.T_26: "spaceEsc",
 	},
 	// SymRefAlts
 	{
@@ -2870,7 +2870,7 @@ var followSets = []map[token.Type]string{
 	// VersionInfo
 	{
 		token.T_22: "optSpaceEsc",
-		token.T_27: "spaceEsc",
+		token.T_26: "spaceEsc",
 	},
 	// VersionNum
 	{
@@ -2880,7 +2880,7 @@ var followSets = []map[token.Type]string{
 	// XMLDecl
 	{
 		token.T_12: "angLBrk",
-		token.T_27: "spaceEsc",
+		token.T_26: "spaceEsc",
 	},
 }
 
