@@ -20,7 +20,7 @@ func parse(s []rune) bool {
 	}
 	// Filter out results that violate ordered choice
 	// bsrSet.FlatDump()
-	bsrSet.FilterByOrderedChoice()
+	//bsrSet.FilterByOrderedChoice()
 	// fmt.Println("=====")
 	// bsrSet.FlatDump()
 	// check that single root covers whole input
