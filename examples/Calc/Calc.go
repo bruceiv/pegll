@@ -16,10 +16,10 @@ import (
 )
 
 //Should match
-const plus_test = `8 + 6` // passed
+/* const plus_test = `8 + 6` // passed
 const minus_test = `8 - 6`
 const mult_test = `8 * 6` // passed
-const mult_ops_test1 = "8 + 16 * 24" // passed
+const plusMult_test = "8 + 16 * 24" // passed */
 
 //Should fail to match
 const f = "12 +"
@@ -167,7 +167,7 @@ func number(n bsr.BSR) int {
 	num_string := num_node.LiteralString()
 
 	//testing
-	//fmt.Println(num_string)
+	fmt.Println(num_string)
 
 	// convert the string version of the number to numberic
 	num_digits, err := strconv.Atoi(num_string)
@@ -207,11 +207,18 @@ func parseAndPrint(s string) {
 		fmt.Println("'" + s + "' DID NOT match")
 	}
 }
+const plus_test     = `8 + 6` // passed
+const minus_test    = `8 - 6` // passed
+const mult_test     = `8 * 6` // passed
+const div_test      = `8 / 6` // DID NOT PASS
+const plusMult_test = "8 + 1 * 2" // passed
 
 func main() {
 	//parseAndPrint(plus_test)
+	//parseAndPrint(minus_test)
 	//parseAndPrint(mult_test)
-	parseAndPrint(mult_ops_test1)
+	parseAndPrint(div_test)
+	//parseAndPrint(plusMult_test)
 }
 
 /*func Test1(t *testing.T) { //Match test
