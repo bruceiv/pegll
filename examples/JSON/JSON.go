@@ -8,15 +8,18 @@ import (
 )
 
 //Matches
-const t00 = `{}`
-const t0 = `{ "name" : "John" }`
-
-const t1 = `{ "name" : "John", "name" : "John" }` // doesn't accept repeated letters
+const bracket_test 	= `{ }`
+const simple_test 	= `{ "name" : "John" }`
+const num_test		= `{ "num" : "N123" }` 
+const empty_test = `{ "num" : "" }` 
+	// issue with reading numbers
+	// issue with empty string 
 
 //Doesn't Match
-const t2 = `123`
-const t3 = `not JSON ~~`
-const t4 = `{ "name" : "Johhn" }`
+//const t2 = `123`
+//const t3 = `not JSON ~~`
+ // doesn't accept repeated letters
+//const t4 = `{ "name" : "Johhn" }` 
 
 func parse(s []rune) bool {
 	// run GLL parser
@@ -39,10 +42,11 @@ func parseAndPrint(s string) {
 }
 
 func main() {
-	parseAndPrint(t00)
-	parseAndPrint(t0)
-	parseAndPrint(t1)
-	parseAndPrint(t2)
-	parseAndPrint(t3)
-	parseAndPrint(t4)
+	parseAndPrint(bracket_test)
+	parseAndPrint(simple_test)
+	parseAndPrint(num_test)
+	parseAndPrint(empty_test)
+	//parseAndPrint(t2)
+	//parseAndPrint(t3)
+	//parseAndPrint(t4) 
 }

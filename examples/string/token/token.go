@@ -106,27 +106,10 @@ func (t Type) ID() string {
 const(
     Error  Type = iota  // Error 
     EOF  // $ 
-    T_0  // + 
-    T_1  // , 
-    T_2  // - 
-    T_3  // . 
-    T_4  // 0 
-    T_5  // : 
-    T_6  // [ 
-    T_7  // ] 
-    T_8  // block_comment 
-    T_9  // eE 
-    T_10  // escCharSpace 
-    T_11  // false 
-    T_12  // hex 
-    T_13  // line_comment 
-    T_14  // nonZero 
-    T_15  // null 
-    T_16  // repNum1x 
-    T_17  // string_ns 
-    T_18  // true 
-    T_19  // { 
-    T_20  // } 
+    T_0  // block_comment 
+    T_1  // escCharSpace 
+    T_2  // line_comment 
+    T_3  // string_ns 
 )
 
 var TypeToString = []string{ 
@@ -136,23 +119,6 @@ var TypeToString = []string{
     "T_1",
     "T_2",
     "T_3",
-    "T_4",
-    "T_5",
-    "T_6",
-    "T_7",
-    "T_8",
-    "T_9",
-    "T_10",
-    "T_11",
-    "T_12",
-    "T_13",
-    "T_14",
-    "T_15",
-    "T_16",
-    "T_17",
-    "T_18",
-    "T_19",
-    "T_20",
 }
 
 var StringToType = map[string] Type { 
@@ -162,74 +128,23 @@ var StringToType = map[string] Type {
     "T_1" : T_1, 
     "T_2" : T_2, 
     "T_3" : T_3, 
-    "T_4" : T_4, 
-    "T_5" : T_5, 
-    "T_6" : T_6, 
-    "T_7" : T_7, 
-    "T_8" : T_8, 
-    "T_9" : T_9, 
-    "T_10" : T_10, 
-    "T_11" : T_11, 
-    "T_12" : T_12, 
-    "T_13" : T_13, 
-    "T_14" : T_14, 
-    "T_15" : T_15, 
-    "T_16" : T_16, 
-    "T_17" : T_17, 
-    "T_18" : T_18, 
-    "T_19" : T_19, 
-    "T_20" : T_20, 
 }
 
 var TypeToID = []string { 
     "Error", 
     "$", 
-    "+", 
-    ",", 
-    "-", 
-    ".", 
-    "0", 
-    ":", 
-    "[", 
-    "]", 
     "block_comment", 
-    "eE", 
     "escCharSpace", 
-    "false", 
-    "hex", 
     "line_comment", 
-    "nonZero", 
-    "null", 
-    "repNum1x", 
     "string_ns", 
-    "true", 
-    "{", 
-    "}", 
 }
 
 var Suppress = []bool { 
     false, 
     false, 
-    false, 
-    false, 
-    false, 
-    false, 
-    false, 
-    false, 
-    false, 
-    false, 
     true, 
     false, 
-    false, 
-    false, 
-    false, 
     true, 
-    false, 
-    false, 
-    false, 
     true, 
-    false, 
-    false, 
-    false, 
 }
 

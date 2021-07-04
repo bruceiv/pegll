@@ -1,0 +1,22 @@
+should match
+The calculation result is: 1
+'1' matched
+The calculation result is: 14
+'8+6' matched
+The calculation result is: 2
+'8 -6 ' matched
+The calculation result is: 48
+'8 * 6' matched
+The calculation result is: 4
+'8 / 2' matched
+The calculation result is: 10
+'8 + 1 * 2' matched
+The calculation result is: -4
+'8 / 1 -12' matched
+The calculation result is: 18
+'(8 + 1)*2' matched
+
+should fail to match
+'12 +' DID NOT match
+'((1+3)-1' DID NOT match
+' ' DID NOT match

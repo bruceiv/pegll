@@ -24,13 +24,12 @@ The following are the GoGLL representations of the higher level JSON components.
 JSON            : WS Object                             ;
 
 Object          : LBRACE OptMems RBRACE                 ;
-        OptMems : Members 
+     OptMems : Members 
                 / empty                                 ;
 
 Members         : Pair RepComPair0x                     ;
-   RepComPair0x : ComPair RepComPair0x  
+   RepComPair0x : COMMA Pair RepComPair0x  
                 / empty                                 ; 
-        ComPair : COMMA Pair                            ;      
 
 Pair            : String COLON Value                    ;
 
@@ -39,61 +38,61 @@ Array           : LBRACKET OptElem RBRACKET             ;
                 / empty                                 ;
 
 Elements        : Value RepComVal0x                     ;
-    RepComVal0x : ComVal RepComVal0x
+    RepComVal0x : COMMA Value RepComVal0x
                 / empty                                 ; 
-         ComVal : COMMA Value                           ;
 
 Value           : String 
-                / Number 
-                / Object 
-                / Array 
-                / TRUE 
-                / FALSE 
-                / NUL                                   ;
+                | Number 
+                | Object 
+                | Array 
+                | TRUE 
+                | FALSE 
+                | NUL                                   ;
 ```  
 #### ***String and Character Literals***
-The following are the GoGLL representations of the JSON String and character literals.
+The following are the GoGLL representations of the JSON string and character literals.
 - NOTE: `char` is likely what is causing the issue with not matching repeated characters 
         - Likely due to `not` consuming a character
-        - won't accept escaped `"` in char or `\` in String
-        
+        - won't accept escaped `"`
+
+`CHAR` and `CharCode` should be an ordered choice above - will not match anything if it is though
 ```
-String          : string_ns WS                          ;
-!string_ns      : '"'  { not "\"" any "^\\" 
-                | not "\"" '\\' [ any "\\\"/bfnrt" ] 
-                | not "\"" '\\' 'u' any "abcdefABCDEF0123456789" 
-                any "abcdefABCDEF0123456789"
-                any "abcdefABCDEF0123456789"
-                any "abcdefABCDEF0123456789"
-                } '"'                                   ;             
-  
+String          : dQuote RepChar0x dQuote WS            ;
+      RepChar0x : CHAR RepChar0x
+                / empty                                 ;
+    dQuote      : any "\""                              ;
+
+CHAR            : char 
+                | bSlash CharCode                       ;  
+        bSlash  : '\\'                                  ;
+       CharCode : esc
+                | "u" HEX HEX HEX HEX                   ;
+        esc     : any "\\\"/bfnrt"                      ;
+        char    : < not "\"\\" any "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890" > ;   
 ```
 #### ***Numeric Literals***
 The following are the GoGLL representations of the JSON numeric literals.
 ```
-hex             : any "abcdefABCDEF0123456789"          ;        
+ HEX            : Number 
+                | aA_fF                                 ;
+        aA_fF   : any "abcdefABCDEF"                    ; 
+        
 Number          : INT OptFrac OptExp WS                 ;
-        OptFrac : FRAC
+        OptFrac : frac
                 / empty                                 ;
-        OptExp  : EXP
+        OptExp  : exp
                 / empty                                 ;
 
-INT             : OptNeg Integers                       ;
-       Integers : nonZero
-                / "0"                                   ;
-       nonZero : < any "123456789" >                    ;
-        OptNeg  : "-"
-                | empty                                 ;
+INT             : optNeg Integers                       ;
+       Integers : integer
+                / zero                                  ;
+        zero    : any "0"                               ;
+        integer : any "123456789" { number }            ;
+        optNeg  : [ '-' ]                               ;
                        
-FRAC            : "." repNum1x                          ;
+frac            : '.' < number >                    ;
 
-EXP             : eE OptPM repNum1x                     ;
-             eE : any "eE"                              ;
-        OptPM   : PlusORMinus
-                / empty                                 ;
-    PlusORMinus : "+"
-                | "-"                                   ;
-       repNum1x : < number >                            ;
+exp             : any "eE" [ any "+-" ] < number >      ;  
 
 ```
 #### ***Operators and Special Characters***
@@ -126,7 +125,7 @@ escCharSpace    : < any " \t\r\n" >                     ;
 
 
 
-!line_comment   : '/' '/' { not "\r\n" }                ;               
+!line_comment   : '/' '/' { not "\n" }                  ;               
 
 !block_comment  : '/''*' { not "*" 
                 | '*' not "/" 

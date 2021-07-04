@@ -1,7 +1,5 @@
-//Incomplete
-//look into else if - line 63
-//and several other times including line 169-173
-//return errors?
+/* calc TEST */
+// tests functionality of simple calculator 
 package main
 
 import (
@@ -14,14 +12,27 @@ import (
 	//"testing"
 )
 
-//Should match
-const simple_test = `9 + 7`
-const a = "908 + 9999999 * 912341"
+/* MATCHING TESTS
+ * tests include variations of whitespace to check
+ * that it is functioning properly
+ */
+// should match
+const single_num  	= `1`			// passed
+const plus_test 	= `8+6`			// passed
+const minus_test 	= `8 -6 `		// passed
+const mult_test 	= `8 * 6`		// passed
+const div_test 		= `8 / 2`		// passed
+const plusMult_test = "8 + 1 * 2" 	// passed
+const minusDiv_test = "8 / 1 -12" 	// passed
+const parens_test 	= "(8 + 1)*2"   // passed
 
-//Should fail to match
-const f = "12 +"
+// should fail to match
+const incomp_expr 	= "12 +"		// did not pass
+const incomp_parens = `((1+3)-1`    // did not pass
+const space 		= " "
 
-//Calculates the value of the input
+/* CALCULATOR FUNCTIONS */
+// Calculates the value of the input
 //EXPR : WS SUM
 func calculate(c bsr.BSR) int {
 	// get the sum from the root (EXPR - expression )
@@ -73,7 +84,8 @@ func repPLUSorMINUS(val int, pORmrep bsr.BSR) int {
 		return repPLUSorMINUS((val - product(prod)), repChild)
 	}
 
-	return -99999 //something went wrong
+	// panic if error occurs
+	panic(fmt.Sprintf("Error in RepPLUSorMINUS0x: %d \t %T", val, pORmrep))
 
 }
 
@@ -122,7 +134,8 @@ func repTIMESorDIV(val int, tORdrep bsr.BSR) int {
 		return repTIMESorDIV((val / element(elem)), repChild)
 	}
 
-	return -999999 //Something went wrong
+	// panic if error occurs
+	panic(fmt.Sprintf("Error in RepTIMESorDIV0x: %d \t %T", val, tORdrep))
 }
 
 //ELEMENT : OPEN SUM CLOSE
@@ -136,10 +149,7 @@ func element(e bsr.BSR) int {
 		val := sum(su)
 		//return value of SUM
 		return val
-	}
-
-	//Alt2 - Number
-	if e.Alternate() == 1 {
+	} else if e.Alternate() == 1 { //Alt2 - Number 
 		//Get Number NT
 		num := e.GetNTChildI(0)
 		//Get value of Number
@@ -147,34 +157,37 @@ func element(e bsr.BSR) int {
 		// return value of Number
 		return val
 	}
-	return -9999999
-
+	// panic if error occurs
+	panic(fmt.Sprintf("Error in element %T", e))
 }
 
 //Number : repNumber1x WS ;
 //repNumber1x : < number > ;
-//////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////
-// possible error - not sure if need to convert each number since repeating
-// digits one or more times - lexical rule in GoGLL `< >` so unsure if it is
-// going work
-//////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////
 func number(n bsr.BSR) int {
 	// get the terminal child of the number node
+	// repNumber1x : < number >
 	num_node := n.GetTChildI(0)
-	// convert that terminal to a string
-	num_string := num_node.String()
+
+	//convert that terminal to a string
+	num_string := num_node.LiteralString()
+
+	// testing
+	//fmt.Println(num_string)
+
 	// convert the string version of the number to numberic
-	fmt.Println(num_string)
 	num_digits, err := strconv.Atoi(num_string)
+<<<<<<< HEAD
 	fmt.Println(num_digits)
+=======
+
+>>>>>>> af4ee04f7b22dbaee046ebddc0a2b1086e41bd7b
 	// return the numeric version if no error
-	if err != nil {
+	if err == nil {
 		return num_digits
 	}
+
 	// otherwise, panic with error
-	panic(fmt.Sprintf("Invalid number: %T", num_digits))
+	panic("Error occurred: " + err.Error())
 }
 
 func parse(s []rune) bool {
@@ -205,9 +218,23 @@ func parseAndPrint(s string) {
 }
 
 func main() {
-	//parseAndPrint(a)
-	parseAndPrint(simple_test)
-	//parseAndPrint(f)
+	// should match and print result
+	fmt.Println("should match")
+	parseAndPrint(single_num) 
+	parseAndPrint(plus_test)
+	parseAndPrint(minus_test)
+	parseAndPrint(mult_test)
+	parseAndPrint(div_test)
+	parseAndPrint(plusMult_test)
+	parseAndPrint(minusDiv_test)
+	parseAndPrint(parens_test)
+
+	// should not match 
+	fmt.Println("\nshould fail to match")
+	parseAndPrint(incomp_expr)
+	parseAndPrint(incomp_parens)
+	parseAndPrint(space)
+
 }
 
 /*func Test1(t *testing.T) { //Match test
