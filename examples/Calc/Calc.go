@@ -168,6 +168,7 @@ func number(n bsr.BSR) int {
 	// convert the string version of the number to numberic
 	fmt.Println(num_string)
 	num_digits, err := strconv.Atoi(num_string)
+	fmt.Println(num_digits)
 	// return the numeric version if no error
 	if err != nil {
 		return num_digits
