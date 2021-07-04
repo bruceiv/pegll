@@ -7,13 +7,7 @@ import (
 	"string/parser"
 )
 
-// test the repeatability of the grammar
-
-// Match
-const a = `p`
-
-
-// use the GetRoot(s) function from bsr.go
+// test strings for the JSON grammar
 func parse(s []rune) bool {
 	// run GLL parser
 	bsrSet, _ := parser.Parse(lexer.New(s))
@@ -28,13 +22,15 @@ func parse(s []rune) bool {
 
 func parseAndPrint(s string) {
 	if parse([]rune(s)) {
-		fmt.Println("'" + s + "' matched")
+		fmt.Println( s + " matched")
 	} else {
-		fmt.Println("'" + s + "' DID NOT match")
+		fmt.Println( s + " DID NOT match")
 	}
 }
 
 func main() {
-	parseAndPrint(a)
+	parseAndPrint(`"aa"`)
+	parseAndPrint(`/* the */`)
+	//parseAndPrint(no_quotes)
 }
 

@@ -19,24 +19,20 @@ The following grammar tests input strings from the JSON language syntax.
 ```
 package "string"
 
-String          : string_ns WS                          ;
-!string_ns      : '"'  
-                { not "\"" any "^\\" 
-                | not "\"" '\\' [ any "\\\"/bfnrt" ] 
-                } '"'                                   ;  
-
+String          : string_ns                  ;
+!string_ns      : '"' { not "\"" letter } '"' ;  
+```
 WS              : EscOrComment WS
                 / empty                                 ;
 EscOrComment    : escCharSpace 
                 / line_comment
                 / block_comment                         
                 / empty                                 ;
-escCharSpace    : < any " \t\r\n" >                     ;
-!line_comment   : '/' '/' { not "\r\n" }                ;               
-!block_comment  : '/''*' { not "*" 
-                | '*' not "/" 
-                } '*''/'                                ;
+escCharSpace    : any " \t\r\n"                     ;
 
+!line_comment   : '/' '/' { not "\r\n" }  ;               
+!block_comment  : '/''*' { not "*" | '*' not "/" } '*''/' ;
+```
 
 ```
 

@@ -13,20 +13,8 @@ import(
 type Label int
 
 const(
-	EscOrComment0R0 Label = iota
-	EscOrComment0R1
-	EscOrComment1R0
-	EscOrComment1R1
-	EscOrComment2R0
-	EscOrComment2R1
-	EscOrComment3R0
-	String0R0
+	String0R0 Label = iota
 	String0R1
-	String0R2
-	WS0R0
-	WS0R1
-	WS0R2
-	WS1R0
 )
 
 type Slot struct {
@@ -133,163 +121,37 @@ func (s *Slot) String() string {
 }
 
 var slots = map[Label]*Slot{ 
-	EscOrComment0R0: {
-		symbols.NT_EscOrComment, 0, 0, 
-		symbols.Symbols{  
-			symbols.T_1,
-		}, 
-		EscOrComment0R0, 
-	},
-	EscOrComment0R1: {
-		symbols.NT_EscOrComment, 0, 1, 
-		symbols.Symbols{  
-			symbols.T_1,
-		}, 
-		EscOrComment0R1, 
-	},
-	EscOrComment1R0: {
-		symbols.NT_EscOrComment, 1, 0, 
-		symbols.Symbols{  
-			symbols.T_2,
-		}, 
-		EscOrComment1R0, 
-	},
-	EscOrComment1R1: {
-		symbols.NT_EscOrComment, 1, 1, 
-		symbols.Symbols{  
-			symbols.T_2,
-		}, 
-		EscOrComment1R1, 
-	},
-	EscOrComment2R0: {
-		symbols.NT_EscOrComment, 2, 0, 
-		symbols.Symbols{  
-			symbols.T_0,
-		}, 
-		EscOrComment2R0, 
-	},
-	EscOrComment2R1: {
-		symbols.NT_EscOrComment, 2, 1, 
-		symbols.Symbols{  
-			symbols.T_0,
-		}, 
-		EscOrComment2R1, 
-	},
-	EscOrComment3R0: {
-		symbols.NT_EscOrComment, 3, 0, 
-		symbols.Symbols{ 
-		}, 
-		EscOrComment3R0, 
-	},
 	String0R0: {
 		symbols.NT_String, 0, 0, 
 		symbols.Symbols{  
-			symbols.T_3, 
-			symbols.NT_WS,
+			symbols.T_0,
 		}, 
 		String0R0, 
 	},
 	String0R1: {
 		symbols.NT_String, 0, 1, 
 		symbols.Symbols{  
-			symbols.T_3, 
-			symbols.NT_WS,
+			symbols.T_0,
 		}, 
 		String0R1, 
-	},
-	String0R2: {
-		symbols.NT_String, 0, 2, 
-		symbols.Symbols{  
-			symbols.T_3, 
-			symbols.NT_WS,
-		}, 
-		String0R2, 
-	},
-	WS0R0: {
-		symbols.NT_WS, 0, 0, 
-		symbols.Symbols{  
-			symbols.NT_EscOrComment, 
-			symbols.NT_WS,
-		}, 
-		WS0R0, 
-	},
-	WS0R1: {
-		symbols.NT_WS, 0, 1, 
-		symbols.Symbols{  
-			symbols.NT_EscOrComment, 
-			symbols.NT_WS,
-		}, 
-		WS0R1, 
-	},
-	WS0R2: {
-		symbols.NT_WS, 0, 2, 
-		symbols.Symbols{  
-			symbols.NT_EscOrComment, 
-			symbols.NT_WS,
-		}, 
-		WS0R2, 
-	},
-	WS1R0: {
-		symbols.NT_WS, 1, 0, 
-		symbols.Symbols{ 
-		}, 
-		WS1R0, 
 	},
 }
 
 var slotIndex = map[Index]Label { 
-	Index{ symbols.NT_EscOrComment,0,0 }: EscOrComment0R0,
-	Index{ symbols.NT_EscOrComment,0,1 }: EscOrComment0R1,
-	Index{ symbols.NT_EscOrComment,1,0 }: EscOrComment1R0,
-	Index{ symbols.NT_EscOrComment,1,1 }: EscOrComment1R1,
-	Index{ symbols.NT_EscOrComment,2,0 }: EscOrComment2R0,
-	Index{ symbols.NT_EscOrComment,2,1 }: EscOrComment2R1,
-	Index{ symbols.NT_EscOrComment,3,0 }: EscOrComment3R0,
 	Index{ symbols.NT_String,0,0 }: String0R0,
 	Index{ symbols.NT_String,0,1 }: String0R1,
-	Index{ symbols.NT_String,0,2 }: String0R2,
-	Index{ symbols.NT_WS,0,0 }: WS0R0,
-	Index{ symbols.NT_WS,0,1 }: WS0R1,
-	Index{ symbols.NT_WS,0,2 }: WS0R2,
-	Index{ symbols.NT_WS,1,0 }: WS1R0,
 }
 
 var alternates = map[symbols.NT][]Label{ 
 	symbols.NT_String:[]Label{ String0R0 },
-	symbols.NT_WS:[]Label{ WS0R0,WS1R0 },
-	symbols.NT_EscOrComment:[]Label{ EscOrComment0R0,EscOrComment1R0,EscOrComment2R0,EscOrComment3R0 },
 }
 
 var nullable = []bool { 
-	false, // EscOrComment0R0 
-	true, // EscOrComment0R1 
-	false, // EscOrComment1R0 
-	true, // EscOrComment1R1 
-	false, // EscOrComment2R0 
-	true, // EscOrComment2R1 
-	true, // EscOrComment3R0 
 	false, // String0R0 
 	true, // String0R1 
-	true, // String0R2 
-	true, // WS0R0 
-	true, // WS0R1 
-	true, // WS0R2 
-	true, // WS1R0 
 }
 
 var firstT = []map[token.Type]bool { 
-	{  token.T_1: true,  }, // EscOrComment0R0 
-	{  }, // EscOrComment0R1 
-	{  token.T_2: true,  }, // EscOrComment1R0 
-	{  }, // EscOrComment1R1 
-	{  token.T_0: true,  }, // EscOrComment2R0 
-	{  }, // EscOrComment2R1 
-	{  }, // EscOrComment3R0 
-	{  token.T_3: true,  }, // String0R0 
-	{  token.T_1: true,  token.T_2: true,  token.T_0: true,  }, // String0R1 
-	{  }, // String0R2 
-	{  token.T_1: true,  token.T_2: true,  token.T_0: true,  }, // WS0R0 
-	{  token.T_1: true,  token.T_2: true,  token.T_0: true,  }, // WS0R1 
-	{  }, // WS0R2 
-	{  }, // WS1R0 
+	{  token.T_0: true,  }, // String0R0 
+	{  }, // String0R1 
 }

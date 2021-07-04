@@ -65,56 +65,11 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 		// p.DumpDescriptors()
 
 		switch L {
-		case slot.EscOrComment0R0: // EscOrComment : ∙escCharSpace
-
-			p.bsrSet.Add(slot.EscOrComment0R1, cU, p.cI, p.cI+1)
-			p.cI++
-			p.rtn(symbols.NT_EscOrComment, cU, p.cI)
-		case slot.EscOrComment1R0: // EscOrComment : ∙line_comment
-
-			p.bsrSet.Add(slot.EscOrComment1R1, cU, p.cI, p.cI+1)
-			p.cI++
-			p.rtn(symbols.NT_EscOrComment, cU, p.cI)
-		case slot.EscOrComment2R0: // EscOrComment : ∙block_comment
-
-			p.bsrSet.Add(slot.EscOrComment2R1, cU, p.cI, p.cI+1)
-			p.cI++
-			p.rtn(symbols.NT_EscOrComment, cU, p.cI)
-		case slot.EscOrComment3R0: // EscOrComment : ∙
-			p.bsrSet.AddEmpty(slot.EscOrComment3R0, p.cI)
-
-			p.rtn(symbols.NT_EscOrComment, cU, p.cI)
-		case slot.String0R0: // String : ∙string_ns WS
+		case slot.String0R0: // String : ∙string_ns
 
 			p.bsrSet.Add(slot.String0R1, cU, p.cI, p.cI+1)
 			p.cI++
-			if !p.testSelect(slot.String0R1) {
-				p.parseError(slot.String0R1, p.cI, first[slot.String0R1])
-				break
-			}
-
-			p.call(slot.String0R2, cU, p.cI)
-		case slot.String0R2: // String : string_ns WS ∙
-
 			p.rtn(symbols.NT_String, cU, p.cI)
-		case slot.WS0R0: // WS : ∙EscOrComment WS
-
-			p.call(slot.WS0R1, cU, p.cI)
-		case slot.WS0R1: // WS : EscOrComment ∙WS
-
-			if !p.testSelect(slot.WS0R1) {
-				p.parseError(slot.WS0R1, p.cI, first[slot.WS0R1])
-				break
-			}
-
-			p.call(slot.WS0R2, cU, p.cI)
-		case slot.WS0R2: // WS : EscOrComment WS ∙
-
-			p.rtn(symbols.NT_WS, cU, p.cI)
-		case slot.WS1R0: // WS : ∙
-			p.bsrSet.AddEmpty(slot.WS1R0, p.cI)
-
-			p.rtn(symbols.NT_WS, cU, p.cI)
 
 		default:
 			panic("This must not happen")
@@ -357,98 +312,18 @@ func (p *parser) testSelect(l slot.Label) bool {
 }
 
 var first = []map[token.Type]string{
-	// EscOrComment : ∙escCharSpace
+	// String : ∙string_ns
 	{
-		token.T_1: "escCharSpace",
+		token.T_0: "string_ns",
 	},
-	// EscOrComment : escCharSpace ∙
-	{
-		token.EOF: "$",
-		token.T_0: "block_comment",
-		token.T_1: "escCharSpace",
-		token.T_2: "line_comment",
-	},
-	// EscOrComment : ∙line_comment
-	{
-		token.T_2: "line_comment",
-	},
-	// EscOrComment : line_comment ∙
-	{
-		token.EOF: "$",
-		token.T_0: "block_comment",
-		token.T_1: "escCharSpace",
-		token.T_2: "line_comment",
-	},
-	// EscOrComment : ∙block_comment
-	{
-		token.T_0: "block_comment",
-	},
-	// EscOrComment : block_comment ∙
-	{
-		token.EOF: "$",
-		token.T_0: "block_comment",
-		token.T_1: "escCharSpace",
-		token.T_2: "line_comment",
-	},
-	// EscOrComment : ∙
-	{
-		token.EOF: "$",
-		token.T_0: "block_comment",
-		token.T_1: "escCharSpace",
-		token.T_2: "line_comment",
-	},
-	// String : ∙string_ns WS
-	{
-		token.T_3: "string_ns",
-	},
-	// String : string_ns ∙WS
-	{
-		token.EOF: "$",
-		token.T_0: "block_comment",
-		token.T_1: "escCharSpace",
-		token.T_2: "line_comment",
-	},
-	// String : string_ns WS ∙
-	{
-		token.EOF: "$",
-	},
-	// WS : ∙EscOrComment WS
-	{
-		token.EOF: "$",
-		token.T_0: "block_comment",
-		token.T_1: "escCharSpace",
-		token.T_2: "line_comment",
-	},
-	// WS : EscOrComment ∙WS
-	{
-		token.EOF: "$",
-		token.T_0: "block_comment",
-		token.T_1: "escCharSpace",
-		token.T_2: "line_comment",
-	},
-	// WS : EscOrComment WS ∙
-	{
-		token.EOF: "$",
-	},
-	// WS : ∙
+	// String : string_ns ∙
 	{
 		token.EOF: "$",
 	},
 }
 
 var followSets = []map[token.Type]string{
-	// EscOrComment
-	{
-		token.EOF: "$",
-		token.T_0: "block_comment",
-		token.T_1: "escCharSpace",
-		token.T_2: "line_comment",
-	},
 	// String
-	{
-		token.EOF: "$",
-	},
-	// WS
 	{
 		token.EOF: "$",
 	},
