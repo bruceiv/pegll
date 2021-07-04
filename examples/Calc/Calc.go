@@ -2,6 +2,7 @@
 //look into else if - line 63
 //and several other times including line 169-173
 //return errors?
+/// need to figure out if need errors for sum / product
 package main
 
 import (
@@ -15,8 +16,10 @@ import (
 )
 
 //Should match
-const simple_test = `9 + 7`
-const a = "908 + 9999999 * 912341"
+const plus_test = `8 + 6` // passed
+const minus_test = `8 - 6`
+const mult_test = `8 * 6` // passed
+const mult_ops_test1 = "8 + 16 * 24" // passed
 
 //Should fail to match
 const f = "12 +"
@@ -73,7 +76,8 @@ func repPLUSorMINUS(val int, pORmrep bsr.BSR) int {
 		return repPLUSorMINUS((val - product(prod)), repChild)
 	}
 
-	return -99999 //something went wrong
+	// panic if error occurs
+	panic(fmt.Sprintf("Error in RepPLUSorMINUS0x: %d \t %T", val, pORmrep ))
 
 }
 
@@ -122,7 +126,8 @@ func repTIMESorDIV(val int, tORdrep bsr.BSR) int {
 		return repTIMESorDIV((val / element(elem)), repChild)
 	}
 
-	return -999999 //Something went wrong
+	// panic if error occurs
+	panic(fmt.Sprintf("Error in RepTIMESorDIV0x: %d \t %T", val, tORdrep ))
 }
 
 //ELEMENT : OPEN SUM CLOSE
@@ -147,33 +152,33 @@ func element(e bsr.BSR) int {
 		// return value of Number
 		return val
 	}
-	return -9999999
-
+	// panic if error occurs 
+	panic(fmt.Sprintf("Error in element %T", e))
 }
 
 //Number : repNumber1x WS ;
 //repNumber1x : < number > ;
-//////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////
-// possible error - not sure if need to convert each number since repeating
-// digits one or more times - lexical rule in GoGLL `< >` so unsure if it is
-// going work
-//////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////
 func number(n bsr.BSR) int {
 	// get the terminal child of the number node
+	// repNumber1x : < number > 
 	num_node := n.GetTChildI(0)
+
 	// convert that terminal to a string
-	num_string := num_node.String()
+	num_string := num_node.LiteralString()
+
+	//testing
+	//fmt.Println(num_string)
+
 	// convert the string version of the number to numberic
-	fmt.Println(num_string)
 	num_digits, err := strconv.Atoi(num_string)
+
 	// return the numeric version if no error
-	if err != nil {
+	if err == nil {
 		return num_digits
 	}
+
 	// otherwise, panic with error
-	panic(fmt.Sprintf("Invalid number: %T", num_digits))
+	panic("Error occurred: " + err.Error() )
 }
 
 func parse(s []rune) bool {
@@ -204,9 +209,9 @@ func parseAndPrint(s string) {
 }
 
 func main() {
-	//parseAndPrint(a)
-	parseAndPrint(simple_test)
-	//parseAndPrint(f)
+	//parseAndPrint(plus_test)
+	//parseAndPrint(mult_test)
+	parseAndPrint(mult_ops_test1)
 }
 
 /*func Test1(t *testing.T) { //Match test
