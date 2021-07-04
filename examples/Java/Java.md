@@ -632,7 +632,7 @@ StringLiteral     : dubQuo StrClose                    ;
       sinQuo      : '\''                               ;
       OptEsc      : Escape 
                   | anyCarSl                           ;
-            anyCarSl : any "^\\" ;
+         anyCarSl : any "^\\"                          ;
 Escape            : dubSlash Escs                      ;
       Escs        : esc
                   | OctalEscape 
@@ -656,7 +656,7 @@ IntegerLiteral    : NumeralAlts optOneL               ;
                   | DecimalNumeral                    ;
       optOneL     : [ any "1L" ]                      ;
 
-DecimalFloat      :  repDig1x dot repDig0x optExpo fF_dD 
+DecimalFloat      : repDig1x dot repDig0x optExpo fF_dD 
                   | dot RepDig1xExp 
                   | RepDig1xExp fF_dD
                   | RepDig1xOptExp fF_dD                   ;

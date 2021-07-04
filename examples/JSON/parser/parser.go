@@ -87,24 +87,6 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 		case slot.Array0R3: // Array : LBRACKET OptElem RBRACKET ∙
 
 			p.rtn(symbols.NT_Array, cU, p.cI)
-		case slot.CHAR0R0: // CHAR : ∙char
-
-			p.bsrSet.Add(slot.CHAR0R1, cU, p.cI, p.cI+1)
-			p.cI++
-			p.rtn(symbols.NT_CHAR, cU, p.cI)
-		case slot.CHAR1R0: // CHAR : ∙bSlash CharCode
-
-			p.bsrSet.Add(slot.CHAR1R1, cU, p.cI, p.cI+1)
-			p.cI++
-			if !p.testSelect(slot.CHAR1R1) {
-				p.parseError(slot.CHAR1R1, p.cI, first[slot.CHAR1R1])
-				break
-			}
-
-			p.call(slot.CHAR1R2, cU, p.cI)
-		case slot.CHAR1R2: // CHAR : bSlash CharCode ∙
-
-			p.rtn(symbols.NT_CHAR, cU, p.cI)
 		case slot.COLON0R0: // COLON : ∙: WS
 
 			p.bsrSet.Add(slot.COLON0R1, cU, p.cI, p.cI+1)
@@ -131,48 +113,26 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 		case slot.COMMA0R2: // COMMA : , WS ∙
 
 			p.rtn(symbols.NT_COMMA, cU, p.cI)
-		case slot.CharCode0R0: // CharCode : ∙esc
+		case slot.EXP0R0: // EXP : ∙eE OptPM repNum1x
 
-			p.bsrSet.Add(slot.CharCode0R1, cU, p.cI, p.cI+1)
+			p.bsrSet.Add(slot.EXP0R1, cU, p.cI, p.cI+1)
 			p.cI++
-			p.rtn(symbols.NT_CharCode, cU, p.cI)
-		case slot.CharCode1R0: // CharCode : ∙u HEX HEX HEX HEX
+			if !p.testSelect(slot.EXP0R1) {
+				p.parseError(slot.EXP0R1, p.cI, first[slot.EXP0R1])
+				break
+			}
 
-			p.bsrSet.Add(slot.CharCode1R1, cU, p.cI, p.cI+1)
+			p.call(slot.EXP0R2, cU, p.cI)
+		case slot.EXP0R2: // EXP : eE OptPM ∙repNum1x
+
+			if !p.testSelect(slot.EXP0R2) {
+				p.parseError(slot.EXP0R2, p.cI, first[slot.EXP0R2])
+				break
+			}
+
+			p.bsrSet.Add(slot.EXP0R3, cU, p.cI, p.cI+1)
 			p.cI++
-			if !p.testSelect(slot.CharCode1R1) {
-				p.parseError(slot.CharCode1R1, p.cI, first[slot.CharCode1R1])
-				break
-			}
-
-			p.call(slot.CharCode1R2, cU, p.cI)
-		case slot.CharCode1R2: // CharCode : u HEX ∙HEX HEX HEX
-
-			if !p.testSelect(slot.CharCode1R2) {
-				p.parseError(slot.CharCode1R2, p.cI, first[slot.CharCode1R2])
-				break
-			}
-
-			p.call(slot.CharCode1R3, cU, p.cI)
-		case slot.CharCode1R3: // CharCode : u HEX HEX ∙HEX HEX
-
-			if !p.testSelect(slot.CharCode1R3) {
-				p.parseError(slot.CharCode1R3, p.cI, first[slot.CharCode1R3])
-				break
-			}
-
-			p.call(slot.CharCode1R4, cU, p.cI)
-		case slot.CharCode1R4: // CharCode : u HEX HEX HEX ∙HEX
-
-			if !p.testSelect(slot.CharCode1R4) {
-				p.parseError(slot.CharCode1R4, p.cI, first[slot.CharCode1R4])
-				break
-			}
-
-			p.call(slot.CharCode1R5, cU, p.cI)
-		case slot.CharCode1R5: // CharCode : u HEX HEX HEX HEX ∙
-
-			p.rtn(symbols.NT_CharCode, cU, p.cI)
+			p.rtn(symbols.NT_EXP, cU, p.cI)
 		case slot.Elements0R0: // Elements : ∙Value RepComVal0x
 
 			p.call(slot.Elements0R1, cU, p.cI)
@@ -187,15 +147,23 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 		case slot.Elements0R2: // Elements : Value RepComVal0x ∙
 
 			p.rtn(symbols.NT_Elements, cU, p.cI)
-		case slot.EscOrComment0R0: // EscOrComment : ∙escChar
+		case slot.EscOrComment0R0: // EscOrComment : ∙escCharSpace
 
 			p.bsrSet.Add(slot.EscOrComment0R1, cU, p.cI, p.cI+1)
 			p.cI++
 			p.rtn(symbols.NT_EscOrComment, cU, p.cI)
-		case slot.EscOrComment1R0: // EscOrComment : ∙LineOrBlock
+		case slot.EscOrComment1R0: // EscOrComment : ∙line_comment
 
-			p.call(slot.EscOrComment1R1, cU, p.cI)
-		case slot.EscOrComment1R1: // EscOrComment : LineOrBlock ∙
+			p.bsrSet.Add(slot.EscOrComment1R1, cU, p.cI, p.cI+1)
+			p.cI++
+			p.rtn(symbols.NT_EscOrComment, cU, p.cI)
+		case slot.EscOrComment2R0: // EscOrComment : ∙block_comment
+
+			p.bsrSet.Add(slot.EscOrComment2R1, cU, p.cI, p.cI+1)
+			p.cI++
+			p.rtn(symbols.NT_EscOrComment, cU, p.cI)
+		case slot.EscOrComment3R0: // EscOrComment : ∙
+			p.bsrSet.AddEmpty(slot.EscOrComment3R0, p.cI)
 
 			p.rtn(symbols.NT_EscOrComment, cU, p.cI)
 		case slot.FALSE0R0: // FALSE : ∙false WS
@@ -211,36 +179,38 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 		case slot.FALSE0R2: // FALSE : false WS ∙
 
 			p.rtn(symbols.NT_FALSE, cU, p.cI)
-		case slot.HEX0R0: // HEX : ∙Number
+		case slot.FRAC0R0: // FRAC : ∙. repNum1x
 
-			p.call(slot.HEX0R1, cU, p.cI)
-		case slot.HEX0R1: // HEX : Number ∙
-
-			p.rtn(symbols.NT_HEX, cU, p.cI)
-		case slot.HEX1R0: // HEX : ∙aA_fF
-
-			p.bsrSet.Add(slot.HEX1R1, cU, p.cI, p.cI+1)
+			p.bsrSet.Add(slot.FRAC0R1, cU, p.cI, p.cI+1)
 			p.cI++
-			p.rtn(symbols.NT_HEX, cU, p.cI)
-		case slot.INT0R0: // INT : ∙optNeg Integers
+			if !p.testSelect(slot.FRAC0R1) {
+				p.parseError(slot.FRAC0R1, p.cI, first[slot.FRAC0R1])
+				break
+			}
 
-			p.bsrSet.Add(slot.INT0R1, cU, p.cI, p.cI+1)
+			p.bsrSet.Add(slot.FRAC0R2, cU, p.cI, p.cI+1)
 			p.cI++
+			p.rtn(symbols.NT_FRAC, cU, p.cI)
+		case slot.INT0R0: // INT : ∙OptNeg Integers
+
+			p.call(slot.INT0R1, cU, p.cI)
+		case slot.INT0R1: // INT : OptNeg ∙Integers
+
 			if !p.testSelect(slot.INT0R1) {
 				p.parseError(slot.INT0R1, p.cI, first[slot.INT0R1])
 				break
 			}
 
 			p.call(slot.INT0R2, cU, p.cI)
-		case slot.INT0R2: // INT : optNeg Integers ∙
+		case slot.INT0R2: // INT : OptNeg Integers ∙
 
 			p.rtn(symbols.NT_INT, cU, p.cI)
-		case slot.Integers0R0: // Integers : ∙integer
+		case slot.Integers0R0: // Integers : ∙nonZero
 
 			p.bsrSet.Add(slot.Integers0R1, cU, p.cI, p.cI+1)
 			p.cI++
 			p.rtn(symbols.NT_Integers, cU, p.cI)
-		case slot.Integers1R0: // Integers : ∙zero
+		case slot.Integers1R0: // Integers : ∙0
 
 			p.bsrSet.Add(slot.Integers1R1, cU, p.cI, p.cI+1)
 			p.cI++
@@ -285,16 +255,6 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 		case slot.LBRACKET0R2: // LBRACKET : [ WS ∙
 
 			p.rtn(symbols.NT_LBRACKET, cU, p.cI)
-		case slot.LineOrBlock0R0: // LineOrBlock : ∙line_comment
-
-			p.bsrSet.Add(slot.LineOrBlock0R1, cU, p.cI, p.cI+1)
-			p.cI++
-			p.rtn(symbols.NT_LineOrBlock, cU, p.cI)
-		case slot.LineOrBlock1R0: // LineOrBlock : ∙block_comment
-
-			p.bsrSet.Add(slot.LineOrBlock1R1, cU, p.cI, p.cI+1)
-			p.cI++
-			p.rtn(symbols.NT_LineOrBlock, cU, p.cI)
 		case slot.Members0R0: // Members : ∙Pair RepComPair0x
 
 			p.call(slot.Members0R1, cU, p.cI)
@@ -384,19 +344,21 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.bsrSet.AddEmpty(slot.OptElem1R0, p.cI)
 
 			p.rtn(symbols.NT_OptElem, cU, p.cI)
-		case slot.OptExp0R0: // OptExp : ∙exp
+		case slot.OptExp0R0: // OptExp : ∙EXP
 
-			p.bsrSet.Add(slot.OptExp0R1, cU, p.cI, p.cI+1)
-			p.cI++
+			p.call(slot.OptExp0R1, cU, p.cI)
+		case slot.OptExp0R1: // OptExp : EXP ∙
+
 			p.rtn(symbols.NT_OptExp, cU, p.cI)
 		case slot.OptExp1R0: // OptExp : ∙
 			p.bsrSet.AddEmpty(slot.OptExp1R0, p.cI)
 
 			p.rtn(symbols.NT_OptExp, cU, p.cI)
-		case slot.OptFrac0R0: // OptFrac : ∙frac
+		case slot.OptFrac0R0: // OptFrac : ∙FRAC
 
-			p.bsrSet.Add(slot.OptFrac0R1, cU, p.cI, p.cI+1)
-			p.cI++
+			p.call(slot.OptFrac0R1, cU, p.cI)
+		case slot.OptFrac0R1: // OptFrac : FRAC ∙
+
 			p.rtn(symbols.NT_OptFrac, cU, p.cI)
 		case slot.OptFrac1R0: // OptFrac : ∙
 			p.bsrSet.AddEmpty(slot.OptFrac1R0, p.cI)
@@ -412,6 +374,25 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.bsrSet.AddEmpty(slot.OptMems1R0, p.cI)
 
 			p.rtn(symbols.NT_OptMems, cU, p.cI)
+		case slot.OptNeg0R0: // OptNeg : ∙-
+
+			p.bsrSet.Add(slot.OptNeg0R1, cU, p.cI, p.cI+1)
+			p.cI++
+			p.rtn(symbols.NT_OptNeg, cU, p.cI)
+		case slot.OptNeg1R0: // OptNeg : ∙
+			p.bsrSet.AddEmpty(slot.OptNeg1R0, p.cI)
+
+			p.rtn(symbols.NT_OptNeg, cU, p.cI)
+		case slot.OptPM0R0: // OptPM : ∙PlusORMinus
+
+			p.call(slot.OptPM0R1, cU, p.cI)
+		case slot.OptPM0R1: // OptPM : PlusORMinus ∙
+
+			p.rtn(symbols.NT_OptPM, cU, p.cI)
+		case slot.OptPM1R0: // OptPM : ∙
+			p.bsrSet.AddEmpty(slot.OptPM1R0, p.cI)
+
+			p.rtn(symbols.NT_OptPM, cU, p.cI)
 		case slot.Pair0R0: // Pair : ∙String COLON Value
 
 			p.call(slot.Pair0R1, cU, p.cI)
@@ -434,6 +415,16 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 		case slot.Pair0R3: // Pair : String COLON Value ∙
 
 			p.rtn(symbols.NT_Pair, cU, p.cI)
+		case slot.PlusORMinus0R0: // PlusORMinus : ∙+
+
+			p.bsrSet.Add(slot.PlusORMinus0R1, cU, p.cI, p.cI+1)
+			p.cI++
+			p.rtn(symbols.NT_PlusORMinus, cU, p.cI)
+		case slot.PlusORMinus1R0: // PlusORMinus : ∙-
+
+			p.bsrSet.Add(slot.PlusORMinus1R1, cU, p.cI, p.cI+1)
+			p.cI++
+			p.rtn(symbols.NT_PlusORMinus, cU, p.cI)
 		case slot.RBRACE0R0: // RBRACE : ∙} WS
 
 			p.bsrSet.Add(slot.RBRACE0R1, cU, p.cI, p.cI+1)
@@ -460,18 +451,17 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 		case slot.RBRACKET0R2: // RBRACKET : ] WS ∙
 
 			p.rtn(symbols.NT_RBRACKET, cU, p.cI)
-		case slot.RepChar0x0R0: // RepChar0x : ∙CHAR RepChar0x
+		case slot.RepChar0x0R0: // RepChar0x : ∙char RepChar0x
 
-			p.call(slot.RepChar0x0R1, cU, p.cI)
-		case slot.RepChar0x0R1: // RepChar0x : CHAR ∙RepChar0x
-
+			p.bsrSet.Add(slot.RepChar0x0R1, cU, p.cI, p.cI+1)
+			p.cI++
 			if !p.testSelect(slot.RepChar0x0R1) {
 				p.parseError(slot.RepChar0x0R1, p.cI, first[slot.RepChar0x0R1])
 				break
 			}
 
 			p.call(slot.RepChar0x0R2, cU, p.cI)
-		case slot.RepChar0x0R2: // RepChar0x : CHAR RepChar0x ∙
+		case slot.RepChar0x0R2: // RepChar0x : char RepChar0x ∙
 
 			p.rtn(symbols.NT_RepChar0x, cU, p.cI)
 		case slot.RepChar0x1R0: // RepChar0x : ∙
@@ -875,217 +865,228 @@ func (p *parser) testSelect(l slot.Label) bool {
 var first = []map[token.Type]string{
 	// Array : ∙LBRACKET OptElem RBRACKET
 	{
-		token.T_2: "[",
+		token.T_6: "[",
 	},
 	// Array : LBRACKET ∙OptElem RBRACKET
 	{
-		token.T_2:  "[",
-		token.T_3:  "]",
-		token.T_8:  "dQuote",
+		token.T_2:  "-",
+		token.T_4:  "0",
+		token.T_6:  "[",
+		token.T_7:  "]",
+		token.T_10: "dQuote",
 		token.T_13: "false",
-		token.T_18: "null",
-		token.T_19: "optNeg",
-		token.T_20: "true",
-		token.T_23: "{",
+		token.T_16: "nonZero",
+		token.T_17: "null",
+		token.T_19: "true",
+		token.T_20: "{",
 	},
 	// Array : LBRACKET OptElem ∙RBRACKET
 	{
-		token.T_3: "]",
+		token.T_7: "]",
 	},
 	// Array : LBRACKET OptElem RBRACKET ∙
 	{
-		token.T_0:  ",",
-		token.T_3:  "]",
-		token.T_24: "}",
-	},
-	// CHAR : ∙char
-	{
-		token.T_7: "char",
-	},
-	// CHAR : char ∙
-	{
-		token.T_5: "bSlash",
-		token.T_7: "char",
-		token.T_8: "dQuote",
-	},
-	// CHAR : ∙bSlash CharCode
-	{
-		token.T_5: "bSlash",
-	},
-	// CHAR : bSlash ∙CharCode
-	{
-		token.T_9:  "esc",
-		token.T_21: "u",
-	},
-	// CHAR : bSlash CharCode ∙
-	{
-		token.T_5: "bSlash",
-		token.T_7: "char",
-		token.T_8: "dQuote",
+		token.T_1:  ",",
+		token.T_7:  "]",
+		token.T_21: "}",
 	},
 	// COLON : ∙: WS
 	{
-		token.T_1: ":",
+		token.T_5: ":",
 	},
 	// COLON : : ∙WS
 	{
-		token.T_2:  "[",
-		token.T_6:  "block_comment",
-		token.T_8:  "dQuote",
-		token.T_10: "escChar",
+		token.T_2:  "-",
+		token.T_4:  "0",
+		token.T_6:  "[",
+		token.T_8:  "block_comment",
+		token.T_10: "dQuote",
+		token.T_12: "escCharSpace",
 		token.T_13: "false",
-		token.T_16: "line_comment",
-		token.T_18: "null",
-		token.T_19: "optNeg",
-		token.T_20: "true",
-		token.T_23: "{",
+		token.T_15: "line_comment",
+		token.T_16: "nonZero",
+		token.T_17: "null",
+		token.T_19: "true",
+		token.T_20: "{",
 	},
 	// COLON : : WS ∙
 	{
-		token.T_2:  "[",
-		token.T_8:  "dQuote",
+		token.T_2:  "-",
+		token.T_4:  "0",
+		token.T_6:  "[",
+		token.T_10: "dQuote",
 		token.T_13: "false",
-		token.T_18: "null",
-		token.T_19: "optNeg",
-		token.T_20: "true",
-		token.T_23: "{",
+		token.T_16: "nonZero",
+		token.T_17: "null",
+		token.T_19: "true",
+		token.T_20: "{",
 	},
 	// COMMA : ∙, WS
 	{
-		token.T_0: ",",
+		token.T_1: ",",
 	},
 	// COMMA : , ∙WS
 	{
-		token.T_2:  "[",
-		token.T_6:  "block_comment",
-		token.T_8:  "dQuote",
-		token.T_10: "escChar",
+		token.T_2:  "-",
+		token.T_4:  "0",
+		token.T_6:  "[",
+		token.T_8:  "block_comment",
+		token.T_10: "dQuote",
+		token.T_12: "escCharSpace",
 		token.T_13: "false",
-		token.T_16: "line_comment",
-		token.T_18: "null",
-		token.T_19: "optNeg",
-		token.T_20: "true",
-		token.T_23: "{",
+		token.T_15: "line_comment",
+		token.T_16: "nonZero",
+		token.T_17: "null",
+		token.T_19: "true",
+		token.T_20: "{",
 	},
 	// COMMA : , WS ∙
 	{
-		token.T_2:  "[",
-		token.T_8:  "dQuote",
+		token.T_2:  "-",
+		token.T_4:  "0",
+		token.T_6:  "[",
+		token.T_10: "dQuote",
 		token.T_13: "false",
-		token.T_18: "null",
-		token.T_19: "optNeg",
-		token.T_20: "true",
-		token.T_23: "{",
+		token.T_16: "nonZero",
+		token.T_17: "null",
+		token.T_19: "true",
+		token.T_20: "{",
 	},
-	// CharCode : ∙esc
+	// EXP : ∙eE OptPM repNum1x
 	{
-		token.T_9: "esc",
+		token.T_11: "eE",
 	},
-	// CharCode : esc ∙
+	// EXP : eE ∙OptPM repNum1x
 	{
-		token.T_5: "bSlash",
-		token.T_7: "char",
-		token.T_8: "dQuote",
+		token.T_0:  "+",
+		token.T_2:  "-",
+		token.T_18: "repNum1x",
 	},
-	// CharCode : ∙u HEX HEX HEX HEX
+	// EXP : eE OptPM ∙repNum1x
 	{
-		token.T_21: "u",
+		token.T_18: "repNum1x",
 	},
-	// CharCode : u ∙HEX HEX HEX HEX
+	// EXP : eE OptPM repNum1x ∙
 	{
-		token.T_4:  "aA_fF",
-		token.T_19: "optNeg",
-	},
-	// CharCode : u HEX ∙HEX HEX HEX
-	{
-		token.T_4:  "aA_fF",
-		token.T_19: "optNeg",
-	},
-	// CharCode : u HEX HEX ∙HEX HEX
-	{
-		token.T_4:  "aA_fF",
-		token.T_19: "optNeg",
-	},
-	// CharCode : u HEX HEX HEX ∙HEX
-	{
-		token.T_4:  "aA_fF",
-		token.T_19: "optNeg",
-	},
-	// CharCode : u HEX HEX HEX HEX ∙
-	{
-		token.T_5: "bSlash",
-		token.T_7: "char",
-		token.T_8: "dQuote",
+		token.T_1:  ",",
+		token.T_7:  "]",
+		token.T_8:  "block_comment",
+		token.T_12: "escCharSpace",
+		token.T_15: "line_comment",
+		token.T_21: "}",
 	},
 	// Elements : ∙Value RepComVal0x
 	{
-		token.T_2:  "[",
-		token.T_8:  "dQuote",
+		token.T_2:  "-",
+		token.T_4:  "0",
+		token.T_6:  "[",
+		token.T_10: "dQuote",
 		token.T_13: "false",
-		token.T_18: "null",
-		token.T_19: "optNeg",
-		token.T_20: "true",
-		token.T_23: "{",
+		token.T_16: "nonZero",
+		token.T_17: "null",
+		token.T_19: "true",
+		token.T_20: "{",
 	},
 	// Elements : Value ∙RepComVal0x
 	{
-		token.T_0: ",",
-		token.T_3: "]",
+		token.T_1: ",",
+		token.T_7: "]",
 	},
 	// Elements : Value RepComVal0x ∙
 	{
-		token.T_3: "]",
+		token.T_7: "]",
 	},
-	// EscOrComment : ∙escChar
+	// EscOrComment : ∙escCharSpace
 	{
-		token.T_10: "escChar",
+		token.T_12: "escCharSpace",
 	},
-	// EscOrComment : escChar ∙
-	{
-		token.EOF:  "$",
-		token.T_0:  ",",
-		token.T_1:  ":",
-		token.T_2:  "[",
-		token.T_3:  "]",
-		token.T_4:  "aA_fF",
-		token.T_5:  "bSlash",
-		token.T_6:  "block_comment",
-		token.T_7:  "char",
-		token.T_8:  "dQuote",
-		token.T_10: "escChar",
-		token.T_13: "false",
-		token.T_16: "line_comment",
-		token.T_18: "null",
-		token.T_19: "optNeg",
-		token.T_20: "true",
-		token.T_23: "{",
-		token.T_24: "}",
-	},
-	// EscOrComment : ∙LineOrBlock
-	{
-		token.T_6:  "block_comment",
-		token.T_16: "line_comment",
-	},
-	// EscOrComment : LineOrBlock ∙
+	// EscOrComment : escCharSpace ∙
 	{
 		token.EOF:  "$",
-		token.T_0:  ",",
-		token.T_1:  ":",
-		token.T_2:  "[",
-		token.T_3:  "]",
-		token.T_4:  "aA_fF",
-		token.T_5:  "bSlash",
-		token.T_6:  "block_comment",
-		token.T_7:  "char",
-		token.T_8:  "dQuote",
-		token.T_10: "escChar",
+		token.T_1:  ",",
+		token.T_2:  "-",
+		token.T_4:  "0",
+		token.T_5:  ":",
+		token.T_6:  "[",
+		token.T_7:  "]",
+		token.T_8:  "block_comment",
+		token.T_10: "dQuote",
+		token.T_12: "escCharSpace",
 		token.T_13: "false",
-		token.T_16: "line_comment",
-		token.T_18: "null",
-		token.T_19: "optNeg",
-		token.T_20: "true",
-		token.T_23: "{",
-		token.T_24: "}",
+		token.T_15: "line_comment",
+		token.T_16: "nonZero",
+		token.T_17: "null",
+		token.T_19: "true",
+		token.T_20: "{",
+		token.T_21: "}",
+	},
+	// EscOrComment : ∙line_comment
+	{
+		token.T_15: "line_comment",
+	},
+	// EscOrComment : line_comment ∙
+	{
+		token.EOF:  "$",
+		token.T_1:  ",",
+		token.T_2:  "-",
+		token.T_4:  "0",
+		token.T_5:  ":",
+		token.T_6:  "[",
+		token.T_7:  "]",
+		token.T_8:  "block_comment",
+		token.T_10: "dQuote",
+		token.T_12: "escCharSpace",
+		token.T_13: "false",
+		token.T_15: "line_comment",
+		token.T_16: "nonZero",
+		token.T_17: "null",
+		token.T_19: "true",
+		token.T_20: "{",
+		token.T_21: "}",
+	},
+	// EscOrComment : ∙block_comment
+	{
+		token.T_8: "block_comment",
+	},
+	// EscOrComment : block_comment ∙
+	{
+		token.EOF:  "$",
+		token.T_1:  ",",
+		token.T_2:  "-",
+		token.T_4:  "0",
+		token.T_5:  ":",
+		token.T_6:  "[",
+		token.T_7:  "]",
+		token.T_8:  "block_comment",
+		token.T_10: "dQuote",
+		token.T_12: "escCharSpace",
+		token.T_13: "false",
+		token.T_15: "line_comment",
+		token.T_16: "nonZero",
+		token.T_17: "null",
+		token.T_19: "true",
+		token.T_20: "{",
+		token.T_21: "}",
+	},
+	// EscOrComment : ∙
+	{
+		token.EOF:  "$",
+		token.T_1:  ",",
+		token.T_2:  "-",
+		token.T_4:  "0",
+		token.T_5:  ":",
+		token.T_6:  "[",
+		token.T_7:  "]",
+		token.T_8:  "block_comment",
+		token.T_10: "dQuote",
+		token.T_12: "escCharSpace",
+		token.T_13: "false",
+		token.T_15: "line_comment",
+		token.T_16: "nonZero",
+		token.T_17: "null",
+		token.T_19: "true",
+		token.T_20: "{",
+		token.T_21: "}",
 	},
 	// FALSE : ∙false WS
 	{
@@ -1093,118 +1094,99 @@ var first = []map[token.Type]string{
 	},
 	// FALSE : false ∙WS
 	{
-		token.T_0:  ",",
-		token.T_3:  "]",
-		token.T_6:  "block_comment",
-		token.T_10: "escChar",
-		token.T_16: "line_comment",
-		token.T_24: "}",
+		token.T_1:  ",",
+		token.T_7:  "]",
+		token.T_8:  "block_comment",
+		token.T_12: "escCharSpace",
+		token.T_15: "line_comment",
+		token.T_21: "}",
 	},
 	// FALSE : false WS ∙
 	{
-		token.T_0:  ",",
-		token.T_3:  "]",
-		token.T_24: "}",
+		token.T_1:  ",",
+		token.T_7:  "]",
+		token.T_21: "}",
 	},
-	// HEX : ∙Number
+	// FRAC : ∙. repNum1x
 	{
-		token.T_19: "optNeg",
+		token.T_3: ".",
 	},
-	// HEX : Number ∙
+	// FRAC : . ∙repNum1x
 	{
-		token.T_4:  "aA_fF",
-		token.T_5:  "bSlash",
-		token.T_7:  "char",
-		token.T_8:  "dQuote",
-		token.T_19: "optNeg",
+		token.T_18: "repNum1x",
 	},
-	// HEX : ∙aA_fF
+	// FRAC : . repNum1x ∙
 	{
-		token.T_4: "aA_fF",
+		token.T_1:  ",",
+		token.T_7:  "]",
+		token.T_8:  "block_comment",
+		token.T_11: "eE",
+		token.T_12: "escCharSpace",
+		token.T_15: "line_comment",
+		token.T_21: "}",
 	},
-	// HEX : aA_fF ∙
+	// INT : ∙OptNeg Integers
 	{
-		token.T_4:  "aA_fF",
-		token.T_5:  "bSlash",
-		token.T_7:  "char",
-		token.T_8:  "dQuote",
-		token.T_19: "optNeg",
+		token.T_2:  "-",
+		token.T_4:  "0",
+		token.T_16: "nonZero",
 	},
-	// INT : ∙optNeg Integers
+	// INT : OptNeg ∙Integers
 	{
-		token.T_19: "optNeg",
+		token.T_4:  "0",
+		token.T_16: "nonZero",
 	},
-	// INT : optNeg ∙Integers
+	// INT : OptNeg Integers ∙
 	{
-		token.T_15: "integer",
-		token.T_22: "zero",
+		token.T_1:  ",",
+		token.T_3:  ".",
+		token.T_7:  "]",
+		token.T_8:  "block_comment",
+		token.T_11: "eE",
+		token.T_12: "escCharSpace",
+		token.T_15: "line_comment",
+		token.T_21: "}",
 	},
-	// INT : optNeg Integers ∙
+	// Integers : ∙nonZero
 	{
-		token.T_0:  ",",
-		token.T_3:  "]",
-		token.T_4:  "aA_fF",
-		token.T_5:  "bSlash",
-		token.T_6:  "block_comment",
-		token.T_7:  "char",
-		token.T_8:  "dQuote",
-		token.T_10: "escChar",
-		token.T_12: "exp",
-		token.T_14: "frac",
-		token.T_16: "line_comment",
-		token.T_19: "optNeg",
-		token.T_24: "}",
+		token.T_16: "nonZero",
 	},
-	// Integers : ∙integer
+	// Integers : nonZero ∙
 	{
-		token.T_15: "integer",
+		token.T_1:  ",",
+		token.T_3:  ".",
+		token.T_7:  "]",
+		token.T_8:  "block_comment",
+		token.T_11: "eE",
+		token.T_12: "escCharSpace",
+		token.T_15: "line_comment",
+		token.T_21: "}",
 	},
-	// Integers : integer ∙
+	// Integers : ∙0
 	{
-		token.T_0:  ",",
-		token.T_3:  "]",
-		token.T_4:  "aA_fF",
-		token.T_5:  "bSlash",
-		token.T_6:  "block_comment",
-		token.T_7:  "char",
-		token.T_8:  "dQuote",
-		token.T_10: "escChar",
-		token.T_12: "exp",
-		token.T_14: "frac",
-		token.T_16: "line_comment",
-		token.T_19: "optNeg",
-		token.T_24: "}",
+		token.T_4: "0",
 	},
-	// Integers : ∙zero
+	// Integers : 0 ∙
 	{
-		token.T_22: "zero",
-	},
-	// Integers : zero ∙
-	{
-		token.T_0:  ",",
-		token.T_3:  "]",
-		token.T_4:  "aA_fF",
-		token.T_5:  "bSlash",
-		token.T_6:  "block_comment",
-		token.T_7:  "char",
-		token.T_8:  "dQuote",
-		token.T_10: "escChar",
-		token.T_12: "exp",
-		token.T_14: "frac",
-		token.T_16: "line_comment",
-		token.T_19: "optNeg",
-		token.T_24: "}",
+		token.T_1:  ",",
+		token.T_3:  ".",
+		token.T_7:  "]",
+		token.T_8:  "block_comment",
+		token.T_11: "eE",
+		token.T_12: "escCharSpace",
+		token.T_15: "line_comment",
+		token.T_21: "}",
 	},
 	// JSON : ∙WS Object
 	{
-		token.T_6:  "block_comment",
-		token.T_10: "escChar",
-		token.T_16: "line_comment",
-		token.T_23: "{",
+		token.T_8:  "block_comment",
+		token.T_12: "escCharSpace",
+		token.T_15: "line_comment",
+		token.T_20: "{",
 	},
 	// JSON : WS ∙Object
 	{
-		token.T_23: "{",
+		token.T_20: "{",
 	},
 	// JSON : WS Object ∙
 	{
@@ -1212,537 +1194,501 @@ var first = []map[token.Type]string{
 	},
 	// LBRACE : ∙{ WS
 	{
-		token.T_23: "{",
+		token.T_20: "{",
 	},
 	// LBRACE : { ∙WS
 	{
-		token.T_6:  "block_comment",
-		token.T_8:  "dQuote",
-		token.T_10: "escChar",
-		token.T_16: "line_comment",
-		token.T_24: "}",
+		token.T_8:  "block_comment",
+		token.T_10: "dQuote",
+		token.T_12: "escCharSpace",
+		token.T_15: "line_comment",
+		token.T_21: "}",
 	},
 	// LBRACE : { WS ∙
 	{
-		token.T_8:  "dQuote",
-		token.T_24: "}",
+		token.T_10: "dQuote",
+		token.T_21: "}",
 	},
 	// LBRACKET : ∙[ WS
 	{
-		token.T_2: "[",
+		token.T_6: "[",
 	},
 	// LBRACKET : [ ∙WS
 	{
-		token.T_2:  "[",
-		token.T_3:  "]",
-		token.T_6:  "block_comment",
-		token.T_8:  "dQuote",
-		token.T_10: "escChar",
+		token.T_2:  "-",
+		token.T_4:  "0",
+		token.T_6:  "[",
+		token.T_7:  "]",
+		token.T_8:  "block_comment",
+		token.T_10: "dQuote",
+		token.T_12: "escCharSpace",
 		token.T_13: "false",
-		token.T_16: "line_comment",
-		token.T_18: "null",
-		token.T_19: "optNeg",
-		token.T_20: "true",
-		token.T_23: "{",
+		token.T_15: "line_comment",
+		token.T_16: "nonZero",
+		token.T_17: "null",
+		token.T_19: "true",
+		token.T_20: "{",
 	},
 	// LBRACKET : [ WS ∙
 	{
-		token.T_2:  "[",
-		token.T_3:  "]",
-		token.T_8:  "dQuote",
+		token.T_2:  "-",
+		token.T_4:  "0",
+		token.T_6:  "[",
+		token.T_7:  "]",
+		token.T_10: "dQuote",
 		token.T_13: "false",
-		token.T_18: "null",
-		token.T_19: "optNeg",
-		token.T_20: "true",
-		token.T_23: "{",
-	},
-	// LineOrBlock : ∙line_comment
-	{
-		token.T_16: "line_comment",
-	},
-	// LineOrBlock : line_comment ∙
-	{
-		token.EOF:  "$",
-		token.T_0:  ",",
-		token.T_1:  ":",
-		token.T_2:  "[",
-		token.T_3:  "]",
-		token.T_4:  "aA_fF",
-		token.T_5:  "bSlash",
-		token.T_6:  "block_comment",
-		token.T_7:  "char",
-		token.T_8:  "dQuote",
-		token.T_10: "escChar",
-		token.T_13: "false",
-		token.T_16: "line_comment",
-		token.T_18: "null",
-		token.T_19: "optNeg",
-		token.T_20: "true",
-		token.T_23: "{",
-		token.T_24: "}",
-	},
-	// LineOrBlock : ∙block_comment
-	{
-		token.T_6: "block_comment",
-	},
-	// LineOrBlock : block_comment ∙
-	{
-		token.EOF:  "$",
-		token.T_0:  ",",
-		token.T_1:  ":",
-		token.T_2:  "[",
-		token.T_3:  "]",
-		token.T_4:  "aA_fF",
-		token.T_5:  "bSlash",
-		token.T_6:  "block_comment",
-		token.T_7:  "char",
-		token.T_8:  "dQuote",
-		token.T_10: "escChar",
-		token.T_13: "false",
-		token.T_16: "line_comment",
-		token.T_18: "null",
-		token.T_19: "optNeg",
-		token.T_20: "true",
-		token.T_23: "{",
-		token.T_24: "}",
+		token.T_16: "nonZero",
+		token.T_17: "null",
+		token.T_19: "true",
+		token.T_20: "{",
 	},
 	// Members : ∙Pair RepComPair0x
 	{
-		token.T_8: "dQuote",
+		token.T_10: "dQuote",
 	},
 	// Members : Pair ∙RepComPair0x
 	{
-		token.T_0:  ",",
-		token.T_24: "}",
+		token.T_1:  ",",
+		token.T_21: "}",
 	},
 	// Members : Pair RepComPair0x ∙
 	{
-		token.T_24: "}",
+		token.T_21: "}",
 	},
 	// NUL : ∙null WS
 	{
-		token.T_18: "null",
+		token.T_17: "null",
 	},
 	// NUL : null ∙WS
 	{
-		token.T_0:  ",",
-		token.T_3:  "]",
-		token.T_6:  "block_comment",
-		token.T_10: "escChar",
-		token.T_16: "line_comment",
-		token.T_24: "}",
+		token.T_1:  ",",
+		token.T_7:  "]",
+		token.T_8:  "block_comment",
+		token.T_12: "escCharSpace",
+		token.T_15: "line_comment",
+		token.T_21: "}",
 	},
 	// NUL : null WS ∙
 	{
-		token.T_0:  ",",
-		token.T_3:  "]",
-		token.T_24: "}",
+		token.T_1:  ",",
+		token.T_7:  "]",
+		token.T_21: "}",
 	},
 	// Number : ∙INT OptFrac OptExp WS
 	{
-		token.T_19: "optNeg",
+		token.T_2:  "-",
+		token.T_4:  "0",
+		token.T_16: "nonZero",
 	},
 	// Number : INT ∙OptFrac OptExp WS
 	{
-		token.T_0:  ",",
-		token.T_3:  "]",
-		token.T_4:  "aA_fF",
-		token.T_5:  "bSlash",
-		token.T_6:  "block_comment",
-		token.T_7:  "char",
-		token.T_8:  "dQuote",
-		token.T_10: "escChar",
-		token.T_12: "exp",
-		token.T_14: "frac",
-		token.T_16: "line_comment",
-		token.T_19: "optNeg",
-		token.T_24: "}",
+		token.T_1:  ",",
+		token.T_3:  ".",
+		token.T_7:  "]",
+		token.T_8:  "block_comment",
+		token.T_11: "eE",
+		token.T_12: "escCharSpace",
+		token.T_15: "line_comment",
+		token.T_21: "}",
 	},
 	// Number : INT OptFrac ∙OptExp WS
 	{
-		token.T_0:  ",",
-		token.T_3:  "]",
-		token.T_4:  "aA_fF",
-		token.T_5:  "bSlash",
-		token.T_6:  "block_comment",
-		token.T_7:  "char",
-		token.T_8:  "dQuote",
-		token.T_10: "escChar",
-		token.T_12: "exp",
-		token.T_16: "line_comment",
-		token.T_19: "optNeg",
-		token.T_24: "}",
+		token.T_1:  ",",
+		token.T_7:  "]",
+		token.T_8:  "block_comment",
+		token.T_11: "eE",
+		token.T_12: "escCharSpace",
+		token.T_15: "line_comment",
+		token.T_21: "}",
 	},
 	// Number : INT OptFrac OptExp ∙WS
 	{
-		token.T_0:  ",",
-		token.T_3:  "]",
-		token.T_4:  "aA_fF",
-		token.T_5:  "bSlash",
-		token.T_6:  "block_comment",
-		token.T_7:  "char",
-		token.T_8:  "dQuote",
-		token.T_10: "escChar",
-		token.T_16: "line_comment",
-		token.T_19: "optNeg",
-		token.T_24: "}",
+		token.T_1:  ",",
+		token.T_7:  "]",
+		token.T_8:  "block_comment",
+		token.T_12: "escCharSpace",
+		token.T_15: "line_comment",
+		token.T_21: "}",
 	},
 	// Number : INT OptFrac OptExp WS ∙
 	{
-		token.T_0:  ",",
-		token.T_3:  "]",
-		token.T_4:  "aA_fF",
-		token.T_5:  "bSlash",
-		token.T_7:  "char",
-		token.T_8:  "dQuote",
-		token.T_19: "optNeg",
-		token.T_24: "}",
+		token.T_1:  ",",
+		token.T_7:  "]",
+		token.T_21: "}",
 	},
 	// Object : ∙LBRACE OptMems RBRACE
 	{
-		token.T_23: "{",
+		token.T_20: "{",
 	},
 	// Object : LBRACE ∙OptMems RBRACE
 	{
-		token.T_8:  "dQuote",
-		token.T_24: "}",
+		token.T_10: "dQuote",
+		token.T_21: "}",
 	},
 	// Object : LBRACE OptMems ∙RBRACE
 	{
-		token.T_24: "}",
+		token.T_21: "}",
 	},
 	// Object : LBRACE OptMems RBRACE ∙
 	{
 		token.EOF:  "$",
-		token.T_0:  ",",
-		token.T_3:  "]",
-		token.T_24: "}",
+		token.T_1:  ",",
+		token.T_7:  "]",
+		token.T_21: "}",
 	},
 	// OptElem : ∙Elements
 	{
-		token.T_2:  "[",
-		token.T_8:  "dQuote",
+		token.T_2:  "-",
+		token.T_4:  "0",
+		token.T_6:  "[",
+		token.T_10: "dQuote",
 		token.T_13: "false",
-		token.T_18: "null",
-		token.T_19: "optNeg",
-		token.T_20: "true",
-		token.T_23: "{",
+		token.T_16: "nonZero",
+		token.T_17: "null",
+		token.T_19: "true",
+		token.T_20: "{",
 	},
 	// OptElem : Elements ∙
 	{
-		token.T_3: "]",
+		token.T_7: "]",
 	},
 	// OptElem : ∙
 	{
-		token.T_3: "]",
+		token.T_7: "]",
 	},
-	// OptExp : ∙exp
+	// OptExp : ∙EXP
 	{
-		token.T_12: "exp",
+		token.T_11: "eE",
 	},
-	// OptExp : exp ∙
+	// OptExp : EXP ∙
 	{
-		token.T_0:  ",",
-		token.T_3:  "]",
-		token.T_4:  "aA_fF",
-		token.T_5:  "bSlash",
-		token.T_6:  "block_comment",
-		token.T_7:  "char",
-		token.T_8:  "dQuote",
-		token.T_10: "escChar",
-		token.T_16: "line_comment",
-		token.T_19: "optNeg",
-		token.T_24: "}",
+		token.T_1:  ",",
+		token.T_7:  "]",
+		token.T_8:  "block_comment",
+		token.T_12: "escCharSpace",
+		token.T_15: "line_comment",
+		token.T_21: "}",
 	},
 	// OptExp : ∙
 	{
-		token.T_0:  ",",
-		token.T_3:  "]",
-		token.T_4:  "aA_fF",
-		token.T_5:  "bSlash",
-		token.T_6:  "block_comment",
-		token.T_7:  "char",
-		token.T_8:  "dQuote",
-		token.T_10: "escChar",
-		token.T_16: "line_comment",
-		token.T_19: "optNeg",
-		token.T_24: "}",
+		token.T_1:  ",",
+		token.T_7:  "]",
+		token.T_8:  "block_comment",
+		token.T_12: "escCharSpace",
+		token.T_15: "line_comment",
+		token.T_21: "}",
 	},
-	// OptFrac : ∙frac
+	// OptFrac : ∙FRAC
 	{
-		token.T_14: "frac",
+		token.T_3: ".",
 	},
-	// OptFrac : frac ∙
+	// OptFrac : FRAC ∙
 	{
-		token.T_0:  ",",
-		token.T_3:  "]",
-		token.T_4:  "aA_fF",
-		token.T_5:  "bSlash",
-		token.T_6:  "block_comment",
-		token.T_7:  "char",
-		token.T_8:  "dQuote",
-		token.T_10: "escChar",
-		token.T_12: "exp",
-		token.T_16: "line_comment",
-		token.T_19: "optNeg",
-		token.T_24: "}",
+		token.T_1:  ",",
+		token.T_7:  "]",
+		token.T_8:  "block_comment",
+		token.T_11: "eE",
+		token.T_12: "escCharSpace",
+		token.T_15: "line_comment",
+		token.T_21: "}",
 	},
 	// OptFrac : ∙
 	{
-		token.T_0:  ",",
-		token.T_3:  "]",
-		token.T_4:  "aA_fF",
-		token.T_5:  "bSlash",
-		token.T_6:  "block_comment",
-		token.T_7:  "char",
-		token.T_8:  "dQuote",
-		token.T_10: "escChar",
-		token.T_12: "exp",
-		token.T_16: "line_comment",
-		token.T_19: "optNeg",
-		token.T_24: "}",
+		token.T_1:  ",",
+		token.T_7:  "]",
+		token.T_8:  "block_comment",
+		token.T_11: "eE",
+		token.T_12: "escCharSpace",
+		token.T_15: "line_comment",
+		token.T_21: "}",
 	},
 	// OptMems : ∙Members
 	{
-		token.T_8: "dQuote",
+		token.T_10: "dQuote",
 	},
 	// OptMems : Members ∙
 	{
-		token.T_24: "}",
+		token.T_21: "}",
 	},
 	// OptMems : ∙
 	{
-		token.T_24: "}",
+		token.T_21: "}",
+	},
+	// OptNeg : ∙-
+	{
+		token.T_2: "-",
+	},
+	// OptNeg : - ∙
+	{
+		token.T_4:  "0",
+		token.T_16: "nonZero",
+	},
+	// OptNeg : ∙
+	{
+		token.T_4:  "0",
+		token.T_16: "nonZero",
+	},
+	// OptPM : ∙PlusORMinus
+	{
+		token.T_0: "+",
+		token.T_2: "-",
+	},
+	// OptPM : PlusORMinus ∙
+	{
+		token.T_18: "repNum1x",
+	},
+	// OptPM : ∙
+	{
+		token.T_18: "repNum1x",
 	},
 	// Pair : ∙String COLON Value
 	{
-		token.T_8: "dQuote",
+		token.T_10: "dQuote",
 	},
 	// Pair : String ∙COLON Value
 	{
-		token.T_1: ":",
+		token.T_5: ":",
 	},
 	// Pair : String COLON ∙Value
 	{
-		token.T_2:  "[",
-		token.T_8:  "dQuote",
+		token.T_2:  "-",
+		token.T_4:  "0",
+		token.T_6:  "[",
+		token.T_10: "dQuote",
 		token.T_13: "false",
-		token.T_18: "null",
-		token.T_19: "optNeg",
-		token.T_20: "true",
-		token.T_23: "{",
+		token.T_16: "nonZero",
+		token.T_17: "null",
+		token.T_19: "true",
+		token.T_20: "{",
 	},
 	// Pair : String COLON Value ∙
 	{
-		token.T_0:  ",",
-		token.T_24: "}",
+		token.T_1:  ",",
+		token.T_21: "}",
+	},
+	// PlusORMinus : ∙+
+	{
+		token.T_0: "+",
+	},
+	// PlusORMinus : + ∙
+	{
+		token.T_18: "repNum1x",
+	},
+	// PlusORMinus : ∙-
+	{
+		token.T_2: "-",
+	},
+	// PlusORMinus : - ∙
+	{
+		token.T_18: "repNum1x",
 	},
 	// RBRACE : ∙} WS
 	{
-		token.T_24: "}",
+		token.T_21: "}",
 	},
 	// RBRACE : } ∙WS
 	{
 		token.EOF:  "$",
-		token.T_0:  ",",
-		token.T_3:  "]",
-		token.T_6:  "block_comment",
-		token.T_10: "escChar",
-		token.T_16: "line_comment",
-		token.T_24: "}",
+		token.T_1:  ",",
+		token.T_7:  "]",
+		token.T_8:  "block_comment",
+		token.T_12: "escCharSpace",
+		token.T_15: "line_comment",
+		token.T_21: "}",
 	},
 	// RBRACE : } WS ∙
 	{
 		token.EOF:  "$",
-		token.T_0:  ",",
-		token.T_3:  "]",
-		token.T_24: "}",
+		token.T_1:  ",",
+		token.T_7:  "]",
+		token.T_21: "}",
 	},
 	// RBRACKET : ∙] WS
 	{
-		token.T_3: "]",
+		token.T_7: "]",
 	},
 	// RBRACKET : ] ∙WS
 	{
-		token.T_0:  ",",
-		token.T_3:  "]",
-		token.T_6:  "block_comment",
-		token.T_10: "escChar",
-		token.T_16: "line_comment",
-		token.T_24: "}",
+		token.T_1:  ",",
+		token.T_7:  "]",
+		token.T_8:  "block_comment",
+		token.T_12: "escCharSpace",
+		token.T_15: "line_comment",
+		token.T_21: "}",
 	},
 	// RBRACKET : ] WS ∙
 	{
-		token.T_0:  ",",
-		token.T_3:  "]",
-		token.T_24: "}",
+		token.T_1:  ",",
+		token.T_7:  "]",
+		token.T_21: "}",
 	},
-	// RepChar0x : ∙CHAR RepChar0x
+	// RepChar0x : ∙char RepChar0x
 	{
-		token.T_5: "bSlash",
-		token.T_7: "char",
+		token.T_9: "char",
 	},
-	// RepChar0x : CHAR ∙RepChar0x
+	// RepChar0x : char ∙RepChar0x
 	{
-		token.T_5: "bSlash",
-		token.T_7: "char",
-		token.T_8: "dQuote",
+		token.T_9:  "char",
+		token.T_10: "dQuote",
 	},
-	// RepChar0x : CHAR RepChar0x ∙
+	// RepChar0x : char RepChar0x ∙
 	{
-		token.T_8: "dQuote",
+		token.T_10: "dQuote",
 	},
 	// RepChar0x : ∙
 	{
-		token.T_8: "dQuote",
+		token.T_10: "dQuote",
 	},
 	// RepComPair0x : ∙COMMA Pair RepComPair0x
 	{
-		token.T_0: ",",
+		token.T_1: ",",
 	},
 	// RepComPair0x : COMMA ∙Pair RepComPair0x
 	{
-		token.T_8: "dQuote",
+		token.T_10: "dQuote",
 	},
 	// RepComPair0x : COMMA Pair ∙RepComPair0x
 	{
-		token.T_0:  ",",
-		token.T_24: "}",
+		token.T_1:  ",",
+		token.T_21: "}",
 	},
 	// RepComPair0x : COMMA Pair RepComPair0x ∙
 	{
-		token.T_24: "}",
+		token.T_21: "}",
 	},
 	// RepComPair0x : ∙
 	{
-		token.T_24: "}",
+		token.T_21: "}",
 	},
 	// RepComVal0x : ∙COMMA Value RepComVal0x
 	{
-		token.T_0: ",",
+		token.T_1: ",",
 	},
 	// RepComVal0x : COMMA ∙Value RepComVal0x
 	{
-		token.T_2:  "[",
-		token.T_8:  "dQuote",
+		token.T_2:  "-",
+		token.T_4:  "0",
+		token.T_6:  "[",
+		token.T_10: "dQuote",
 		token.T_13: "false",
-		token.T_18: "null",
-		token.T_19: "optNeg",
-		token.T_20: "true",
-		token.T_23: "{",
+		token.T_16: "nonZero",
+		token.T_17: "null",
+		token.T_19: "true",
+		token.T_20: "{",
 	},
 	// RepComVal0x : COMMA Value ∙RepComVal0x
 	{
-		token.T_0: ",",
-		token.T_3: "]",
+		token.T_1: ",",
+		token.T_7: "]",
 	},
 	// RepComVal0x : COMMA Value RepComVal0x ∙
 	{
-		token.T_3: "]",
+		token.T_7: "]",
 	},
 	// RepComVal0x : ∙
 	{
-		token.T_3: "]",
+		token.T_7: "]",
 	},
 	// String : ∙dQuote RepChar0x dQuote WS
 	{
-		token.T_8: "dQuote",
+		token.T_10: "dQuote",
 	},
 	// String : dQuote ∙RepChar0x dQuote WS
 	{
-		token.T_5: "bSlash",
-		token.T_7: "char",
-		token.T_8: "dQuote",
+		token.T_9:  "char",
+		token.T_10: "dQuote",
 	},
 	// String : dQuote RepChar0x ∙dQuote WS
 	{
-		token.T_8: "dQuote",
+		token.T_10: "dQuote",
 	},
 	// String : dQuote RepChar0x dQuote ∙WS
 	{
-		token.T_0:  ",",
-		token.T_1:  ":",
-		token.T_3:  "]",
-		token.T_6:  "block_comment",
-		token.T_10: "escChar",
-		token.T_16: "line_comment",
-		token.T_24: "}",
+		token.T_1:  ",",
+		token.T_5:  ":",
+		token.T_7:  "]",
+		token.T_8:  "block_comment",
+		token.T_12: "escCharSpace",
+		token.T_15: "line_comment",
+		token.T_21: "}",
 	},
 	// String : dQuote RepChar0x dQuote WS ∙
 	{
-		token.T_0:  ",",
-		token.T_1:  ":",
-		token.T_3:  "]",
-		token.T_24: "}",
+		token.T_1:  ",",
+		token.T_5:  ":",
+		token.T_7:  "]",
+		token.T_21: "}",
 	},
 	// TRUE : ∙true WS
 	{
-		token.T_20: "true",
+		token.T_19: "true",
 	},
 	// TRUE : true ∙WS
 	{
-		token.T_0:  ",",
-		token.T_3:  "]",
-		token.T_6:  "block_comment",
-		token.T_10: "escChar",
-		token.T_16: "line_comment",
-		token.T_24: "}",
+		token.T_1:  ",",
+		token.T_7:  "]",
+		token.T_8:  "block_comment",
+		token.T_12: "escCharSpace",
+		token.T_15: "line_comment",
+		token.T_21: "}",
 	},
 	// TRUE : true WS ∙
 	{
-		token.T_0:  ",",
-		token.T_3:  "]",
-		token.T_24: "}",
+		token.T_1:  ",",
+		token.T_7:  "]",
+		token.T_21: "}",
 	},
 	// Value : ∙String
 	{
-		token.T_8: "dQuote",
+		token.T_10: "dQuote",
 	},
 	// Value : String ∙
 	{
-		token.T_0:  ",",
-		token.T_3:  "]",
-		token.T_24: "}",
+		token.T_1:  ",",
+		token.T_7:  "]",
+		token.T_21: "}",
 	},
 	// Value : ∙Number
 	{
-		token.T_19: "optNeg",
+		token.T_2:  "-",
+		token.T_4:  "0",
+		token.T_16: "nonZero",
 	},
 	// Value : Number ∙
 	{
-		token.T_0:  ",",
-		token.T_3:  "]",
-		token.T_24: "}",
+		token.T_1:  ",",
+		token.T_7:  "]",
+		token.T_21: "}",
 	},
 	// Value : ∙Object
 	{
-		token.T_23: "{",
+		token.T_20: "{",
 	},
 	// Value : Object ∙
 	{
-		token.T_0:  ",",
-		token.T_3:  "]",
-		token.T_24: "}",
+		token.T_1:  ",",
+		token.T_7:  "]",
+		token.T_21: "}",
 	},
 	// Value : ∙Array
 	{
-		token.T_2: "[",
+		token.T_6: "[",
 	},
 	// Value : Array ∙
 	{
-		token.T_0:  ",",
-		token.T_3:  "]",
-		token.T_24: "}",
+		token.T_1:  ",",
+		token.T_7:  "]",
+		token.T_21: "}",
 	},
 	// Value : ∙TRUE
 	{
-		token.T_20: "true",
+		token.T_19: "true",
 	},
 	// Value : TRUE ∙
 	{
-		token.T_0:  ",",
-		token.T_3:  "]",
-		token.T_24: "}",
+		token.T_1:  ",",
+		token.T_7:  "]",
+		token.T_21: "}",
 	},
 	// Value : ∙FALSE
 	{
@@ -1750,194 +1696,197 @@ var first = []map[token.Type]string{
 	},
 	// Value : FALSE ∙
 	{
-		token.T_0:  ",",
-		token.T_3:  "]",
-		token.T_24: "}",
+		token.T_1:  ",",
+		token.T_7:  "]",
+		token.T_21: "}",
 	},
 	// Value : ∙NUL
 	{
-		token.T_18: "null",
+		token.T_17: "null",
 	},
 	// Value : NUL ∙
 	{
-		token.T_0:  ",",
-		token.T_3:  "]",
-		token.T_24: "}",
+		token.T_1:  ",",
+		token.T_7:  "]",
+		token.T_21: "}",
 	},
 	// WS : ∙EscOrComment WS
 	{
-		token.T_6:  "block_comment",
-		token.T_10: "escChar",
-		token.T_16: "line_comment",
+		token.EOF:  "$",
+		token.T_1:  ",",
+		token.T_2:  "-",
+		token.T_4:  "0",
+		token.T_5:  ":",
+		token.T_6:  "[",
+		token.T_7:  "]",
+		token.T_8:  "block_comment",
+		token.T_10: "dQuote",
+		token.T_12: "escCharSpace",
+		token.T_13: "false",
+		token.T_15: "line_comment",
+		token.T_16: "nonZero",
+		token.T_17: "null",
+		token.T_19: "true",
+		token.T_20: "{",
+		token.T_21: "}",
 	},
 	// WS : EscOrComment ∙WS
 	{
 		token.EOF:  "$",
-		token.T_0:  ",",
-		token.T_1:  ":",
-		token.T_2:  "[",
-		token.T_3:  "]",
-		token.T_4:  "aA_fF",
-		token.T_5:  "bSlash",
-		token.T_6:  "block_comment",
-		token.T_7:  "char",
-		token.T_8:  "dQuote",
-		token.T_10: "escChar",
+		token.T_1:  ",",
+		token.T_2:  "-",
+		token.T_4:  "0",
+		token.T_5:  ":",
+		token.T_6:  "[",
+		token.T_7:  "]",
+		token.T_8:  "block_comment",
+		token.T_10: "dQuote",
+		token.T_12: "escCharSpace",
 		token.T_13: "false",
-		token.T_16: "line_comment",
-		token.T_18: "null",
-		token.T_19: "optNeg",
-		token.T_20: "true",
-		token.T_23: "{",
-		token.T_24: "}",
+		token.T_15: "line_comment",
+		token.T_16: "nonZero",
+		token.T_17: "null",
+		token.T_19: "true",
+		token.T_20: "{",
+		token.T_21: "}",
 	},
 	// WS : EscOrComment WS ∙
 	{
 		token.EOF:  "$",
-		token.T_0:  ",",
-		token.T_1:  ":",
-		token.T_2:  "[",
-		token.T_3:  "]",
-		token.T_4:  "aA_fF",
-		token.T_5:  "bSlash",
-		token.T_7:  "char",
-		token.T_8:  "dQuote",
+		token.T_1:  ",",
+		token.T_2:  "-",
+		token.T_4:  "0",
+		token.T_5:  ":",
+		token.T_6:  "[",
+		token.T_7:  "]",
+		token.T_10: "dQuote",
 		token.T_13: "false",
-		token.T_18: "null",
-		token.T_19: "optNeg",
-		token.T_20: "true",
-		token.T_23: "{",
-		token.T_24: "}",
+		token.T_16: "nonZero",
+		token.T_17: "null",
+		token.T_19: "true",
+		token.T_20: "{",
+		token.T_21: "}",
 	},
 	// WS : ∙
 	{
 		token.EOF:  "$",
-		token.T_0:  ",",
-		token.T_1:  ":",
-		token.T_2:  "[",
-		token.T_3:  "]",
-		token.T_4:  "aA_fF",
-		token.T_5:  "bSlash",
-		token.T_7:  "char",
-		token.T_8:  "dQuote",
+		token.T_1:  ",",
+		token.T_2:  "-",
+		token.T_4:  "0",
+		token.T_5:  ":",
+		token.T_6:  "[",
+		token.T_7:  "]",
+		token.T_10: "dQuote",
 		token.T_13: "false",
-		token.T_18: "null",
-		token.T_19: "optNeg",
-		token.T_20: "true",
-		token.T_23: "{",
-		token.T_24: "}",
+		token.T_16: "nonZero",
+		token.T_17: "null",
+		token.T_19: "true",
+		token.T_20: "{",
+		token.T_21: "}",
 	},
 }
 
 var followSets = []map[token.Type]string{
 	// Array
 	{
-		token.T_0:  ",",
-		token.T_3:  "]",
-		token.T_24: "}",
-	},
-	// CHAR
-	{
-		token.T_5: "bSlash",
-		token.T_7: "char",
-		token.T_8: "dQuote",
+		token.T_1:  ",",
+		token.T_7:  "]",
+		token.T_21: "}",
 	},
 	// COLON
 	{
-		token.T_2:  "[",
-		token.T_8:  "dQuote",
+		token.T_2:  "-",
+		token.T_4:  "0",
+		token.T_6:  "[",
+		token.T_10: "dQuote",
 		token.T_13: "false",
-		token.T_18: "null",
-		token.T_19: "optNeg",
-		token.T_20: "true",
-		token.T_23: "{",
+		token.T_16: "nonZero",
+		token.T_17: "null",
+		token.T_19: "true",
+		token.T_20: "{",
 	},
 	// COMMA
 	{
-		token.T_2:  "[",
-		token.T_8:  "dQuote",
+		token.T_2:  "-",
+		token.T_4:  "0",
+		token.T_6:  "[",
+		token.T_10: "dQuote",
 		token.T_13: "false",
-		token.T_18: "null",
-		token.T_19: "optNeg",
-		token.T_20: "true",
-		token.T_23: "{",
+		token.T_16: "nonZero",
+		token.T_17: "null",
+		token.T_19: "true",
+		token.T_20: "{",
 	},
-	// CharCode
+	// EXP
 	{
-		token.T_5: "bSlash",
-		token.T_7: "char",
-		token.T_8: "dQuote",
+		token.T_1:  ",",
+		token.T_7:  "]",
+		token.T_8:  "block_comment",
+		token.T_12: "escCharSpace",
+		token.T_15: "line_comment",
+		token.T_21: "}",
 	},
 	// Elements
 	{
-		token.T_3: "]",
+		token.T_7: "]",
 	},
 	// EscOrComment
 	{
 		token.EOF:  "$",
-		token.T_0:  ",",
-		token.T_1:  ":",
-		token.T_2:  "[",
-		token.T_3:  "]",
-		token.T_4:  "aA_fF",
-		token.T_5:  "bSlash",
-		token.T_6:  "block_comment",
-		token.T_7:  "char",
-		token.T_8:  "dQuote",
-		token.T_10: "escChar",
+		token.T_1:  ",",
+		token.T_2:  "-",
+		token.T_4:  "0",
+		token.T_5:  ":",
+		token.T_6:  "[",
+		token.T_7:  "]",
+		token.T_8:  "block_comment",
+		token.T_10: "dQuote",
+		token.T_12: "escCharSpace",
 		token.T_13: "false",
-		token.T_16: "line_comment",
-		token.T_18: "null",
-		token.T_19: "optNeg",
-		token.T_20: "true",
-		token.T_23: "{",
-		token.T_24: "}",
+		token.T_15: "line_comment",
+		token.T_16: "nonZero",
+		token.T_17: "null",
+		token.T_19: "true",
+		token.T_20: "{",
+		token.T_21: "}",
 	},
 	// FALSE
 	{
-		token.T_0:  ",",
-		token.T_3:  "]",
-		token.T_24: "}",
+		token.T_1:  ",",
+		token.T_7:  "]",
+		token.T_21: "}",
 	},
-	// HEX
+	// FRAC
 	{
-		token.T_4:  "aA_fF",
-		token.T_5:  "bSlash",
-		token.T_7:  "char",
-		token.T_8:  "dQuote",
-		token.T_19: "optNeg",
+		token.T_1:  ",",
+		token.T_7:  "]",
+		token.T_8:  "block_comment",
+		token.T_11: "eE",
+		token.T_12: "escCharSpace",
+		token.T_15: "line_comment",
+		token.T_21: "}",
 	},
 	// INT
 	{
-		token.T_0:  ",",
-		token.T_3:  "]",
-		token.T_4:  "aA_fF",
-		token.T_5:  "bSlash",
-		token.T_6:  "block_comment",
-		token.T_7:  "char",
-		token.T_8:  "dQuote",
-		token.T_10: "escChar",
-		token.T_12: "exp",
-		token.T_14: "frac",
-		token.T_16: "line_comment",
-		token.T_19: "optNeg",
-		token.T_24: "}",
+		token.T_1:  ",",
+		token.T_3:  ".",
+		token.T_7:  "]",
+		token.T_8:  "block_comment",
+		token.T_11: "eE",
+		token.T_12: "escCharSpace",
+		token.T_15: "line_comment",
+		token.T_21: "}",
 	},
 	// Integers
 	{
-		token.T_0:  ",",
-		token.T_3:  "]",
-		token.T_4:  "aA_fF",
-		token.T_5:  "bSlash",
-		token.T_6:  "block_comment",
-		token.T_7:  "char",
-		token.T_8:  "dQuote",
-		token.T_10: "escChar",
-		token.T_12: "exp",
-		token.T_14: "frac",
-		token.T_16: "line_comment",
-		token.T_19: "optNeg",
-		token.T_24: "}",
+		token.T_1:  ",",
+		token.T_3:  ".",
+		token.T_7:  "]",
+		token.T_8:  "block_comment",
+		token.T_11: "eE",
+		token.T_12: "escCharSpace",
+		token.T_15: "line_comment",
+		token.T_21: "}",
 	},
 	// JSON
 	{
@@ -1945,172 +1894,150 @@ var followSets = []map[token.Type]string{
 	},
 	// LBRACE
 	{
-		token.T_8:  "dQuote",
-		token.T_24: "}",
+		token.T_10: "dQuote",
+		token.T_21: "}",
 	},
 	// LBRACKET
 	{
-		token.T_2:  "[",
-		token.T_3:  "]",
-		token.T_8:  "dQuote",
+		token.T_2:  "-",
+		token.T_4:  "0",
+		token.T_6:  "[",
+		token.T_7:  "]",
+		token.T_10: "dQuote",
 		token.T_13: "false",
-		token.T_18: "null",
-		token.T_19: "optNeg",
-		token.T_20: "true",
-		token.T_23: "{",
-	},
-	// LineOrBlock
-	{
-		token.EOF:  "$",
-		token.T_0:  ",",
-		token.T_1:  ":",
-		token.T_2:  "[",
-		token.T_3:  "]",
-		token.T_4:  "aA_fF",
-		token.T_5:  "bSlash",
-		token.T_6:  "block_comment",
-		token.T_7:  "char",
-		token.T_8:  "dQuote",
-		token.T_10: "escChar",
-		token.T_13: "false",
-		token.T_16: "line_comment",
-		token.T_18: "null",
-		token.T_19: "optNeg",
-		token.T_20: "true",
-		token.T_23: "{",
-		token.T_24: "}",
+		token.T_16: "nonZero",
+		token.T_17: "null",
+		token.T_19: "true",
+		token.T_20: "{",
 	},
 	// Members
 	{
-		token.T_24: "}",
+		token.T_21: "}",
 	},
 	// NUL
 	{
-		token.T_0:  ",",
-		token.T_3:  "]",
-		token.T_24: "}",
+		token.T_1:  ",",
+		token.T_7:  "]",
+		token.T_21: "}",
 	},
 	// Number
 	{
-		token.T_0:  ",",
-		token.T_3:  "]",
-		token.T_4:  "aA_fF",
-		token.T_5:  "bSlash",
-		token.T_7:  "char",
-		token.T_8:  "dQuote",
-		token.T_19: "optNeg",
-		token.T_24: "}",
+		token.T_1:  ",",
+		token.T_7:  "]",
+		token.T_21: "}",
 	},
 	// Object
 	{
 		token.EOF:  "$",
-		token.T_0:  ",",
-		token.T_3:  "]",
-		token.T_24: "}",
+		token.T_1:  ",",
+		token.T_7:  "]",
+		token.T_21: "}",
 	},
 	// OptElem
 	{
-		token.T_3: "]",
+		token.T_7: "]",
 	},
 	// OptExp
 	{
-		token.T_0:  ",",
-		token.T_3:  "]",
-		token.T_4:  "aA_fF",
-		token.T_5:  "bSlash",
-		token.T_6:  "block_comment",
-		token.T_7:  "char",
-		token.T_8:  "dQuote",
-		token.T_10: "escChar",
-		token.T_16: "line_comment",
-		token.T_19: "optNeg",
-		token.T_24: "}",
+		token.T_1:  ",",
+		token.T_7:  "]",
+		token.T_8:  "block_comment",
+		token.T_12: "escCharSpace",
+		token.T_15: "line_comment",
+		token.T_21: "}",
 	},
 	// OptFrac
 	{
-		token.T_0:  ",",
-		token.T_3:  "]",
-		token.T_4:  "aA_fF",
-		token.T_5:  "bSlash",
-		token.T_6:  "block_comment",
-		token.T_7:  "char",
-		token.T_8:  "dQuote",
-		token.T_10: "escChar",
-		token.T_12: "exp",
-		token.T_16: "line_comment",
-		token.T_19: "optNeg",
-		token.T_24: "}",
+		token.T_1:  ",",
+		token.T_7:  "]",
+		token.T_8:  "block_comment",
+		token.T_11: "eE",
+		token.T_12: "escCharSpace",
+		token.T_15: "line_comment",
+		token.T_21: "}",
 	},
 	// OptMems
 	{
-		token.T_24: "}",
+		token.T_21: "}",
+	},
+	// OptNeg
+	{
+		token.T_4:  "0",
+		token.T_16: "nonZero",
+	},
+	// OptPM
+	{
+		token.T_18: "repNum1x",
 	},
 	// Pair
 	{
-		token.T_0:  ",",
-		token.T_24: "}",
+		token.T_1:  ",",
+		token.T_21: "}",
+	},
+	// PlusORMinus
+	{
+		token.T_18: "repNum1x",
 	},
 	// RBRACE
 	{
 		token.EOF:  "$",
-		token.T_0:  ",",
-		token.T_3:  "]",
-		token.T_24: "}",
+		token.T_1:  ",",
+		token.T_7:  "]",
+		token.T_21: "}",
 	},
 	// RBRACKET
 	{
-		token.T_0:  ",",
-		token.T_3:  "]",
-		token.T_24: "}",
+		token.T_1:  ",",
+		token.T_7:  "]",
+		token.T_21: "}",
 	},
 	// RepChar0x
 	{
-		token.T_8: "dQuote",
+		token.T_10: "dQuote",
 	},
 	// RepComPair0x
 	{
-		token.T_24: "}",
+		token.T_21: "}",
 	},
 	// RepComVal0x
 	{
-		token.T_3: "]",
+		token.T_7: "]",
 	},
 	// String
 	{
-		token.T_0:  ",",
-		token.T_1:  ":",
-		token.T_3:  "]",
-		token.T_24: "}",
+		token.T_1:  ",",
+		token.T_5:  ":",
+		token.T_7:  "]",
+		token.T_21: "}",
 	},
 	// TRUE
 	{
-		token.T_0:  ",",
-		token.T_3:  "]",
-		token.T_24: "}",
+		token.T_1:  ",",
+		token.T_7:  "]",
+		token.T_21: "}",
 	},
 	// Value
 	{
-		token.T_0:  ",",
-		token.T_3:  "]",
-		token.T_24: "}",
+		token.T_1:  ",",
+		token.T_7:  "]",
+		token.T_21: "}",
 	},
 	// WS
 	{
 		token.EOF:  "$",
-		token.T_0:  ",",
-		token.T_1:  ":",
-		token.T_2:  "[",
-		token.T_3:  "]",
-		token.T_4:  "aA_fF",
-		token.T_5:  "bSlash",
-		token.T_7:  "char",
-		token.T_8:  "dQuote",
+		token.T_1:  ",",
+		token.T_2:  "-",
+		token.T_4:  "0",
+		token.T_5:  ":",
+		token.T_6:  "[",
+		token.T_7:  "]",
+		token.T_10: "dQuote",
 		token.T_13: "false",
-		token.T_18: "null",
-		token.T_19: "optNeg",
-		token.T_20: "true",
-		token.T_23: "{",
-		token.T_24: "}",
+		token.T_16: "nonZero",
+		token.T_17: "null",
+		token.T_19: "true",
+		token.T_20: "{",
+		token.T_21: "}",
 	},
 }
 

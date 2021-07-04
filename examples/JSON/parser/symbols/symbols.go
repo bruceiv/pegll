@@ -15,20 +15,18 @@ func (T) isSymbol() {}
 type NT int
 const( 
 	NT_Array NT = iota
-	NT_CHAR 
 	NT_COLON 
 	NT_COMMA 
-	NT_CharCode 
+	NT_EXP 
 	NT_Elements 
 	NT_EscOrComment 
 	NT_FALSE 
-	NT_HEX 
+	NT_FRAC 
 	NT_INT 
 	NT_Integers 
 	NT_JSON 
 	NT_LBRACE 
 	NT_LBRACKET 
-	NT_LineOrBlock 
 	NT_Members 
 	NT_NUL 
 	NT_Number 
@@ -37,7 +35,10 @@ const(
 	NT_OptExp 
 	NT_OptFrac 
 	NT_OptMems 
+	NT_OptNeg 
+	NT_OptPM 
 	NT_Pair 
+	NT_PlusORMinus 
 	NT_RBRACE 
 	NT_RBRACKET 
 	NT_RepChar0x 
@@ -49,38 +50,35 @@ const(
 	NT_WS 
 )
 
-const NumNTs = 33
+const NumNTs = 34
 
 type NTs []NT
 
 // T is the type of terminals symbols
 type T int
 const( 
-	T_0 T = iota // , 
-	T_1  // : 
-	T_2  // [ 
-	T_3  // ] 
-	T_4  // aA_fF 
-	T_5  // bSlash 
-	T_6  // block_comment 
-	T_7  // char 
-	T_8  // dQuote 
-	T_9  // esc 
-	T_10  // escChar 
-	T_11  // escCharSpace 
-	T_12  // exp 
+	T_0 T = iota // + 
+	T_1  // , 
+	T_2  // - 
+	T_3  // . 
+	T_4  // 0 
+	T_5  // : 
+	T_6  // [ 
+	T_7  // ] 
+	T_8  // block_comment 
+	T_9  // char 
+	T_10  // dQuote 
+	T_11  // eE 
+	T_12  // escCharSpace 
 	T_13  // false 
-	T_14  // frac 
-	T_15  // integer 
-	T_16  // line_comment 
-	T_17  // newLine 
-	T_18  // null 
-	T_19  // optNeg 
-	T_20  // true 
-	T_21  // u 
-	T_22  // zero 
-	T_23  // { 
-	T_24  // } 
+	T_14  // hex 
+	T_15  // line_comment 
+	T_16  // nonZero 
+	T_17  // null 
+	T_18  // repNum1x 
+	T_19  // true 
+	T_20  // { 
+	T_21  // } 
 )
 
 type Symbols []Symbol
@@ -115,20 +113,18 @@ func (nt NT) LeftRec() NTs {
 
 var ntToString = []string { 
 	"Array", /* NT_Array */
-	"CHAR", /* NT_CHAR */
 	"COLON", /* NT_COLON */
 	"COMMA", /* NT_COMMA */
-	"CharCode", /* NT_CharCode */
+	"EXP", /* NT_EXP */
 	"Elements", /* NT_Elements */
 	"EscOrComment", /* NT_EscOrComment */
 	"FALSE", /* NT_FALSE */
-	"HEX", /* NT_HEX */
+	"FRAC", /* NT_FRAC */
 	"INT", /* NT_INT */
 	"Integers", /* NT_Integers */
 	"JSON", /* NT_JSON */
 	"LBRACE", /* NT_LBRACE */
 	"LBRACKET", /* NT_LBRACKET */
-	"LineOrBlock", /* NT_LineOrBlock */
 	"Members", /* NT_Members */
 	"NUL", /* NT_NUL */
 	"Number", /* NT_Number */
@@ -137,7 +133,10 @@ var ntToString = []string {
 	"OptExp", /* NT_OptExp */
 	"OptFrac", /* NT_OptFrac */
 	"OptMems", /* NT_OptMems */
+	"OptNeg", /* NT_OptNeg */
+	"OptPM", /* NT_OptPM */
 	"Pair", /* NT_Pair */
+	"PlusORMinus", /* NT_PlusORMinus */
 	"RBRACE", /* NT_RBRACE */
 	"RBRACKET", /* NT_RBRACKET */
 	"RepChar0x", /* NT_RepChar0x */
@@ -150,49 +149,44 @@ var ntToString = []string {
 }
 
 var tToString = []string { 
-	",", /* T_0 */
-	":", /* T_1 */
-	"[", /* T_2 */
-	"]", /* T_3 */
-	"aA_fF", /* T_4 */
-	"bSlash", /* T_5 */
-	"block_comment", /* T_6 */
-	"char", /* T_7 */
-	"dQuote", /* T_8 */
-	"esc", /* T_9 */
-	"escChar", /* T_10 */
-	"escCharSpace", /* T_11 */
-	"exp", /* T_12 */
+	"+", /* T_0 */
+	",", /* T_1 */
+	"-", /* T_2 */
+	".", /* T_3 */
+	"0", /* T_4 */
+	":", /* T_5 */
+	"[", /* T_6 */
+	"]", /* T_7 */
+	"block_comment", /* T_8 */
+	"char", /* T_9 */
+	"dQuote", /* T_10 */
+	"eE", /* T_11 */
+	"escCharSpace", /* T_12 */
 	"false", /* T_13 */
-	"frac", /* T_14 */
-	"integer", /* T_15 */
-	"line_comment", /* T_16 */
-	"newLine", /* T_17 */
-	"null", /* T_18 */
-	"optNeg", /* T_19 */
-	"true", /* T_20 */
-	"u", /* T_21 */
-	"zero", /* T_22 */
-	"{", /* T_23 */
-	"}", /* T_24 */ 
+	"hex", /* T_14 */
+	"line_comment", /* T_15 */
+	"nonZero", /* T_16 */
+	"null", /* T_17 */
+	"repNum1x", /* T_18 */
+	"true", /* T_19 */
+	"{", /* T_20 */
+	"}", /* T_21 */ 
 }
 
 var stringNT = map[string]NT{ 
 	"Array":NT_Array,
-	"CHAR":NT_CHAR,
 	"COLON":NT_COLON,
 	"COMMA":NT_COMMA,
-	"CharCode":NT_CharCode,
+	"EXP":NT_EXP,
 	"Elements":NT_Elements,
 	"EscOrComment":NT_EscOrComment,
 	"FALSE":NT_FALSE,
-	"HEX":NT_HEX,
+	"FRAC":NT_FRAC,
 	"INT":NT_INT,
 	"Integers":NT_Integers,
 	"JSON":NT_JSON,
 	"LBRACE":NT_LBRACE,
 	"LBRACKET":NT_LBRACKET,
-	"LineOrBlock":NT_LineOrBlock,
 	"Members":NT_Members,
 	"NUL":NT_NUL,
 	"Number":NT_Number,
@@ -201,7 +195,10 @@ var stringNT = map[string]NT{
 	"OptExp":NT_OptExp,
 	"OptFrac":NT_OptFrac,
 	"OptMems":NT_OptMems,
+	"OptNeg":NT_OptNeg,
+	"OptPM":NT_OptPM,
 	"Pair":NT_Pair,
+	"PlusORMinus":NT_PlusORMinus,
 	"RBRACE":NT_RBRACE,
 	"RBRACKET":NT_RBRACKET,
 	"RepChar0x":NT_RepChar0x,
@@ -215,36 +212,37 @@ var stringNT = map[string]NT{
 
 var leftRec = map[NT]NTs { 
 	NT_Array: NTs {  NT_LBRACKET,  },
-	NT_CHAR: NTs {  },
 	NT_COLON: NTs {  },
 	NT_COMMA: NTs {  },
-	NT_CharCode: NTs {  },
-	NT_Elements: NTs {  NT_NUL,  NT_String,  NT_INT,  NT_Object,  NT_Array,  NT_Value,  NT_TRUE,  NT_LBRACE,  NT_LBRACKET,  NT_FALSE,  NT_Number,  },
-	NT_EscOrComment: NTs {  NT_LineOrBlock,  },
+	NT_EXP: NTs {  },
+	NT_Elements: NTs {  NT_TRUE,  NT_OptNeg,  NT_LBRACE,  NT_Object,  NT_Array,  NT_Integers,  NT_INT,  NT_Value,  NT_String,  NT_LBRACKET,  NT_FALSE,  NT_NUL,  NT_Number,  },
+	NT_EscOrComment: NTs {  },
 	NT_FALSE: NTs {  },
-	NT_HEX: NTs {  NT_INT,  NT_Number,  },
-	NT_INT: NTs {  },
+	NT_FRAC: NTs {  },
+	NT_INT: NTs {  NT_OptNeg,  NT_Integers,  },
 	NT_Integers: NTs {  },
-	NT_JSON: NTs {  NT_LineOrBlock,  NT_Object,  NT_LBRACE,  NT_WS,  NT_EscOrComment,  },
+	NT_JSON: NTs {  NT_WS,  NT_EscOrComment,  NT_Object,  NT_LBRACE,  },
 	NT_LBRACE: NTs {  },
 	NT_LBRACKET: NTs {  },
-	NT_LineOrBlock: NTs {  },
 	NT_Members: NTs {  NT_Pair,  NT_String,  },
 	NT_NUL: NTs {  },
-	NT_Number: NTs {  NT_INT,  },
+	NT_Number: NTs {  NT_INT,  NT_OptNeg,  NT_Integers,  },
 	NT_Object: NTs {  NT_LBRACE,  },
-	NT_OptElem: NTs {  NT_String,  NT_INT,  NT_Number,  NT_Value,  NT_TRUE,  NT_LBRACKET,  NT_Elements,  NT_Array,  NT_NUL,  NT_Object,  NT_FALSE,  NT_LBRACE,  },
-	NT_OptExp: NTs {  },
-	NT_OptFrac: NTs {  },
-	NT_OptMems: NTs {  NT_String,  NT_Members,  NT_Pair,  },
+	NT_OptElem: NTs {  NT_FALSE,  NT_Value,  NT_LBRACE,  NT_TRUE,  NT_Elements,  NT_Array,  NT_Integers,  NT_LBRACKET,  NT_Number,  NT_INT,  NT_OptNeg,  NT_Object,  NT_String,  NT_NUL,  },
+	NT_OptExp: NTs {  NT_EXP,  },
+	NT_OptFrac: NTs {  NT_FRAC,  },
+	NT_OptMems: NTs {  NT_Members,  NT_Pair,  NT_String,  },
+	NT_OptNeg: NTs {  },
+	NT_OptPM: NTs {  NT_PlusORMinus,  },
 	NT_Pair: NTs {  NT_String,  },
+	NT_PlusORMinus: NTs {  },
 	NT_RBRACE: NTs {  },
 	NT_RBRACKET: NTs {  },
-	NT_RepChar0x: NTs {  NT_CHAR,  },
+	NT_RepChar0x: NTs {  },
 	NT_RepComPair0x: NTs {  NT_COMMA,  },
 	NT_RepComVal0x: NTs {  NT_COMMA,  },
 	NT_String: NTs {  },
 	NT_TRUE: NTs {  },
-	NT_Value: NTs {  NT_Array,  NT_LBRACKET,  NT_FALSE,  NT_Number,  NT_INT,  NT_Object,  NT_LBRACE,  NT_String,  NT_TRUE,  NT_NUL,  },
-	NT_WS: NTs {  NT_EscOrComment,  NT_LineOrBlock,  },
+	NT_Value: NTs {  NT_Array,  NT_LBRACKET,  NT_FALSE,  NT_NUL,  NT_Number,  NT_INT,  NT_Integers,  NT_Object,  NT_String,  NT_OptNeg,  NT_LBRACE,  NT_TRUE,  },
+	NT_WS: NTs {  NT_EscOrComment,  NT_WS,  },
 }
