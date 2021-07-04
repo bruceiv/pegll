@@ -74,13 +74,10 @@ func repPLUSorMINUS(val int, pORmrep bsr.BSR) int {
 	//self-assignment aspect of RepPLUSorMINUS0x NT
 	repChild := pORmrep.GetNTChildI(1)
 
-	//alt0 -> addition
-	if pORm.Alternate() == 0 {
+	
+	if pORm.Alternate() == 0 { //alt0 -> addition
 		return repPLUSorMINUS((val + product(prod)), repChild)
-	}
-
-	//alt1 -> subtraction
-	if pORm.Alternate() == 1 {
+	}else if pORm.Alternate() == 1 { //alt1 -> subtraction
 		return repPLUSorMINUS((val - product(prod)), repChild)
 	}
 
@@ -124,13 +121,10 @@ func repTIMESorDIV(val int, tORdrep bsr.BSR) int {
 	//self-assignment aspect of RepTIMESorDIVIDE0x NT
 	repChild := tORdrep.GetNTChildI(1)
 
-	//alt0 -> multiplication
-	if tORd.Alternate() == 0 {
+	
+	if tORd.Alternate() == 0 { //alt0 -> multiplication
 		return repTIMESorDIV((val * element(elem)), repChild)
-	}
-
-	//alt1 -> division
-	if tORd.Alternate() == 1 {
+	} else if tORd.Alternate() == 1 { //alt1 -> division
 		return repTIMESorDIV((val / element(elem)), repChild)
 	}
 
@@ -141,8 +135,7 @@ func repTIMESorDIV(val int, tORdrep bsr.BSR) int {
 //ELEMENT : OPEN SUM CLOSE
 //        | Number ;
 func element(e bsr.BSR) int {
-	//Alt1 - OPEN SUM CLOSE
-	if e.Alternate() == 0 {
+	if e.Alternate() == 0 { //Alt1 - OPEN SUM CLOSE
 		//Get SUM NT
 		su := e.GetNTChildI(1)
 		//Calculate SUM
