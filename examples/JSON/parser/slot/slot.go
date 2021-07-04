@@ -23,6 +23,12 @@ const(
 	COMMA0R0
 	COMMA0R1
 	COMMA0R2
+	ComPair0R0
+	ComPair0R1
+	ComPair0R2
+	ComVal0R0
+	ComVal0R1
+	ComVal0R2
 	EXP0R0
 	EXP0R1
 	EXP0R2
@@ -106,25 +112,17 @@ const(
 	RBRACKET0R0
 	RBRACKET0R1
 	RBRACKET0R2
-	RepChar0x0R0
-	RepChar0x0R1
-	RepChar0x0R2
-	RepChar0x1R0
 	RepComPair0x0R0
 	RepComPair0x0R1
 	RepComPair0x0R2
-	RepComPair0x0R3
 	RepComPair0x1R0
 	RepComVal0x0R0
 	RepComVal0x0R1
 	RepComVal0x0R2
-	RepComVal0x0R3
 	RepComVal0x1R0
 	String0R0
 	String0R1
 	String0R2
-	String0R3
-	String0R4
 	TRUE0R0
 	TRUE0R1
 	TRUE0R2
@@ -336,39 +334,87 @@ var slots = map[Label]*Slot{
 		}, 
 		COMMA0R2, 
 	},
+	ComPair0R0: {
+		symbols.NT_ComPair, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_COMMA, 
+			symbols.NT_Pair,
+		}, 
+		ComPair0R0, 
+	},
+	ComPair0R1: {
+		symbols.NT_ComPair, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_COMMA, 
+			symbols.NT_Pair,
+		}, 
+		ComPair0R1, 
+	},
+	ComPair0R2: {
+		symbols.NT_ComPair, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_COMMA, 
+			symbols.NT_Pair,
+		}, 
+		ComPair0R2, 
+	},
+	ComVal0R0: {
+		symbols.NT_ComVal, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_COMMA, 
+			symbols.NT_Value,
+		}, 
+		ComVal0R0, 
+	},
+	ComVal0R1: {
+		symbols.NT_ComVal, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_COMMA, 
+			symbols.NT_Value,
+		}, 
+		ComVal0R1, 
+	},
+	ComVal0R2: {
+		symbols.NT_ComVal, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_COMMA, 
+			symbols.NT_Value,
+		}, 
+		ComVal0R2, 
+	},
 	EXP0R0: {
 		symbols.NT_EXP, 0, 0, 
 		symbols.Symbols{  
-			symbols.T_11, 
+			symbols.T_9, 
 			symbols.NT_OptPM, 
-			symbols.T_18,
+			symbols.T_16,
 		}, 
 		EXP0R0, 
 	},
 	EXP0R1: {
 		symbols.NT_EXP, 0, 1, 
 		symbols.Symbols{  
-			symbols.T_11, 
+			symbols.T_9, 
 			symbols.NT_OptPM, 
-			symbols.T_18,
+			symbols.T_16,
 		}, 
 		EXP0R1, 
 	},
 	EXP0R2: {
 		symbols.NT_EXP, 0, 2, 
 		symbols.Symbols{  
-			symbols.T_11, 
+			symbols.T_9, 
 			symbols.NT_OptPM, 
-			symbols.T_18,
+			symbols.T_16,
 		}, 
 		EXP0R2, 
 	},
 	EXP0R3: {
 		symbols.NT_EXP, 0, 3, 
 		symbols.Symbols{  
-			symbols.T_11, 
+			symbols.T_9, 
 			symbols.NT_OptPM, 
-			symbols.T_18,
+			symbols.T_16,
 		}, 
 		EXP0R3, 
 	},
@@ -399,28 +445,28 @@ var slots = map[Label]*Slot{
 	EscOrComment0R0: {
 		symbols.NT_EscOrComment, 0, 0, 
 		symbols.Symbols{  
-			symbols.T_12,
+			symbols.T_10,
 		}, 
 		EscOrComment0R0, 
 	},
 	EscOrComment0R1: {
 		symbols.NT_EscOrComment, 0, 1, 
 		symbols.Symbols{  
-			symbols.T_12,
+			symbols.T_10,
 		}, 
 		EscOrComment0R1, 
 	},
 	EscOrComment1R0: {
 		symbols.NT_EscOrComment, 1, 0, 
 		symbols.Symbols{  
-			symbols.T_15,
+			symbols.T_13,
 		}, 
 		EscOrComment1R0, 
 	},
 	EscOrComment1R1: {
 		symbols.NT_EscOrComment, 1, 1, 
 		symbols.Symbols{  
-			symbols.T_15,
+			symbols.T_13,
 		}, 
 		EscOrComment1R1, 
 	},
@@ -447,7 +493,7 @@ var slots = map[Label]*Slot{
 	FALSE0R0: {
 		symbols.NT_FALSE, 0, 0, 
 		symbols.Symbols{  
-			symbols.T_13, 
+			symbols.T_11, 
 			symbols.NT_WS,
 		}, 
 		FALSE0R0, 
@@ -455,7 +501,7 @@ var slots = map[Label]*Slot{
 	FALSE0R1: {
 		symbols.NT_FALSE, 0, 1, 
 		symbols.Symbols{  
-			symbols.T_13, 
+			symbols.T_11, 
 			symbols.NT_WS,
 		}, 
 		FALSE0R1, 
@@ -463,7 +509,7 @@ var slots = map[Label]*Slot{
 	FALSE0R2: {
 		symbols.NT_FALSE, 0, 2, 
 		symbols.Symbols{  
-			symbols.T_13, 
+			symbols.T_11, 
 			symbols.NT_WS,
 		}, 
 		FALSE0R2, 
@@ -472,7 +518,7 @@ var slots = map[Label]*Slot{
 		symbols.NT_FRAC, 0, 0, 
 		symbols.Symbols{  
 			symbols.T_3, 
-			symbols.T_18,
+			symbols.T_16,
 		}, 
 		FRAC0R0, 
 	},
@@ -480,7 +526,7 @@ var slots = map[Label]*Slot{
 		symbols.NT_FRAC, 0, 1, 
 		symbols.Symbols{  
 			symbols.T_3, 
-			symbols.T_18,
+			symbols.T_16,
 		}, 
 		FRAC0R1, 
 	},
@@ -488,7 +534,7 @@ var slots = map[Label]*Slot{
 		symbols.NT_FRAC, 0, 2, 
 		symbols.Symbols{  
 			symbols.T_3, 
-			symbols.T_18,
+			symbols.T_16,
 		}, 
 		FRAC0R2, 
 	},
@@ -519,14 +565,14 @@ var slots = map[Label]*Slot{
 	Integers0R0: {
 		symbols.NT_Integers, 0, 0, 
 		symbols.Symbols{  
-			symbols.T_16,
+			symbols.T_14,
 		}, 
 		Integers0R0, 
 	},
 	Integers0R1: {
 		symbols.NT_Integers, 0, 1, 
 		symbols.Symbols{  
-			symbols.T_16,
+			symbols.T_14,
 		}, 
 		Integers0R1, 
 	},
@@ -571,7 +617,7 @@ var slots = map[Label]*Slot{
 	LBRACE0R0: {
 		symbols.NT_LBRACE, 0, 0, 
 		symbols.Symbols{  
-			symbols.T_20, 
+			symbols.T_19, 
 			symbols.NT_WS,
 		}, 
 		LBRACE0R0, 
@@ -579,7 +625,7 @@ var slots = map[Label]*Slot{
 	LBRACE0R1: {
 		symbols.NT_LBRACE, 0, 1, 
 		symbols.Symbols{  
-			symbols.T_20, 
+			symbols.T_19, 
 			symbols.NT_WS,
 		}, 
 		LBRACE0R1, 
@@ -587,7 +633,7 @@ var slots = map[Label]*Slot{
 	LBRACE0R2: {
 		symbols.NT_LBRACE, 0, 2, 
 		symbols.Symbols{  
-			symbols.T_20, 
+			symbols.T_19, 
 			symbols.NT_WS,
 		}, 
 		LBRACE0R2, 
@@ -643,7 +689,7 @@ var slots = map[Label]*Slot{
 	NUL0R0: {
 		symbols.NT_NUL, 0, 0, 
 		symbols.Symbols{  
-			symbols.T_17, 
+			symbols.T_15, 
 			symbols.NT_WS,
 		}, 
 		NUL0R0, 
@@ -651,7 +697,7 @@ var slots = map[Label]*Slot{
 	NUL0R1: {
 		symbols.NT_NUL, 0, 1, 
 		symbols.Symbols{  
-			symbols.T_17, 
+			symbols.T_15, 
 			symbols.NT_WS,
 		}, 
 		NUL0R1, 
@@ -659,7 +705,7 @@ var slots = map[Label]*Slot{
 	NUL0R2: {
 		symbols.NT_NUL, 0, 2, 
 		symbols.Symbols{  
-			symbols.T_17, 
+			symbols.T_15, 
 			symbols.NT_WS,
 		}, 
 		NUL0R2, 
@@ -937,7 +983,7 @@ var slots = map[Label]*Slot{
 	RBRACE0R0: {
 		symbols.NT_RBRACE, 0, 0, 
 		symbols.Symbols{  
-			symbols.T_21, 
+			symbols.T_20, 
 			symbols.NT_WS,
 		}, 
 		RBRACE0R0, 
@@ -945,7 +991,7 @@ var slots = map[Label]*Slot{
 	RBRACE0R1: {
 		symbols.NT_RBRACE, 0, 1, 
 		symbols.Symbols{  
-			symbols.T_21, 
+			symbols.T_20, 
 			symbols.NT_WS,
 		}, 
 		RBRACE0R1, 
@@ -953,7 +999,7 @@ var slots = map[Label]*Slot{
 	RBRACE0R2: {
 		symbols.NT_RBRACE, 0, 2, 
 		symbols.Symbols{  
-			symbols.T_21, 
+			symbols.T_20, 
 			symbols.NT_WS,
 		}, 
 		RBRACE0R2, 
@@ -982,41 +1028,10 @@ var slots = map[Label]*Slot{
 		}, 
 		RBRACKET0R2, 
 	},
-	RepChar0x0R0: {
-		symbols.NT_RepChar0x, 0, 0, 
-		symbols.Symbols{  
-			symbols.T_9, 
-			symbols.NT_RepChar0x,
-		}, 
-		RepChar0x0R0, 
-	},
-	RepChar0x0R1: {
-		symbols.NT_RepChar0x, 0, 1, 
-		symbols.Symbols{  
-			symbols.T_9, 
-			symbols.NT_RepChar0x,
-		}, 
-		RepChar0x0R1, 
-	},
-	RepChar0x0R2: {
-		symbols.NT_RepChar0x, 0, 2, 
-		symbols.Symbols{  
-			symbols.T_9, 
-			symbols.NT_RepChar0x,
-		}, 
-		RepChar0x0R2, 
-	},
-	RepChar0x1R0: {
-		symbols.NT_RepChar0x, 1, 0, 
-		symbols.Symbols{ 
-		}, 
-		RepChar0x1R0, 
-	},
 	RepComPair0x0R0: {
 		symbols.NT_RepComPair0x, 0, 0, 
 		symbols.Symbols{  
-			symbols.NT_COMMA, 
-			symbols.NT_Pair, 
+			symbols.NT_ComPair, 
 			symbols.NT_RepComPair0x,
 		}, 
 		RepComPair0x0R0, 
@@ -1024,8 +1039,7 @@ var slots = map[Label]*Slot{
 	RepComPair0x0R1: {
 		symbols.NT_RepComPair0x, 0, 1, 
 		symbols.Symbols{  
-			symbols.NT_COMMA, 
-			symbols.NT_Pair, 
+			symbols.NT_ComPair, 
 			symbols.NT_RepComPair0x,
 		}, 
 		RepComPair0x0R1, 
@@ -1033,20 +1047,10 @@ var slots = map[Label]*Slot{
 	RepComPair0x0R2: {
 		symbols.NT_RepComPair0x, 0, 2, 
 		symbols.Symbols{  
-			symbols.NT_COMMA, 
-			symbols.NT_Pair, 
+			symbols.NT_ComPair, 
 			symbols.NT_RepComPair0x,
 		}, 
 		RepComPair0x0R2, 
-	},
-	RepComPair0x0R3: {
-		symbols.NT_RepComPair0x, 0, 3, 
-		symbols.Symbols{  
-			symbols.NT_COMMA, 
-			symbols.NT_Pair, 
-			symbols.NT_RepComPair0x,
-		}, 
-		RepComPair0x0R3, 
 	},
 	RepComPair0x1R0: {
 		symbols.NT_RepComPair0x, 1, 0, 
@@ -1057,8 +1061,7 @@ var slots = map[Label]*Slot{
 	RepComVal0x0R0: {
 		symbols.NT_RepComVal0x, 0, 0, 
 		symbols.Symbols{  
-			symbols.NT_COMMA, 
-			symbols.NT_Value, 
+			symbols.NT_ComVal, 
 			symbols.NT_RepComVal0x,
 		}, 
 		RepComVal0x0R0, 
@@ -1066,8 +1069,7 @@ var slots = map[Label]*Slot{
 	RepComVal0x0R1: {
 		symbols.NT_RepComVal0x, 0, 1, 
 		symbols.Symbols{  
-			symbols.NT_COMMA, 
-			symbols.NT_Value, 
+			symbols.NT_ComVal, 
 			symbols.NT_RepComVal0x,
 		}, 
 		RepComVal0x0R1, 
@@ -1075,20 +1077,10 @@ var slots = map[Label]*Slot{
 	RepComVal0x0R2: {
 		symbols.NT_RepComVal0x, 0, 2, 
 		symbols.Symbols{  
-			symbols.NT_COMMA, 
-			symbols.NT_Value, 
+			symbols.NT_ComVal, 
 			symbols.NT_RepComVal0x,
 		}, 
 		RepComVal0x0R2, 
-	},
-	RepComVal0x0R3: {
-		symbols.NT_RepComVal0x, 0, 3, 
-		symbols.Symbols{  
-			symbols.NT_COMMA, 
-			symbols.NT_Value, 
-			symbols.NT_RepComVal0x,
-		}, 
-		RepComVal0x0R3, 
 	},
 	RepComVal0x1R0: {
 		symbols.NT_RepComVal0x, 1, 0, 
@@ -1099,9 +1091,7 @@ var slots = map[Label]*Slot{
 	String0R0: {
 		symbols.NT_String, 0, 0, 
 		symbols.Symbols{  
-			symbols.T_10, 
-			symbols.NT_RepChar0x, 
-			symbols.T_10, 
+			symbols.T_17, 
 			symbols.NT_WS,
 		}, 
 		String0R0, 
@@ -1109,9 +1099,7 @@ var slots = map[Label]*Slot{
 	String0R1: {
 		symbols.NT_String, 0, 1, 
 		symbols.Symbols{  
-			symbols.T_10, 
-			symbols.NT_RepChar0x, 
-			symbols.T_10, 
+			symbols.T_17, 
 			symbols.NT_WS,
 		}, 
 		String0R1, 
@@ -1119,37 +1107,15 @@ var slots = map[Label]*Slot{
 	String0R2: {
 		symbols.NT_String, 0, 2, 
 		symbols.Symbols{  
-			symbols.T_10, 
-			symbols.NT_RepChar0x, 
-			symbols.T_10, 
+			symbols.T_17, 
 			symbols.NT_WS,
 		}, 
 		String0R2, 
 	},
-	String0R3: {
-		symbols.NT_String, 0, 3, 
-		symbols.Symbols{  
-			symbols.T_10, 
-			symbols.NT_RepChar0x, 
-			symbols.T_10, 
-			symbols.NT_WS,
-		}, 
-		String0R3, 
-	},
-	String0R4: {
-		symbols.NT_String, 0, 4, 
-		symbols.Symbols{  
-			symbols.T_10, 
-			symbols.NT_RepChar0x, 
-			symbols.T_10, 
-			symbols.NT_WS,
-		}, 
-		String0R4, 
-	},
 	TRUE0R0: {
 		symbols.NT_TRUE, 0, 0, 
 		symbols.Symbols{  
-			symbols.T_19, 
+			symbols.T_18, 
 			symbols.NT_WS,
 		}, 
 		TRUE0R0, 
@@ -1157,7 +1123,7 @@ var slots = map[Label]*Slot{
 	TRUE0R1: {
 		symbols.NT_TRUE, 0, 1, 
 		symbols.Symbols{  
-			symbols.T_19, 
+			symbols.T_18, 
 			symbols.NT_WS,
 		}, 
 		TRUE0R1, 
@@ -1165,7 +1131,7 @@ var slots = map[Label]*Slot{
 	TRUE0R2: {
 		symbols.NT_TRUE, 0, 2, 
 		symbols.Symbols{  
-			symbols.T_19, 
+			symbols.T_18, 
 			symbols.NT_WS,
 		}, 
 		TRUE0R2, 
@@ -1311,6 +1277,12 @@ var slotIndex = map[Index]Label {
 	Index{ symbols.NT_COMMA,0,0 }: COMMA0R0,
 	Index{ symbols.NT_COMMA,0,1 }: COMMA0R1,
 	Index{ symbols.NT_COMMA,0,2 }: COMMA0R2,
+	Index{ symbols.NT_ComPair,0,0 }: ComPair0R0,
+	Index{ symbols.NT_ComPair,0,1 }: ComPair0R1,
+	Index{ symbols.NT_ComPair,0,2 }: ComPair0R2,
+	Index{ symbols.NT_ComVal,0,0 }: ComVal0R0,
+	Index{ symbols.NT_ComVal,0,1 }: ComVal0R1,
+	Index{ symbols.NT_ComVal,0,2 }: ComVal0R2,
 	Index{ symbols.NT_EXP,0,0 }: EXP0R0,
 	Index{ symbols.NT_EXP,0,1 }: EXP0R1,
 	Index{ symbols.NT_EXP,0,2 }: EXP0R2,
@@ -1394,25 +1366,17 @@ var slotIndex = map[Index]Label {
 	Index{ symbols.NT_RBRACKET,0,0 }: RBRACKET0R0,
 	Index{ symbols.NT_RBRACKET,0,1 }: RBRACKET0R1,
 	Index{ symbols.NT_RBRACKET,0,2 }: RBRACKET0R2,
-	Index{ symbols.NT_RepChar0x,0,0 }: RepChar0x0R0,
-	Index{ symbols.NT_RepChar0x,0,1 }: RepChar0x0R1,
-	Index{ symbols.NT_RepChar0x,0,2 }: RepChar0x0R2,
-	Index{ symbols.NT_RepChar0x,1,0 }: RepChar0x1R0,
 	Index{ symbols.NT_RepComPair0x,0,0 }: RepComPair0x0R0,
 	Index{ symbols.NT_RepComPair0x,0,1 }: RepComPair0x0R1,
 	Index{ symbols.NT_RepComPair0x,0,2 }: RepComPair0x0R2,
-	Index{ symbols.NT_RepComPair0x,0,3 }: RepComPair0x0R3,
 	Index{ symbols.NT_RepComPair0x,1,0 }: RepComPair0x1R0,
 	Index{ symbols.NT_RepComVal0x,0,0 }: RepComVal0x0R0,
 	Index{ symbols.NT_RepComVal0x,0,1 }: RepComVal0x0R1,
 	Index{ symbols.NT_RepComVal0x,0,2 }: RepComVal0x0R2,
-	Index{ symbols.NT_RepComVal0x,0,3 }: RepComVal0x0R3,
 	Index{ symbols.NT_RepComVal0x,1,0 }: RepComVal0x1R0,
 	Index{ symbols.NT_String,0,0 }: String0R0,
 	Index{ symbols.NT_String,0,1 }: String0R1,
 	Index{ symbols.NT_String,0,2 }: String0R2,
-	Index{ symbols.NT_String,0,3 }: String0R3,
-	Index{ symbols.NT_String,0,4 }: String0R4,
 	Index{ symbols.NT_TRUE,0,0 }: TRUE0R0,
 	Index{ symbols.NT_TRUE,0,1 }: TRUE0R1,
 	Index{ symbols.NT_TRUE,0,2 }: TRUE0R2,
@@ -1442,14 +1406,15 @@ var alternates = map[symbols.NT][]Label{
 	symbols.NT_OptMems:[]Label{ OptMems0R0,OptMems1R0 },
 	symbols.NT_Members:[]Label{ Members0R0 },
 	symbols.NT_RepComPair0x:[]Label{ RepComPair0x0R0,RepComPair0x1R0 },
+	symbols.NT_ComPair:[]Label{ ComPair0R0 },
 	symbols.NT_Pair:[]Label{ Pair0R0 },
 	symbols.NT_Array:[]Label{ Array0R0 },
 	symbols.NT_OptElem:[]Label{ OptElem0R0,OptElem1R0 },
 	symbols.NT_Elements:[]Label{ Elements0R0 },
 	symbols.NT_RepComVal0x:[]Label{ RepComVal0x0R0,RepComVal0x1R0 },
+	symbols.NT_ComVal:[]Label{ ComVal0R0 },
 	symbols.NT_Value:[]Label{ Value0R0,Value1R0,Value2R0,Value3R0,Value4R0,Value5R0,Value6R0 },
 	symbols.NT_String:[]Label{ String0R0 },
-	symbols.NT_RepChar0x:[]Label{ RepChar0x0R0,RepChar0x1R0 },
 	symbols.NT_Number:[]Label{ Number0R0 },
 	symbols.NT_OptFrac:[]Label{ OptFrac0R0,OptFrac1R0 },
 	symbols.NT_OptExp:[]Label{ OptExp0R0,OptExp1R0 },
@@ -1484,6 +1449,12 @@ var nullable = []bool {
 	false, // COMMA0R0 
 	true, // COMMA0R1 
 	true, // COMMA0R2 
+	false, // ComPair0R0 
+	false, // ComPair0R1 
+	true, // ComPair0R2 
+	false, // ComVal0R0 
+	false, // ComVal0R1 
+	true, // ComVal0R2 
 	false, // EXP0R0 
 	false, // EXP0R1 
 	false, // EXP0R2 
@@ -1567,25 +1538,17 @@ var nullable = []bool {
 	false, // RBRACKET0R0 
 	true, // RBRACKET0R1 
 	true, // RBRACKET0R2 
-	false, // RepChar0x0R0 
-	true, // RepChar0x0R1 
-	true, // RepChar0x0R2 
-	true, // RepChar0x1R0 
 	false, // RepComPair0x0R0 
-	false, // RepComPair0x0R1 
+	true, // RepComPair0x0R1 
 	true, // RepComPair0x0R2 
-	true, // RepComPair0x0R3 
 	true, // RepComPair0x1R0 
 	false, // RepComVal0x0R0 
-	false, // RepComVal0x0R1 
+	true, // RepComVal0x0R1 
 	true, // RepComVal0x0R2 
-	true, // RepComVal0x0R3 
 	true, // RepComVal0x1R0 
 	false, // String0R0 
-	false, // String0R1 
-	false, // String0R2 
-	true, // String0R3 
-	true, // String0R4 
+	true, // String0R1 
+	true, // String0R2 
 	false, // TRUE0R0 
 	true, // TRUE0R1 
 	true, // TRUE0R2 
@@ -1611,76 +1574,82 @@ var nullable = []bool {
 
 var firstT = []map[token.Type]bool { 
 	{  token.T_6: true,  }, // Array0R0 
-	{  token.T_6: true,  token.T_20: true,  token.T_2: true,  token.T_16: true,  token.T_7: true,  token.T_4: true,  token.T_19: true,  token.T_13: true,  token.T_17: true,  token.T_10: true,  }, // Array0R1 
+	{  token.T_17: true,  token.T_6: true,  token.T_19: true,  token.T_4: true,  token.T_18: true,  token.T_15: true,  token.T_7: true,  token.T_2: true,  token.T_14: true,  token.T_11: true,  }, // Array0R1 
 	{  token.T_7: true,  }, // Array0R2 
 	{  }, // Array0R3 
 	{  token.T_5: true,  }, // COLON0R0 
-	{  token.T_15: true,  token.T_8: true,  token.T_12: true,  }, // COLON0R1 
+	{  token.T_10: true,  token.T_13: true,  token.T_8: true,  }, // COLON0R1 
 	{  }, // COLON0R2 
 	{  token.T_1: true,  }, // COMMA0R0 
-	{  token.T_8: true,  token.T_12: true,  token.T_15: true,  }, // COMMA0R1 
+	{  token.T_10: true,  token.T_13: true,  token.T_8: true,  }, // COMMA0R1 
 	{  }, // COMMA0R2 
-	{  token.T_11: true,  }, // EXP0R0 
-	{  token.T_2: true,  token.T_0: true,  token.T_18: true,  }, // EXP0R1 
-	{  token.T_18: true,  }, // EXP0R2 
+	{  token.T_1: true,  }, // ComPair0R0 
+	{  token.T_17: true,  }, // ComPair0R1 
+	{  }, // ComPair0R2 
+	{  token.T_1: true,  }, // ComVal0R0 
+	{  token.T_4: true,  token.T_14: true,  token.T_6: true,  token.T_11: true,  token.T_19: true,  token.T_2: true,  token.T_17: true,  token.T_18: true,  token.T_15: true,  }, // ComVal0R1 
+	{  }, // ComVal0R2 
+	{  token.T_9: true,  }, // EXP0R0 
+	{  token.T_16: true,  token.T_0: true,  token.T_2: true,  }, // EXP0R1 
+	{  token.T_16: true,  }, // EXP0R2 
 	{  }, // EXP0R3 
-	{  token.T_10: true,  token.T_17: true,  token.T_2: true,  token.T_16: true,  token.T_4: true,  token.T_19: true,  token.T_13: true,  token.T_20: true,  token.T_6: true,  }, // Elements0R0 
+	{  token.T_4: true,  token.T_19: true,  token.T_18: true,  token.T_11: true,  token.T_15: true,  token.T_6: true,  token.T_17: true,  token.T_2: true,  token.T_14: true,  }, // Elements0R0 
 	{  token.T_1: true,  }, // Elements0R1 
 	{  }, // Elements0R2 
-	{  token.T_12: true,  }, // EscOrComment0R0 
+	{  token.T_10: true,  }, // EscOrComment0R0 
 	{  }, // EscOrComment0R1 
-	{  token.T_15: true,  }, // EscOrComment1R0 
+	{  token.T_13: true,  }, // EscOrComment1R0 
 	{  }, // EscOrComment1R1 
 	{  token.T_8: true,  }, // EscOrComment2R0 
 	{  }, // EscOrComment2R1 
 	{  }, // EscOrComment3R0 
-	{  token.T_13: true,  }, // FALSE0R0 
-	{  token.T_12: true,  token.T_15: true,  token.T_8: true,  }, // FALSE0R1 
+	{  token.T_11: true,  }, // FALSE0R0 
+	{  token.T_8: true,  token.T_10: true,  token.T_13: true,  }, // FALSE0R1 
 	{  }, // FALSE0R2 
 	{  token.T_3: true,  }, // FRAC0R0 
-	{  token.T_18: true,  }, // FRAC0R1 
+	{  token.T_16: true,  }, // FRAC0R1 
 	{  }, // FRAC0R2 
-	{  token.T_4: true,  token.T_16: true,  token.T_2: true,  }, // INT0R0 
-	{  token.T_16: true,  token.T_4: true,  }, // INT0R1 
+	{  token.T_4: true,  token.T_14: true,  token.T_2: true,  }, // INT0R0 
+	{  token.T_14: true,  token.T_4: true,  }, // INT0R1 
 	{  }, // INT0R2 
-	{  token.T_16: true,  }, // Integers0R0 
+	{  token.T_14: true,  }, // Integers0R0 
 	{  }, // Integers0R1 
 	{  token.T_4: true,  }, // Integers1R0 
 	{  }, // Integers1R1 
-	{  token.T_12: true,  token.T_15: true,  token.T_8: true,  token.T_20: true,  }, // JSON0R0 
-	{  token.T_20: true,  }, // JSON0R1 
+	{  token.T_8: true,  token.T_10: true,  token.T_13: true,  token.T_19: true,  }, // JSON0R0 
+	{  token.T_19: true,  }, // JSON0R1 
 	{  }, // JSON0R2 
-	{  token.T_20: true,  }, // LBRACE0R0 
-	{  token.T_12: true,  token.T_15: true,  token.T_8: true,  }, // LBRACE0R1 
+	{  token.T_19: true,  }, // LBRACE0R0 
+	{  token.T_10: true,  token.T_13: true,  token.T_8: true,  }, // LBRACE0R1 
 	{  }, // LBRACE0R2 
 	{  token.T_6: true,  }, // LBRACKET0R0 
-	{  token.T_8: true,  token.T_12: true,  token.T_15: true,  }, // LBRACKET0R1 
+	{  token.T_10: true,  token.T_13: true,  token.T_8: true,  }, // LBRACKET0R1 
 	{  }, // LBRACKET0R2 
-	{  token.T_10: true,  }, // Members0R0 
+	{  token.T_17: true,  }, // Members0R0 
 	{  token.T_1: true,  }, // Members0R1 
 	{  }, // Members0R2 
-	{  token.T_17: true,  }, // NUL0R0 
-	{  token.T_8: true,  token.T_12: true,  token.T_15: true,  }, // NUL0R1 
+	{  token.T_15: true,  }, // NUL0R0 
+	{  token.T_10: true,  token.T_13: true,  token.T_8: true,  }, // NUL0R1 
 	{  }, // NUL0R2 
-	{  token.T_4: true,  token.T_2: true,  token.T_16: true,  }, // Number0R0 
-	{  token.T_3: true,  token.T_11: true,  token.T_12: true,  token.T_15: true,  token.T_8: true,  }, // Number0R1 
-	{  token.T_11: true,  token.T_15: true,  token.T_8: true,  token.T_12: true,  }, // Number0R2 
-	{  token.T_12: true,  token.T_15: true,  token.T_8: true,  }, // Number0R3 
+	{  token.T_2: true,  token.T_14: true,  token.T_4: true,  }, // Number0R0 
+	{  token.T_3: true,  token.T_9: true,  token.T_8: true,  token.T_10: true,  token.T_13: true,  }, // Number0R1 
+	{  token.T_13: true,  token.T_8: true,  token.T_9: true,  token.T_10: true,  }, // Number0R2 
+	{  token.T_10: true,  token.T_13: true,  token.T_8: true,  }, // Number0R3 
 	{  }, // Number0R4 
-	{  token.T_20: true,  }, // Object0R0 
-	{  token.T_10: true,  token.T_21: true,  }, // Object0R1 
-	{  token.T_21: true,  }, // Object0R2 
+	{  token.T_19: true,  }, // Object0R0 
+	{  token.T_17: true,  token.T_20: true,  }, // Object0R1 
+	{  token.T_20: true,  }, // Object0R2 
 	{  }, // Object0R3 
-	{  token.T_17: true,  token.T_10: true,  token.T_13: true,  token.T_20: true,  token.T_4: true,  token.T_19: true,  token.T_16: true,  token.T_6: true,  token.T_2: true,  }, // OptElem0R0 
+	{  token.T_6: true,  token.T_2: true,  token.T_4: true,  token.T_18: true,  token.T_15: true,  token.T_19: true,  token.T_14: true,  token.T_11: true,  token.T_17: true,  }, // OptElem0R0 
 	{  }, // OptElem0R1 
 	{  }, // OptElem1R0 
-	{  token.T_11: true,  }, // OptExp0R0 
+	{  token.T_9: true,  }, // OptExp0R0 
 	{  }, // OptExp0R1 
 	{  }, // OptExp1R0 
 	{  token.T_3: true,  }, // OptFrac0R0 
 	{  }, // OptFrac0R1 
 	{  }, // OptFrac1R0 
-	{  token.T_10: true,  }, // OptMems0R0 
+	{  token.T_17: true,  }, // OptMems0R0 
 	{  }, // OptMems0R1 
 	{  }, // OptMems1R0 
 	{  token.T_2: true,  }, // OptNeg0R0 
@@ -1689,58 +1658,50 @@ var firstT = []map[token.Type]bool {
 	{  token.T_0: true,  token.T_2: true,  }, // OptPM0R0 
 	{  }, // OptPM0R1 
 	{  }, // OptPM1R0 
-	{  token.T_10: true,  }, // Pair0R0 
+	{  token.T_17: true,  }, // Pair0R0 
 	{  token.T_5: true,  }, // Pair0R1 
-	{  token.T_6: true,  token.T_20: true,  token.T_17: true,  token.T_13: true,  token.T_10: true,  token.T_16: true,  token.T_4: true,  token.T_19: true,  token.T_2: true,  }, // Pair0R2 
+	{  token.T_4: true,  token.T_14: true,  token.T_15: true,  token.T_6: true,  token.T_17: true,  token.T_2: true,  token.T_19: true,  token.T_18: true,  token.T_11: true,  }, // Pair0R2 
 	{  }, // Pair0R3 
 	{  token.T_0: true,  }, // PlusORMinus0R0 
 	{  }, // PlusORMinus0R1 
 	{  token.T_2: true,  }, // PlusORMinus1R0 
 	{  }, // PlusORMinus1R1 
-	{  token.T_21: true,  }, // RBRACE0R0 
-	{  token.T_12: true,  token.T_15: true,  token.T_8: true,  }, // RBRACE0R1 
+	{  token.T_20: true,  }, // RBRACE0R0 
+	{  token.T_10: true,  token.T_13: true,  token.T_8: true,  }, // RBRACE0R1 
 	{  }, // RBRACE0R2 
 	{  token.T_7: true,  }, // RBRACKET0R0 
-	{  token.T_15: true,  token.T_8: true,  token.T_12: true,  }, // RBRACKET0R1 
+	{  token.T_13: true,  token.T_8: true,  token.T_10: true,  }, // RBRACKET0R1 
 	{  }, // RBRACKET0R2 
-	{  token.T_9: true,  }, // RepChar0x0R0 
-	{  token.T_9: true,  }, // RepChar0x0R1 
-	{  }, // RepChar0x0R2 
-	{  }, // RepChar0x1R0 
 	{  token.T_1: true,  }, // RepComPair0x0R0 
-	{  token.T_10: true,  }, // RepComPair0x0R1 
-	{  token.T_1: true,  }, // RepComPair0x0R2 
-	{  }, // RepComPair0x0R3 
+	{  token.T_1: true,  }, // RepComPair0x0R1 
+	{  }, // RepComPair0x0R2 
 	{  }, // RepComPair0x1R0 
 	{  token.T_1: true,  }, // RepComVal0x0R0 
-	{  token.T_2: true,  token.T_20: true,  token.T_6: true,  token.T_13: true,  token.T_19: true,  token.T_17: true,  token.T_10: true,  token.T_16: true,  token.T_4: true,  }, // RepComVal0x0R1 
-	{  token.T_1: true,  }, // RepComVal0x0R2 
-	{  }, // RepComVal0x0R3 
+	{  token.T_1: true,  }, // RepComVal0x0R1 
+	{  }, // RepComVal0x0R2 
 	{  }, // RepComVal0x1R0 
-	{  token.T_10: true,  }, // String0R0 
-	{  token.T_9: true,  token.T_10: true,  }, // String0R1 
-	{  token.T_10: true,  }, // String0R2 
-	{  token.T_12: true,  token.T_15: true,  token.T_8: true,  }, // String0R3 
-	{  }, // String0R4 
-	{  token.T_19: true,  }, // TRUE0R0 
-	{  token.T_12: true,  token.T_15: true,  token.T_8: true,  }, // TRUE0R1 
+	{  token.T_17: true,  }, // String0R0 
+	{  token.T_10: true,  token.T_13: true,  token.T_8: true,  }, // String0R1 
+	{  }, // String0R2 
+	{  token.T_18: true,  }, // TRUE0R0 
+	{  token.T_10: true,  token.T_13: true,  token.T_8: true,  }, // TRUE0R1 
 	{  }, // TRUE0R2 
-	{  token.T_10: true,  }, // Value0R0 
+	{  token.T_17: true,  }, // Value0R0 
 	{  }, // Value0R1 
-	{  token.T_16: true,  token.T_4: true,  token.T_2: true,  }, // Value1R0 
+	{  token.T_4: true,  token.T_2: true,  token.T_14: true,  }, // Value1R0 
 	{  }, // Value1R1 
-	{  token.T_20: true,  }, // Value2R0 
+	{  token.T_19: true,  }, // Value2R0 
 	{  }, // Value2R1 
 	{  token.T_6: true,  }, // Value3R0 
 	{  }, // Value3R1 
-	{  token.T_19: true,  }, // Value4R0 
+	{  token.T_18: true,  }, // Value4R0 
 	{  }, // Value4R1 
-	{  token.T_13: true,  }, // Value5R0 
+	{  token.T_11: true,  }, // Value5R0 
 	{  }, // Value5R1 
-	{  token.T_17: true,  }, // Value6R0 
+	{  token.T_15: true,  }, // Value6R0 
 	{  }, // Value6R1 
-	{  token.T_8: true,  token.T_12: true,  token.T_15: true,  }, // WS0R0 
-	{  token.T_12: true,  token.T_15: true,  token.T_8: true,  }, // WS0R1 
+	{  token.T_10: true,  token.T_13: true,  token.T_8: true,  }, // WS0R0 
+	{  token.T_10: true,  token.T_13: true,  token.T_8: true,  }, // WS0R1 
 	{  }, // WS0R2 
 	{  }, // WS1R0 
 }

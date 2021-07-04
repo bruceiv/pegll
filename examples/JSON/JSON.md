@@ -24,12 +24,13 @@ The following are the GoGLL representations of the higher level JSON components.
 JSON            : WS Object                             ;
 
 Object          : LBRACE OptMems RBRACE                 ;
-     OptMems : Members 
+        OptMems : Members 
                 / empty                                 ;
 
 Members         : Pair RepComPair0x                     ;
-   RepComPair0x : COMMA Pair RepComPair0x  
+   RepComPair0x : ComPair RepComPair0x  
                 / empty                                 ; 
+        ComPair : COMMA Pair                            ;      
 
 Pair            : String COLON Value                    ;
 
@@ -38,8 +39,9 @@ Array           : LBRACKET OptElem RBRACKET             ;
                 / empty                                 ;
 
 Elements        : Value RepComVal0x                     ;
-    RepComVal0x : COMMA Value RepComVal0x
+    RepComVal0x : ComVal RepComVal0x
                 / empty                                 ; 
+         ComVal : COMMA Value                           ;
 
 Value           : String 
                 / Number 
@@ -50,51 +52,26 @@ Value           : String
                 / NUL                                   ;
 ```  
 #### ***String and Character Literals***
-The following are the GoGLL representations of the JSON string and character literals.
+The following are the GoGLL representations of the JSON String and character literals.
 - NOTE: `char` is likely what is causing the issue with not matching repeated characters 
         - Likely due to `not` consuming a character
-        - won't accept escaped `"` in char or `\` in string
+        - won't accept escaped `"` in char or `\` in String
         
-
-`CHAR` and `CharCode` should be an ordered choice above - will not match anything if it is though
-
-CHAR            : optCarBSlash  
-                / bSlash EscAlts                        ;
-         bSlash : '\\'                                  ;
-        EscAlts : optEscChar 
-                / HexCode                               ;
-     optEscChar : [ any "\\\"/bfnrt" ]                  ;
-        HexCode : "u" hex hex hex hex                   ;
-   optCarBSlash : [ any "^\\" ]                         ;
-        char    : < not "\"\\" any "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890" > ; 
-!char           : ['^''\\'] 
-                | '\\' 
-                ( [ any "\\\"/bfnrt" ]
-                | 'u' any "abcdefABCDEF0123456789" 
-                any "abcdefABCDEF0123456789" 
-                any "abcdefABCDEF0123456789" 
-                any "abcdefABCDEF0123456789" 
-                )                                       ;
 ```
-!string          : '"' 
-                        ['^''\\'] 
-                        | '\'
-                                ( [ any "\\\"/bfnrt" ]
-                                | 'u' any "abcdefABCDEF0123456789" 
-                                any "abcdefABCDEF0123456789" 
-                                any "abcdefABCDEF0123456789" 
-                                any "abcdefABCDEF0123456789" 
-                                ) 
-                '"'                                     ;             
-
-
-
+String          : string_ns WS                          ;
+!string_ns      : '"'  { not "\"" any "^\\" 
+                | not "\"" '\\' [ any "\\\"/bfnrt" ] 
+                | not "\"" '\\' 'u' any "abcdefABCDEF0123456789" 
+                any "abcdefABCDEF0123456789"
+                any "abcdefABCDEF0123456789"
+                any "abcdefABCDEF0123456789"
+                } '"'                                   ;             
   
 ```
 #### ***Numeric Literals***
 The following are the GoGLL representations of the JSON numeric literals.
 ```
-hex            : any "abcdefABCDEF0123456789"          ;        
+hex             : any "abcdefABCDEF0123456789"          ;        
 Number          : INT OptFrac OptExp WS                 ;
         OptFrac : FRAC
                 / empty                                 ;
@@ -149,7 +126,7 @@ escCharSpace    : < any " \t\r\n" >                     ;
 
 
 
-!line_comment   : '/' '/' { not "\n" }                  ;               
+!line_comment   : '/' '/' { not "\r\n" }                  ;               
 
 !block_comment  : '/''*' { not "*" 
                 | '*' not "/" 

@@ -17,6 +17,8 @@ const(
 	NT_Array NT = iota
 	NT_COLON 
 	NT_COMMA 
+	NT_ComPair 
+	NT_ComVal 
 	NT_EXP 
 	NT_Elements 
 	NT_EscOrComment 
@@ -41,7 +43,6 @@ const(
 	NT_PlusORMinus 
 	NT_RBRACE 
 	NT_RBRACKET 
-	NT_RepChar0x 
 	NT_RepComPair0x 
 	NT_RepComVal0x 
 	NT_String 
@@ -50,7 +51,7 @@ const(
 	NT_WS 
 )
 
-const NumNTs = 34
+const NumNTs = 35
 
 type NTs []NT
 
@@ -66,19 +67,18 @@ const(
 	T_6  // [ 
 	T_7  // ] 
 	T_8  // block_comment 
-	T_9  // char 
-	T_10  // dQuote 
-	T_11  // eE 
-	T_12  // escCharSpace 
-	T_13  // false 
-	T_14  // hex 
-	T_15  // line_comment 
-	T_16  // nonZero 
-	T_17  // null 
-	T_18  // repNum1x 
-	T_19  // true 
-	T_20  // { 
-	T_21  // } 
+	T_9  // eE 
+	T_10  // escCharSpace 
+	T_11  // false 
+	T_12  // hex 
+	T_13  // line_comment 
+	T_14  // nonZero 
+	T_15  // null 
+	T_16  // repNum1x 
+	T_17  // string_ns 
+	T_18  // true 
+	T_19  // { 
+	T_20  // } 
 )
 
 type Symbols []Symbol
@@ -115,6 +115,8 @@ var ntToString = []string {
 	"Array", /* NT_Array */
 	"COLON", /* NT_COLON */
 	"COMMA", /* NT_COMMA */
+	"ComPair", /* NT_ComPair */
+	"ComVal", /* NT_ComVal */
 	"EXP", /* NT_EXP */
 	"Elements", /* NT_Elements */
 	"EscOrComment", /* NT_EscOrComment */
@@ -139,7 +141,6 @@ var ntToString = []string {
 	"PlusORMinus", /* NT_PlusORMinus */
 	"RBRACE", /* NT_RBRACE */
 	"RBRACKET", /* NT_RBRACKET */
-	"RepChar0x", /* NT_RepChar0x */
 	"RepComPair0x", /* NT_RepComPair0x */
 	"RepComVal0x", /* NT_RepComVal0x */
 	"String", /* NT_String */
@@ -158,25 +159,26 @@ var tToString = []string {
 	"[", /* T_6 */
 	"]", /* T_7 */
 	"block_comment", /* T_8 */
-	"char", /* T_9 */
-	"dQuote", /* T_10 */
-	"eE", /* T_11 */
-	"escCharSpace", /* T_12 */
-	"false", /* T_13 */
-	"hex", /* T_14 */
-	"line_comment", /* T_15 */
-	"nonZero", /* T_16 */
-	"null", /* T_17 */
-	"repNum1x", /* T_18 */
-	"true", /* T_19 */
-	"{", /* T_20 */
-	"}", /* T_21 */ 
+	"eE", /* T_9 */
+	"escCharSpace", /* T_10 */
+	"false", /* T_11 */
+	"hex", /* T_12 */
+	"line_comment", /* T_13 */
+	"nonZero", /* T_14 */
+	"null", /* T_15 */
+	"repNum1x", /* T_16 */
+	"string_ns", /* T_17 */
+	"true", /* T_18 */
+	"{", /* T_19 */
+	"}", /* T_20 */ 
 }
 
 var stringNT = map[string]NT{ 
 	"Array":NT_Array,
 	"COLON":NT_COLON,
 	"COMMA":NT_COMMA,
+	"ComPair":NT_ComPair,
+	"ComVal":NT_ComVal,
 	"EXP":NT_EXP,
 	"Elements":NT_Elements,
 	"EscOrComment":NT_EscOrComment,
@@ -201,7 +203,6 @@ var stringNT = map[string]NT{
 	"PlusORMinus":NT_PlusORMinus,
 	"RBRACE":NT_RBRACE,
 	"RBRACKET":NT_RBRACKET,
-	"RepChar0x":NT_RepChar0x,
 	"RepComPair0x":NT_RepComPair0x,
 	"RepComVal0x":NT_RepComVal0x,
 	"String":NT_String,
@@ -214,8 +215,10 @@ var leftRec = map[NT]NTs {
 	NT_Array: NTs {  NT_LBRACKET,  },
 	NT_COLON: NTs {  },
 	NT_COMMA: NTs {  },
+	NT_ComPair: NTs {  NT_COMMA,  },
+	NT_ComVal: NTs {  NT_COMMA,  },
 	NT_EXP: NTs {  },
-	NT_Elements: NTs {  NT_TRUE,  NT_OptNeg,  NT_LBRACE,  NT_Object,  NT_Array,  NT_Integers,  NT_INT,  NT_Value,  NT_String,  NT_LBRACKET,  NT_FALSE,  NT_NUL,  NT_Number,  },
+	NT_Elements: NTs {  NT_NUL,  NT_Value,  NT_OptNeg,  NT_Object,  NT_LBRACE,  NT_Array,  NT_LBRACKET,  NT_TRUE,  NT_INT,  NT_Integers,  NT_String,  NT_Number,  NT_FALSE,  },
 	NT_EscOrComment: NTs {  },
 	NT_FALSE: NTs {  },
 	NT_FRAC: NTs {  },
@@ -228,7 +231,7 @@ var leftRec = map[NT]NTs {
 	NT_NUL: NTs {  },
 	NT_Number: NTs {  NT_INT,  NT_OptNeg,  NT_Integers,  },
 	NT_Object: NTs {  NT_LBRACE,  },
-	NT_OptElem: NTs {  NT_FALSE,  NT_Value,  NT_LBRACE,  NT_TRUE,  NT_Elements,  NT_Array,  NT_Integers,  NT_LBRACKET,  NT_Number,  NT_INT,  NT_OptNeg,  NT_Object,  NT_String,  NT_NUL,  },
+	NT_OptElem: NTs {  NT_Number,  NT_Value,  NT_OptNeg,  NT_Elements,  NT_FALSE,  NT_LBRACKET,  NT_TRUE,  NT_Array,  NT_Object,  NT_INT,  NT_String,  NT_NUL,  NT_Integers,  NT_LBRACE,  },
 	NT_OptExp: NTs {  NT_EXP,  },
 	NT_OptFrac: NTs {  NT_FRAC,  },
 	NT_OptMems: NTs {  NT_Members,  NT_Pair,  NT_String,  },
@@ -238,11 +241,10 @@ var leftRec = map[NT]NTs {
 	NT_PlusORMinus: NTs {  },
 	NT_RBRACE: NTs {  },
 	NT_RBRACKET: NTs {  },
-	NT_RepChar0x: NTs {  },
-	NT_RepComPair0x: NTs {  NT_COMMA,  },
-	NT_RepComVal0x: NTs {  NT_COMMA,  },
+	NT_RepComPair0x: NTs {  NT_ComPair,  NT_COMMA,  },
+	NT_RepComVal0x: NTs {  NT_ComVal,  NT_COMMA,  },
 	NT_String: NTs {  },
 	NT_TRUE: NTs {  },
-	NT_Value: NTs {  NT_Array,  NT_LBRACKET,  NT_FALSE,  NT_NUL,  NT_Number,  NT_INT,  NT_Integers,  NT_Object,  NT_String,  NT_OptNeg,  NT_LBRACE,  NT_TRUE,  },
+	NT_Value: NTs {  NT_Object,  NT_LBRACE,  NT_Array,  NT_String,  NT_Number,  NT_INT,  NT_OptNeg,  NT_Integers,  NT_LBRACKET,  NT_TRUE,  NT_FALSE,  NT_NUL,  },
 	NT_WS: NTs {  NT_EscOrComment,  NT_WS,  },
 }
