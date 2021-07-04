@@ -13,8 +13,8 @@ A modification of `calc` grammar from [Egg](https://github.com/bruceiv/egg/blob/
 ### **STATUS ON GRAMMAR**
 #### *Markdown File Creation:* Working 
 #### *Parser Generated :* Complete
-#### *Test File Creation:* Incomplete
-#### *Testing Results:* Unknown
+#### *Test File Creation:* Complete
+#### *Testing Results:* Passed
 
 ### **`calc` GRAMMAR GUIDE**
 The following grammar tests simple calculations, with order of operations under consideration, based on a given input.
@@ -73,8 +73,7 @@ DIVIDE           : "/" WS                     ;
 OPEN             : "(" WS                     ;                
 CLOSE            : ")" WS                     ;
 ```
-NEEDS TO BE EDITED
-`space` is a lexical rule matched through the whitespace characters ' ' and '\t'. It may be repeated zero or more times as defined by the bracketed expression `{}` in the GoGLL grammar. See the [grammar for details.](../../gogll.md)
+`WS` is a semantic rule matched through `sp`, a lexical rule composed of the whitespace characters ' ' and '\t', or an `empty`. For more details on `empty` in the GoGLL grammar, see the [grammar for details.](../../gogll.md)
 ```
 WS               : sp
                  / empty                       ;
