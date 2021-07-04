@@ -126,7 +126,7 @@ escCharSpace    : < any " \t\r\n" >                     ;
 
 
 
-!line_comment   : '/' '/' { not "\r\n" }                  ;               
+!line_comment   : '/' '/' { not "\r\n" }                ;               
 
 !block_comment  : '/''*' { not "*" 
                 | '*' not "/" 
