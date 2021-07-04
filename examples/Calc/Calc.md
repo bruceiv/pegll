@@ -4,7 +4,7 @@
 #### *Authors :* Brynn Harrington and Emily Hoppe Copyright (C) 2021
 #### *Adapted from :* Aaron Moss's [`Calc` Egg Grammar](https://github.com/bruceiv/egg/blob/deriv/grammars/Calc.egg)
 #### *Creation Date :* June 17, 2021 
-#### *Last Modified :* June 24, 2021
+#### *Last Modified :* July 4, 2021
 #### *Copyright and Licensing Information :* See end of file.
 
 ###  **GENERAL DESCRIPTION**
