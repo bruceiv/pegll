@@ -23,7 +23,7 @@ package "calc"
 ```
 `EXPR` represents the starting rule for the grammar being a semantic rule composed of a space followed by a `SUM`.
 ```
-EXPR             : WS SUM                     ;
+EXPR             : WS SUM                       ;
 ```
 The following section is composed of `SUM`, `RepPLUSorMINUS0x`, and `PLUSorMINUS`, where:
 - `SUM` is a semantic rule matched with `PRODUCT` followed by `RepPLUSorMINUS0x`;
@@ -55,7 +55,7 @@ For more information about the `number` reserved word, see the [grammar for deta
 ```       
 ELEMENT          : OPEN SUM CLOSE 
                  | Number                        ;
-Number           : repNumber1x WS             ;
+Number           : repNumber1x WS                ;
 repNumber1x      : < number >                    ;
 ```
 The following section is composed of `PLUS`, `MINUS`, `TIMES`, `DIVIDE`, `OPEN`, and `CLOSE`, where:

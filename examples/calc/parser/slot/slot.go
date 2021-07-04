@@ -797,12 +797,12 @@ var firstT = []map[token.Type]bool {
 	{  token.T_7: true,  }, // DIVIDE0R1 
 	{  }, // DIVIDE0R2 
 	{  token.T_0: true,  }, // ELEMENT0R0 
-	{  token.T_0: true,  token.T_6: true,  }, // ELEMENT0R1 
+	{  token.T_6: true,  token.T_0: true,  }, // ELEMENT0R1 
 	{  token.T_1: true,  }, // ELEMENT0R2 
 	{  }, // ELEMENT0R3 
 	{  token.T_6: true,  }, // ELEMENT1R0 
 	{  }, // ELEMENT1R1 
-	{  token.T_7: true,  token.T_0: true,  token.T_6: true,  }, // EXPR0R0 
+	{  token.T_0: true,  token.T_6: true,  token.T_7: true,  }, // EXPR0R0 
 	{  token.T_0: true,  token.T_6: true,  }, // EXPR0R1 
 	{  }, // EXPR0R2 
 	{  token.T_4: true,  }, // MINUS0R0 
@@ -830,12 +830,12 @@ var firstT = []map[token.Type]bool {
 	{  token.T_3: true,  token.T_4: true,  }, // RepPLUSorMINUS0x0R1 
 	{  }, // RepPLUSorMINUS0x0R2 
 	{  }, // RepPLUSorMINUS0x1R0 
-	{  token.T_5: true,  token.T_2: true,  }, // RepTIMESorDIV0x0R0 
+	{  token.T_2: true,  token.T_5: true,  }, // RepTIMESorDIV0x0R0 
 	{  token.T_2: true,  token.T_5: true,  }, // RepTIMESorDIV0x0R1 
 	{  }, // RepTIMESorDIV0x0R2 
 	{  }, // RepTIMESorDIV0x1R0 
 	{  token.T_0: true,  token.T_6: true,  }, // SUM0R0 
-	{  token.T_4: true,  token.T_3: true,  }, // SUM0R1 
+	{  token.T_3: true,  token.T_4: true,  }, // SUM0R1 
 	{  }, // SUM0R2 
 	{  token.T_2: true,  }, // TIMES0R0 
 	{  token.T_7: true,  }, // TIMES0R1 
@@ -844,7 +844,7 @@ var firstT = []map[token.Type]bool {
 	{  token.T_0: true,  token.T_6: true,  }, // TIMESorDIVIDE0R1 
 	{  }, // TIMESorDIVIDE0R2 
 	{  token.T_5: true,  }, // TIMESorDIVIDE1R0 
-	{  token.T_6: true,  token.T_0: true,  }, // TIMESorDIVIDE1R1 
+	{  token.T_0: true,  token.T_6: true,  }, // TIMESorDIVIDE1R1 
 	{  }, // TIMESorDIVIDE1R2 
 	{  token.T_7: true,  }, // WS0R0 
 	{  }, // WS0R1 
