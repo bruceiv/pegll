@@ -32,6 +32,10 @@ const(
 	NT_WS 
 )
 
+const NumNTs = 16
+
+type NTs []NT
+
 // T is the type of terminals symbols
 type T int
 const( 
@@ -69,6 +73,10 @@ func (nt NT) String() string {
 
 func (t T) String() string {
 	return tToString[t]
+}
+
+func (nt NT) LeftRec() NTs {
+	return leftRec[nt]
 }
 
 var ntToString = []string { 
@@ -118,4 +126,23 @@ var stringNT = map[string]NT{
 	"TIMES":NT_TIMES,
 	"TIMESorDIVIDE":NT_TIMESorDIVIDE,
 	"WS":NT_WS,
+}
+
+var leftRec = map[NT]NTs { 
+	NT_CLOSE: NTs {  },
+	NT_DIVIDE: NTs {  },
+	NT_ELEMENT: NTs {  NT_OPEN,  NT_Number,  },
+	NT_EXPR: NTs {  NT_WS,  NT_SUM,  NT_PRODUCT,  NT_ELEMENT,  NT_Number,  NT_OPEN,  },
+	NT_MINUS: NTs {  },
+	NT_Number: NTs {  },
+	NT_OPEN: NTs {  },
+	NT_PLUS: NTs {  },
+	NT_PLUSorMINUS: NTs {  NT_PLUS,  NT_MINUS,  },
+	NT_PRODUCT: NTs {  NT_ELEMENT,  NT_Number,  NT_OPEN,  },
+	NT_RepPLUSorMINUS0x: NTs {  NT_PLUSorMINUS,  NT_PLUS,  NT_MINUS,  },
+	NT_RepTIMESorDIV0x: NTs {  NT_DIVIDE,  NT_TIMESorDIVIDE,  NT_TIMES,  },
+	NT_SUM: NTs {  NT_PRODUCT,  NT_ELEMENT,  NT_Number,  NT_OPEN,  },
+	NT_TIMES: NTs {  },
+	NT_TIMESorDIVIDE: NTs {  NT_DIVIDE,  NT_TIMES,  },
+	NT_WS: NTs {  },
 }
