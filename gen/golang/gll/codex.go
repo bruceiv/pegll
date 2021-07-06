@@ -25,10 +25,34 @@ import (
 func (g *gen) genAlternatesCode() string {
 	buf := new(bytes.Buffer)
 	for _, nt := range g.g.NonTerminals.ElementsSorted() {
-		rule := g.g.GetSyntaxRule(nt)
+		buf.WriteString(g.getRuleCode(nt))
+	}
+	return buf.String()
+}
+
+const (
+	ordered   = true
+	unordered = false
+)
+
+func (g *gen) getRuleCode(nt string) string {
+	buf := new(bytes.Buffer)
+	rule := g.g.GetSyntaxRule(nt)
+	if rule.IsOrdered || len(rule.Alternates) == 1 {
+		// try alternates one-at-a-time if ordered or only one
 		for i, alt := range rule.Alternates {
-			buf.WriteString(g.getAlternateCode(nt, alt, i))
+			buf.WriteString(g.getAlternateCode(nt, alt, i, len(rule.Alternates), ordered))
 		}
+	} else {
+		// double-generate alternates of unordered rules to encode
+		// match status in rule labels
+		for i, alt := range rule.Alternates {
+			buf.WriteString(g.getAlternateCode(nt, alt, i, len(rule.Alternates), unordered))
+		}
+	}
+	// finish with failure alternate for all nonterminals that don't end with an empty alternate
+	if !rule.AlwaysMatches() {
+		buf.WriteString(g.getFailAlternate(nt))
 	}
 	return buf.String()
 }
@@ -37,84 +61,156 @@ type AltData struct {
 	NT         string
 	AltLabel   string
 	AltComment string
-	Empty      bool
+	HasPass    bool
+	NotLastAlt bool
 	Slots      []*SlotData
 	LastSlot   *SlotData
 }
 
-func (g *gen) getAlternateCode(nt string, alt *ast.SyntaxAlternate, altI int) string {
+func (g *gen) getAlternateCode(nt string, alt *ast.SyntaxAlternate, altI, altN int, isOrdered bool) string {
 	// fmt.Printf("codes.genAlternateCode: %s altI %d\n", nt, altI)
-	tmpl, err := template.New("Alternate").Parse(altCodeTmpl)
+	var tmpl *template.Template
+	var err error
+	if alt.Empty() {
+		tmpl, err = template.New("EmptyAlternate").Parse(eAltCodeTmpl)
+	} else if isOrdered {
+		tmpl, err = template.New("OrderedAlternate").Parse(oAltCodeTmpl)
+	} else {
+		tmpl, err = template.New("UnorderedAlternate").Parse(uAltCodeTmpl)
+	}
 	if err != nil {
 		panic(err)
 	}
-	buf, data := new(bytes.Buffer), g.getAltData(nt, alt, altI)
+	buf, data := new(bytes.Buffer), g.getAltData(nt, alt, altI, altN, isOrdered)
 	if err = tmpl.Execute(buf, data); err != nil {
 		panic(err)
 	}
 	return buf.String()
 }
 
-func (g *gen) getAltData(nt string, alt *ast.SyntaxAlternate, altI int) *AltData {
+func (g *gen) getAltData(nt string, alt *ast.SyntaxAlternate, altI, altN int, isOrdered bool) *AltData {
 	// fmt.Printf("codex.getAltData %s[%d]\n", nt, altI)
 	L := gslot.NewLabel(nt, altI, 0, g.gs, g.ff)
 	d := &AltData{
 		NT:         nt,
 		AltLabel:   L.Label(),
 		AltComment: L.String(),
-		Empty:      alt.Empty(),
+		HasPass:    altN > 1 && altI > 0,
+		NotLastAlt: altI+1 < altN,
 	}
 	if !alt.Empty() {
-		d.Slots = g.getSlotsData(nt, alt, altI)
+		d.Slots = g.getSlotsData(nt, alt, altI, altN, isOrdered)
 		d.LastSlot = d.Slots[len(d.Slots)-1]
 	}
 	return d
 }
 
-func (g *gen) getSlotsData(nt string, alt *ast.SyntaxAlternate, altI int) (data []*SlotData) {
+func (g *gen) getSlotsData(nt string, alt *ast.SyntaxAlternate, altI, altN int, isOrdered bool) (data []*SlotData) {
 	for i, sym := range alt.Symbols {
 		// fmt.Printf("getSlotsData(%s) %s\n", nt, getSlotData(nt, altI, sym, i))
-		data = append(data, g.getSlotData(nt, altI, sym.String(), i))
+		data = append(data, g.getOSlotData(nt, altI, altN, sym.String(), i, isOrdered))
 	}
 	return
 }
 
-func (g *gen) getSlotData(nt string, altI int, symbol string, pos int) *SlotData {
+func (g *gen) getOSlotData(nt string, altI, altN int, symbol string, pos int, isOrdered bool) *SlotData {
 	preLabel := gslot.NewLabel(nt, altI, pos, g.gs, g.ff)
 	postLabel := gslot.NewLabel(nt, altI, pos+1, g.gs, g.ff)
+	var failLabel string
+	var passLabel string
+	if altI+1 < altN {
+		nextAlt := gslot.NewLabel(nt, altI+1, 0, g.gs, g.ff).Label()
+		failLabel = `slot.` + nextAlt
+		passLabel = `pass_` + nextAlt
+	} else {
+		failLabel = `fail_` + nt
+		passLabel = `failInd`
+	}
 	sd := &SlotData{
 		AltLabel:  gslot.NewLabel(nt, altI, 0, g.gs, g.ff).Label(),
 		PreLabel:  preLabel.Label(),
 		PostLabel: postLabel.Label(),
+		FailLabel: failLabel,
+		PassLabel: passLabel,
 		Comment:   postLabel.String(),
 		Head:      nt,
 	}
-	sd.IsNT = !g.g.Terminals.Contain(symbol)
+	if g.g.Terminals.Contain(symbol) {
+		sd.IsNT = false
+		sd.NT = "<error: not NT>"
+	} else {
+		sd.IsNT = true
+		sd.NT = symbol
+	}
 	// fmt.Printf("getSlotData: altlabel:%s, pre:%s, post:%s\n",
 	// 	sd.AltLabel, sd.PreLabel, sd.PostLabel)
 	return sd
+}
+
+func (g *gen) getFailAlternate(nt string) string {
+	return `		case fail_` + nt + ` // ` + nt + ` failure case
+			p.rtn(symbols.NT_` + nt + `, cU, failInd)
+	`
 }
 
 type SlotData struct {
 	AltLabel  string
 	PreLabel  string
 	PostLabel string
+	FailLabel string
+	PassLabel string
 	Comment   string
 	IsNT      bool
+	NT        string
 	Head      string
 }
 
-const altCodeTmpl = `		case slot.{{.AltLabel}}: // {{.AltComment}}{{if .Empty}}
+const eAltCodeTmpl = `case slot.{{.AltLabel}}: // {{.AltComment}}
 			p.bsrSet.AddEmpty(slot.{{.AltLabel}},p.cI)
-		{{else}}{{range $i, $slot := .Slots}}
-			{{if $i}}if !p.testSelect(slot.{{$slot.PreLabel}}){ 
+			p.rtn(symbols.NT_{{.NT}}, cU, p.cI)
+	`
+
+const oAltCodeTmpl = `		case slot.{{.AltLabel}}: // {{.AltComment}}
+		{{range $i, $slot := .Slots}}
+			if !p.testSelect(slot.{{$slot.PreLabel}}){ 
 				p.parseError(slot.{{$slot.PreLabel}}, p.cI, first[slot.{{$slot.PreLabel}}])
-				break 
+				L, p.cI = {{$slot.FailLabel}}, cU
+				goto nextSlot
 			}
-			{{end}}
-			{{if $slot.IsNT}}p.call(slot.{{$slot.PostLabel}}, cU, p.cI)
+			{{if $slot.IsNT}}p.call(slot.{{$slot.PostLabel}}, {{$slot.FailLabel}}, {{$slot.NT}}, cU, p.cI)
 case slot.{{$slot.PostLabel}}: // {{$slot.Comment}} 
 			{{else}}p.bsrSet.Add(slot.{{$slot.PostLabel}}, cU, p.cI, p.cI+1)
-			p.cI++ {{end}}{{end}}{{end}}
+			p.cI++ {{end}}{{end}}
 			p.rtn(symbols.NT_{{.NT}}, cU, p.cI)
+	`
+
+const uAltCodeTmpl = `		case slot.{{.AltLabel}}: // {{.AltComment}}
+		{{range $i, $slot := .Slots}}
+			if !p.testSelect(slot.{{$slot.PreLabel}}){ 
+				p.parseError(slot.{{$slot.PreLabel}}, p.cI, first[slot.{{$slot.PreLabel}}])
+				L, p.cI = {{$slot.FailLabel}}, cU
+				goto nextSlot
+			}
+			{{if $slot.IsNT}}p.call(slot.{{$slot.PostLabel}}, {{$slot.FailLabel}}, {{$slot.NT}}, cU, p.cI)
+case slot.{{$slot.PostLabel}}: // {{$slot.Comment}} 
+			{{else}}p.bsrSet.Add(slot.{{$slot.PostLabel}}, cU, p.cI, p.cI+1)
+			p.cI++ {{end}}{{end}}
+			p.rtn(symbols.NT_{{.NT}}, cU, p.cI)
+			{{if .NotLastAlt}}L, p.cI = {{$slot.PassLabel}}, cU
+			goto nextSlot{{end}}
+		{{if .HasPass}}case pass_{{.AltLabel}}: // {{.AltComment}}
+		{{range $i, $slot := .Slots}}
+		if !p.testSelect(slot.{{$slot.PreLabel}}){ 
+			p.parseError(slot.{{$slot.PreLabel}}, p.cI, first[slot.{{$slot.PreLabel}}])
+			{{if .NotLastAlt}}L, p.cI = {{$slot.PassLabel}}, cU
+			goto nextSlot{{end}}
+		}
+		{{if $slot.IsNT}}p.call(pass_{{$slot.PostLabel}}, {{$slot.PassLabel}}, {{$slot.NT}}, cU, p.cI)
+case pass_{{$slot.PostLabel}}: // {{$slot.Comment}} 
+		{{else}}p.bsrSet.Add(slot.{{$slot.PostLabel}}, cU, p.cI, p.cI+1)
+		p.cI++ {{end}}{{end}}
+		p.rtn(symbols.NT_{{.NT}}, cU, p.cI)
+		{{if .NotLastAlt}}L, p.cI = {{$slot.PassLabel}}, cU
+		goto nextSlot{{end}}
+		{{end}}
 	`

@@ -71,7 +71,11 @@ func (gs *GSlot) Slots() Slots {
 }
 
 func (s Label) Label() string {
-	return fmt.Sprintf("%s%dR%d", s.Head, s.Alternate, s.Pos)
+	return LabelFor(s.Head, s.Alternate, s.Pos)
+}
+
+func LabelFor(head string, alt, pos int) string {
+	return fmt.Sprintf("%s%dR%d", head, alt, pos)
 }
 
 func (s Label) IsEoR() bool {
