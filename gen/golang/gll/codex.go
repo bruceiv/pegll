@@ -62,7 +62,6 @@ type AltData struct {
 	AltLabel   string
 	AltComment string
 	HasPass    bool
-	NotLastAlt bool
 	Slots      []*SlotData
 	LastSlot   *SlotData
 }
@@ -96,7 +95,6 @@ func (g *gen) getAltData(nt string, alt *ast.SyntaxAlternate, altI, altN int, is
 		AltLabel:   L.Label(),
 		AltComment: L.String(),
 		HasPass:    altN > 1 && altI > 0,
-		NotLastAlt: altI+1 < altN,
 	}
 	if !alt.Empty() {
 		d.Slots = g.getSlotsData(nt, alt, altI, altN, isOrdered)
@@ -127,20 +125,21 @@ func (g *gen) getOSlotData(nt string, altI, altN int, symbol string, pos int, is
 		passLabel = `failInd`
 	}
 	sd := &SlotData{
-		AltLabel:  gslot.NewLabel(nt, altI, 0, g.gs, g.ff).Label(),
-		PreLabel:  preLabel.Label(),
-		PostLabel: postLabel.Label(),
-		FailLabel: failLabel,
-		PassLabel: passLabel,
-		Comment:   postLabel.String(),
-		Head:      nt,
+		AltLabel:   gslot.NewLabel(nt, altI, 0, g.gs, g.ff).Label(),
+		PreLabel:   preLabel.Label(),
+		PostLabel:  postLabel.Label(),
+		FailLabel:  failLabel,
+		PassLabel:  passLabel,
+		Comment:    postLabel.String(),
+		NotLastAlt: altI+1 < altN,
+		Head:       nt,
 	}
 	if g.g.Terminals.Contain(symbol) {
 		sd.IsNT = false
-		sd.NT = "<error: not NT>"
+		sd.CallNT = "<error: not NT>"
 	} else {
 		sd.IsNT = true
-		sd.NT = symbol
+		sd.CallNT = symbol
 	}
 	// fmt.Printf("getSlotData: altlabel:%s, pre:%s, post:%s\n",
 	// 	sd.AltLabel, sd.PreLabel, sd.PostLabel)
@@ -148,21 +147,22 @@ func (g *gen) getOSlotData(nt string, altI, altN int, symbol string, pos int, is
 }
 
 func (g *gen) getFailAlternate(nt string) string {
-	return `		case fail_` + nt + ` // ` + nt + ` failure case
+	return `		case fail_` + nt + `: // ` + nt + ` failure case
 			p.rtn(symbols.NT_` + nt + `, cU, failInd)
 	`
 }
 
 type SlotData struct {
-	AltLabel  string
-	PreLabel  string
-	PostLabel string
-	FailLabel string
-	PassLabel string
-	Comment   string
-	IsNT      bool
-	NT        string
-	Head      string
+	AltLabel   string
+	PreLabel   string
+	PostLabel  string
+	FailLabel  string
+	PassLabel  string
+	Comment    string
+	IsNT       bool
+	CallNT     string
+	NotLastAlt bool
+	Head       string
 }
 
 const eAltCodeTmpl = `case slot.{{.AltLabel}}: // {{.AltComment}}
@@ -177,7 +177,7 @@ const oAltCodeTmpl = `		case slot.{{.AltLabel}}: // {{.AltComment}}
 				L, p.cI = {{$slot.FailLabel}}, cU
 				goto nextSlot
 			}
-			{{if $slot.IsNT}}p.call(slot.{{$slot.PostLabel}}, {{$slot.FailLabel}}, {{$slot.NT}}, cU, p.cI)
+			{{if $slot.IsNT}}p.call(slot.{{$slot.PostLabel}}, {{$slot.FailLabel}}, symbols.NT_{{$slot.CallNT}}, cU, p.cI)
 case slot.{{$slot.PostLabel}}: // {{$slot.Comment}} 
 			{{else}}p.bsrSet.Add(slot.{{$slot.PostLabel}}, cU, p.cI, p.cI+1)
 			p.cI++ {{end}}{{end}}
@@ -191,13 +191,13 @@ const uAltCodeTmpl = `		case slot.{{.AltLabel}}: // {{.AltComment}}
 				L, p.cI = {{$slot.FailLabel}}, cU
 				goto nextSlot
 			}
-			{{if $slot.IsNT}}p.call(slot.{{$slot.PostLabel}}, {{$slot.FailLabel}}, {{$slot.NT}}, cU, p.cI)
+			{{if $slot.IsNT}}p.call(slot.{{$slot.PostLabel}}, {{$slot.FailLabel}}, symbols.NT_{{$slot.CallNT}}, cU, p.cI)
 case slot.{{$slot.PostLabel}}: // {{$slot.Comment}} 
 			{{else}}p.bsrSet.Add(slot.{{$slot.PostLabel}}, cU, p.cI, p.cI+1)
-			p.cI++ {{end}}{{end}}
-			p.rtn(symbols.NT_{{.NT}}, cU, p.cI)
+			p.cI++ {{end}}
+			p.rtn(symbols.NT_{{$slot.Head}}, cU, p.cI)
 			{{if .NotLastAlt}}L, p.cI = {{$slot.PassLabel}}, cU
-			goto nextSlot{{end}}
+			goto nextSlot{{end}}{{end}}
 		{{if .HasPass}}case pass_{{.AltLabel}}: // {{.AltComment}}
 		{{range $i, $slot := .Slots}}
 		if !p.testSelect(slot.{{$slot.PreLabel}}){ 
@@ -205,12 +205,12 @@ case slot.{{$slot.PostLabel}}: // {{$slot.Comment}}
 			{{if .NotLastAlt}}L, p.cI = {{$slot.PassLabel}}, cU
 			goto nextSlot{{end}}
 		}
-		{{if $slot.IsNT}}p.call(pass_{{$slot.PostLabel}}, {{$slot.PassLabel}}, {{$slot.NT}}, cU, p.cI)
+		{{if $slot.IsNT}}p.call(pass_{{$slot.PostLabel}}, {{$slot.PassLabel}}, symbols.NT_{{$slot.CallNT}}, cU, p.cI)
 case pass_{{$slot.PostLabel}}: // {{$slot.Comment}} 
 		{{else}}p.bsrSet.Add(slot.{{$slot.PostLabel}}, cU, p.cI, p.cI+1)
-		p.cI++ {{end}}{{end}}
-		p.rtn(symbols.NT_{{.NT}}, cU, p.cI)
+		p.cI++ {{end}}
+		p.rtn(symbols.NT_{{$slot.Head}}, cU, p.cI)
 		{{if .NotLastAlt}}L, p.cI = {{$slot.PassLabel}}, cU
 		goto nextSlot{{end}}
-		{{end}}
+		{{end}}{{end}}
 	`

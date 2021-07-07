@@ -185,6 +185,10 @@ func (gs *GSlot) genSlot(nt string, altI, pos int, symbols ...symbols.Symbol) {
 	gs.slots[slot] = symbols
 }
 
+func (gs *GSlot) Len() int {
+	return len(gs.slots)
+}
+
 // getSymbols translates AST symbol strings to symbols.Symbol
 func getSymbols(astSymbols []string) []symbols.Symbol {
 	symbls := make([]symbols.Symbol, len(astSymbols))

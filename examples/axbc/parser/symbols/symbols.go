@@ -85,7 +85,7 @@ var stringNT = map[string]NT{
 
 var leftRec = map[NT]NTs { 
 	NT_AorB: NTs {  NT_Repa0x,  },
-	NT_AxBC: NTs {  NT_AorB,  NT_Repa0x,  },
+	NT_AxBC: NTs {  NT_Repa0x,  NT_AorB,  },
 	NT_Repa0x: NTs {  },
 }
 

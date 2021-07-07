@@ -21,7 +21,7 @@ type parser struct {
 	U *descriptors
 
 	popped   map[poppedNode]bool
-	crf_s    map[clusterNode][]*crfNode
+	crf_m    map[clusterNode][]*crfNode
 	crf_f    map[clusterNode][]*crfNode
 	crfNodes map[crfNode]*crfNode
 
@@ -41,7 +41,7 @@ func newParser(l *lexer.Lexer) *parser {
 		R:      &descriptors{},
 		U:      &descriptors{},
 		popped: make(map[poppedNode]bool),
-		crf_s: map[clusterNode][]*crfNode{
+		crf_m: map[clusterNode][]*crfNode{
 			{symbols.NT_AxBC, 0}: {},
 		},
 		crf_f:       map[clusterNode][]*crfNode{},
@@ -58,8 +58,10 @@ func Parse(l *lexer.Lexer) (*bsr.Set, []*Error) {
 }
 
 const (
-	fail_AorB slot.Label = iota + 12
+	_ slot.Label = iota + 11
+
 	fail_AxBC
+	fail_AorB
 )
 
 func (p *parser) parse() (*bsr.Set, []*Error) {
@@ -77,6 +79,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 		for {
 			switch L {
 			case slot.AorB0R0: // AorB : ∙Repa0x
+
 				if !p.testSelect(slot.AorB0R0) {
 					p.parseError(slot.AorB0R0, p.cI, first[slot.AorB0R0])
 					L, p.cI = slot.AorB1R0, cU
@@ -84,8 +87,10 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 				}
 				p.call(slot.AorB0R1, slot.AorB1R0, symbols.NT_Repa0x, cU, p.cI)
 			case slot.AorB0R1: // AorB : Repa0x ∙
+
 				p.rtn(symbols.NT_AorB, cU, p.cI)
 			case slot.AorB1R0: // AorB : ∙a b
+
 				if !p.testSelect(slot.AorB1R0) {
 					p.parseError(slot.AorB1R0, p.cI, first[slot.AorB1R0])
 					L, p.cI = fail_AorB, cU
@@ -101,12 +106,13 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 				p.bsrSet.Add(slot.AorB1R2, cU, p.cI, p.cI+1)
 				p.cI++
 				p.rtn(symbols.NT_AorB, cU, p.cI)
-			case fail_AorB:
+			case fail_AorB: // AorB failure case
 				p.rtn(symbols.NT_AorB, cU, failInd)
 			case slot.AxBC0R0: // AxBC : ∙AorB c
-				if !p.testSelect(slot.AorB0R0) {
-					p.parseError(slot.AorB0R0, p.cI, first[slot.AorB0R0])
-					L, p.cI = slot.AorB1R0, cU
+
+				if !p.testSelect(slot.AxBC0R0) {
+					p.parseError(slot.AxBC0R0, p.cI, first[slot.AxBC0R0])
+					L, p.cI = fail_AxBC, cU
 					goto nextSlot
 				}
 				p.call(slot.AxBC0R1, fail_AxBC, symbols.NT_AorB, cU, p.cI)
@@ -117,13 +123,13 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 					L, p.cI = fail_AxBC, cU
 					goto nextSlot
 				}
-
 				p.bsrSet.Add(slot.AxBC0R2, cU, p.cI, p.cI+1)
 				p.cI++
 				p.rtn(symbols.NT_AxBC, cU, p.cI)
-			case fail_AxBC:
+			case fail_AxBC: // AxBC failure case
 				p.rtn(symbols.NT_AxBC, cU, failInd)
 			case slot.Repa0x0R0: // Repa0x : ∙a Repa0x
+
 				if !p.testSelect(slot.Repa0x0R0) {
 					p.parseError(slot.Repa0x0R0, p.cI, first[slot.Repa0x0R0])
 					L, p.cI = slot.Repa0x1R0, cU
@@ -136,14 +142,12 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 					L, p.cI = slot.Repa0x1R0, cU
 					goto nextSlot
 				}
-
 				p.call(slot.Repa0x0R2, slot.Repa0x1R0, symbols.NT_Repa0x, cU, p.cI)
 			case slot.Repa0x0R2: // Repa0x : a Repa0x ∙
 
 				p.rtn(symbols.NT_Repa0x, cU, p.cI)
 			case slot.Repa0x1R0: // Repa0x : ∙
 				p.bsrSet.AddEmpty(slot.Repa0x1R0, p.cI)
-
 				p.rtn(symbols.NT_Repa0x, cU, p.cI)
 
 			default:
@@ -164,26 +168,8 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 }
 
 func (p *parser) ntAdd(nt symbols.NT, j int) {
-	// fmt.Printf("p.ntAdd(%s, %d)\n", nt, j)
 	l := slot.GetAlternates(nt)[0]
 	p.dscAdd(l, j, j)
-	// failed := true
-	// expected := map[token.Type]string{}
-	// for _, l := range slot.GetAlternates(nt) {
-	// 	if p.testSelect(l) {
-	// 		p.dscAdd(l, j, j)
-	// 		failed = false
-	// 	} else {
-	// 		for k, v := range first[l] {
-	// 			expected[k] = v
-	// 		}
-	// 	}
-	// }
-	// if failed {
-	// 	for _, l := range slot.GetAlternates(nt) {
-	// 		p.parseError(l, j, expected)
-	// 	}
-	// }
 }
 
 /*** Call Return Forest ***/
@@ -203,32 +189,13 @@ type crfNode struct {
 	i int
 }
 
-/*
-suppose that L is Y ::=αX ·β
-if there is no CRF node labelled (L,i)
-	create one let u be the CRF node labelled (L,i)
-if there is no CRF node labelled (X, j) {
-	create a CRF node v labelled (X, j)
-	create an edge from v to u
-	ntAdd(X, j)
-} else {
-	let v be the CRF node labelled (X, j)
-	if there is not an edge from v to u {
-		create an edge from v to u
-		for all ((X, j,h)∈P) {
-			dscAdd(L, i, h);
-			bsrAdd(L, i, j, h)
-		}
-	}
-}
-*/
-func (p *parser) call(Ls, Lf slot.Label, X symbols.NT, i, j int) {
+func (p *parser) call(Lm, Lf slot.Label, X symbols.NT, i, j int) {
 	// fmt.Printf("p.call(%s,%d,%d)\n", L,i,j)
-	us, exist := p.crfNodes[crfNode{Ls, i}]
+	um, exist := p.crfNodes[crfNode{Lm, i}]
 	// fmt.Printf("  u exist=%t\n", exist)
 	if !exist {
-		us = &crfNode{Ls, i}
-		p.crfNodes[*us] = us
+		um = &crfNode{Lm, i}
+		p.crfNodes[*um] = um
 	}
 	uf, exist := p.crfNodes[crfNode{Lf, i}]
 	if !exist {
@@ -237,23 +204,23 @@ func (p *parser) call(Ls, Lf slot.Label, X symbols.NT, i, j int) {
 	}
 
 	ndV := clusterNode{X, j}
-	vs, exists := p.crf_s[ndV]
+	vm, existm := p.crf_m[ndV]
 	vf, existf := p.crf_f[ndV]
-	if !exists && !existf {
+	if !existm && !existf {
 		// fmt.Println("  v !exist")
-		p.crf_s[ndV] = []*crfNode{us}
+		p.crf_m[ndV] = []*crfNode{um}
 		p.crf_f[ndV] = []*crfNode{uf}
 		p.ntAdd(X, j)
 	} else {
 		// fmt.Println("  v exist")
-		if !existEdge(vs, us) {
+		if !existEdge(vm, um) {
 			// fmt.Printf("  !existEdge(%v)\n", u)
-			p.crf_s[ndV] = append(vs, us)
+			p.crf_m[ndV] = append(vm, um)
 			// fmt.Printf("|popped|=%d\n", len(popped))
 			for pnd := range p.popped {
 				if pnd.X == X && pnd.k == j && pnd.j != failInd {
-					p.dscAdd(Ls, i, pnd.j)
-					p.bsrSet.Add(Ls, i, j, pnd.j)
+					p.dscAdd(Lm, i, pnd.j)
+					p.bsrSet.Add(Lm, i, j, pnd.j)
 				}
 			}
 		}
@@ -283,7 +250,7 @@ func (p *parser) rtn(X symbols.NT, k, j int) {
 	if _, exist := p.popped[pn]; !exist {
 		p.popped[pn] = true
 		if j != failInd {
-			for _, nd := range p.crf_s[clusterNode{X, k}] {
+			for _, nd := range p.crf_m[clusterNode{X, k}] {
 				p.dscAdd(nd.L, nd.i, j)
 				p.bsrSet.Add(nd.L, nd.i, k, j)
 			}

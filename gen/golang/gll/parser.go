@@ -77,7 +77,7 @@ type Data struct {
 	Package     string
 	StartSymbol string
 	ExtraLabels []string
-	NRules      int
+	LastSlot    int
 	CodeX       string
 	TestSelect  string
 }
@@ -108,7 +108,7 @@ func (g *gen) getData(baseDir string) *Data {
 		Package:     g.g.Package.GetString(),
 		StartSymbol: g.g.StartSymbol(),
 		ExtraLabels: extraLabels,
-		NRules:      len(g.g.SyntaxRules),
+		LastSlot:    g.gs.Len() - 1,
 		CodeX:       g.genAlternatesCode(),
 		TestSelect:  g.genTestSelect(),
 	}
@@ -182,9 +182,11 @@ func Parse(l *lexer.Lexer) (*bsr.Set, []*Error) {
 	return newParser(l).parse()
 }
 
-const({{range $i, $lbl := range .ExtraLabels}}
-	{{$lbl}}{{if not $i}} slot.Label = iota + {{.NRules}}{{end}}
-{{end}})
+const(
+	_ slot.Label = iota + {{.LastSlot}}
+	{{range $i, $lbl := .ExtraLabels}}
+	{{$lbl}}{{end}}
+)
 
 func (p *parser) parse() (*bsr.Set, []*Error) {
 	var L slot.Label

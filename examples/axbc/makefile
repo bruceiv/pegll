@@ -1,4 +1,4 @@
 .PHONY: go
 
 go:
-	gogll axbc.md
+	pegll axbc.md
