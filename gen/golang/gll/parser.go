@@ -273,8 +273,7 @@ func (p *parser) call(Lm, Lf slot.Label, X symbols.NT, i, j int) {
 			// fmt.Printf("|popped|=%d\n", len(popped))
 			for pnd := range p.popped {
 				if pnd.X == X && pnd.k == j && pnd.j != failInd {
-					p.dscAdd(Lm, i, pnd.j)
-					p.bsrSet.Add(Lm, i, j, pnd.j)
+					p.addMatch(Lm, i, j, pnd.j)
 				}
 			}
 		}
@@ -282,7 +281,7 @@ func (p *parser) call(Lm, Lf slot.Label, X symbols.NT, i, j int) {
 			p.crf_f[ndV] = append(vf, uf)
 			for pnd := range p.popped {
 				if pnd.X == X && pnd.k == j && pnd.j == failInd {
-					p.dscAdd(Lf, i, i)
+					p.addFail(Lf, i, j)
 				}
 			}
 		}
@@ -305,14 +304,30 @@ func (p *parser) rtn(X symbols.NT, k, j int) {
 		p.popped[pn] = true
 		if j != failInd {
 			for _, nd := range p.crf_m[clusterNode{X, k}] {
-				p.dscAdd(nd.L, nd.i, j)
-				p.bsrSet.Add(nd.L, nd.i, k, j)
+				p.addMatch(nd.L, nd.i, k, j)
 			}
 		} else {
 			for _, nd := range p.crf_f[clusterNode{X, k}] {
-				p.dscAdd(nd.L, nd.i, nd.i)
+				p.addFail(nd.L, nd.i, k)
 			}
 		}
+	}
+}
+
+func (p *parser) addMatch(L slot.Label, i, k, j int) {
+	p.bsrSet.Add(L, i, k, j)
+	if L.IsLookahead() {
+		p.dscAdd(L, i, k)
+	} else {
+		p.dscAdd(L, i, j)
+	}
+}
+
+func (p *parser) addFail(L slot.Label, i, k int) {
+	if L.IsLookahead() {
+		p.dscAdd(L, i, k)
+	} else {
+		p.dscAdd(L, i, i)
 	}
 }
 

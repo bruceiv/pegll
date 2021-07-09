@@ -106,12 +106,12 @@ func (g *gen) getAltData(nt string, alt *ast.SyntaxAlternate, altI, altN int, is
 func (g *gen) getSlotsData(nt string, alt *ast.SyntaxAlternate, altI, altN int, isOrdered bool) (data []*SlotData) {
 	for i, sym := range alt.Symbols {
 		// fmt.Printf("getSlotsData(%s) %s\n", nt, getSlotData(nt, altI, sym, i))
-		data = append(data, g.getOSlotData(nt, altI, altN, sym.String(), i, isOrdered))
+		data = append(data, g.getSlotData(nt, altI, altN, sym.String(), i, isOrdered))
 	}
 	return
 }
 
-func (g *gen) getOSlotData(nt string, altI, altN int, symbol string, pos int, isOrdered bool) *SlotData {
+func (g *gen) getSlotData(nt string, altI, altN int, symbol string, pos int, isOrdered bool) *SlotData {
 	preLabel := gslot.NewLabel(nt, altI, pos, g.gs, g.ff)
 	postLabel := gslot.NewLabel(nt, altI, pos+1, g.gs, g.ff)
 	var failLabel string
@@ -132,11 +132,23 @@ func (g *gen) getOSlotData(nt string, altI, altN int, symbol string, pos int, is
 		PassLabel:  passLabel,
 		Comment:    postLabel.String(),
 		NotLastAlt: altI+1 < altN,
+		IsNT:       false,
+		IsPLook:    false,
+		IsNLook:    false,
 		Head:       nt,
 	}
 	if g.g.Terminals.Contain(symbol) {
-		sd.IsNT = false
 		sd.CallNT = "<error: not NT>"
+	} else if g.g.Lookaheads.Contain(symbol) {
+		switch symbol[0] {
+		case '&':
+			sd.IsPLook = true
+		case '!':
+			sd.IsNLook = true
+		default:
+			panic("Invalid lookahead symbol: " + symbol)
+		}
+		sd.CallNT = symbol[1:]
 	} else {
 		sd.IsNT = true
 		sd.CallNT = symbol
@@ -160,6 +172,8 @@ type SlotData struct {
 	PassLabel  string
 	Comment    string
 	IsNT       bool
+	IsPLook    bool
+	IsNLook    bool
 	CallNT     string
 	NotLastAlt bool
 	Head       string
@@ -178,7 +192,11 @@ const oAltCodeTmpl = `		case slot.{{.AltLabel}}: // {{.AltComment}}
 				goto nextSlot
 			}
 			{{if $slot.IsNT}}p.call(slot.{{$slot.PostLabel}}, {{$slot.FailLabel}}, symbols.NT_{{$slot.CallNT}}, cU, p.cI)
-case slot.{{$slot.PostLabel}}: // {{$slot.Comment}} 
+		case slot.{{$slot.PostLabel}}: // {{$slot.Comment}} 
+			{{else if $slot.IsPLook}}p.call(slot.{{$slot.PostLabel}}, {{$slot.FailLabel}}, symbols.NT_{{$slot.CallNT}}, cU, p.cI)
+		case slot.{{$slot.PostLabel}}: // {{$slot.Comment}}
+			{{else if $slot.IsNLook}}p.call({{$slot.FailLabel}}, slot.{{$slot.PostLabel}}, symbols.NT_{{$slot.CallNT}}, cU, p.cI)
+		case slot.{{$slot.PostLabel}}: // {{$slot.Comment}}
 			{{else}}p.bsrSet.Add(slot.{{$slot.PostLabel}}, cU, p.cI, p.cI+1)
 			p.cI++ {{end}}{{end}}
 			p.rtn(symbols.NT_{{.NT}}, cU, p.cI)
@@ -192,7 +210,11 @@ const uAltCodeTmpl = `		case slot.{{.AltLabel}}: // {{.AltComment}}
 				goto nextSlot
 			}
 			{{if $slot.IsNT}}p.call(slot.{{$slot.PostLabel}}, {{$slot.FailLabel}}, symbols.NT_{{$slot.CallNT}}, cU, p.cI)
-case slot.{{$slot.PostLabel}}: // {{$slot.Comment}} 
+		case slot.{{$slot.PostLabel}}: // {{$slot.Comment}} 
+			{{else if $slot.IsPLook}}p.call(slot.{{$slot.PostLabel}}, {{$slot.FailLabel}}, symbols.NT_{{$slot.CallNT}}, cU, p.cI)
+		case slot.{{$slot.PostLabel}}: // {{$slot.Comment}}
+			{{else if $slot.IsNLook}}p.call({{$slot.FailLabel}}, slot.{{$slot.PostLabel}}, symbols.NT_{{$slot.CallNT}}, cU, p.cI)
+		case slot.{{$slot.PostLabel}}: // {{$slot.Comment}}
 			{{else}}p.bsrSet.Add(slot.{{$slot.PostLabel}}, cU, p.cI, p.cI+1)
 			p.cI++ {{end}}
 			p.rtn(symbols.NT_{{$slot.Head}}, cU, p.cI)
@@ -206,7 +228,11 @@ case slot.{{$slot.PostLabel}}: // {{$slot.Comment}}
 			goto nextSlot{{end}}
 		}
 		{{if $slot.IsNT}}p.call(pass_{{$slot.PostLabel}}, {{$slot.PassLabel}}, symbols.NT_{{$slot.CallNT}}, cU, p.cI)
-case pass_{{$slot.PostLabel}}: // {{$slot.Comment}} 
+	case pass_{{$slot.PostLabel}}: // {{$slot.Comment}} 
+		{{else if $slot.IsPLook}}p.call(slot.{{$slot.PostLabel}}, {{$slot.PassLabel}}, symbols.NT_{{$slot.CallNT}}, cU, p.cI)
+	case slot.{{$slot.PostLabel}}: // {{$slot.Comment}}
+		{{else if $slot.IsNLook}}p.call({{$slot.PassLabel}}, slot.{{$slot.PostLabel}}, symbols.NT_{{$slot.CallNT}}, cU, p.cI)
+	case slot.{{$slot.PostLabel}}: // {{$slot.Comment}}
 		{{else}}p.bsrSet.Add(slot.{{$slot.PostLabel}}, cU, p.cI, p.cI+1)
 		p.cI++ {{end}}
 		p.rtn(symbols.NT_{{$slot.Head}}, cU, p.cI)
