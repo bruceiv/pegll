@@ -182,8 +182,10 @@ func Parse(l *lexer.Lexer) (*bsr.Set, []*Error) {
 	return newParser(l).parse()
 }
 
+const lastSlot slot.Label = {{.LastSlot}}
+
 const(
-	_ slot.Label = iota + {{.LastSlot}}
+	_ slot.Label = iota + lastSlot
 	{{range $i, $lbl := .ExtraLabels}}
 	{{$lbl}}{{end}}
 )
@@ -316,7 +318,7 @@ func (p *parser) rtn(X symbols.NT, k, j int) {
 
 func (p *parser) addMatch(L slot.Label, i, k, j int) {
 	p.bsrSet.Add(L, i, k, j)
-	if L.IsLookahead() {
+	if isLookahead(L) {
 		p.dscAdd(L, i, k)
 	} else {
 		p.dscAdd(L, i, j)
@@ -324,11 +326,15 @@ func (p *parser) addMatch(L slot.Label, i, k, j int) {
 }
 
 func (p *parser) addFail(L slot.Label, i, k int) {
-	if L.IsLookahead() {
+	if isLookahead(L) {
 		p.dscAdd(L, i, k)
 	} else {
 		p.dscAdd(L, i, i)
 	}
+}
+
+func isLookahead(L slot.Label) bool {
+	return L <= lastSlot && L.IsLookahead()
 }
 
 // func CRFString() string {

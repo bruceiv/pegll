@@ -57,8 +57,10 @@ func Parse(l *lexer.Lexer) (*bsr.Set, []*Error) {
 	return newParser(l).parse()
 }
 
+const lastSlot slot.Label = 25
+
 const (
-	_ slot.Label = iota + 25
+	_ slot.Label = iota + lastSlot
 
 	fail_G1
 	fail_A1
@@ -358,7 +360,7 @@ func (p *parser) rtn(X symbols.NT, k, j int) {
 
 func (p *parser) addMatch(L slot.Label, i, k, j int) {
 	p.bsrSet.Add(L, i, k, j)
-	if L.IsLookahead() {
+	if isLookahead(L) {
 		p.dscAdd(L, i, k)
 	} else {
 		p.dscAdd(L, i, j)
@@ -366,11 +368,15 @@ func (p *parser) addMatch(L slot.Label, i, k, j int) {
 }
 
 func (p *parser) addFail(L slot.Label, i, k int) {
-	if L.IsLookahead() {
+	if isLookahead(L) {
 		p.dscAdd(L, i, k)
 	} else {
 		p.dscAdd(L, i, i)
 	}
+}
+
+func isLookahead(L slot.Label) bool {
+	return L <= lastSlot && L.IsLookahead()
 }
 
 // func CRFString() string {
