@@ -45,6 +45,6 @@ func parseAndPrint(s string) {
 func main() {
 	//parseAndPrint(t1)
 	//parseAndPrint(t2)
-	//parseAndPrint(t3)
+	parseAndPrint(t3)
 	parseAndPrint(comment)
 }

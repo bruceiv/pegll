@@ -56,13 +56,13 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 	var L slot.Label
 	m, cU := len(p.lex.Tokens)-1, 0
 	p.ntAdd(symbols.NT_Document, 0)
-	p.DumpDescriptors()
+	// p.DumpDescriptors()
 	for !p.R.empty() {
 		L, cU, p.cI = p.R.remove()
 
-		fmt.Println()
-		fmt.Printf("L:%s, cI:%d, I[p.cI]:%s, cU:%d\n", L, p.cI, p.lex.Tokens[p.cI], cU)
-		p.DumpDescriptors()
+		// fmt.Println()
+		// fmt.Printf("L:%s, cI:%d, I[p.cI]:%s, cU:%d\n", L, p.cI, p.lex.Tokens[p.cI], cU)
+		// p.DumpDescriptors()
 
 		switch L {
 		case slot.ATT_VALUE0R0: // ATT_VALUE : ∙dubQu DubConClose
@@ -77,11 +77,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.ATT_VALUE0R2, cU, p.cI)
 		case slot.ATT_VALUE0R2: // ATT_VALUE : dubQu DubConClose ∙
 
-			if p.follow(symbols.NT_ATT_VALUE) {
-				p.rtn(symbols.NT_ATT_VALUE, cU, p.cI)
-			} else {
-				p.parseError(slot.ATT_VALUE0R0, p.cI, followSets[symbols.NT_ATT_VALUE])
-			}
+			p.rtn(symbols.NT_ATT_VALUE, cU, p.cI)
 		case slot.ATT_VALUE1R0: // ATT_VALUE : ∙' SinConClose
 
 			p.bsrSet.Add(slot.ATT_VALUE1R1, cU, p.cI, p.cI+1)
@@ -94,11 +90,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.ATT_VALUE1R2, cU, p.cI)
 		case slot.ATT_VALUE1R2: // ATT_VALUE : ' SinConClose ∙
 
-			if p.follow(symbols.NT_ATT_VALUE) {
-				p.rtn(symbols.NT_ATT_VALUE, cU, p.cI)
-			} else {
-				p.parseError(slot.ATT_VALUE1R0, p.cI, followSets[symbols.NT_ATT_VALUE])
-			}
+			p.rtn(symbols.NT_ATT_VALUE, cU, p.cI)
 		case slot.Attribute0R0: // Attribute : ∙NAME optSpaceEsc = optSpaceEsc ATT_VALUE
 
 			p.call(slot.Attribute0R1, cU, p.cI)
@@ -109,9 +101,8 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 				break
 			}
 
-			p.call(slot.Attribute0R2, cU, p.cI)
-		case slot.Attribute0R2: // Attribute : NAME OptSpaceEsc ∙eq OptSpaceEsc ATT_VALUE
-
+			p.bsrSet.Add(slot.Attribute0R2, cU, p.cI, p.cI+1)
+			p.cI++
 			if !p.testSelect(slot.Attribute0R2) {
 				p.parseError(slot.Attribute0R2, p.cI, first[slot.Attribute0R2])
 				break
@@ -124,9 +115,8 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 				break
 			}
 
-			p.call(slot.Attribute0R4, cU, p.cI)
-		case slot.Attribute0R4: // Attribute : NAME OptSpaceEsc eq OptSpaceEsc ∙ATT_VALUE
-
+			p.bsrSet.Add(slot.Attribute0R4, cU, p.cI, p.cI+1)
+			p.cI++
 			if !p.testSelect(slot.Attribute0R4) {
 				p.parseError(slot.Attribute0R4, p.cI, first[slot.Attribute0R4])
 				break
@@ -135,11 +125,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.Attribute0R5, cU, p.cI)
 		case slot.Attribute0R5: // Attribute : NAME optSpaceEsc = optSpaceEsc ATT_VALUE ∙
 
-			if p.follow(symbols.NT_Attribute) {
-				p.rtn(symbols.NT_Attribute, cU, p.cI)
-			} else {
-				p.parseError(slot.Attribute0R0, p.cI, followSets[symbols.NT_Attribute])
-			}
+			p.rtn(symbols.NT_Attribute, cU, p.cI)
 		case slot.CHAR_REF0R0: // CHAR_REF : ∙&#x Hex ;
 
 			p.bsrSet.Add(slot.CHAR_REF0R1, cU, p.cI, p.cI+1)
@@ -159,11 +145,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 
 			p.bsrSet.Add(slot.CHAR_REF0R3, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_CHAR_REF) {
-				p.rtn(symbols.NT_CHAR_REF, cU, p.cI)
-			} else {
-				p.parseError(slot.CHAR_REF0R0, p.cI, followSets[symbols.NT_CHAR_REF])
-			}
+			p.rtn(symbols.NT_CHAR_REF, cU, p.cI)
 		case slot.CHAR_REF1R0: // CHAR_REF : ∙&# repNum1x ;
 
 			p.bsrSet.Add(slot.CHAR_REF1R1, cU, p.cI, p.cI+1)
@@ -182,11 +164,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 
 			p.bsrSet.Add(slot.CHAR_REF1R3, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_CHAR_REF) {
-				p.rtn(symbols.NT_CHAR_REF, cU, p.cI)
-			} else {
-				p.parseError(slot.CHAR_REF1R0, p.cI, followSets[symbols.NT_CHAR_REF])
-			}
+			p.rtn(symbols.NT_CHAR_REF, cU, p.cI)
 		case slot.Content0R0: // Content : ∙ContentAlts Content
 
 			p.call(slot.Content0R1, cU, p.cI)
@@ -200,57 +178,33 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.Content0R2, cU, p.cI)
 		case slot.Content0R2: // Content : ContentAlts Content ∙
 
-			if p.follow(symbols.NT_Content) {
-				p.rtn(symbols.NT_Content, cU, p.cI)
-			} else {
-				p.parseError(slot.Content0R0, p.cI, followSets[symbols.NT_Content])
-			}
+			p.rtn(symbols.NT_Content, cU, p.cI)
 		case slot.Content1R0: // Content : ∙
 			p.bsrSet.AddEmpty(slot.Content1R0, p.cI)
 
-			if p.follow(symbols.NT_Content) {
-				p.rtn(symbols.NT_Content, cU, p.cI)
-			} else {
-				p.parseError(slot.Content1R0, p.cI, followSets[symbols.NT_Content])
-			}
+			p.rtn(symbols.NT_Content, cU, p.cI)
 		case slot.ContentAlts0R0: // ContentAlts : ∙comment
 
 			p.bsrSet.Add(slot.ContentAlts0R1, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_ContentAlts) {
-				p.rtn(symbols.NT_ContentAlts, cU, p.cI)
-			} else {
-				p.parseError(slot.ContentAlts0R0, p.cI, followSets[symbols.NT_ContentAlts])
-			}
+			p.rtn(symbols.NT_ContentAlts, cU, p.cI)
 		case slot.ContentAlts1R0: // ContentAlts : ∙Element
 
 			p.call(slot.ContentAlts1R1, cU, p.cI)
 		case slot.ContentAlts1R1: // ContentAlts : Element ∙
 
-			if p.follow(symbols.NT_ContentAlts) {
-				p.rtn(symbols.NT_ContentAlts, cU, p.cI)
-			} else {
-				p.parseError(slot.ContentAlts1R0, p.cI, followSets[symbols.NT_ContentAlts])
-			}
+			p.rtn(symbols.NT_ContentAlts, cU, p.cI)
 		case slot.ContentAlts2R0: // ContentAlts : ∙REFERENCE
 
 			p.call(slot.ContentAlts2R1, cU, p.cI)
 		case slot.ContentAlts2R1: // ContentAlts : REFERENCE ∙
 
-			if p.follow(symbols.NT_ContentAlts) {
-				p.rtn(symbols.NT_ContentAlts, cU, p.cI)
-			} else {
-				p.parseError(slot.ContentAlts2R0, p.cI, followSets[symbols.NT_ContentAlts])
-			}
+			p.rtn(symbols.NT_ContentAlts, cU, p.cI)
 		case slot.ContentAlts3R0: // ContentAlts : ∙charData
 
 			p.bsrSet.Add(slot.ContentAlts3R1, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_ContentAlts) {
-				p.rtn(symbols.NT_ContentAlts, cU, p.cI)
-			} else {
-				p.parseError(slot.ContentAlts3R0, p.cI, followSets[symbols.NT_ContentAlts])
-			}
+			p.rtn(symbols.NT_ContentAlts, cU, p.cI)
 		case slot.Document0R0: // Document : ∙Prolog Element RepMisc0x
 
 			p.call(slot.Document0R1, cU, p.cI)
@@ -272,20 +226,12 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.Document0R3, cU, p.cI)
 		case slot.Document0R3: // Document : Prolog Element RepMisc0x ∙
 
-			if p.follow(symbols.NT_Document) {
-				p.rtn(symbols.NT_Document, cU, p.cI)
-			} else {
-				p.parseError(slot.Document0R0, p.cI, followSets[symbols.NT_Document])
-			}
+			p.rtn(symbols.NT_Document, cU, p.cI)
 		case slot.DubConClose0R0: // DubConClose : ∙dubQu
 
 			p.bsrSet.Add(slot.DubConClose0R1, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_DubConClose) {
-				p.rtn(symbols.NT_DubConClose, cU, p.cI)
-			} else {
-				p.parseError(slot.DubConClose0R0, p.cI, followSets[symbols.NT_DubConClose])
-			}
+			p.rtn(symbols.NT_DubConClose, cU, p.cI)
 		case slot.DubConClose1R0: // DubConClose : ∙SymRefAlts DubConClose
 
 			p.call(slot.DubConClose1R1, cU, p.cI)
@@ -299,11 +245,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.DubConClose1R2, cU, p.cI)
 		case slot.DubConClose1R2: // DubConClose : SymRefAlts DubConClose ∙
 
-			if p.follow(symbols.NT_DubConClose) {
-				p.rtn(symbols.NT_DubConClose, cU, p.cI)
-			} else {
-				p.parseError(slot.DubConClose1R0, p.cI, followSets[symbols.NT_DubConClose])
-			}
+			p.rtn(symbols.NT_DubConClose, cU, p.cI)
 		case slot.ENTITY_REF0R0: // ENTITY_REF : ∙& NAME ;
 
 			p.bsrSet.Add(slot.ENTITY_REF0R1, cU, p.cI, p.cI+1)
@@ -323,11 +265,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 
 			p.bsrSet.Add(slot.ENTITY_REF0R3, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_ENTITY_REF) {
-				p.rtn(symbols.NT_ENTITY_REF, cU, p.cI)
-			} else {
-				p.parseError(slot.ENTITY_REF0R0, p.cI, followSets[symbols.NT_ENTITY_REF])
-			}
+			p.rtn(symbols.NT_ENTITY_REF, cU, p.cI)
 		case slot.ElemCloseAlts0R0: // ElemCloseAlts : ∙> Content </ NAME optSpaceEsc >
 
 			p.bsrSet.Add(slot.ElemCloseAlts0R1, cU, p.cI, p.cI+1)
@@ -360,9 +298,8 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 				break
 			}
 
-			p.call(slot.ElemCloseAlts0R5, cU, p.cI)
-		case slot.ElemCloseAlts0R5: // ElemCloseAlts : angRBrk Content slashAngLBrk NAME OptSpaceEsc ∙angRBrk
-
+			p.bsrSet.Add(slot.ElemCloseAlts0R5, cU, p.cI, p.cI+1)
+			p.cI++
 			if !p.testSelect(slot.ElemCloseAlts0R5) {
 				p.parseError(slot.ElemCloseAlts0R5, p.cI, first[slot.ElemCloseAlts0R5])
 				break
@@ -370,20 +307,12 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 
 			p.bsrSet.Add(slot.ElemCloseAlts0R6, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_ElemCloseAlts) {
-				p.rtn(symbols.NT_ElemCloseAlts, cU, p.cI)
-			} else {
-				p.parseError(slot.ElemCloseAlts0R0, p.cI, followSets[symbols.NT_ElemCloseAlts])
-			}
+			p.rtn(symbols.NT_ElemCloseAlts, cU, p.cI)
 		case slot.ElemCloseAlts1R0: // ElemCloseAlts : ∙</
 
 			p.bsrSet.Add(slot.ElemCloseAlts1R1, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_ElemCloseAlts) {
-				p.rtn(symbols.NT_ElemCloseAlts, cU, p.cI)
-			} else {
-				p.parseError(slot.ElemCloseAlts1R0, p.cI, followSets[symbols.NT_ElemCloseAlts])
-			}
+			p.rtn(symbols.NT_ElemCloseAlts, cU, p.cI)
 		case slot.Element0R0: // Element : ∙angLBrk NAME RepSAttx0x optSpaceEsc ElemCloseAlts
 
 			p.bsrSet.Add(slot.Element0R1, cU, p.cI, p.cI+1)
@@ -394,7 +323,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			}
 
 			p.call(slot.Element0R2, cU, p.cI)
-		case slot.Element0R2: // Element : angLBrk NAME ∙RepSAttx0x OptSpaceEsc ElemCloseAlts
+		case slot.Element0R2: // Element : angLBrk NAME ∙RepSAttx0x optSpaceEsc ElemCloseAlts
 
 			if !p.testSelect(slot.Element0R2) {
 				p.parseError(slot.Element0R2, p.cI, first[slot.Element0R2])
@@ -402,29 +331,24 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			}
 
 			p.call(slot.Element0R3, cU, p.cI)
-		case slot.Element0R3: // Element : angLBrk NAME RepSAttx0x ∙OptSpaceEsc ElemCloseAlts
+		case slot.Element0R3: // Element : angLBrk NAME RepSAttx0x ∙optSpaceEsc ElemCloseAlts
 
 			if !p.testSelect(slot.Element0R3) {
 				p.parseError(slot.Element0R3, p.cI, first[slot.Element0R3])
 				break
 			}
 
-			p.call(slot.Element0R4, cU, p.cI)
-		case slot.Element0R4: // Element : angLBrk NAME RepSAttx0x OptSpaceEsc ∙ElemCloseAlts
-
+			p.bsrSet.Add(slot.Element0R4, cU, p.cI, p.cI+1)
+			p.cI++
 			if !p.testSelect(slot.Element0R4) {
 				p.parseError(slot.Element0R4, p.cI, first[slot.Element0R4])
 				break
 			}
 
 			p.call(slot.Element0R5, cU, p.cI)
-		case slot.Element0R5: // Element : angLBrk NAME RepSAttx0x OptSpaceEsc ElemCloseAlts ∙
+		case slot.Element0R5: // Element : angLBrk NAME RepSAttx0x optSpaceEsc ElemCloseAlts ∙
 
-			if p.follow(symbols.NT_Element) {
-				p.rtn(symbols.NT_Element, cU, p.cI)
-			} else {
-				p.parseError(slot.Element0R0, p.cI, followSets[symbols.NT_Element])
-			}
+			p.rtn(symbols.NT_Element, cU, p.cI)
 		case slot.EncName0R0: // EncName : ∙let RepLDSAlts0x
 
 			p.bsrSet.Add(slot.EncName0R1, cU, p.cI, p.cI+1)
@@ -437,44 +361,39 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.EncName0R2, cU, p.cI)
 		case slot.EncName0R2: // EncName : let RepLDSAlts0x ∙
 
-			if p.follow(symbols.NT_EncName) {
-				p.rtn(symbols.NT_EncName, cU, p.cI)
-			} else {
-				p.parseError(slot.EncName0R0, p.cI, followSets[symbols.NT_EncName])
-			}
+			p.rtn(symbols.NT_EncName, cU, p.cI)
 		case slot.EncodingDecl0R0: // EncodingDecl : ∙spaceEsc encoding Eq QuoEncNam
 
-			p.bsrSet.Add(slot.Encoding0R1, cU, p.cI, p.cI+1)
+			p.bsrSet.Add(slot.EncodingDecl0R1, cU, p.cI, p.cI+1)
 			p.cI++
-			p.rtn(symbols.NT_Encoding, cU, p.cI)
-		case slot.EncodingDecl0R0: // EncodingDecl : ∙Encoding Eq QuoEncNam
-
-			p.call(slot.EncodingDecl0R1, cU, p.cI)
-		case slot.EncodingDecl0R1: // EncodingDecl : Encoding ∙Eq QuoEncNam
-
 			if !p.testSelect(slot.EncodingDecl0R1) {
 				p.parseError(slot.EncodingDecl0R1, p.cI, first[slot.EncodingDecl0R1])
 				break
 			}
 
-			p.call(slot.EncodingDecl0R2, cU, p.cI)
-		case slot.EncodingDecl0R2: // EncodingDecl : Encoding Eq ∙QuoEncNam
-
+			p.bsrSet.Add(slot.EncodingDecl0R2, cU, p.cI, p.cI+1)
+			p.cI++
 			if !p.testSelect(slot.EncodingDecl0R2) {
 				p.parseError(slot.EncodingDecl0R2, p.cI, first[slot.EncodingDecl0R2])
 				break
 			}
 
 			p.call(slot.EncodingDecl0R3, cU, p.cI)
-		case slot.EncodingDecl0R3: // EncodingDecl : Encoding Eq QuoEncNam ∙
+		case slot.EncodingDecl0R3: // EncodingDecl : spaceEsc encoding Eq ∙QuoEncNam
 
-			if p.follow(symbols.NT_EncodingDecl) {
-				p.rtn(symbols.NT_EncodingDecl, cU, p.cI)
-			} else {
-				p.parseError(slot.EncodingDecl0R0, p.cI, followSets[symbols.NT_EncodingDecl])
+			if !p.testSelect(slot.EncodingDecl0R3) {
+				p.parseError(slot.EncodingDecl0R3, p.cI, first[slot.EncodingDecl0R3])
+				break
 			}
+
+			p.call(slot.EncodingDecl0R4, cU, p.cI)
+		case slot.EncodingDecl0R4: // EncodingDecl : spaceEsc encoding Eq QuoEncNam ∙
+
+			p.rtn(symbols.NT_EncodingDecl, cU, p.cI)
 		case slot.Eq0R0: // Eq : ∙optSpaceEsc = optSpaceEsc
 
+			p.bsrSet.Add(slot.Eq0R1, cU, p.cI, p.cI+1)
+			p.cI++
 			if !p.testSelect(slot.Eq0R1) {
 				p.parseError(slot.Eq0R1, p.cI, first[slot.Eq0R1])
 				break
@@ -489,11 +408,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 
 			p.bsrSet.Add(slot.Eq0R3, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_Eq) {
-				p.rtn(symbols.NT_Eq, cU, p.cI)
-			} else {
-				p.parseError(slot.Eq0R0, p.cI, followSets[symbols.NT_Eq])
-			}
+			p.rtn(symbols.NT_Eq, cU, p.cI)
 		case slot.Hex0R0: // Hex : ∙HexAlts RepHexAlts0x
 
 			p.call(slot.Hex0R1, cU, p.cI)
@@ -507,110 +422,62 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.Hex0R2, cU, p.cI)
 		case slot.Hex0R2: // Hex : HexAlts RepHexAlts0x ∙
 
-			if p.follow(symbols.NT_Hex) {
-				p.rtn(symbols.NT_Hex, cU, p.cI)
-			} else {
-				p.parseError(slot.Hex0R0, p.cI, followSets[symbols.NT_Hex])
-			}
+			p.rtn(symbols.NT_Hex, cU, p.cI)
 		case slot.HexAlts0R0: // HexAlts : ∙num
 
 			p.bsrSet.Add(slot.HexAlts0R1, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_HexAlts) {
-				p.rtn(symbols.NT_HexAlts, cU, p.cI)
-			} else {
-				p.parseError(slot.HexAlts0R0, p.cI, followSets[symbols.NT_HexAlts])
-			}
+			p.rtn(symbols.NT_HexAlts, cU, p.cI)
 		case slot.HexAlts1R0: // HexAlts : ∙aA_fF
 
 			p.bsrSet.Add(slot.HexAlts1R1, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_HexAlts) {
-				p.rtn(symbols.NT_HexAlts, cU, p.cI)
-			} else {
-				p.parseError(slot.HexAlts1R0, p.cI, followSets[symbols.NT_HexAlts])
-			}
+			p.rtn(symbols.NT_HexAlts, cU, p.cI)
 		case slot.LetColonAlts0R0: // LetColonAlts : ∙let
 
 			p.bsrSet.Add(slot.LetColonAlts0R1, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_LetColonAlts) {
-				p.rtn(symbols.NT_LetColonAlts, cU, p.cI)
-			} else {
-				p.parseError(slot.LetColonAlts0R0, p.cI, followSets[symbols.NT_LetColonAlts])
-			}
+			p.rtn(symbols.NT_LetColonAlts, cU, p.cI)
 		case slot.LetColonAlts1R0: // LetColonAlts : ∙:
 
 			p.bsrSet.Add(slot.LetColonAlts1R1, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_LetColonAlts) {
-				p.rtn(symbols.NT_LetColonAlts, cU, p.cI)
-			} else {
-				p.parseError(slot.LetColonAlts1R0, p.cI, followSets[symbols.NT_LetColonAlts])
-			}
+			p.rtn(symbols.NT_LetColonAlts, cU, p.cI)
 		case slot.LetColonAlts2R0: // LetColonAlts : ∙_
 
 			p.bsrSet.Add(slot.LetColonAlts2R1, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_LetColonAlts) {
-				p.rtn(symbols.NT_LetColonAlts, cU, p.cI)
-			} else {
-				p.parseError(slot.LetColonAlts2R0, p.cI, followSets[symbols.NT_LetColonAlts])
-			}
+			p.rtn(symbols.NT_LetColonAlts, cU, p.cI)
 		case slot.LetDigSymAlts0R0: // LetDigSymAlts : ∙let
 
 			p.bsrSet.Add(slot.LetDigSymAlts0R1, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_LetDigSymAlts) {
-				p.rtn(symbols.NT_LetDigSymAlts, cU, p.cI)
-			} else {
-				p.parseError(slot.LetDigSymAlts0R0, p.cI, followSets[symbols.NT_LetDigSymAlts])
-			}
+			p.rtn(symbols.NT_LetDigSymAlts, cU, p.cI)
 		case slot.LetDigSymAlts1R0: // LetDigSymAlts : ∙num
 
 			p.bsrSet.Add(slot.LetDigSymAlts1R1, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_LetDigSymAlts) {
-				p.rtn(symbols.NT_LetDigSymAlts, cU, p.cI)
-			} else {
-				p.parseError(slot.LetDigSymAlts1R0, p.cI, followSets[symbols.NT_LetDigSymAlts])
-			}
+			p.rtn(symbols.NT_LetDigSymAlts, cU, p.cI)
 		case slot.LetDigSymAlts2R0: // LetDigSymAlts : ∙_
 
 			p.bsrSet.Add(slot.LetDigSymAlts2R1, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_LetDigSymAlts) {
-				p.rtn(symbols.NT_LetDigSymAlts, cU, p.cI)
-			} else {
-				p.parseError(slot.LetDigSymAlts2R0, p.cI, followSets[symbols.NT_LetDigSymAlts])
-			}
+			p.rtn(symbols.NT_LetDigSymAlts, cU, p.cI)
 		case slot.LetDigSymAlts3R0: // LetDigSymAlts : ∙dot_BSlashDash
 
 			p.bsrSet.Add(slot.LetDigSymAlts3R1, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_LetDigSymAlts) {
-				p.rtn(symbols.NT_LetDigSymAlts, cU, p.cI)
-			} else {
-				p.parseError(slot.LetDigSymAlts3R0, p.cI, followSets[symbols.NT_LetDigSymAlts])
-			}
+			p.rtn(symbols.NT_LetDigSymAlts, cU, p.cI)
 		case slot.Misc0R0: // Misc : ∙comment
 
 			p.bsrSet.Add(slot.Misc0R1, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_Misc) {
-				p.rtn(symbols.NT_Misc, cU, p.cI)
-			} else {
-				p.parseError(slot.Misc0R0, p.cI, followSets[symbols.NT_Misc])
-			}
+			p.rtn(symbols.NT_Misc, cU, p.cI)
 		case slot.Misc1R0: // Misc : ∙spaceEsc
 
 			p.bsrSet.Add(slot.Misc1R1, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_Misc) {
-				p.rtn(symbols.NT_Misc, cU, p.cI)
-			} else {
-				p.parseError(slot.Misc1R0, p.cI, followSets[symbols.NT_Misc])
-			}
+			p.rtn(symbols.NT_Misc, cU, p.cI)
 		case slot.NAME0R0: // NAME : ∙LetColonAlts RepNameChar0x
 
 			p.call(slot.NAME0R1, cU, p.cI)
@@ -624,92 +491,52 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.NAME0R2, cU, p.cI)
 		case slot.NAME0R2: // NAME : LetColonAlts RepNameChar0x ∙
 
-			if p.follow(symbols.NT_NAME) {
-				p.rtn(symbols.NT_NAME, cU, p.cI)
-			} else {
-				p.parseError(slot.NAME0R0, p.cI, followSets[symbols.NT_NAME])
-			}
+			p.rtn(symbols.NT_NAME, cU, p.cI)
 		case slot.NAME_CHAR0R0: // NAME_CHAR : ∙let
 
 			p.bsrSet.Add(slot.NAME_CHAR0R1, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_NAME_CHAR) {
-				p.rtn(symbols.NT_NAME_CHAR, cU, p.cI)
-			} else {
-				p.parseError(slot.NAME_CHAR0R0, p.cI, followSets[symbols.NT_NAME_CHAR])
-			}
+			p.rtn(symbols.NT_NAME_CHAR, cU, p.cI)
 		case slot.NAME_CHAR1R0: // NAME_CHAR : ∙num
 
 			p.bsrSet.Add(slot.NAME_CHAR1R1, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_NAME_CHAR) {
-				p.rtn(symbols.NT_NAME_CHAR, cU, p.cI)
-			} else {
-				p.parseError(slot.NAME_CHAR1R0, p.cI, followSets[symbols.NT_NAME_CHAR])
-			}
+			p.rtn(symbols.NT_NAME_CHAR, cU, p.cI)
 		case slot.NAME_CHAR2R0: // NAME_CHAR : ∙:
 
 			p.bsrSet.Add(slot.NAME_CHAR2R1, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_NAME_CHAR) {
-				p.rtn(symbols.NT_NAME_CHAR, cU, p.cI)
-			} else {
-				p.parseError(slot.NAME_CHAR2R0, p.cI, followSets[symbols.NT_NAME_CHAR])
-			}
+			p.rtn(symbols.NT_NAME_CHAR, cU, p.cI)
 		case slot.NAME_CHAR3R0: // NAME_CHAR : ∙_
 
 			p.bsrSet.Add(slot.NAME_CHAR3R1, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_NAME_CHAR) {
-				p.rtn(symbols.NT_NAME_CHAR, cU, p.cI)
-			} else {
-				p.parseError(slot.NAME_CHAR3R0, p.cI, followSets[symbols.NT_NAME_CHAR])
-			}
+			p.rtn(symbols.NT_NAME_CHAR, cU, p.cI)
 		case slot.NAME_CHAR4R0: // NAME_CHAR : ∙dot_BSlashDash
 
 			p.bsrSet.Add(slot.NAME_CHAR4R1, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_NAME_CHAR) {
-				p.rtn(symbols.NT_NAME_CHAR, cU, p.cI)
-			} else {
-				p.parseError(slot.NAME_CHAR4R0, p.cI, followSets[symbols.NT_NAME_CHAR])
-			}
+			p.rtn(symbols.NT_NAME_CHAR, cU, p.cI)
 		case slot.OptEncDecl0R0: // OptEncDecl : ∙EncodingDecl
 
 			p.call(slot.OptEncDecl0R1, cU, p.cI)
 		case slot.OptEncDecl0R1: // OptEncDecl : EncodingDecl ∙
 
-			if p.follow(symbols.NT_OptEncDecl) {
-				p.rtn(symbols.NT_OptEncDecl, cU, p.cI)
-			} else {
-				p.parseError(slot.OptEncDecl0R0, p.cI, followSets[symbols.NT_OptEncDecl])
-			}
+			p.rtn(symbols.NT_OptEncDecl, cU, p.cI)
 		case slot.OptEncDecl1R0: // OptEncDecl : ∙
 			p.bsrSet.AddEmpty(slot.OptEncDecl1R0, p.cI)
 
-			if p.follow(symbols.NT_OptEncDecl) {
-				p.rtn(symbols.NT_OptEncDecl, cU, p.cI)
-			} else {
-				p.parseError(slot.OptEncDecl1R0, p.cI, followSets[symbols.NT_OptEncDecl])
-			}
+			p.rtn(symbols.NT_OptEncDecl, cU, p.cI)
 		case slot.OptXMLDecl0R0: // OptXMLDecl : ∙XMLDecl
 
 			p.call(slot.OptXMLDecl0R1, cU, p.cI)
 		case slot.OptXMLDecl0R1: // OptXMLDecl : XMLDecl ∙
 
-			if p.follow(symbols.NT_OptXMLDecl) {
-				p.rtn(symbols.NT_OptXMLDecl, cU, p.cI)
-			} else {
-				p.parseError(slot.OptXMLDecl0R0, p.cI, followSets[symbols.NT_OptXMLDecl])
-			}
+			p.rtn(symbols.NT_OptXMLDecl, cU, p.cI)
 		case slot.OptXMLDecl1R0: // OptXMLDecl : ∙
 			p.bsrSet.AddEmpty(slot.OptXMLDecl1R0, p.cI)
 
-			if p.follow(symbols.NT_OptXMLDecl) {
-				p.rtn(symbols.NT_OptXMLDecl, cU, p.cI)
-			} else {
-				p.parseError(slot.OptXMLDecl1R0, p.cI, followSets[symbols.NT_OptXMLDecl])
-			}
+			p.rtn(symbols.NT_OptXMLDecl, cU, p.cI)
 		case slot.Prolog0R0: // Prolog : ∙OptXMLDecl RepMisc0x
 
 			p.call(slot.Prolog0R1, cU, p.cI)
@@ -723,11 +550,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.Prolog0R2, cU, p.cI)
 		case slot.Prolog0R2: // Prolog : OptXMLDecl RepMisc0x ∙
 
-			if p.follow(symbols.NT_Prolog) {
-				p.rtn(symbols.NT_Prolog, cU, p.cI)
-			} else {
-				p.parseError(slot.Prolog0R0, p.cI, followSets[symbols.NT_Prolog])
-			}
+			p.rtn(symbols.NT_Prolog, cU, p.cI)
 		case slot.QuoEncNam0R0: // QuoEncNam : ∙' EncName '
 
 			p.bsrSet.Add(slot.QuoEncNam0R1, cU, p.cI, p.cI+1)
@@ -747,11 +570,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 
 			p.bsrSet.Add(slot.QuoEncNam0R3, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_QuoEncNam) {
-				p.rtn(symbols.NT_QuoEncNam, cU, p.cI)
-			} else {
-				p.parseError(slot.QuoEncNam0R0, p.cI, followSets[symbols.NT_QuoEncNam])
-			}
+			p.rtn(symbols.NT_QuoEncNam, cU, p.cI)
 		case slot.QuoEncNam1R0: // QuoEncNam : ∙dubQu EncName dubQu
 
 			p.bsrSet.Add(slot.QuoEncNam1R1, cU, p.cI, p.cI+1)
@@ -771,11 +590,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 
 			p.bsrSet.Add(slot.QuoEncNam1R3, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_QuoEncNam) {
-				p.rtn(symbols.NT_QuoEncNam, cU, p.cI)
-			} else {
-				p.parseError(slot.QuoEncNam1R0, p.cI, followSets[symbols.NT_QuoEncNam])
-			}
+			p.rtn(symbols.NT_QuoEncNam, cU, p.cI)
 		case slot.QuoVerNum0R0: // QuoVerNum : ∙' VersionNum '
 
 			p.bsrSet.Add(slot.QuoVerNum0R1, cU, p.cI, p.cI+1)
@@ -795,11 +610,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 
 			p.bsrSet.Add(slot.QuoVerNum0R3, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_QuoVerNum) {
-				p.rtn(symbols.NT_QuoVerNum, cU, p.cI)
-			} else {
-				p.parseError(slot.QuoVerNum0R0, p.cI, followSets[symbols.NT_QuoVerNum])
-			}
+			p.rtn(symbols.NT_QuoVerNum, cU, p.cI)
 		case slot.QuoVerNum1R0: // QuoVerNum : ∙dubQu VersionNum dubQu
 
 			p.bsrSet.Add(slot.QuoVerNum1R1, cU, p.cI, p.cI+1)
@@ -819,31 +630,19 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 
 			p.bsrSet.Add(slot.QuoVerNum1R3, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_QuoVerNum) {
-				p.rtn(symbols.NT_QuoVerNum, cU, p.cI)
-			} else {
-				p.parseError(slot.QuoVerNum1R0, p.cI, followSets[symbols.NT_QuoVerNum])
-			}
+			p.rtn(symbols.NT_QuoVerNum, cU, p.cI)
 		case slot.REFERENCE0R0: // REFERENCE : ∙ENTITY_REF
 
 			p.call(slot.REFERENCE0R1, cU, p.cI)
 		case slot.REFERENCE0R1: // REFERENCE : ENTITY_REF ∙
 
-			if p.follow(symbols.NT_REFERENCE) {
-				p.rtn(symbols.NT_REFERENCE, cU, p.cI)
-			} else {
-				p.parseError(slot.REFERENCE0R0, p.cI, followSets[symbols.NT_REFERENCE])
-			}
+			p.rtn(symbols.NT_REFERENCE, cU, p.cI)
 		case slot.REFERENCE1R0: // REFERENCE : ∙CHAR_REF
 
 			p.call(slot.REFERENCE1R1, cU, p.cI)
 		case slot.REFERENCE1R1: // REFERENCE : CHAR_REF ∙
 
-			if p.follow(symbols.NT_REFERENCE) {
-				p.rtn(symbols.NT_REFERENCE, cU, p.cI)
-			} else {
-				p.parseError(slot.REFERENCE1R0, p.cI, followSets[symbols.NT_REFERENCE])
-			}
+			p.rtn(symbols.NT_REFERENCE, cU, p.cI)
 		case slot.RepHexAlts0x0R0: // RepHexAlts0x : ∙HexAlts Hex
 
 			p.call(slot.RepHexAlts0x0R1, cU, p.cI)
@@ -857,19 +656,11 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.RepHexAlts0x0R2, cU, p.cI)
 		case slot.RepHexAlts0x0R2: // RepHexAlts0x : HexAlts Hex ∙
 
-			if p.follow(symbols.NT_RepHexAlts0x) {
-				p.rtn(symbols.NT_RepHexAlts0x, cU, p.cI)
-			} else {
-				p.parseError(slot.RepHexAlts0x0R0, p.cI, followSets[symbols.NT_RepHexAlts0x])
-			}
+			p.rtn(symbols.NT_RepHexAlts0x, cU, p.cI)
 		case slot.RepHexAlts0x1R0: // RepHexAlts0x : ∙
 			p.bsrSet.AddEmpty(slot.RepHexAlts0x1R0, p.cI)
 
-			if p.follow(symbols.NT_RepHexAlts0x) {
-				p.rtn(symbols.NT_RepHexAlts0x, cU, p.cI)
-			} else {
-				p.parseError(slot.RepHexAlts0x1R0, p.cI, followSets[symbols.NT_RepHexAlts0x])
-			}
+			p.rtn(symbols.NT_RepHexAlts0x, cU, p.cI)
 		case slot.RepLDSAlts0x0R0: // RepLDSAlts0x : ∙LetDigSymAlts RepLDSAlts0x
 
 			p.call(slot.RepLDSAlts0x0R1, cU, p.cI)
@@ -883,19 +674,11 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.RepLDSAlts0x0R2, cU, p.cI)
 		case slot.RepLDSAlts0x0R2: // RepLDSAlts0x : LetDigSymAlts RepLDSAlts0x ∙
 
-			if p.follow(symbols.NT_RepLDSAlts0x) {
-				p.rtn(symbols.NT_RepLDSAlts0x, cU, p.cI)
-			} else {
-				p.parseError(slot.RepLDSAlts0x0R0, p.cI, followSets[symbols.NT_RepLDSAlts0x])
-			}
+			p.rtn(symbols.NT_RepLDSAlts0x, cU, p.cI)
 		case slot.RepLDSAlts0x1R0: // RepLDSAlts0x : ∙
 			p.bsrSet.AddEmpty(slot.RepLDSAlts0x1R0, p.cI)
 
-			if p.follow(symbols.NT_RepLDSAlts0x) {
-				p.rtn(symbols.NT_RepLDSAlts0x, cU, p.cI)
-			} else {
-				p.parseError(slot.RepLDSAlts0x1R0, p.cI, followSets[symbols.NT_RepLDSAlts0x])
-			}
+			p.rtn(symbols.NT_RepLDSAlts0x, cU, p.cI)
 		case slot.RepMisc0x0R0: // RepMisc0x : ∙Misc RepMisc0x
 
 			p.call(slot.RepMisc0x0R1, cU, p.cI)
@@ -909,19 +692,11 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.RepMisc0x0R2, cU, p.cI)
 		case slot.RepMisc0x0R2: // RepMisc0x : Misc RepMisc0x ∙
 
-			if p.follow(symbols.NT_RepMisc0x) {
-				p.rtn(symbols.NT_RepMisc0x, cU, p.cI)
-			} else {
-				p.parseError(slot.RepMisc0x0R0, p.cI, followSets[symbols.NT_RepMisc0x])
-			}
+			p.rtn(symbols.NT_RepMisc0x, cU, p.cI)
 		case slot.RepMisc0x1R0: // RepMisc0x : ∙
 			p.bsrSet.AddEmpty(slot.RepMisc0x1R0, p.cI)
 
-			if p.follow(symbols.NT_RepMisc0x) {
-				p.rtn(symbols.NT_RepMisc0x, cU, p.cI)
-			} else {
-				p.parseError(slot.RepMisc0x1R0, p.cI, followSets[symbols.NT_RepMisc0x])
-			}
+			p.rtn(symbols.NT_RepMisc0x, cU, p.cI)
 		case slot.RepNameChar0x0R0: // RepNameChar0x : ∙NAME_CHAR RepNameChar0x
 
 			p.call(slot.RepNameChar0x0R1, cU, p.cI)
@@ -935,19 +710,11 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.RepNameChar0x0R2, cU, p.cI)
 		case slot.RepNameChar0x0R2: // RepNameChar0x : NAME_CHAR RepNameChar0x ∙
 
-			if p.follow(symbols.NT_RepNameChar0x) {
-				p.rtn(symbols.NT_RepNameChar0x, cU, p.cI)
-			} else {
-				p.parseError(slot.RepNameChar0x0R0, p.cI, followSets[symbols.NT_RepNameChar0x])
-			}
+			p.rtn(symbols.NT_RepNameChar0x, cU, p.cI)
 		case slot.RepNameChar0x1R0: // RepNameChar0x : ∙
 			p.bsrSet.AddEmpty(slot.RepNameChar0x1R0, p.cI)
 
-			if p.follow(symbols.NT_RepNameChar0x) {
-				p.rtn(symbols.NT_RepNameChar0x, cU, p.cI)
-			} else {
-				p.parseError(slot.RepNameChar0x1R0, p.cI, followSets[symbols.NT_RepNameChar0x])
-			}
+			p.rtn(symbols.NT_RepNameChar0x, cU, p.cI)
 		case slot.RepSAttx0x0R0: // RepSAttx0x : ∙SAtt RepSAttx0x
 
 			p.call(slot.RepSAttx0x0R1, cU, p.cI)
@@ -961,19 +728,11 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.RepSAttx0x0R2, cU, p.cI)
 		case slot.RepSAttx0x0R2: // RepSAttx0x : SAtt RepSAttx0x ∙
 
-			if p.follow(symbols.NT_RepSAttx0x) {
-				p.rtn(symbols.NT_RepSAttx0x, cU, p.cI)
-			} else {
-				p.parseError(slot.RepSAttx0x0R0, p.cI, followSets[symbols.NT_RepSAttx0x])
-			}
+			p.rtn(symbols.NT_RepSAttx0x, cU, p.cI)
 		case slot.RepSAttx0x1R0: // RepSAttx0x : ∙
 			p.bsrSet.AddEmpty(slot.RepSAttx0x1R0, p.cI)
 
-			if p.follow(symbols.NT_RepSAttx0x) {
-				p.rtn(symbols.NT_RepSAttx0x, cU, p.cI)
-			} else {
-				p.parseError(slot.RepSAttx0x1R0, p.cI, followSets[symbols.NT_RepSAttx0x])
-			}
+			p.rtn(symbols.NT_RepSAttx0x, cU, p.cI)
 		case slot.SAtt0R0: // SAtt : ∙spaceEsc Attribute
 
 			p.bsrSet.Add(slot.SAtt0R1, cU, p.cI, p.cI+1)
@@ -986,20 +745,12 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.SAtt0R2, cU, p.cI)
 		case slot.SAtt0R2: // SAtt : spaceEsc Attribute ∙
 
-			if p.follow(symbols.NT_SAtt) {
-				p.rtn(symbols.NT_SAtt, cU, p.cI)
-			} else {
-				p.parseError(slot.SAtt0R0, p.cI, followSets[symbols.NT_SAtt])
-			}
+			p.rtn(symbols.NT_SAtt, cU, p.cI)
 		case slot.SinConClose0R0: // SinConClose : ∙'
 
 			p.bsrSet.Add(slot.SinConClose0R1, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_SinConClose) {
-				p.rtn(symbols.NT_SinConClose, cU, p.cI)
-			} else {
-				p.parseError(slot.SinConClose0R0, p.cI, followSets[symbols.NT_SinConClose])
-			}
+			p.rtn(symbols.NT_SinConClose, cU, p.cI)
 		case slot.SinConClose1R0: // SinConClose : ∙SymRefAlts SinConClose
 
 			p.call(slot.SinConClose1R1, cU, p.cI)
@@ -1013,40 +764,22 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.SinConClose1R2, cU, p.cI)
 		case slot.SinConClose1R2: // SinConClose : SymRefAlts SinConClose ∙
 
-			if p.follow(symbols.NT_SinConClose) {
-				p.rtn(symbols.NT_SinConClose, cU, p.cI)
-			} else {
-				p.parseError(slot.SinConClose1R0, p.cI, followSets[symbols.NT_SinConClose])
-			}
+			p.rtn(symbols.NT_SinConClose, cU, p.cI)
 		case slot.SymRefAlts0R0: // SymRefAlts : ∙andCars
 
 			p.bsrSet.Add(slot.SymRefAlts0R1, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_SymRefAlts) {
-				p.rtn(symbols.NT_SymRefAlts, cU, p.cI)
-			} else {
-				p.parseError(slot.SymRefAlts0R0, p.cI, followSets[symbols.NT_SymRefAlts])
-			}
+			p.rtn(symbols.NT_SymRefAlts, cU, p.cI)
 		case slot.SymRefAlts1R0: // SymRefAlts : ∙REFERENCE
 
 			p.call(slot.SymRefAlts1R1, cU, p.cI)
 		case slot.SymRefAlts1R1: // SymRefAlts : REFERENCE ∙
 
-			if p.follow(symbols.NT_SymRefAlts) {
-				p.rtn(symbols.NT_SymRefAlts, cU, p.cI)
-			} else {
-				p.parseError(slot.SymRefAlts1R0, p.cI, followSets[symbols.NT_SymRefAlts])
-			}
+			p.rtn(symbols.NT_SymRefAlts, cU, p.cI)
 		case slot.VersionInfo0R0: // VersionInfo : ∙spaceEsc version Eq QuoVerNum
 
-			p.bsrSet.Add(slot.Version0R1, cU, p.cI, p.cI+1)
+			p.bsrSet.Add(slot.VersionInfo0R1, cU, p.cI, p.cI+1)
 			p.cI++
-			p.rtn(symbols.NT_Version, cU, p.cI)
-		case slot.VersionInfo0R0: // VersionInfo : ∙Version = QuoVerNum
-
-			p.call(slot.VersionInfo0R1, cU, p.cI)
-		case slot.VersionInfo0R1: // VersionInfo : Version ∙= QuoVerNum
-
 			if !p.testSelect(slot.VersionInfo0R1) {
 				p.parseError(slot.VersionInfo0R1, p.cI, first[slot.VersionInfo0R1])
 				break
@@ -1060,13 +793,17 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			}
 
 			p.call(slot.VersionInfo0R3, cU, p.cI)
-		case slot.VersionInfo0R3: // VersionInfo : Version = QuoVerNum ∙
+		case slot.VersionInfo0R3: // VersionInfo : spaceEsc version Eq ∙QuoVerNum
 
-			if p.follow(symbols.NT_VersionInfo) {
-				p.rtn(symbols.NT_VersionInfo, cU, p.cI)
-			} else {
-				p.parseError(slot.VersionInfo0R0, p.cI, followSets[symbols.NT_VersionInfo])
+			if !p.testSelect(slot.VersionInfo0R3) {
+				p.parseError(slot.VersionInfo0R3, p.cI, first[slot.VersionInfo0R3])
+				break
 			}
+
+			p.call(slot.VersionInfo0R4, cU, p.cI)
+		case slot.VersionInfo0R4: // VersionInfo : spaceEsc version Eq QuoVerNum ∙
+
+			p.rtn(symbols.NT_VersionInfo, cU, p.cI)
 		case slot.VersionNum0R0: // VersionNum : ∙NAME_CHAR RepNameChar0x
 
 			p.call(slot.VersionNum0R1, cU, p.cI)
@@ -1080,13 +817,11 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.VersionNum0R2, cU, p.cI)
 		case slot.VersionNum0R2: // VersionNum : NAME_CHAR RepNameChar0x ∙
 
-			if p.follow(symbols.NT_VersionNum) {
-				p.rtn(symbols.NT_VersionNum, cU, p.cI)
-			} else {
-				p.parseError(slot.VersionNum0R0, p.cI, followSets[symbols.NT_VersionNum])
-			}
+			p.rtn(symbols.NT_VersionNum, cU, p.cI)
 		case slot.XMLDecl0R0: // XMLDecl : ∙<?xml VersionInfo OptEncDecl optSpaceEsc ?>
 
+			p.bsrSet.Add(slot.XMLDecl0R1, cU, p.cI, p.cI+1)
+			p.cI++
 			if !p.testSelect(slot.XMLDecl0R1) {
 				p.parseError(slot.XMLDecl0R1, p.cI, first[slot.XMLDecl0R1])
 				break
@@ -1108,9 +843,8 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 				break
 			}
 
-			p.call(slot.XMLDecl0R4, cU, p.cI)
-		case slot.XMLDecl0R4: // XMLDecl : XmlDeclStart VersionInfo OptEncodDecl OptSpaceEsc ∙XmlDeclEnd
-
+			p.bsrSet.Add(slot.XMLDecl0R4, cU, p.cI, p.cI+1)
+			p.cI++
 			if !p.testSelect(slot.XMLDecl0R4) {
 				p.parseError(slot.XMLDecl0R4, p.cI, first[slot.XMLDecl0R4])
 				break
@@ -1118,11 +852,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 
 			p.bsrSet.Add(slot.XMLDecl0R5, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_XMLDecl) {
-				p.rtn(symbols.NT_XMLDecl, cU, p.cI)
-			} else {
-				p.parseError(slot.XMLDecl0R0, p.cI, followSets[symbols.NT_XMLDecl])
-			}
+			p.rtn(symbols.NT_XMLDecl, cU, p.cI)
 
 		default:
 			panic("This must not happen")
@@ -1359,9 +1089,9 @@ func (p *parser) follow(nt symbols.NT) bool {
 }
 
 func (p *parser) testSelect(l slot.Label) bool {
-	_, exist := first[l][p.lex.Tokens[p.cI].Type()]
-	// fmt.Printf("testSelect(%s) = %t\n", l, exist)
-	return exist
+	return l.IsNullable() || l.FirstContains(p.lex.Tokens[p.cI].Type())
+	// _, exist := first[l][p.lex.Tokens[p.cI].Type()]
+	// return exist
 }
 
 var first = []map[token.Type]string{
@@ -1492,10 +1222,10 @@ var first = []map[token.Type]string{
 		token.T_0:  "&",
 		token.T_1:  "&#",
 		token.T_2:  "&#x",
+		token.T_6:  "</",
 		token.T_14: "angLBrk",
 		token.T_15: "charData",
 		token.T_16: "comment",
-		token.T_6:  "</",
 	},
 	// Content : ContentAlts Content ∙
 	{
@@ -1576,9 +1306,9 @@ var first = []map[token.Type]string{
 	},
 	// Document : Prolog Element ∙RepMisc0x
 	{
+		token.EOF:  "$",
 		token.T_16: "comment",
 		token.T_26: "spaceEsc",
-		token.EOF:  "$",
 	},
 	// Document : Prolog Element RepMisc0x ∙
 	{
@@ -1700,31 +1430,31 @@ var first = []map[token.Type]string{
 		token.T_16: "comment",
 		token.T_26: "spaceEsc",
 	},
-	// Element : ∙angLBrk NAME RepSAttx0x OptSpaceEsc ElemCloseAlts
+	// Element : ∙angLBrk NAME RepSAttx0x optSpaceEsc ElemCloseAlts
 	{
 		token.T_14: "angLBrk",
 	},
-	// Element : angLBrk ∙NAME RepSAttx0x OptSpaceEsc ElemCloseAlts
+	// Element : angLBrk ∙NAME RepSAttx0x optSpaceEsc ElemCloseAlts
 	{
 		token.T_4:  ":",
 		token.T_11: "_",
 		token.T_21: "let",
 	},
-	// Element : angLBrk NAME ∙RepSAttx0x OptSpaceEsc ElemCloseAlts
+	// Element : angLBrk NAME ∙RepSAttx0x optSpaceEsc ElemCloseAlts
 	{
 		token.T_23: "optSpaceEsc",
 		token.T_26: "spaceEsc",
 	},
-	// Element : angLBrk NAME RepSAttx0x ∙OptSpaceEsc ElemCloseAlts
+	// Element : angLBrk NAME RepSAttx0x ∙optSpaceEsc ElemCloseAlts
 	{
 		token.T_23: "optSpaceEsc",
 	},
-	// Element : angLBrk NAME RepSAttx0x OptSpaceEsc ∙ElemCloseAlts
+	// Element : angLBrk NAME RepSAttx0x optSpaceEsc ∙ElemCloseAlts
 	{
 		token.T_6: "</",
 		token.T_9: ">",
 	},
-	// Element : angLBrk NAME RepSAttx0x OptSpaceEsc ElemCloseAlts ∙
+	// Element : angLBrk NAME RepSAttx0x optSpaceEsc ElemCloseAlts ∙
 	{
 		token.EOF:  "$",
 		token.T_0:  "&",
@@ -1742,36 +1472,36 @@ var first = []map[token.Type]string{
 	},
 	// EncName : let ∙RepLDSAlts0x
 	{
+		token.T_3:  "'",
 		token.T_11: "_",
 		token.T_17: "dot_BSlashDash",
+		token.T_18: "dubQu",
 		token.T_21: "let",
 		token.T_22: "num",
-		token.T_3:  "'",
-		token.T_18: "dubQu",
 	},
 	// EncName : let RepLDSAlts0x ∙
 	{
 		token.T_3:  "'",
 		token.T_18: "dubQu",
 	},
-	// Encoding : ∙encoding
+	// EncodingDecl : ∙spaceEsc encoding Eq QuoEncNam
 	{
 		token.T_26: "spaceEsc",
 	},
-	// Encoding : encoding ∙
+	// EncodingDecl : spaceEsc ∙encoding Eq QuoEncNam
 	{
 		token.T_19: "encoding",
 	},
-	// EncodingDecl : ∙Encoding Eq QuoEncNam
+	// EncodingDecl : spaceEsc encoding ∙Eq QuoEncNam
 	{
 		token.T_23: "optSpaceEsc",
 	},
-	// EncodingDecl : Encoding ∙Eq QuoEncNam
+	// EncodingDecl : spaceEsc encoding Eq ∙QuoEncNam
 	{
 		token.T_3:  "'",
 		token.T_18: "dubQu",
 	},
-	// EncodingDecl : Encoding Eq ∙QuoEncNam
+	// EncodingDecl : spaceEsc encoding Eq QuoEncNam ∙
 	{
 		token.T_23: "optSpaceEsc",
 	},
@@ -1799,9 +1529,9 @@ var first = []map[token.Type]string{
 	},
 	// Hex : HexAlts ∙RepHexAlts0x
 	{
+		token.T_5:  ";",
 		token.T_12: "aA_fF",
 		token.T_22: "num",
-		token.T_5:  ";",
 	},
 	// Hex : HexAlts RepHexAlts0x ∙
 	{
@@ -1955,11 +1685,11 @@ var first = []map[token.Type]string{
 	// NAME : LetColonAlts ∙RepNameChar0x
 	{
 		token.T_4:  ":",
+		token.T_5:  ";",
 		token.T_11: "_",
 		token.T_17: "dot_BSlashDash",
 		token.T_21: "let",
 		token.T_22: "num",
-		token.T_5:  ";",
 		token.T_23: "optSpaceEsc",
 		token.T_26: "spaceEsc",
 	},
@@ -2085,15 +1815,15 @@ var first = []map[token.Type]string{
 	// Prolog : ∙OptXMLDecl RepMisc0x
 	{
 		token.T_7:  "<?xml",
+		token.T_14: "angLBrk",
 		token.T_16: "comment",
 		token.T_26: "spaceEsc",
-		token.T_14: "angLBrk",
 	},
 	// Prolog : OptXMLDecl ∙RepMisc0x
 	{
+		token.T_14: "angLBrk",
 		token.T_16: "comment",
 		token.T_26: "spaceEsc",
-		token.T_14: "angLBrk",
 	},
 	// Prolog : OptXMLDecl RepMisc0x ∙
 	{
@@ -2235,12 +1965,12 @@ var first = []map[token.Type]string{
 	},
 	// RepLDSAlts0x : LetDigSymAlts ∙RepLDSAlts0x
 	{
+		token.T_3:  "'",
 		token.T_11: "_",
 		token.T_17: "dot_BSlashDash",
+		token.T_18: "dubQu",
 		token.T_21: "let",
 		token.T_22: "num",
-		token.T_3:  "'",
-		token.T_18: "dubQu",
 	},
 	// RepLDSAlts0x : LetDigSymAlts RepLDSAlts0x ∙
 	{
@@ -2259,10 +1989,10 @@ var first = []map[token.Type]string{
 	},
 	// RepMisc0x : Misc ∙RepMisc0x
 	{
-		token.T_16: "comment",
-		token.T_26: "spaceEsc",
 		token.EOF:  "$",
 		token.T_14: "angLBrk",
+		token.T_16: "comment",
+		token.T_26: "spaceEsc",
 	},
 	// RepMisc0x : Misc RepMisc0x ∙
 	{
@@ -2284,14 +2014,14 @@ var first = []map[token.Type]string{
 	},
 	// RepNameChar0x : NAME_CHAR ∙RepNameChar0x
 	{
+		token.T_3:  "'",
 		token.T_4:  ":",
+		token.T_5:  ";",
 		token.T_11: "_",
 		token.T_17: "dot_BSlashDash",
+		token.T_18: "dubQu",
 		token.T_21: "let",
 		token.T_22: "num",
-		token.T_3:  "'",
-		token.T_5:  ";",
-		token.T_18: "dubQu",
 		token.T_23: "optSpaceEsc",
 		token.T_26: "spaceEsc",
 	},
@@ -2317,8 +2047,8 @@ var first = []map[token.Type]string{
 	},
 	// RepSAttx0x : SAtt ∙RepSAttx0x
 	{
-		token.T_26: "spaceEsc",
 		token.T_23: "optSpaceEsc",
+		token.T_26: "spaceEsc",
 	},
 	// RepSAttx0x : SAtt RepSAttx0x ∙
 	{
@@ -2400,24 +2130,24 @@ var first = []map[token.Type]string{
 		token.T_13: "andCars",
 		token.T_18: "dubQu",
 	},
-	// Version : ∙version
+	// VersionInfo : ∙spaceEsc version Eq QuoVerNum
 	{
 		token.T_26: "spaceEsc",
 	},
-	// Version : version ∙
+	// VersionInfo : spaceEsc ∙version Eq QuoVerNum
 	{
 		token.T_27: "version",
 	},
-	// VersionInfo : ∙Version = QuoVerNum
+	// VersionInfo : spaceEsc version ∙Eq QuoVerNum
 	{
 		token.T_23: "optSpaceEsc",
 	},
-	// VersionInfo : Version ∙= QuoVerNum
+	// VersionInfo : spaceEsc version Eq ∙QuoVerNum
 	{
 		token.T_3:  "'",
 		token.T_18: "dubQu",
 	},
-	// VersionInfo : Version = ∙QuoVerNum
+	// VersionInfo : spaceEsc version Eq QuoVerNum ∙
 	{
 		token.T_23: "optSpaceEsc",
 		token.T_26: "spaceEsc",
@@ -2432,13 +2162,13 @@ var first = []map[token.Type]string{
 	},
 	// VersionNum : NAME_CHAR ∙RepNameChar0x
 	{
+		token.T_3:  "'",
 		token.T_4:  ":",
 		token.T_11: "_",
 		token.T_17: "dot_BSlashDash",
+		token.T_18: "dubQu",
 		token.T_21: "let",
 		token.T_22: "num",
-		token.T_3:  "'",
-		token.T_18: "dubQu",
 	},
 	// VersionNum : NAME_CHAR RepNameChar0x ∙
 	{

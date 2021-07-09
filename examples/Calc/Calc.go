@@ -1,5 +1,5 @@
 /* calc TEST */
-// tests functionality of simple calculator 
+// tests functionality of simple calculator
 package main
 
 import (
@@ -17,19 +17,19 @@ import (
  * that it is functioning properly
  */
 // should match
-const single_num  	= `1`			// passed
-const plus_test 	= `8+6`			// passed
-const minus_test 	= `8 -6 `		// passed
-const mult_test 	= `8 * 6`		// passed
-const div_test 		= `8 / 2`		// passed
-const plusMult_test = "8 + 1 * 2" 	// passed
-const minusDiv_test = "8 / 1 -12" 	// passed
-const parens_test 	= "(8 + 1)*2"   // passed
+const single_num = `1`            // passed
+const plus_test = `8+6`           // passed
+const minus_test = `8 -6 `        // passed
+const mult_test = `8 * 6`         // passed
+const div_test = `8 / 2`          // passed
+const plusMult_test = "8 + 1 * 2" // passed
+const minusDiv_test = "8 / 1 -12" // passed
+const parens_test = "(8 + 1)*2"   // passed
 
 // should fail to match
-const incomp_expr 	= "12 +"		// did not pass
-const incomp_parens = `((1+3)-1`    // did not pass
-const space 		= " "
+const incomp_expr = "12 +"       // did not pass
+const incomp_parens = `((1+3)-1` // did not pass
+const space = " "
 
 /* CALCULATOR FUNCTIONS */
 // Calculates the value of the input
@@ -74,10 +74,9 @@ func repPLUSorMINUS(val int, pORmrep bsr.BSR) int {
 	//self-assignment aspect of RepPLUSorMINUS0x NT
 	repChild := pORmrep.GetNTChildI(1)
 
-	
 	if pORm.Alternate() == 0 { //alt0 -> addition
 		return repPLUSorMINUS((val + product(prod)), repChild)
-	}else if pORm.Alternate() == 1 { //alt1 -> subtraction
+	} else if pORm.Alternate() == 1 { //alt1 -> subtraction
 		return repPLUSorMINUS((val - product(prod)), repChild)
 	}
 
@@ -121,7 +120,6 @@ func repTIMESorDIV(val int, tORdrep bsr.BSR) int {
 	//self-assignment aspect of RepTIMESorDIVIDE0x NT
 	repChild := tORdrep.GetNTChildI(1)
 
-	
 	if tORd.Alternate() == 0 { //alt0 -> multiplication
 		return repTIMESorDIV((val * element(elem)), repChild)
 	} else if tORd.Alternate() == 1 { //alt1 -> division
@@ -142,7 +140,7 @@ func element(e bsr.BSR) int {
 		val := sum(su)
 		//return value of SUM
 		return val
-	} else if e.Alternate() == 1 { //Alt2 - Number 
+	} else if e.Alternate() == 1 { //Alt2 - Number
 		//Get Number NT
 		num := e.GetNTChildI(0)
 		//Get value of Number
@@ -169,11 +167,8 @@ func number(n bsr.BSR) int {
 
 	// convert the string version of the number to numberic
 	num_digits, err := strconv.Atoi(num_string)
-<<<<<<< HEAD
-	fmt.Println(num_digits)
-=======
 
->>>>>>> af4ee04f7b22dbaee046ebddc0a2b1086e41bd7b
+	fmt.Println(num_digits)
 	// return the numeric version if no error
 	if err == nil {
 		return num_digits
@@ -213,7 +208,7 @@ func parseAndPrint(s string) {
 func main() {
 	// should match and print result
 	fmt.Println("should match")
-	parseAndPrint(single_num) 
+	parseAndPrint(single_num)
 	parseAndPrint(plus_test)
 	parseAndPrint(minus_test)
 	parseAndPrint(mult_test)
@@ -222,7 +217,7 @@ func main() {
 	parseAndPrint(minusDiv_test)
 	parseAndPrint(parens_test)
 
-	// should not match 
+	// should not match
 	fmt.Println("\nshould fail to match")
 	parseAndPrint(incomp_expr)
 	parseAndPrint(incomp_parens)
