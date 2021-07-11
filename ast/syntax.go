@@ -17,7 +17,13 @@ limitations under the License.
 
 package ast
 
+import "github.com/goccmack/gogll/token"
+
 // The syntax part of the AST
+type SynOptional struct { //Where do we get it to connect to the '?' ????  --> similar to Lext function in lex.go??
+	tok *token.Token //I think contains the ?
+	//Possibly needs: strLit *token.Token -- might contain the 'rule?' structure
+}
 
 type SyntaxAlternate struct {
 	Symbols []SyntaxSymbol
@@ -40,6 +46,8 @@ type SyntaxSymbol interface {
 
 	String() string
 }
+
+func (*SynOptional) isSyntaxSymbol() {} // I believe this gets it included in the list
 
 func (*NT) isSyntaxSymbol() {}
 
