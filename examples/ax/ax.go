@@ -10,13 +10,18 @@ import (
 
 // test the repeatability of the grammar
 
-// should match
-const a = 'a'
+// Match
+const a = "a"
 const aa = "aa"
 const aaa = "aaa"
 
-// should fail to match
-const ab = "ab"
+// Loops infinitely
+//const ab = "ab"
+//const aba = "aba"
+
+//Fails to match
+const space = " "
+const nothing = ""
 
 // use the GetRoot(s) function from bsr.go
 func parse(s []rune) bool {
@@ -26,9 +31,15 @@ func parse(s []rune) bool {
 	if bsrSet == nil {
 		return false
 	}
+	// print tree in pre-order
+	//bsrSet.FlatDump()
+	//bsrSet.FilterByOrderedChoice()
+	//fmt.Println("=====")
+	//bsrSet.FlatDump()
+	//fmt.Println("=====")
 	// check that root covers whole input
-	root := bsrSet.GetRoots()
-	return root.RightExtent == bsrSet.GerRightExtent()
+	root := bsrSet.GetRoot()
+	return root.RightExtent() == bsrSet.GetRightExtent()
 }
 
 func parseAndPrint(s string) {
@@ -43,5 +54,8 @@ func main() {
 	parseAndPrint(a)
 	parseAndPrint(aa)
 	parseAndPrint(aaa)
-	parseAndPrint(ab)
+	//parseAndPrint(ab)
+	//parseAndPrint(aba)
+	parseAndPrint(space)
+	parseAndPrint(nothing)
 }

@@ -156,8 +156,11 @@ func (l *Lexer) GetLineColumnOfToken(i int) (line, col int) {
 }
 
 // GetString returns the input string from the left extent of Token[lext] to
-// the right extent of Token[rext]
+// the right extent of Token[rext], or empty string if range empty
 func (l *Lexer) GetString(lext, rext int) string {
+	if rext < lext {
+		return ""
+	}
 	return string(l.I[l.Tokens[lext].Lext():l.Tokens[rext].Rext()])
 }
 
@@ -188,108 +191,109 @@ func not(r rune, set []rune) bool {
 }
 
 var accept = []token.Type{ 
-	token.T_19, 
+	token.Error, 
+	token.Error, 
 	token.T_0, 
-	token.T_19, 
-	token.T_9, 
 	token.T_1, 
 	token.T_2, 
-	token.T_5, 
 	token.T_3, 
-	token.T_4, 
-	token.T_9, 
-	token.T_9, 
-	token.T_21, 
-	token.T_23, 
-	token.T_24, 
-	token.T_10, 
-	token.T_10, 
-	token.T_11, 
-	token.T_4, 
 	token.Error, 
-	token.T_15, 
-	token.T_22, 
 	token.T_4, 
 	token.T_5, 
-	token.T_8, 
-	token.T_5, 
-	token.Error, 
-	token.T_16, 
-	token.Error, 
-	token.Error, 
-	token.Error, 
-	token.Error, 
+	token.T_6, 
+	token.T_7, 
 	token.T_12, 
+	token.Error, 
+	token.Error, 
+	token.T_19, 
+	token.T_20, 
+	token.T_10, 
+	token.T_12, 
+	token.T_4, 
+	token.T_16, 
+	token.T_9, 
+	token.T_17, 
+	token.Error, 
+	token.Error, 
+	token.T_13, 
+	token.Error, 
+	token.Error, 
+	token.Error, 
 	token.T_14, 
 	token.Error, 
 	token.Error, 
 	token.Error, 
 	token.Error, 
-	token.T_6, 
 	token.Error, 
+	token.T_17, 
+	token.Error, 
+	token.T_17, 
+	token.T_8, 
+	token.Error, 
+	token.T_15, 
 	token.T_18, 
-	token.T_20, 
-	token.T_13, 
+	token.Error, 
+	token.Error, 
+	token.T_11, 
+	token.Error, 
+	token.T_17, 
+	token.Error, 
 }
 
 var nextState = []func(r rune) state{ 
 	// Set0
 	func(r rune) state {
 		switch { 
-		case r == ',':
+		case r == '"':
 			return 1 
-		case r == '-':
+		case r == '+':
 			return 2 
-		case r == '/':
+		case r == ',':
 			return 3 
-		case r == ':':
+		case r == '-':
 			return 4 
-		case r == '[':
+		case r == '.':
 			return 5 
-		case r == '\\':
+		case r == '/':
 			return 6 
-		case r == ']':
+		case r == '0':
 			return 7 
-		case r == 'f':
+		case r == ':':
 			return 8 
-		case r == 'n':
+		case r == '[':
 			return 9 
-		case r == 't':
+		case r == ']':
 			return 10 
-		case r == 'u':
+		case r == 'f':
 			return 11 
-		case r == '{':
+		case r == 'n':
 			return 12 
-		case r == '}':
+		case r == 't':
 			return 13 
-		case any(r, []rune{'\n','\r'}):
+		case r == '{':
 			return 14 
-		case any(r, []rune{'\t','\n','\r'}):
+		case r == '}':
 			return 15 
 		case any(r, []rune{'\t','\n','\r',' '}):
 			return 16 
-		case any(r, []rune{'E','e'}):
-			return 17 
-		case any(r, []rune{'.'}):
-			return 18 
 		case any(r, []rune{'1','2','3','4','5','6','7','8','9'}):
+			return 17 
+		case any(r, []rune{'0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F','a','b','c','d','e','f'}):
+			return 18 
+		case unicode.IsNumber(r):
 			return 19 
-		case any(r, []rune{'0'}):
+		case any(r, []rune{'E','e'}):
 			return 20 
-		case any(r, []rune{'A','B','C','D','E','F','a','b','c','d','e','f'}):
-			return 21 
-		case any(r, []rune{'\\','^'}):
-			return 22 
-		case any(r, []rune{'"'}):
-			return 23 
-		case any(r, []rune{'"','/','\\','b','f','n','r','t'}):
-			return 24 
 		}
 		return nullState
 	}, 
 	// Set1
 	func(r rune) state {
 		switch { 
+		case r == '"':
+			return 21 
+		case not(r, []rune{'"'}):
+			return 22 
 		}
 		return nullState
 	}, 
@@ -302,10 +306,6 @@ var nextState = []func(r rune) state{
 	// Set3
 	func(r rune) state {
 		switch { 
-		case r == '*':
-			return 25 
-		case r == '/':
-			return 26 
 		}
 		return nullState
 	}, 
@@ -324,96 +324,96 @@ var nextState = []func(r rune) state{
 	// Set6
 	func(r rune) state {
 		switch { 
+		case r == '*':
+			return 23 
+		case r == '/':
+			return 24 
 		}
 		return nullState
 	}, 
 	// Set7
 	func(r rune) state {
 		switch { 
+		case unicode.IsNumber(r):
+			return 19 
 		}
 		return nullState
 	}, 
 	// Set8
 	func(r rune) state {
 		switch { 
-		case r == 'a':
-			return 27 
 		}
 		return nullState
 	}, 
 	// Set9
 	func(r rune) state {
 		switch { 
-		case r == 'u':
-			return 28 
 		}
 		return nullState
 	}, 
 	// Set10
 	func(r rune) state {
 		switch { 
-		case r == 'r':
-			return 29 
 		}
 		return nullState
 	}, 
 	// Set11
 	func(r rune) state {
 		switch { 
+		case r == 'a':
+			return 25 
 		}
 		return nullState
 	}, 
 	// Set12
 	func(r rune) state {
 		switch { 
+		case r == 'u':
+			return 26 
 		}
 		return nullState
 	}, 
 	// Set13
 	func(r rune) state {
 		switch { 
+		case r == 'r':
+			return 27 
 		}
 		return nullState
 	}, 
 	// Set14
 	func(r rune) state {
 		switch { 
-		case any(r, []rune{'\t','\n','\r',' '}):
-			return 16 
 		}
 		return nullState
 	}, 
 	// Set15
 	func(r rune) state {
 		switch { 
-		case any(r, []rune{'\t','\n','\r',' '}):
-			return 16 
 		}
 		return nullState
 	}, 
 	// Set16
 	func(r rune) state {
 		switch { 
-		case any(r, []rune{'\t','\n','\r',' '}):
-			return 16 
 		}
 		return nullState
 	}, 
 	// Set17
 	func(r rune) state {
 		switch { 
-		case any(r, []rune{'+','-'}):
-			return 30 
+		case any(r, []rune{'1','2','3','4','5','6','7','8','9'}):
+			return 28 
 		case unicode.IsNumber(r):
-			return 31 
+			return 19 
 		}
 		return nullState
 	}, 
 	// Set18
 	func(r rune) state {
 		switch { 
-		case unicode.IsNumber(r):
-			return 32 
+		case r == 'a':
+			return 25 
 		}
 		return nullState
 	}, 
@@ -434,77 +434,81 @@ var nextState = []func(r rune) state{
 	// Set21
 	func(r rune) state {
 		switch { 
-		case r == 'a':
-			return 27 
 		}
 		return nullState
 	}, 
 	// Set22
 	func(r rune) state {
 		switch { 
+		case r == '\\':
+			return 29 
+		case any(r, []rune{'\\','^'}):
+			return 29 
 		}
 		return nullState
 	}, 
 	// Set23
 	func(r rune) state {
 		switch { 
+		case r == '*':
+			return 30 
+		case not(r, []rune{'*'}):
+			return 23 
 		}
 		return nullState
 	}, 
 	// Set24
 	func(r rune) state {
 		switch { 
-		case r == '*':
-			return 25 
-		case r == '/':
-			return 26 
-		case r == 'a':
-			return 27 
-		case r == 'r':
-			return 29 
-		case r == 'u':
-			return 28 
+		case not(r, []rune{'\n','\r'}):
+			return 24 
 		}
 		return nullState
 	}, 
 	// Set25
 	func(r rune) state {
 		switch { 
-		case r == '*':
-			return 33 
-		case not(r, []rune{'*'}):
-			return 25 
+		case r == 'l':
+			return 31 
 		}
 		return nullState
 	}, 
 	// Set26
 	func(r rune) state {
 		switch { 
-		case not(r, []rune{'\n'}):
-			return 26 
+		case r == 'l':
+			return 32 
 		}
 		return nullState
 	}, 
 	// Set27
 	func(r rune) state {
 		switch { 
-		case r == 'l':
-			return 34 
+		case r == 'u':
+			return 33 
 		}
 		return nullState
 	}, 
 	// Set28
 	func(r rune) state {
 		switch { 
-		case r == 'l':
-			return 35 
+		case any(r, []rune{'1','2','3','4','5','6','7','8','9'}):
+			return 28 
+		case unicode.IsNumber(r):
+			return 19 
 		}
 		return nullState
 	}, 
 	// Set29
 	func(r rune) state {
 		switch { 
+		case r == '"':
+			return 34 
 		case r == 'u':
+			return 35 
+		case not(r, []rune{'"'}):
+			return 22 
+		case any(r, []rune{'"','/','\\','b','f','n','r','t'}):
 			return 36 
 		}
 		return nullState
@@ -512,38 +516,14 @@ var nextState = []func(r rune) state{
 	// Set30
 	func(r rune) state {
 		switch { 
-		case unicode.IsNumber(r):
-			return 31 
+		case r == '/':
+			return 37 
+		case not(r, []rune{'/'}):
+			return 23 
 		}
 		return nullState
 	}, 
 	// Set31
-	func(r rune) state {
-		switch { 
-		case unicode.IsNumber(r):
-			return 31 
-		}
-		return nullState
-	}, 
-	// Set32
-	func(r rune) state {
-		switch { 
-		case unicode.IsNumber(r):
-			return 32 
-		}
-		return nullState
-	}, 
-	// Set33
-	func(r rune) state {
-		switch { 
-		case r == '/':
-			return 37 
-		case not(r, []rune{'/'}):
-			return 25 
-		}
-		return nullState
-	}, 
-	// Set34
 	func(r rune) state {
 		switch { 
 		case r == 's':
@@ -551,7 +531,7 @@ var nextState = []func(r rune) state{
 		}
 		return nullState
 	}, 
-	// Set35
+	// Set32
 	func(r rune) state {
 		switch { 
 		case r == 'l':
@@ -559,11 +539,47 @@ var nextState = []func(r rune) state{
 		}
 		return nullState
 	}, 
-	// Set36
+	// Set33
 	func(r rune) state {
 		switch { 
 		case r == 'e':
 			return 40 
+		}
+		return nullState
+	}, 
+	// Set34
+	func(r rune) state {
+		switch { 
+		case r == '"':
+			return 21 
+		case not(r, []rune{'"'}):
+			return 22 
+		}
+		return nullState
+	}, 
+	// Set35
+	func(r rune) state {
+		switch { 
+		case r == '\\':
+			return 29 
+		case any(r, []rune{'\\','^'}):
+			return 29 
+		case any(r, []rune{'0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F','a','b','c','d','e','f'}):
+			return 41 
+		}
+		return nullState
+	}, 
+	// Set36
+	func(r rune) state {
+		switch { 
+		case r == '"':
+			return 21 
+		case r == '\\':
+			return 42 
+		case any(r, []rune{'\\','^'}):
+			return 42 
+		case not(r, []rune{'"'}):
+			return 22 
 		}
 		return nullState
 	}, 
@@ -577,7 +593,7 @@ var nextState = []func(r rune) state{
 	func(r rune) state {
 		switch { 
 		case r == 'e':
-			return 41 
+			return 43 
 		}
 		return nullState
 	}, 
@@ -596,6 +612,66 @@ var nextState = []func(r rune) state{
 	// Set41
 	func(r rune) state {
 		switch { 
+		case any(r, []rune{'0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F','a','b','c','d','e','f'}):
+			return 44 
+		}
+		return nullState
+	}, 
+	// Set42
+	func(r rune) state {
+		switch { 
+		case r == '"':
+			return 34 
+		case r == '\\':
+			return 42 
+		case r == 'u':
+			return 35 
+		case not(r, []rune{'"'}):
+			return 22 
+		case any(r, []rune{'"','/','\\','b','f','n','r','t'}):
+			return 45 
+		case any(r, []rune{'\\','^'}):
+			return 42 
+		}
+		return nullState
+	}, 
+	// Set43
+	func(r rune) state {
+		switch { 
+		}
+		return nullState
+	}, 
+	// Set44
+	func(r rune) state {
+		switch { 
+		case any(r, []rune{'0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F','a','b','c','d','e','f'}):
+			return 46 
+		}
+		return nullState
+	}, 
+	// Set45
+	func(r rune) state {
+		switch { 
+		case r == '"':
+			return 34 
+		case r == '\\':
+			return 42 
+		case r == 'u':
+			return 35 
+		case any(r, []rune{'\\','^'}):
+			return 42 
+		case not(r, []rune{'"'}):
+			return 22 
+		case any(r, []rune{'"','/','\\','b','f','n','r','t'}):
+			return 45 
+		}
+		return nullState
+	}, 
+	// Set46
+	func(r rune) state {
+		switch { 
+		case any(r, []rune{'0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F','a','b','c','d','e','f'}):
+			return 1 
 		}
 		return nullState
 	}, 

@@ -17,14 +17,10 @@ const(
 	NT_ATT_VALUE NT = iota
 	NT_Attribute 
 	NT_CHAR_REF 
-	NT_COMMENT 
-	NT_ComEnterior 
-	NT_ComStart 
 	NT_Content 
 	NT_ContentAlts 
 	NT_Document 
-	NT_DubCondClose 
-	NT_DubDash 
+	NT_DubConClose 
 	NT_ENTITY_REF 
 	NT_ElemCloseAlts 
 	NT_Element 
@@ -38,8 +34,7 @@ const(
 	NT_Misc 
 	NT_NAME 
 	NT_NAME_CHAR 
-	NT_NameCharRep 
-	NT_OptEncodDecl 
+	NT_OptEncDecl 
 	NT_OptXMLDecl 
 	NT_Prolog 
 	NT_QuoEncNam 
@@ -51,12 +46,16 @@ const(
 	NT_RepNameChar0x 
 	NT_RepSAttx0x 
 	NT_SAtt 
-	NT_SinCondClose 
+	NT_SinConClose 
 	NT_SymRefAlts 
 	NT_VersionInfo 
 	NT_VersionNum 
 	NT_XMLDecl 
 )
+
+const NumNTs = 37
+
+type NTs []NT
 
 // T is the type of terminals symbols
 type T int
@@ -64,31 +63,31 @@ const(
 	T_0 T = iota // & 
 	T_1  // &# 
 	T_2  // &#x 
-	T_3  // -- 
-	T_4  // ; 
-	T_5  // aA_fF 
-	T_6  // andCarrs 
-	T_7  // angLBrk 
-	T_8  // angRBrk 
-	T_9  // charData 
-	T_10  // col_ 
-	T_11  // dot_BSlashDash 
-	T_12  // dot_BSlashDashCol 
-	T_13  // dubQu 
-	T_14  // encoding 
-	T_15  // eq 
-	T_16  // exclamation 
-	T_17  // let 
-	T_18  // num 
-	T_19  // optSpaceEsc 
-	T_20  // repNum1x 
-	T_21  // sinQu 
-	T_22  // slashAngLBrk 
-	T_23  // slashAngRBrk 
-	T_24  // spaceEsc 
-	T_25  // version 
-	T_26  // xmlDeclEnd 
-	T_27  // xmlDeclStart 
+	T_3  // ' 
+	T_4  // : 
+	T_5  // ; 
+	T_6  // </ 
+	T_7  // <?xml 
+	T_8  // = 
+	T_9  // > 
+	T_10  // ?> 
+	T_11  // _ 
+	T_12  // aA_fF 
+	T_13  // andCars 
+	T_14  // angLBrk 
+	T_15  // charData 
+	T_16  // comment 
+	T_17  // dot_BSlashDash 
+	T_18  // dubQu 
+	T_19  // encoding 
+	T_20  // exclamation 
+	T_21  // let 
+	T_22  // num 
+	T_23  // optSpaceEsc 
+	T_24  // repNum1x 
+	T_25  // sinQu 
+	T_26  // spaceEsc 
+	T_27  // version 
 )
 
 type Symbols []Symbol
@@ -117,18 +116,18 @@ func (t T) String() string {
 	return tToString[t]
 }
 
+func (nt NT) LeftRec() NTs {
+	return leftRec[nt]
+}
+
 var ntToString = []string { 
 	"ATT_VALUE", /* NT_ATT_VALUE */
 	"Attribute", /* NT_Attribute */
 	"CHAR_REF", /* NT_CHAR_REF */
-	"COMMENT", /* NT_COMMENT */
-	"ComEnterior", /* NT_ComEnterior */
-	"ComStart", /* NT_ComStart */
 	"Content", /* NT_Content */
 	"ContentAlts", /* NT_ContentAlts */
 	"Document", /* NT_Document */
-	"DubCondClose", /* NT_DubCondClose */
-	"DubDash", /* NT_DubDash */
+	"DubConClose", /* NT_DubConClose */
 	"ENTITY_REF", /* NT_ENTITY_REF */
 	"ElemCloseAlts", /* NT_ElemCloseAlts */
 	"Element", /* NT_Element */
@@ -142,8 +141,7 @@ var ntToString = []string {
 	"Misc", /* NT_Misc */
 	"NAME", /* NT_NAME */
 	"NAME_CHAR", /* NT_NAME_CHAR */
-	"NameCharRep", /* NT_NameCharRep */
-	"OptEncodDecl", /* NT_OptEncodDecl */
+	"OptEncDecl", /* NT_OptEncDecl */
 	"OptXMLDecl", /* NT_OptXMLDecl */
 	"Prolog", /* NT_Prolog */
 	"QuoEncNam", /* NT_QuoEncNam */
@@ -155,7 +153,7 @@ var ntToString = []string {
 	"RepNameChar0x", /* NT_RepNameChar0x */
 	"RepSAttx0x", /* NT_RepSAttx0x */
 	"SAtt", /* NT_SAtt */
-	"SinCondClose", /* NT_SinCondClose */
+	"SinConClose", /* NT_SinConClose */
 	"SymRefAlts", /* NT_SymRefAlts */
 	"VersionInfo", /* NT_VersionInfo */
 	"VersionNum", /* NT_VersionNum */
@@ -166,45 +164,41 @@ var tToString = []string {
 	"&", /* T_0 */
 	"&#", /* T_1 */
 	"&#x", /* T_2 */
-	"--", /* T_3 */
-	";", /* T_4 */
-	"aA_fF", /* T_5 */
-	"andCarrs", /* T_6 */
-	"angLBrk", /* T_7 */
-	"angRBrk", /* T_8 */
-	"charData", /* T_9 */
-	"col_", /* T_10 */
-	"dot_BSlashDash", /* T_11 */
-	"dot_BSlashDashCol", /* T_12 */
-	"dubQu", /* T_13 */
-	"encoding", /* T_14 */
-	"eq", /* T_15 */
-	"exclamation", /* T_16 */
-	"let", /* T_17 */
-	"num", /* T_18 */
-	"optSpaceEsc", /* T_19 */
-	"repNum1x", /* T_20 */
-	"sinQu", /* T_21 */
-	"slashAngLBrk", /* T_22 */
-	"slashAngRBrk", /* T_23 */
-	"spaceEsc", /* T_24 */
-	"version", /* T_25 */
-	"xmlDeclEnd", /* T_26 */
-	"xmlDeclStart", /* T_27 */ 
+	"'", /* T_3 */
+	":", /* T_4 */
+	";", /* T_5 */
+	"</", /* T_6 */
+	"<?xml", /* T_7 */
+	"=", /* T_8 */
+	">", /* T_9 */
+	"?>", /* T_10 */
+	"_", /* T_11 */
+	"aA_fF", /* T_12 */
+	"andCars", /* T_13 */
+	"angLBrk", /* T_14 */
+	"charData", /* T_15 */
+	"comment", /* T_16 */
+	"dot_BSlashDash", /* T_17 */
+	"dubQu", /* T_18 */
+	"encoding", /* T_19 */
+	"exclamation", /* T_20 */
+	"let", /* T_21 */
+	"num", /* T_22 */
+	"optSpaceEsc", /* T_23 */
+	"repNum1x", /* T_24 */
+	"sinQu", /* T_25 */
+	"spaceEsc", /* T_26 */
+	"version", /* T_27 */ 
 }
 
 var stringNT = map[string]NT{ 
 	"ATT_VALUE":NT_ATT_VALUE,
 	"Attribute":NT_Attribute,
 	"CHAR_REF":NT_CHAR_REF,
-	"COMMENT":NT_COMMENT,
-	"ComEnterior":NT_ComEnterior,
-	"ComStart":NT_ComStart,
 	"Content":NT_Content,
 	"ContentAlts":NT_ContentAlts,
 	"Document":NT_Document,
-	"DubCondClose":NT_DubCondClose,
-	"DubDash":NT_DubDash,
+	"DubConClose":NT_DubConClose,
 	"ENTITY_REF":NT_ENTITY_REF,
 	"ElemCloseAlts":NT_ElemCloseAlts,
 	"Element":NT_Element,
@@ -218,8 +212,7 @@ var stringNT = map[string]NT{
 	"Misc":NT_Misc,
 	"NAME":NT_NAME,
 	"NAME_CHAR":NT_NAME_CHAR,
-	"NameCharRep":NT_NameCharRep,
-	"OptEncodDecl":NT_OptEncodDecl,
+	"OptEncDecl":NT_OptEncDecl,
 	"OptXMLDecl":NT_OptXMLDecl,
 	"Prolog":NT_Prolog,
 	"QuoEncNam":NT_QuoEncNam,
@@ -231,9 +224,49 @@ var stringNT = map[string]NT{
 	"RepNameChar0x":NT_RepNameChar0x,
 	"RepSAttx0x":NT_RepSAttx0x,
 	"SAtt":NT_SAtt,
-	"SinCondClose":NT_SinCondClose,
+	"SinConClose":NT_SinConClose,
 	"SymRefAlts":NT_SymRefAlts,
 	"VersionInfo":NT_VersionInfo,
 	"VersionNum":NT_VersionNum,
 	"XMLDecl":NT_XMLDecl,
+}
+
+var leftRec = map[NT]NTs { 
+	NT_ATT_VALUE: NTs {  },
+	NT_Attribute: NTs {  NT_NAME,  NT_LetColonAlts,  },
+	NT_CHAR_REF: NTs {  },
+	NT_Content: NTs {  NT_REFERENCE,  NT_ENTITY_REF,  NT_CHAR_REF,  NT_ContentAlts,  NT_Element,  },
+	NT_ContentAlts: NTs {  NT_Element,  NT_REFERENCE,  NT_ENTITY_REF,  NT_CHAR_REF,  },
+	NT_Document: NTs {  NT_Prolog,  NT_OptXMLDecl,  NT_XMLDecl,  NT_RepMisc0x,  NT_Misc,  NT_Element,  },
+	NT_DubConClose: NTs {  NT_SymRefAlts,  NT_CHAR_REF,  NT_REFERENCE,  NT_ENTITY_REF,  },
+	NT_ENTITY_REF: NTs {  },
+	NT_ElemCloseAlts: NTs {  },
+	NT_Element: NTs {  },
+	NT_EncName: NTs {  },
+	NT_EncodingDecl: NTs {  },
+	NT_Eq: NTs {  },
+	NT_Hex: NTs {  NT_HexAlts,  },
+	NT_HexAlts: NTs {  },
+	NT_LetColonAlts: NTs {  },
+	NT_LetDigSymAlts: NTs {  },
+	NT_Misc: NTs {  },
+	NT_NAME: NTs {  NT_LetColonAlts,  },
+	NT_NAME_CHAR: NTs {  },
+	NT_OptEncDecl: NTs {  NT_EncodingDecl,  },
+	NT_OptXMLDecl: NTs {  NT_XMLDecl,  },
+	NT_Prolog: NTs {  NT_XMLDecl,  NT_RepMisc0x,  NT_Misc,  NT_OptXMLDecl,  },
+	NT_QuoEncNam: NTs {  },
+	NT_QuoVerNum: NTs {  },
+	NT_REFERENCE: NTs {  NT_ENTITY_REF,  NT_CHAR_REF,  },
+	NT_RepHexAlts0x: NTs {  NT_HexAlts,  },
+	NT_RepLDSAlts0x: NTs {  NT_LetDigSymAlts,  },
+	NT_RepMisc0x: NTs {  NT_Misc,  },
+	NT_RepNameChar0x: NTs {  NT_NAME_CHAR,  },
+	NT_RepSAttx0x: NTs {  NT_SAtt,  },
+	NT_SAtt: NTs {  },
+	NT_SinConClose: NTs {  NT_SymRefAlts,  NT_REFERENCE,  NT_ENTITY_REF,  NT_CHAR_REF,  },
+	NT_SymRefAlts: NTs {  NT_REFERENCE,  NT_ENTITY_REF,  NT_CHAR_REF,  },
+	NT_VersionInfo: NTs {  },
+	NT_VersionNum: NTs {  NT_NAME_CHAR,  },
+	NT_XMLDecl: NTs {  },
 }

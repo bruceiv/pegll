@@ -7,15 +7,1238 @@ import(
 	"fmt"
 	
 	"Java/parser/symbols"
+	"Java/token"
 )
 
 type Label int
 
 const(
-	Test0R0 Label = iota
-	Test0R1
-	Test0R2
-	Test0R3
+	AND0R0 Label = iota
+	AND0R1
+	AND0R2
+	AND0R3
+	ANDExpr0R0
+	ANDExpr0R1
+	ANDExpr0R2
+	AND_AND0R0
+	AND_AND0R1
+	AND_AND0R2
+	AND_EQU0R0
+	AND_EQU0R1
+	AND_EQU0R2
+	ASSERT0R0
+	ASSERT0R1
+	ASSERT0R2
+	AddAlts0R0
+	AddAlts0R1
+	AddAlts1R0
+	AddAlts1R1
+	AddExpr0R0
+	AddExpr0R1
+	AddExpr0R2
+	Any0xX0R0
+	Any0xX0R1
+	Any0xX1R0
+	Any0xX1R1
+	Any0xX2R0
+	Any0xX2R1
+	Arguments0R0
+	Arguments0R1
+	Arguments0R2
+	Arguments0R3
+	ArrayCreatorRest0R0
+	ArrayCreatorRest0R1
+	ArrayCreatorRest0R2
+	ArrayInitializer0R0
+	ArrayInitializer0R1
+	ArrayInitializer0R2
+	ArrayInitializer0R3
+	ArrayRest0R0
+	ArrayRest0R1
+	ArrayRest0R2
+	ArrayRest0R3
+	ArrayRest1R0
+	ArrayRest1R1
+	ArrayRest1R2
+	ArrayRest1R3
+	ArrayRest1R4
+	AssignOp0R0
+	AssignOp0R1
+	AssignOp1R0
+	AssignOp1R1
+	AssignOp2R0
+	AssignOp2R1
+	AssignOp3R0
+	AssignOp3R1
+	AssignOp4R0
+	AssignOp4R1
+	AssignOp5R0
+	AssignOp5R1
+	AssignOp6R0
+	AssignOp6R1
+	AssignOp7R0
+	AssignOp7R1
+	AssignOp8R0
+	AssignOp8R1
+	AssignOp9R0
+	AssignOp9R1
+	AssignOp10R0
+	AssignOp10R1
+	AssignOp11R0
+	AssignOp11R1
+	BANG0R0
+	BANG0R1
+	BANG0R2
+	BANG0R3
+	BREAK0R0
+	BREAK0R1
+	BREAK0R2
+	BSR0R0
+	BSR0R1
+	BSR0R2
+	BSR0R3
+	BSR_EQU0R0
+	BSR_EQU0R1
+	BSR_EQU0R2
+	BasicType0R0
+	BasicType0R1
+	BasicType0R2
+	BasicTypeLit0R0
+	BasicTypeLit0R1
+	BasicTypeLit1R0
+	BasicTypeLit1R1
+	BasicTypeLit2R0
+	BasicTypeLit2R1
+	BasicTypeLit3R0
+	BasicTypeLit3R1
+	BasicTypeLit4R0
+	BasicTypeLit4R1
+	BasicTypeLit5R0
+	BasicTypeLit5R1
+	BasicTypeLit6R0
+	BasicTypeLit6R1
+	BasicTypeLit7R0
+	BasicTypeLit7R1
+	Beoptfd0R0
+	Beoptfd0R1
+	Beoptfd0R2
+	Block0R0
+	Block0R1
+	Block0R2
+	Block0R3
+	BlockStmt0R0
+	BlockStmt0R1
+	BlockStmt1R0
+	BlockStmt1R1
+	BlockStmt1R2
+	BlockStmt2R0
+	BlockStmt2R1
+	CASE0R0
+	CASE0R1
+	CASE0R2
+	CATCH0R0
+	CATCH0R1
+	CATCH0R2
+	COLON0R0
+	COLON0R1
+	COLON0R2
+	COMMA0R0
+	COMMA0R1
+	COMMA0R2
+	CONTINUE0R0
+	CONTINUE0R1
+	CONTINUE0R2
+	CarrotAlts0R0
+	CarrotAlts0R1
+	CarrotAlts1R0
+	CarrotAlts1R1
+	CarrotAlts2R0
+	CarrotAlts2R1
+	Catch0R0
+	Catch0R1
+	Catch0R2
+	Catch0R3
+	Catch0R4
+	Catch0R5
+	CatchBlk0R0
+	CatchBlk0R1
+	CatchBlk0R2
+	CatchBlk0R3
+	CatchBlk1R0
+	CatchBlk1R1
+	CharLiteral0R0
+	CharLiteral0R1
+	CharLiteral0R2
+	CharLiteral0R3
+	Cls0R0
+	Cls0R1
+	Cls0R2
+	ClsBdy0R0
+	ClsBdy0R1
+	ClsBdy0R2
+	ClsBdy0R3
+	ClsBdyDecl0R0
+	ClsBdyDecl0R1
+	ClsBdyDecl1R0
+	ClsBdyDecl1R1
+	ClsBdyDecl1R2
+	ClsBdyDecl2R0
+	ClsBdyDecl2R1
+	ClsBdyDecl2R2
+	ClsCreatorRest0R0
+	ClsCreatorRest0R1
+	ClsCreatorRest0R2
+	ClsDecl0R0
+	ClsDecl0R1
+	ClsDecl0R2
+	ClsDecl0R3
+	ClsDecl0R4
+	ClsDecl0R5
+	ClsType0R0
+	ClsType0R1
+	ClsType0R2
+	ClsTypeList0R0
+	ClsTypeList0R1
+	ClsTypeList0R2
+	CompUnit0R0
+	CompUnit0R1
+	CompUnit0R2
+	CompUnit0R3
+	CompUnit0R4
+	CondANDExpr0R0
+	CondANDExpr0R1
+	CondANDExpr0R2
+	CondExpr0R0
+	CondExpr0R1
+	CondExpr0R2
+	CondORExpr0R0
+	CondORExpr0R1
+	CondORExpr0R2
+	ConstDecl0R0
+	ConstDecl0R1
+	ConstDecl0R2
+	ConstDeclRest0R0
+	ConstDeclRest0R1
+	ConstDeclRest0R2
+	ConstDeclRest0R3
+	ConstDeclsRest0R0
+	ConstDeclsRest0R1
+	ConstDeclsRest0R2
+	ConstExpr0R0
+	ConstExpr0R1
+	CreatedName0R0
+	CreatedName0R1
+	CreatedName0R2
+	Creator0R0
+	Creator0R1
+	Creator0R2
+	Creator1R0
+	Creator1R1
+	Creator1R2
+	DEC0R0
+	DEC0R1
+	DEC0R2
+	DEFAULT0R0
+	DEFAULT0R1
+	DEFAULT0R2
+	DIV0R0
+	DIV0R1
+	DIV0R2
+	DIV0R3
+	DIV_EQU0R0
+	DIV_EQU0R1
+	DIV_EQU0R2
+	DO0R0
+	DO0R1
+	DO0R2
+	DOT0R0
+	DOT0R1
+	DOT0R2
+	DecimalFloat0R0
+	DecimalFloat0R1
+	DecimalFloat0R2
+	DecimalFloat0R3
+	DecimalFloat0R4
+	DecimalFloat0R5
+	DecimalFloat1R0
+	DecimalFloat1R1
+	DecimalFloat1R2
+	DecimalFloat2R0
+	DecimalFloat2R1
+	DecimalFloat2R2
+	DecimalFloat3R0
+	DecimalFloat3R1
+	DecimalFloat3R2
+	DecimalNumeral0R0
+	DecimalNumeral0R1
+	DecimalNumeral1R0
+	DecimalNumeral1R1
+	DecimalNumeral1R2
+	DeclAlts0R0
+	DeclAlts0R1
+	DeclAlts1R0
+	DeclAlts1R1
+	Dim0R0
+	Dim0R1
+	Dim0R2
+	DimExpr0R0
+	DimExpr0R1
+	DimExpr0R2
+	DimExpr0R3
+	ELSE0R0
+	ELSE0R1
+	ELSE0R2
+	EQU0R0
+	EQU0R1
+	EQU0R2
+	EQU0R3
+	EQUAL0R0
+	EQUAL0R1
+	EQUAL0R2
+	ESInst0R0
+	ESInst0R1
+	ESInst1R0
+	ESInst1R1
+	ESInst1R2
+	EXTENDS0R0
+	EXTENDS0R1
+	EXTENDS0R2
+	EqAlts0R0
+	EqAlts0R1
+	EqAlts1R0
+	EqAlts1R1
+	EqCheck0R0
+	EqCheck0R1
+	EqCheck1R0
+	EqCheck1R1
+	EqCheck2R0
+	EqCheck2R1
+	EqCheck3R0
+	EqCheck3R1
+	EqShift0R0
+	EqShift0R1
+	EqShift0R2
+	EqualExpr0R0
+	EqualExpr0R1
+	EqualExpr0R2
+	EscOrLineOrBlock0R0
+	EscOrLineOrBlock0R1
+	EscOrLineOrBlock1R0
+	EscOrLineOrBlock1R1
+	EscOrLineOrBlock2R0
+	EscOrLineOrBlock2R1
+	EscSlash0R0
+	EscSlash0R1
+	EscSlash1R0
+	EscSlash1R1
+	EscUp0R0
+	EscUp0R1
+	EscUp1R0
+	EscUp1R1
+	EscUp2R0
+	EscUp2R1
+	Escape0R0
+	Escape0R1
+	Escape0R2
+	Escs0R0
+	Escs0R1
+	Escs1R0
+	Escs1R1
+	Escs2R0
+	Escs2R1
+	Expr0R0
+	Expr0R1
+	Expr0R2
+	FINAL0R0
+	FINAL0R1
+	FINAL0R2
+	FINALLY0R0
+	FINALLY0R1
+	FINALLY0R2
+	FOR0R0
+	FOR0R1
+	FOR0R2
+	Finally0R0
+	Finally0R1
+	Finally0R2
+	FloatLiteral0R0
+	FloatLiteral0R1
+	FloatLiteral1R0
+	FloatLiteral1R1
+	ForInit0R0
+	ForInit0R1
+	ForInit0R2
+	ForInit0R3
+	ForInit1R0
+	ForInit1R1
+	ForInit1R2
+	ForUpdate0R0
+	ForUpdate0R1
+	ForUpdate0R2
+	FormalParam0R0
+	FormalParam0R1
+	FormalParam0R2
+	FormalParamDecls0R0
+	FormalParamDecls0R1
+	FormalParamDecls0R2
+	FormalParamDeclsRest0R0
+	FormalParamDeclsRest0R1
+	FormalParamDeclsRest0R2
+	FormalParams0R0
+	FormalParams0R1
+	FormalParams0R2
+	FormalParams0R3
+	GE0R0
+	GE0R1
+	GE0R2
+	GT0R0
+	GT0R1
+	GT0R2
+	GT0R3
+	HAT0R0
+	HAT0R1
+	HAT0R2
+	HAT0R3
+	HAT_EQU0R0
+	HAT_EQU0R1
+	HAT_EQU0R2
+	HexFloat0R0
+	HexFloat0R1
+	HexFloat0R2
+	HexNumeral0R0
+	HexNumeral0R1
+	HexNumeral0R2
+	HexSignificand0R0
+	HexSignificand0R1
+	HexSignificand0R2
+	HexSignificand1R0
+	HexSignificand1R1
+	HexSignificand1R2
+	HexSignificand1R3
+	ID0R0
+	ID0R1
+	ID0R2
+	IDSuffix0R0
+	IDSuffix0R1
+	IDSuffix0R2
+	IDSuffix1R0
+	IDSuffix1R1
+	IDSuffix2R0
+	IDSuffix2R1
+	IDSuffix2R2
+	IF0R0
+	IF0R1
+	IF0R2
+	IMPLEMENTS0R0
+	IMPLEMENTS0R1
+	IMPLEMENTS0R2
+	IMPORT0R0
+	IMPORT0R1
+	IMPORT0R2
+	INC0R0
+	INC0R1
+	INC0R2
+	INSTANCEOF0R0
+	INSTANCEOF0R1
+	INSTANCEOF0R2
+	IORExpr0R0
+	IORExpr0R1
+	IORExpr0R2
+	ImportDecl0R0
+	ImportDecl0R1
+	ImportDecl0R2
+	ImportDecl0R3
+	ImportDecl0R4
+	ImportDecl0R5
+	InnerCreator0R0
+	InnerCreator0R1
+	InnerCreator0R2
+	IntegerLiteral0R0
+	IntegerLiteral0R1
+	IntegerLiteral0R2
+	Intf0R0
+	Intf0R1
+	Intf0R2
+	IntfBdy0R0
+	IntfBdy0R1
+	IntfBdy0R2
+	IntfBdy0R3
+	IntfBdyDecl0R0
+	IntfBdyDecl0R1
+	IntfBdyDecl0R2
+	IntfBdyDecl1R0
+	IntfBdyDecl1R1
+	IntfDecl0R0
+	IntfDecl0R1
+	IntfDecl0R2
+	IntfDecl0R3
+	IntfDecl0R4
+	IntfMemDecl0R0
+	IntfMemDecl0R1
+	IntfMemDecl1R0
+	IntfMemDecl1R1
+	IntfMemDecl1R2
+	IntfMemDecl1R3
+	IntfMemDecl2R0
+	IntfMemDecl2R1
+	IntfMemDecl3R0
+	IntfMemDecl3R1
+	IntfMethDeclRest0R0
+	IntfMethDeclRest0R1
+	IntfMethDeclRest0R2
+	IntfMethDeclRest0R3
+	IntfMethDeclRest0R4
+	IntfMethFieldDecl0R0
+	IntfMethFieldDecl0R1
+	IntfMethFieldDecl0R2
+	IntfMethFieldDecl0R3
+	IntfMethFieldRest0R0
+	IntfMethFieldRest0R1
+	IntfMethFieldRest0R2
+	IntfMethFieldRest1R0
+	IntfMethFieldRest1R1
+	LBRK0R0
+	LBRK0R1
+	LBRK0R2
+	LE0R0
+	LE0R1
+	LE0R2
+	LPAR0R0
+	LPAR0R1
+	LPAR0R2
+	LT0R0
+	LT0R1
+	LT0R2
+	LT0R3
+	LWING0R0
+	LWING0R1
+	LWING0R2
+	Letter0R0
+	Letter0R1
+	Letter1R0
+	Letter1R1
+	LetterLorD0R0
+	LetterLorD0R1
+	LetterLorD0R2
+	LetterLorD0R3
+	LitAlts0R0
+	LitAlts0R1
+	LitAlts1R0
+	LitAlts1R1
+	LitAlts2R0
+	LitAlts2R1
+	LitAlts3R0
+	LitAlts3R1
+	LitAlts4R0
+	LitAlts4R1
+	LitAlts4R2
+	LitAlts5R0
+	LitAlts5R1
+	LitAlts5R2
+	LitAlts6R0
+	LitAlts6R1
+	LitAlts6R2
+	Literal0R0
+	Literal0R1
+	Literal0R2
+	LocalVarDeclStmt0R0
+	LocalVarDeclStmt0R1
+	LocalVarDeclStmt0R2
+	LocalVarDeclStmt0R3
+	LocalVarDeclStmt0R4
+	LorD0R0
+	LorD0R1
+	LorD1R0
+	LorD1R1
+	MINUS0R0
+	MINUS0R1
+	MINUS0R2
+	MINUS0R3
+	MINUS_EQU0R0
+	MINUS_EQU0R1
+	MINUS_EQU0R2
+	MOD0R0
+	MOD0R1
+	MOD0R2
+	MOD0R3
+	MOD_EQU0R0
+	MOD_EQU0R1
+	MOD_EQU0R2
+	MemAlts0R0
+	MemAlts0R1
+	MemAlts1R0
+	MemAlts1R1
+	MemDecl0R0
+	MemDecl0R1
+	MemDecl0R2
+	MemDecl0R3
+	MemDecl0R4
+	MemDecl0R5
+	MemDecl0R6
+	MemDecl1R0
+	MemDecl1R1
+	MemDecl1R2
+	MemDecl1R3
+	MemDecl1R4
+	MemDecl1R5
+	MemDecl2R0
+	MemDecl2R1
+	MemDecl2R2
+	MemDecl2R3
+	MemDecl2R4
+	MemDecl3R0
+	MemDecl3R1
+	MemDecl4R0
+	MemDecl4R1
+	MemDecl5R0
+	MemDecl5R1
+	MemDecl5R2
+	MemDecl5R3
+	Modifier0R0
+	Modifier0R1
+	Modifier0R2
+	Modifs0R0
+	Modifs0R1
+	Modifs1R0
+	Modifs1R1
+	Modifs2R0
+	Modifs2R1
+	Modifs3R0
+	Modifs3R1
+	Modifs4R0
+	Modifs4R1
+	Modifs5R0
+	Modifs5R1
+	Modifs6R0
+	Modifs6R1
+	Modifs7R0
+	Modifs7R1
+	Modifs8R0
+	Modifs8R1
+	Modifs9R0
+	Modifs9R1
+	Modifs10R0
+	Modifs10R1
+	MultExpr0R0
+	MultExpr0R1
+	MultExpr0R2
+	NEW0R0
+	NEW0R1
+	NEW0R2
+	NOT_EQUAL0R0
+	NOT_EQUAL0R1
+	NOT_EQUAL0R2
+	NumeralAlts0R0
+	NumeralAlts0R1
+	NumeralAlts1R0
+	NumeralAlts1R1
+	NumeralAlts2R0
+	NumeralAlts2R1
+	OR0R0
+	OR0R1
+	OR0R2
+	OR0R3
+	ORXOR0R0
+	ORXOR0R1
+	ORXOR0R2
+	OR_EQU0R0
+	OR_EQU0R1
+	OR_EQU0R2
+	OR_OR0R0
+	OR_OR0R1
+	OR_OR0R2
+	OctalEscape0R0
+	OctalEscape0R1
+	OctalEscape1R0
+	OctalEscape1R1
+	OctalEscape2R0
+	OctalEscape2R1
+	OptArgs0R0
+	OptArgs0R1
+	OptArgs1R0
+	OptClsBdy0R0
+	OptClsBdy0R1
+	OptClsBdy1R0
+	OptColExpr0R0
+	OptColExpr0R1
+	OptColExpr0R2
+	OptColExpr1R0
+	OptCom0R0
+	OptCom0R1
+	OptCom1R0
+	OptComFormPDecl0R0
+	OptComFormPDecl0R1
+	OptComFormPDecl0R2
+	OptComFormPDecl1R0
+	OptDot0R0
+	OptDot0R1
+	OptDot1R0
+	OptDotStar0R0
+	OptDotStar0R1
+	OptDotStar0R2
+	OptDotStar1R0
+	OptElse0R0
+	OptElse0R1
+	OptElse0R2
+	OptElse1R0
+	OptEqVarInit0R0
+	OptEqVarInit0R1
+	OptEqVarInit0R2
+	OptEqVarInit1R0
+	OptEsc0R0
+	OptEsc0R1
+	OptEsc1R0
+	OptEsc1R1
+	OptExpr0R0
+	OptExpr0R1
+	OptExpr1R0
+	OptExprs0R0
+	OptExprs0R1
+	OptExprs0R2
+	OptExprs1R0
+	OptExtClsType0R0
+	OptExtClsType0R1
+	OptExtClsType0R2
+	OptExtClsType1R0
+	OptExtendsClsLis0R0
+	OptExtendsClsLis0R1
+	OptExtendsClsLis0R2
+	OptExtendsClsLis1R0
+	OptFin0R0
+	OptFin0R1
+	OptFin1R0
+	OptFinType0R0
+	OptFinType0R1
+	OptFinType0R2
+	OptForInit0R0
+	OptForInit0R1
+	OptForInit1R0
+	OptForUpd0R0
+	OptForUpd0R1
+	OptForUpd1R0
+	OptFormPDecl0R0
+	OptFormPDecl0R1
+	OptFormPDecl1R0
+	OptID0R0
+	OptID0R1
+	OptID1R0
+	OptIDSuff0R0
+	OptIDSuff0R1
+	OptIDSuff1R0
+	OptImpClsLst0R0
+	OptImpClsLst0R1
+	OptImpClsLst0R2
+	OptImpClsLst1R0
+	OptPackDecl0R0
+	OptPackDecl0R1
+	OptPackDecl1R0
+	OptStatic0R0
+	OptStatic0R1
+	OptStatic1R0
+	OptThrowClsTypLst0R0
+	OptThrowClsTypLst0R1
+	OptThrowClsTypLst0R2
+	OptThrowClsTypLst1R0
+	OptVarInit0R0
+	OptVarInit0R1
+	OptVarInit0R2
+	OptVarInit0R3
+	OptVarInit1R0
+	OtherAlts0R0
+	OtherAlts0R1
+	OtherAlts1R0
+	OtherAlts1R1
+	OtherAlts2R0
+	OtherAlts2R1
+	OtherAlts2R2
+	OtherAlts3R0
+	OtherAlts3R1
+	OtherAlts3R2
+	PACKAGE0R0
+	PACKAGE0R1
+	PACKAGE0R2
+	PLUS0R0
+	PLUS0R1
+	PLUS0R2
+	PLUS0R3
+	PLUS_EQU0R0
+	PLUS_EQU0R1
+	PLUS_EQU0R2
+	PackDecl0R0
+	PackDecl0R1
+	PackDecl0R2
+	PackDecl0R3
+	ParExpr0R0
+	ParExpr0R1
+	ParExpr0R2
+	ParExpr0R3
+	PostfixOp0R0
+	PostfixOp0R1
+	PostfixOp1R0
+	PostfixOp1R1
+	PrefixOp0R0
+	PrefixOp0R1
+	PrefixOp1R0
+	PrefixOp1R1
+	PrefixOp2R0
+	PrefixOp2R1
+	PrefixOp3R0
+	PrefixOp3R1
+	PrefixOp4R0
+	PrefixOp4R1
+	PrefixOp5R0
+	PrefixOp5R1
+	Primary0R0
+	Primary0R1
+	Primary1R0
+	Primary1R1
+	Primary1R2
+	Primary2R0
+	Primary2R1
+	Primary2R2
+	Primary3R0
+	Primary3R1
+	Primary4R0
+	Primary4R1
+	Primary4R2
+	Primary5R0
+	Primary5R1
+	Primary5R2
+	Primary6R0
+	Primary6R1
+	Primary6R2
+	Primary6R3
+	Primary6R4
+	Primary7R0
+	Primary7R1
+	Primary7R2
+	Primary7R3
+	QUERY0R0
+	QUERY0R1
+	QUERY0R2
+	QualifiedID0R0
+	QualifiedID0R1
+	QualifiedID0R2
+	RBRK0R0
+	RBRK0R1
+	RBRK0R2
+	RBRKAlts0R0
+	RBRKAlts0R1
+	RBRKAlts0R2
+	RBRKAlts0R3
+	RBRKAlts0R4
+	RBRKAlts1R0
+	RBRKAlts1R1
+	RBRKAlts1R2
+	RETURN0R0
+	RETURN0R1
+	RETURN0R2
+	RPAR0R0
+	RPAR0R1
+	RPAR0R2
+	RWING0R0
+	RWING0R1
+	RWING0R2
+	ReferenceType0R0
+	ReferenceType0R1
+	ReferenceType0R2
+	ReferenceType0R3
+	ReferenceType1R0
+	ReferenceType1R1
+	ReferenceType1R2
+	RelateExpr0R0
+	RelateExpr0R1
+	RelateExpr0R2
+	RepANDEq0x0R0
+	RepANDEq0x0R1
+	RepANDEq0x0R2
+	RepANDEq0x0R3
+	RepANDEq0x1R0
+	RepANDIOR0x0R0
+	RepANDIOR0x0R1
+	RepANDIOR0x0R2
+	RepANDIOR0x0R3
+	RepANDIOR0x1R0
+	RepAddAltsMult0x0R0
+	RepAddAltsMult0x0R1
+	RepAddAltsMult0x0R2
+	RepAddAltsMult0x1R0
+	RepAsscExpr0x0R0
+	RepAsscExpr0x0R1
+	RepAsscExpr0x0R2
+	RepAsscExpr0x0R3
+	RepAsscExpr0x1R0
+	RepBlkSt0x0R0
+	RepBlkSt0x0R1
+	RepBlkSt0x0R2
+	RepBlkSt0x1R0
+	RepCatch0x0R0
+	RepCatch0x0R1
+	RepCatch0x0R2
+	RepCatch0x1R0
+	RepClsBDecl0x0R0
+	RepClsBDecl0x0R1
+	RepClsBDecl0x0R2
+	RepClsBDecl0x1R0
+	RepComCls0x0R0
+	RepComCls0x0R1
+	RepComCls0x0R2
+	RepComCls0x0R3
+	RepComCls0x1R0
+	RepComCnstDecl0x0R0
+	RepComCnstDecl0x0R1
+	RepComCnstDecl0x0R2
+	RepComCnstDecl0x0R3
+	RepComCnstDecl0x1R0
+	RepComExp0x0R0
+	RepComExp0x0R1
+	RepComExp0x0R2
+	RepComExp0x0R3
+	RepComExp0x1R0
+	RepComInit0x0R0
+	RepComInit0x0R1
+	RepComInit0x0R2
+	RepComInit0x0R3
+	RepComInit0x1R0
+	RepComSExpr0x0R0
+	RepComSExpr0x0R1
+	RepComSExpr0x0R2
+	RepComSExpr0x0R3
+	RepComSExpr0x1R0
+	RepComVDecl0x0R0
+	RepComVDecl0x0R1
+	RepComVDecl0x0R2
+	RepComVDecl0x0R3
+	RepComVDecl0x1R0
+	RepCondition0x0R0
+	RepCondition0x0R1
+	RepCondition0x0R2
+	RepCondition0x0R3
+	RepCondition0x0R4
+	RepCondition0x0R5
+	RepCondition0x1R0
+	RepDig1xExp0R0
+	RepDig1xExp0R1
+	RepDig1xExp0R2
+	RepDig1xOptExp0R0
+	RepDig1xOptExp0R1
+	RepDig1xOptExp0R2
+	RepDim0x0R0
+	RepDim0x0R1
+	RepDim0x0R2
+	RepDim0x1R0
+	RepDimExpr0x0R0
+	RepDimExpr0x0R1
+	RepDimExpr0x0R2
+	RepDimExpr0x1R0
+	RepDotID0x0R0
+	RepDotID0x0R1
+	RepDotID0x0R2
+	RepDotID0x0R3
+	RepDotID0x1R0
+	RepESInst0x0R0
+	RepESInst0x0R1
+	RepESInst0x0R2
+	RepESInst0x1R0
+	RepEqExpr0x0R0
+	RepEqExpr0x0R1
+	RepEqExpr0x0R2
+	RepEqExpr0x0R3
+	RepEqExpr0x1R0
+	RepHatAND0x0R0
+	RepHatAND0x0R1
+	RepHatAND0x0R2
+	RepHatAND0x0R3
+	RepHatAND0x1R0
+	RepHex0xDot0R0
+	RepHex0xDot0R1
+	RepHex0xDot0R2
+	RepHex0xDot0R3
+	RepImpDecl0x0R0
+	RepImpDecl0x0R1
+	RepImpDecl0x0R2
+	RepImpDecl0x1R0
+	RepInBodDecl0x0R0
+	RepInBodDecl0x0R1
+	RepInBodDecl0x0R2
+	RepInBodDecl0x1R0
+	RepLorD0x0R0
+	RepLorD0x0R1
+	RepLorD0x0R2
+	RepLorD0x1R0
+	RepModif00R0
+	RepModif00R1
+	RepModif00R2
+	RepModif01R0
+	RepORXOR0x0R0
+	RepORXOR0x0R1
+	RepORXOR0x0R2
+	RepORXOR0x1R0
+	RepORcAND0x0R0
+	RepORcAND0x0R1
+	RepORcAND0x0R2
+	RepORcAND0x0R3
+	RepORcAND0x1R0
+	RepPfOp0x0R0
+	RepPfOp0x0R1
+	RepPfOp0x0R2
+	RepPfOp0x1R0
+	RepSDMUExpr0x0R0
+	RepSDMUExpr0x0R1
+	RepSDMUExpr0x0R2
+	RepSDMUExpr0x0R3
+	RepSDMUExpr0x1R0
+	RepSel0x0R0
+	RepSel0x0R1
+	RepSel0x0R2
+	RepSel0x1R0
+	RepSemiModDecl0x0R0
+	RepSemiModDecl0x0R1
+	RepSemiModDecl0x0R2
+	RepSemiModDecl0x1R0
+	RepSwBlkStmt0x0R0
+	RepSwBlkStmt0x0R1
+	RepSwBlkStmt0x0R2
+	RepSwBlkStmt0x1R0
+	SDM0R0
+	SDM0R1
+	SDM1R0
+	SDM1R1
+	SDM2R0
+	SDM2R1
+	SEMI0R0
+	SEMI0R1
+	SEMI0R2
+	SL0R0
+	SL0R1
+	SL0R2
+	SL0R3
+	SL_EQU0R0
+	SL_EQU0R1
+	SL_EQU0R2
+	SR0R0
+	SR0R1
+	SR0R2
+	SR0R3
+	SR_EQU0R0
+	SR_EQU0R1
+	SR_EQU0R2
+	STAR0R0
+	STAR0R1
+	STAR0R2
+	STAR0R3
+	STAR_EQU0R0
+	STAR_EQU0R1
+	STAR_EQU0R2
+	STATIC0R0
+	STATIC0R1
+	STATIC0R2
+	SUPER0R0
+	SUPER0R1
+	SUPER0R2
+	SWITCH0R0
+	SWITCH0R1
+	SWITCH0R2
+	SYNCHRONIZED0R0
+	SYNCHRONIZED0R1
+	SYNCHRONIZED0R2
+	Selector0R0
+	Selector0R1
+	Selector0R2
+	Selector0R3
+	Selector1R0
+	Selector1R1
+	Selector1R2
+	Selector2R0
+	Selector2R1
+	Selector2R2
+	Selector2R3
+	Selector3R0
+	Selector3R1
+	Selector3R2
+	Selector3R3
+	Selector4R0
+	Selector4R1
+	SemiModDecl0R0
+	SemiModDecl0R1
+	SemiModDecl1R0
+	SemiModDecl1R1
+	SemiModDecl1R2
+	ShiftAlts0R0
+	ShiftAlts0R1
+	ShiftAlts0R2
+	ShiftAlts0R3
+	ShiftAlts1R0
+	ShiftExpr0R0
+	ShiftExpr0R1
+	ShiftExpr0R2
+	Stmt0R0
+	Stmt0R1
+	Stmt1R0
+	Stmt1R1
+	Stmt1R2
+	Stmt1R3
+	Stmt1R4
+	Stmt2R0
+	Stmt2R1
+	Stmt2R2
+	Stmt2R3
+	Stmt2R4
+	Stmt3R0
+	Stmt3R1
+	Stmt3R2
+	Stmt3R3
+	Stmt3R4
+	Stmt3R5
+	Stmt3R6
+	Stmt3R7
+	Stmt3R8
+	Stmt3R9
+	Stmt4R0
+	Stmt4R1
+	Stmt4R2
+	Stmt4R3
+	Stmt5R0
+	Stmt5R1
+	Stmt5R2
+	Stmt5R3
+	Stmt5R4
+	Stmt5R5
+	Stmt6R0
+	Stmt6R1
+	Stmt6R2
+	Stmt6R3
+	Stmt7R0
+	Stmt7R1
+	Stmt7R2
+	Stmt7R3
+	Stmt7R4
+	Stmt7R5
+	Stmt8R0
+	Stmt8R1
+	Stmt8R2
+	Stmt8R3
+	Stmt9R0
+	Stmt9R1
+	Stmt9R2
+	Stmt9R3
+	Stmt10R0
+	Stmt10R1
+	Stmt10R2
+	Stmt10R3
+	Stmt11R0
+	Stmt11R1
+	Stmt11R2
+	Stmt11R3
+	Stmt12R0
+	Stmt12R1
+	Stmt12R2
+	Stmt12R3
+	Stmt13R0
+	Stmt13R1
+	Stmt14R0
+	Stmt14R1
+	Stmt14R2
+	Stmt15R0
+	Stmt15R1
+	Stmt15R2
+	Stmt15R3
+	StmtExpr0R0
+	StmtExpr0R1
+	StrClose0R0
+	StrClose0R1
+	StrClose1R0
+	StrClose1R1
+	StrClose1R2
+	StringLiteral0R0
+	StringLiteral0R1
+	StringLiteral0R2
+	SuperSuffix0R0
+	SuperSuffix0R1
+	SuperSuffix1R0
+	SuperSuffix1R1
+	SuperSuffix1R2
+	SuperSuffix1R3
+	SwitchBlockStmtGrp0R0
+	SwitchBlockStmtGrp0R1
+	SwitchBlockStmtGrp0R2
+	SwitchLabel0R0
+	SwitchLabel0R1
+	SwitchLabel0R2
+	SwitchLabel0R3
+	SwitchLabel1R0
+	SwitchLabel1R1
+	SwitchLabel1R2
+	THIS0R0
+	THIS0R1
+	THIS0R2
+	THROW0R0
+	THROW0R1
+	THROW0R2
+	THROWS0R0
+	THROWS0R1
+	THROWS0R2
+	TILDA0R0
+	TILDA0R1
+	TILDA0R2
+	TRY0R0
+	TRY0R1
+	TRY0R2
+	Type0R0
+	Type0R1
+	Type0R2
+	TypeAlts0R0
+	TypeAlts0R1
+	TypeAlts1R0
+	TypeAlts1R1
+	UnaryExpr0R0
+	UnaryExpr0R1
+	UnaryExpr0R2
+	UnaryExpr1R0
+	UnaryExpr1R1
+	UnaryExpr1R2
+	UnaryExpr1R3
+	UnaryExpr1R4
+	UnaryExpr2R0
+	UnaryExpr2R1
+	UnaryExpr2R2
+	UnaryExpr2R3
+	UnicodeEscape0R0
+	UnicodeEscape0R1
+	UnicodeEscape0R2
+	UnicodeEscape0R3
+	UnicodeEscape0R4
+	UnicodeEscape0R5
+	VOID0R0
+	VOID0R1
+	VOID0R2
+	VarDecl0R0
+	VarDecl0R1
+	VarDecl0R2
+	VarDecl0R3
+	VarDeclInit0R0
+	VarDeclInit0R1
+	VarDeclInit0R2
+	VarDelID0R0
+	VarDelID0R1
+	VarDelID0R2
+	VarInitial0R0
+	VarInitial0R1
+	VarInitial1R0
+	VarInitial1R1
+	VoidIntfMethDeclRst0R0
+	VoidIntfMethDeclRst0R1
+	VoidIntfMethDeclRst0R2
+	VoidIntfMethDeclRst0R3
+	WHILE0R0
+	WHILE0R1
+	WHILE0R2
+	WS0R0
+	WS0R1
+	WS1R0
+	XORExpr0R0
+	XORExpr0R1
+	XORExpr0R2
 )
 
 type Slot struct {
@@ -85,8 +1308,25 @@ func (l Label) Symbols() symbols.Symbols {
 	return l.Slot().Symbols
 }
 
+func (l Label) IsNullable() bool {
+	return nullable[l]
+}
+
+func (l Label) FirstContains(typ token.Type) bool {
+	return firstT[l][typ]
+}
+
 func (s *Slot) EoR() bool {
 	return s.Pos >= len(s.Symbols)
+}
+
+func (s *Slot) Successor() *Slot {
+	if s.EoR() {
+		return nil
+	} else {
+		// TODO try slots[s.Label + 1]
+		return slots[slotIndex[Index{s.NT,s.Alt,s.Pos+1}]]
+	}
 }
 
 func (s *Slot) String() string {
@@ -105,52 +1345,14026 @@ func (s *Slot) String() string {
 }
 
 var slots = map[Label]*Slot{ 
-	Test0R0: {
-		symbols.NT_Test, 0, 0, 
+	AND0R0: {
+		symbols.NT_AND, 0, 0, 
 		symbols.Symbols{  
-			symbols.T_1, 
-			symbols.T_0, 
-			symbols.T_2,
+			symbols.T_4, 
+			symbols.T_91, 
+			symbols.NT_WS,
 		}, 
-		Test0R0, 
+		AND0R0, 
 	},
-	Test0R1: {
-		symbols.NT_Test, 0, 1, 
+	AND0R1: {
+		symbols.NT_AND, 0, 1, 
 		symbols.Symbols{  
-			symbols.T_1, 
-			symbols.T_0, 
-			symbols.T_2,
+			symbols.T_4, 
+			symbols.T_91, 
+			symbols.NT_WS,
 		}, 
-		Test0R1, 
+		AND0R1, 
 	},
-	Test0R2: {
-		symbols.NT_Test, 0, 2, 
+	AND0R2: {
+		symbols.NT_AND, 0, 2, 
 		symbols.Symbols{  
-			symbols.T_1, 
-			symbols.T_0, 
-			symbols.T_2,
+			symbols.T_4, 
+			symbols.T_91, 
+			symbols.NT_WS,
 		}, 
-		Test0R2, 
+		AND0R2, 
 	},
-	Test0R3: {
-		symbols.NT_Test, 0, 3, 
+	AND0R3: {
+		symbols.NT_AND, 0, 3, 
+		symbols.Symbols{  
+			symbols.T_4, 
+			symbols.T_91, 
+			symbols.NT_WS,
+		}, 
+		AND0R3, 
+	},
+	ANDExpr0R0: {
+		symbols.NT_ANDExpr, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_EqualExpr, 
+			symbols.NT_RepANDEq0x,
+		}, 
+		ANDExpr0R0, 
+	},
+	ANDExpr0R1: {
+		symbols.NT_ANDExpr, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_EqualExpr, 
+			symbols.NT_RepANDEq0x,
+		}, 
+		ANDExpr0R1, 
+	},
+	ANDExpr0R2: {
+		symbols.NT_ANDExpr, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_EqualExpr, 
+			symbols.NT_RepANDEq0x,
+		}, 
+		ANDExpr0R2, 
+	},
+	AND_AND0R0: {
+		symbols.NT_AND_AND, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_5, 
+			symbols.NT_WS,
+		}, 
+		AND_AND0R0, 
+	},
+	AND_AND0R1: {
+		symbols.NT_AND_AND, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_5, 
+			symbols.NT_WS,
+		}, 
+		AND_AND0R1, 
+	},
+	AND_AND0R2: {
+		symbols.NT_AND_AND, 0, 2, 
+		symbols.Symbols{  
+			symbols.T_5, 
+			symbols.NT_WS,
+		}, 
+		AND_AND0R2, 
+	},
+	AND_EQU0R0: {
+		symbols.NT_AND_EQU, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_6, 
+			symbols.NT_WS,
+		}, 
+		AND_EQU0R0, 
+	},
+	AND_EQU0R1: {
+		symbols.NT_AND_EQU, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_6, 
+			symbols.NT_WS,
+		}, 
+		AND_EQU0R1, 
+	},
+	AND_EQU0R2: {
+		symbols.NT_AND_EQU, 0, 2, 
+		symbols.Symbols{  
+			symbols.T_6, 
+			symbols.NT_WS,
+		}, 
+		AND_EQU0R2, 
+	},
+	ASSERT0R0: {
+		symbols.NT_ASSERT, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_47, 
+			symbols.T_98,
+		}, 
+		ASSERT0R0, 
+	},
+	ASSERT0R1: {
+		symbols.NT_ASSERT, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_47, 
+			symbols.T_98,
+		}, 
+		ASSERT0R1, 
+	},
+	ASSERT0R2: {
+		symbols.NT_ASSERT, 0, 2, 
+		symbols.Symbols{  
+			symbols.T_47, 
+			symbols.T_98,
+		}, 
+		ASSERT0R2, 
+	},
+	AddAlts0R0: {
+		symbols.NT_AddAlts, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_PLUS,
+		}, 
+		AddAlts0R0, 
+	},
+	AddAlts0R1: {
+		symbols.NT_AddAlts, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_PLUS,
+		}, 
+		AddAlts0R1, 
+	},
+	AddAlts1R0: {
+		symbols.NT_AddAlts, 1, 0, 
+		symbols.Symbols{  
+			symbols.NT_MINUS,
+		}, 
+		AddAlts1R0, 
+	},
+	AddAlts1R1: {
+		symbols.NT_AddAlts, 1, 1, 
+		symbols.Symbols{  
+			symbols.NT_MINUS,
+		}, 
+		AddAlts1R1, 
+	},
+	AddExpr0R0: {
+		symbols.NT_AddExpr, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_MultExpr, 
+			symbols.NT_RepAddAltsMult0x,
+		}, 
+		AddExpr0R0, 
+	},
+	AddExpr0R1: {
+		symbols.NT_AddExpr, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_MultExpr, 
+			symbols.NT_RepAddAltsMult0x,
+		}, 
+		AddExpr0R1, 
+	},
+	AddExpr0R2: {
+		symbols.NT_AddExpr, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_MultExpr, 
+			symbols.NT_RepAddAltsMult0x,
+		}, 
+		AddExpr0R2, 
+	},
+	Any0xX0R0: {
+		symbols.NT_Any0xX, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_21,
+		}, 
+		Any0xX0R0, 
+	},
+	Any0xX0R1: {
+		symbols.NT_Any0xX, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_21,
+		}, 
+		Any0xX0R1, 
+	},
+	Any0xX1R0: {
+		symbols.NT_Any0xX, 1, 0, 
+		symbols.Symbols{  
+			symbols.T_134,
+		}, 
+		Any0xX1R0, 
+	},
+	Any0xX1R1: {
+		symbols.NT_Any0xX, 1, 1, 
+		symbols.Symbols{  
+			symbols.T_134,
+		}, 
+		Any0xX1R1, 
+	},
+	Any0xX2R0: {
+		symbols.NT_Any0xX, 2, 0, 
+		symbols.Symbols{  
+			symbols.T_39,
+		}, 
+		Any0xX2R0, 
+	},
+	Any0xX2R1: {
+		symbols.NT_Any0xX, 2, 1, 
+		symbols.Symbols{  
+			symbols.T_39,
+		}, 
+		Any0xX2R1, 
+	},
+	Arguments0R0: {
+		symbols.NT_Arguments, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_LPAR, 
+			symbols.NT_OptExprs, 
+			symbols.NT_RPAR,
+		}, 
+		Arguments0R0, 
+	},
+	Arguments0R1: {
+		symbols.NT_Arguments, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_LPAR, 
+			symbols.NT_OptExprs, 
+			symbols.NT_RPAR,
+		}, 
+		Arguments0R1, 
+	},
+	Arguments0R2: {
+		symbols.NT_Arguments, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_LPAR, 
+			symbols.NT_OptExprs, 
+			symbols.NT_RPAR,
+		}, 
+		Arguments0R2, 
+	},
+	Arguments0R3: {
+		symbols.NT_Arguments, 0, 3, 
+		symbols.Symbols{  
+			symbols.NT_LPAR, 
+			symbols.NT_OptExprs, 
+			symbols.NT_RPAR,
+		}, 
+		Arguments0R3, 
+	},
+	ArrayCreatorRest0R0: {
+		symbols.NT_ArrayCreatorRest, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_LBRK, 
+			symbols.NT_ArrayRest,
+		}, 
+		ArrayCreatorRest0R0, 
+	},
+	ArrayCreatorRest0R1: {
+		symbols.NT_ArrayCreatorRest, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_LBRK, 
+			symbols.NT_ArrayRest,
+		}, 
+		ArrayCreatorRest0R1, 
+	},
+	ArrayCreatorRest0R2: {
+		symbols.NT_ArrayCreatorRest, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_LBRK, 
+			symbols.NT_ArrayRest,
+		}, 
+		ArrayCreatorRest0R2, 
+	},
+	ArrayInitializer0R0: {
+		symbols.NT_ArrayInitializer, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_LWING, 
+			symbols.NT_OptVarInit, 
+			symbols.NT_RWING,
+		}, 
+		ArrayInitializer0R0, 
+	},
+	ArrayInitializer0R1: {
+		symbols.NT_ArrayInitializer, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_LWING, 
+			symbols.NT_OptVarInit, 
+			symbols.NT_RWING,
+		}, 
+		ArrayInitializer0R1, 
+	},
+	ArrayInitializer0R2: {
+		symbols.NT_ArrayInitializer, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_LWING, 
+			symbols.NT_OptVarInit, 
+			symbols.NT_RWING,
+		}, 
+		ArrayInitializer0R2, 
+	},
+	ArrayInitializer0R3: {
+		symbols.NT_ArrayInitializer, 0, 3, 
+		symbols.Symbols{  
+			symbols.NT_LWING, 
+			symbols.NT_OptVarInit, 
+			symbols.NT_RWING,
+		}, 
+		ArrayInitializer0R3, 
+	},
+	ArrayRest0R0: {
+		symbols.NT_ArrayRest, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_RBRK, 
+			symbols.NT_RepDim0x, 
+			symbols.NT_ArrayInitializer,
+		}, 
+		ArrayRest0R0, 
+	},
+	ArrayRest0R1: {
+		symbols.NT_ArrayRest, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_RBRK, 
+			symbols.NT_RepDim0x, 
+			symbols.NT_ArrayInitializer,
+		}, 
+		ArrayRest0R1, 
+	},
+	ArrayRest0R2: {
+		symbols.NT_ArrayRest, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_RBRK, 
+			symbols.NT_RepDim0x, 
+			symbols.NT_ArrayInitializer,
+		}, 
+		ArrayRest0R2, 
+	},
+	ArrayRest0R3: {
+		symbols.NT_ArrayRest, 0, 3, 
+		symbols.Symbols{  
+			symbols.NT_RBRK, 
+			symbols.NT_RepDim0x, 
+			symbols.NT_ArrayInitializer,
+		}, 
+		ArrayRest0R3, 
+	},
+	ArrayRest1R0: {
+		symbols.NT_ArrayRest, 1, 0, 
+		symbols.Symbols{  
+			symbols.NT_Expr, 
+			symbols.NT_RBRK, 
+			symbols.NT_RepDimExpr0x, 
+			symbols.NT_RepDim0x,
+		}, 
+		ArrayRest1R0, 
+	},
+	ArrayRest1R1: {
+		symbols.NT_ArrayRest, 1, 1, 
+		symbols.Symbols{  
+			symbols.NT_Expr, 
+			symbols.NT_RBRK, 
+			symbols.NT_RepDimExpr0x, 
+			symbols.NT_RepDim0x,
+		}, 
+		ArrayRest1R1, 
+	},
+	ArrayRest1R2: {
+		symbols.NT_ArrayRest, 1, 2, 
+		symbols.Symbols{  
+			symbols.NT_Expr, 
+			symbols.NT_RBRK, 
+			symbols.NT_RepDimExpr0x, 
+			symbols.NT_RepDim0x,
+		}, 
+		ArrayRest1R2, 
+	},
+	ArrayRest1R3: {
+		symbols.NT_ArrayRest, 1, 3, 
+		symbols.Symbols{  
+			symbols.NT_Expr, 
+			symbols.NT_RBRK, 
+			symbols.NT_RepDimExpr0x, 
+			symbols.NT_RepDim0x,
+		}, 
+		ArrayRest1R3, 
+	},
+	ArrayRest1R4: {
+		symbols.NT_ArrayRest, 1, 4, 
+		symbols.Symbols{  
+			symbols.NT_Expr, 
+			symbols.NT_RBRK, 
+			symbols.NT_RepDimExpr0x, 
+			symbols.NT_RepDim0x,
+		}, 
+		ArrayRest1R4, 
+	},
+	AssignOp0R0: {
+		symbols.NT_AssignOp, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_EQU,
+		}, 
+		AssignOp0R0, 
+	},
+	AssignOp0R1: {
+		symbols.NT_AssignOp, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_EQU,
+		}, 
+		AssignOp0R1, 
+	},
+	AssignOp1R0: {
+		symbols.NT_AssignOp, 1, 0, 
+		symbols.Symbols{  
+			symbols.NT_PLUS_EQU,
+		}, 
+		AssignOp1R0, 
+	},
+	AssignOp1R1: {
+		symbols.NT_AssignOp, 1, 1, 
+		symbols.Symbols{  
+			symbols.NT_PLUS_EQU,
+		}, 
+		AssignOp1R1, 
+	},
+	AssignOp2R0: {
+		symbols.NT_AssignOp, 2, 0, 
+		symbols.Symbols{  
+			symbols.NT_MINUS_EQU,
+		}, 
+		AssignOp2R0, 
+	},
+	AssignOp2R1: {
+		symbols.NT_AssignOp, 2, 1, 
+		symbols.Symbols{  
+			symbols.NT_MINUS_EQU,
+		}, 
+		AssignOp2R1, 
+	},
+	AssignOp3R0: {
+		symbols.NT_AssignOp, 3, 0, 
+		symbols.Symbols{  
+			symbols.NT_STAR_EQU,
+		}, 
+		AssignOp3R0, 
+	},
+	AssignOp3R1: {
+		symbols.NT_AssignOp, 3, 1, 
+		symbols.Symbols{  
+			symbols.NT_STAR_EQU,
+		}, 
+		AssignOp3R1, 
+	},
+	AssignOp4R0: {
+		symbols.NT_AssignOp, 4, 0, 
+		symbols.Symbols{  
+			symbols.NT_DIV_EQU,
+		}, 
+		AssignOp4R0, 
+	},
+	AssignOp4R1: {
+		symbols.NT_AssignOp, 4, 1, 
+		symbols.Symbols{  
+			symbols.NT_DIV_EQU,
+		}, 
+		AssignOp4R1, 
+	},
+	AssignOp5R0: {
+		symbols.NT_AssignOp, 5, 0, 
+		symbols.Symbols{  
+			symbols.NT_AND_EQU,
+		}, 
+		AssignOp5R0, 
+	},
+	AssignOp5R1: {
+		symbols.NT_AssignOp, 5, 1, 
+		symbols.Symbols{  
+			symbols.NT_AND_EQU,
+		}, 
+		AssignOp5R1, 
+	},
+	AssignOp6R0: {
+		symbols.NT_AssignOp, 6, 0, 
+		symbols.Symbols{  
+			symbols.NT_OR_EQU,
+		}, 
+		AssignOp6R0, 
+	},
+	AssignOp6R1: {
+		symbols.NT_AssignOp, 6, 1, 
+		symbols.Symbols{  
+			symbols.NT_OR_EQU,
+		}, 
+		AssignOp6R1, 
+	},
+	AssignOp7R0: {
+		symbols.NT_AssignOp, 7, 0, 
+		symbols.Symbols{  
+			symbols.NT_HAT_EQU,
+		}, 
+		AssignOp7R0, 
+	},
+	AssignOp7R1: {
+		symbols.NT_AssignOp, 7, 1, 
+		symbols.Symbols{  
+			symbols.NT_HAT_EQU,
+		}, 
+		AssignOp7R1, 
+	},
+	AssignOp8R0: {
+		symbols.NT_AssignOp, 8, 0, 
+		symbols.Symbols{  
+			symbols.NT_MOD_EQU,
+		}, 
+		AssignOp8R0, 
+	},
+	AssignOp8R1: {
+		symbols.NT_AssignOp, 8, 1, 
+		symbols.Symbols{  
+			symbols.NT_MOD_EQU,
+		}, 
+		AssignOp8R1, 
+	},
+	AssignOp9R0: {
+		symbols.NT_AssignOp, 9, 0, 
+		symbols.Symbols{  
+			symbols.NT_SL_EQU,
+		}, 
+		AssignOp9R0, 
+	},
+	AssignOp9R1: {
+		symbols.NT_AssignOp, 9, 1, 
+		symbols.Symbols{  
+			symbols.NT_SL_EQU,
+		}, 
+		AssignOp9R1, 
+	},
+	AssignOp10R0: {
+		symbols.NT_AssignOp, 10, 0, 
+		symbols.Symbols{  
+			symbols.NT_SR_EQU,
+		}, 
+		AssignOp10R0, 
+	},
+	AssignOp10R1: {
+		symbols.NT_AssignOp, 10, 1, 
+		symbols.Symbols{  
+			symbols.NT_SR_EQU,
+		}, 
+		AssignOp10R1, 
+	},
+	AssignOp11R0: {
+		symbols.NT_AssignOp, 11, 0, 
+		symbols.Symbols{  
+			symbols.NT_BSR_EQU,
+		}, 
+		AssignOp11R0, 
+	},
+	AssignOp11R1: {
+		symbols.NT_AssignOp, 11, 1, 
+		symbols.Symbols{  
+			symbols.NT_BSR_EQU,
+		}, 
+		AssignOp11R1, 
+	},
+	BANG0R0: {
+		symbols.NT_BANG, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_0, 
+			symbols.T_87, 
+			symbols.NT_WS,
+		}, 
+		BANG0R0, 
+	},
+	BANG0R1: {
+		symbols.NT_BANG, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_0, 
+			symbols.T_87, 
+			symbols.NT_WS,
+		}, 
+		BANG0R1, 
+	},
+	BANG0R2: {
+		symbols.NT_BANG, 0, 2, 
+		symbols.Symbols{  
+			symbols.T_0, 
+			symbols.T_87, 
+			symbols.NT_WS,
+		}, 
+		BANG0R2, 
+	},
+	BANG0R3: {
+		symbols.NT_BANG, 0, 3, 
+		symbols.Symbols{  
+			symbols.T_0, 
+			symbols.T_87, 
+			symbols.NT_WS,
+		}, 
+		BANG0R3, 
+	},
+	BREAK0R0: {
+		symbols.NT_BREAK, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_51, 
+			symbols.T_98,
+		}, 
+		BREAK0R0, 
+	},
+	BREAK0R1: {
+		symbols.NT_BREAK, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_51, 
+			symbols.T_98,
+		}, 
+		BREAK0R1, 
+	},
+	BREAK0R2: {
+		symbols.NT_BREAK, 0, 2, 
+		symbols.Symbols{  
+			symbols.T_51, 
+			symbols.T_98,
+		}, 
+		BREAK0R2, 
+	},
+	BSR0R0: {
+		symbols.NT_BSR, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_34, 
+			symbols.T_87, 
+			symbols.NT_WS,
+		}, 
+		BSR0R0, 
+	},
+	BSR0R1: {
+		symbols.NT_BSR, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_34, 
+			symbols.T_87, 
+			symbols.NT_WS,
+		}, 
+		BSR0R1, 
+	},
+	BSR0R2: {
+		symbols.NT_BSR, 0, 2, 
+		symbols.Symbols{  
+			symbols.T_34, 
+			symbols.T_87, 
+			symbols.NT_WS,
+		}, 
+		BSR0R2, 
+	},
+	BSR0R3: {
+		symbols.NT_BSR, 0, 3, 
+		symbols.Symbols{  
+			symbols.T_34, 
+			symbols.T_87, 
+			symbols.NT_WS,
+		}, 
+		BSR0R3, 
+	},
+	BSR_EQU0R0: {
+		symbols.NT_BSR_EQU, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_35, 
+			symbols.NT_WS,
+		}, 
+		BSR_EQU0R0, 
+	},
+	BSR_EQU0R1: {
+		symbols.NT_BSR_EQU, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_35, 
+			symbols.NT_WS,
+		}, 
+		BSR_EQU0R1, 
+	},
+	BSR_EQU0R2: {
+		symbols.NT_BSR_EQU, 0, 2, 
+		symbols.Symbols{  
+			symbols.T_35, 
+			symbols.NT_WS,
+		}, 
+		BSR_EQU0R2, 
+	},
+	BasicType0R0: {
+		symbols.NT_BasicType, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_BasicTypeLit, 
+			symbols.T_98,
+		}, 
+		BasicType0R0, 
+	},
+	BasicType0R1: {
+		symbols.NT_BasicType, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_BasicTypeLit, 
+			symbols.T_98,
+		}, 
+		BasicType0R1, 
+	},
+	BasicType0R2: {
+		symbols.NT_BasicType, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_BasicTypeLit, 
+			symbols.T_98,
+		}, 
+		BasicType0R2, 
+	},
+	BasicTypeLit0R0: {
+		symbols.NT_BasicTypeLit, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_52,
+		}, 
+		BasicTypeLit0R0, 
+	},
+	BasicTypeLit0R1: {
+		symbols.NT_BasicTypeLit, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_52,
+		}, 
+		BasicTypeLit0R1, 
+	},
+	BasicTypeLit1R0: {
+		symbols.NT_BasicTypeLit, 1, 0, 
+		symbols.Symbols{  
+			symbols.T_116,
+		}, 
+		BasicTypeLit1R0, 
+	},
+	BasicTypeLit1R1: {
+		symbols.NT_BasicTypeLit, 1, 1, 
+		symbols.Symbols{  
+			symbols.T_116,
+		}, 
+		BasicTypeLit1R1, 
+	},
+	BasicTypeLit2R0: {
+		symbols.NT_BasicTypeLit, 2, 0, 
+		symbols.Symbols{  
+			symbols.T_56,
+		}, 
+		BasicTypeLit2R0, 
+	},
+	BasicTypeLit2R1: {
+		symbols.NT_BasicTypeLit, 2, 1, 
+		symbols.Symbols{  
+			symbols.T_56,
+		}, 
+		BasicTypeLit2R1, 
+	},
+	BasicTypeLit3R0: {
+		symbols.NT_BasicTypeLit, 3, 0, 
+		symbols.Symbols{  
+			symbols.T_80,
+		}, 
+		BasicTypeLit3R0, 
+	},
+	BasicTypeLit3R1: {
+		symbols.NT_BasicTypeLit, 3, 1, 
+		symbols.Symbols{  
+			symbols.T_80,
+		}, 
+		BasicTypeLit3R1, 
+	},
+	BasicTypeLit4R0: {
+		symbols.NT_BasicTypeLit, 4, 0, 
+		symbols.Symbols{  
+			symbols.T_86,
+		}, 
+		BasicTypeLit4R0, 
+	},
+	BasicTypeLit4R1: {
+		symbols.NT_BasicTypeLit, 4, 1, 
+		symbols.Symbols{  
+			symbols.T_86,
+		}, 
+		BasicTypeLit4R1, 
+	},
+	BasicTypeLit5R0: {
+		symbols.NT_BasicTypeLit, 5, 0, 
+		symbols.Symbols{  
+			symbols.T_73,
+		}, 
+		BasicTypeLit5R0, 
+	},
+	BasicTypeLit5R1: {
+		symbols.NT_BasicTypeLit, 5, 1, 
+		symbols.Symbols{  
+			symbols.T_73,
+		}, 
+		BasicTypeLit5R1, 
+	},
+	BasicTypeLit6R0: {
+		symbols.NT_BasicTypeLit, 6, 0, 
+		symbols.Symbols{  
+			symbols.T_61,
+		}, 
+		BasicTypeLit6R0, 
+	},
+	BasicTypeLit6R1: {
+		symbols.NT_BasicTypeLit, 6, 1, 
+		symbols.Symbols{  
+			symbols.T_61,
+		}, 
+		BasicTypeLit6R1, 
+	},
+	BasicTypeLit7R0: {
+		symbols.NT_BasicTypeLit, 7, 0, 
+		symbols.Symbols{  
+			symbols.T_50,
+		}, 
+		BasicTypeLit7R0, 
+	},
+	BasicTypeLit7R1: {
+		symbols.NT_BasicTypeLit, 7, 1, 
+		symbols.Symbols{  
+			symbols.T_50,
+		}, 
+		BasicTypeLit7R1, 
+	},
+	Beoptfd0R0: {
+		symbols.NT_Beoptfd, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_48, 
+			symbols.T_105,
+		}, 
+		Beoptfd0R0, 
+	},
+	Beoptfd0R1: {
+		symbols.NT_Beoptfd, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_48, 
+			symbols.T_105,
+		}, 
+		Beoptfd0R1, 
+	},
+	Beoptfd0R2: {
+		symbols.NT_Beoptfd, 0, 2, 
+		symbols.Symbols{  
+			symbols.T_48, 
+			symbols.T_105,
+		}, 
+		Beoptfd0R2, 
+	},
+	Block0R0: {
+		symbols.NT_Block, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_LWING, 
+			symbols.NT_RepBlkSt0x, 
+			symbols.NT_RWING,
+		}, 
+		Block0R0, 
+	},
+	Block0R1: {
+		symbols.NT_Block, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_LWING, 
+			symbols.NT_RepBlkSt0x, 
+			symbols.NT_RWING,
+		}, 
+		Block0R1, 
+	},
+	Block0R2: {
+		symbols.NT_Block, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_LWING, 
+			symbols.NT_RepBlkSt0x, 
+			symbols.NT_RWING,
+		}, 
+		Block0R2, 
+	},
+	Block0R3: {
+		symbols.NT_Block, 0, 3, 
+		symbols.Symbols{  
+			symbols.NT_LWING, 
+			symbols.NT_RepBlkSt0x, 
+			symbols.NT_RWING,
+		}, 
+		Block0R3, 
+	},
+	BlockStmt0R0: {
+		symbols.NT_BlockStmt, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_LocalVarDeclStmt,
+		}, 
+		BlockStmt0R0, 
+	},
+	BlockStmt0R1: {
+		symbols.NT_BlockStmt, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_LocalVarDeclStmt,
+		}, 
+		BlockStmt0R1, 
+	},
+	BlockStmt1R0: {
+		symbols.NT_BlockStmt, 1, 0, 
+		symbols.Symbols{  
+			symbols.NT_RepModif0, 
+			symbols.NT_ClsDecl,
+		}, 
+		BlockStmt1R0, 
+	},
+	BlockStmt1R1: {
+		symbols.NT_BlockStmt, 1, 1, 
+		symbols.Symbols{  
+			symbols.NT_RepModif0, 
+			symbols.NT_ClsDecl,
+		}, 
+		BlockStmt1R1, 
+	},
+	BlockStmt1R2: {
+		symbols.NT_BlockStmt, 1, 2, 
+		symbols.Symbols{  
+			symbols.NT_RepModif0, 
+			symbols.NT_ClsDecl,
+		}, 
+		BlockStmt1R2, 
+	},
+	BlockStmt2R0: {
+		symbols.NT_BlockStmt, 2, 0, 
+		symbols.Symbols{  
+			symbols.NT_Stmt,
+		}, 
+		BlockStmt2R0, 
+	},
+	BlockStmt2R1: {
+		symbols.NT_BlockStmt, 2, 1, 
+		symbols.Symbols{  
+			symbols.NT_Stmt,
+		}, 
+		BlockStmt2R1, 
+	},
+	CASE0R0: {
+		symbols.NT_CASE, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_54, 
+			symbols.T_98,
+		}, 
+		CASE0R0, 
+	},
+	CASE0R1: {
+		symbols.NT_CASE, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_54, 
+			symbols.T_98,
+		}, 
+		CASE0R1, 
+	},
+	CASE0R2: {
+		symbols.NT_CASE, 0, 2, 
+		symbols.Symbols{  
+			symbols.T_54, 
+			symbols.T_98,
+		}, 
+		CASE0R2, 
+	},
+	CATCH0R0: {
+		symbols.NT_CATCH, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_55, 
+			symbols.T_98,
+		}, 
+		CATCH0R0, 
+	},
+	CATCH0R1: {
+		symbols.NT_CATCH, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_55, 
+			symbols.T_98,
+		}, 
+		CATCH0R1, 
+	},
+	CATCH0R2: {
+		symbols.NT_CATCH, 0, 2, 
+		symbols.Symbols{  
+			symbols.T_55, 
+			symbols.T_98,
+		}, 
+		CATCH0R2, 
+	},
+	COLON0R0: {
+		symbols.NT_COLON, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_22, 
+			symbols.NT_WS,
+		}, 
+		COLON0R0, 
+	},
+	COLON0R1: {
+		symbols.NT_COLON, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_22, 
+			symbols.NT_WS,
+		}, 
+		COLON0R1, 
+	},
+	COLON0R2: {
+		symbols.NT_COLON, 0, 2, 
+		symbols.Symbols{  
+			symbols.T_22, 
+			symbols.NT_WS,
+		}, 
+		COLON0R2, 
+	},
+	COMMA0R0: {
+		symbols.NT_COMMA, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_14, 
+			symbols.NT_WS,
+		}, 
+		COMMA0R0, 
+	},
+	COMMA0R1: {
+		symbols.NT_COMMA, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_14, 
+			symbols.NT_WS,
+		}, 
+		COMMA0R1, 
+	},
+	COMMA0R2: {
+		symbols.NT_COMMA, 0, 2, 
+		symbols.Symbols{  
+			symbols.T_14, 
+			symbols.NT_WS,
+		}, 
+		COMMA0R2, 
+	},
+	CONTINUE0R0: {
+		symbols.NT_CONTINUE, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_57, 
+			symbols.T_98,
+		}, 
+		CONTINUE0R0, 
+	},
+	CONTINUE0R1: {
+		symbols.NT_CONTINUE, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_57, 
+			symbols.T_98,
+		}, 
+		CONTINUE0R1, 
+	},
+	CONTINUE0R2: {
+		symbols.NT_CONTINUE, 0, 2, 
+		symbols.Symbols{  
+			symbols.T_57, 
+			symbols.T_98,
+		}, 
+		CONTINUE0R2, 
+	},
+	CarrotAlts0R0: {
+		symbols.NT_CarrotAlts, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_SL,
+		}, 
+		CarrotAlts0R0, 
+	},
+	CarrotAlts0R1: {
+		symbols.NT_CarrotAlts, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_SL,
+		}, 
+		CarrotAlts0R1, 
+	},
+	CarrotAlts1R0: {
+		symbols.NT_CarrotAlts, 1, 0, 
+		symbols.Symbols{  
+			symbols.NT_SR,
+		}, 
+		CarrotAlts1R0, 
+	},
+	CarrotAlts1R1: {
+		symbols.NT_CarrotAlts, 1, 1, 
+		symbols.Symbols{  
+			symbols.NT_SR,
+		}, 
+		CarrotAlts1R1, 
+	},
+	CarrotAlts2R0: {
+		symbols.NT_CarrotAlts, 2, 0, 
+		symbols.Symbols{  
+			symbols.NT_BSR,
+		}, 
+		CarrotAlts2R0, 
+	},
+	CarrotAlts2R1: {
+		symbols.NT_CarrotAlts, 2, 1, 
+		symbols.Symbols{  
+			symbols.NT_BSR,
+		}, 
+		CarrotAlts2R1, 
+	},
+	Catch0R0: {
+		symbols.NT_Catch, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_CATCH, 
+			symbols.NT_LPAR, 
+			symbols.NT_FormalParam, 
+			symbols.NT_RPAR, 
+			symbols.NT_Block,
+		}, 
+		Catch0R0, 
+	},
+	Catch0R1: {
+		symbols.NT_Catch, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_CATCH, 
+			symbols.NT_LPAR, 
+			symbols.NT_FormalParam, 
+			symbols.NT_RPAR, 
+			symbols.NT_Block,
+		}, 
+		Catch0R1, 
+	},
+	Catch0R2: {
+		symbols.NT_Catch, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_CATCH, 
+			symbols.NT_LPAR, 
+			symbols.NT_FormalParam, 
+			symbols.NT_RPAR, 
+			symbols.NT_Block,
+		}, 
+		Catch0R2, 
+	},
+	Catch0R3: {
+		symbols.NT_Catch, 0, 3, 
+		symbols.Symbols{  
+			symbols.NT_CATCH, 
+			symbols.NT_LPAR, 
+			symbols.NT_FormalParam, 
+			symbols.NT_RPAR, 
+			symbols.NT_Block,
+		}, 
+		Catch0R3, 
+	},
+	Catch0R4: {
+		symbols.NT_Catch, 0, 4, 
+		symbols.Symbols{  
+			symbols.NT_CATCH, 
+			symbols.NT_LPAR, 
+			symbols.NT_FormalParam, 
+			symbols.NT_RPAR, 
+			symbols.NT_Block,
+		}, 
+		Catch0R4, 
+	},
+	Catch0R5: {
+		symbols.NT_Catch, 0, 5, 
+		symbols.Symbols{  
+			symbols.NT_CATCH, 
+			symbols.NT_LPAR, 
+			symbols.NT_FormalParam, 
+			symbols.NT_RPAR, 
+			symbols.NT_Block,
+		}, 
+		Catch0R5, 
+	},
+	CatchBlk0R0: {
+		symbols.NT_CatchBlk, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_Catch, 
+			symbols.NT_RepCatch0x, 
+			symbols.NT_OptFin,
+		}, 
+		CatchBlk0R0, 
+	},
+	CatchBlk0R1: {
+		symbols.NT_CatchBlk, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_Catch, 
+			symbols.NT_RepCatch0x, 
+			symbols.NT_OptFin,
+		}, 
+		CatchBlk0R1, 
+	},
+	CatchBlk0R2: {
+		symbols.NT_CatchBlk, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_Catch, 
+			symbols.NT_RepCatch0x, 
+			symbols.NT_OptFin,
+		}, 
+		CatchBlk0R2, 
+	},
+	CatchBlk0R3: {
+		symbols.NT_CatchBlk, 0, 3, 
+		symbols.Symbols{  
+			symbols.NT_Catch, 
+			symbols.NT_RepCatch0x, 
+			symbols.NT_OptFin,
+		}, 
+		CatchBlk0R3, 
+	},
+	CatchBlk1R0: {
+		symbols.NT_CatchBlk, 1, 0, 
+		symbols.Symbols{  
+			symbols.NT_Finally,
+		}, 
+		CatchBlk1R0, 
+	},
+	CatchBlk1R1: {
+		symbols.NT_CatchBlk, 1, 1, 
+		symbols.Symbols{  
+			symbols.NT_Finally,
+		}, 
+		CatchBlk1R1, 
+	},
+	CharLiteral0R0: {
+		symbols.NT_CharLiteral, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_117, 
+			symbols.NT_EscSlash, 
+			symbols.T_117,
+		}, 
+		CharLiteral0R0, 
+	},
+	CharLiteral0R1: {
+		symbols.NT_CharLiteral, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_117, 
+			symbols.NT_EscSlash, 
+			symbols.T_117,
+		}, 
+		CharLiteral0R1, 
+	},
+	CharLiteral0R2: {
+		symbols.NT_CharLiteral, 0, 2, 
+		symbols.Symbols{  
+			symbols.T_117, 
+			symbols.NT_EscSlash, 
+			symbols.T_117,
+		}, 
+		CharLiteral0R2, 
+	},
+	CharLiteral0R3: {
+		symbols.NT_CharLiteral, 0, 3, 
+		symbols.Symbols{  
+			symbols.T_117, 
+			symbols.NT_EscSlash, 
+			symbols.T_117,
+		}, 
+		CharLiteral0R3, 
+	},
+	Cls0R0: {
+		symbols.NT_Cls, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_Cls, 
+			symbols.T_98,
+		}, 
+		Cls0R0, 
+	},
+	Cls0R1: {
+		symbols.NT_Cls, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_Cls, 
+			symbols.T_98,
+		}, 
+		Cls0R1, 
+	},
+	Cls0R2: {
+		symbols.NT_Cls, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_Cls, 
+			symbols.T_98,
+		}, 
+		Cls0R2, 
+	},
+	ClsBdy0R0: {
+		symbols.NT_ClsBdy, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_LWING, 
+			symbols.NT_RepClsBDecl0x, 
+			symbols.NT_RWING,
+		}, 
+		ClsBdy0R0, 
+	},
+	ClsBdy0R1: {
+		symbols.NT_ClsBdy, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_LWING, 
+			symbols.NT_RepClsBDecl0x, 
+			symbols.NT_RWING,
+		}, 
+		ClsBdy0R1, 
+	},
+	ClsBdy0R2: {
+		symbols.NT_ClsBdy, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_LWING, 
+			symbols.NT_RepClsBDecl0x, 
+			symbols.NT_RWING,
+		}, 
+		ClsBdy0R2, 
+	},
+	ClsBdy0R3: {
+		symbols.NT_ClsBdy, 0, 3, 
+		symbols.Symbols{  
+			symbols.NT_LWING, 
+			symbols.NT_RepClsBDecl0x, 
+			symbols.NT_RWING,
+		}, 
+		ClsBdy0R3, 
+	},
+	ClsBdyDecl0R0: {
+		symbols.NT_ClsBdyDecl, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_SEMI,
+		}, 
+		ClsBdyDecl0R0, 
+	},
+	ClsBdyDecl0R1: {
+		symbols.NT_ClsBdyDecl, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_SEMI,
+		}, 
+		ClsBdyDecl0R1, 
+	},
+	ClsBdyDecl1R0: {
+		symbols.NT_ClsBdyDecl, 1, 0, 
+		symbols.Symbols{  
+			symbols.NT_OptStatic, 
+			symbols.NT_Block,
+		}, 
+		ClsBdyDecl1R0, 
+	},
+	ClsBdyDecl1R1: {
+		symbols.NT_ClsBdyDecl, 1, 1, 
+		symbols.Symbols{  
+			symbols.NT_OptStatic, 
+			symbols.NT_Block,
+		}, 
+		ClsBdyDecl1R1, 
+	},
+	ClsBdyDecl1R2: {
+		symbols.NT_ClsBdyDecl, 1, 2, 
+		symbols.Symbols{  
+			symbols.NT_OptStatic, 
+			symbols.NT_Block,
+		}, 
+		ClsBdyDecl1R2, 
+	},
+	ClsBdyDecl2R0: {
+		symbols.NT_ClsBdyDecl, 2, 0, 
+		symbols.Symbols{  
+			symbols.NT_RepModif0, 
+			symbols.NT_MemDecl,
+		}, 
+		ClsBdyDecl2R0, 
+	},
+	ClsBdyDecl2R1: {
+		symbols.NT_ClsBdyDecl, 2, 1, 
+		symbols.Symbols{  
+			symbols.NT_RepModif0, 
+			symbols.NT_MemDecl,
+		}, 
+		ClsBdyDecl2R1, 
+	},
+	ClsBdyDecl2R2: {
+		symbols.NT_ClsBdyDecl, 2, 2, 
+		symbols.Symbols{  
+			symbols.NT_RepModif0, 
+			symbols.NT_MemDecl,
+		}, 
+		ClsBdyDecl2R2, 
+	},
+	ClsCreatorRest0R0: {
+		symbols.NT_ClsCreatorRest, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_Arguments, 
+			symbols.NT_OptClsBdy,
+		}, 
+		ClsCreatorRest0R0, 
+	},
+	ClsCreatorRest0R1: {
+		symbols.NT_ClsCreatorRest, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_Arguments, 
+			symbols.NT_OptClsBdy,
+		}, 
+		ClsCreatorRest0R1, 
+	},
+	ClsCreatorRest0R2: {
+		symbols.NT_ClsCreatorRest, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_Arguments, 
+			symbols.NT_OptClsBdy,
+		}, 
+		ClsCreatorRest0R2, 
+	},
+	ClsDecl0R0: {
+		symbols.NT_ClsDecl, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_Cls, 
+			symbols.NT_ID, 
+			symbols.NT_OptExtClsType, 
+			symbols.NT_OptImpClsLst, 
+			symbols.NT_ClsBdy,
+		}, 
+		ClsDecl0R0, 
+	},
+	ClsDecl0R1: {
+		symbols.NT_ClsDecl, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_Cls, 
+			symbols.NT_ID, 
+			symbols.NT_OptExtClsType, 
+			symbols.NT_OptImpClsLst, 
+			symbols.NT_ClsBdy,
+		}, 
+		ClsDecl0R1, 
+	},
+	ClsDecl0R2: {
+		symbols.NT_ClsDecl, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_Cls, 
+			symbols.NT_ID, 
+			symbols.NT_OptExtClsType, 
+			symbols.NT_OptImpClsLst, 
+			symbols.NT_ClsBdy,
+		}, 
+		ClsDecl0R2, 
+	},
+	ClsDecl0R3: {
+		symbols.NT_ClsDecl, 0, 3, 
+		symbols.Symbols{  
+			symbols.NT_Cls, 
+			symbols.NT_ID, 
+			symbols.NT_OptExtClsType, 
+			symbols.NT_OptImpClsLst, 
+			symbols.NT_ClsBdy,
+		}, 
+		ClsDecl0R3, 
+	},
+	ClsDecl0R4: {
+		symbols.NT_ClsDecl, 0, 4, 
+		symbols.Symbols{  
+			symbols.NT_Cls, 
+			symbols.NT_ID, 
+			symbols.NT_OptExtClsType, 
+			symbols.NT_OptImpClsLst, 
+			symbols.NT_ClsBdy,
+		}, 
+		ClsDecl0R4, 
+	},
+	ClsDecl0R5: {
+		symbols.NT_ClsDecl, 0, 5, 
+		symbols.Symbols{  
+			symbols.NT_Cls, 
+			symbols.NT_ID, 
+			symbols.NT_OptExtClsType, 
+			symbols.NT_OptImpClsLst, 
+			symbols.NT_ClsBdy,
+		}, 
+		ClsDecl0R5, 
+	},
+	ClsType0R0: {
+		symbols.NT_ClsType, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_ID, 
+			symbols.NT_RepDotID0x,
+		}, 
+		ClsType0R0, 
+	},
+	ClsType0R1: {
+		symbols.NT_ClsType, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_ID, 
+			symbols.NT_RepDotID0x,
+		}, 
+		ClsType0R1, 
+	},
+	ClsType0R2: {
+		symbols.NT_ClsType, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_ID, 
+			symbols.NT_RepDotID0x,
+		}, 
+		ClsType0R2, 
+	},
+	ClsTypeList0R0: {
+		symbols.NT_ClsTypeList, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_ClsType, 
+			symbols.NT_RepComCls0x,
+		}, 
+		ClsTypeList0R0, 
+	},
+	ClsTypeList0R1: {
+		symbols.NT_ClsTypeList, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_ClsType, 
+			symbols.NT_RepComCls0x,
+		}, 
+		ClsTypeList0R1, 
+	},
+	ClsTypeList0R2: {
+		symbols.NT_ClsTypeList, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_ClsType, 
+			symbols.NT_RepComCls0x,
+		}, 
+		ClsTypeList0R2, 
+	},
+	CompUnit0R0: {
+		symbols.NT_CompUnit, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_WS, 
+			symbols.NT_OptPackDecl, 
+			symbols.NT_RepImpDecl0x, 
+			symbols.NT_RepSemiModDecl0x,
+		}, 
+		CompUnit0R0, 
+	},
+	CompUnit0R1: {
+		symbols.NT_CompUnit, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_WS, 
+			symbols.NT_OptPackDecl, 
+			symbols.NT_RepImpDecl0x, 
+			symbols.NT_RepSemiModDecl0x,
+		}, 
+		CompUnit0R1, 
+	},
+	CompUnit0R2: {
+		symbols.NT_CompUnit, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_WS, 
+			symbols.NT_OptPackDecl, 
+			symbols.NT_RepImpDecl0x, 
+			symbols.NT_RepSemiModDecl0x,
+		}, 
+		CompUnit0R2, 
+	},
+	CompUnit0R3: {
+		symbols.NT_CompUnit, 0, 3, 
+		symbols.Symbols{  
+			symbols.NT_WS, 
+			symbols.NT_OptPackDecl, 
+			symbols.NT_RepImpDecl0x, 
+			symbols.NT_RepSemiModDecl0x,
+		}, 
+		CompUnit0R3, 
+	},
+	CompUnit0R4: {
+		symbols.NT_CompUnit, 0, 4, 
+		symbols.Symbols{  
+			symbols.NT_WS, 
+			symbols.NT_OptPackDecl, 
+			symbols.NT_RepImpDecl0x, 
+			symbols.NT_RepSemiModDecl0x,
+		}, 
+		CompUnit0R4, 
+	},
+	CondANDExpr0R0: {
+		symbols.NT_CondANDExpr, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_IORExpr, 
+			symbols.NT_RepANDIOR0x,
+		}, 
+		CondANDExpr0R0, 
+	},
+	CondANDExpr0R1: {
+		symbols.NT_CondANDExpr, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_IORExpr, 
+			symbols.NT_RepANDIOR0x,
+		}, 
+		CondANDExpr0R1, 
+	},
+	CondANDExpr0R2: {
+		symbols.NT_CondANDExpr, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_IORExpr, 
+			symbols.NT_RepANDIOR0x,
+		}, 
+		CondANDExpr0R2, 
+	},
+	CondExpr0R0: {
+		symbols.NT_CondExpr, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_CondORExpr, 
+			symbols.NT_RepCondition0x,
+		}, 
+		CondExpr0R0, 
+	},
+	CondExpr0R1: {
+		symbols.NT_CondExpr, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_CondORExpr, 
+			symbols.NT_RepCondition0x,
+		}, 
+		CondExpr0R1, 
+	},
+	CondExpr0R2: {
+		symbols.NT_CondExpr, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_CondORExpr, 
+			symbols.NT_RepCondition0x,
+		}, 
+		CondExpr0R2, 
+	},
+	CondORExpr0R0: {
+		symbols.NT_CondORExpr, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_CondANDExpr, 
+			symbols.NT_RepORcAND0x,
+		}, 
+		CondORExpr0R0, 
+	},
+	CondORExpr0R1: {
+		symbols.NT_CondORExpr, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_CondANDExpr, 
+			symbols.NT_RepORcAND0x,
+		}, 
+		CondORExpr0R1, 
+	},
+	CondORExpr0R2: {
+		symbols.NT_CondORExpr, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_CondANDExpr, 
+			symbols.NT_RepORcAND0x,
+		}, 
+		CondORExpr0R2, 
+	},
+	ConstDecl0R0: {
+		symbols.NT_ConstDecl, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_ID, 
+			symbols.NT_ConstDeclRest,
+		}, 
+		ConstDecl0R0, 
+	},
+	ConstDecl0R1: {
+		symbols.NT_ConstDecl, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_ID, 
+			symbols.NT_ConstDeclRest,
+		}, 
+		ConstDecl0R1, 
+	},
+	ConstDecl0R2: {
+		symbols.NT_ConstDecl, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_ID, 
+			symbols.NT_ConstDeclRest,
+		}, 
+		ConstDecl0R2, 
+	},
+	ConstDeclRest0R0: {
+		symbols.NT_ConstDeclRest, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_RepDim0x, 
+			symbols.NT_EQU, 
+			symbols.NT_VarInitial,
+		}, 
+		ConstDeclRest0R0, 
+	},
+	ConstDeclRest0R1: {
+		symbols.NT_ConstDeclRest, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_RepDim0x, 
+			symbols.NT_EQU, 
+			symbols.NT_VarInitial,
+		}, 
+		ConstDeclRest0R1, 
+	},
+	ConstDeclRest0R2: {
+		symbols.NT_ConstDeclRest, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_RepDim0x, 
+			symbols.NT_EQU, 
+			symbols.NT_VarInitial,
+		}, 
+		ConstDeclRest0R2, 
+	},
+	ConstDeclRest0R3: {
+		symbols.NT_ConstDeclRest, 0, 3, 
+		symbols.Symbols{  
+			symbols.NT_RepDim0x, 
+			symbols.NT_EQU, 
+			symbols.NT_VarInitial,
+		}, 
+		ConstDeclRest0R3, 
+	},
+	ConstDeclsRest0R0: {
+		symbols.NT_ConstDeclsRest, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_ConstDeclRest, 
+			symbols.NT_RepComCnstDecl0x,
+		}, 
+		ConstDeclsRest0R0, 
+	},
+	ConstDeclsRest0R1: {
+		symbols.NT_ConstDeclsRest, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_ConstDeclRest, 
+			symbols.NT_RepComCnstDecl0x,
+		}, 
+		ConstDeclsRest0R1, 
+	},
+	ConstDeclsRest0R2: {
+		symbols.NT_ConstDeclsRest, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_ConstDeclRest, 
+			symbols.NT_RepComCnstDecl0x,
+		}, 
+		ConstDeclsRest0R2, 
+	},
+	ConstExpr0R0: {
+		symbols.NT_ConstExpr, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_Expr,
+		}, 
+		ConstExpr0R0, 
+	},
+	ConstExpr0R1: {
+		symbols.NT_ConstExpr, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_Expr,
+		}, 
+		ConstExpr0R1, 
+	},
+	CreatedName0R0: {
+		symbols.NT_CreatedName, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_ID, 
+			symbols.NT_RepDotID0x,
+		}, 
+		CreatedName0R0, 
+	},
+	CreatedName0R1: {
+		symbols.NT_CreatedName, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_ID, 
+			symbols.NT_RepDotID0x,
+		}, 
+		CreatedName0R1, 
+	},
+	CreatedName0R2: {
+		symbols.NT_CreatedName, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_ID, 
+			symbols.NT_RepDotID0x,
+		}, 
+		CreatedName0R2, 
+	},
+	Creator0R0: {
+		symbols.NT_Creator, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_CreatedName, 
+			symbols.NT_ClsCreatorRest,
+		}, 
+		Creator0R0, 
+	},
+	Creator0R1: {
+		symbols.NT_Creator, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_CreatedName, 
+			symbols.NT_ClsCreatorRest,
+		}, 
+		Creator0R1, 
+	},
+	Creator0R2: {
+		symbols.NT_Creator, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_CreatedName, 
+			symbols.NT_ClsCreatorRest,
+		}, 
+		Creator0R2, 
+	},
+	Creator1R0: {
+		symbols.NT_Creator, 1, 0, 
+		symbols.Symbols{  
+			symbols.NT_TypeAlts, 
+			symbols.NT_ArrayCreatorRest,
+		}, 
+		Creator1R0, 
+	},
+	Creator1R1: {
+		symbols.NT_Creator, 1, 1, 
+		symbols.Symbols{  
+			symbols.NT_TypeAlts, 
+			symbols.NT_ArrayCreatorRest,
+		}, 
+		Creator1R1, 
+	},
+	Creator1R2: {
+		symbols.NT_Creator, 1, 2, 
+		symbols.Symbols{  
+			symbols.NT_TypeAlts, 
+			symbols.NT_ArrayCreatorRest,
+		}, 
+		Creator1R2, 
+	},
+	DEC0R0: {
+		symbols.NT_DEC, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_16, 
+			symbols.NT_WS,
+		}, 
+		DEC0R0, 
+	},
+	DEC0R1: {
+		symbols.NT_DEC, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_16, 
+			symbols.NT_WS,
+		}, 
+		DEC0R1, 
+	},
+	DEC0R2: {
+		symbols.NT_DEC, 0, 2, 
+		symbols.Symbols{  
+			symbols.T_16, 
+			symbols.NT_WS,
+		}, 
+		DEC0R2, 
+	},
+	DEFAULT0R0: {
+		symbols.NT_DEFAULT, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_58, 
+			symbols.T_98,
+		}, 
+		DEFAULT0R0, 
+	},
+	DEFAULT0R1: {
+		symbols.NT_DEFAULT, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_58, 
+			symbols.T_98,
+		}, 
+		DEFAULT0R1, 
+	},
+	DEFAULT0R2: {
+		symbols.NT_DEFAULT, 0, 2, 
+		symbols.Symbols{  
+			symbols.T_58, 
+			symbols.T_98,
+		}, 
+		DEFAULT0R2, 
+	},
+	DIV0R0: {
+		symbols.NT_DIV, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_19, 
+			symbols.T_87, 
+			symbols.NT_WS,
+		}, 
+		DIV0R0, 
+	},
+	DIV0R1: {
+		symbols.NT_DIV, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_19, 
+			symbols.T_87, 
+			symbols.NT_WS,
+		}, 
+		DIV0R1, 
+	},
+	DIV0R2: {
+		symbols.NT_DIV, 0, 2, 
+		symbols.Symbols{  
+			symbols.T_19, 
+			symbols.T_87, 
+			symbols.NT_WS,
+		}, 
+		DIV0R2, 
+	},
+	DIV0R3: {
+		symbols.NT_DIV, 0, 3, 
+		symbols.Symbols{  
+			symbols.T_19, 
+			symbols.T_87, 
+			symbols.NT_WS,
+		}, 
+		DIV0R3, 
+	},
+	DIV_EQU0R0: {
+		symbols.NT_DIV_EQU, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_20, 
+			symbols.NT_WS,
+		}, 
+		DIV_EQU0R0, 
+	},
+	DIV_EQU0R1: {
+		symbols.NT_DIV_EQU, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_20, 
+			symbols.NT_WS,
+		}, 
+		DIV_EQU0R1, 
+	},
+	DIV_EQU0R2: {
+		symbols.NT_DIV_EQU, 0, 2, 
+		symbols.Symbols{  
+			symbols.T_20, 
+			symbols.NT_WS,
+		}, 
+		DIV_EQU0R2, 
+	},
+	DO0R0: {
+		symbols.NT_DO, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_59, 
+			symbols.T_98,
+		}, 
+		DO0R0, 
+	},
+	DO0R1: {
+		symbols.NT_DO, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_59, 
+			symbols.T_98,
+		}, 
+		DO0R1, 
+	},
+	DO0R2: {
+		symbols.NT_DO, 0, 2, 
+		symbols.Symbols{  
+			symbols.T_59, 
+			symbols.T_98,
+		}, 
+		DO0R2, 
+	},
+	DOT0R0: {
+		symbols.NT_DOT, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_18, 
+			symbols.NT_WS,
+		}, 
+		DOT0R0, 
+	},
+	DOT0R1: {
+		symbols.NT_DOT, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_18, 
+			symbols.NT_WS,
+		}, 
+		DOT0R1, 
+	},
+	DOT0R2: {
+		symbols.NT_DOT, 0, 2, 
+		symbols.Symbols{  
+			symbols.T_18, 
+			symbols.NT_WS,
+		}, 
+		DOT0R2, 
+	},
+	DecimalFloat0R0: {
+		symbols.NT_DecimalFloat, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_111, 
+			symbols.T_60, 
+			symbols.T_110, 
+			symbols.T_103, 
+			symbols.T_69,
+		}, 
+		DecimalFloat0R0, 
+	},
+	DecimalFloat0R1: {
+		symbols.NT_DecimalFloat, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_111, 
+			symbols.T_60, 
+			symbols.T_110, 
+			symbols.T_103, 
+			symbols.T_69,
+		}, 
+		DecimalFloat0R1, 
+	},
+	DecimalFloat0R2: {
+		symbols.NT_DecimalFloat, 0, 2, 
+		symbols.Symbols{  
+			symbols.T_111, 
+			symbols.T_60, 
+			symbols.T_110, 
+			symbols.T_103, 
+			symbols.T_69,
+		}, 
+		DecimalFloat0R2, 
+	},
+	DecimalFloat0R3: {
+		symbols.NT_DecimalFloat, 0, 3, 
+		symbols.Symbols{  
+			symbols.T_111, 
+			symbols.T_60, 
+			symbols.T_110, 
+			symbols.T_103, 
+			symbols.T_69,
+		}, 
+		DecimalFloat0R3, 
+	},
+	DecimalFloat0R4: {
+		symbols.NT_DecimalFloat, 0, 4, 
+		symbols.Symbols{  
+			symbols.T_111, 
+			symbols.T_60, 
+			symbols.T_110, 
+			symbols.T_103, 
+			symbols.T_69,
+		}, 
+		DecimalFloat0R4, 
+	},
+	DecimalFloat0R5: {
+		symbols.NT_DecimalFloat, 0, 5, 
+		symbols.Symbols{  
+			symbols.T_111, 
+			symbols.T_60, 
+			symbols.T_110, 
+			symbols.T_103, 
+			symbols.T_69,
+		}, 
+		DecimalFloat0R5, 
+	},
+	DecimalFloat1R0: {
+		symbols.NT_DecimalFloat, 1, 0, 
+		symbols.Symbols{  
+			symbols.T_60, 
+			symbols.NT_RepDig1xExp,
+		}, 
+		DecimalFloat1R0, 
+	},
+	DecimalFloat1R1: {
+		symbols.NT_DecimalFloat, 1, 1, 
+		symbols.Symbols{  
+			symbols.T_60, 
+			symbols.NT_RepDig1xExp,
+		}, 
+		DecimalFloat1R1, 
+	},
+	DecimalFloat1R2: {
+		symbols.NT_DecimalFloat, 1, 2, 
+		symbols.Symbols{  
+			symbols.T_60, 
+			symbols.NT_RepDig1xExp,
+		}, 
+		DecimalFloat1R2, 
+	},
+	DecimalFloat2R0: {
+		symbols.NT_DecimalFloat, 2, 0, 
+		symbols.Symbols{  
+			symbols.NT_RepDig1xExp, 
+			symbols.T_69,
+		}, 
+		DecimalFloat2R0, 
+	},
+	DecimalFloat2R1: {
+		symbols.NT_DecimalFloat, 2, 1, 
+		symbols.Symbols{  
+			symbols.NT_RepDig1xExp, 
+			symbols.T_69,
+		}, 
+		DecimalFloat2R1, 
+	},
+	DecimalFloat2R2: {
+		symbols.NT_DecimalFloat, 2, 2, 
+		symbols.Symbols{  
+			symbols.NT_RepDig1xExp, 
+			symbols.T_69,
+		}, 
+		DecimalFloat2R2, 
+	},
+	DecimalFloat3R0: {
+		symbols.NT_DecimalFloat, 3, 0, 
+		symbols.Symbols{  
+			symbols.NT_RepDig1xOptExp, 
+			symbols.T_69,
+		}, 
+		DecimalFloat3R0, 
+	},
+	DecimalFloat3R1: {
+		symbols.NT_DecimalFloat, 3, 1, 
+		symbols.Symbols{  
+			symbols.NT_RepDig1xOptExp, 
+			symbols.T_69,
+		}, 
+		DecimalFloat3R1, 
+	},
+	DecimalFloat3R2: {
+		symbols.NT_DecimalFloat, 3, 2, 
+		symbols.Symbols{  
+			symbols.NT_RepDig1xOptExp, 
+			symbols.T_69,
+		}, 
+		DecimalFloat3R2, 
+	},
+	DecimalNumeral0R0: {
+		symbols.NT_DecimalNumeral, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_135,
+		}, 
+		DecimalNumeral0R0, 
+	},
+	DecimalNumeral0R1: {
+		symbols.NT_DecimalNumeral, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_135,
+		}, 
+		DecimalNumeral0R1, 
+	},
+	DecimalNumeral1R0: {
+		symbols.NT_DecimalNumeral, 1, 0, 
+		symbols.Symbols{  
+			symbols.T_102, 
+			symbols.T_114,
+		}, 
+		DecimalNumeral1R0, 
+	},
+	DecimalNumeral1R1: {
+		symbols.NT_DecimalNumeral, 1, 1, 
+		symbols.Symbols{  
+			symbols.T_102, 
+			symbols.T_114,
+		}, 
+		DecimalNumeral1R1, 
+	},
+	DecimalNumeral1R2: {
+		symbols.NT_DecimalNumeral, 1, 2, 
+		symbols.Symbols{  
+			symbols.T_102, 
+			symbols.T_114,
+		}, 
+		DecimalNumeral1R2, 
+	},
+	DeclAlts0R0: {
+		symbols.NT_DeclAlts, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_ClsDecl,
+		}, 
+		DeclAlts0R0, 
+	},
+	DeclAlts0R1: {
+		symbols.NT_DeclAlts, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_ClsDecl,
+		}, 
+		DeclAlts0R1, 
+	},
+	DeclAlts1R0: {
+		symbols.NT_DeclAlts, 1, 0, 
+		symbols.Symbols{  
+			symbols.NT_IntfDecl,
+		}, 
+		DeclAlts1R0, 
+	},
+	DeclAlts1R1: {
+		symbols.NT_DeclAlts, 1, 1, 
+		symbols.Symbols{  
+			symbols.NT_IntfDecl,
+		}, 
+		DeclAlts1R1, 
+	},
+	Dim0R0: {
+		symbols.NT_Dim, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_LBRK, 
+			symbols.NT_RBRK,
+		}, 
+		Dim0R0, 
+	},
+	Dim0R1: {
+		symbols.NT_Dim, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_LBRK, 
+			symbols.NT_RBRK,
+		}, 
+		Dim0R1, 
+	},
+	Dim0R2: {
+		symbols.NT_Dim, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_LBRK, 
+			symbols.NT_RBRK,
+		}, 
+		Dim0R2, 
+	},
+	DimExpr0R0: {
+		symbols.NT_DimExpr, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_LBRK, 
+			symbols.NT_Expr, 
+			symbols.NT_RBRK,
+		}, 
+		DimExpr0R0, 
+	},
+	DimExpr0R1: {
+		symbols.NT_DimExpr, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_LBRK, 
+			symbols.NT_Expr, 
+			symbols.NT_RBRK,
+		}, 
+		DimExpr0R1, 
+	},
+	DimExpr0R2: {
+		symbols.NT_DimExpr, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_LBRK, 
+			symbols.NT_Expr, 
+			symbols.NT_RBRK,
+		}, 
+		DimExpr0R2, 
+	},
+	DimExpr0R3: {
+		symbols.NT_DimExpr, 0, 3, 
+		symbols.Symbols{  
+			symbols.NT_LBRK, 
+			symbols.NT_Expr, 
+			symbols.NT_RBRK,
+		}, 
+		DimExpr0R3, 
+	},
+	ELSE0R0: {
+		symbols.NT_ELSE, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_64, 
+			symbols.T_98,
+		}, 
+		ELSE0R0, 
+	},
+	ELSE0R1: {
+		symbols.NT_ELSE, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_64, 
+			symbols.T_98,
+		}, 
+		ELSE0R1, 
+	},
+	ELSE0R2: {
+		symbols.NT_ELSE, 0, 2, 
+		symbols.Symbols{  
+			symbols.T_64, 
+			symbols.T_98,
+		}, 
+		ELSE0R2, 
+	},
+	EQU0R0: {
+		symbols.NT_EQU, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_28, 
+			symbols.T_87, 
+			symbols.NT_WS,
+		}, 
+		EQU0R0, 
+	},
+	EQU0R1: {
+		symbols.NT_EQU, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_28, 
+			symbols.T_87, 
+			symbols.NT_WS,
+		}, 
+		EQU0R1, 
+	},
+	EQU0R2: {
+		symbols.NT_EQU, 0, 2, 
+		symbols.Symbols{  
+			symbols.T_28, 
+			symbols.T_87, 
+			symbols.NT_WS,
+		}, 
+		EQU0R2, 
+	},
+	EQU0R3: {
+		symbols.NT_EQU, 0, 3, 
+		symbols.Symbols{  
+			symbols.T_28, 
+			symbols.T_87, 
+			symbols.NT_WS,
+		}, 
+		EQU0R3, 
+	},
+	EQUAL0R0: {
+		symbols.NT_EQUAL, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_29, 
+			symbols.NT_WS,
+		}, 
+		EQUAL0R0, 
+	},
+	EQUAL0R1: {
+		symbols.NT_EQUAL, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_29, 
+			symbols.NT_WS,
+		}, 
+		EQUAL0R1, 
+	},
+	EQUAL0R2: {
+		symbols.NT_EQUAL, 0, 2, 
+		symbols.Symbols{  
+			symbols.T_29, 
+			symbols.NT_WS,
+		}, 
+		EQUAL0R2, 
+	},
+	ESInst0R0: {
+		symbols.NT_ESInst, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_EqShift,
+		}, 
+		ESInst0R0, 
+	},
+	ESInst0R1: {
+		symbols.NT_ESInst, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_EqShift,
+		}, 
+		ESInst0R1, 
+	},
+	ESInst1R0: {
+		symbols.NT_ESInst, 1, 0, 
+		symbols.Symbols{  
+			symbols.NT_INSTANCEOF, 
+			symbols.NT_ReferenceType,
+		}, 
+		ESInst1R0, 
+	},
+	ESInst1R1: {
+		symbols.NT_ESInst, 1, 1, 
+		symbols.Symbols{  
+			symbols.NT_INSTANCEOF, 
+			symbols.NT_ReferenceType,
+		}, 
+		ESInst1R1, 
+	},
+	ESInst1R2: {
+		symbols.NT_ESInst, 1, 2, 
+		symbols.Symbols{  
+			symbols.NT_INSTANCEOF, 
+			symbols.NT_ReferenceType,
+		}, 
+		ESInst1R2, 
+	},
+	EXTENDS0R0: {
+		symbols.NT_EXTENDS, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_68, 
+			symbols.T_98,
+		}, 
+		EXTENDS0R0, 
+	},
+	EXTENDS0R1: {
+		symbols.NT_EXTENDS, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_68, 
+			symbols.T_98,
+		}, 
+		EXTENDS0R1, 
+	},
+	EXTENDS0R2: {
+		symbols.NT_EXTENDS, 0, 2, 
+		symbols.Symbols{  
+			symbols.T_68, 
+			symbols.T_98,
+		}, 
+		EXTENDS0R2, 
+	},
+	EqAlts0R0: {
+		symbols.NT_EqAlts, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_EQUAL,
+		}, 
+		EqAlts0R0, 
+	},
+	EqAlts0R1: {
+		symbols.NT_EqAlts, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_EQUAL,
+		}, 
+		EqAlts0R1, 
+	},
+	EqAlts1R0: {
+		symbols.NT_EqAlts, 1, 0, 
+		symbols.Symbols{  
+			symbols.NT_NOT_EQUAL,
+		}, 
+		EqAlts1R0, 
+	},
+	EqAlts1R1: {
+		symbols.NT_EqAlts, 1, 1, 
+		symbols.Symbols{  
+			symbols.NT_NOT_EQUAL,
+		}, 
+		EqAlts1R1, 
+	},
+	EqCheck0R0: {
+		symbols.NT_EqCheck, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_LE,
+		}, 
+		EqCheck0R0, 
+	},
+	EqCheck0R1: {
+		symbols.NT_EqCheck, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_LE,
+		}, 
+		EqCheck0R1, 
+	},
+	EqCheck1R0: {
+		symbols.NT_EqCheck, 1, 0, 
+		symbols.Symbols{  
+			symbols.NT_GE,
+		}, 
+		EqCheck1R0, 
+	},
+	EqCheck1R1: {
+		symbols.NT_EqCheck, 1, 1, 
+		symbols.Symbols{  
+			symbols.NT_GE,
+		}, 
+		EqCheck1R1, 
+	},
+	EqCheck2R0: {
+		symbols.NT_EqCheck, 2, 0, 
+		symbols.Symbols{  
+			symbols.NT_LT,
+		}, 
+		EqCheck2R0, 
+	},
+	EqCheck2R1: {
+		symbols.NT_EqCheck, 2, 1, 
+		symbols.Symbols{  
+			symbols.NT_LT,
+		}, 
+		EqCheck2R1, 
+	},
+	EqCheck3R0: {
+		symbols.NT_EqCheck, 3, 0, 
+		symbols.Symbols{  
+			symbols.NT_GT,
+		}, 
+		EqCheck3R0, 
+	},
+	EqCheck3R1: {
+		symbols.NT_EqCheck, 3, 1, 
+		symbols.Symbols{  
+			symbols.NT_GT,
+		}, 
+		EqCheck3R1, 
+	},
+	EqShift0R0: {
+		symbols.NT_EqShift, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_EqCheck, 
+			symbols.NT_ShiftExpr,
+		}, 
+		EqShift0R0, 
+	},
+	EqShift0R1: {
+		symbols.NT_EqShift, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_EqCheck, 
+			symbols.NT_ShiftExpr,
+		}, 
+		EqShift0R1, 
+	},
+	EqShift0R2: {
+		symbols.NT_EqShift, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_EqCheck, 
+			symbols.NT_ShiftExpr,
+		}, 
+		EqShift0R2, 
+	},
+	EqualExpr0R0: {
+		symbols.NT_EqualExpr, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_RelateExpr, 
+			symbols.NT_RepEqExpr0x,
+		}, 
+		EqualExpr0R0, 
+	},
+	EqualExpr0R1: {
+		symbols.NT_EqualExpr, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_RelateExpr, 
+			symbols.NT_RepEqExpr0x,
+		}, 
+		EqualExpr0R1, 
+	},
+	EqualExpr0R2: {
+		symbols.NT_EqualExpr, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_RelateExpr, 
+			symbols.NT_RepEqExpr0x,
+		}, 
+		EqualExpr0R2, 
+	},
+	EscOrLineOrBlock0R0: {
+		symbols.NT_EscOrLineOrBlock, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_85,
+		}, 
+		EscOrLineOrBlock0R0, 
+	},
+	EscOrLineOrBlock0R1: {
+		symbols.NT_EscOrLineOrBlock, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_85,
+		}, 
+		EscOrLineOrBlock0R1, 
+	},
+	EscOrLineOrBlock1R0: {
+		symbols.NT_EscOrLineOrBlock, 1, 0, 
+		symbols.Symbols{  
+			symbols.T_49,
+		}, 
+		EscOrLineOrBlock1R0, 
+	},
+	EscOrLineOrBlock1R1: {
+		symbols.NT_EscOrLineOrBlock, 1, 1, 
+		symbols.Symbols{  
+			symbols.T_49,
+		}, 
+		EscOrLineOrBlock1R1, 
+	},
+	EscOrLineOrBlock2R0: {
+		symbols.NT_EscOrLineOrBlock, 2, 0, 
+		symbols.Symbols{  
+			symbols.T_66,
+		}, 
+		EscOrLineOrBlock2R0, 
+	},
+	EscOrLineOrBlock2R1: {
+		symbols.NT_EscOrLineOrBlock, 2, 1, 
+		symbols.Symbols{  
+			symbols.T_66,
+		}, 
+		EscOrLineOrBlock2R1, 
+	},
+	EscSlash0R0: {
+		symbols.NT_EscSlash, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_Escape,
+		}, 
+		EscSlash0R0, 
+	},
+	EscSlash0R1: {
+		symbols.NT_EscSlash, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_Escape,
+		}, 
+		EscSlash0R1, 
+	},
+	EscSlash1R0: {
+		symbols.NT_EscSlash, 1, 0, 
+		symbols.Symbols{  
+			symbols.NT_EscUp,
+		}, 
+		EscSlash1R0, 
+	},
+	EscSlash1R1: {
+		symbols.NT_EscSlash, 1, 1, 
+		symbols.Symbols{  
+			symbols.NT_EscUp,
+		}, 
+		EscSlash1R1, 
+	},
+	EscUp0R0: {
+		symbols.NT_EscUp, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_42,
+		}, 
+		EscUp0R0, 
+	},
+	EscUp0R1: {
+		symbols.NT_EscUp, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_42,
+		}, 
+		EscUp0R1, 
+	},
+	EscUp1R0: {
+		symbols.NT_EscUp, 1, 0, 
+		symbols.Symbols{  
+			symbols.T_117,
+		}, 
+		EscUp1R0, 
+	},
+	EscUp1R1: {
+		symbols.NT_EscUp, 1, 1, 
+		symbols.Symbols{  
+			symbols.T_117,
+		}, 
+		EscUp1R1, 
+	},
+	EscUp2R0: {
+		symbols.NT_EscUp, 2, 0, 
+		symbols.Symbols{  
+			symbols.T_63,
+		}, 
+		EscUp2R0, 
+	},
+	EscUp2R1: {
+		symbols.NT_EscUp, 2, 1, 
+		symbols.Symbols{  
+			symbols.T_63,
+		}, 
+		EscUp2R1, 
+	},
+	Escape0R0: {
+		symbols.NT_Escape, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_63, 
+			symbols.NT_Escs,
+		}, 
+		Escape0R0, 
+	},
+	Escape0R1: {
+		symbols.NT_Escape, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_63, 
+			symbols.NT_Escs,
+		}, 
+		Escape0R1, 
+	},
+	Escape0R2: {
+		symbols.NT_Escape, 0, 2, 
+		symbols.Symbols{  
+			symbols.T_63, 
+			symbols.NT_Escs,
+		}, 
+		Escape0R2, 
+	},
+	Escs0R0: {
+		symbols.NT_Escs, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_65,
+		}, 
+		Escs0R0, 
+	},
+	Escs0R1: {
+		symbols.NT_Escs, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_65,
+		}, 
+		Escs0R1, 
+	},
+	Escs1R0: {
+		symbols.NT_Escs, 1, 0, 
+		symbols.Symbols{  
+			symbols.NT_OctalEscape,
+		}, 
+		Escs1R0, 
+	},
+	Escs1R1: {
+		symbols.NT_Escs, 1, 1, 
+		symbols.Symbols{  
+			symbols.NT_OctalEscape,
+		}, 
+		Escs1R1, 
+	},
+	Escs2R0: {
+		symbols.NT_Escs, 2, 0, 
+		symbols.Symbols{  
+			symbols.NT_UnicodeEscape,
+		}, 
+		Escs2R0, 
+	},
+	Escs2R1: {
+		symbols.NT_Escs, 2, 1, 
+		symbols.Symbols{  
+			symbols.NT_UnicodeEscape,
+		}, 
+		Escs2R1, 
+	},
+	Expr0R0: {
+		symbols.NT_Expr, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_CondExpr, 
+			symbols.NT_RepAsscExpr0x,
+		}, 
+		Expr0R0, 
+	},
+	Expr0R1: {
+		symbols.NT_Expr, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_CondExpr, 
+			symbols.NT_RepAsscExpr0x,
+		}, 
+		Expr0R1, 
+	},
+	Expr0R2: {
+		symbols.NT_Expr, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_CondExpr, 
+			symbols.NT_RepAsscExpr0x,
+		}, 
+		Expr0R2, 
+	},
+	FINAL0R0: {
+		symbols.NT_FINAL, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_71, 
+			symbols.T_98,
+		}, 
+		FINAL0R0, 
+	},
+	FINAL0R1: {
+		symbols.NT_FINAL, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_71, 
+			symbols.T_98,
+		}, 
+		FINAL0R1, 
+	},
+	FINAL0R2: {
+		symbols.NT_FINAL, 0, 2, 
+		symbols.Symbols{  
+			symbols.T_71, 
+			symbols.T_98,
+		}, 
+		FINAL0R2, 
+	},
+	FINALLY0R0: {
+		symbols.NT_FINALLY, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_72, 
+			symbols.T_98,
+		}, 
+		FINALLY0R0, 
+	},
+	FINALLY0R1: {
+		symbols.NT_FINALLY, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_72, 
+			symbols.T_98,
+		}, 
+		FINALLY0R1, 
+	},
+	FINALLY0R2: {
+		symbols.NT_FINALLY, 0, 2, 
+		symbols.Symbols{  
+			symbols.T_72, 
+			symbols.T_98,
+		}, 
+		FINALLY0R2, 
+	},
+	FOR0R0: {
+		symbols.NT_FOR, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_74, 
+			symbols.T_98,
+		}, 
+		FOR0R0, 
+	},
+	FOR0R1: {
+		symbols.NT_FOR, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_74, 
+			symbols.T_98,
+		}, 
+		FOR0R1, 
+	},
+	FOR0R2: {
+		symbols.NT_FOR, 0, 2, 
+		symbols.Symbols{  
+			symbols.T_74, 
+			symbols.T_98,
+		}, 
+		FOR0R2, 
+	},
+	Finally0R0: {
+		symbols.NT_Finally, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_FINALLY, 
+			symbols.NT_Block,
+		}, 
+		Finally0R0, 
+	},
+	Finally0R1: {
+		symbols.NT_Finally, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_FINALLY, 
+			symbols.NT_Block,
+		}, 
+		Finally0R1, 
+	},
+	Finally0R2: {
+		symbols.NT_Finally, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_FINALLY, 
+			symbols.NT_Block,
+		}, 
+		Finally0R2, 
+	},
+	FloatLiteral0R0: {
+		symbols.NT_FloatLiteral, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_HexFloat,
+		}, 
+		FloatLiteral0R0, 
+	},
+	FloatLiteral0R1: {
+		symbols.NT_FloatLiteral, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_HexFloat,
+		}, 
+		FloatLiteral0R1, 
+	},
+	FloatLiteral1R0: {
+		symbols.NT_FloatLiteral, 1, 0, 
+		symbols.Symbols{  
+			symbols.NT_DecimalFloat,
+		}, 
+		FloatLiteral1R0, 
+	},
+	FloatLiteral1R1: {
+		symbols.NT_FloatLiteral, 1, 1, 
+		symbols.Symbols{  
+			symbols.NT_DecimalFloat,
+		}, 
+		FloatLiteral1R1, 
+	},
+	ForInit0R0: {
+		symbols.NT_ForInit, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_OptFinType, 
+			symbols.NT_Type, 
+			symbols.NT_VarDeclInit,
+		}, 
+		ForInit0R0, 
+	},
+	ForInit0R1: {
+		symbols.NT_ForInit, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_OptFinType, 
+			symbols.NT_Type, 
+			symbols.NT_VarDeclInit,
+		}, 
+		ForInit0R1, 
+	},
+	ForInit0R2: {
+		symbols.NT_ForInit, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_OptFinType, 
+			symbols.NT_Type, 
+			symbols.NT_VarDeclInit,
+		}, 
+		ForInit0R2, 
+	},
+	ForInit0R3: {
+		symbols.NT_ForInit, 0, 3, 
+		symbols.Symbols{  
+			symbols.NT_OptFinType, 
+			symbols.NT_Type, 
+			symbols.NT_VarDeclInit,
+		}, 
+		ForInit0R3, 
+	},
+	ForInit1R0: {
+		symbols.NT_ForInit, 1, 0, 
+		symbols.Symbols{  
+			symbols.NT_StmtExpr, 
+			symbols.NT_RepComSExpr0x,
+		}, 
+		ForInit1R0, 
+	},
+	ForInit1R1: {
+		symbols.NT_ForInit, 1, 1, 
+		symbols.Symbols{  
+			symbols.NT_StmtExpr, 
+			symbols.NT_RepComSExpr0x,
+		}, 
+		ForInit1R1, 
+	},
+	ForInit1R2: {
+		symbols.NT_ForInit, 1, 2, 
+		symbols.Symbols{  
+			symbols.NT_StmtExpr, 
+			symbols.NT_RepComSExpr0x,
+		}, 
+		ForInit1R2, 
+	},
+	ForUpdate0R0: {
+		symbols.NT_ForUpdate, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_StmtExpr, 
+			symbols.NT_RepComSExpr0x,
+		}, 
+		ForUpdate0R0, 
+	},
+	ForUpdate0R1: {
+		symbols.NT_ForUpdate, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_StmtExpr, 
+			symbols.NT_RepComSExpr0x,
+		}, 
+		ForUpdate0R1, 
+	},
+	ForUpdate0R2: {
+		symbols.NT_ForUpdate, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_StmtExpr, 
+			symbols.NT_RepComSExpr0x,
+		}, 
+		ForUpdate0R2, 
+	},
+	FormalParam0R0: {
+		symbols.NT_FormalParam, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_OptFinType, 
+			symbols.NT_VarDelID,
+		}, 
+		FormalParam0R0, 
+	},
+	FormalParam0R1: {
+		symbols.NT_FormalParam, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_OptFinType, 
+			symbols.NT_VarDelID,
+		}, 
+		FormalParam0R1, 
+	},
+	FormalParam0R2: {
+		symbols.NT_FormalParam, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_OptFinType, 
+			symbols.NT_VarDelID,
+		}, 
+		FormalParam0R2, 
+	},
+	FormalParamDecls0R0: {
+		symbols.NT_FormalParamDecls, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_OptFinType, 
+			symbols.NT_FormalParamDeclsRest,
+		}, 
+		FormalParamDecls0R0, 
+	},
+	FormalParamDecls0R1: {
+		symbols.NT_FormalParamDecls, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_OptFinType, 
+			symbols.NT_FormalParamDeclsRest,
+		}, 
+		FormalParamDecls0R1, 
+	},
+	FormalParamDecls0R2: {
+		symbols.NT_FormalParamDecls, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_OptFinType, 
+			symbols.NT_FormalParamDeclsRest,
+		}, 
+		FormalParamDecls0R2, 
+	},
+	FormalParamDeclsRest0R0: {
+		symbols.NT_FormalParamDeclsRest, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_VarDelID, 
+			symbols.NT_OptComFormPDecl,
+		}, 
+		FormalParamDeclsRest0R0, 
+	},
+	FormalParamDeclsRest0R1: {
+		symbols.NT_FormalParamDeclsRest, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_VarDelID, 
+			symbols.NT_OptComFormPDecl,
+		}, 
+		FormalParamDeclsRest0R1, 
+	},
+	FormalParamDeclsRest0R2: {
+		symbols.NT_FormalParamDeclsRest, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_VarDelID, 
+			symbols.NT_OptComFormPDecl,
+		}, 
+		FormalParamDeclsRest0R2, 
+	},
+	FormalParams0R0: {
+		symbols.NT_FormalParams, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_LPAR, 
+			symbols.NT_OptFormPDecl, 
+			symbols.NT_RPAR,
+		}, 
+		FormalParams0R0, 
+	},
+	FormalParams0R1: {
+		symbols.NT_FormalParams, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_LPAR, 
+			symbols.NT_OptFormPDecl, 
+			symbols.NT_RPAR,
+		}, 
+		FormalParams0R1, 
+	},
+	FormalParams0R2: {
+		symbols.NT_FormalParams, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_LPAR, 
+			symbols.NT_OptFormPDecl, 
+			symbols.NT_RPAR,
+		}, 
+		FormalParams0R2, 
+	},
+	FormalParams0R3: {
+		symbols.NT_FormalParams, 0, 3, 
+		symbols.Symbols{  
+			symbols.NT_LPAR, 
+			symbols.NT_OptFormPDecl, 
+			symbols.NT_RPAR,
+		}, 
+		FormalParams0R3, 
+	},
+	GE0R0: {
+		symbols.NT_GE, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_31, 
+			symbols.NT_WS,
+		}, 
+		GE0R0, 
+	},
+	GE0R1: {
+		symbols.NT_GE, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_31, 
+			symbols.NT_WS,
+		}, 
+		GE0R1, 
+	},
+	GE0R2: {
+		symbols.NT_GE, 0, 2, 
+		symbols.Symbols{  
+			symbols.T_31, 
+			symbols.NT_WS,
+		}, 
+		GE0R2, 
+	},
+	GT0R0: {
+		symbols.NT_GT, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_30, 
+			symbols.T_92, 
+			symbols.NT_WS,
+		}, 
+		GT0R0, 
+	},
+	GT0R1: {
+		symbols.NT_GT, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_30, 
+			symbols.T_92, 
+			symbols.NT_WS,
+		}, 
+		GT0R1, 
+	},
+	GT0R2: {
+		symbols.NT_GT, 0, 2, 
+		symbols.Symbols{  
+			symbols.T_30, 
+			symbols.T_92, 
+			symbols.NT_WS,
+		}, 
+		GT0R2, 
+	},
+	GT0R3: {
+		symbols.NT_GT, 0, 3, 
+		symbols.Symbols{  
+			symbols.T_30, 
+			symbols.T_92, 
+			symbols.NT_WS,
+		}, 
+		GT0R3, 
+	},
+	HAT0R0: {
+		symbols.NT_HAT, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_42, 
+			symbols.T_87, 
+			symbols.NT_WS,
+		}, 
+		HAT0R0, 
+	},
+	HAT0R1: {
+		symbols.NT_HAT, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_42, 
+			symbols.T_87, 
+			symbols.NT_WS,
+		}, 
+		HAT0R1, 
+	},
+	HAT0R2: {
+		symbols.NT_HAT, 0, 2, 
+		symbols.Symbols{  
+			symbols.T_42, 
+			symbols.T_87, 
+			symbols.NT_WS,
+		}, 
+		HAT0R2, 
+	},
+	HAT0R3: {
+		symbols.NT_HAT, 0, 3, 
+		symbols.Symbols{  
+			symbols.T_42, 
+			symbols.T_87, 
+			symbols.NT_WS,
+		}, 
+		HAT0R3, 
+	},
+	HAT_EQU0R0: {
+		symbols.NT_HAT_EQU, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_43, 
+			symbols.NT_WS,
+		}, 
+		HAT_EQU0R0, 
+	},
+	HAT_EQU0R1: {
+		symbols.NT_HAT_EQU, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_43, 
+			symbols.NT_WS,
+		}, 
+		HAT_EQU0R1, 
+	},
+	HAT_EQU0R2: {
+		symbols.NT_HAT_EQU, 0, 2, 
+		symbols.Symbols{  
+			symbols.T_43, 
+			symbols.NT_WS,
+		}, 
+		HAT_EQU0R2, 
+	},
+	HexFloat0R0: {
+		symbols.NT_HexFloat, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_HexSignificand, 
+			symbols.NT_Beoptfd,
+		}, 
+		HexFloat0R0, 
+	},
+	HexFloat0R1: {
+		symbols.NT_HexFloat, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_HexSignificand, 
+			symbols.NT_Beoptfd,
+		}, 
+		HexFloat0R1, 
+	},
+	HexFloat0R2: {
+		symbols.NT_HexFloat, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_HexSignificand, 
+			symbols.NT_Beoptfd,
+		}, 
+		HexFloat0R2, 
+	},
+	HexNumeral0R0: {
+		symbols.NT_HexNumeral, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_Any0xX, 
+			symbols.T_113,
+		}, 
+		HexNumeral0R0, 
+	},
+	HexNumeral0R1: {
+		symbols.NT_HexNumeral, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_Any0xX, 
+			symbols.T_113,
+		}, 
+		HexNumeral0R1, 
+	},
+	HexNumeral0R2: {
+		symbols.NT_HexNumeral, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_Any0xX, 
+			symbols.T_113,
+		}, 
+		HexNumeral0R2, 
+	},
+	HexSignificand0R0: {
+		symbols.NT_HexSignificand, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_HexNumeral, 
+			symbols.NT_OptDot,
+		}, 
+		HexSignificand0R0, 
+	},
+	HexSignificand0R1: {
+		symbols.NT_HexSignificand, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_HexNumeral, 
+			symbols.NT_OptDot,
+		}, 
+		HexSignificand0R1, 
+	},
+	HexSignificand0R2: {
+		symbols.NT_HexSignificand, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_HexNumeral, 
+			symbols.NT_OptDot,
+		}, 
+		HexSignificand0R2, 
+	},
+	HexSignificand1R0: {
+		symbols.NT_HexSignificand, 1, 0, 
+		symbols.Symbols{  
+			symbols.NT_RepHex0xDot, 
+			symbols.T_75, 
+			symbols.T_112,
+		}, 
+		HexSignificand1R0, 
+	},
+	HexSignificand1R1: {
+		symbols.NT_HexSignificand, 1, 1, 
+		symbols.Symbols{  
+			symbols.NT_RepHex0xDot, 
+			symbols.T_75, 
+			symbols.T_112,
+		}, 
+		HexSignificand1R1, 
+	},
+	HexSignificand1R2: {
+		symbols.NT_HexSignificand, 1, 2, 
+		symbols.Symbols{  
+			symbols.NT_RepHex0xDot, 
+			symbols.T_75, 
+			symbols.T_112,
+		}, 
+		HexSignificand1R2, 
+	},
+	HexSignificand1R3: {
+		symbols.NT_HexSignificand, 1, 3, 
+		symbols.Symbols{  
+			symbols.NT_RepHex0xDot, 
+			symbols.T_75, 
+			symbols.T_112,
+		}, 
+		HexSignificand1R3, 
+	},
+	ID0R0: {
+		symbols.NT_ID, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_97, 
+			symbols.NT_LetterLorD,
+		}, 
+		ID0R0, 
+	},
+	ID0R1: {
+		symbols.NT_ID, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_97, 
+			symbols.NT_LetterLorD,
+		}, 
+		ID0R1, 
+	},
+	ID0R2: {
+		symbols.NT_ID, 0, 2, 
+		symbols.Symbols{  
+			symbols.T_97, 
+			symbols.NT_LetterLorD,
+		}, 
+		ID0R2, 
+	},
+	IDSuffix0R0: {
+		symbols.NT_IDSuffix, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_LBRK, 
+			symbols.NT_RBRKAlts,
+		}, 
+		IDSuffix0R0, 
+	},
+	IDSuffix0R1: {
+		symbols.NT_IDSuffix, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_LBRK, 
+			symbols.NT_RBRKAlts,
+		}, 
+		IDSuffix0R1, 
+	},
+	IDSuffix0R2: {
+		symbols.NT_IDSuffix, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_LBRK, 
+			symbols.NT_RBRKAlts,
+		}, 
+		IDSuffix0R2, 
+	},
+	IDSuffix1R0: {
+		symbols.NT_IDSuffix, 1, 0, 
+		symbols.Symbols{  
+			symbols.NT_Arguments,
+		}, 
+		IDSuffix1R0, 
+	},
+	IDSuffix1R1: {
+		symbols.NT_IDSuffix, 1, 1, 
+		symbols.Symbols{  
+			symbols.NT_Arguments,
+		}, 
+		IDSuffix1R1, 
+	},
+	IDSuffix2R0: {
+		symbols.NT_IDSuffix, 2, 0, 
+		symbols.Symbols{  
+			symbols.NT_DOT, 
+			symbols.NT_OtherAlts,
+		}, 
+		IDSuffix2R0, 
+	},
+	IDSuffix2R1: {
+		symbols.NT_IDSuffix, 2, 1, 
+		symbols.Symbols{  
+			symbols.NT_DOT, 
+			symbols.NT_OtherAlts,
+		}, 
+		IDSuffix2R1, 
+	},
+	IDSuffix2R2: {
+		symbols.NT_IDSuffix, 2, 2, 
+		symbols.Symbols{  
+			symbols.NT_DOT, 
+			symbols.NT_OtherAlts,
+		}, 
+		IDSuffix2R2, 
+	},
+	IF0R0: {
+		symbols.NT_IF, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_76, 
+			symbols.T_98,
+		}, 
+		IF0R0, 
+	},
+	IF0R1: {
+		symbols.NT_IF, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_76, 
+			symbols.T_98,
+		}, 
+		IF0R1, 
+	},
+	IF0R2: {
+		symbols.NT_IF, 0, 2, 
+		symbols.Symbols{  
+			symbols.T_76, 
+			symbols.T_98,
+		}, 
+		IF0R2, 
+	},
+	IMPLEMENTS0R0: {
+		symbols.NT_IMPLEMENTS, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_77, 
+			symbols.T_98,
+		}, 
+		IMPLEMENTS0R0, 
+	},
+	IMPLEMENTS0R1: {
+		symbols.NT_IMPLEMENTS, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_77, 
+			symbols.T_98,
+		}, 
+		IMPLEMENTS0R1, 
+	},
+	IMPLEMENTS0R2: {
+		symbols.NT_IMPLEMENTS, 0, 2, 
+		symbols.Symbols{  
+			symbols.T_77, 
+			symbols.T_98,
+		}, 
+		IMPLEMENTS0R2, 
+	},
+	IMPORT0R0: {
+		symbols.NT_IMPORT, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_78, 
+			symbols.T_98,
+		}, 
+		IMPORT0R0, 
+	},
+	IMPORT0R1: {
+		symbols.NT_IMPORT, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_78, 
+			symbols.T_98,
+		}, 
+		IMPORT0R1, 
+	},
+	IMPORT0R2: {
+		symbols.NT_IMPORT, 0, 2, 
+		symbols.Symbols{  
+			symbols.T_78, 
+			symbols.T_98,
+		}, 
+		IMPORT0R2, 
+	},
+	INC0R0: {
+		symbols.NT_INC, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_12, 
+			symbols.NT_WS,
+		}, 
+		INC0R0, 
+	},
+	INC0R1: {
+		symbols.NT_INC, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_12, 
+			symbols.NT_WS,
+		}, 
+		INC0R1, 
+	},
+	INC0R2: {
+		symbols.NT_INC, 0, 2, 
+		symbols.Symbols{  
+			symbols.T_12, 
+			symbols.NT_WS,
+		}, 
+		INC0R2, 
+	},
+	INSTANCEOF0R0: {
+		symbols.NT_INSTANCEOF, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_79, 
+			symbols.T_98,
+		}, 
+		INSTANCEOF0R0, 
+	},
+	INSTANCEOF0R1: {
+		symbols.NT_INSTANCEOF, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_79, 
+			symbols.T_98,
+		}, 
+		INSTANCEOF0R1, 
+	},
+	INSTANCEOF0R2: {
+		symbols.NT_INSTANCEOF, 0, 2, 
+		symbols.Symbols{  
+			symbols.T_79, 
+			symbols.T_98,
+		}, 
+		INSTANCEOF0R2, 
+	},
+	IORExpr0R0: {
+		symbols.NT_IORExpr, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_XORExpr, 
+			symbols.NT_RepORXOR0x,
+		}, 
+		IORExpr0R0, 
+	},
+	IORExpr0R1: {
+		symbols.NT_IORExpr, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_XORExpr, 
+			symbols.NT_RepORXOR0x,
+		}, 
+		IORExpr0R1, 
+	},
+	IORExpr0R2: {
+		symbols.NT_IORExpr, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_XORExpr, 
+			symbols.NT_RepORXOR0x,
+		}, 
+		IORExpr0R2, 
+	},
+	ImportDecl0R0: {
+		symbols.NT_ImportDecl, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_IMPORT, 
+			symbols.NT_OptStatic, 
+			symbols.NT_QualifiedID, 
+			symbols.NT_OptDotStar, 
+			symbols.NT_SEMI,
+		}, 
+		ImportDecl0R0, 
+	},
+	ImportDecl0R1: {
+		symbols.NT_ImportDecl, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_IMPORT, 
+			symbols.NT_OptStatic, 
+			symbols.NT_QualifiedID, 
+			symbols.NT_OptDotStar, 
+			symbols.NT_SEMI,
+		}, 
+		ImportDecl0R1, 
+	},
+	ImportDecl0R2: {
+		symbols.NT_ImportDecl, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_IMPORT, 
+			symbols.NT_OptStatic, 
+			symbols.NT_QualifiedID, 
+			symbols.NT_OptDotStar, 
+			symbols.NT_SEMI,
+		}, 
+		ImportDecl0R2, 
+	},
+	ImportDecl0R3: {
+		symbols.NT_ImportDecl, 0, 3, 
+		symbols.Symbols{  
+			symbols.NT_IMPORT, 
+			symbols.NT_OptStatic, 
+			symbols.NT_QualifiedID, 
+			symbols.NT_OptDotStar, 
+			symbols.NT_SEMI,
+		}, 
+		ImportDecl0R3, 
+	},
+	ImportDecl0R4: {
+		symbols.NT_ImportDecl, 0, 4, 
+		symbols.Symbols{  
+			symbols.NT_IMPORT, 
+			symbols.NT_OptStatic, 
+			symbols.NT_QualifiedID, 
+			symbols.NT_OptDotStar, 
+			symbols.NT_SEMI,
+		}, 
+		ImportDecl0R4, 
+	},
+	ImportDecl0R5: {
+		symbols.NT_ImportDecl, 0, 5, 
+		symbols.Symbols{  
+			symbols.NT_IMPORT, 
+			symbols.NT_OptStatic, 
+			symbols.NT_QualifiedID, 
+			symbols.NT_OptDotStar, 
+			symbols.NT_SEMI,
+		}, 
+		ImportDecl0R5, 
+	},
+	InnerCreator0R0: {
+		symbols.NT_InnerCreator, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_ID, 
+			symbols.NT_ClsCreatorRest,
+		}, 
+		InnerCreator0R0, 
+	},
+	InnerCreator0R1: {
+		symbols.NT_InnerCreator, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_ID, 
+			symbols.NT_ClsCreatorRest,
+		}, 
+		InnerCreator0R1, 
+	},
+	InnerCreator0R2: {
+		symbols.NT_InnerCreator, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_ID, 
+			symbols.NT_ClsCreatorRest,
+		}, 
+		InnerCreator0R2, 
+	},
+	IntegerLiteral0R0: {
+		symbols.NT_IntegerLiteral, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_NumeralAlts, 
+			symbols.T_104,
+		}, 
+		IntegerLiteral0R0, 
+	},
+	IntegerLiteral0R1: {
+		symbols.NT_IntegerLiteral, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_NumeralAlts, 
+			symbols.T_104,
+		}, 
+		IntegerLiteral0R1, 
+	},
+	IntegerLiteral0R2: {
+		symbols.NT_IntegerLiteral, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_NumeralAlts, 
+			symbols.T_104,
+		}, 
+		IntegerLiteral0R2, 
+	},
+	Intf0R0: {
+		symbols.NT_Intf, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_Intf, 
+			symbols.T_98,
+		}, 
+		Intf0R0, 
+	},
+	Intf0R1: {
+		symbols.NT_Intf, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_Intf, 
+			symbols.T_98,
+		}, 
+		Intf0R1, 
+	},
+	Intf0R2: {
+		symbols.NT_Intf, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_Intf, 
+			symbols.T_98,
+		}, 
+		Intf0R2, 
+	},
+	IntfBdy0R0: {
+		symbols.NT_IntfBdy, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_LWING, 
+			symbols.NT_RepInBodDecl0x, 
+			symbols.NT_RWING,
+		}, 
+		IntfBdy0R0, 
+	},
+	IntfBdy0R1: {
+		symbols.NT_IntfBdy, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_LWING, 
+			symbols.NT_RepInBodDecl0x, 
+			symbols.NT_RWING,
+		}, 
+		IntfBdy0R1, 
+	},
+	IntfBdy0R2: {
+		symbols.NT_IntfBdy, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_LWING, 
+			symbols.NT_RepInBodDecl0x, 
+			symbols.NT_RWING,
+		}, 
+		IntfBdy0R2, 
+	},
+	IntfBdy0R3: {
+		symbols.NT_IntfBdy, 0, 3, 
+		symbols.Symbols{  
+			symbols.NT_LWING, 
+			symbols.NT_RepInBodDecl0x, 
+			symbols.NT_RWING,
+		}, 
+		IntfBdy0R3, 
+	},
+	IntfBdyDecl0R0: {
+		symbols.NT_IntfBdyDecl, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_RepModif0, 
+			symbols.NT_IntfMemDecl,
+		}, 
+		IntfBdyDecl0R0, 
+	},
+	IntfBdyDecl0R1: {
+		symbols.NT_IntfBdyDecl, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_RepModif0, 
+			symbols.NT_IntfMemDecl,
+		}, 
+		IntfBdyDecl0R1, 
+	},
+	IntfBdyDecl0R2: {
+		symbols.NT_IntfBdyDecl, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_RepModif0, 
+			symbols.NT_IntfMemDecl,
+		}, 
+		IntfBdyDecl0R2, 
+	},
+	IntfBdyDecl1R0: {
+		symbols.NT_IntfBdyDecl, 1, 0, 
+		symbols.Symbols{  
+			symbols.NT_SEMI,
+		}, 
+		IntfBdyDecl1R0, 
+	},
+	IntfBdyDecl1R1: {
+		symbols.NT_IntfBdyDecl, 1, 1, 
+		symbols.Symbols{  
+			symbols.NT_SEMI,
+		}, 
+		IntfBdyDecl1R1, 
+	},
+	IntfDecl0R0: {
+		symbols.NT_IntfDecl, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_Intf, 
+			symbols.NT_ID, 
+			symbols.NT_OptExtendsClsLis, 
+			symbols.NT_IntfBdy,
+		}, 
+		IntfDecl0R0, 
+	},
+	IntfDecl0R1: {
+		symbols.NT_IntfDecl, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_Intf, 
+			symbols.NT_ID, 
+			symbols.NT_OptExtendsClsLis, 
+			symbols.NT_IntfBdy,
+		}, 
+		IntfDecl0R1, 
+	},
+	IntfDecl0R2: {
+		symbols.NT_IntfDecl, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_Intf, 
+			symbols.NT_ID, 
+			symbols.NT_OptExtendsClsLis, 
+			symbols.NT_IntfBdy,
+		}, 
+		IntfDecl0R2, 
+	},
+	IntfDecl0R3: {
+		symbols.NT_IntfDecl, 0, 3, 
+		symbols.Symbols{  
+			symbols.NT_Intf, 
+			symbols.NT_ID, 
+			symbols.NT_OptExtendsClsLis, 
+			symbols.NT_IntfBdy,
+		}, 
+		IntfDecl0R3, 
+	},
+	IntfDecl0R4: {
+		symbols.NT_IntfDecl, 0, 4, 
+		symbols.Symbols{  
+			symbols.NT_Intf, 
+			symbols.NT_ID, 
+			symbols.NT_OptExtendsClsLis, 
+			symbols.NT_IntfBdy,
+		}, 
+		IntfDecl0R4, 
+	},
+	IntfMemDecl0R0: {
+		symbols.NT_IntfMemDecl, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_IntfMethFieldDecl,
+		}, 
+		IntfMemDecl0R0, 
+	},
+	IntfMemDecl0R1: {
+		symbols.NT_IntfMemDecl, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_IntfMethFieldDecl,
+		}, 
+		IntfMemDecl0R1, 
+	},
+	IntfMemDecl1R0: {
+		symbols.NT_IntfMemDecl, 1, 0, 
+		symbols.Symbols{  
+			symbols.NT_VOID, 
+			symbols.NT_ID, 
+			symbols.NT_VoidIntfMethDeclRst,
+		}, 
+		IntfMemDecl1R0, 
+	},
+	IntfMemDecl1R1: {
+		symbols.NT_IntfMemDecl, 1, 1, 
+		symbols.Symbols{  
+			symbols.NT_VOID, 
+			symbols.NT_ID, 
+			symbols.NT_VoidIntfMethDeclRst,
+		}, 
+		IntfMemDecl1R1, 
+	},
+	IntfMemDecl1R2: {
+		symbols.NT_IntfMemDecl, 1, 2, 
+		symbols.Symbols{  
+			symbols.NT_VOID, 
+			symbols.NT_ID, 
+			symbols.NT_VoidIntfMethDeclRst,
+		}, 
+		IntfMemDecl1R2, 
+	},
+	IntfMemDecl1R3: {
+		symbols.NT_IntfMemDecl, 1, 3, 
+		symbols.Symbols{  
+			symbols.NT_VOID, 
+			symbols.NT_ID, 
+			symbols.NT_VoidIntfMethDeclRst,
+		}, 
+		IntfMemDecl1R3, 
+	},
+	IntfMemDecl2R0: {
+		symbols.NT_IntfMemDecl, 2, 0, 
+		symbols.Symbols{  
+			symbols.NT_IntfDecl,
+		}, 
+		IntfMemDecl2R0, 
+	},
+	IntfMemDecl2R1: {
+		symbols.NT_IntfMemDecl, 2, 1, 
+		symbols.Symbols{  
+			symbols.NT_IntfDecl,
+		}, 
+		IntfMemDecl2R1, 
+	},
+	IntfMemDecl3R0: {
+		symbols.NT_IntfMemDecl, 3, 0, 
+		symbols.Symbols{  
+			symbols.NT_ClsDecl,
+		}, 
+		IntfMemDecl3R0, 
+	},
+	IntfMemDecl3R1: {
+		symbols.NT_IntfMemDecl, 3, 1, 
+		symbols.Symbols{  
+			symbols.NT_ClsDecl,
+		}, 
+		IntfMemDecl3R1, 
+	},
+	IntfMethDeclRest0R0: {
+		symbols.NT_IntfMethDeclRest, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_FormalParams, 
+			symbols.NT_RepDim0x, 
+			symbols.NT_OptThrowClsTypLst, 
+			symbols.NT_SEMI,
+		}, 
+		IntfMethDeclRest0R0, 
+	},
+	IntfMethDeclRest0R1: {
+		symbols.NT_IntfMethDeclRest, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_FormalParams, 
+			symbols.NT_RepDim0x, 
+			symbols.NT_OptThrowClsTypLst, 
+			symbols.NT_SEMI,
+		}, 
+		IntfMethDeclRest0R1, 
+	},
+	IntfMethDeclRest0R2: {
+		symbols.NT_IntfMethDeclRest, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_FormalParams, 
+			symbols.NT_RepDim0x, 
+			symbols.NT_OptThrowClsTypLst, 
+			symbols.NT_SEMI,
+		}, 
+		IntfMethDeclRest0R2, 
+	},
+	IntfMethDeclRest0R3: {
+		symbols.NT_IntfMethDeclRest, 0, 3, 
+		symbols.Symbols{  
+			symbols.NT_FormalParams, 
+			symbols.NT_RepDim0x, 
+			symbols.NT_OptThrowClsTypLst, 
+			symbols.NT_SEMI,
+		}, 
+		IntfMethDeclRest0R3, 
+	},
+	IntfMethDeclRest0R4: {
+		symbols.NT_IntfMethDeclRest, 0, 4, 
+		symbols.Symbols{  
+			symbols.NT_FormalParams, 
+			symbols.NT_RepDim0x, 
+			symbols.NT_OptThrowClsTypLst, 
+			symbols.NT_SEMI,
+		}, 
+		IntfMethDeclRest0R4, 
+	},
+	IntfMethFieldDecl0R0: {
+		symbols.NT_IntfMethFieldDecl, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_Type, 
+			symbols.NT_ID, 
+			symbols.NT_IntfMethFieldRest,
+		}, 
+		IntfMethFieldDecl0R0, 
+	},
+	IntfMethFieldDecl0R1: {
+		symbols.NT_IntfMethFieldDecl, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_Type, 
+			symbols.NT_ID, 
+			symbols.NT_IntfMethFieldRest,
+		}, 
+		IntfMethFieldDecl0R1, 
+	},
+	IntfMethFieldDecl0R2: {
+		symbols.NT_IntfMethFieldDecl, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_Type, 
+			symbols.NT_ID, 
+			symbols.NT_IntfMethFieldRest,
+		}, 
+		IntfMethFieldDecl0R2, 
+	},
+	IntfMethFieldDecl0R3: {
+		symbols.NT_IntfMethFieldDecl, 0, 3, 
+		symbols.Symbols{  
+			symbols.NT_Type, 
+			symbols.NT_ID, 
+			symbols.NT_IntfMethFieldRest,
+		}, 
+		IntfMethFieldDecl0R3, 
+	},
+	IntfMethFieldRest0R0: {
+		symbols.NT_IntfMethFieldRest, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_ConstDeclsRest, 
+			symbols.NT_SEMI,
+		}, 
+		IntfMethFieldRest0R0, 
+	},
+	IntfMethFieldRest0R1: {
+		symbols.NT_IntfMethFieldRest, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_ConstDeclsRest, 
+			symbols.NT_SEMI,
+		}, 
+		IntfMethFieldRest0R1, 
+	},
+	IntfMethFieldRest0R2: {
+		symbols.NT_IntfMethFieldRest, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_ConstDeclsRest, 
+			symbols.NT_SEMI,
+		}, 
+		IntfMethFieldRest0R2, 
+	},
+	IntfMethFieldRest1R0: {
+		symbols.NT_IntfMethFieldRest, 1, 0, 
+		symbols.Symbols{  
+			symbols.NT_IntfMethDeclRest,
+		}, 
+		IntfMethFieldRest1R0, 
+	},
+	IntfMethFieldRest1R1: {
+		symbols.NT_IntfMethFieldRest, 1, 1, 
+		symbols.Symbols{  
+			symbols.NT_IntfMethDeclRest,
+		}, 
+		IntfMethFieldRest1R1, 
+	},
+	LBRK0R0: {
+		symbols.NT_LBRK, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_40, 
+			symbols.NT_WS,
+		}, 
+		LBRK0R0, 
+	},
+	LBRK0R1: {
+		symbols.NT_LBRK, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_40, 
+			symbols.NT_WS,
+		}, 
+		LBRK0R1, 
+	},
+	LBRK0R2: {
+		symbols.NT_LBRK, 0, 2, 
+		symbols.Symbols{  
+			symbols.T_40, 
+			symbols.NT_WS,
+		}, 
+		LBRK0R2, 
+	},
+	LE0R0: {
+		symbols.NT_LE, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_27, 
+			symbols.NT_WS,
+		}, 
+		LE0R0, 
+	},
+	LE0R1: {
+		symbols.NT_LE, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_27, 
+			symbols.NT_WS,
+		}, 
+		LE0R1, 
+	},
+	LE0R2: {
+		symbols.NT_LE, 0, 2, 
+		symbols.Symbols{  
+			symbols.T_27, 
+			symbols.NT_WS,
+		}, 
+		LE0R2, 
+	},
+	LPAR0R0: {
+		symbols.NT_LPAR, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_7, 
+			symbols.NT_WS,
+		}, 
+		LPAR0R0, 
+	},
+	LPAR0R1: {
+		symbols.NT_LPAR, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_7, 
+			symbols.NT_WS,
+		}, 
+		LPAR0R1, 
+	},
+	LPAR0R2: {
+		symbols.NT_LPAR, 0, 2, 
+		symbols.Symbols{  
+			symbols.T_7, 
+			symbols.NT_WS,
+		}, 
+		LPAR0R2, 
+	},
+	LT0R0: {
+		symbols.NT_LT, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_24, 
+			symbols.T_93, 
+			symbols.NT_WS,
+		}, 
+		LT0R0, 
+	},
+	LT0R1: {
+		symbols.NT_LT, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_24, 
+			symbols.T_93, 
+			symbols.NT_WS,
+		}, 
+		LT0R1, 
+	},
+	LT0R2: {
+		symbols.NT_LT, 0, 2, 
+		symbols.Symbols{  
+			symbols.T_24, 
+			symbols.T_93, 
+			symbols.NT_WS,
+		}, 
+		LT0R2, 
+	},
+	LT0R3: {
+		symbols.NT_LT, 0, 3, 
+		symbols.Symbols{  
+			symbols.T_24, 
+			symbols.T_93, 
+			symbols.NT_WS,
+		}, 
+		LT0R3, 
+	},
+	LWING0R0: {
+		symbols.NT_LWING, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_136, 
+			symbols.NT_WS,
+		}, 
+		LWING0R0, 
+	},
+	LWING0R1: {
+		symbols.NT_LWING, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_136, 
+			symbols.NT_WS,
+		}, 
+		LWING0R1, 
+	},
+	LWING0R2: {
+		symbols.NT_LWING, 0, 2, 
+		symbols.Symbols{  
+			symbols.T_136, 
+			symbols.NT_WS,
+		}, 
+		LWING0R2, 
+	},
+	Letter0R0: {
+		symbols.NT_Letter, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_84,
+		}, 
+		Letter0R0, 
+	},
+	Letter0R1: {
+		symbols.NT_Letter, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_84,
+		}, 
+		Letter0R1, 
+	},
+	Letter1R0: {
+		symbols.NT_Letter, 1, 0, 
+		symbols.Symbols{  
+			symbols.NT_WS,
+		}, 
+		Letter1R0, 
+	},
+	Letter1R1: {
+		symbols.NT_Letter, 1, 1, 
+		symbols.Symbols{  
+			symbols.NT_WS,
+		}, 
+		Letter1R1, 
+	},
+	LetterLorD0R0: {
+		symbols.NT_LetterLorD, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_Letter, 
+			symbols.NT_RepLorD0x, 
+			symbols.NT_WS,
+		}, 
+		LetterLorD0R0, 
+	},
+	LetterLorD0R1: {
+		symbols.NT_LetterLorD, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_Letter, 
+			symbols.NT_RepLorD0x, 
+			symbols.NT_WS,
+		}, 
+		LetterLorD0R1, 
+	},
+	LetterLorD0R2: {
+		symbols.NT_LetterLorD, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_Letter, 
+			symbols.NT_RepLorD0x, 
+			symbols.NT_WS,
+		}, 
+		LetterLorD0R2, 
+	},
+	LetterLorD0R3: {
+		symbols.NT_LetterLorD, 0, 3, 
+		symbols.Symbols{  
+			symbols.NT_Letter, 
+			symbols.NT_RepLorD0x, 
+			symbols.NT_WS,
+		}, 
+		LetterLorD0R3, 
+	},
+	LitAlts0R0: {
+		symbols.NT_LitAlts, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_FloatLiteral,
+		}, 
+		LitAlts0R0, 
+	},
+	LitAlts0R1: {
+		symbols.NT_LitAlts, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_FloatLiteral,
+		}, 
+		LitAlts0R1, 
+	},
+	LitAlts1R0: {
+		symbols.NT_LitAlts, 1, 0, 
+		symbols.Symbols{  
+			symbols.NT_IntegerLiteral,
+		}, 
+		LitAlts1R0, 
+	},
+	LitAlts1R1: {
+		symbols.NT_LitAlts, 1, 1, 
+		symbols.Symbols{  
+			symbols.NT_IntegerLiteral,
+		}, 
+		LitAlts1R1, 
+	},
+	LitAlts2R0: {
+		symbols.NT_LitAlts, 2, 0, 
+		symbols.Symbols{  
+			symbols.NT_CharLiteral,
+		}, 
+		LitAlts2R0, 
+	},
+	LitAlts2R1: {
+		symbols.NT_LitAlts, 2, 1, 
+		symbols.Symbols{  
+			symbols.NT_CharLiteral,
+		}, 
+		LitAlts2R1, 
+	},
+	LitAlts3R0: {
+		symbols.NT_LitAlts, 3, 0, 
+		symbols.Symbols{  
+			symbols.NT_StringLiteral,
+		}, 
+		LitAlts3R0, 
+	},
+	LitAlts3R1: {
+		symbols.NT_LitAlts, 3, 1, 
+		symbols.Symbols{  
+			symbols.NT_StringLiteral,
+		}, 
+		LitAlts3R1, 
+	},
+	LitAlts4R0: {
+		symbols.NT_LitAlts, 4, 0, 
+		symbols.Symbols{  
+			symbols.T_127, 
+			symbols.T_98,
+		}, 
+		LitAlts4R0, 
+	},
+	LitAlts4R1: {
+		symbols.NT_LitAlts, 4, 1, 
+		symbols.Symbols{  
+			symbols.T_127, 
+			symbols.T_98,
+		}, 
+		LitAlts4R1, 
+	},
+	LitAlts4R2: {
+		symbols.NT_LitAlts, 4, 2, 
+		symbols.Symbols{  
+			symbols.T_127, 
+			symbols.T_98,
+		}, 
+		LitAlts4R2, 
+	},
+	LitAlts5R0: {
+		symbols.NT_LitAlts, 5, 0, 
+		symbols.Symbols{  
+			symbols.T_70, 
+			symbols.T_98,
+		}, 
+		LitAlts5R0, 
+	},
+	LitAlts5R1: {
+		symbols.NT_LitAlts, 5, 1, 
+		symbols.Symbols{  
+			symbols.T_70, 
+			symbols.T_98,
+		}, 
+		LitAlts5R1, 
+	},
+	LitAlts5R2: {
+		symbols.NT_LitAlts, 5, 2, 
+		symbols.Symbols{  
+			symbols.T_70, 
+			symbols.T_98,
+		}, 
+		LitAlts5R2, 
+	},
+	LitAlts6R0: {
+		symbols.NT_LitAlts, 6, 0, 
+		symbols.Symbols{  
+			symbols.T_99, 
+			symbols.T_98,
+		}, 
+		LitAlts6R0, 
+	},
+	LitAlts6R1: {
+		symbols.NT_LitAlts, 6, 1, 
+		symbols.Symbols{  
+			symbols.T_99, 
+			symbols.T_98,
+		}, 
+		LitAlts6R1, 
+	},
+	LitAlts6R2: {
+		symbols.NT_LitAlts, 6, 2, 
+		symbols.Symbols{  
+			symbols.T_99, 
+			symbols.T_98,
+		}, 
+		LitAlts6R2, 
+	},
+	Literal0R0: {
+		symbols.NT_Literal, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_LitAlts, 
+			symbols.NT_WS,
+		}, 
+		Literal0R0, 
+	},
+	Literal0R1: {
+		symbols.NT_Literal, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_LitAlts, 
+			symbols.NT_WS,
+		}, 
+		Literal0R1, 
+	},
+	Literal0R2: {
+		symbols.NT_Literal, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_LitAlts, 
+			symbols.NT_WS,
+		}, 
+		Literal0R2, 
+	},
+	LocalVarDeclStmt0R0: {
+		symbols.NT_LocalVarDeclStmt, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_OptFinType, 
+			symbols.NT_VarDecl, 
+			symbols.NT_RepComVDecl0x, 
+			symbols.NT_SEMI,
+		}, 
+		LocalVarDeclStmt0R0, 
+	},
+	LocalVarDeclStmt0R1: {
+		symbols.NT_LocalVarDeclStmt, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_OptFinType, 
+			symbols.NT_VarDecl, 
+			symbols.NT_RepComVDecl0x, 
+			symbols.NT_SEMI,
+		}, 
+		LocalVarDeclStmt0R1, 
+	},
+	LocalVarDeclStmt0R2: {
+		symbols.NT_LocalVarDeclStmt, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_OptFinType, 
+			symbols.NT_VarDecl, 
+			symbols.NT_RepComVDecl0x, 
+			symbols.NT_SEMI,
+		}, 
+		LocalVarDeclStmt0R2, 
+	},
+	LocalVarDeclStmt0R3: {
+		symbols.NT_LocalVarDeclStmt, 0, 3, 
+		symbols.Symbols{  
+			symbols.NT_OptFinType, 
+			symbols.NT_VarDecl, 
+			symbols.NT_RepComVDecl0x, 
+			symbols.NT_SEMI,
+		}, 
+		LocalVarDeclStmt0R3, 
+	},
+	LocalVarDeclStmt0R4: {
+		symbols.NT_LocalVarDeclStmt, 0, 4, 
+		symbols.Symbols{  
+			symbols.NT_OptFinType, 
+			symbols.NT_VarDecl, 
+			symbols.NT_RepComVDecl0x, 
+			symbols.NT_SEMI,
+		}, 
+		LocalVarDeclStmt0R4, 
+	},
+	LorD0R0: {
+		symbols.NT_LorD, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_Letter,
+		}, 
+		LorD0R0, 
+	},
+	LorD0R1: {
+		symbols.NT_LorD, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_Letter,
+		}, 
+		LorD0R1, 
+	},
+	LorD1R0: {
+		symbols.NT_LorD, 1, 0, 
+		symbols.Symbols{  
+			symbols.T_100,
+		}, 
+		LorD1R0, 
+	},
+	LorD1R1: {
+		symbols.NT_LorD, 1, 1, 
+		symbols.Symbols{  
+			symbols.T_100,
+		}, 
+		LorD1R1, 
+	},
+	MINUS0R0: {
+		symbols.NT_MINUS, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_15, 
+			symbols.T_96, 
+			symbols.NT_WS,
+		}, 
+		MINUS0R0, 
+	},
+	MINUS0R1: {
+		symbols.NT_MINUS, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_15, 
+			symbols.T_96, 
+			symbols.NT_WS,
+		}, 
+		MINUS0R1, 
+	},
+	MINUS0R2: {
+		symbols.NT_MINUS, 0, 2, 
+		symbols.Symbols{  
+			symbols.T_15, 
+			symbols.T_96, 
+			symbols.NT_WS,
+		}, 
+		MINUS0R2, 
+	},
+	MINUS0R3: {
+		symbols.NT_MINUS, 0, 3, 
+		symbols.Symbols{  
+			symbols.T_15, 
+			symbols.T_96, 
+			symbols.NT_WS,
+		}, 
+		MINUS0R3, 
+	},
+	MINUS_EQU0R0: {
+		symbols.NT_MINUS_EQU, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_17, 
+			symbols.NT_WS,
+		}, 
+		MINUS_EQU0R0, 
+	},
+	MINUS_EQU0R1: {
+		symbols.NT_MINUS_EQU, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_17, 
+			symbols.NT_WS,
+		}, 
+		MINUS_EQU0R1, 
+	},
+	MINUS_EQU0R2: {
+		symbols.NT_MINUS_EQU, 0, 2, 
+		symbols.Symbols{  
+			symbols.T_17, 
+			symbols.NT_WS,
+		}, 
+		MINUS_EQU0R2, 
+	},
+	MOD0R0: {
+		symbols.NT_MOD, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_2, 
+			symbols.T_87, 
+			symbols.NT_WS,
+		}, 
+		MOD0R0, 
+	},
+	MOD0R1: {
+		symbols.NT_MOD, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_2, 
+			symbols.T_87, 
+			symbols.NT_WS,
+		}, 
+		MOD0R1, 
+	},
+	MOD0R2: {
+		symbols.NT_MOD, 0, 2, 
+		symbols.Symbols{  
+			symbols.T_2, 
+			symbols.T_87, 
+			symbols.NT_WS,
+		}, 
+		MOD0R2, 
+	},
+	MOD0R3: {
+		symbols.NT_MOD, 0, 3, 
+		symbols.Symbols{  
+			symbols.T_2, 
+			symbols.T_87, 
+			symbols.NT_WS,
+		}, 
+		MOD0R3, 
+	},
+	MOD_EQU0R0: {
+		symbols.NT_MOD_EQU, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_3, 
+			symbols.NT_WS,
+		}, 
+		MOD_EQU0R0, 
+	},
+	MOD_EQU0R1: {
+		symbols.NT_MOD_EQU, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_3, 
+			symbols.NT_WS,
+		}, 
+		MOD_EQU0R1, 
+	},
+	MOD_EQU0R2: {
+		symbols.NT_MOD_EQU, 0, 2, 
+		symbols.Symbols{  
+			symbols.T_3, 
+			symbols.NT_WS,
+		}, 
+		MOD_EQU0R2, 
+	},
+	MemAlts0R0: {
+		symbols.NT_MemAlts, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_SEMI,
+		}, 
+		MemAlts0R0, 
+	},
+	MemAlts0R1: {
+		symbols.NT_MemAlts, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_SEMI,
+		}, 
+		MemAlts0R1, 
+	},
+	MemAlts1R0: {
+		symbols.NT_MemAlts, 1, 0, 
+		symbols.Symbols{  
+			symbols.NT_Block,
+		}, 
+		MemAlts1R0, 
+	},
+	MemAlts1R1: {
+		symbols.NT_MemAlts, 1, 1, 
+		symbols.Symbols{  
+			symbols.NT_Block,
+		}, 
+		MemAlts1R1, 
+	},
+	MemDecl0R0: {
+		symbols.NT_MemDecl, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_Type, 
+			symbols.NT_ID, 
+			symbols.NT_FormalParams, 
+			symbols.NT_RepDim0x, 
+			symbols.NT_OptThrowClsTypLst, 
+			symbols.NT_MemAlts,
+		}, 
+		MemDecl0R0, 
+	},
+	MemDecl0R1: {
+		symbols.NT_MemDecl, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_Type, 
+			symbols.NT_ID, 
+			symbols.NT_FormalParams, 
+			symbols.NT_RepDim0x, 
+			symbols.NT_OptThrowClsTypLst, 
+			symbols.NT_MemAlts,
+		}, 
+		MemDecl0R1, 
+	},
+	MemDecl0R2: {
+		symbols.NT_MemDecl, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_Type, 
+			symbols.NT_ID, 
+			symbols.NT_FormalParams, 
+			symbols.NT_RepDim0x, 
+			symbols.NT_OptThrowClsTypLst, 
+			symbols.NT_MemAlts,
+		}, 
+		MemDecl0R2, 
+	},
+	MemDecl0R3: {
+		symbols.NT_MemDecl, 0, 3, 
+		symbols.Symbols{  
+			symbols.NT_Type, 
+			symbols.NT_ID, 
+			symbols.NT_FormalParams, 
+			symbols.NT_RepDim0x, 
+			symbols.NT_OptThrowClsTypLst, 
+			symbols.NT_MemAlts,
+		}, 
+		MemDecl0R3, 
+	},
+	MemDecl0R4: {
+		symbols.NT_MemDecl, 0, 4, 
+		symbols.Symbols{  
+			symbols.NT_Type, 
+			symbols.NT_ID, 
+			symbols.NT_FormalParams, 
+			symbols.NT_RepDim0x, 
+			symbols.NT_OptThrowClsTypLst, 
+			symbols.NT_MemAlts,
+		}, 
+		MemDecl0R4, 
+	},
+	MemDecl0R5: {
+		symbols.NT_MemDecl, 0, 5, 
+		symbols.Symbols{  
+			symbols.NT_Type, 
+			symbols.NT_ID, 
+			symbols.NT_FormalParams, 
+			symbols.NT_RepDim0x, 
+			symbols.NT_OptThrowClsTypLst, 
+			symbols.NT_MemAlts,
+		}, 
+		MemDecl0R5, 
+	},
+	MemDecl0R6: {
+		symbols.NT_MemDecl, 0, 6, 
+		symbols.Symbols{  
+			symbols.NT_Type, 
+			symbols.NT_ID, 
+			symbols.NT_FormalParams, 
+			symbols.NT_RepDim0x, 
+			symbols.NT_OptThrowClsTypLst, 
+			symbols.NT_MemAlts,
+		}, 
+		MemDecl0R6, 
+	},
+	MemDecl1R0: {
+		symbols.NT_MemDecl, 1, 0, 
+		symbols.Symbols{  
+			symbols.NT_VOID, 
+			symbols.NT_ID, 
+			symbols.NT_FormalParams, 
+			symbols.NT_OptThrowClsTypLst, 
+			symbols.NT_MemAlts,
+		}, 
+		MemDecl1R0, 
+	},
+	MemDecl1R1: {
+		symbols.NT_MemDecl, 1, 1, 
+		symbols.Symbols{  
+			symbols.NT_VOID, 
+			symbols.NT_ID, 
+			symbols.NT_FormalParams, 
+			symbols.NT_OptThrowClsTypLst, 
+			symbols.NT_MemAlts,
+		}, 
+		MemDecl1R1, 
+	},
+	MemDecl1R2: {
+		symbols.NT_MemDecl, 1, 2, 
+		symbols.Symbols{  
+			symbols.NT_VOID, 
+			symbols.NT_ID, 
+			symbols.NT_FormalParams, 
+			symbols.NT_OptThrowClsTypLst, 
+			symbols.NT_MemAlts,
+		}, 
+		MemDecl1R2, 
+	},
+	MemDecl1R3: {
+		symbols.NT_MemDecl, 1, 3, 
+		symbols.Symbols{  
+			symbols.NT_VOID, 
+			symbols.NT_ID, 
+			symbols.NT_FormalParams, 
+			symbols.NT_OptThrowClsTypLst, 
+			symbols.NT_MemAlts,
+		}, 
+		MemDecl1R3, 
+	},
+	MemDecl1R4: {
+		symbols.NT_MemDecl, 1, 4, 
+		symbols.Symbols{  
+			symbols.NT_VOID, 
+			symbols.NT_ID, 
+			symbols.NT_FormalParams, 
+			symbols.NT_OptThrowClsTypLst, 
+			symbols.NT_MemAlts,
+		}, 
+		MemDecl1R4, 
+	},
+	MemDecl1R5: {
+		symbols.NT_MemDecl, 1, 5, 
+		symbols.Symbols{  
+			symbols.NT_VOID, 
+			symbols.NT_ID, 
+			symbols.NT_FormalParams, 
+			symbols.NT_OptThrowClsTypLst, 
+			symbols.NT_MemAlts,
+		}, 
+		MemDecl1R5, 
+	},
+	MemDecl2R0: {
+		symbols.NT_MemDecl, 2, 0, 
+		symbols.Symbols{  
+			symbols.NT_ID, 
+			symbols.NT_FormalParams, 
+			symbols.NT_OptThrowClsTypLst, 
+			symbols.NT_Block,
+		}, 
+		MemDecl2R0, 
+	},
+	MemDecl2R1: {
+		symbols.NT_MemDecl, 2, 1, 
+		symbols.Symbols{  
+			symbols.NT_ID, 
+			symbols.NT_FormalParams, 
+			symbols.NT_OptThrowClsTypLst, 
+			symbols.NT_Block,
+		}, 
+		MemDecl2R1, 
+	},
+	MemDecl2R2: {
+		symbols.NT_MemDecl, 2, 2, 
+		symbols.Symbols{  
+			symbols.NT_ID, 
+			symbols.NT_FormalParams, 
+			symbols.NT_OptThrowClsTypLst, 
+			symbols.NT_Block,
+		}, 
+		MemDecl2R2, 
+	},
+	MemDecl2R3: {
+		symbols.NT_MemDecl, 2, 3, 
+		symbols.Symbols{  
+			symbols.NT_ID, 
+			symbols.NT_FormalParams, 
+			symbols.NT_OptThrowClsTypLst, 
+			symbols.NT_Block,
+		}, 
+		MemDecl2R3, 
+	},
+	MemDecl2R4: {
+		symbols.NT_MemDecl, 2, 4, 
+		symbols.Symbols{  
+			symbols.NT_ID, 
+			symbols.NT_FormalParams, 
+			symbols.NT_OptThrowClsTypLst, 
+			symbols.NT_Block,
+		}, 
+		MemDecl2R4, 
+	},
+	MemDecl3R0: {
+		symbols.NT_MemDecl, 3, 0, 
+		symbols.Symbols{  
+			symbols.NT_IntfDecl,
+		}, 
+		MemDecl3R0, 
+	},
+	MemDecl3R1: {
+		symbols.NT_MemDecl, 3, 1, 
+		symbols.Symbols{  
+			symbols.NT_IntfDecl,
+		}, 
+		MemDecl3R1, 
+	},
+	MemDecl4R0: {
+		symbols.NT_MemDecl, 4, 0, 
+		symbols.Symbols{  
+			symbols.NT_ClsDecl,
+		}, 
+		MemDecl4R0, 
+	},
+	MemDecl4R1: {
+		symbols.NT_MemDecl, 4, 1, 
+		symbols.Symbols{  
+			symbols.NT_ClsDecl,
+		}, 
+		MemDecl4R1, 
+	},
+	MemDecl5R0: {
+		symbols.NT_MemDecl, 5, 0, 
+		symbols.Symbols{  
+			symbols.NT_Type, 
+			symbols.NT_VarDecl, 
+			symbols.NT_RepComVDecl0x,
+		}, 
+		MemDecl5R0, 
+	},
+	MemDecl5R1: {
+		symbols.NT_MemDecl, 5, 1, 
+		symbols.Symbols{  
+			symbols.NT_Type, 
+			symbols.NT_VarDecl, 
+			symbols.NT_RepComVDecl0x,
+		}, 
+		MemDecl5R1, 
+	},
+	MemDecl5R2: {
+		symbols.NT_MemDecl, 5, 2, 
+		symbols.Symbols{  
+			symbols.NT_Type, 
+			symbols.NT_VarDecl, 
+			symbols.NT_RepComVDecl0x,
+		}, 
+		MemDecl5R2, 
+	},
+	MemDecl5R3: {
+		symbols.NT_MemDecl, 5, 3, 
+		symbols.Symbols{  
+			symbols.NT_Type, 
+			symbols.NT_VarDecl, 
+			symbols.NT_RepComVDecl0x,
+		}, 
+		MemDecl5R3, 
+	},
+	Modifier0R0: {
+		symbols.NT_Modifier, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_Modifs, 
+			symbols.T_98,
+		}, 
+		Modifier0R0, 
+	},
+	Modifier0R1: {
+		symbols.NT_Modifier, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_Modifs, 
+			symbols.T_98,
+		}, 
+		Modifier0R1, 
+	},
+	Modifier0R2: {
+		symbols.NT_Modifier, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_Modifs, 
+			symbols.T_98,
+		}, 
+		Modifier0R2, 
+	},
+	Modifs0R0: {
+		symbols.NT_Modifs, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_109,
+		}, 
+		Modifs0R0, 
+	},
+	Modifs0R1: {
+		symbols.NT_Modifs, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_109,
+		}, 
+		Modifs0R1, 
+	},
+	Modifs1R0: {
+		symbols.NT_Modifs, 1, 0, 
+		symbols.Symbols{  
+			symbols.T_108,
+		}, 
+		Modifs1R0, 
+	},
+	Modifs1R1: {
+		symbols.NT_Modifs, 1, 1, 
+		symbols.Symbols{  
+			symbols.T_108,
+		}, 
+		Modifs1R1, 
+	},
+	Modifs2R0: {
+		symbols.NT_Modifs, 2, 0, 
+		symbols.Symbols{  
+			symbols.T_107,
+		}, 
+		Modifs2R0, 
+	},
+	Modifs2R1: {
+		symbols.NT_Modifs, 2, 1, 
+		symbols.Symbols{  
+			symbols.T_107,
+		}, 
+		Modifs2R1, 
+	},
+	Modifs3R0: {
+		symbols.NT_Modifs, 3, 0, 
+		symbols.Symbols{  
+			symbols.T_118,
+		}, 
+		Modifs3R0, 
+	},
+	Modifs3R1: {
+		symbols.NT_Modifs, 3, 1, 
+		symbols.Symbols{  
+			symbols.T_118,
+		}, 
+		Modifs3R1, 
+	},
+	Modifs4R0: {
+		symbols.NT_Modifs, 4, 0, 
+		symbols.Symbols{  
+			symbols.T_44,
+		}, 
+		Modifs4R0, 
+	},
+	Modifs4R1: {
+		symbols.NT_Modifs, 4, 1, 
+		symbols.Symbols{  
+			symbols.T_44,
+		}, 
+		Modifs4R1, 
+	},
+	Modifs5R0: {
+		symbols.NT_Modifs, 5, 0, 
+		symbols.Symbols{  
+			symbols.T_71,
+		}, 
+		Modifs5R0, 
+	},
+	Modifs5R1: {
+		symbols.NT_Modifs, 5, 1, 
+		symbols.Symbols{  
+			symbols.T_71,
+		}, 
+		Modifs5R1, 
+	},
+	Modifs6R0: {
+		symbols.NT_Modifs, 6, 0, 
+		symbols.Symbols{  
+			symbols.T_88,
+		}, 
+		Modifs6R0, 
+	},
+	Modifs6R1: {
+		symbols.NT_Modifs, 6, 1, 
+		symbols.Symbols{  
+			symbols.T_88,
+		}, 
+		Modifs6R1, 
+	},
+	Modifs7R0: {
+		symbols.NT_Modifs, 7, 0, 
+		symbols.Symbols{  
+			symbols.T_122,
+		}, 
+		Modifs7R0, 
+	},
+	Modifs7R1: {
+		symbols.NT_Modifs, 7, 1, 
+		symbols.Symbols{  
+			symbols.T_122,
+		}, 
+		Modifs7R1, 
+	},
+	Modifs8R0: {
+		symbols.NT_Modifs, 8, 0, 
+		symbols.Symbols{  
+			symbols.T_126,
+		}, 
+		Modifs8R0, 
+	},
+	Modifs8R1: {
+		symbols.NT_Modifs, 8, 1, 
+		symbols.Symbols{  
+			symbols.T_126,
+		}, 
+		Modifs8R1, 
+	},
+	Modifs9R0: {
+		symbols.NT_Modifs, 9, 0, 
+		symbols.Symbols{  
+			symbols.T_132,
+		}, 
+		Modifs9R0, 
+	},
+	Modifs9R1: {
+		symbols.NT_Modifs, 9, 1, 
+		symbols.Symbols{  
+			symbols.T_132,
+		}, 
+		Modifs9R1, 
+	},
+	Modifs10R0: {
+		symbols.NT_Modifs, 10, 0, 
+		symbols.Symbols{  
+			symbols.T_119,
+		}, 
+		Modifs10R0, 
+	},
+	Modifs10R1: {
+		symbols.NT_Modifs, 10, 1, 
+		symbols.Symbols{  
+			symbols.T_119,
+		}, 
+		Modifs10R1, 
+	},
+	MultExpr0R0: {
+		symbols.NT_MultExpr, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_UnaryExpr, 
+			symbols.NT_RepSDMUExpr0x,
+		}, 
+		MultExpr0R0, 
+	},
+	MultExpr0R1: {
+		symbols.NT_MultExpr, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_UnaryExpr, 
+			symbols.NT_RepSDMUExpr0x,
+		}, 
+		MultExpr0R1, 
+	},
+	MultExpr0R2: {
+		symbols.NT_MultExpr, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_UnaryExpr, 
+			symbols.NT_RepSDMUExpr0x,
+		}, 
+		MultExpr0R2, 
+	},
+	NEW0R0: {
+		symbols.NT_NEW, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_89, 
+			symbols.T_98,
+		}, 
+		NEW0R0, 
+	},
+	NEW0R1: {
+		symbols.NT_NEW, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_89, 
+			symbols.T_98,
+		}, 
+		NEW0R1, 
+	},
+	NEW0R2: {
+		symbols.NT_NEW, 0, 2, 
+		symbols.Symbols{  
+			symbols.T_89, 
+			symbols.T_98,
+		}, 
+		NEW0R2, 
+	},
+	NOT_EQUAL0R0: {
+		symbols.NT_NOT_EQUAL, 0, 0, 
 		symbols.Symbols{  
 			symbols.T_1, 
-			symbols.T_0, 
-			symbols.T_2,
+			symbols.NT_WS,
 		}, 
-		Test0R3, 
+		NOT_EQUAL0R0, 
+	},
+	NOT_EQUAL0R1: {
+		symbols.NT_NOT_EQUAL, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_1, 
+			symbols.NT_WS,
+		}, 
+		NOT_EQUAL0R1, 
+	},
+	NOT_EQUAL0R2: {
+		symbols.NT_NOT_EQUAL, 0, 2, 
+		symbols.Symbols{  
+			symbols.T_1, 
+			symbols.NT_WS,
+		}, 
+		NOT_EQUAL0R2, 
+	},
+	NumeralAlts0R0: {
+		symbols.NT_NumeralAlts, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_HexNumeral,
+		}, 
+		NumeralAlts0R0, 
+	},
+	NumeralAlts0R1: {
+		symbols.NT_NumeralAlts, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_HexNumeral,
+		}, 
+		NumeralAlts0R1, 
+	},
+	NumeralAlts1R0: {
+		symbols.NT_NumeralAlts, 1, 0, 
+		symbols.Symbols{  
+			symbols.T_101,
+		}, 
+		NumeralAlts1R0, 
+	},
+	NumeralAlts1R1: {
+		symbols.NT_NumeralAlts, 1, 1, 
+		symbols.Symbols{  
+			symbols.T_101,
+		}, 
+		NumeralAlts1R1, 
+	},
+	NumeralAlts2R0: {
+		symbols.NT_NumeralAlts, 2, 0, 
+		symbols.Symbols{  
+			symbols.NT_DecimalNumeral,
+		}, 
+		NumeralAlts2R0, 
+	},
+	NumeralAlts2R1: {
+		symbols.NT_NumeralAlts, 2, 1, 
+		symbols.Symbols{  
+			symbols.NT_DecimalNumeral,
+		}, 
+		NumeralAlts2R1, 
+	},
+	OR0R0: {
+		symbols.NT_OR, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_137, 
+			symbols.T_94, 
+			symbols.NT_WS,
+		}, 
+		OR0R0, 
+	},
+	OR0R1: {
+		symbols.NT_OR, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_137, 
+			symbols.T_94, 
+			symbols.NT_WS,
+		}, 
+		OR0R1, 
+	},
+	OR0R2: {
+		symbols.NT_OR, 0, 2, 
+		symbols.Symbols{  
+			symbols.T_137, 
+			symbols.T_94, 
+			symbols.NT_WS,
+		}, 
+		OR0R2, 
+	},
+	OR0R3: {
+		symbols.NT_OR, 0, 3, 
+		symbols.Symbols{  
+			symbols.T_137, 
+			symbols.T_94, 
+			symbols.NT_WS,
+		}, 
+		OR0R3, 
+	},
+	ORXOR0R0: {
+		symbols.NT_ORXOR, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_OR, 
+			symbols.NT_XORExpr,
+		}, 
+		ORXOR0R0, 
+	},
+	ORXOR0R1: {
+		symbols.NT_ORXOR, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_OR, 
+			symbols.NT_XORExpr,
+		}, 
+		ORXOR0R1, 
+	},
+	ORXOR0R2: {
+		symbols.NT_ORXOR, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_OR, 
+			symbols.NT_XORExpr,
+		}, 
+		ORXOR0R2, 
+	},
+	OR_EQU0R0: {
+		symbols.NT_OR_EQU, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_138, 
+			symbols.NT_WS,
+		}, 
+		OR_EQU0R0, 
+	},
+	OR_EQU0R1: {
+		symbols.NT_OR_EQU, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_138, 
+			symbols.NT_WS,
+		}, 
+		OR_EQU0R1, 
+	},
+	OR_EQU0R2: {
+		symbols.NT_OR_EQU, 0, 2, 
+		symbols.Symbols{  
+			symbols.T_138, 
+			symbols.NT_WS,
+		}, 
+		OR_EQU0R2, 
+	},
+	OR_OR0R0: {
+		symbols.NT_OR_OR, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_139, 
+			symbols.NT_WS,
+		}, 
+		OR_OR0R0, 
+	},
+	OR_OR0R1: {
+		symbols.NT_OR_OR, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_139, 
+			symbols.NT_WS,
+		}, 
+		OR_OR0R1, 
+	},
+	OR_OR0R2: {
+		symbols.NT_OR_OR, 0, 2, 
+		symbols.Symbols{  
+			symbols.T_139, 
+			symbols.NT_WS,
+		}, 
+		OR_OR0R2, 
+	},
+	OctalEscape0R0: {
+		symbols.NT_OctalEscape, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_82,
+		}, 
+		OctalEscape0R0, 
+	},
+	OctalEscape0R1: {
+		symbols.NT_OctalEscape, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_82,
+		}, 
+		OctalEscape0R1, 
+	},
+	OctalEscape1R0: {
+		symbols.NT_OctalEscape, 1, 0, 
+		symbols.Symbols{  
+			symbols.T_129,
+		}, 
+		OctalEscape1R0, 
+	},
+	OctalEscape1R1: {
+		symbols.NT_OctalEscape, 1, 1, 
+		symbols.Symbols{  
+			symbols.T_129,
+		}, 
+		OctalEscape1R1, 
+	},
+	OctalEscape2R0: {
+		symbols.NT_OctalEscape, 2, 0, 
+		symbols.Symbols{  
+			symbols.T_83,
+		}, 
+		OctalEscape2R0, 
+	},
+	OctalEscape2R1: {
+		symbols.NT_OctalEscape, 2, 1, 
+		symbols.Symbols{  
+			symbols.T_83,
+		}, 
+		OctalEscape2R1, 
+	},
+	OptArgs0R0: {
+		symbols.NT_OptArgs, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_Arguments,
+		}, 
+		OptArgs0R0, 
+	},
+	OptArgs0R1: {
+		symbols.NT_OptArgs, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_Arguments,
+		}, 
+		OptArgs0R1, 
+	},
+	OptArgs1R0: {
+		symbols.NT_OptArgs, 1, 0, 
+		symbols.Symbols{ 
+		}, 
+		OptArgs1R0, 
+	},
+	OptClsBdy0R0: {
+		symbols.NT_OptClsBdy, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_ClsBdy,
+		}, 
+		OptClsBdy0R0, 
+	},
+	OptClsBdy0R1: {
+		symbols.NT_OptClsBdy, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_ClsBdy,
+		}, 
+		OptClsBdy0R1, 
+	},
+	OptClsBdy1R0: {
+		symbols.NT_OptClsBdy, 1, 0, 
+		symbols.Symbols{ 
+		}, 
+		OptClsBdy1R0, 
+	},
+	OptColExpr0R0: {
+		symbols.NT_OptColExpr, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_COLON, 
+			symbols.NT_Expr,
+		}, 
+		OptColExpr0R0, 
+	},
+	OptColExpr0R1: {
+		symbols.NT_OptColExpr, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_COLON, 
+			symbols.NT_Expr,
+		}, 
+		OptColExpr0R1, 
+	},
+	OptColExpr0R2: {
+		symbols.NT_OptColExpr, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_COLON, 
+			symbols.NT_Expr,
+		}, 
+		OptColExpr0R2, 
+	},
+	OptColExpr1R0: {
+		symbols.NT_OptColExpr, 1, 0, 
+		symbols.Symbols{ 
+		}, 
+		OptColExpr1R0, 
+	},
+	OptCom0R0: {
+		symbols.NT_OptCom, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_COMMA,
+		}, 
+		OptCom0R0, 
+	},
+	OptCom0R1: {
+		symbols.NT_OptCom, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_COMMA,
+		}, 
+		OptCom0R1, 
+	},
+	OptCom1R0: {
+		symbols.NT_OptCom, 1, 0, 
+		symbols.Symbols{ 
+		}, 
+		OptCom1R0, 
+	},
+	OptComFormPDecl0R0: {
+		symbols.NT_OptComFormPDecl, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_COMMA, 
+			symbols.NT_FormalParamDecls,
+		}, 
+		OptComFormPDecl0R0, 
+	},
+	OptComFormPDecl0R1: {
+		symbols.NT_OptComFormPDecl, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_COMMA, 
+			symbols.NT_FormalParamDecls,
+		}, 
+		OptComFormPDecl0R1, 
+	},
+	OptComFormPDecl0R2: {
+		symbols.NT_OptComFormPDecl, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_COMMA, 
+			symbols.NT_FormalParamDecls,
+		}, 
+		OptComFormPDecl0R2, 
+	},
+	OptComFormPDecl1R0: {
+		symbols.NT_OptComFormPDecl, 1, 0, 
+		symbols.Symbols{ 
+		}, 
+		OptComFormPDecl1R0, 
+	},
+	OptDot0R0: {
+		symbols.NT_OptDot, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_18,
+		}, 
+		OptDot0R0, 
+	},
+	OptDot0R1: {
+		symbols.NT_OptDot, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_18,
+		}, 
+		OptDot0R1, 
+	},
+	OptDot1R0: {
+		symbols.NT_OptDot, 1, 0, 
+		symbols.Symbols{ 
+		}, 
+		OptDot1R0, 
+	},
+	OptDotStar0R0: {
+		symbols.NT_OptDotStar, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_DOT, 
+			symbols.NT_STAR,
+		}, 
+		OptDotStar0R0, 
+	},
+	OptDotStar0R1: {
+		symbols.NT_OptDotStar, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_DOT, 
+			symbols.NT_STAR,
+		}, 
+		OptDotStar0R1, 
+	},
+	OptDotStar0R2: {
+		symbols.NT_OptDotStar, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_DOT, 
+			symbols.NT_STAR,
+		}, 
+		OptDotStar0R2, 
+	},
+	OptDotStar1R0: {
+		symbols.NT_OptDotStar, 1, 0, 
+		symbols.Symbols{ 
+		}, 
+		OptDotStar1R0, 
+	},
+	OptElse0R0: {
+		symbols.NT_OptElse, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_ELSE, 
+			symbols.NT_Stmt,
+		}, 
+		OptElse0R0, 
+	},
+	OptElse0R1: {
+		symbols.NT_OptElse, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_ELSE, 
+			symbols.NT_Stmt,
+		}, 
+		OptElse0R1, 
+	},
+	OptElse0R2: {
+		symbols.NT_OptElse, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_ELSE, 
+			symbols.NT_Stmt,
+		}, 
+		OptElse0R2, 
+	},
+	OptElse1R0: {
+		symbols.NT_OptElse, 1, 0, 
+		symbols.Symbols{ 
+		}, 
+		OptElse1R0, 
+	},
+	OptEqVarInit0R0: {
+		symbols.NT_OptEqVarInit, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_EQU, 
+			symbols.NT_VarInitial,
+		}, 
+		OptEqVarInit0R0, 
+	},
+	OptEqVarInit0R1: {
+		symbols.NT_OptEqVarInit, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_EQU, 
+			symbols.NT_VarInitial,
+		}, 
+		OptEqVarInit0R1, 
+	},
+	OptEqVarInit0R2: {
+		symbols.NT_OptEqVarInit, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_EQU, 
+			symbols.NT_VarInitial,
+		}, 
+		OptEqVarInit0R2, 
+	},
+	OptEqVarInit1R0: {
+		symbols.NT_OptEqVarInit, 1, 0, 
+		symbols.Symbols{ 
+		}, 
+		OptEqVarInit1R0, 
+	},
+	OptEsc0R0: {
+		symbols.NT_OptEsc, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_Escape,
+		}, 
+		OptEsc0R0, 
+	},
+	OptEsc0R1: {
+		symbols.NT_OptEsc, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_Escape,
+		}, 
+		OptEsc0R1, 
+	},
+	OptEsc1R0: {
+		symbols.NT_OptEsc, 1, 0, 
+		symbols.Symbols{  
+			symbols.T_46,
+		}, 
+		OptEsc1R0, 
+	},
+	OptEsc1R1: {
+		symbols.NT_OptEsc, 1, 1, 
+		symbols.Symbols{  
+			symbols.T_46,
+		}, 
+		OptEsc1R1, 
+	},
+	OptExpr0R0: {
+		symbols.NT_OptExpr, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_Expr,
+		}, 
+		OptExpr0R0, 
+	},
+	OptExpr0R1: {
+		symbols.NT_OptExpr, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_Expr,
+		}, 
+		OptExpr0R1, 
+	},
+	OptExpr1R0: {
+		symbols.NT_OptExpr, 1, 0, 
+		symbols.Symbols{ 
+		}, 
+		OptExpr1R0, 
+	},
+	OptExprs0R0: {
+		symbols.NT_OptExprs, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_Expr, 
+			symbols.NT_RepComExp0x,
+		}, 
+		OptExprs0R0, 
+	},
+	OptExprs0R1: {
+		symbols.NT_OptExprs, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_Expr, 
+			symbols.NT_RepComExp0x,
+		}, 
+		OptExprs0R1, 
+	},
+	OptExprs0R2: {
+		symbols.NT_OptExprs, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_Expr, 
+			symbols.NT_RepComExp0x,
+		}, 
+		OptExprs0R2, 
+	},
+	OptExprs1R0: {
+		symbols.NT_OptExprs, 1, 0, 
+		symbols.Symbols{ 
+		}, 
+		OptExprs1R0, 
+	},
+	OptExtClsType0R0: {
+		symbols.NT_OptExtClsType, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_EXTENDS, 
+			symbols.NT_ClsType,
+		}, 
+		OptExtClsType0R0, 
+	},
+	OptExtClsType0R1: {
+		symbols.NT_OptExtClsType, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_EXTENDS, 
+			symbols.NT_ClsType,
+		}, 
+		OptExtClsType0R1, 
+	},
+	OptExtClsType0R2: {
+		symbols.NT_OptExtClsType, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_EXTENDS, 
+			symbols.NT_ClsType,
+		}, 
+		OptExtClsType0R2, 
+	},
+	OptExtClsType1R0: {
+		symbols.NT_OptExtClsType, 1, 0, 
+		symbols.Symbols{ 
+		}, 
+		OptExtClsType1R0, 
+	},
+	OptExtendsClsLis0R0: {
+		symbols.NT_OptExtendsClsLis, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_EXTENDS, 
+			symbols.NT_ClsTypeList,
+		}, 
+		OptExtendsClsLis0R0, 
+	},
+	OptExtendsClsLis0R1: {
+		symbols.NT_OptExtendsClsLis, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_EXTENDS, 
+			symbols.NT_ClsTypeList,
+		}, 
+		OptExtendsClsLis0R1, 
+	},
+	OptExtendsClsLis0R2: {
+		symbols.NT_OptExtendsClsLis, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_EXTENDS, 
+			symbols.NT_ClsTypeList,
+		}, 
+		OptExtendsClsLis0R2, 
+	},
+	OptExtendsClsLis1R0: {
+		symbols.NT_OptExtendsClsLis, 1, 0, 
+		symbols.Symbols{ 
+		}, 
+		OptExtendsClsLis1R0, 
+	},
+	OptFin0R0: {
+		symbols.NT_OptFin, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_FINAL,
+		}, 
+		OptFin0R0, 
+	},
+	OptFin0R1: {
+		symbols.NT_OptFin, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_FINAL,
+		}, 
+		OptFin0R1, 
+	},
+	OptFin1R0: {
+		symbols.NT_OptFin, 1, 0, 
+		symbols.Symbols{ 
+		}, 
+		OptFin1R0, 
+	},
+	OptFinType0R0: {
+		symbols.NT_OptFinType, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_FINAL, 
+			symbols.NT_Type,
+		}, 
+		OptFinType0R0, 
+	},
+	OptFinType0R1: {
+		symbols.NT_OptFinType, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_FINAL, 
+			symbols.NT_Type,
+		}, 
+		OptFinType0R1, 
+	},
+	OptFinType0R2: {
+		symbols.NT_OptFinType, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_FINAL, 
+			symbols.NT_Type,
+		}, 
+		OptFinType0R2, 
+	},
+	OptForInit0R0: {
+		symbols.NT_OptForInit, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_ForInit,
+		}, 
+		OptForInit0R0, 
+	},
+	OptForInit0R1: {
+		symbols.NT_OptForInit, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_ForInit,
+		}, 
+		OptForInit0R1, 
+	},
+	OptForInit1R0: {
+		symbols.NT_OptForInit, 1, 0, 
+		symbols.Symbols{ 
+		}, 
+		OptForInit1R0, 
+	},
+	OptForUpd0R0: {
+		symbols.NT_OptForUpd, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_ForUpdate,
+		}, 
+		OptForUpd0R0, 
+	},
+	OptForUpd0R1: {
+		symbols.NT_OptForUpd, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_ForUpdate,
+		}, 
+		OptForUpd0R1, 
+	},
+	OptForUpd1R0: {
+		symbols.NT_OptForUpd, 1, 0, 
+		symbols.Symbols{ 
+		}, 
+		OptForUpd1R0, 
+	},
+	OptFormPDecl0R0: {
+		symbols.NT_OptFormPDecl, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_FormalParamDecls,
+		}, 
+		OptFormPDecl0R0, 
+	},
+	OptFormPDecl0R1: {
+		symbols.NT_OptFormPDecl, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_FormalParamDecls,
+		}, 
+		OptFormPDecl0R1, 
+	},
+	OptFormPDecl1R0: {
+		symbols.NT_OptFormPDecl, 1, 0, 
+		symbols.Symbols{ 
+		}, 
+		OptFormPDecl1R0, 
+	},
+	OptID0R0: {
+		symbols.NT_OptID, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_ID,
+		}, 
+		OptID0R0, 
+	},
+	OptID0R1: {
+		symbols.NT_OptID, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_ID,
+		}, 
+		OptID0R1, 
+	},
+	OptID1R0: {
+		symbols.NT_OptID, 1, 0, 
+		symbols.Symbols{ 
+		}, 
+		OptID1R0, 
+	},
+	OptIDSuff0R0: {
+		symbols.NT_OptIDSuff, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_IDSuffix,
+		}, 
+		OptIDSuff0R0, 
+	},
+	OptIDSuff0R1: {
+		symbols.NT_OptIDSuff, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_IDSuffix,
+		}, 
+		OptIDSuff0R1, 
+	},
+	OptIDSuff1R0: {
+		symbols.NT_OptIDSuff, 1, 0, 
+		symbols.Symbols{ 
+		}, 
+		OptIDSuff1R0, 
+	},
+	OptImpClsLst0R0: {
+		symbols.NT_OptImpClsLst, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_IMPLEMENTS, 
+			symbols.NT_ClsTypeList,
+		}, 
+		OptImpClsLst0R0, 
+	},
+	OptImpClsLst0R1: {
+		symbols.NT_OptImpClsLst, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_IMPLEMENTS, 
+			symbols.NT_ClsTypeList,
+		}, 
+		OptImpClsLst0R1, 
+	},
+	OptImpClsLst0R2: {
+		symbols.NT_OptImpClsLst, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_IMPLEMENTS, 
+			symbols.NT_ClsTypeList,
+		}, 
+		OptImpClsLst0R2, 
+	},
+	OptImpClsLst1R0: {
+		symbols.NT_OptImpClsLst, 1, 0, 
+		symbols.Symbols{ 
+		}, 
+		OptImpClsLst1R0, 
+	},
+	OptPackDecl0R0: {
+		symbols.NT_OptPackDecl, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_PackDecl,
+		}, 
+		OptPackDecl0R0, 
+	},
+	OptPackDecl0R1: {
+		symbols.NT_OptPackDecl, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_PackDecl,
+		}, 
+		OptPackDecl0R1, 
+	},
+	OptPackDecl1R0: {
+		symbols.NT_OptPackDecl, 1, 0, 
+		symbols.Symbols{ 
+		}, 
+		OptPackDecl1R0, 
+	},
+	OptStatic0R0: {
+		symbols.NT_OptStatic, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_STATIC,
+		}, 
+		OptStatic0R0, 
+	},
+	OptStatic0R1: {
+		symbols.NT_OptStatic, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_STATIC,
+		}, 
+		OptStatic0R1, 
+	},
+	OptStatic1R0: {
+		symbols.NT_OptStatic, 1, 0, 
+		symbols.Symbols{ 
+		}, 
+		OptStatic1R0, 
+	},
+	OptThrowClsTypLst0R0: {
+		symbols.NT_OptThrowClsTypLst, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_THROWS, 
+			symbols.NT_ClsTypeList,
+		}, 
+		OptThrowClsTypLst0R0, 
+	},
+	OptThrowClsTypLst0R1: {
+		symbols.NT_OptThrowClsTypLst, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_THROWS, 
+			symbols.NT_ClsTypeList,
+		}, 
+		OptThrowClsTypLst0R1, 
+	},
+	OptThrowClsTypLst0R2: {
+		symbols.NT_OptThrowClsTypLst, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_THROWS, 
+			symbols.NT_ClsTypeList,
+		}, 
+		OptThrowClsTypLst0R2, 
+	},
+	OptThrowClsTypLst1R0: {
+		symbols.NT_OptThrowClsTypLst, 1, 0, 
+		symbols.Symbols{ 
+		}, 
+		OptThrowClsTypLst1R0, 
+	},
+	OptVarInit0R0: {
+		symbols.NT_OptVarInit, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_VarInitial, 
+			symbols.NT_RepComInit0x, 
+			symbols.NT_OptCom,
+		}, 
+		OptVarInit0R0, 
+	},
+	OptVarInit0R1: {
+		symbols.NT_OptVarInit, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_VarInitial, 
+			symbols.NT_RepComInit0x, 
+			symbols.NT_OptCom,
+		}, 
+		OptVarInit0R1, 
+	},
+	OptVarInit0R2: {
+		symbols.NT_OptVarInit, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_VarInitial, 
+			symbols.NT_RepComInit0x, 
+			symbols.NT_OptCom,
+		}, 
+		OptVarInit0R2, 
+	},
+	OptVarInit0R3: {
+		symbols.NT_OptVarInit, 0, 3, 
+		symbols.Symbols{  
+			symbols.NT_VarInitial, 
+			symbols.NT_RepComInit0x, 
+			symbols.NT_OptCom,
+		}, 
+		OptVarInit0R3, 
+	},
+	OptVarInit1R0: {
+		symbols.NT_OptVarInit, 1, 0, 
+		symbols.Symbols{ 
+		}, 
+		OptVarInit1R0, 
+	},
+	OtherAlts0R0: {
+		symbols.NT_OtherAlts, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_Cls,
+		}, 
+		OtherAlts0R0, 
+	},
+	OtherAlts0R1: {
+		symbols.NT_OtherAlts, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_Cls,
+		}, 
+		OtherAlts0R1, 
+	},
+	OtherAlts1R0: {
+		symbols.NT_OtherAlts, 1, 0, 
+		symbols.Symbols{  
+			symbols.NT_THIS,
+		}, 
+		OtherAlts1R0, 
+	},
+	OtherAlts1R1: {
+		symbols.NT_OtherAlts, 1, 1, 
+		symbols.Symbols{  
+			symbols.NT_THIS,
+		}, 
+		OtherAlts1R1, 
+	},
+	OtherAlts2R0: {
+		symbols.NT_OtherAlts, 2, 0, 
+		symbols.Symbols{  
+			symbols.NT_SUPER, 
+			symbols.NT_Arguments,
+		}, 
+		OtherAlts2R0, 
+	},
+	OtherAlts2R1: {
+		symbols.NT_OtherAlts, 2, 1, 
+		symbols.Symbols{  
+			symbols.NT_SUPER, 
+			symbols.NT_Arguments,
+		}, 
+		OtherAlts2R1, 
+	},
+	OtherAlts2R2: {
+		symbols.NT_OtherAlts, 2, 2, 
+		symbols.Symbols{  
+			symbols.NT_SUPER, 
+			symbols.NT_Arguments,
+		}, 
+		OtherAlts2R2, 
+	},
+	OtherAlts3R0: {
+		symbols.NT_OtherAlts, 3, 0, 
+		symbols.Symbols{  
+			symbols.NT_NEW, 
+			symbols.NT_InnerCreator,
+		}, 
+		OtherAlts3R0, 
+	},
+	OtherAlts3R1: {
+		symbols.NT_OtherAlts, 3, 1, 
+		symbols.Symbols{  
+			symbols.NT_NEW, 
+			symbols.NT_InnerCreator,
+		}, 
+		OtherAlts3R1, 
+	},
+	OtherAlts3R2: {
+		symbols.NT_OtherAlts, 3, 2, 
+		symbols.Symbols{  
+			symbols.NT_NEW, 
+			symbols.NT_InnerCreator,
+		}, 
+		OtherAlts3R2, 
+	},
+	PACKAGE0R0: {
+		symbols.NT_PACKAGE, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_106, 
+			symbols.T_98,
+		}, 
+		PACKAGE0R0, 
+	},
+	PACKAGE0R1: {
+		symbols.NT_PACKAGE, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_106, 
+			symbols.T_98,
+		}, 
+		PACKAGE0R1, 
+	},
+	PACKAGE0R2: {
+		symbols.NT_PACKAGE, 0, 2, 
+		symbols.Symbols{  
+			symbols.T_106, 
+			symbols.T_98,
+		}, 
+		PACKAGE0R2, 
+	},
+	PLUS0R0: {
+		symbols.NT_PLUS, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_11, 
+			symbols.T_95, 
+			symbols.NT_WS,
+		}, 
+		PLUS0R0, 
+	},
+	PLUS0R1: {
+		symbols.NT_PLUS, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_11, 
+			symbols.T_95, 
+			symbols.NT_WS,
+		}, 
+		PLUS0R1, 
+	},
+	PLUS0R2: {
+		symbols.NT_PLUS, 0, 2, 
+		symbols.Symbols{  
+			symbols.T_11, 
+			symbols.T_95, 
+			symbols.NT_WS,
+		}, 
+		PLUS0R2, 
+	},
+	PLUS0R3: {
+		symbols.NT_PLUS, 0, 3, 
+		symbols.Symbols{  
+			symbols.T_11, 
+			symbols.T_95, 
+			symbols.NT_WS,
+		}, 
+		PLUS0R3, 
+	},
+	PLUS_EQU0R0: {
+		symbols.NT_PLUS_EQU, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_13, 
+			symbols.NT_WS,
+		}, 
+		PLUS_EQU0R0, 
+	},
+	PLUS_EQU0R1: {
+		symbols.NT_PLUS_EQU, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_13, 
+			symbols.NT_WS,
+		}, 
+		PLUS_EQU0R1, 
+	},
+	PLUS_EQU0R2: {
+		symbols.NT_PLUS_EQU, 0, 2, 
+		symbols.Symbols{  
+			symbols.T_13, 
+			symbols.NT_WS,
+		}, 
+		PLUS_EQU0R2, 
+	},
+	PackDecl0R0: {
+		symbols.NT_PackDecl, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_PACKAGE, 
+			symbols.NT_QualifiedID, 
+			symbols.NT_SEMI,
+		}, 
+		PackDecl0R0, 
+	},
+	PackDecl0R1: {
+		symbols.NT_PackDecl, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_PACKAGE, 
+			symbols.NT_QualifiedID, 
+			symbols.NT_SEMI,
+		}, 
+		PackDecl0R1, 
+	},
+	PackDecl0R2: {
+		symbols.NT_PackDecl, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_PACKAGE, 
+			symbols.NT_QualifiedID, 
+			symbols.NT_SEMI,
+		}, 
+		PackDecl0R2, 
+	},
+	PackDecl0R3: {
+		symbols.NT_PackDecl, 0, 3, 
+		symbols.Symbols{  
+			symbols.NT_PACKAGE, 
+			symbols.NT_QualifiedID, 
+			symbols.NT_SEMI,
+		}, 
+		PackDecl0R3, 
+	},
+	ParExpr0R0: {
+		symbols.NT_ParExpr, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_LPAR, 
+			symbols.NT_Expr, 
+			symbols.NT_RPAR,
+		}, 
+		ParExpr0R0, 
+	},
+	ParExpr0R1: {
+		symbols.NT_ParExpr, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_LPAR, 
+			symbols.NT_Expr, 
+			symbols.NT_RPAR,
+		}, 
+		ParExpr0R1, 
+	},
+	ParExpr0R2: {
+		symbols.NT_ParExpr, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_LPAR, 
+			symbols.NT_Expr, 
+			symbols.NT_RPAR,
+		}, 
+		ParExpr0R2, 
+	},
+	ParExpr0R3: {
+		symbols.NT_ParExpr, 0, 3, 
+		symbols.Symbols{  
+			symbols.NT_LPAR, 
+			symbols.NT_Expr, 
+			symbols.NT_RPAR,
+		}, 
+		ParExpr0R3, 
+	},
+	PostfixOp0R0: {
+		symbols.NT_PostfixOp, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_INC,
+		}, 
+		PostfixOp0R0, 
+	},
+	PostfixOp0R1: {
+		symbols.NT_PostfixOp, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_INC,
+		}, 
+		PostfixOp0R1, 
+	},
+	PostfixOp1R0: {
+		symbols.NT_PostfixOp, 1, 0, 
+		symbols.Symbols{  
+			symbols.NT_DEC,
+		}, 
+		PostfixOp1R0, 
+	},
+	PostfixOp1R1: {
+		symbols.NT_PostfixOp, 1, 1, 
+		symbols.Symbols{  
+			symbols.NT_DEC,
+		}, 
+		PostfixOp1R1, 
+	},
+	PrefixOp0R0: {
+		symbols.NT_PrefixOp, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_INC,
+		}, 
+		PrefixOp0R0, 
+	},
+	PrefixOp0R1: {
+		symbols.NT_PrefixOp, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_INC,
+		}, 
+		PrefixOp0R1, 
+	},
+	PrefixOp1R0: {
+		symbols.NT_PrefixOp, 1, 0, 
+		symbols.Symbols{  
+			symbols.NT_DEC,
+		}, 
+		PrefixOp1R0, 
+	},
+	PrefixOp1R1: {
+		symbols.NT_PrefixOp, 1, 1, 
+		symbols.Symbols{  
+			symbols.NT_DEC,
+		}, 
+		PrefixOp1R1, 
+	},
+	PrefixOp2R0: {
+		symbols.NT_PrefixOp, 2, 0, 
+		symbols.Symbols{  
+			symbols.NT_BANG,
+		}, 
+		PrefixOp2R0, 
+	},
+	PrefixOp2R1: {
+		symbols.NT_PrefixOp, 2, 1, 
+		symbols.Symbols{  
+			symbols.NT_BANG,
+		}, 
+		PrefixOp2R1, 
+	},
+	PrefixOp3R0: {
+		symbols.NT_PrefixOp, 3, 0, 
+		symbols.Symbols{  
+			symbols.NT_TILDA,
+		}, 
+		PrefixOp3R0, 
+	},
+	PrefixOp3R1: {
+		symbols.NT_PrefixOp, 3, 1, 
+		symbols.Symbols{  
+			symbols.NT_TILDA,
+		}, 
+		PrefixOp3R1, 
+	},
+	PrefixOp4R0: {
+		symbols.NT_PrefixOp, 4, 0, 
+		symbols.Symbols{  
+			symbols.NT_PLUS,
+		}, 
+		PrefixOp4R0, 
+	},
+	PrefixOp4R1: {
+		symbols.NT_PrefixOp, 4, 1, 
+		symbols.Symbols{  
+			symbols.NT_PLUS,
+		}, 
+		PrefixOp4R1, 
+	},
+	PrefixOp5R0: {
+		symbols.NT_PrefixOp, 5, 0, 
+		symbols.Symbols{  
+			symbols.NT_MINUS,
+		}, 
+		PrefixOp5R0, 
+	},
+	PrefixOp5R1: {
+		symbols.NT_PrefixOp, 5, 1, 
+		symbols.Symbols{  
+			symbols.NT_MINUS,
+		}, 
+		PrefixOp5R1, 
+	},
+	Primary0R0: {
+		symbols.NT_Primary, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_ParExpr,
+		}, 
+		Primary0R0, 
+	},
+	Primary0R1: {
+		symbols.NT_Primary, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_ParExpr,
+		}, 
+		Primary0R1, 
+	},
+	Primary1R0: {
+		symbols.NT_Primary, 1, 0, 
+		symbols.Symbols{  
+			symbols.NT_THIS, 
+			symbols.NT_OptArgs,
+		}, 
+		Primary1R0, 
+	},
+	Primary1R1: {
+		symbols.NT_Primary, 1, 1, 
+		symbols.Symbols{  
+			symbols.NT_THIS, 
+			symbols.NT_OptArgs,
+		}, 
+		Primary1R1, 
+	},
+	Primary1R2: {
+		symbols.NT_Primary, 1, 2, 
+		symbols.Symbols{  
+			symbols.NT_THIS, 
+			symbols.NT_OptArgs,
+		}, 
+		Primary1R2, 
+	},
+	Primary2R0: {
+		symbols.NT_Primary, 2, 0, 
+		symbols.Symbols{  
+			symbols.NT_SUPER, 
+			symbols.NT_SuperSuffix,
+		}, 
+		Primary2R0, 
+	},
+	Primary2R1: {
+		symbols.NT_Primary, 2, 1, 
+		symbols.Symbols{  
+			symbols.NT_SUPER, 
+			symbols.NT_SuperSuffix,
+		}, 
+		Primary2R1, 
+	},
+	Primary2R2: {
+		symbols.NT_Primary, 2, 2, 
+		symbols.Symbols{  
+			symbols.NT_SUPER, 
+			symbols.NT_SuperSuffix,
+		}, 
+		Primary2R2, 
+	},
+	Primary3R0: {
+		symbols.NT_Primary, 3, 0, 
+		symbols.Symbols{  
+			symbols.NT_Literal,
+		}, 
+		Primary3R0, 
+	},
+	Primary3R1: {
+		symbols.NT_Primary, 3, 1, 
+		symbols.Symbols{  
+			symbols.NT_Literal,
+		}, 
+		Primary3R1, 
+	},
+	Primary4R0: {
+		symbols.NT_Primary, 4, 0, 
+		symbols.Symbols{  
+			symbols.NT_NEW, 
+			symbols.NT_Creator,
+		}, 
+		Primary4R0, 
+	},
+	Primary4R1: {
+		symbols.NT_Primary, 4, 1, 
+		symbols.Symbols{  
+			symbols.NT_NEW, 
+			symbols.NT_Creator,
+		}, 
+		Primary4R1, 
+	},
+	Primary4R2: {
+		symbols.NT_Primary, 4, 2, 
+		symbols.Symbols{  
+			symbols.NT_NEW, 
+			symbols.NT_Creator,
+		}, 
+		Primary4R2, 
+	},
+	Primary5R0: {
+		symbols.NT_Primary, 5, 0, 
+		symbols.Symbols{  
+			symbols.NT_QualifiedID, 
+			symbols.NT_OptIDSuff,
+		}, 
+		Primary5R0, 
+	},
+	Primary5R1: {
+		symbols.NT_Primary, 5, 1, 
+		symbols.Symbols{  
+			symbols.NT_QualifiedID, 
+			symbols.NT_OptIDSuff,
+		}, 
+		Primary5R1, 
+	},
+	Primary5R2: {
+		symbols.NT_Primary, 5, 2, 
+		symbols.Symbols{  
+			symbols.NT_QualifiedID, 
+			symbols.NT_OptIDSuff,
+		}, 
+		Primary5R2, 
+	},
+	Primary6R0: {
+		symbols.NT_Primary, 6, 0, 
+		symbols.Symbols{  
+			symbols.NT_BasicType, 
+			symbols.NT_RepDim0x, 
+			symbols.NT_DOT, 
+			symbols.NT_Cls,
+		}, 
+		Primary6R0, 
+	},
+	Primary6R1: {
+		symbols.NT_Primary, 6, 1, 
+		symbols.Symbols{  
+			symbols.NT_BasicType, 
+			symbols.NT_RepDim0x, 
+			symbols.NT_DOT, 
+			symbols.NT_Cls,
+		}, 
+		Primary6R1, 
+	},
+	Primary6R2: {
+		symbols.NT_Primary, 6, 2, 
+		symbols.Symbols{  
+			symbols.NT_BasicType, 
+			symbols.NT_RepDim0x, 
+			symbols.NT_DOT, 
+			symbols.NT_Cls,
+		}, 
+		Primary6R2, 
+	},
+	Primary6R3: {
+		symbols.NT_Primary, 6, 3, 
+		symbols.Symbols{  
+			symbols.NT_BasicType, 
+			symbols.NT_RepDim0x, 
+			symbols.NT_DOT, 
+			symbols.NT_Cls,
+		}, 
+		Primary6R3, 
+	},
+	Primary6R4: {
+		symbols.NT_Primary, 6, 4, 
+		symbols.Symbols{  
+			symbols.NT_BasicType, 
+			symbols.NT_RepDim0x, 
+			symbols.NT_DOT, 
+			symbols.NT_Cls,
+		}, 
+		Primary6R4, 
+	},
+	Primary7R0: {
+		symbols.NT_Primary, 7, 0, 
+		symbols.Symbols{  
+			symbols.NT_VOID, 
+			symbols.NT_DOT, 
+			symbols.NT_Cls,
+		}, 
+		Primary7R0, 
+	},
+	Primary7R1: {
+		symbols.NT_Primary, 7, 1, 
+		symbols.Symbols{  
+			symbols.NT_VOID, 
+			symbols.NT_DOT, 
+			symbols.NT_Cls,
+		}, 
+		Primary7R1, 
+	},
+	Primary7R2: {
+		symbols.NT_Primary, 7, 2, 
+		symbols.Symbols{  
+			symbols.NT_VOID, 
+			symbols.NT_DOT, 
+			symbols.NT_Cls,
+		}, 
+		Primary7R2, 
+	},
+	Primary7R3: {
+		symbols.NT_Primary, 7, 3, 
+		symbols.Symbols{  
+			symbols.NT_VOID, 
+			symbols.NT_DOT, 
+			symbols.NT_Cls,
+		}, 
+		Primary7R3, 
+	},
+	QUERY0R0: {
+		symbols.NT_QUERY, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_36, 
+			symbols.NT_WS,
+		}, 
+		QUERY0R0, 
+	},
+	QUERY0R1: {
+		symbols.NT_QUERY, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_36, 
+			symbols.NT_WS,
+		}, 
+		QUERY0R1, 
+	},
+	QUERY0R2: {
+		symbols.NT_QUERY, 0, 2, 
+		symbols.Symbols{  
+			symbols.T_36, 
+			symbols.NT_WS,
+		}, 
+		QUERY0R2, 
+	},
+	QualifiedID0R0: {
+		symbols.NT_QualifiedID, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_ID, 
+			symbols.NT_RepDotID0x,
+		}, 
+		QualifiedID0R0, 
+	},
+	QualifiedID0R1: {
+		symbols.NT_QualifiedID, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_ID, 
+			symbols.NT_RepDotID0x,
+		}, 
+		QualifiedID0R1, 
+	},
+	QualifiedID0R2: {
+		symbols.NT_QualifiedID, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_ID, 
+			symbols.NT_RepDotID0x,
+		}, 
+		QualifiedID0R2, 
+	},
+	RBRK0R0: {
+		symbols.NT_RBRK, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_41, 
+			symbols.NT_WS,
+		}, 
+		RBRK0R0, 
+	},
+	RBRK0R1: {
+		symbols.NT_RBRK, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_41, 
+			symbols.NT_WS,
+		}, 
+		RBRK0R1, 
+	},
+	RBRK0R2: {
+		symbols.NT_RBRK, 0, 2, 
+		symbols.Symbols{  
+			symbols.T_41, 
+			symbols.NT_WS,
+		}, 
+		RBRK0R2, 
+	},
+	RBRKAlts0R0: {
+		symbols.NT_RBRKAlts, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_RBRK, 
+			symbols.NT_RepDim0x, 
+			symbols.NT_DOT, 
+			symbols.NT_Cls,
+		}, 
+		RBRKAlts0R0, 
+	},
+	RBRKAlts0R1: {
+		symbols.NT_RBRKAlts, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_RBRK, 
+			symbols.NT_RepDim0x, 
+			symbols.NT_DOT, 
+			symbols.NT_Cls,
+		}, 
+		RBRKAlts0R1, 
+	},
+	RBRKAlts0R2: {
+		symbols.NT_RBRKAlts, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_RBRK, 
+			symbols.NT_RepDim0x, 
+			symbols.NT_DOT, 
+			symbols.NT_Cls,
+		}, 
+		RBRKAlts0R2, 
+	},
+	RBRKAlts0R3: {
+		symbols.NT_RBRKAlts, 0, 3, 
+		symbols.Symbols{  
+			symbols.NT_RBRK, 
+			symbols.NT_RepDim0x, 
+			symbols.NT_DOT, 
+			symbols.NT_Cls,
+		}, 
+		RBRKAlts0R3, 
+	},
+	RBRKAlts0R4: {
+		symbols.NT_RBRKAlts, 0, 4, 
+		symbols.Symbols{  
+			symbols.NT_RBRK, 
+			symbols.NT_RepDim0x, 
+			symbols.NT_DOT, 
+			symbols.NT_Cls,
+		}, 
+		RBRKAlts0R4, 
+	},
+	RBRKAlts1R0: {
+		symbols.NT_RBRKAlts, 1, 0, 
+		symbols.Symbols{  
+			symbols.NT_Expr, 
+			symbols.NT_RBRK,
+		}, 
+		RBRKAlts1R0, 
+	},
+	RBRKAlts1R1: {
+		symbols.NT_RBRKAlts, 1, 1, 
+		symbols.Symbols{  
+			symbols.NT_Expr, 
+			symbols.NT_RBRK,
+		}, 
+		RBRKAlts1R1, 
+	},
+	RBRKAlts1R2: {
+		symbols.NT_RBRKAlts, 1, 2, 
+		symbols.Symbols{  
+			symbols.NT_Expr, 
+			symbols.NT_RBRK,
+		}, 
+		RBRKAlts1R2, 
+	},
+	RETURN0R0: {
+		symbols.NT_RETURN, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_115, 
+			symbols.T_98,
+		}, 
+		RETURN0R0, 
+	},
+	RETURN0R1: {
+		symbols.NT_RETURN, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_115, 
+			symbols.T_98,
+		}, 
+		RETURN0R1, 
+	},
+	RETURN0R2: {
+		symbols.NT_RETURN, 0, 2, 
+		symbols.Symbols{  
+			symbols.T_115, 
+			symbols.T_98,
+		}, 
+		RETURN0R2, 
+	},
+	RPAR0R0: {
+		symbols.NT_RPAR, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_8, 
+			symbols.NT_WS,
+		}, 
+		RPAR0R0, 
+	},
+	RPAR0R1: {
+		symbols.NT_RPAR, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_8, 
+			symbols.NT_WS,
+		}, 
+		RPAR0R1, 
+	},
+	RPAR0R2: {
+		symbols.NT_RPAR, 0, 2, 
+		symbols.Symbols{  
+			symbols.T_8, 
+			symbols.NT_WS,
+		}, 
+		RPAR0R2, 
+	},
+	RWING0R0: {
+		symbols.NT_RWING, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_140, 
+			symbols.NT_WS,
+		}, 
+		RWING0R0, 
+	},
+	RWING0R1: {
+		symbols.NT_RWING, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_140, 
+			symbols.NT_WS,
+		}, 
+		RWING0R1, 
+	},
+	RWING0R2: {
+		symbols.NT_RWING, 0, 2, 
+		symbols.Symbols{  
+			symbols.T_140, 
+			symbols.NT_WS,
+		}, 
+		RWING0R2, 
+	},
+	ReferenceType0R0: {
+		symbols.NT_ReferenceType, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_BasicType, 
+			symbols.NT_Dim, 
+			symbols.NT_RepDim0x,
+		}, 
+		ReferenceType0R0, 
+	},
+	ReferenceType0R1: {
+		symbols.NT_ReferenceType, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_BasicType, 
+			symbols.NT_Dim, 
+			symbols.NT_RepDim0x,
+		}, 
+		ReferenceType0R1, 
+	},
+	ReferenceType0R2: {
+		symbols.NT_ReferenceType, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_BasicType, 
+			symbols.NT_Dim, 
+			symbols.NT_RepDim0x,
+		}, 
+		ReferenceType0R2, 
+	},
+	ReferenceType0R3: {
+		symbols.NT_ReferenceType, 0, 3, 
+		symbols.Symbols{  
+			symbols.NT_BasicType, 
+			symbols.NT_Dim, 
+			symbols.NT_RepDim0x,
+		}, 
+		ReferenceType0R3, 
+	},
+	ReferenceType1R0: {
+		symbols.NT_ReferenceType, 1, 0, 
+		symbols.Symbols{  
+			symbols.NT_ClsType, 
+			symbols.NT_RepDim0x,
+		}, 
+		ReferenceType1R0, 
+	},
+	ReferenceType1R1: {
+		symbols.NT_ReferenceType, 1, 1, 
+		symbols.Symbols{  
+			symbols.NT_ClsType, 
+			symbols.NT_RepDim0x,
+		}, 
+		ReferenceType1R1, 
+	},
+	ReferenceType1R2: {
+		symbols.NT_ReferenceType, 1, 2, 
+		symbols.Symbols{  
+			symbols.NT_ClsType, 
+			symbols.NT_RepDim0x,
+		}, 
+		ReferenceType1R2, 
+	},
+	RelateExpr0R0: {
+		symbols.NT_RelateExpr, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_ShiftExpr, 
+			symbols.NT_RepESInst0x,
+		}, 
+		RelateExpr0R0, 
+	},
+	RelateExpr0R1: {
+		symbols.NT_RelateExpr, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_ShiftExpr, 
+			symbols.NT_RepESInst0x,
+		}, 
+		RelateExpr0R1, 
+	},
+	RelateExpr0R2: {
+		symbols.NT_RelateExpr, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_ShiftExpr, 
+			symbols.NT_RepESInst0x,
+		}, 
+		RelateExpr0R2, 
+	},
+	RepANDEq0x0R0: {
+		symbols.NT_RepANDEq0x, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_AND, 
+			symbols.NT_EqualExpr, 
+			symbols.NT_RepANDEq0x,
+		}, 
+		RepANDEq0x0R0, 
+	},
+	RepANDEq0x0R1: {
+		symbols.NT_RepANDEq0x, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_AND, 
+			symbols.NT_EqualExpr, 
+			symbols.NT_RepANDEq0x,
+		}, 
+		RepANDEq0x0R1, 
+	},
+	RepANDEq0x0R2: {
+		symbols.NT_RepANDEq0x, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_AND, 
+			symbols.NT_EqualExpr, 
+			symbols.NT_RepANDEq0x,
+		}, 
+		RepANDEq0x0R2, 
+	},
+	RepANDEq0x0R3: {
+		symbols.NT_RepANDEq0x, 0, 3, 
+		symbols.Symbols{  
+			symbols.NT_AND, 
+			symbols.NT_EqualExpr, 
+			symbols.NT_RepANDEq0x,
+		}, 
+		RepANDEq0x0R3, 
+	},
+	RepANDEq0x1R0: {
+		symbols.NT_RepANDEq0x, 1, 0, 
+		symbols.Symbols{ 
+		}, 
+		RepANDEq0x1R0, 
+	},
+	RepANDIOR0x0R0: {
+		symbols.NT_RepANDIOR0x, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_AND_AND, 
+			symbols.NT_IORExpr, 
+			symbols.NT_RepANDIOR0x,
+		}, 
+		RepANDIOR0x0R0, 
+	},
+	RepANDIOR0x0R1: {
+		symbols.NT_RepANDIOR0x, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_AND_AND, 
+			symbols.NT_IORExpr, 
+			symbols.NT_RepANDIOR0x,
+		}, 
+		RepANDIOR0x0R1, 
+	},
+	RepANDIOR0x0R2: {
+		symbols.NT_RepANDIOR0x, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_AND_AND, 
+			symbols.NT_IORExpr, 
+			symbols.NT_RepANDIOR0x,
+		}, 
+		RepANDIOR0x0R2, 
+	},
+	RepANDIOR0x0R3: {
+		symbols.NT_RepANDIOR0x, 0, 3, 
+		symbols.Symbols{  
+			symbols.NT_AND_AND, 
+			symbols.NT_IORExpr, 
+			symbols.NT_RepANDIOR0x,
+		}, 
+		RepANDIOR0x0R3, 
+	},
+	RepANDIOR0x1R0: {
+		symbols.NT_RepANDIOR0x, 1, 0, 
+		symbols.Symbols{ 
+		}, 
+		RepANDIOR0x1R0, 
+	},
+	RepAddAltsMult0x0R0: {
+		symbols.NT_RepAddAltsMult0x, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_AddAlts, 
+			symbols.NT_MultExpr,
+		}, 
+		RepAddAltsMult0x0R0, 
+	},
+	RepAddAltsMult0x0R1: {
+		symbols.NT_RepAddAltsMult0x, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_AddAlts, 
+			symbols.NT_MultExpr,
+		}, 
+		RepAddAltsMult0x0R1, 
+	},
+	RepAddAltsMult0x0R2: {
+		symbols.NT_RepAddAltsMult0x, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_AddAlts, 
+			symbols.NT_MultExpr,
+		}, 
+		RepAddAltsMult0x0R2, 
+	},
+	RepAddAltsMult0x1R0: {
+		symbols.NT_RepAddAltsMult0x, 1, 0, 
+		symbols.Symbols{ 
+		}, 
+		RepAddAltsMult0x1R0, 
+	},
+	RepAsscExpr0x0R0: {
+		symbols.NT_RepAsscExpr0x, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_AssignOp, 
+			symbols.NT_CondExpr, 
+			symbols.NT_RepAsscExpr0x,
+		}, 
+		RepAsscExpr0x0R0, 
+	},
+	RepAsscExpr0x0R1: {
+		symbols.NT_RepAsscExpr0x, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_AssignOp, 
+			symbols.NT_CondExpr, 
+			symbols.NT_RepAsscExpr0x,
+		}, 
+		RepAsscExpr0x0R1, 
+	},
+	RepAsscExpr0x0R2: {
+		symbols.NT_RepAsscExpr0x, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_AssignOp, 
+			symbols.NT_CondExpr, 
+			symbols.NT_RepAsscExpr0x,
+		}, 
+		RepAsscExpr0x0R2, 
+	},
+	RepAsscExpr0x0R3: {
+		symbols.NT_RepAsscExpr0x, 0, 3, 
+		symbols.Symbols{  
+			symbols.NT_AssignOp, 
+			symbols.NT_CondExpr, 
+			symbols.NT_RepAsscExpr0x,
+		}, 
+		RepAsscExpr0x0R3, 
+	},
+	RepAsscExpr0x1R0: {
+		symbols.NT_RepAsscExpr0x, 1, 0, 
+		symbols.Symbols{ 
+		}, 
+		RepAsscExpr0x1R0, 
+	},
+	RepBlkSt0x0R0: {
+		symbols.NT_RepBlkSt0x, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_BlockStmt, 
+			symbols.NT_RepBlkSt0x,
+		}, 
+		RepBlkSt0x0R0, 
+	},
+	RepBlkSt0x0R1: {
+		symbols.NT_RepBlkSt0x, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_BlockStmt, 
+			symbols.NT_RepBlkSt0x,
+		}, 
+		RepBlkSt0x0R1, 
+	},
+	RepBlkSt0x0R2: {
+		symbols.NT_RepBlkSt0x, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_BlockStmt, 
+			symbols.NT_RepBlkSt0x,
+		}, 
+		RepBlkSt0x0R2, 
+	},
+	RepBlkSt0x1R0: {
+		symbols.NT_RepBlkSt0x, 1, 0, 
+		symbols.Symbols{ 
+		}, 
+		RepBlkSt0x1R0, 
+	},
+	RepCatch0x0R0: {
+		symbols.NT_RepCatch0x, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_Catch, 
+			symbols.NT_RepCatch0x,
+		}, 
+		RepCatch0x0R0, 
+	},
+	RepCatch0x0R1: {
+		symbols.NT_RepCatch0x, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_Catch, 
+			symbols.NT_RepCatch0x,
+		}, 
+		RepCatch0x0R1, 
+	},
+	RepCatch0x0R2: {
+		symbols.NT_RepCatch0x, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_Catch, 
+			symbols.NT_RepCatch0x,
+		}, 
+		RepCatch0x0R2, 
+	},
+	RepCatch0x1R0: {
+		symbols.NT_RepCatch0x, 1, 0, 
+		symbols.Symbols{ 
+		}, 
+		RepCatch0x1R0, 
+	},
+	RepClsBDecl0x0R0: {
+		symbols.NT_RepClsBDecl0x, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_ClsBdyDecl, 
+			symbols.NT_RepClsBDecl0x,
+		}, 
+		RepClsBDecl0x0R0, 
+	},
+	RepClsBDecl0x0R1: {
+		symbols.NT_RepClsBDecl0x, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_ClsBdyDecl, 
+			symbols.NT_RepClsBDecl0x,
+		}, 
+		RepClsBDecl0x0R1, 
+	},
+	RepClsBDecl0x0R2: {
+		symbols.NT_RepClsBDecl0x, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_ClsBdyDecl, 
+			symbols.NT_RepClsBDecl0x,
+		}, 
+		RepClsBDecl0x0R2, 
+	},
+	RepClsBDecl0x1R0: {
+		symbols.NT_RepClsBDecl0x, 1, 0, 
+		symbols.Symbols{ 
+		}, 
+		RepClsBDecl0x1R0, 
+	},
+	RepComCls0x0R0: {
+		symbols.NT_RepComCls0x, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_COMMA, 
+			symbols.NT_ClsType, 
+			symbols.NT_RepComCls0x,
+		}, 
+		RepComCls0x0R0, 
+	},
+	RepComCls0x0R1: {
+		symbols.NT_RepComCls0x, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_COMMA, 
+			symbols.NT_ClsType, 
+			symbols.NT_RepComCls0x,
+		}, 
+		RepComCls0x0R1, 
+	},
+	RepComCls0x0R2: {
+		symbols.NT_RepComCls0x, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_COMMA, 
+			symbols.NT_ClsType, 
+			symbols.NT_RepComCls0x,
+		}, 
+		RepComCls0x0R2, 
+	},
+	RepComCls0x0R3: {
+		symbols.NT_RepComCls0x, 0, 3, 
+		symbols.Symbols{  
+			symbols.NT_COMMA, 
+			symbols.NT_ClsType, 
+			symbols.NT_RepComCls0x,
+		}, 
+		RepComCls0x0R3, 
+	},
+	RepComCls0x1R0: {
+		symbols.NT_RepComCls0x, 1, 0, 
+		symbols.Symbols{ 
+		}, 
+		RepComCls0x1R0, 
+	},
+	RepComCnstDecl0x0R0: {
+		symbols.NT_RepComCnstDecl0x, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_COMMA, 
+			symbols.NT_ConstDecl, 
+			symbols.NT_RepComCnstDecl0x,
+		}, 
+		RepComCnstDecl0x0R0, 
+	},
+	RepComCnstDecl0x0R1: {
+		symbols.NT_RepComCnstDecl0x, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_COMMA, 
+			symbols.NT_ConstDecl, 
+			symbols.NT_RepComCnstDecl0x,
+		}, 
+		RepComCnstDecl0x0R1, 
+	},
+	RepComCnstDecl0x0R2: {
+		symbols.NT_RepComCnstDecl0x, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_COMMA, 
+			symbols.NT_ConstDecl, 
+			symbols.NT_RepComCnstDecl0x,
+		}, 
+		RepComCnstDecl0x0R2, 
+	},
+	RepComCnstDecl0x0R3: {
+		symbols.NT_RepComCnstDecl0x, 0, 3, 
+		symbols.Symbols{  
+			symbols.NT_COMMA, 
+			symbols.NT_ConstDecl, 
+			symbols.NT_RepComCnstDecl0x,
+		}, 
+		RepComCnstDecl0x0R3, 
+	},
+	RepComCnstDecl0x1R0: {
+		symbols.NT_RepComCnstDecl0x, 1, 0, 
+		symbols.Symbols{ 
+		}, 
+		RepComCnstDecl0x1R0, 
+	},
+	RepComExp0x0R0: {
+		symbols.NT_RepComExp0x, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_COMMA, 
+			symbols.NT_Expr, 
+			symbols.NT_RepComExp0x,
+		}, 
+		RepComExp0x0R0, 
+	},
+	RepComExp0x0R1: {
+		symbols.NT_RepComExp0x, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_COMMA, 
+			symbols.NT_Expr, 
+			symbols.NT_RepComExp0x,
+		}, 
+		RepComExp0x0R1, 
+	},
+	RepComExp0x0R2: {
+		symbols.NT_RepComExp0x, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_COMMA, 
+			symbols.NT_Expr, 
+			symbols.NT_RepComExp0x,
+		}, 
+		RepComExp0x0R2, 
+	},
+	RepComExp0x0R3: {
+		symbols.NT_RepComExp0x, 0, 3, 
+		symbols.Symbols{  
+			symbols.NT_COMMA, 
+			symbols.NT_Expr, 
+			symbols.NT_RepComExp0x,
+		}, 
+		RepComExp0x0R3, 
+	},
+	RepComExp0x1R0: {
+		symbols.NT_RepComExp0x, 1, 0, 
+		symbols.Symbols{ 
+		}, 
+		RepComExp0x1R0, 
+	},
+	RepComInit0x0R0: {
+		symbols.NT_RepComInit0x, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_COMMA, 
+			symbols.NT_VarInitial, 
+			symbols.NT_RepComInit0x,
+		}, 
+		RepComInit0x0R0, 
+	},
+	RepComInit0x0R1: {
+		symbols.NT_RepComInit0x, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_COMMA, 
+			symbols.NT_VarInitial, 
+			symbols.NT_RepComInit0x,
+		}, 
+		RepComInit0x0R1, 
+	},
+	RepComInit0x0R2: {
+		symbols.NT_RepComInit0x, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_COMMA, 
+			symbols.NT_VarInitial, 
+			symbols.NT_RepComInit0x,
+		}, 
+		RepComInit0x0R2, 
+	},
+	RepComInit0x0R3: {
+		symbols.NT_RepComInit0x, 0, 3, 
+		symbols.Symbols{  
+			symbols.NT_COMMA, 
+			symbols.NT_VarInitial, 
+			symbols.NT_RepComInit0x,
+		}, 
+		RepComInit0x0R3, 
+	},
+	RepComInit0x1R0: {
+		symbols.NT_RepComInit0x, 1, 0, 
+		symbols.Symbols{ 
+		}, 
+		RepComInit0x1R0, 
+	},
+	RepComSExpr0x0R0: {
+		symbols.NT_RepComSExpr0x, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_COMMA, 
+			symbols.NT_StmtExpr, 
+			symbols.NT_RepComSExpr0x,
+		}, 
+		RepComSExpr0x0R0, 
+	},
+	RepComSExpr0x0R1: {
+		symbols.NT_RepComSExpr0x, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_COMMA, 
+			symbols.NT_StmtExpr, 
+			symbols.NT_RepComSExpr0x,
+		}, 
+		RepComSExpr0x0R1, 
+	},
+	RepComSExpr0x0R2: {
+		symbols.NT_RepComSExpr0x, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_COMMA, 
+			symbols.NT_StmtExpr, 
+			symbols.NT_RepComSExpr0x,
+		}, 
+		RepComSExpr0x0R2, 
+	},
+	RepComSExpr0x0R3: {
+		symbols.NT_RepComSExpr0x, 0, 3, 
+		symbols.Symbols{  
+			symbols.NT_COMMA, 
+			symbols.NT_StmtExpr, 
+			symbols.NT_RepComSExpr0x,
+		}, 
+		RepComSExpr0x0R3, 
+	},
+	RepComSExpr0x1R0: {
+		symbols.NT_RepComSExpr0x, 1, 0, 
+		symbols.Symbols{ 
+		}, 
+		RepComSExpr0x1R0, 
+	},
+	RepComVDecl0x0R0: {
+		symbols.NT_RepComVDecl0x, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_COMMA, 
+			symbols.NT_VarDecl, 
+			symbols.NT_RepComVDecl0x,
+		}, 
+		RepComVDecl0x0R0, 
+	},
+	RepComVDecl0x0R1: {
+		symbols.NT_RepComVDecl0x, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_COMMA, 
+			symbols.NT_VarDecl, 
+			symbols.NT_RepComVDecl0x,
+		}, 
+		RepComVDecl0x0R1, 
+	},
+	RepComVDecl0x0R2: {
+		symbols.NT_RepComVDecl0x, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_COMMA, 
+			symbols.NT_VarDecl, 
+			symbols.NT_RepComVDecl0x,
+		}, 
+		RepComVDecl0x0R2, 
+	},
+	RepComVDecl0x0R3: {
+		symbols.NT_RepComVDecl0x, 0, 3, 
+		symbols.Symbols{  
+			symbols.NT_COMMA, 
+			symbols.NT_VarDecl, 
+			symbols.NT_RepComVDecl0x,
+		}, 
+		RepComVDecl0x0R3, 
+	},
+	RepComVDecl0x1R0: {
+		symbols.NT_RepComVDecl0x, 1, 0, 
+		symbols.Symbols{ 
+		}, 
+		RepComVDecl0x1R0, 
+	},
+	RepCondition0x0R0: {
+		symbols.NT_RepCondition0x, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_QUERY, 
+			symbols.NT_Expr, 
+			symbols.NT_COLON, 
+			symbols.NT_CondORExpr, 
+			symbols.NT_RepCondition0x,
+		}, 
+		RepCondition0x0R0, 
+	},
+	RepCondition0x0R1: {
+		symbols.NT_RepCondition0x, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_QUERY, 
+			symbols.NT_Expr, 
+			symbols.NT_COLON, 
+			symbols.NT_CondORExpr, 
+			symbols.NT_RepCondition0x,
+		}, 
+		RepCondition0x0R1, 
+	},
+	RepCondition0x0R2: {
+		symbols.NT_RepCondition0x, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_QUERY, 
+			symbols.NT_Expr, 
+			symbols.NT_COLON, 
+			symbols.NT_CondORExpr, 
+			symbols.NT_RepCondition0x,
+		}, 
+		RepCondition0x0R2, 
+	},
+	RepCondition0x0R3: {
+		symbols.NT_RepCondition0x, 0, 3, 
+		symbols.Symbols{  
+			symbols.NT_QUERY, 
+			symbols.NT_Expr, 
+			symbols.NT_COLON, 
+			symbols.NT_CondORExpr, 
+			symbols.NT_RepCondition0x,
+		}, 
+		RepCondition0x0R3, 
+	},
+	RepCondition0x0R4: {
+		symbols.NT_RepCondition0x, 0, 4, 
+		symbols.Symbols{  
+			symbols.NT_QUERY, 
+			symbols.NT_Expr, 
+			symbols.NT_COLON, 
+			symbols.NT_CondORExpr, 
+			symbols.NT_RepCondition0x,
+		}, 
+		RepCondition0x0R4, 
+	},
+	RepCondition0x0R5: {
+		symbols.NT_RepCondition0x, 0, 5, 
+		symbols.Symbols{  
+			symbols.NT_QUERY, 
+			symbols.NT_Expr, 
+			symbols.NT_COLON, 
+			symbols.NT_CondORExpr, 
+			symbols.NT_RepCondition0x,
+		}, 
+		RepCondition0x0R5, 
+	},
+	RepCondition0x1R0: {
+		symbols.NT_RepCondition0x, 1, 0, 
+		symbols.Symbols{ 
+		}, 
+		RepCondition0x1R0, 
+	},
+	RepDig1xExp0R0: {
+		symbols.NT_RepDig1xExp, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_111, 
+			symbols.T_67,
+		}, 
+		RepDig1xExp0R0, 
+	},
+	RepDig1xExp0R1: {
+		symbols.NT_RepDig1xExp, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_111, 
+			symbols.T_67,
+		}, 
+		RepDig1xExp0R1, 
+	},
+	RepDig1xExp0R2: {
+		symbols.NT_RepDig1xExp, 0, 2, 
+		symbols.Symbols{  
+			symbols.T_111, 
+			symbols.T_67,
+		}, 
+		RepDig1xExp0R2, 
+	},
+	RepDig1xOptExp0R0: {
+		symbols.NT_RepDig1xOptExp, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_111, 
+			symbols.T_103,
+		}, 
+		RepDig1xOptExp0R0, 
+	},
+	RepDig1xOptExp0R1: {
+		symbols.NT_RepDig1xOptExp, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_111, 
+			symbols.T_103,
+		}, 
+		RepDig1xOptExp0R1, 
+	},
+	RepDig1xOptExp0R2: {
+		symbols.NT_RepDig1xOptExp, 0, 2, 
+		symbols.Symbols{  
+			symbols.T_111, 
+			symbols.T_103,
+		}, 
+		RepDig1xOptExp0R2, 
+	},
+	RepDim0x0R0: {
+		symbols.NT_RepDim0x, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_Dim, 
+			symbols.NT_RepDim0x,
+		}, 
+		RepDim0x0R0, 
+	},
+	RepDim0x0R1: {
+		symbols.NT_RepDim0x, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_Dim, 
+			symbols.NT_RepDim0x,
+		}, 
+		RepDim0x0R1, 
+	},
+	RepDim0x0R2: {
+		symbols.NT_RepDim0x, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_Dim, 
+			symbols.NT_RepDim0x,
+		}, 
+		RepDim0x0R2, 
+	},
+	RepDim0x1R0: {
+		symbols.NT_RepDim0x, 1, 0, 
+		symbols.Symbols{ 
+		}, 
+		RepDim0x1R0, 
+	},
+	RepDimExpr0x0R0: {
+		symbols.NT_RepDimExpr0x, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_DimExpr, 
+			symbols.NT_RepDimExpr0x,
+		}, 
+		RepDimExpr0x0R0, 
+	},
+	RepDimExpr0x0R1: {
+		symbols.NT_RepDimExpr0x, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_DimExpr, 
+			symbols.NT_RepDimExpr0x,
+		}, 
+		RepDimExpr0x0R1, 
+	},
+	RepDimExpr0x0R2: {
+		symbols.NT_RepDimExpr0x, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_DimExpr, 
+			symbols.NT_RepDimExpr0x,
+		}, 
+		RepDimExpr0x0R2, 
+	},
+	RepDimExpr0x1R0: {
+		symbols.NT_RepDimExpr0x, 1, 0, 
+		symbols.Symbols{ 
+		}, 
+		RepDimExpr0x1R0, 
+	},
+	RepDotID0x0R0: {
+		symbols.NT_RepDotID0x, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_DOT, 
+			symbols.NT_ID, 
+			symbols.NT_RepDotID0x,
+		}, 
+		RepDotID0x0R0, 
+	},
+	RepDotID0x0R1: {
+		symbols.NT_RepDotID0x, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_DOT, 
+			symbols.NT_ID, 
+			symbols.NT_RepDotID0x,
+		}, 
+		RepDotID0x0R1, 
+	},
+	RepDotID0x0R2: {
+		symbols.NT_RepDotID0x, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_DOT, 
+			symbols.NT_ID, 
+			symbols.NT_RepDotID0x,
+		}, 
+		RepDotID0x0R2, 
+	},
+	RepDotID0x0R3: {
+		symbols.NT_RepDotID0x, 0, 3, 
+		symbols.Symbols{  
+			symbols.NT_DOT, 
+			symbols.NT_ID, 
+			symbols.NT_RepDotID0x,
+		}, 
+		RepDotID0x0R3, 
+	},
+	RepDotID0x1R0: {
+		symbols.NT_RepDotID0x, 1, 0, 
+		symbols.Symbols{ 
+		}, 
+		RepDotID0x1R0, 
+	},
+	RepESInst0x0R0: {
+		symbols.NT_RepESInst0x, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_ESInst, 
+			symbols.NT_RepESInst0x,
+		}, 
+		RepESInst0x0R0, 
+	},
+	RepESInst0x0R1: {
+		symbols.NT_RepESInst0x, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_ESInst, 
+			symbols.NT_RepESInst0x,
+		}, 
+		RepESInst0x0R1, 
+	},
+	RepESInst0x0R2: {
+		symbols.NT_RepESInst0x, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_ESInst, 
+			symbols.NT_RepESInst0x,
+		}, 
+		RepESInst0x0R2, 
+	},
+	RepESInst0x1R0: {
+		symbols.NT_RepESInst0x, 1, 0, 
+		symbols.Symbols{ 
+		}, 
+		RepESInst0x1R0, 
+	},
+	RepEqExpr0x0R0: {
+		symbols.NT_RepEqExpr0x, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_EqAlts, 
+			symbols.NT_RelateExpr, 
+			symbols.NT_RepEqExpr0x,
+		}, 
+		RepEqExpr0x0R0, 
+	},
+	RepEqExpr0x0R1: {
+		symbols.NT_RepEqExpr0x, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_EqAlts, 
+			symbols.NT_RelateExpr, 
+			symbols.NT_RepEqExpr0x,
+		}, 
+		RepEqExpr0x0R1, 
+	},
+	RepEqExpr0x0R2: {
+		symbols.NT_RepEqExpr0x, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_EqAlts, 
+			symbols.NT_RelateExpr, 
+			symbols.NT_RepEqExpr0x,
+		}, 
+		RepEqExpr0x0R2, 
+	},
+	RepEqExpr0x0R3: {
+		symbols.NT_RepEqExpr0x, 0, 3, 
+		symbols.Symbols{  
+			symbols.NT_EqAlts, 
+			symbols.NT_RelateExpr, 
+			symbols.NT_RepEqExpr0x,
+		}, 
+		RepEqExpr0x0R3, 
+	},
+	RepEqExpr0x1R0: {
+		symbols.NT_RepEqExpr0x, 1, 0, 
+		symbols.Symbols{ 
+		}, 
+		RepEqExpr0x1R0, 
+	},
+	RepHatAND0x0R0: {
+		symbols.NT_RepHatAND0x, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_HAT, 
+			symbols.NT_ANDExpr, 
+			symbols.NT_RepHatAND0x,
+		}, 
+		RepHatAND0x0R0, 
+	},
+	RepHatAND0x0R1: {
+		symbols.NT_RepHatAND0x, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_HAT, 
+			symbols.NT_ANDExpr, 
+			symbols.NT_RepHatAND0x,
+		}, 
+		RepHatAND0x0R1, 
+	},
+	RepHatAND0x0R2: {
+		symbols.NT_RepHatAND0x, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_HAT, 
+			symbols.NT_ANDExpr, 
+			symbols.NT_RepHatAND0x,
+		}, 
+		RepHatAND0x0R2, 
+	},
+	RepHatAND0x0R3: {
+		symbols.NT_RepHatAND0x, 0, 3, 
+		symbols.Symbols{  
+			symbols.NT_HAT, 
+			symbols.NT_ANDExpr, 
+			symbols.NT_RepHatAND0x,
+		}, 
+		RepHatAND0x0R3, 
+	},
+	RepHatAND0x1R0: {
+		symbols.NT_RepHatAND0x, 1, 0, 
+		symbols.Symbols{ 
+		}, 
+		RepHatAND0x1R0, 
+	},
+	RepHex0xDot0R0: {
+		symbols.NT_RepHex0xDot, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_Any0xX, 
+			symbols.T_112, 
+			symbols.T_18,
+		}, 
+		RepHex0xDot0R0, 
+	},
+	RepHex0xDot0R1: {
+		symbols.NT_RepHex0xDot, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_Any0xX, 
+			symbols.T_112, 
+			symbols.T_18,
+		}, 
+		RepHex0xDot0R1, 
+	},
+	RepHex0xDot0R2: {
+		symbols.NT_RepHex0xDot, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_Any0xX, 
+			symbols.T_112, 
+			symbols.T_18,
+		}, 
+		RepHex0xDot0R2, 
+	},
+	RepHex0xDot0R3: {
+		symbols.NT_RepHex0xDot, 0, 3, 
+		symbols.Symbols{  
+			symbols.NT_Any0xX, 
+			symbols.T_112, 
+			symbols.T_18,
+		}, 
+		RepHex0xDot0R3, 
+	},
+	RepImpDecl0x0R0: {
+		symbols.NT_RepImpDecl0x, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_ImportDecl, 
+			symbols.NT_RepImpDecl0x,
+		}, 
+		RepImpDecl0x0R0, 
+	},
+	RepImpDecl0x0R1: {
+		symbols.NT_RepImpDecl0x, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_ImportDecl, 
+			symbols.NT_RepImpDecl0x,
+		}, 
+		RepImpDecl0x0R1, 
+	},
+	RepImpDecl0x0R2: {
+		symbols.NT_RepImpDecl0x, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_ImportDecl, 
+			symbols.NT_RepImpDecl0x,
+		}, 
+		RepImpDecl0x0R2, 
+	},
+	RepImpDecl0x1R0: {
+		symbols.NT_RepImpDecl0x, 1, 0, 
+		symbols.Symbols{ 
+		}, 
+		RepImpDecl0x1R0, 
+	},
+	RepInBodDecl0x0R0: {
+		symbols.NT_RepInBodDecl0x, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_IntfBdyDecl, 
+			symbols.NT_RepInBodDecl0x,
+		}, 
+		RepInBodDecl0x0R0, 
+	},
+	RepInBodDecl0x0R1: {
+		symbols.NT_RepInBodDecl0x, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_IntfBdyDecl, 
+			symbols.NT_RepInBodDecl0x,
+		}, 
+		RepInBodDecl0x0R1, 
+	},
+	RepInBodDecl0x0R2: {
+		symbols.NT_RepInBodDecl0x, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_IntfBdyDecl, 
+			symbols.NT_RepInBodDecl0x,
+		}, 
+		RepInBodDecl0x0R2, 
+	},
+	RepInBodDecl0x1R0: {
+		symbols.NT_RepInBodDecl0x, 1, 0, 
+		symbols.Symbols{ 
+		}, 
+		RepInBodDecl0x1R0, 
+	},
+	RepLorD0x0R0: {
+		symbols.NT_RepLorD0x, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_LorD, 
+			symbols.NT_RepLorD0x,
+		}, 
+		RepLorD0x0R0, 
+	},
+	RepLorD0x0R1: {
+		symbols.NT_RepLorD0x, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_LorD, 
+			symbols.NT_RepLorD0x,
+		}, 
+		RepLorD0x0R1, 
+	},
+	RepLorD0x0R2: {
+		symbols.NT_RepLorD0x, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_LorD, 
+			symbols.NT_RepLorD0x,
+		}, 
+		RepLorD0x0R2, 
+	},
+	RepLorD0x1R0: {
+		symbols.NT_RepLorD0x, 1, 0, 
+		symbols.Symbols{ 
+		}, 
+		RepLorD0x1R0, 
+	},
+	RepModif00R0: {
+		symbols.NT_RepModif0, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_Modifier, 
+			symbols.NT_RepModif0,
+		}, 
+		RepModif00R0, 
+	},
+	RepModif00R1: {
+		symbols.NT_RepModif0, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_Modifier, 
+			symbols.NT_RepModif0,
+		}, 
+		RepModif00R1, 
+	},
+	RepModif00R2: {
+		symbols.NT_RepModif0, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_Modifier, 
+			symbols.NT_RepModif0,
+		}, 
+		RepModif00R2, 
+	},
+	RepModif01R0: {
+		symbols.NT_RepModif0, 1, 0, 
+		symbols.Symbols{ 
+		}, 
+		RepModif01R0, 
+	},
+	RepORXOR0x0R0: {
+		symbols.NT_RepORXOR0x, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_ORXOR, 
+			symbols.NT_RepORXOR0x,
+		}, 
+		RepORXOR0x0R0, 
+	},
+	RepORXOR0x0R1: {
+		symbols.NT_RepORXOR0x, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_ORXOR, 
+			symbols.NT_RepORXOR0x,
+		}, 
+		RepORXOR0x0R1, 
+	},
+	RepORXOR0x0R2: {
+		symbols.NT_RepORXOR0x, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_ORXOR, 
+			symbols.NT_RepORXOR0x,
+		}, 
+		RepORXOR0x0R2, 
+	},
+	RepORXOR0x1R0: {
+		symbols.NT_RepORXOR0x, 1, 0, 
+		symbols.Symbols{ 
+		}, 
+		RepORXOR0x1R0, 
+	},
+	RepORcAND0x0R0: {
+		symbols.NT_RepORcAND0x, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_OR_OR, 
+			symbols.NT_CondANDExpr, 
+			symbols.NT_RepORcAND0x,
+		}, 
+		RepORcAND0x0R0, 
+	},
+	RepORcAND0x0R1: {
+		symbols.NT_RepORcAND0x, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_OR_OR, 
+			symbols.NT_CondANDExpr, 
+			symbols.NT_RepORcAND0x,
+		}, 
+		RepORcAND0x0R1, 
+	},
+	RepORcAND0x0R2: {
+		symbols.NT_RepORcAND0x, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_OR_OR, 
+			symbols.NT_CondANDExpr, 
+			symbols.NT_RepORcAND0x,
+		}, 
+		RepORcAND0x0R2, 
+	},
+	RepORcAND0x0R3: {
+		symbols.NT_RepORcAND0x, 0, 3, 
+		symbols.Symbols{  
+			symbols.NT_OR_OR, 
+			symbols.NT_CondANDExpr, 
+			symbols.NT_RepORcAND0x,
+		}, 
+		RepORcAND0x0R3, 
+	},
+	RepORcAND0x1R0: {
+		symbols.NT_RepORcAND0x, 1, 0, 
+		symbols.Symbols{ 
+		}, 
+		RepORcAND0x1R0, 
+	},
+	RepPfOp0x0R0: {
+		symbols.NT_RepPfOp0x, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_PostfixOp, 
+			symbols.NT_RepPfOp0x,
+		}, 
+		RepPfOp0x0R0, 
+	},
+	RepPfOp0x0R1: {
+		symbols.NT_RepPfOp0x, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_PostfixOp, 
+			symbols.NT_RepPfOp0x,
+		}, 
+		RepPfOp0x0R1, 
+	},
+	RepPfOp0x0R2: {
+		symbols.NT_RepPfOp0x, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_PostfixOp, 
+			symbols.NT_RepPfOp0x,
+		}, 
+		RepPfOp0x0R2, 
+	},
+	RepPfOp0x1R0: {
+		symbols.NT_RepPfOp0x, 1, 0, 
+		symbols.Symbols{ 
+		}, 
+		RepPfOp0x1R0, 
+	},
+	RepSDMUExpr0x0R0: {
+		symbols.NT_RepSDMUExpr0x, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_SDM, 
+			symbols.NT_UnaryExpr, 
+			symbols.NT_RepSDMUExpr0x,
+		}, 
+		RepSDMUExpr0x0R0, 
+	},
+	RepSDMUExpr0x0R1: {
+		symbols.NT_RepSDMUExpr0x, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_SDM, 
+			symbols.NT_UnaryExpr, 
+			symbols.NT_RepSDMUExpr0x,
+		}, 
+		RepSDMUExpr0x0R1, 
+	},
+	RepSDMUExpr0x0R2: {
+		symbols.NT_RepSDMUExpr0x, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_SDM, 
+			symbols.NT_UnaryExpr, 
+			symbols.NT_RepSDMUExpr0x,
+		}, 
+		RepSDMUExpr0x0R2, 
+	},
+	RepSDMUExpr0x0R3: {
+		symbols.NT_RepSDMUExpr0x, 0, 3, 
+		symbols.Symbols{  
+			symbols.NT_SDM, 
+			symbols.NT_UnaryExpr, 
+			symbols.NT_RepSDMUExpr0x,
+		}, 
+		RepSDMUExpr0x0R3, 
+	},
+	RepSDMUExpr0x1R0: {
+		symbols.NT_RepSDMUExpr0x, 1, 0, 
+		symbols.Symbols{ 
+		}, 
+		RepSDMUExpr0x1R0, 
+	},
+	RepSel0x0R0: {
+		symbols.NT_RepSel0x, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_Selector, 
+			symbols.NT_RepSel0x,
+		}, 
+		RepSel0x0R0, 
+	},
+	RepSel0x0R1: {
+		symbols.NT_RepSel0x, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_Selector, 
+			symbols.NT_RepSel0x,
+		}, 
+		RepSel0x0R1, 
+	},
+	RepSel0x0R2: {
+		symbols.NT_RepSel0x, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_Selector, 
+			symbols.NT_RepSel0x,
+		}, 
+		RepSel0x0R2, 
+	},
+	RepSel0x1R0: {
+		symbols.NT_RepSel0x, 1, 0, 
+		symbols.Symbols{ 
+		}, 
+		RepSel0x1R0, 
+	},
+	RepSemiModDecl0x0R0: {
+		symbols.NT_RepSemiModDecl0x, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_SemiModDecl, 
+			symbols.NT_RepSemiModDecl0x,
+		}, 
+		RepSemiModDecl0x0R0, 
+	},
+	RepSemiModDecl0x0R1: {
+		symbols.NT_RepSemiModDecl0x, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_SemiModDecl, 
+			symbols.NT_RepSemiModDecl0x,
+		}, 
+		RepSemiModDecl0x0R1, 
+	},
+	RepSemiModDecl0x0R2: {
+		symbols.NT_RepSemiModDecl0x, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_SemiModDecl, 
+			symbols.NT_RepSemiModDecl0x,
+		}, 
+		RepSemiModDecl0x0R2, 
+	},
+	RepSemiModDecl0x1R0: {
+		symbols.NT_RepSemiModDecl0x, 1, 0, 
+		symbols.Symbols{ 
+		}, 
+		RepSemiModDecl0x1R0, 
+	},
+	RepSwBlkStmt0x0R0: {
+		symbols.NT_RepSwBlkStmt0x, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_SwitchBlockStmtGrp, 
+			symbols.NT_RepSwBlkStmt0x,
+		}, 
+		RepSwBlkStmt0x0R0, 
+	},
+	RepSwBlkStmt0x0R1: {
+		symbols.NT_RepSwBlkStmt0x, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_SwitchBlockStmtGrp, 
+			symbols.NT_RepSwBlkStmt0x,
+		}, 
+		RepSwBlkStmt0x0R1, 
+	},
+	RepSwBlkStmt0x0R2: {
+		symbols.NT_RepSwBlkStmt0x, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_SwitchBlockStmtGrp, 
+			symbols.NT_RepSwBlkStmt0x,
+		}, 
+		RepSwBlkStmt0x0R2, 
+	},
+	RepSwBlkStmt0x1R0: {
+		symbols.NT_RepSwBlkStmt0x, 1, 0, 
+		symbols.Symbols{ 
+		}, 
+		RepSwBlkStmt0x1R0, 
+	},
+	SDM0R0: {
+		symbols.NT_SDM, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_STAR,
+		}, 
+		SDM0R0, 
+	},
+	SDM0R1: {
+		symbols.NT_SDM, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_STAR,
+		}, 
+		SDM0R1, 
+	},
+	SDM1R0: {
+		symbols.NT_SDM, 1, 0, 
+		symbols.Symbols{  
+			symbols.NT_DIV,
+		}, 
+		SDM1R0, 
+	},
+	SDM1R1: {
+		symbols.NT_SDM, 1, 1, 
+		symbols.Symbols{  
+			symbols.NT_DIV,
+		}, 
+		SDM1R1, 
+	},
+	SDM2R0: {
+		symbols.NT_SDM, 2, 0, 
+		symbols.Symbols{  
+			symbols.NT_MOD,
+		}, 
+		SDM2R0, 
+	},
+	SDM2R1: {
+		symbols.NT_SDM, 2, 1, 
+		symbols.Symbols{  
+			symbols.NT_MOD,
+		}, 
+		SDM2R1, 
+	},
+	SEMI0R0: {
+		symbols.NT_SEMI, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_23, 
+			symbols.NT_WS,
+		}, 
+		SEMI0R0, 
+	},
+	SEMI0R1: {
+		symbols.NT_SEMI, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_23, 
+			symbols.NT_WS,
+		}, 
+		SEMI0R1, 
+	},
+	SEMI0R2: {
+		symbols.NT_SEMI, 0, 2, 
+		symbols.Symbols{  
+			symbols.T_23, 
+			symbols.NT_WS,
+		}, 
+		SEMI0R2, 
+	},
+	SL0R0: {
+		symbols.NT_SL, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_25, 
+			symbols.T_87, 
+			symbols.NT_WS,
+		}, 
+		SL0R0, 
+	},
+	SL0R1: {
+		symbols.NT_SL, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_25, 
+			symbols.T_87, 
+			symbols.NT_WS,
+		}, 
+		SL0R1, 
+	},
+	SL0R2: {
+		symbols.NT_SL, 0, 2, 
+		symbols.Symbols{  
+			symbols.T_25, 
+			symbols.T_87, 
+			symbols.NT_WS,
+		}, 
+		SL0R2, 
+	},
+	SL0R3: {
+		symbols.NT_SL, 0, 3, 
+		symbols.Symbols{  
+			symbols.T_25, 
+			symbols.T_87, 
+			symbols.NT_WS,
+		}, 
+		SL0R3, 
+	},
+	SL_EQU0R0: {
+		symbols.NT_SL_EQU, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_26, 
+			symbols.NT_WS,
+		}, 
+		SL_EQU0R0, 
+	},
+	SL_EQU0R1: {
+		symbols.NT_SL_EQU, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_26, 
+			symbols.NT_WS,
+		}, 
+		SL_EQU0R1, 
+	},
+	SL_EQU0R2: {
+		symbols.NT_SL_EQU, 0, 2, 
+		symbols.Symbols{  
+			symbols.T_26, 
+			symbols.NT_WS,
+		}, 
+		SL_EQU0R2, 
+	},
+	SR0R0: {
+		symbols.NT_SR, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_32, 
+			symbols.T_92, 
+			symbols.NT_WS,
+		}, 
+		SR0R0, 
+	},
+	SR0R1: {
+		symbols.NT_SR, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_32, 
+			symbols.T_92, 
+			symbols.NT_WS,
+		}, 
+		SR0R1, 
+	},
+	SR0R2: {
+		symbols.NT_SR, 0, 2, 
+		symbols.Symbols{  
+			symbols.T_32, 
+			symbols.T_92, 
+			symbols.NT_WS,
+		}, 
+		SR0R2, 
+	},
+	SR0R3: {
+		symbols.NT_SR, 0, 3, 
+		symbols.Symbols{  
+			symbols.T_32, 
+			symbols.T_92, 
+			symbols.NT_WS,
+		}, 
+		SR0R3, 
+	},
+	SR_EQU0R0: {
+		symbols.NT_SR_EQU, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_33, 
+			symbols.NT_WS,
+		}, 
+		SR_EQU0R0, 
+	},
+	SR_EQU0R1: {
+		symbols.NT_SR_EQU, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_33, 
+			symbols.NT_WS,
+		}, 
+		SR_EQU0R1, 
+	},
+	SR_EQU0R2: {
+		symbols.NT_SR_EQU, 0, 2, 
+		symbols.Symbols{  
+			symbols.T_33, 
+			symbols.NT_WS,
+		}, 
+		SR_EQU0R2, 
+	},
+	STAR0R0: {
+		symbols.NT_STAR, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_9, 
+			symbols.T_87, 
+			symbols.NT_WS,
+		}, 
+		STAR0R0, 
+	},
+	STAR0R1: {
+		symbols.NT_STAR, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_9, 
+			symbols.T_87, 
+			symbols.NT_WS,
+		}, 
+		STAR0R1, 
+	},
+	STAR0R2: {
+		symbols.NT_STAR, 0, 2, 
+		symbols.Symbols{  
+			symbols.T_9, 
+			symbols.T_87, 
+			symbols.NT_WS,
+		}, 
+		STAR0R2, 
+	},
+	STAR0R3: {
+		symbols.NT_STAR, 0, 3, 
+		symbols.Symbols{  
+			symbols.T_9, 
+			symbols.T_87, 
+			symbols.NT_WS,
+		}, 
+		STAR0R3, 
+	},
+	STAR_EQU0R0: {
+		symbols.NT_STAR_EQU, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_10, 
+			symbols.NT_WS,
+		}, 
+		STAR_EQU0R0, 
+	},
+	STAR_EQU0R1: {
+		symbols.NT_STAR_EQU, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_10, 
+			symbols.NT_WS,
+		}, 
+		STAR_EQU0R1, 
+	},
+	STAR_EQU0R2: {
+		symbols.NT_STAR_EQU, 0, 2, 
+		symbols.Symbols{  
+			symbols.T_10, 
+			symbols.NT_WS,
+		}, 
+		STAR_EQU0R2, 
+	},
+	STATIC0R0: {
+		symbols.NT_STATIC, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_118, 
+			symbols.T_98,
+		}, 
+		STATIC0R0, 
+	},
+	STATIC0R1: {
+		symbols.NT_STATIC, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_118, 
+			symbols.T_98,
+		}, 
+		STATIC0R1, 
+	},
+	STATIC0R2: {
+		symbols.NT_STATIC, 0, 2, 
+		symbols.Symbols{  
+			symbols.T_118, 
+			symbols.T_98,
+		}, 
+		STATIC0R2, 
+	},
+	SUPER0R0: {
+		symbols.NT_SUPER, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_120, 
+			symbols.T_98,
+		}, 
+		SUPER0R0, 
+	},
+	SUPER0R1: {
+		symbols.NT_SUPER, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_120, 
+			symbols.T_98,
+		}, 
+		SUPER0R1, 
+	},
+	SUPER0R2: {
+		symbols.NT_SUPER, 0, 2, 
+		symbols.Symbols{  
+			symbols.T_120, 
+			symbols.T_98,
+		}, 
+		SUPER0R2, 
+	},
+	SWITCH0R0: {
+		symbols.NT_SWITCH, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_121, 
+			symbols.T_98,
+		}, 
+		SWITCH0R0, 
+	},
+	SWITCH0R1: {
+		symbols.NT_SWITCH, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_121, 
+			symbols.T_98,
+		}, 
+		SWITCH0R1, 
+	},
+	SWITCH0R2: {
+		symbols.NT_SWITCH, 0, 2, 
+		symbols.Symbols{  
+			symbols.T_121, 
+			symbols.T_98,
+		}, 
+		SWITCH0R2, 
+	},
+	SYNCHRONIZED0R0: {
+		symbols.NT_SYNCHRONIZED, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_122, 
+			symbols.T_98,
+		}, 
+		SYNCHRONIZED0R0, 
+	},
+	SYNCHRONIZED0R1: {
+		symbols.NT_SYNCHRONIZED, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_122, 
+			symbols.T_98,
+		}, 
+		SYNCHRONIZED0R1, 
+	},
+	SYNCHRONIZED0R2: {
+		symbols.NT_SYNCHRONIZED, 0, 2, 
+		symbols.Symbols{  
+			symbols.T_122, 
+			symbols.T_98,
+		}, 
+		SYNCHRONIZED0R2, 
+	},
+	Selector0R0: {
+		symbols.NT_Selector, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_DOT, 
+			symbols.NT_ID, 
+			symbols.NT_OptArgs,
+		}, 
+		Selector0R0, 
+	},
+	Selector0R1: {
+		symbols.NT_Selector, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_DOT, 
+			symbols.NT_ID, 
+			symbols.NT_OptArgs,
+		}, 
+		Selector0R1, 
+	},
+	Selector0R2: {
+		symbols.NT_Selector, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_DOT, 
+			symbols.NT_ID, 
+			symbols.NT_OptArgs,
+		}, 
+		Selector0R2, 
+	},
+	Selector0R3: {
+		symbols.NT_Selector, 0, 3, 
+		symbols.Symbols{  
+			symbols.NT_DOT, 
+			symbols.NT_ID, 
+			symbols.NT_OptArgs,
+		}, 
+		Selector0R3, 
+	},
+	Selector1R0: {
+		symbols.NT_Selector, 1, 0, 
+		symbols.Symbols{  
+			symbols.NT_DOT, 
+			symbols.NT_THIS,
+		}, 
+		Selector1R0, 
+	},
+	Selector1R1: {
+		symbols.NT_Selector, 1, 1, 
+		symbols.Symbols{  
+			symbols.NT_DOT, 
+			symbols.NT_THIS,
+		}, 
+		Selector1R1, 
+	},
+	Selector1R2: {
+		symbols.NT_Selector, 1, 2, 
+		symbols.Symbols{  
+			symbols.NT_DOT, 
+			symbols.NT_THIS,
+		}, 
+		Selector1R2, 
+	},
+	Selector2R0: {
+		symbols.NT_Selector, 2, 0, 
+		symbols.Symbols{  
+			symbols.NT_DOT, 
+			symbols.NT_SUPER, 
+			symbols.NT_SuperSuffix,
+		}, 
+		Selector2R0, 
+	},
+	Selector2R1: {
+		symbols.NT_Selector, 2, 1, 
+		symbols.Symbols{  
+			symbols.NT_DOT, 
+			symbols.NT_SUPER, 
+			symbols.NT_SuperSuffix,
+		}, 
+		Selector2R1, 
+	},
+	Selector2R2: {
+		symbols.NT_Selector, 2, 2, 
+		symbols.Symbols{  
+			symbols.NT_DOT, 
+			symbols.NT_SUPER, 
+			symbols.NT_SuperSuffix,
+		}, 
+		Selector2R2, 
+	},
+	Selector2R3: {
+		symbols.NT_Selector, 2, 3, 
+		symbols.Symbols{  
+			symbols.NT_DOT, 
+			symbols.NT_SUPER, 
+			symbols.NT_SuperSuffix,
+		}, 
+		Selector2R3, 
+	},
+	Selector3R0: {
+		symbols.NT_Selector, 3, 0, 
+		symbols.Symbols{  
+			symbols.NT_DOT, 
+			symbols.NT_NEW, 
+			symbols.NT_InnerCreator,
+		}, 
+		Selector3R0, 
+	},
+	Selector3R1: {
+		symbols.NT_Selector, 3, 1, 
+		symbols.Symbols{  
+			symbols.NT_DOT, 
+			symbols.NT_NEW, 
+			symbols.NT_InnerCreator,
+		}, 
+		Selector3R1, 
+	},
+	Selector3R2: {
+		symbols.NT_Selector, 3, 2, 
+		symbols.Symbols{  
+			symbols.NT_DOT, 
+			symbols.NT_NEW, 
+			symbols.NT_InnerCreator,
+		}, 
+		Selector3R2, 
+	},
+	Selector3R3: {
+		symbols.NT_Selector, 3, 3, 
+		symbols.Symbols{  
+			symbols.NT_DOT, 
+			symbols.NT_NEW, 
+			symbols.NT_InnerCreator,
+		}, 
+		Selector3R3, 
+	},
+	Selector4R0: {
+		symbols.NT_Selector, 4, 0, 
+		symbols.Symbols{  
+			symbols.NT_DimExpr,
+		}, 
+		Selector4R0, 
+	},
+	Selector4R1: {
+		symbols.NT_Selector, 4, 1, 
+		symbols.Symbols{  
+			symbols.NT_DimExpr,
+		}, 
+		Selector4R1, 
+	},
+	SemiModDecl0R0: {
+		symbols.NT_SemiModDecl, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_SEMI,
+		}, 
+		SemiModDecl0R0, 
+	},
+	SemiModDecl0R1: {
+		symbols.NT_SemiModDecl, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_SEMI,
+		}, 
+		SemiModDecl0R1, 
+	},
+	SemiModDecl1R0: {
+		symbols.NT_SemiModDecl, 1, 0, 
+		symbols.Symbols{  
+			symbols.NT_RepModif0, 
+			symbols.NT_DeclAlts,
+		}, 
+		SemiModDecl1R0, 
+	},
+	SemiModDecl1R1: {
+		symbols.NT_SemiModDecl, 1, 1, 
+		symbols.Symbols{  
+			symbols.NT_RepModif0, 
+			symbols.NT_DeclAlts,
+		}, 
+		SemiModDecl1R1, 
+	},
+	SemiModDecl1R2: {
+		symbols.NT_SemiModDecl, 1, 2, 
+		symbols.Symbols{  
+			symbols.NT_RepModif0, 
+			symbols.NT_DeclAlts,
+		}, 
+		SemiModDecl1R2, 
+	},
+	ShiftAlts0R0: {
+		symbols.NT_ShiftAlts, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_CarrotAlts, 
+			symbols.NT_AddExpr, 
+			symbols.NT_ShiftAlts,
+		}, 
+		ShiftAlts0R0, 
+	},
+	ShiftAlts0R1: {
+		symbols.NT_ShiftAlts, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_CarrotAlts, 
+			symbols.NT_AddExpr, 
+			symbols.NT_ShiftAlts,
+		}, 
+		ShiftAlts0R1, 
+	},
+	ShiftAlts0R2: {
+		symbols.NT_ShiftAlts, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_CarrotAlts, 
+			symbols.NT_AddExpr, 
+			symbols.NT_ShiftAlts,
+		}, 
+		ShiftAlts0R2, 
+	},
+	ShiftAlts0R3: {
+		symbols.NT_ShiftAlts, 0, 3, 
+		symbols.Symbols{  
+			symbols.NT_CarrotAlts, 
+			symbols.NT_AddExpr, 
+			symbols.NT_ShiftAlts,
+		}, 
+		ShiftAlts0R3, 
+	},
+	ShiftAlts1R0: {
+		symbols.NT_ShiftAlts, 1, 0, 
+		symbols.Symbols{ 
+		}, 
+		ShiftAlts1R0, 
+	},
+	ShiftExpr0R0: {
+		symbols.NT_ShiftExpr, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_AddExpr, 
+			symbols.NT_ShiftAlts,
+		}, 
+		ShiftExpr0R0, 
+	},
+	ShiftExpr0R1: {
+		symbols.NT_ShiftExpr, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_AddExpr, 
+			symbols.NT_ShiftAlts,
+		}, 
+		ShiftExpr0R1, 
+	},
+	ShiftExpr0R2: {
+		symbols.NT_ShiftExpr, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_AddExpr, 
+			symbols.NT_ShiftAlts,
+		}, 
+		ShiftExpr0R2, 
+	},
+	Stmt0R0: {
+		symbols.NT_Stmt, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_Block,
+		}, 
+		Stmt0R0, 
+	},
+	Stmt0R1: {
+		symbols.NT_Stmt, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_Block,
+		}, 
+		Stmt0R1, 
+	},
+	Stmt1R0: {
+		symbols.NT_Stmt, 1, 0, 
+		symbols.Symbols{  
+			symbols.NT_ASSERT, 
+			symbols.NT_Expr, 
+			symbols.NT_OptColExpr, 
+			symbols.NT_SEMI,
+		}, 
+		Stmt1R0, 
+	},
+	Stmt1R1: {
+		symbols.NT_Stmt, 1, 1, 
+		symbols.Symbols{  
+			symbols.NT_ASSERT, 
+			symbols.NT_Expr, 
+			symbols.NT_OptColExpr, 
+			symbols.NT_SEMI,
+		}, 
+		Stmt1R1, 
+	},
+	Stmt1R2: {
+		symbols.NT_Stmt, 1, 2, 
+		symbols.Symbols{  
+			symbols.NT_ASSERT, 
+			symbols.NT_Expr, 
+			symbols.NT_OptColExpr, 
+			symbols.NT_SEMI,
+		}, 
+		Stmt1R2, 
+	},
+	Stmt1R3: {
+		symbols.NT_Stmt, 1, 3, 
+		symbols.Symbols{  
+			symbols.NT_ASSERT, 
+			symbols.NT_Expr, 
+			symbols.NT_OptColExpr, 
+			symbols.NT_SEMI,
+		}, 
+		Stmt1R3, 
+	},
+	Stmt1R4: {
+		symbols.NT_Stmt, 1, 4, 
+		symbols.Symbols{  
+			symbols.NT_ASSERT, 
+			symbols.NT_Expr, 
+			symbols.NT_OptColExpr, 
+			symbols.NT_SEMI,
+		}, 
+		Stmt1R4, 
+	},
+	Stmt2R0: {
+		symbols.NT_Stmt, 2, 0, 
+		symbols.Symbols{  
+			symbols.NT_IF, 
+			symbols.NT_ParExpr, 
+			symbols.NT_Stmt, 
+			symbols.NT_OptElse,
+		}, 
+		Stmt2R0, 
+	},
+	Stmt2R1: {
+		symbols.NT_Stmt, 2, 1, 
+		symbols.Symbols{  
+			symbols.NT_IF, 
+			symbols.NT_ParExpr, 
+			symbols.NT_Stmt, 
+			symbols.NT_OptElse,
+		}, 
+		Stmt2R1, 
+	},
+	Stmt2R2: {
+		symbols.NT_Stmt, 2, 2, 
+		symbols.Symbols{  
+			symbols.NT_IF, 
+			symbols.NT_ParExpr, 
+			symbols.NT_Stmt, 
+			symbols.NT_OptElse,
+		}, 
+		Stmt2R2, 
+	},
+	Stmt2R3: {
+		symbols.NT_Stmt, 2, 3, 
+		symbols.Symbols{  
+			symbols.NT_IF, 
+			symbols.NT_ParExpr, 
+			symbols.NT_Stmt, 
+			symbols.NT_OptElse,
+		}, 
+		Stmt2R3, 
+	},
+	Stmt2R4: {
+		symbols.NT_Stmt, 2, 4, 
+		symbols.Symbols{  
+			symbols.NT_IF, 
+			symbols.NT_ParExpr, 
+			symbols.NT_Stmt, 
+			symbols.NT_OptElse,
+		}, 
+		Stmt2R4, 
+	},
+	Stmt3R0: {
+		symbols.NT_Stmt, 3, 0, 
+		symbols.Symbols{  
+			symbols.NT_FOR, 
+			symbols.NT_LPAR, 
+			symbols.NT_OptForInit, 
+			symbols.NT_SEMI, 
+			symbols.NT_OptExpr, 
+			symbols.NT_SEMI, 
+			symbols.NT_OptForUpd, 
+			symbols.NT_RPAR, 
+			symbols.NT_Stmt,
+		}, 
+		Stmt3R0, 
+	},
+	Stmt3R1: {
+		symbols.NT_Stmt, 3, 1, 
+		symbols.Symbols{  
+			symbols.NT_FOR, 
+			symbols.NT_LPAR, 
+			symbols.NT_OptForInit, 
+			symbols.NT_SEMI, 
+			symbols.NT_OptExpr, 
+			symbols.NT_SEMI, 
+			symbols.NT_OptForUpd, 
+			symbols.NT_RPAR, 
+			symbols.NT_Stmt,
+		}, 
+		Stmt3R1, 
+	},
+	Stmt3R2: {
+		symbols.NT_Stmt, 3, 2, 
+		symbols.Symbols{  
+			symbols.NT_FOR, 
+			symbols.NT_LPAR, 
+			symbols.NT_OptForInit, 
+			symbols.NT_SEMI, 
+			symbols.NT_OptExpr, 
+			symbols.NT_SEMI, 
+			symbols.NT_OptForUpd, 
+			symbols.NT_RPAR, 
+			symbols.NT_Stmt,
+		}, 
+		Stmt3R2, 
+	},
+	Stmt3R3: {
+		symbols.NT_Stmt, 3, 3, 
+		symbols.Symbols{  
+			symbols.NT_FOR, 
+			symbols.NT_LPAR, 
+			symbols.NT_OptForInit, 
+			symbols.NT_SEMI, 
+			symbols.NT_OptExpr, 
+			symbols.NT_SEMI, 
+			symbols.NT_OptForUpd, 
+			symbols.NT_RPAR, 
+			symbols.NT_Stmt,
+		}, 
+		Stmt3R3, 
+	},
+	Stmt3R4: {
+		symbols.NT_Stmt, 3, 4, 
+		symbols.Symbols{  
+			symbols.NT_FOR, 
+			symbols.NT_LPAR, 
+			symbols.NT_OptForInit, 
+			symbols.NT_SEMI, 
+			symbols.NT_OptExpr, 
+			symbols.NT_SEMI, 
+			symbols.NT_OptForUpd, 
+			symbols.NT_RPAR, 
+			symbols.NT_Stmt,
+		}, 
+		Stmt3R4, 
+	},
+	Stmt3R5: {
+		symbols.NT_Stmt, 3, 5, 
+		symbols.Symbols{  
+			symbols.NT_FOR, 
+			symbols.NT_LPAR, 
+			symbols.NT_OptForInit, 
+			symbols.NT_SEMI, 
+			symbols.NT_OptExpr, 
+			symbols.NT_SEMI, 
+			symbols.NT_OptForUpd, 
+			symbols.NT_RPAR, 
+			symbols.NT_Stmt,
+		}, 
+		Stmt3R5, 
+	},
+	Stmt3R6: {
+		symbols.NT_Stmt, 3, 6, 
+		symbols.Symbols{  
+			symbols.NT_FOR, 
+			symbols.NT_LPAR, 
+			symbols.NT_OptForInit, 
+			symbols.NT_SEMI, 
+			symbols.NT_OptExpr, 
+			symbols.NT_SEMI, 
+			symbols.NT_OptForUpd, 
+			symbols.NT_RPAR, 
+			symbols.NT_Stmt,
+		}, 
+		Stmt3R6, 
+	},
+	Stmt3R7: {
+		symbols.NT_Stmt, 3, 7, 
+		symbols.Symbols{  
+			symbols.NT_FOR, 
+			symbols.NT_LPAR, 
+			symbols.NT_OptForInit, 
+			symbols.NT_SEMI, 
+			symbols.NT_OptExpr, 
+			symbols.NT_SEMI, 
+			symbols.NT_OptForUpd, 
+			symbols.NT_RPAR, 
+			symbols.NT_Stmt,
+		}, 
+		Stmt3R7, 
+	},
+	Stmt3R8: {
+		symbols.NT_Stmt, 3, 8, 
+		symbols.Symbols{  
+			symbols.NT_FOR, 
+			symbols.NT_LPAR, 
+			symbols.NT_OptForInit, 
+			symbols.NT_SEMI, 
+			symbols.NT_OptExpr, 
+			symbols.NT_SEMI, 
+			symbols.NT_OptForUpd, 
+			symbols.NT_RPAR, 
+			symbols.NT_Stmt,
+		}, 
+		Stmt3R8, 
+	},
+	Stmt3R9: {
+		symbols.NT_Stmt, 3, 9, 
+		symbols.Symbols{  
+			symbols.NT_FOR, 
+			symbols.NT_LPAR, 
+			symbols.NT_OptForInit, 
+			symbols.NT_SEMI, 
+			symbols.NT_OptExpr, 
+			symbols.NT_SEMI, 
+			symbols.NT_OptForUpd, 
+			symbols.NT_RPAR, 
+			symbols.NT_Stmt,
+		}, 
+		Stmt3R9, 
+	},
+	Stmt4R0: {
+		symbols.NT_Stmt, 4, 0, 
+		symbols.Symbols{  
+			symbols.NT_WHILE, 
+			symbols.NT_ParExpr, 
+			symbols.NT_Stmt,
+		}, 
+		Stmt4R0, 
+	},
+	Stmt4R1: {
+		symbols.NT_Stmt, 4, 1, 
+		symbols.Symbols{  
+			symbols.NT_WHILE, 
+			symbols.NT_ParExpr, 
+			symbols.NT_Stmt,
+		}, 
+		Stmt4R1, 
+	},
+	Stmt4R2: {
+		symbols.NT_Stmt, 4, 2, 
+		symbols.Symbols{  
+			symbols.NT_WHILE, 
+			symbols.NT_ParExpr, 
+			symbols.NT_Stmt,
+		}, 
+		Stmt4R2, 
+	},
+	Stmt4R3: {
+		symbols.NT_Stmt, 4, 3, 
+		symbols.Symbols{  
+			symbols.NT_WHILE, 
+			symbols.NT_ParExpr, 
+			symbols.NT_Stmt,
+		}, 
+		Stmt4R3, 
+	},
+	Stmt5R0: {
+		symbols.NT_Stmt, 5, 0, 
+		symbols.Symbols{  
+			symbols.NT_DO, 
+			symbols.NT_Stmt, 
+			symbols.NT_WHILE, 
+			symbols.NT_ParExpr, 
+			symbols.NT_SEMI,
+		}, 
+		Stmt5R0, 
+	},
+	Stmt5R1: {
+		symbols.NT_Stmt, 5, 1, 
+		symbols.Symbols{  
+			symbols.NT_DO, 
+			symbols.NT_Stmt, 
+			symbols.NT_WHILE, 
+			symbols.NT_ParExpr, 
+			symbols.NT_SEMI,
+		}, 
+		Stmt5R1, 
+	},
+	Stmt5R2: {
+		symbols.NT_Stmt, 5, 2, 
+		symbols.Symbols{  
+			symbols.NT_DO, 
+			symbols.NT_Stmt, 
+			symbols.NT_WHILE, 
+			symbols.NT_ParExpr, 
+			symbols.NT_SEMI,
+		}, 
+		Stmt5R2, 
+	},
+	Stmt5R3: {
+		symbols.NT_Stmt, 5, 3, 
+		symbols.Symbols{  
+			symbols.NT_DO, 
+			symbols.NT_Stmt, 
+			symbols.NT_WHILE, 
+			symbols.NT_ParExpr, 
+			symbols.NT_SEMI,
+		}, 
+		Stmt5R3, 
+	},
+	Stmt5R4: {
+		symbols.NT_Stmt, 5, 4, 
+		symbols.Symbols{  
+			symbols.NT_DO, 
+			symbols.NT_Stmt, 
+			symbols.NT_WHILE, 
+			symbols.NT_ParExpr, 
+			symbols.NT_SEMI,
+		}, 
+		Stmt5R4, 
+	},
+	Stmt5R5: {
+		symbols.NT_Stmt, 5, 5, 
+		symbols.Symbols{  
+			symbols.NT_DO, 
+			symbols.NT_Stmt, 
+			symbols.NT_WHILE, 
+			symbols.NT_ParExpr, 
+			symbols.NT_SEMI,
+		}, 
+		Stmt5R5, 
+	},
+	Stmt6R0: {
+		symbols.NT_Stmt, 6, 0, 
+		symbols.Symbols{  
+			symbols.NT_TRY, 
+			symbols.NT_Block, 
+			symbols.NT_CatchBlk,
+		}, 
+		Stmt6R0, 
+	},
+	Stmt6R1: {
+		symbols.NT_Stmt, 6, 1, 
+		symbols.Symbols{  
+			symbols.NT_TRY, 
+			symbols.NT_Block, 
+			symbols.NT_CatchBlk,
+		}, 
+		Stmt6R1, 
+	},
+	Stmt6R2: {
+		symbols.NT_Stmt, 6, 2, 
+		symbols.Symbols{  
+			symbols.NT_TRY, 
+			symbols.NT_Block, 
+			symbols.NT_CatchBlk,
+		}, 
+		Stmt6R2, 
+	},
+	Stmt6R3: {
+		symbols.NT_Stmt, 6, 3, 
+		symbols.Symbols{  
+			symbols.NT_TRY, 
+			symbols.NT_Block, 
+			symbols.NT_CatchBlk,
+		}, 
+		Stmt6R3, 
+	},
+	Stmt7R0: {
+		symbols.NT_Stmt, 7, 0, 
+		symbols.Symbols{  
+			symbols.NT_SWITCH, 
+			symbols.NT_ParExpr, 
+			symbols.NT_LWING, 
+			symbols.NT_RepSwBlkStmt0x, 
+			symbols.NT_RWING,
+		}, 
+		Stmt7R0, 
+	},
+	Stmt7R1: {
+		symbols.NT_Stmt, 7, 1, 
+		symbols.Symbols{  
+			symbols.NT_SWITCH, 
+			symbols.NT_ParExpr, 
+			symbols.NT_LWING, 
+			symbols.NT_RepSwBlkStmt0x, 
+			symbols.NT_RWING,
+		}, 
+		Stmt7R1, 
+	},
+	Stmt7R2: {
+		symbols.NT_Stmt, 7, 2, 
+		symbols.Symbols{  
+			symbols.NT_SWITCH, 
+			symbols.NT_ParExpr, 
+			symbols.NT_LWING, 
+			symbols.NT_RepSwBlkStmt0x, 
+			symbols.NT_RWING,
+		}, 
+		Stmt7R2, 
+	},
+	Stmt7R3: {
+		symbols.NT_Stmt, 7, 3, 
+		symbols.Symbols{  
+			symbols.NT_SWITCH, 
+			symbols.NT_ParExpr, 
+			symbols.NT_LWING, 
+			symbols.NT_RepSwBlkStmt0x, 
+			symbols.NT_RWING,
+		}, 
+		Stmt7R3, 
+	},
+	Stmt7R4: {
+		symbols.NT_Stmt, 7, 4, 
+		symbols.Symbols{  
+			symbols.NT_SWITCH, 
+			symbols.NT_ParExpr, 
+			symbols.NT_LWING, 
+			symbols.NT_RepSwBlkStmt0x, 
+			symbols.NT_RWING,
+		}, 
+		Stmt7R4, 
+	},
+	Stmt7R5: {
+		symbols.NT_Stmt, 7, 5, 
+		symbols.Symbols{  
+			symbols.NT_SWITCH, 
+			symbols.NT_ParExpr, 
+			symbols.NT_LWING, 
+			symbols.NT_RepSwBlkStmt0x, 
+			symbols.NT_RWING,
+		}, 
+		Stmt7R5, 
+	},
+	Stmt8R0: {
+		symbols.NT_Stmt, 8, 0, 
+		symbols.Symbols{  
+			symbols.NT_SYNCHRONIZED, 
+			symbols.NT_ParExpr, 
+			symbols.NT_Block,
+		}, 
+		Stmt8R0, 
+	},
+	Stmt8R1: {
+		symbols.NT_Stmt, 8, 1, 
+		symbols.Symbols{  
+			symbols.NT_SYNCHRONIZED, 
+			symbols.NT_ParExpr, 
+			symbols.NT_Block,
+		}, 
+		Stmt8R1, 
+	},
+	Stmt8R2: {
+		symbols.NT_Stmt, 8, 2, 
+		symbols.Symbols{  
+			symbols.NT_SYNCHRONIZED, 
+			symbols.NT_ParExpr, 
+			symbols.NT_Block,
+		}, 
+		Stmt8R2, 
+	},
+	Stmt8R3: {
+		symbols.NT_Stmt, 8, 3, 
+		symbols.Symbols{  
+			symbols.NT_SYNCHRONIZED, 
+			symbols.NT_ParExpr, 
+			symbols.NT_Block,
+		}, 
+		Stmt8R3, 
+	},
+	Stmt9R0: {
+		symbols.NT_Stmt, 9, 0, 
+		symbols.Symbols{  
+			symbols.NT_RETURN, 
+			symbols.NT_OptExpr, 
+			symbols.NT_SEMI,
+		}, 
+		Stmt9R0, 
+	},
+	Stmt9R1: {
+		symbols.NT_Stmt, 9, 1, 
+		symbols.Symbols{  
+			symbols.NT_RETURN, 
+			symbols.NT_OptExpr, 
+			symbols.NT_SEMI,
+		}, 
+		Stmt9R1, 
+	},
+	Stmt9R2: {
+		symbols.NT_Stmt, 9, 2, 
+		symbols.Symbols{  
+			symbols.NT_RETURN, 
+			symbols.NT_OptExpr, 
+			symbols.NT_SEMI,
+		}, 
+		Stmt9R2, 
+	},
+	Stmt9R3: {
+		symbols.NT_Stmt, 9, 3, 
+		symbols.Symbols{  
+			symbols.NT_RETURN, 
+			symbols.NT_OptExpr, 
+			symbols.NT_SEMI,
+		}, 
+		Stmt9R3, 
+	},
+	Stmt10R0: {
+		symbols.NT_Stmt, 10, 0, 
+		symbols.Symbols{  
+			symbols.NT_THROW, 
+			symbols.NT_Expr, 
+			symbols.NT_SEMI,
+		}, 
+		Stmt10R0, 
+	},
+	Stmt10R1: {
+		symbols.NT_Stmt, 10, 1, 
+		symbols.Symbols{  
+			symbols.NT_THROW, 
+			symbols.NT_Expr, 
+			symbols.NT_SEMI,
+		}, 
+		Stmt10R1, 
+	},
+	Stmt10R2: {
+		symbols.NT_Stmt, 10, 2, 
+		symbols.Symbols{  
+			symbols.NT_THROW, 
+			symbols.NT_Expr, 
+			symbols.NT_SEMI,
+		}, 
+		Stmt10R2, 
+	},
+	Stmt10R3: {
+		symbols.NT_Stmt, 10, 3, 
+		symbols.Symbols{  
+			symbols.NT_THROW, 
+			symbols.NT_Expr, 
+			symbols.NT_SEMI,
+		}, 
+		Stmt10R3, 
+	},
+	Stmt11R0: {
+		symbols.NT_Stmt, 11, 0, 
+		symbols.Symbols{  
+			symbols.NT_BREAK, 
+			symbols.NT_OptID, 
+			symbols.NT_SEMI,
+		}, 
+		Stmt11R0, 
+	},
+	Stmt11R1: {
+		symbols.NT_Stmt, 11, 1, 
+		symbols.Symbols{  
+			symbols.NT_BREAK, 
+			symbols.NT_OptID, 
+			symbols.NT_SEMI,
+		}, 
+		Stmt11R1, 
+	},
+	Stmt11R2: {
+		symbols.NT_Stmt, 11, 2, 
+		symbols.Symbols{  
+			symbols.NT_BREAK, 
+			symbols.NT_OptID, 
+			symbols.NT_SEMI,
+		}, 
+		Stmt11R2, 
+	},
+	Stmt11R3: {
+		symbols.NT_Stmt, 11, 3, 
+		symbols.Symbols{  
+			symbols.NT_BREAK, 
+			symbols.NT_OptID, 
+			symbols.NT_SEMI,
+		}, 
+		Stmt11R3, 
+	},
+	Stmt12R0: {
+		symbols.NT_Stmt, 12, 0, 
+		symbols.Symbols{  
+			symbols.NT_CONTINUE, 
+			symbols.NT_OptID, 
+			symbols.NT_SEMI,
+		}, 
+		Stmt12R0, 
+	},
+	Stmt12R1: {
+		symbols.NT_Stmt, 12, 1, 
+		symbols.Symbols{  
+			symbols.NT_CONTINUE, 
+			symbols.NT_OptID, 
+			symbols.NT_SEMI,
+		}, 
+		Stmt12R1, 
+	},
+	Stmt12R2: {
+		symbols.NT_Stmt, 12, 2, 
+		symbols.Symbols{  
+			symbols.NT_CONTINUE, 
+			symbols.NT_OptID, 
+			symbols.NT_SEMI,
+		}, 
+		Stmt12R2, 
+	},
+	Stmt12R3: {
+		symbols.NT_Stmt, 12, 3, 
+		symbols.Symbols{  
+			symbols.NT_CONTINUE, 
+			symbols.NT_OptID, 
+			symbols.NT_SEMI,
+		}, 
+		Stmt12R3, 
+	},
+	Stmt13R0: {
+		symbols.NT_Stmt, 13, 0, 
+		symbols.Symbols{  
+			symbols.NT_SEMI,
+		}, 
+		Stmt13R0, 
+	},
+	Stmt13R1: {
+		symbols.NT_Stmt, 13, 1, 
+		symbols.Symbols{  
+			symbols.NT_SEMI,
+		}, 
+		Stmt13R1, 
+	},
+	Stmt14R0: {
+		symbols.NT_Stmt, 14, 0, 
+		symbols.Symbols{  
+			symbols.NT_StmtExpr, 
+			symbols.NT_SEMI,
+		}, 
+		Stmt14R0, 
+	},
+	Stmt14R1: {
+		symbols.NT_Stmt, 14, 1, 
+		symbols.Symbols{  
+			symbols.NT_StmtExpr, 
+			symbols.NT_SEMI,
+		}, 
+		Stmt14R1, 
+	},
+	Stmt14R2: {
+		symbols.NT_Stmt, 14, 2, 
+		symbols.Symbols{  
+			symbols.NT_StmtExpr, 
+			symbols.NT_SEMI,
+		}, 
+		Stmt14R2, 
+	},
+	Stmt15R0: {
+		symbols.NT_Stmt, 15, 0, 
+		symbols.Symbols{  
+			symbols.NT_ID, 
+			symbols.NT_COLON, 
+			symbols.NT_Stmt,
+		}, 
+		Stmt15R0, 
+	},
+	Stmt15R1: {
+		symbols.NT_Stmt, 15, 1, 
+		symbols.Symbols{  
+			symbols.NT_ID, 
+			symbols.NT_COLON, 
+			symbols.NT_Stmt,
+		}, 
+		Stmt15R1, 
+	},
+	Stmt15R2: {
+		symbols.NT_Stmt, 15, 2, 
+		symbols.Symbols{  
+			symbols.NT_ID, 
+			symbols.NT_COLON, 
+			symbols.NT_Stmt,
+		}, 
+		Stmt15R2, 
+	},
+	Stmt15R3: {
+		symbols.NT_Stmt, 15, 3, 
+		symbols.Symbols{  
+			symbols.NT_ID, 
+			symbols.NT_COLON, 
+			symbols.NT_Stmt,
+		}, 
+		Stmt15R3, 
+	},
+	StmtExpr0R0: {
+		symbols.NT_StmtExpr, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_Expr,
+		}, 
+		StmtExpr0R0, 
+	},
+	StmtExpr0R1: {
+		symbols.NT_StmtExpr, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_Expr,
+		}, 
+		StmtExpr0R1, 
+	},
+	StrClose0R0: {
+		symbols.NT_StrClose, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_62,
+		}, 
+		StrClose0R0, 
+	},
+	StrClose0R1: {
+		symbols.NT_StrClose, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_62,
+		}, 
+		StrClose0R1, 
+	},
+	StrClose1R0: {
+		symbols.NT_StrClose, 1, 0, 
+		symbols.Symbols{  
+			symbols.NT_OptEsc, 
+			symbols.NT_StrClose,
+		}, 
+		StrClose1R0, 
+	},
+	StrClose1R1: {
+		symbols.NT_StrClose, 1, 1, 
+		symbols.Symbols{  
+			symbols.NT_OptEsc, 
+			symbols.NT_StrClose,
+		}, 
+		StrClose1R1, 
+	},
+	StrClose1R2: {
+		symbols.NT_StrClose, 1, 2, 
+		symbols.Symbols{  
+			symbols.NT_OptEsc, 
+			symbols.NT_StrClose,
+		}, 
+		StrClose1R2, 
+	},
+	StringLiteral0R0: {
+		symbols.NT_StringLiteral, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_62, 
+			symbols.NT_StrClose,
+		}, 
+		StringLiteral0R0, 
+	},
+	StringLiteral0R1: {
+		symbols.NT_StringLiteral, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_62, 
+			symbols.NT_StrClose,
+		}, 
+		StringLiteral0R1, 
+	},
+	StringLiteral0R2: {
+		symbols.NT_StringLiteral, 0, 2, 
+		symbols.Symbols{  
+			symbols.T_62, 
+			symbols.NT_StrClose,
+		}, 
+		StringLiteral0R2, 
+	},
+	SuperSuffix0R0: {
+		symbols.NT_SuperSuffix, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_Arguments,
+		}, 
+		SuperSuffix0R0, 
+	},
+	SuperSuffix0R1: {
+		symbols.NT_SuperSuffix, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_Arguments,
+		}, 
+		SuperSuffix0R1, 
+	},
+	SuperSuffix1R0: {
+		symbols.NT_SuperSuffix, 1, 0, 
+		symbols.Symbols{  
+			symbols.NT_DOT, 
+			symbols.NT_ID, 
+			symbols.NT_OptArgs,
+		}, 
+		SuperSuffix1R0, 
+	},
+	SuperSuffix1R1: {
+		symbols.NT_SuperSuffix, 1, 1, 
+		symbols.Symbols{  
+			symbols.NT_DOT, 
+			symbols.NT_ID, 
+			symbols.NT_OptArgs,
+		}, 
+		SuperSuffix1R1, 
+	},
+	SuperSuffix1R2: {
+		symbols.NT_SuperSuffix, 1, 2, 
+		symbols.Symbols{  
+			symbols.NT_DOT, 
+			symbols.NT_ID, 
+			symbols.NT_OptArgs,
+		}, 
+		SuperSuffix1R2, 
+	},
+	SuperSuffix1R3: {
+		symbols.NT_SuperSuffix, 1, 3, 
+		symbols.Symbols{  
+			symbols.NT_DOT, 
+			symbols.NT_ID, 
+			symbols.NT_OptArgs,
+		}, 
+		SuperSuffix1R3, 
+	},
+	SwitchBlockStmtGrp0R0: {
+		symbols.NT_SwitchBlockStmtGrp, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_SwitchLabel, 
+			symbols.NT_RepBlkSt0x,
+		}, 
+		SwitchBlockStmtGrp0R0, 
+	},
+	SwitchBlockStmtGrp0R1: {
+		symbols.NT_SwitchBlockStmtGrp, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_SwitchLabel, 
+			symbols.NT_RepBlkSt0x,
+		}, 
+		SwitchBlockStmtGrp0R1, 
+	},
+	SwitchBlockStmtGrp0R2: {
+		symbols.NT_SwitchBlockStmtGrp, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_SwitchLabel, 
+			symbols.NT_RepBlkSt0x,
+		}, 
+		SwitchBlockStmtGrp0R2, 
+	},
+	SwitchLabel0R0: {
+		symbols.NT_SwitchLabel, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_CASE, 
+			symbols.NT_ConstExpr, 
+			symbols.NT_COLON,
+		}, 
+		SwitchLabel0R0, 
+	},
+	SwitchLabel0R1: {
+		symbols.NT_SwitchLabel, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_CASE, 
+			symbols.NT_ConstExpr, 
+			symbols.NT_COLON,
+		}, 
+		SwitchLabel0R1, 
+	},
+	SwitchLabel0R2: {
+		symbols.NT_SwitchLabel, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_CASE, 
+			symbols.NT_ConstExpr, 
+			symbols.NT_COLON,
+		}, 
+		SwitchLabel0R2, 
+	},
+	SwitchLabel0R3: {
+		symbols.NT_SwitchLabel, 0, 3, 
+		symbols.Symbols{  
+			symbols.NT_CASE, 
+			symbols.NT_ConstExpr, 
+			symbols.NT_COLON,
+		}, 
+		SwitchLabel0R3, 
+	},
+	SwitchLabel1R0: {
+		symbols.NT_SwitchLabel, 1, 0, 
+		symbols.Symbols{  
+			symbols.NT_DEFAULT, 
+			symbols.NT_COLON,
+		}, 
+		SwitchLabel1R0, 
+	},
+	SwitchLabel1R1: {
+		symbols.NT_SwitchLabel, 1, 1, 
+		symbols.Symbols{  
+			symbols.NT_DEFAULT, 
+			symbols.NT_COLON,
+		}, 
+		SwitchLabel1R1, 
+	},
+	SwitchLabel1R2: {
+		symbols.NT_SwitchLabel, 1, 2, 
+		symbols.Symbols{  
+			symbols.NT_DEFAULT, 
+			symbols.NT_COLON,
+		}, 
+		SwitchLabel1R2, 
+	},
+	THIS0R0: {
+		symbols.NT_THIS, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_123, 
+			symbols.T_98,
+		}, 
+		THIS0R0, 
+	},
+	THIS0R1: {
+		symbols.NT_THIS, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_123, 
+			symbols.T_98,
+		}, 
+		THIS0R1, 
+	},
+	THIS0R2: {
+		symbols.NT_THIS, 0, 2, 
+		symbols.Symbols{  
+			symbols.T_123, 
+			symbols.T_98,
+		}, 
+		THIS0R2, 
+	},
+	THROW0R0: {
+		symbols.NT_THROW, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_124, 
+			symbols.T_98,
+		}, 
+		THROW0R0, 
+	},
+	THROW0R1: {
+		symbols.NT_THROW, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_124, 
+			symbols.T_98,
+		}, 
+		THROW0R1, 
+	},
+	THROW0R2: {
+		symbols.NT_THROW, 0, 2, 
+		symbols.Symbols{  
+			symbols.T_124, 
+			symbols.T_98,
+		}, 
+		THROW0R2, 
+	},
+	THROWS0R0: {
+		symbols.NT_THROWS, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_125, 
+			symbols.T_98,
+		}, 
+		THROWS0R0, 
+	},
+	THROWS0R1: {
+		symbols.NT_THROWS, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_125, 
+			symbols.T_98,
+		}, 
+		THROWS0R1, 
+	},
+	THROWS0R2: {
+		symbols.NT_THROWS, 0, 2, 
+		symbols.Symbols{  
+			symbols.T_125, 
+			symbols.T_98,
+		}, 
+		THROWS0R2, 
+	},
+	TILDA0R0: {
+		symbols.NT_TILDA, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_141, 
+			symbols.NT_WS,
+		}, 
+		TILDA0R0, 
+	},
+	TILDA0R1: {
+		symbols.NT_TILDA, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_141, 
+			symbols.NT_WS,
+		}, 
+		TILDA0R1, 
+	},
+	TILDA0R2: {
+		symbols.NT_TILDA, 0, 2, 
+		symbols.Symbols{  
+			symbols.T_141, 
+			symbols.NT_WS,
+		}, 
+		TILDA0R2, 
+	},
+	TRY0R0: {
+		symbols.NT_TRY, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_128, 
+			symbols.T_98,
+		}, 
+		TRY0R0, 
+	},
+	TRY0R1: {
+		symbols.NT_TRY, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_128, 
+			symbols.T_98,
+		}, 
+		TRY0R1, 
+	},
+	TRY0R2: {
+		symbols.NT_TRY, 0, 2, 
+		symbols.Symbols{  
+			symbols.T_128, 
+			symbols.T_98,
+		}, 
+		TRY0R2, 
+	},
+	Type0R0: {
+		symbols.NT_Type, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_TypeAlts, 
+			symbols.NT_RepDim0x,
+		}, 
+		Type0R0, 
+	},
+	Type0R1: {
+		symbols.NT_Type, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_TypeAlts, 
+			symbols.NT_RepDim0x,
+		}, 
+		Type0R1, 
+	},
+	Type0R2: {
+		symbols.NT_Type, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_TypeAlts, 
+			symbols.NT_RepDim0x,
+		}, 
+		Type0R2, 
+	},
+	TypeAlts0R0: {
+		symbols.NT_TypeAlts, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_BasicType,
+		}, 
+		TypeAlts0R0, 
+	},
+	TypeAlts0R1: {
+		symbols.NT_TypeAlts, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_BasicType,
+		}, 
+		TypeAlts0R1, 
+	},
+	TypeAlts1R0: {
+		symbols.NT_TypeAlts, 1, 0, 
+		symbols.Symbols{  
+			symbols.NT_ClsType,
+		}, 
+		TypeAlts1R0, 
+	},
+	TypeAlts1R1: {
+		symbols.NT_TypeAlts, 1, 1, 
+		symbols.Symbols{  
+			symbols.NT_ClsType,
+		}, 
+		TypeAlts1R1, 
+	},
+	UnaryExpr0R0: {
+		symbols.NT_UnaryExpr, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_PrefixOp, 
+			symbols.NT_UnaryExpr,
+		}, 
+		UnaryExpr0R0, 
+	},
+	UnaryExpr0R1: {
+		symbols.NT_UnaryExpr, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_PrefixOp, 
+			symbols.NT_UnaryExpr,
+		}, 
+		UnaryExpr0R1, 
+	},
+	UnaryExpr0R2: {
+		symbols.NT_UnaryExpr, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_PrefixOp, 
+			symbols.NT_UnaryExpr,
+		}, 
+		UnaryExpr0R2, 
+	},
+	UnaryExpr1R0: {
+		symbols.NT_UnaryExpr, 1, 0, 
+		symbols.Symbols{  
+			symbols.NT_LPAR, 
+			symbols.NT_Type, 
+			symbols.NT_RPAR, 
+			symbols.NT_UnaryExpr,
+		}, 
+		UnaryExpr1R0, 
+	},
+	UnaryExpr1R1: {
+		symbols.NT_UnaryExpr, 1, 1, 
+		symbols.Symbols{  
+			symbols.NT_LPAR, 
+			symbols.NT_Type, 
+			symbols.NT_RPAR, 
+			symbols.NT_UnaryExpr,
+		}, 
+		UnaryExpr1R1, 
+	},
+	UnaryExpr1R2: {
+		symbols.NT_UnaryExpr, 1, 2, 
+		symbols.Symbols{  
+			symbols.NT_LPAR, 
+			symbols.NT_Type, 
+			symbols.NT_RPAR, 
+			symbols.NT_UnaryExpr,
+		}, 
+		UnaryExpr1R2, 
+	},
+	UnaryExpr1R3: {
+		symbols.NT_UnaryExpr, 1, 3, 
+		symbols.Symbols{  
+			symbols.NT_LPAR, 
+			symbols.NT_Type, 
+			symbols.NT_RPAR, 
+			symbols.NT_UnaryExpr,
+		}, 
+		UnaryExpr1R3, 
+	},
+	UnaryExpr1R4: {
+		symbols.NT_UnaryExpr, 1, 4, 
+		symbols.Symbols{  
+			symbols.NT_LPAR, 
+			symbols.NT_Type, 
+			symbols.NT_RPAR, 
+			symbols.NT_UnaryExpr,
+		}, 
+		UnaryExpr1R4, 
+	},
+	UnaryExpr2R0: {
+		symbols.NT_UnaryExpr, 2, 0, 
+		symbols.Symbols{  
+			symbols.NT_Primary, 
+			symbols.NT_RepSel0x, 
+			symbols.NT_RepPfOp0x,
+		}, 
+		UnaryExpr2R0, 
+	},
+	UnaryExpr2R1: {
+		symbols.NT_UnaryExpr, 2, 1, 
+		symbols.Symbols{  
+			symbols.NT_Primary, 
+			symbols.NT_RepSel0x, 
+			symbols.NT_RepPfOp0x,
+		}, 
+		UnaryExpr2R1, 
+	},
+	UnaryExpr2R2: {
+		symbols.NT_UnaryExpr, 2, 2, 
+		symbols.Symbols{  
+			symbols.NT_Primary, 
+			symbols.NT_RepSel0x, 
+			symbols.NT_RepPfOp0x,
+		}, 
+		UnaryExpr2R2, 
+	},
+	UnaryExpr2R3: {
+		symbols.NT_UnaryExpr, 2, 3, 
+		symbols.Symbols{  
+			symbols.NT_Primary, 
+			symbols.NT_RepSel0x, 
+			symbols.NT_RepPfOp0x,
+		}, 
+		UnaryExpr2R3, 
+	},
+	UnicodeEscape0R0: {
+		symbols.NT_UnicodeEscape, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_130, 
+			symbols.T_75, 
+			symbols.T_75, 
+			symbols.T_75, 
+			symbols.T_75,
+		}, 
+		UnicodeEscape0R0, 
+	},
+	UnicodeEscape0R1: {
+		symbols.NT_UnicodeEscape, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_130, 
+			symbols.T_75, 
+			symbols.T_75, 
+			symbols.T_75, 
+			symbols.T_75,
+		}, 
+		UnicodeEscape0R1, 
+	},
+	UnicodeEscape0R2: {
+		symbols.NT_UnicodeEscape, 0, 2, 
+		symbols.Symbols{  
+			symbols.T_130, 
+			symbols.T_75, 
+			symbols.T_75, 
+			symbols.T_75, 
+			symbols.T_75,
+		}, 
+		UnicodeEscape0R2, 
+	},
+	UnicodeEscape0R3: {
+		symbols.NT_UnicodeEscape, 0, 3, 
+		symbols.Symbols{  
+			symbols.T_130, 
+			symbols.T_75, 
+			symbols.T_75, 
+			symbols.T_75, 
+			symbols.T_75,
+		}, 
+		UnicodeEscape0R3, 
+	},
+	UnicodeEscape0R4: {
+		symbols.NT_UnicodeEscape, 0, 4, 
+		symbols.Symbols{  
+			symbols.T_130, 
+			symbols.T_75, 
+			symbols.T_75, 
+			symbols.T_75, 
+			symbols.T_75,
+		}, 
+		UnicodeEscape0R4, 
+	},
+	UnicodeEscape0R5: {
+		symbols.NT_UnicodeEscape, 0, 5, 
+		symbols.Symbols{  
+			symbols.T_130, 
+			symbols.T_75, 
+			symbols.T_75, 
+			symbols.T_75, 
+			symbols.T_75,
+		}, 
+		UnicodeEscape0R5, 
+	},
+	VOID0R0: {
+		symbols.NT_VOID, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_131, 
+			symbols.T_98,
+		}, 
+		VOID0R0, 
+	},
+	VOID0R1: {
+		symbols.NT_VOID, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_131, 
+			symbols.T_98,
+		}, 
+		VOID0R1, 
+	},
+	VOID0R2: {
+		symbols.NT_VOID, 0, 2, 
+		symbols.Symbols{  
+			symbols.T_131, 
+			symbols.T_98,
+		}, 
+		VOID0R2, 
+	},
+	VarDecl0R0: {
+		symbols.NT_VarDecl, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_ID, 
+			symbols.NT_RepDim0x, 
+			symbols.NT_OptEqVarInit,
+		}, 
+		VarDecl0R0, 
+	},
+	VarDecl0R1: {
+		symbols.NT_VarDecl, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_ID, 
+			symbols.NT_RepDim0x, 
+			symbols.NT_OptEqVarInit,
+		}, 
+		VarDecl0R1, 
+	},
+	VarDecl0R2: {
+		symbols.NT_VarDecl, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_ID, 
+			symbols.NT_RepDim0x, 
+			symbols.NT_OptEqVarInit,
+		}, 
+		VarDecl0R2, 
+	},
+	VarDecl0R3: {
+		symbols.NT_VarDecl, 0, 3, 
+		symbols.Symbols{  
+			symbols.NT_ID, 
+			symbols.NT_RepDim0x, 
+			symbols.NT_OptEqVarInit,
+		}, 
+		VarDecl0R3, 
+	},
+	VarDeclInit0R0: {
+		symbols.NT_VarDeclInit, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_VarDecl, 
+			symbols.NT_RepComVDecl0x,
+		}, 
+		VarDeclInit0R0, 
+	},
+	VarDeclInit0R1: {
+		symbols.NT_VarDeclInit, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_VarDecl, 
+			symbols.NT_RepComVDecl0x,
+		}, 
+		VarDeclInit0R1, 
+	},
+	VarDeclInit0R2: {
+		symbols.NT_VarDeclInit, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_VarDecl, 
+			symbols.NT_RepComVDecl0x,
+		}, 
+		VarDeclInit0R2, 
+	},
+	VarDelID0R0: {
+		symbols.NT_VarDelID, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_ID, 
+			symbols.NT_RepDim0x,
+		}, 
+		VarDelID0R0, 
+	},
+	VarDelID0R1: {
+		symbols.NT_VarDelID, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_ID, 
+			symbols.NT_RepDim0x,
+		}, 
+		VarDelID0R1, 
+	},
+	VarDelID0R2: {
+		symbols.NT_VarDelID, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_ID, 
+			symbols.NT_RepDim0x,
+		}, 
+		VarDelID0R2, 
+	},
+	VarInitial0R0: {
+		symbols.NT_VarInitial, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_ArrayInitializer,
+		}, 
+		VarInitial0R0, 
+	},
+	VarInitial0R1: {
+		symbols.NT_VarInitial, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_ArrayInitializer,
+		}, 
+		VarInitial0R1, 
+	},
+	VarInitial1R0: {
+		symbols.NT_VarInitial, 1, 0, 
+		symbols.Symbols{  
+			symbols.NT_Expr,
+		}, 
+		VarInitial1R0, 
+	},
+	VarInitial1R1: {
+		symbols.NT_VarInitial, 1, 1, 
+		symbols.Symbols{  
+			symbols.NT_Expr,
+		}, 
+		VarInitial1R1, 
+	},
+	VoidIntfMethDeclRst0R0: {
+		symbols.NT_VoidIntfMethDeclRst, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_FormalParams, 
+			symbols.NT_OptThrowClsTypLst, 
+			symbols.NT_SEMI,
+		}, 
+		VoidIntfMethDeclRst0R0, 
+	},
+	VoidIntfMethDeclRst0R1: {
+		symbols.NT_VoidIntfMethDeclRst, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_FormalParams, 
+			symbols.NT_OptThrowClsTypLst, 
+			symbols.NT_SEMI,
+		}, 
+		VoidIntfMethDeclRst0R1, 
+	},
+	VoidIntfMethDeclRst0R2: {
+		symbols.NT_VoidIntfMethDeclRst, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_FormalParams, 
+			symbols.NT_OptThrowClsTypLst, 
+			symbols.NT_SEMI,
+		}, 
+		VoidIntfMethDeclRst0R2, 
+	},
+	VoidIntfMethDeclRst0R3: {
+		symbols.NT_VoidIntfMethDeclRst, 0, 3, 
+		symbols.Symbols{  
+			symbols.NT_FormalParams, 
+			symbols.NT_OptThrowClsTypLst, 
+			symbols.NT_SEMI,
+		}, 
+		VoidIntfMethDeclRst0R3, 
+	},
+	WHILE0R0: {
+		symbols.NT_WHILE, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_133, 
+			symbols.T_98,
+		}, 
+		WHILE0R0, 
+	},
+	WHILE0R1: {
+		symbols.NT_WHILE, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_133, 
+			symbols.T_98,
+		}, 
+		WHILE0R1, 
+	},
+	WHILE0R2: {
+		symbols.NT_WHILE, 0, 2, 
+		symbols.Symbols{  
+			symbols.T_133, 
+			symbols.T_98,
+		}, 
+		WHILE0R2, 
+	},
+	WS0R0: {
+		symbols.NT_WS, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_EscOrLineOrBlock,
+		}, 
+		WS0R0, 
+	},
+	WS0R1: {
+		symbols.NT_WS, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_EscOrLineOrBlock,
+		}, 
+		WS0R1, 
+	},
+	WS1R0: {
+		symbols.NT_WS, 1, 0, 
+		symbols.Symbols{ 
+		}, 
+		WS1R0, 
+	},
+	XORExpr0R0: {
+		symbols.NT_XORExpr, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_ANDExpr, 
+			symbols.NT_RepHatAND0x,
+		}, 
+		XORExpr0R0, 
+	},
+	XORExpr0R1: {
+		symbols.NT_XORExpr, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_ANDExpr, 
+			symbols.NT_RepHatAND0x,
+		}, 
+		XORExpr0R1, 
+	},
+	XORExpr0R2: {
+		symbols.NT_XORExpr, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_ANDExpr, 
+			symbols.NT_RepHatAND0x,
+		}, 
+		XORExpr0R2, 
 	},
 }
 
 var slotIndex = map[Index]Label { 
-	Index{ symbols.NT_Test,0,0 }: Test0R0,
-	Index{ symbols.NT_Test,0,1 }: Test0R1,
-	Index{ symbols.NT_Test,0,2 }: Test0R2,
-	Index{ symbols.NT_Test,0,3 }: Test0R3,
+	Index{ symbols.NT_AND,0,0 }: AND0R0,
+	Index{ symbols.NT_AND,0,1 }: AND0R1,
+	Index{ symbols.NT_AND,0,2 }: AND0R2,
+	Index{ symbols.NT_AND,0,3 }: AND0R3,
+	Index{ symbols.NT_ANDExpr,0,0 }: ANDExpr0R0,
+	Index{ symbols.NT_ANDExpr,0,1 }: ANDExpr0R1,
+	Index{ symbols.NT_ANDExpr,0,2 }: ANDExpr0R2,
+	Index{ symbols.NT_AND_AND,0,0 }: AND_AND0R0,
+	Index{ symbols.NT_AND_AND,0,1 }: AND_AND0R1,
+	Index{ symbols.NT_AND_AND,0,2 }: AND_AND0R2,
+	Index{ symbols.NT_AND_EQU,0,0 }: AND_EQU0R0,
+	Index{ symbols.NT_AND_EQU,0,1 }: AND_EQU0R1,
+	Index{ symbols.NT_AND_EQU,0,2 }: AND_EQU0R2,
+	Index{ symbols.NT_ASSERT,0,0 }: ASSERT0R0,
+	Index{ symbols.NT_ASSERT,0,1 }: ASSERT0R1,
+	Index{ symbols.NT_ASSERT,0,2 }: ASSERT0R2,
+	Index{ symbols.NT_AddAlts,0,0 }: AddAlts0R0,
+	Index{ symbols.NT_AddAlts,0,1 }: AddAlts0R1,
+	Index{ symbols.NT_AddAlts,1,0 }: AddAlts1R0,
+	Index{ symbols.NT_AddAlts,1,1 }: AddAlts1R1,
+	Index{ symbols.NT_AddExpr,0,0 }: AddExpr0R0,
+	Index{ symbols.NT_AddExpr,0,1 }: AddExpr0R1,
+	Index{ symbols.NT_AddExpr,0,2 }: AddExpr0R2,
+	Index{ symbols.NT_Any0xX,0,0 }: Any0xX0R0,
+	Index{ symbols.NT_Any0xX,0,1 }: Any0xX0R1,
+	Index{ symbols.NT_Any0xX,1,0 }: Any0xX1R0,
+	Index{ symbols.NT_Any0xX,1,1 }: Any0xX1R1,
+	Index{ symbols.NT_Any0xX,2,0 }: Any0xX2R0,
+	Index{ symbols.NT_Any0xX,2,1 }: Any0xX2R1,
+	Index{ symbols.NT_Arguments,0,0 }: Arguments0R0,
+	Index{ symbols.NT_Arguments,0,1 }: Arguments0R1,
+	Index{ symbols.NT_Arguments,0,2 }: Arguments0R2,
+	Index{ symbols.NT_Arguments,0,3 }: Arguments0R3,
+	Index{ symbols.NT_ArrayCreatorRest,0,0 }: ArrayCreatorRest0R0,
+	Index{ symbols.NT_ArrayCreatorRest,0,1 }: ArrayCreatorRest0R1,
+	Index{ symbols.NT_ArrayCreatorRest,0,2 }: ArrayCreatorRest0R2,
+	Index{ symbols.NT_ArrayInitializer,0,0 }: ArrayInitializer0R0,
+	Index{ symbols.NT_ArrayInitializer,0,1 }: ArrayInitializer0R1,
+	Index{ symbols.NT_ArrayInitializer,0,2 }: ArrayInitializer0R2,
+	Index{ symbols.NT_ArrayInitializer,0,3 }: ArrayInitializer0R3,
+	Index{ symbols.NT_ArrayRest,0,0 }: ArrayRest0R0,
+	Index{ symbols.NT_ArrayRest,0,1 }: ArrayRest0R1,
+	Index{ symbols.NT_ArrayRest,0,2 }: ArrayRest0R2,
+	Index{ symbols.NT_ArrayRest,0,3 }: ArrayRest0R3,
+	Index{ symbols.NT_ArrayRest,1,0 }: ArrayRest1R0,
+	Index{ symbols.NT_ArrayRest,1,1 }: ArrayRest1R1,
+	Index{ symbols.NT_ArrayRest,1,2 }: ArrayRest1R2,
+	Index{ symbols.NT_ArrayRest,1,3 }: ArrayRest1R3,
+	Index{ symbols.NT_ArrayRest,1,4 }: ArrayRest1R4,
+	Index{ symbols.NT_AssignOp,0,0 }: AssignOp0R0,
+	Index{ symbols.NT_AssignOp,0,1 }: AssignOp0R1,
+	Index{ symbols.NT_AssignOp,1,0 }: AssignOp1R0,
+	Index{ symbols.NT_AssignOp,1,1 }: AssignOp1R1,
+	Index{ symbols.NT_AssignOp,2,0 }: AssignOp2R0,
+	Index{ symbols.NT_AssignOp,2,1 }: AssignOp2R1,
+	Index{ symbols.NT_AssignOp,3,0 }: AssignOp3R0,
+	Index{ symbols.NT_AssignOp,3,1 }: AssignOp3R1,
+	Index{ symbols.NT_AssignOp,4,0 }: AssignOp4R0,
+	Index{ symbols.NT_AssignOp,4,1 }: AssignOp4R1,
+	Index{ symbols.NT_AssignOp,5,0 }: AssignOp5R0,
+	Index{ symbols.NT_AssignOp,5,1 }: AssignOp5R1,
+	Index{ symbols.NT_AssignOp,6,0 }: AssignOp6R0,
+	Index{ symbols.NT_AssignOp,6,1 }: AssignOp6R1,
+	Index{ symbols.NT_AssignOp,7,0 }: AssignOp7R0,
+	Index{ symbols.NT_AssignOp,7,1 }: AssignOp7R1,
+	Index{ symbols.NT_AssignOp,8,0 }: AssignOp8R0,
+	Index{ symbols.NT_AssignOp,8,1 }: AssignOp8R1,
+	Index{ symbols.NT_AssignOp,9,0 }: AssignOp9R0,
+	Index{ symbols.NT_AssignOp,9,1 }: AssignOp9R1,
+	Index{ symbols.NT_AssignOp,10,0 }: AssignOp10R0,
+	Index{ symbols.NT_AssignOp,10,1 }: AssignOp10R1,
+	Index{ symbols.NT_AssignOp,11,0 }: AssignOp11R0,
+	Index{ symbols.NT_AssignOp,11,1 }: AssignOp11R1,
+	Index{ symbols.NT_BANG,0,0 }: BANG0R0,
+	Index{ symbols.NT_BANG,0,1 }: BANG0R1,
+	Index{ symbols.NT_BANG,0,2 }: BANG0R2,
+	Index{ symbols.NT_BANG,0,3 }: BANG0R3,
+	Index{ symbols.NT_BREAK,0,0 }: BREAK0R0,
+	Index{ symbols.NT_BREAK,0,1 }: BREAK0R1,
+	Index{ symbols.NT_BREAK,0,2 }: BREAK0R2,
+	Index{ symbols.NT_BSR,0,0 }: BSR0R0,
+	Index{ symbols.NT_BSR,0,1 }: BSR0R1,
+	Index{ symbols.NT_BSR,0,2 }: BSR0R2,
+	Index{ symbols.NT_BSR,0,3 }: BSR0R3,
+	Index{ symbols.NT_BSR_EQU,0,0 }: BSR_EQU0R0,
+	Index{ symbols.NT_BSR_EQU,0,1 }: BSR_EQU0R1,
+	Index{ symbols.NT_BSR_EQU,0,2 }: BSR_EQU0R2,
+	Index{ symbols.NT_BasicType,0,0 }: BasicType0R0,
+	Index{ symbols.NT_BasicType,0,1 }: BasicType0R1,
+	Index{ symbols.NT_BasicType,0,2 }: BasicType0R2,
+	Index{ symbols.NT_BasicTypeLit,0,0 }: BasicTypeLit0R0,
+	Index{ symbols.NT_BasicTypeLit,0,1 }: BasicTypeLit0R1,
+	Index{ symbols.NT_BasicTypeLit,1,0 }: BasicTypeLit1R0,
+	Index{ symbols.NT_BasicTypeLit,1,1 }: BasicTypeLit1R1,
+	Index{ symbols.NT_BasicTypeLit,2,0 }: BasicTypeLit2R0,
+	Index{ symbols.NT_BasicTypeLit,2,1 }: BasicTypeLit2R1,
+	Index{ symbols.NT_BasicTypeLit,3,0 }: BasicTypeLit3R0,
+	Index{ symbols.NT_BasicTypeLit,3,1 }: BasicTypeLit3R1,
+	Index{ symbols.NT_BasicTypeLit,4,0 }: BasicTypeLit4R0,
+	Index{ symbols.NT_BasicTypeLit,4,1 }: BasicTypeLit4R1,
+	Index{ symbols.NT_BasicTypeLit,5,0 }: BasicTypeLit5R0,
+	Index{ symbols.NT_BasicTypeLit,5,1 }: BasicTypeLit5R1,
+	Index{ symbols.NT_BasicTypeLit,6,0 }: BasicTypeLit6R0,
+	Index{ symbols.NT_BasicTypeLit,6,1 }: BasicTypeLit6R1,
+	Index{ symbols.NT_BasicTypeLit,7,0 }: BasicTypeLit7R0,
+	Index{ symbols.NT_BasicTypeLit,7,1 }: BasicTypeLit7R1,
+	Index{ symbols.NT_Beoptfd,0,0 }: Beoptfd0R0,
+	Index{ symbols.NT_Beoptfd,0,1 }: Beoptfd0R1,
+	Index{ symbols.NT_Beoptfd,0,2 }: Beoptfd0R2,
+	Index{ symbols.NT_Block,0,0 }: Block0R0,
+	Index{ symbols.NT_Block,0,1 }: Block0R1,
+	Index{ symbols.NT_Block,0,2 }: Block0R2,
+	Index{ symbols.NT_Block,0,3 }: Block0R3,
+	Index{ symbols.NT_BlockStmt,0,0 }: BlockStmt0R0,
+	Index{ symbols.NT_BlockStmt,0,1 }: BlockStmt0R1,
+	Index{ symbols.NT_BlockStmt,1,0 }: BlockStmt1R0,
+	Index{ symbols.NT_BlockStmt,1,1 }: BlockStmt1R1,
+	Index{ symbols.NT_BlockStmt,1,2 }: BlockStmt1R2,
+	Index{ symbols.NT_BlockStmt,2,0 }: BlockStmt2R0,
+	Index{ symbols.NT_BlockStmt,2,1 }: BlockStmt2R1,
+	Index{ symbols.NT_CASE,0,0 }: CASE0R0,
+	Index{ symbols.NT_CASE,0,1 }: CASE0R1,
+	Index{ symbols.NT_CASE,0,2 }: CASE0R2,
+	Index{ symbols.NT_CATCH,0,0 }: CATCH0R0,
+	Index{ symbols.NT_CATCH,0,1 }: CATCH0R1,
+	Index{ symbols.NT_CATCH,0,2 }: CATCH0R2,
+	Index{ symbols.NT_COLON,0,0 }: COLON0R0,
+	Index{ symbols.NT_COLON,0,1 }: COLON0R1,
+	Index{ symbols.NT_COLON,0,2 }: COLON0R2,
+	Index{ symbols.NT_COMMA,0,0 }: COMMA0R0,
+	Index{ symbols.NT_COMMA,0,1 }: COMMA0R1,
+	Index{ symbols.NT_COMMA,0,2 }: COMMA0R2,
+	Index{ symbols.NT_CONTINUE,0,0 }: CONTINUE0R0,
+	Index{ symbols.NT_CONTINUE,0,1 }: CONTINUE0R1,
+	Index{ symbols.NT_CONTINUE,0,2 }: CONTINUE0R2,
+	Index{ symbols.NT_CarrotAlts,0,0 }: CarrotAlts0R0,
+	Index{ symbols.NT_CarrotAlts,0,1 }: CarrotAlts0R1,
+	Index{ symbols.NT_CarrotAlts,1,0 }: CarrotAlts1R0,
+	Index{ symbols.NT_CarrotAlts,1,1 }: CarrotAlts1R1,
+	Index{ symbols.NT_CarrotAlts,2,0 }: CarrotAlts2R0,
+	Index{ symbols.NT_CarrotAlts,2,1 }: CarrotAlts2R1,
+	Index{ symbols.NT_Catch,0,0 }: Catch0R0,
+	Index{ symbols.NT_Catch,0,1 }: Catch0R1,
+	Index{ symbols.NT_Catch,0,2 }: Catch0R2,
+	Index{ symbols.NT_Catch,0,3 }: Catch0R3,
+	Index{ symbols.NT_Catch,0,4 }: Catch0R4,
+	Index{ symbols.NT_Catch,0,5 }: Catch0R5,
+	Index{ symbols.NT_CatchBlk,0,0 }: CatchBlk0R0,
+	Index{ symbols.NT_CatchBlk,0,1 }: CatchBlk0R1,
+	Index{ symbols.NT_CatchBlk,0,2 }: CatchBlk0R2,
+	Index{ symbols.NT_CatchBlk,0,3 }: CatchBlk0R3,
+	Index{ symbols.NT_CatchBlk,1,0 }: CatchBlk1R0,
+	Index{ symbols.NT_CatchBlk,1,1 }: CatchBlk1R1,
+	Index{ symbols.NT_CharLiteral,0,0 }: CharLiteral0R0,
+	Index{ symbols.NT_CharLiteral,0,1 }: CharLiteral0R1,
+	Index{ symbols.NT_CharLiteral,0,2 }: CharLiteral0R2,
+	Index{ symbols.NT_CharLiteral,0,3 }: CharLiteral0R3,
+	Index{ symbols.NT_Cls,0,0 }: Cls0R0,
+	Index{ symbols.NT_Cls,0,1 }: Cls0R1,
+	Index{ symbols.NT_Cls,0,2 }: Cls0R2,
+	Index{ symbols.NT_ClsBdy,0,0 }: ClsBdy0R0,
+	Index{ symbols.NT_ClsBdy,0,1 }: ClsBdy0R1,
+	Index{ symbols.NT_ClsBdy,0,2 }: ClsBdy0R2,
+	Index{ symbols.NT_ClsBdy,0,3 }: ClsBdy0R3,
+	Index{ symbols.NT_ClsBdyDecl,0,0 }: ClsBdyDecl0R0,
+	Index{ symbols.NT_ClsBdyDecl,0,1 }: ClsBdyDecl0R1,
+	Index{ symbols.NT_ClsBdyDecl,1,0 }: ClsBdyDecl1R0,
+	Index{ symbols.NT_ClsBdyDecl,1,1 }: ClsBdyDecl1R1,
+	Index{ symbols.NT_ClsBdyDecl,1,2 }: ClsBdyDecl1R2,
+	Index{ symbols.NT_ClsBdyDecl,2,0 }: ClsBdyDecl2R0,
+	Index{ symbols.NT_ClsBdyDecl,2,1 }: ClsBdyDecl2R1,
+	Index{ symbols.NT_ClsBdyDecl,2,2 }: ClsBdyDecl2R2,
+	Index{ symbols.NT_ClsCreatorRest,0,0 }: ClsCreatorRest0R0,
+	Index{ symbols.NT_ClsCreatorRest,0,1 }: ClsCreatorRest0R1,
+	Index{ symbols.NT_ClsCreatorRest,0,2 }: ClsCreatorRest0R2,
+	Index{ symbols.NT_ClsDecl,0,0 }: ClsDecl0R0,
+	Index{ symbols.NT_ClsDecl,0,1 }: ClsDecl0R1,
+	Index{ symbols.NT_ClsDecl,0,2 }: ClsDecl0R2,
+	Index{ symbols.NT_ClsDecl,0,3 }: ClsDecl0R3,
+	Index{ symbols.NT_ClsDecl,0,4 }: ClsDecl0R4,
+	Index{ symbols.NT_ClsDecl,0,5 }: ClsDecl0R5,
+	Index{ symbols.NT_ClsType,0,0 }: ClsType0R0,
+	Index{ symbols.NT_ClsType,0,1 }: ClsType0R1,
+	Index{ symbols.NT_ClsType,0,2 }: ClsType0R2,
+	Index{ symbols.NT_ClsTypeList,0,0 }: ClsTypeList0R0,
+	Index{ symbols.NT_ClsTypeList,0,1 }: ClsTypeList0R1,
+	Index{ symbols.NT_ClsTypeList,0,2 }: ClsTypeList0R2,
+	Index{ symbols.NT_CompUnit,0,0 }: CompUnit0R0,
+	Index{ symbols.NT_CompUnit,0,1 }: CompUnit0R1,
+	Index{ symbols.NT_CompUnit,0,2 }: CompUnit0R2,
+	Index{ symbols.NT_CompUnit,0,3 }: CompUnit0R3,
+	Index{ symbols.NT_CompUnit,0,4 }: CompUnit0R4,
+	Index{ symbols.NT_CondANDExpr,0,0 }: CondANDExpr0R0,
+	Index{ symbols.NT_CondANDExpr,0,1 }: CondANDExpr0R1,
+	Index{ symbols.NT_CondANDExpr,0,2 }: CondANDExpr0R2,
+	Index{ symbols.NT_CondExpr,0,0 }: CondExpr0R0,
+	Index{ symbols.NT_CondExpr,0,1 }: CondExpr0R1,
+	Index{ symbols.NT_CondExpr,0,2 }: CondExpr0R2,
+	Index{ symbols.NT_CondORExpr,0,0 }: CondORExpr0R0,
+	Index{ symbols.NT_CondORExpr,0,1 }: CondORExpr0R1,
+	Index{ symbols.NT_CondORExpr,0,2 }: CondORExpr0R2,
+	Index{ symbols.NT_ConstDecl,0,0 }: ConstDecl0R0,
+	Index{ symbols.NT_ConstDecl,0,1 }: ConstDecl0R1,
+	Index{ symbols.NT_ConstDecl,0,2 }: ConstDecl0R2,
+	Index{ symbols.NT_ConstDeclRest,0,0 }: ConstDeclRest0R0,
+	Index{ symbols.NT_ConstDeclRest,0,1 }: ConstDeclRest0R1,
+	Index{ symbols.NT_ConstDeclRest,0,2 }: ConstDeclRest0R2,
+	Index{ symbols.NT_ConstDeclRest,0,3 }: ConstDeclRest0R3,
+	Index{ symbols.NT_ConstDeclsRest,0,0 }: ConstDeclsRest0R0,
+	Index{ symbols.NT_ConstDeclsRest,0,1 }: ConstDeclsRest0R1,
+	Index{ symbols.NT_ConstDeclsRest,0,2 }: ConstDeclsRest0R2,
+	Index{ symbols.NT_ConstExpr,0,0 }: ConstExpr0R0,
+	Index{ symbols.NT_ConstExpr,0,1 }: ConstExpr0R1,
+	Index{ symbols.NT_CreatedName,0,0 }: CreatedName0R0,
+	Index{ symbols.NT_CreatedName,0,1 }: CreatedName0R1,
+	Index{ symbols.NT_CreatedName,0,2 }: CreatedName0R2,
+	Index{ symbols.NT_Creator,0,0 }: Creator0R0,
+	Index{ symbols.NT_Creator,0,1 }: Creator0R1,
+	Index{ symbols.NT_Creator,0,2 }: Creator0R2,
+	Index{ symbols.NT_Creator,1,0 }: Creator1R0,
+	Index{ symbols.NT_Creator,1,1 }: Creator1R1,
+	Index{ symbols.NT_Creator,1,2 }: Creator1R2,
+	Index{ symbols.NT_DEC,0,0 }: DEC0R0,
+	Index{ symbols.NT_DEC,0,1 }: DEC0R1,
+	Index{ symbols.NT_DEC,0,2 }: DEC0R2,
+	Index{ symbols.NT_DEFAULT,0,0 }: DEFAULT0R0,
+	Index{ symbols.NT_DEFAULT,0,1 }: DEFAULT0R1,
+	Index{ symbols.NT_DEFAULT,0,2 }: DEFAULT0R2,
+	Index{ symbols.NT_DIV,0,0 }: DIV0R0,
+	Index{ symbols.NT_DIV,0,1 }: DIV0R1,
+	Index{ symbols.NT_DIV,0,2 }: DIV0R2,
+	Index{ symbols.NT_DIV,0,3 }: DIV0R3,
+	Index{ symbols.NT_DIV_EQU,0,0 }: DIV_EQU0R0,
+	Index{ symbols.NT_DIV_EQU,0,1 }: DIV_EQU0R1,
+	Index{ symbols.NT_DIV_EQU,0,2 }: DIV_EQU0R2,
+	Index{ symbols.NT_DO,0,0 }: DO0R0,
+	Index{ symbols.NT_DO,0,1 }: DO0R1,
+	Index{ symbols.NT_DO,0,2 }: DO0R2,
+	Index{ symbols.NT_DOT,0,0 }: DOT0R0,
+	Index{ symbols.NT_DOT,0,1 }: DOT0R1,
+	Index{ symbols.NT_DOT,0,2 }: DOT0R2,
+	Index{ symbols.NT_DecimalFloat,0,0 }: DecimalFloat0R0,
+	Index{ symbols.NT_DecimalFloat,0,1 }: DecimalFloat0R1,
+	Index{ symbols.NT_DecimalFloat,0,2 }: DecimalFloat0R2,
+	Index{ symbols.NT_DecimalFloat,0,3 }: DecimalFloat0R3,
+	Index{ symbols.NT_DecimalFloat,0,4 }: DecimalFloat0R4,
+	Index{ symbols.NT_DecimalFloat,0,5 }: DecimalFloat0R5,
+	Index{ symbols.NT_DecimalFloat,1,0 }: DecimalFloat1R0,
+	Index{ symbols.NT_DecimalFloat,1,1 }: DecimalFloat1R1,
+	Index{ symbols.NT_DecimalFloat,1,2 }: DecimalFloat1R2,
+	Index{ symbols.NT_DecimalFloat,2,0 }: DecimalFloat2R0,
+	Index{ symbols.NT_DecimalFloat,2,1 }: DecimalFloat2R1,
+	Index{ symbols.NT_DecimalFloat,2,2 }: DecimalFloat2R2,
+	Index{ symbols.NT_DecimalFloat,3,0 }: DecimalFloat3R0,
+	Index{ symbols.NT_DecimalFloat,3,1 }: DecimalFloat3R1,
+	Index{ symbols.NT_DecimalFloat,3,2 }: DecimalFloat3R2,
+	Index{ symbols.NT_DecimalNumeral,0,0 }: DecimalNumeral0R0,
+	Index{ symbols.NT_DecimalNumeral,0,1 }: DecimalNumeral0R1,
+	Index{ symbols.NT_DecimalNumeral,1,0 }: DecimalNumeral1R0,
+	Index{ symbols.NT_DecimalNumeral,1,1 }: DecimalNumeral1R1,
+	Index{ symbols.NT_DecimalNumeral,1,2 }: DecimalNumeral1R2,
+	Index{ symbols.NT_DeclAlts,0,0 }: DeclAlts0R0,
+	Index{ symbols.NT_DeclAlts,0,1 }: DeclAlts0R1,
+	Index{ symbols.NT_DeclAlts,1,0 }: DeclAlts1R0,
+	Index{ symbols.NT_DeclAlts,1,1 }: DeclAlts1R1,
+	Index{ symbols.NT_Dim,0,0 }: Dim0R0,
+	Index{ symbols.NT_Dim,0,1 }: Dim0R1,
+	Index{ symbols.NT_Dim,0,2 }: Dim0R2,
+	Index{ symbols.NT_DimExpr,0,0 }: DimExpr0R0,
+	Index{ symbols.NT_DimExpr,0,1 }: DimExpr0R1,
+	Index{ symbols.NT_DimExpr,0,2 }: DimExpr0R2,
+	Index{ symbols.NT_DimExpr,0,3 }: DimExpr0R3,
+	Index{ symbols.NT_ELSE,0,0 }: ELSE0R0,
+	Index{ symbols.NT_ELSE,0,1 }: ELSE0R1,
+	Index{ symbols.NT_ELSE,0,2 }: ELSE0R2,
+	Index{ symbols.NT_EQU,0,0 }: EQU0R0,
+	Index{ symbols.NT_EQU,0,1 }: EQU0R1,
+	Index{ symbols.NT_EQU,0,2 }: EQU0R2,
+	Index{ symbols.NT_EQU,0,3 }: EQU0R3,
+	Index{ symbols.NT_EQUAL,0,0 }: EQUAL0R0,
+	Index{ symbols.NT_EQUAL,0,1 }: EQUAL0R1,
+	Index{ symbols.NT_EQUAL,0,2 }: EQUAL0R2,
+	Index{ symbols.NT_ESInst,0,0 }: ESInst0R0,
+	Index{ symbols.NT_ESInst,0,1 }: ESInst0R1,
+	Index{ symbols.NT_ESInst,1,0 }: ESInst1R0,
+	Index{ symbols.NT_ESInst,1,1 }: ESInst1R1,
+	Index{ symbols.NT_ESInst,1,2 }: ESInst1R2,
+	Index{ symbols.NT_EXTENDS,0,0 }: EXTENDS0R0,
+	Index{ symbols.NT_EXTENDS,0,1 }: EXTENDS0R1,
+	Index{ symbols.NT_EXTENDS,0,2 }: EXTENDS0R2,
+	Index{ symbols.NT_EqAlts,0,0 }: EqAlts0R0,
+	Index{ symbols.NT_EqAlts,0,1 }: EqAlts0R1,
+	Index{ symbols.NT_EqAlts,1,0 }: EqAlts1R0,
+	Index{ symbols.NT_EqAlts,1,1 }: EqAlts1R1,
+	Index{ symbols.NT_EqCheck,0,0 }: EqCheck0R0,
+	Index{ symbols.NT_EqCheck,0,1 }: EqCheck0R1,
+	Index{ symbols.NT_EqCheck,1,0 }: EqCheck1R0,
+	Index{ symbols.NT_EqCheck,1,1 }: EqCheck1R1,
+	Index{ symbols.NT_EqCheck,2,0 }: EqCheck2R0,
+	Index{ symbols.NT_EqCheck,2,1 }: EqCheck2R1,
+	Index{ symbols.NT_EqCheck,3,0 }: EqCheck3R0,
+	Index{ symbols.NT_EqCheck,3,1 }: EqCheck3R1,
+	Index{ symbols.NT_EqShift,0,0 }: EqShift0R0,
+	Index{ symbols.NT_EqShift,0,1 }: EqShift0R1,
+	Index{ symbols.NT_EqShift,0,2 }: EqShift0R2,
+	Index{ symbols.NT_EqualExpr,0,0 }: EqualExpr0R0,
+	Index{ symbols.NT_EqualExpr,0,1 }: EqualExpr0R1,
+	Index{ symbols.NT_EqualExpr,0,2 }: EqualExpr0R2,
+	Index{ symbols.NT_EscOrLineOrBlock,0,0 }: EscOrLineOrBlock0R0,
+	Index{ symbols.NT_EscOrLineOrBlock,0,1 }: EscOrLineOrBlock0R1,
+	Index{ symbols.NT_EscOrLineOrBlock,1,0 }: EscOrLineOrBlock1R0,
+	Index{ symbols.NT_EscOrLineOrBlock,1,1 }: EscOrLineOrBlock1R1,
+	Index{ symbols.NT_EscOrLineOrBlock,2,0 }: EscOrLineOrBlock2R0,
+	Index{ symbols.NT_EscOrLineOrBlock,2,1 }: EscOrLineOrBlock2R1,
+	Index{ symbols.NT_EscSlash,0,0 }: EscSlash0R0,
+	Index{ symbols.NT_EscSlash,0,1 }: EscSlash0R1,
+	Index{ symbols.NT_EscSlash,1,0 }: EscSlash1R0,
+	Index{ symbols.NT_EscSlash,1,1 }: EscSlash1R1,
+	Index{ symbols.NT_EscUp,0,0 }: EscUp0R0,
+	Index{ symbols.NT_EscUp,0,1 }: EscUp0R1,
+	Index{ symbols.NT_EscUp,1,0 }: EscUp1R0,
+	Index{ symbols.NT_EscUp,1,1 }: EscUp1R1,
+	Index{ symbols.NT_EscUp,2,0 }: EscUp2R0,
+	Index{ symbols.NT_EscUp,2,1 }: EscUp2R1,
+	Index{ symbols.NT_Escape,0,0 }: Escape0R0,
+	Index{ symbols.NT_Escape,0,1 }: Escape0R1,
+	Index{ symbols.NT_Escape,0,2 }: Escape0R2,
+	Index{ symbols.NT_Escs,0,0 }: Escs0R0,
+	Index{ symbols.NT_Escs,0,1 }: Escs0R1,
+	Index{ symbols.NT_Escs,1,0 }: Escs1R0,
+	Index{ symbols.NT_Escs,1,1 }: Escs1R1,
+	Index{ symbols.NT_Escs,2,0 }: Escs2R0,
+	Index{ symbols.NT_Escs,2,1 }: Escs2R1,
+	Index{ symbols.NT_Expr,0,0 }: Expr0R0,
+	Index{ symbols.NT_Expr,0,1 }: Expr0R1,
+	Index{ symbols.NT_Expr,0,2 }: Expr0R2,
+	Index{ symbols.NT_FINAL,0,0 }: FINAL0R0,
+	Index{ symbols.NT_FINAL,0,1 }: FINAL0R1,
+	Index{ symbols.NT_FINAL,0,2 }: FINAL0R2,
+	Index{ symbols.NT_FINALLY,0,0 }: FINALLY0R0,
+	Index{ symbols.NT_FINALLY,0,1 }: FINALLY0R1,
+	Index{ symbols.NT_FINALLY,0,2 }: FINALLY0R2,
+	Index{ symbols.NT_FOR,0,0 }: FOR0R0,
+	Index{ symbols.NT_FOR,0,1 }: FOR0R1,
+	Index{ symbols.NT_FOR,0,2 }: FOR0R2,
+	Index{ symbols.NT_Finally,0,0 }: Finally0R0,
+	Index{ symbols.NT_Finally,0,1 }: Finally0R1,
+	Index{ symbols.NT_Finally,0,2 }: Finally0R2,
+	Index{ symbols.NT_FloatLiteral,0,0 }: FloatLiteral0R0,
+	Index{ symbols.NT_FloatLiteral,0,1 }: FloatLiteral0R1,
+	Index{ symbols.NT_FloatLiteral,1,0 }: FloatLiteral1R0,
+	Index{ symbols.NT_FloatLiteral,1,1 }: FloatLiteral1R1,
+	Index{ symbols.NT_ForInit,0,0 }: ForInit0R0,
+	Index{ symbols.NT_ForInit,0,1 }: ForInit0R1,
+	Index{ symbols.NT_ForInit,0,2 }: ForInit0R2,
+	Index{ symbols.NT_ForInit,0,3 }: ForInit0R3,
+	Index{ symbols.NT_ForInit,1,0 }: ForInit1R0,
+	Index{ symbols.NT_ForInit,1,1 }: ForInit1R1,
+	Index{ symbols.NT_ForInit,1,2 }: ForInit1R2,
+	Index{ symbols.NT_ForUpdate,0,0 }: ForUpdate0R0,
+	Index{ symbols.NT_ForUpdate,0,1 }: ForUpdate0R1,
+	Index{ symbols.NT_ForUpdate,0,2 }: ForUpdate0R2,
+	Index{ symbols.NT_FormalParam,0,0 }: FormalParam0R0,
+	Index{ symbols.NT_FormalParam,0,1 }: FormalParam0R1,
+	Index{ symbols.NT_FormalParam,0,2 }: FormalParam0R2,
+	Index{ symbols.NT_FormalParamDecls,0,0 }: FormalParamDecls0R0,
+	Index{ symbols.NT_FormalParamDecls,0,1 }: FormalParamDecls0R1,
+	Index{ symbols.NT_FormalParamDecls,0,2 }: FormalParamDecls0R2,
+	Index{ symbols.NT_FormalParamDeclsRest,0,0 }: FormalParamDeclsRest0R0,
+	Index{ symbols.NT_FormalParamDeclsRest,0,1 }: FormalParamDeclsRest0R1,
+	Index{ symbols.NT_FormalParamDeclsRest,0,2 }: FormalParamDeclsRest0R2,
+	Index{ symbols.NT_FormalParams,0,0 }: FormalParams0R0,
+	Index{ symbols.NT_FormalParams,0,1 }: FormalParams0R1,
+	Index{ symbols.NT_FormalParams,0,2 }: FormalParams0R2,
+	Index{ symbols.NT_FormalParams,0,3 }: FormalParams0R3,
+	Index{ symbols.NT_GE,0,0 }: GE0R0,
+	Index{ symbols.NT_GE,0,1 }: GE0R1,
+	Index{ symbols.NT_GE,0,2 }: GE0R2,
+	Index{ symbols.NT_GT,0,0 }: GT0R0,
+	Index{ symbols.NT_GT,0,1 }: GT0R1,
+	Index{ symbols.NT_GT,0,2 }: GT0R2,
+	Index{ symbols.NT_GT,0,3 }: GT0R3,
+	Index{ symbols.NT_HAT,0,0 }: HAT0R0,
+	Index{ symbols.NT_HAT,0,1 }: HAT0R1,
+	Index{ symbols.NT_HAT,0,2 }: HAT0R2,
+	Index{ symbols.NT_HAT,0,3 }: HAT0R3,
+	Index{ symbols.NT_HAT_EQU,0,0 }: HAT_EQU0R0,
+	Index{ symbols.NT_HAT_EQU,0,1 }: HAT_EQU0R1,
+	Index{ symbols.NT_HAT_EQU,0,2 }: HAT_EQU0R2,
+	Index{ symbols.NT_HexFloat,0,0 }: HexFloat0R0,
+	Index{ symbols.NT_HexFloat,0,1 }: HexFloat0R1,
+	Index{ symbols.NT_HexFloat,0,2 }: HexFloat0R2,
+	Index{ symbols.NT_HexNumeral,0,0 }: HexNumeral0R0,
+	Index{ symbols.NT_HexNumeral,0,1 }: HexNumeral0R1,
+	Index{ symbols.NT_HexNumeral,0,2 }: HexNumeral0R2,
+	Index{ symbols.NT_HexSignificand,0,0 }: HexSignificand0R0,
+	Index{ symbols.NT_HexSignificand,0,1 }: HexSignificand0R1,
+	Index{ symbols.NT_HexSignificand,0,2 }: HexSignificand0R2,
+	Index{ symbols.NT_HexSignificand,1,0 }: HexSignificand1R0,
+	Index{ symbols.NT_HexSignificand,1,1 }: HexSignificand1R1,
+	Index{ symbols.NT_HexSignificand,1,2 }: HexSignificand1R2,
+	Index{ symbols.NT_HexSignificand,1,3 }: HexSignificand1R3,
+	Index{ symbols.NT_ID,0,0 }: ID0R0,
+	Index{ symbols.NT_ID,0,1 }: ID0R1,
+	Index{ symbols.NT_ID,0,2 }: ID0R2,
+	Index{ symbols.NT_IDSuffix,0,0 }: IDSuffix0R0,
+	Index{ symbols.NT_IDSuffix,0,1 }: IDSuffix0R1,
+	Index{ symbols.NT_IDSuffix,0,2 }: IDSuffix0R2,
+	Index{ symbols.NT_IDSuffix,1,0 }: IDSuffix1R0,
+	Index{ symbols.NT_IDSuffix,1,1 }: IDSuffix1R1,
+	Index{ symbols.NT_IDSuffix,2,0 }: IDSuffix2R0,
+	Index{ symbols.NT_IDSuffix,2,1 }: IDSuffix2R1,
+	Index{ symbols.NT_IDSuffix,2,2 }: IDSuffix2R2,
+	Index{ symbols.NT_IF,0,0 }: IF0R0,
+	Index{ symbols.NT_IF,0,1 }: IF0R1,
+	Index{ symbols.NT_IF,0,2 }: IF0R2,
+	Index{ symbols.NT_IMPLEMENTS,0,0 }: IMPLEMENTS0R0,
+	Index{ symbols.NT_IMPLEMENTS,0,1 }: IMPLEMENTS0R1,
+	Index{ symbols.NT_IMPLEMENTS,0,2 }: IMPLEMENTS0R2,
+	Index{ symbols.NT_IMPORT,0,0 }: IMPORT0R0,
+	Index{ symbols.NT_IMPORT,0,1 }: IMPORT0R1,
+	Index{ symbols.NT_IMPORT,0,2 }: IMPORT0R2,
+	Index{ symbols.NT_INC,0,0 }: INC0R0,
+	Index{ symbols.NT_INC,0,1 }: INC0R1,
+	Index{ symbols.NT_INC,0,2 }: INC0R2,
+	Index{ symbols.NT_INSTANCEOF,0,0 }: INSTANCEOF0R0,
+	Index{ symbols.NT_INSTANCEOF,0,1 }: INSTANCEOF0R1,
+	Index{ symbols.NT_INSTANCEOF,0,2 }: INSTANCEOF0R2,
+	Index{ symbols.NT_IORExpr,0,0 }: IORExpr0R0,
+	Index{ symbols.NT_IORExpr,0,1 }: IORExpr0R1,
+	Index{ symbols.NT_IORExpr,0,2 }: IORExpr0R2,
+	Index{ symbols.NT_ImportDecl,0,0 }: ImportDecl0R0,
+	Index{ symbols.NT_ImportDecl,0,1 }: ImportDecl0R1,
+	Index{ symbols.NT_ImportDecl,0,2 }: ImportDecl0R2,
+	Index{ symbols.NT_ImportDecl,0,3 }: ImportDecl0R3,
+	Index{ symbols.NT_ImportDecl,0,4 }: ImportDecl0R4,
+	Index{ symbols.NT_ImportDecl,0,5 }: ImportDecl0R5,
+	Index{ symbols.NT_InnerCreator,0,0 }: InnerCreator0R0,
+	Index{ symbols.NT_InnerCreator,0,1 }: InnerCreator0R1,
+	Index{ symbols.NT_InnerCreator,0,2 }: InnerCreator0R2,
+	Index{ symbols.NT_IntegerLiteral,0,0 }: IntegerLiteral0R0,
+	Index{ symbols.NT_IntegerLiteral,0,1 }: IntegerLiteral0R1,
+	Index{ symbols.NT_IntegerLiteral,0,2 }: IntegerLiteral0R2,
+	Index{ symbols.NT_Intf,0,0 }: Intf0R0,
+	Index{ symbols.NT_Intf,0,1 }: Intf0R1,
+	Index{ symbols.NT_Intf,0,2 }: Intf0R2,
+	Index{ symbols.NT_IntfBdy,0,0 }: IntfBdy0R0,
+	Index{ symbols.NT_IntfBdy,0,1 }: IntfBdy0R1,
+	Index{ symbols.NT_IntfBdy,0,2 }: IntfBdy0R2,
+	Index{ symbols.NT_IntfBdy,0,3 }: IntfBdy0R3,
+	Index{ symbols.NT_IntfBdyDecl,0,0 }: IntfBdyDecl0R0,
+	Index{ symbols.NT_IntfBdyDecl,0,1 }: IntfBdyDecl0R1,
+	Index{ symbols.NT_IntfBdyDecl,0,2 }: IntfBdyDecl0R2,
+	Index{ symbols.NT_IntfBdyDecl,1,0 }: IntfBdyDecl1R0,
+	Index{ symbols.NT_IntfBdyDecl,1,1 }: IntfBdyDecl1R1,
+	Index{ symbols.NT_IntfDecl,0,0 }: IntfDecl0R0,
+	Index{ symbols.NT_IntfDecl,0,1 }: IntfDecl0R1,
+	Index{ symbols.NT_IntfDecl,0,2 }: IntfDecl0R2,
+	Index{ symbols.NT_IntfDecl,0,3 }: IntfDecl0R3,
+	Index{ symbols.NT_IntfDecl,0,4 }: IntfDecl0R4,
+	Index{ symbols.NT_IntfMemDecl,0,0 }: IntfMemDecl0R0,
+	Index{ symbols.NT_IntfMemDecl,0,1 }: IntfMemDecl0R1,
+	Index{ symbols.NT_IntfMemDecl,1,0 }: IntfMemDecl1R0,
+	Index{ symbols.NT_IntfMemDecl,1,1 }: IntfMemDecl1R1,
+	Index{ symbols.NT_IntfMemDecl,1,2 }: IntfMemDecl1R2,
+	Index{ symbols.NT_IntfMemDecl,1,3 }: IntfMemDecl1R3,
+	Index{ symbols.NT_IntfMemDecl,2,0 }: IntfMemDecl2R0,
+	Index{ symbols.NT_IntfMemDecl,2,1 }: IntfMemDecl2R1,
+	Index{ symbols.NT_IntfMemDecl,3,0 }: IntfMemDecl3R0,
+	Index{ symbols.NT_IntfMemDecl,3,1 }: IntfMemDecl3R1,
+	Index{ symbols.NT_IntfMethDeclRest,0,0 }: IntfMethDeclRest0R0,
+	Index{ symbols.NT_IntfMethDeclRest,0,1 }: IntfMethDeclRest0R1,
+	Index{ symbols.NT_IntfMethDeclRest,0,2 }: IntfMethDeclRest0R2,
+	Index{ symbols.NT_IntfMethDeclRest,0,3 }: IntfMethDeclRest0R3,
+	Index{ symbols.NT_IntfMethDeclRest,0,4 }: IntfMethDeclRest0R4,
+	Index{ symbols.NT_IntfMethFieldDecl,0,0 }: IntfMethFieldDecl0R0,
+	Index{ symbols.NT_IntfMethFieldDecl,0,1 }: IntfMethFieldDecl0R1,
+	Index{ symbols.NT_IntfMethFieldDecl,0,2 }: IntfMethFieldDecl0R2,
+	Index{ symbols.NT_IntfMethFieldDecl,0,3 }: IntfMethFieldDecl0R3,
+	Index{ symbols.NT_IntfMethFieldRest,0,0 }: IntfMethFieldRest0R0,
+	Index{ symbols.NT_IntfMethFieldRest,0,1 }: IntfMethFieldRest0R1,
+	Index{ symbols.NT_IntfMethFieldRest,0,2 }: IntfMethFieldRest0R2,
+	Index{ symbols.NT_IntfMethFieldRest,1,0 }: IntfMethFieldRest1R0,
+	Index{ symbols.NT_IntfMethFieldRest,1,1 }: IntfMethFieldRest1R1,
+	Index{ symbols.NT_LBRK,0,0 }: LBRK0R0,
+	Index{ symbols.NT_LBRK,0,1 }: LBRK0R1,
+	Index{ symbols.NT_LBRK,0,2 }: LBRK0R2,
+	Index{ symbols.NT_LE,0,0 }: LE0R0,
+	Index{ symbols.NT_LE,0,1 }: LE0R1,
+	Index{ symbols.NT_LE,0,2 }: LE0R2,
+	Index{ symbols.NT_LPAR,0,0 }: LPAR0R0,
+	Index{ symbols.NT_LPAR,0,1 }: LPAR0R1,
+	Index{ symbols.NT_LPAR,0,2 }: LPAR0R2,
+	Index{ symbols.NT_LT,0,0 }: LT0R0,
+	Index{ symbols.NT_LT,0,1 }: LT0R1,
+	Index{ symbols.NT_LT,0,2 }: LT0R2,
+	Index{ symbols.NT_LT,0,3 }: LT0R3,
+	Index{ symbols.NT_LWING,0,0 }: LWING0R0,
+	Index{ symbols.NT_LWING,0,1 }: LWING0R1,
+	Index{ symbols.NT_LWING,0,2 }: LWING0R2,
+	Index{ symbols.NT_Letter,0,0 }: Letter0R0,
+	Index{ symbols.NT_Letter,0,1 }: Letter0R1,
+	Index{ symbols.NT_Letter,1,0 }: Letter1R0,
+	Index{ symbols.NT_Letter,1,1 }: Letter1R1,
+	Index{ symbols.NT_LetterLorD,0,0 }: LetterLorD0R0,
+	Index{ symbols.NT_LetterLorD,0,1 }: LetterLorD0R1,
+	Index{ symbols.NT_LetterLorD,0,2 }: LetterLorD0R2,
+	Index{ symbols.NT_LetterLorD,0,3 }: LetterLorD0R3,
+	Index{ symbols.NT_LitAlts,0,0 }: LitAlts0R0,
+	Index{ symbols.NT_LitAlts,0,1 }: LitAlts0R1,
+	Index{ symbols.NT_LitAlts,1,0 }: LitAlts1R0,
+	Index{ symbols.NT_LitAlts,1,1 }: LitAlts1R1,
+	Index{ symbols.NT_LitAlts,2,0 }: LitAlts2R0,
+	Index{ symbols.NT_LitAlts,2,1 }: LitAlts2R1,
+	Index{ symbols.NT_LitAlts,3,0 }: LitAlts3R0,
+	Index{ symbols.NT_LitAlts,3,1 }: LitAlts3R1,
+	Index{ symbols.NT_LitAlts,4,0 }: LitAlts4R0,
+	Index{ symbols.NT_LitAlts,4,1 }: LitAlts4R1,
+	Index{ symbols.NT_LitAlts,4,2 }: LitAlts4R2,
+	Index{ symbols.NT_LitAlts,5,0 }: LitAlts5R0,
+	Index{ symbols.NT_LitAlts,5,1 }: LitAlts5R1,
+	Index{ symbols.NT_LitAlts,5,2 }: LitAlts5R2,
+	Index{ symbols.NT_LitAlts,6,0 }: LitAlts6R0,
+	Index{ symbols.NT_LitAlts,6,1 }: LitAlts6R1,
+	Index{ symbols.NT_LitAlts,6,2 }: LitAlts6R2,
+	Index{ symbols.NT_Literal,0,0 }: Literal0R0,
+	Index{ symbols.NT_Literal,0,1 }: Literal0R1,
+	Index{ symbols.NT_Literal,0,2 }: Literal0R2,
+	Index{ symbols.NT_LocalVarDeclStmt,0,0 }: LocalVarDeclStmt0R0,
+	Index{ symbols.NT_LocalVarDeclStmt,0,1 }: LocalVarDeclStmt0R1,
+	Index{ symbols.NT_LocalVarDeclStmt,0,2 }: LocalVarDeclStmt0R2,
+	Index{ symbols.NT_LocalVarDeclStmt,0,3 }: LocalVarDeclStmt0R3,
+	Index{ symbols.NT_LocalVarDeclStmt,0,4 }: LocalVarDeclStmt0R4,
+	Index{ symbols.NT_LorD,0,0 }: LorD0R0,
+	Index{ symbols.NT_LorD,0,1 }: LorD0R1,
+	Index{ symbols.NT_LorD,1,0 }: LorD1R0,
+	Index{ symbols.NT_LorD,1,1 }: LorD1R1,
+	Index{ symbols.NT_MINUS,0,0 }: MINUS0R0,
+	Index{ symbols.NT_MINUS,0,1 }: MINUS0R1,
+	Index{ symbols.NT_MINUS,0,2 }: MINUS0R2,
+	Index{ symbols.NT_MINUS,0,3 }: MINUS0R3,
+	Index{ symbols.NT_MINUS_EQU,0,0 }: MINUS_EQU0R0,
+	Index{ symbols.NT_MINUS_EQU,0,1 }: MINUS_EQU0R1,
+	Index{ symbols.NT_MINUS_EQU,0,2 }: MINUS_EQU0R2,
+	Index{ symbols.NT_MOD,0,0 }: MOD0R0,
+	Index{ symbols.NT_MOD,0,1 }: MOD0R1,
+	Index{ symbols.NT_MOD,0,2 }: MOD0R2,
+	Index{ symbols.NT_MOD,0,3 }: MOD0R3,
+	Index{ symbols.NT_MOD_EQU,0,0 }: MOD_EQU0R0,
+	Index{ symbols.NT_MOD_EQU,0,1 }: MOD_EQU0R1,
+	Index{ symbols.NT_MOD_EQU,0,2 }: MOD_EQU0R2,
+	Index{ symbols.NT_MemAlts,0,0 }: MemAlts0R0,
+	Index{ symbols.NT_MemAlts,0,1 }: MemAlts0R1,
+	Index{ symbols.NT_MemAlts,1,0 }: MemAlts1R0,
+	Index{ symbols.NT_MemAlts,1,1 }: MemAlts1R1,
+	Index{ symbols.NT_MemDecl,0,0 }: MemDecl0R0,
+	Index{ symbols.NT_MemDecl,0,1 }: MemDecl0R1,
+	Index{ symbols.NT_MemDecl,0,2 }: MemDecl0R2,
+	Index{ symbols.NT_MemDecl,0,3 }: MemDecl0R3,
+	Index{ symbols.NT_MemDecl,0,4 }: MemDecl0R4,
+	Index{ symbols.NT_MemDecl,0,5 }: MemDecl0R5,
+	Index{ symbols.NT_MemDecl,0,6 }: MemDecl0R6,
+	Index{ symbols.NT_MemDecl,1,0 }: MemDecl1R0,
+	Index{ symbols.NT_MemDecl,1,1 }: MemDecl1R1,
+	Index{ symbols.NT_MemDecl,1,2 }: MemDecl1R2,
+	Index{ symbols.NT_MemDecl,1,3 }: MemDecl1R3,
+	Index{ symbols.NT_MemDecl,1,4 }: MemDecl1R4,
+	Index{ symbols.NT_MemDecl,1,5 }: MemDecl1R5,
+	Index{ symbols.NT_MemDecl,2,0 }: MemDecl2R0,
+	Index{ symbols.NT_MemDecl,2,1 }: MemDecl2R1,
+	Index{ symbols.NT_MemDecl,2,2 }: MemDecl2R2,
+	Index{ symbols.NT_MemDecl,2,3 }: MemDecl2R3,
+	Index{ symbols.NT_MemDecl,2,4 }: MemDecl2R4,
+	Index{ symbols.NT_MemDecl,3,0 }: MemDecl3R0,
+	Index{ symbols.NT_MemDecl,3,1 }: MemDecl3R1,
+	Index{ symbols.NT_MemDecl,4,0 }: MemDecl4R0,
+	Index{ symbols.NT_MemDecl,4,1 }: MemDecl4R1,
+	Index{ symbols.NT_MemDecl,5,0 }: MemDecl5R0,
+	Index{ symbols.NT_MemDecl,5,1 }: MemDecl5R1,
+	Index{ symbols.NT_MemDecl,5,2 }: MemDecl5R2,
+	Index{ symbols.NT_MemDecl,5,3 }: MemDecl5R3,
+	Index{ symbols.NT_Modifier,0,0 }: Modifier0R0,
+	Index{ symbols.NT_Modifier,0,1 }: Modifier0R1,
+	Index{ symbols.NT_Modifier,0,2 }: Modifier0R2,
+	Index{ symbols.NT_Modifs,0,0 }: Modifs0R0,
+	Index{ symbols.NT_Modifs,0,1 }: Modifs0R1,
+	Index{ symbols.NT_Modifs,1,0 }: Modifs1R0,
+	Index{ symbols.NT_Modifs,1,1 }: Modifs1R1,
+	Index{ symbols.NT_Modifs,2,0 }: Modifs2R0,
+	Index{ symbols.NT_Modifs,2,1 }: Modifs2R1,
+	Index{ symbols.NT_Modifs,3,0 }: Modifs3R0,
+	Index{ symbols.NT_Modifs,3,1 }: Modifs3R1,
+	Index{ symbols.NT_Modifs,4,0 }: Modifs4R0,
+	Index{ symbols.NT_Modifs,4,1 }: Modifs4R1,
+	Index{ symbols.NT_Modifs,5,0 }: Modifs5R0,
+	Index{ symbols.NT_Modifs,5,1 }: Modifs5R1,
+	Index{ symbols.NT_Modifs,6,0 }: Modifs6R0,
+	Index{ symbols.NT_Modifs,6,1 }: Modifs6R1,
+	Index{ symbols.NT_Modifs,7,0 }: Modifs7R0,
+	Index{ symbols.NT_Modifs,7,1 }: Modifs7R1,
+	Index{ symbols.NT_Modifs,8,0 }: Modifs8R0,
+	Index{ symbols.NT_Modifs,8,1 }: Modifs8R1,
+	Index{ symbols.NT_Modifs,9,0 }: Modifs9R0,
+	Index{ symbols.NT_Modifs,9,1 }: Modifs9R1,
+	Index{ symbols.NT_Modifs,10,0 }: Modifs10R0,
+	Index{ symbols.NT_Modifs,10,1 }: Modifs10R1,
+	Index{ symbols.NT_MultExpr,0,0 }: MultExpr0R0,
+	Index{ symbols.NT_MultExpr,0,1 }: MultExpr0R1,
+	Index{ symbols.NT_MultExpr,0,2 }: MultExpr0R2,
+	Index{ symbols.NT_NEW,0,0 }: NEW0R0,
+	Index{ symbols.NT_NEW,0,1 }: NEW0R1,
+	Index{ symbols.NT_NEW,0,2 }: NEW0R2,
+	Index{ symbols.NT_NOT_EQUAL,0,0 }: NOT_EQUAL0R0,
+	Index{ symbols.NT_NOT_EQUAL,0,1 }: NOT_EQUAL0R1,
+	Index{ symbols.NT_NOT_EQUAL,0,2 }: NOT_EQUAL0R2,
+	Index{ symbols.NT_NumeralAlts,0,0 }: NumeralAlts0R0,
+	Index{ symbols.NT_NumeralAlts,0,1 }: NumeralAlts0R1,
+	Index{ symbols.NT_NumeralAlts,1,0 }: NumeralAlts1R0,
+	Index{ symbols.NT_NumeralAlts,1,1 }: NumeralAlts1R1,
+	Index{ symbols.NT_NumeralAlts,2,0 }: NumeralAlts2R0,
+	Index{ symbols.NT_NumeralAlts,2,1 }: NumeralAlts2R1,
+	Index{ symbols.NT_OR,0,0 }: OR0R0,
+	Index{ symbols.NT_OR,0,1 }: OR0R1,
+	Index{ symbols.NT_OR,0,2 }: OR0R2,
+	Index{ symbols.NT_OR,0,3 }: OR0R3,
+	Index{ symbols.NT_ORXOR,0,0 }: ORXOR0R0,
+	Index{ symbols.NT_ORXOR,0,1 }: ORXOR0R1,
+	Index{ symbols.NT_ORXOR,0,2 }: ORXOR0R2,
+	Index{ symbols.NT_OR_EQU,0,0 }: OR_EQU0R0,
+	Index{ symbols.NT_OR_EQU,0,1 }: OR_EQU0R1,
+	Index{ symbols.NT_OR_EQU,0,2 }: OR_EQU0R2,
+	Index{ symbols.NT_OR_OR,0,0 }: OR_OR0R0,
+	Index{ symbols.NT_OR_OR,0,1 }: OR_OR0R1,
+	Index{ symbols.NT_OR_OR,0,2 }: OR_OR0R2,
+	Index{ symbols.NT_OctalEscape,0,0 }: OctalEscape0R0,
+	Index{ symbols.NT_OctalEscape,0,1 }: OctalEscape0R1,
+	Index{ symbols.NT_OctalEscape,1,0 }: OctalEscape1R0,
+	Index{ symbols.NT_OctalEscape,1,1 }: OctalEscape1R1,
+	Index{ symbols.NT_OctalEscape,2,0 }: OctalEscape2R0,
+	Index{ symbols.NT_OctalEscape,2,1 }: OctalEscape2R1,
+	Index{ symbols.NT_OptArgs,0,0 }: OptArgs0R0,
+	Index{ symbols.NT_OptArgs,0,1 }: OptArgs0R1,
+	Index{ symbols.NT_OptArgs,1,0 }: OptArgs1R0,
+	Index{ symbols.NT_OptClsBdy,0,0 }: OptClsBdy0R0,
+	Index{ symbols.NT_OptClsBdy,0,1 }: OptClsBdy0R1,
+	Index{ symbols.NT_OptClsBdy,1,0 }: OptClsBdy1R0,
+	Index{ symbols.NT_OptColExpr,0,0 }: OptColExpr0R0,
+	Index{ symbols.NT_OptColExpr,0,1 }: OptColExpr0R1,
+	Index{ symbols.NT_OptColExpr,0,2 }: OptColExpr0R2,
+	Index{ symbols.NT_OptColExpr,1,0 }: OptColExpr1R0,
+	Index{ symbols.NT_OptCom,0,0 }: OptCom0R0,
+	Index{ symbols.NT_OptCom,0,1 }: OptCom0R1,
+	Index{ symbols.NT_OptCom,1,0 }: OptCom1R0,
+	Index{ symbols.NT_OptComFormPDecl,0,0 }: OptComFormPDecl0R0,
+	Index{ symbols.NT_OptComFormPDecl,0,1 }: OptComFormPDecl0R1,
+	Index{ symbols.NT_OptComFormPDecl,0,2 }: OptComFormPDecl0R2,
+	Index{ symbols.NT_OptComFormPDecl,1,0 }: OptComFormPDecl1R0,
+	Index{ symbols.NT_OptDot,0,0 }: OptDot0R0,
+	Index{ symbols.NT_OptDot,0,1 }: OptDot0R1,
+	Index{ symbols.NT_OptDot,1,0 }: OptDot1R0,
+	Index{ symbols.NT_OptDotStar,0,0 }: OptDotStar0R0,
+	Index{ symbols.NT_OptDotStar,0,1 }: OptDotStar0R1,
+	Index{ symbols.NT_OptDotStar,0,2 }: OptDotStar0R2,
+	Index{ symbols.NT_OptDotStar,1,0 }: OptDotStar1R0,
+	Index{ symbols.NT_OptElse,0,0 }: OptElse0R0,
+	Index{ symbols.NT_OptElse,0,1 }: OptElse0R1,
+	Index{ symbols.NT_OptElse,0,2 }: OptElse0R2,
+	Index{ symbols.NT_OptElse,1,0 }: OptElse1R0,
+	Index{ symbols.NT_OptEqVarInit,0,0 }: OptEqVarInit0R0,
+	Index{ symbols.NT_OptEqVarInit,0,1 }: OptEqVarInit0R1,
+	Index{ symbols.NT_OptEqVarInit,0,2 }: OptEqVarInit0R2,
+	Index{ symbols.NT_OptEqVarInit,1,0 }: OptEqVarInit1R0,
+	Index{ symbols.NT_OptEsc,0,0 }: OptEsc0R0,
+	Index{ symbols.NT_OptEsc,0,1 }: OptEsc0R1,
+	Index{ symbols.NT_OptEsc,1,0 }: OptEsc1R0,
+	Index{ symbols.NT_OptEsc,1,1 }: OptEsc1R1,
+	Index{ symbols.NT_OptExpr,0,0 }: OptExpr0R0,
+	Index{ symbols.NT_OptExpr,0,1 }: OptExpr0R1,
+	Index{ symbols.NT_OptExpr,1,0 }: OptExpr1R0,
+	Index{ symbols.NT_OptExprs,0,0 }: OptExprs0R0,
+	Index{ symbols.NT_OptExprs,0,1 }: OptExprs0R1,
+	Index{ symbols.NT_OptExprs,0,2 }: OptExprs0R2,
+	Index{ symbols.NT_OptExprs,1,0 }: OptExprs1R0,
+	Index{ symbols.NT_OptExtClsType,0,0 }: OptExtClsType0R0,
+	Index{ symbols.NT_OptExtClsType,0,1 }: OptExtClsType0R1,
+	Index{ symbols.NT_OptExtClsType,0,2 }: OptExtClsType0R2,
+	Index{ symbols.NT_OptExtClsType,1,0 }: OptExtClsType1R0,
+	Index{ symbols.NT_OptExtendsClsLis,0,0 }: OptExtendsClsLis0R0,
+	Index{ symbols.NT_OptExtendsClsLis,0,1 }: OptExtendsClsLis0R1,
+	Index{ symbols.NT_OptExtendsClsLis,0,2 }: OptExtendsClsLis0R2,
+	Index{ symbols.NT_OptExtendsClsLis,1,0 }: OptExtendsClsLis1R0,
+	Index{ symbols.NT_OptFin,0,0 }: OptFin0R0,
+	Index{ symbols.NT_OptFin,0,1 }: OptFin0R1,
+	Index{ symbols.NT_OptFin,1,0 }: OptFin1R0,
+	Index{ symbols.NT_OptFinType,0,0 }: OptFinType0R0,
+	Index{ symbols.NT_OptFinType,0,1 }: OptFinType0R1,
+	Index{ symbols.NT_OptFinType,0,2 }: OptFinType0R2,
+	Index{ symbols.NT_OptForInit,0,0 }: OptForInit0R0,
+	Index{ symbols.NT_OptForInit,0,1 }: OptForInit0R1,
+	Index{ symbols.NT_OptForInit,1,0 }: OptForInit1R0,
+	Index{ symbols.NT_OptForUpd,0,0 }: OptForUpd0R0,
+	Index{ symbols.NT_OptForUpd,0,1 }: OptForUpd0R1,
+	Index{ symbols.NT_OptForUpd,1,0 }: OptForUpd1R0,
+	Index{ symbols.NT_OptFormPDecl,0,0 }: OptFormPDecl0R0,
+	Index{ symbols.NT_OptFormPDecl,0,1 }: OptFormPDecl0R1,
+	Index{ symbols.NT_OptFormPDecl,1,0 }: OptFormPDecl1R0,
+	Index{ symbols.NT_OptID,0,0 }: OptID0R0,
+	Index{ symbols.NT_OptID,0,1 }: OptID0R1,
+	Index{ symbols.NT_OptID,1,0 }: OptID1R0,
+	Index{ symbols.NT_OptIDSuff,0,0 }: OptIDSuff0R0,
+	Index{ symbols.NT_OptIDSuff,0,1 }: OptIDSuff0R1,
+	Index{ symbols.NT_OptIDSuff,1,0 }: OptIDSuff1R0,
+	Index{ symbols.NT_OptImpClsLst,0,0 }: OptImpClsLst0R0,
+	Index{ symbols.NT_OptImpClsLst,0,1 }: OptImpClsLst0R1,
+	Index{ symbols.NT_OptImpClsLst,0,2 }: OptImpClsLst0R2,
+	Index{ symbols.NT_OptImpClsLst,1,0 }: OptImpClsLst1R0,
+	Index{ symbols.NT_OptPackDecl,0,0 }: OptPackDecl0R0,
+	Index{ symbols.NT_OptPackDecl,0,1 }: OptPackDecl0R1,
+	Index{ symbols.NT_OptPackDecl,1,0 }: OptPackDecl1R0,
+	Index{ symbols.NT_OptStatic,0,0 }: OptStatic0R0,
+	Index{ symbols.NT_OptStatic,0,1 }: OptStatic0R1,
+	Index{ symbols.NT_OptStatic,1,0 }: OptStatic1R0,
+	Index{ symbols.NT_OptThrowClsTypLst,0,0 }: OptThrowClsTypLst0R0,
+	Index{ symbols.NT_OptThrowClsTypLst,0,1 }: OptThrowClsTypLst0R1,
+	Index{ symbols.NT_OptThrowClsTypLst,0,2 }: OptThrowClsTypLst0R2,
+	Index{ symbols.NT_OptThrowClsTypLst,1,0 }: OptThrowClsTypLst1R0,
+	Index{ symbols.NT_OptVarInit,0,0 }: OptVarInit0R0,
+	Index{ symbols.NT_OptVarInit,0,1 }: OptVarInit0R1,
+	Index{ symbols.NT_OptVarInit,0,2 }: OptVarInit0R2,
+	Index{ symbols.NT_OptVarInit,0,3 }: OptVarInit0R3,
+	Index{ symbols.NT_OptVarInit,1,0 }: OptVarInit1R0,
+	Index{ symbols.NT_OtherAlts,0,0 }: OtherAlts0R0,
+	Index{ symbols.NT_OtherAlts,0,1 }: OtherAlts0R1,
+	Index{ symbols.NT_OtherAlts,1,0 }: OtherAlts1R0,
+	Index{ symbols.NT_OtherAlts,1,1 }: OtherAlts1R1,
+	Index{ symbols.NT_OtherAlts,2,0 }: OtherAlts2R0,
+	Index{ symbols.NT_OtherAlts,2,1 }: OtherAlts2R1,
+	Index{ symbols.NT_OtherAlts,2,2 }: OtherAlts2R2,
+	Index{ symbols.NT_OtherAlts,3,0 }: OtherAlts3R0,
+	Index{ symbols.NT_OtherAlts,3,1 }: OtherAlts3R1,
+	Index{ symbols.NT_OtherAlts,3,2 }: OtherAlts3R2,
+	Index{ symbols.NT_PACKAGE,0,0 }: PACKAGE0R0,
+	Index{ symbols.NT_PACKAGE,0,1 }: PACKAGE0R1,
+	Index{ symbols.NT_PACKAGE,0,2 }: PACKAGE0R2,
+	Index{ symbols.NT_PLUS,0,0 }: PLUS0R0,
+	Index{ symbols.NT_PLUS,0,1 }: PLUS0R1,
+	Index{ symbols.NT_PLUS,0,2 }: PLUS0R2,
+	Index{ symbols.NT_PLUS,0,3 }: PLUS0R3,
+	Index{ symbols.NT_PLUS_EQU,0,0 }: PLUS_EQU0R0,
+	Index{ symbols.NT_PLUS_EQU,0,1 }: PLUS_EQU0R1,
+	Index{ symbols.NT_PLUS_EQU,0,2 }: PLUS_EQU0R2,
+	Index{ symbols.NT_PackDecl,0,0 }: PackDecl0R0,
+	Index{ symbols.NT_PackDecl,0,1 }: PackDecl0R1,
+	Index{ symbols.NT_PackDecl,0,2 }: PackDecl0R2,
+	Index{ symbols.NT_PackDecl,0,3 }: PackDecl0R3,
+	Index{ symbols.NT_ParExpr,0,0 }: ParExpr0R0,
+	Index{ symbols.NT_ParExpr,0,1 }: ParExpr0R1,
+	Index{ symbols.NT_ParExpr,0,2 }: ParExpr0R2,
+	Index{ symbols.NT_ParExpr,0,3 }: ParExpr0R3,
+	Index{ symbols.NT_PostfixOp,0,0 }: PostfixOp0R0,
+	Index{ symbols.NT_PostfixOp,0,1 }: PostfixOp0R1,
+	Index{ symbols.NT_PostfixOp,1,0 }: PostfixOp1R0,
+	Index{ symbols.NT_PostfixOp,1,1 }: PostfixOp1R1,
+	Index{ symbols.NT_PrefixOp,0,0 }: PrefixOp0R0,
+	Index{ symbols.NT_PrefixOp,0,1 }: PrefixOp0R1,
+	Index{ symbols.NT_PrefixOp,1,0 }: PrefixOp1R0,
+	Index{ symbols.NT_PrefixOp,1,1 }: PrefixOp1R1,
+	Index{ symbols.NT_PrefixOp,2,0 }: PrefixOp2R0,
+	Index{ symbols.NT_PrefixOp,2,1 }: PrefixOp2R1,
+	Index{ symbols.NT_PrefixOp,3,0 }: PrefixOp3R0,
+	Index{ symbols.NT_PrefixOp,3,1 }: PrefixOp3R1,
+	Index{ symbols.NT_PrefixOp,4,0 }: PrefixOp4R0,
+	Index{ symbols.NT_PrefixOp,4,1 }: PrefixOp4R1,
+	Index{ symbols.NT_PrefixOp,5,0 }: PrefixOp5R0,
+	Index{ symbols.NT_PrefixOp,5,1 }: PrefixOp5R1,
+	Index{ symbols.NT_Primary,0,0 }: Primary0R0,
+	Index{ symbols.NT_Primary,0,1 }: Primary0R1,
+	Index{ symbols.NT_Primary,1,0 }: Primary1R0,
+	Index{ symbols.NT_Primary,1,1 }: Primary1R1,
+	Index{ symbols.NT_Primary,1,2 }: Primary1R2,
+	Index{ symbols.NT_Primary,2,0 }: Primary2R0,
+	Index{ symbols.NT_Primary,2,1 }: Primary2R1,
+	Index{ symbols.NT_Primary,2,2 }: Primary2R2,
+	Index{ symbols.NT_Primary,3,0 }: Primary3R0,
+	Index{ symbols.NT_Primary,3,1 }: Primary3R1,
+	Index{ symbols.NT_Primary,4,0 }: Primary4R0,
+	Index{ symbols.NT_Primary,4,1 }: Primary4R1,
+	Index{ symbols.NT_Primary,4,2 }: Primary4R2,
+	Index{ symbols.NT_Primary,5,0 }: Primary5R0,
+	Index{ symbols.NT_Primary,5,1 }: Primary5R1,
+	Index{ symbols.NT_Primary,5,2 }: Primary5R2,
+	Index{ symbols.NT_Primary,6,0 }: Primary6R0,
+	Index{ symbols.NT_Primary,6,1 }: Primary6R1,
+	Index{ symbols.NT_Primary,6,2 }: Primary6R2,
+	Index{ symbols.NT_Primary,6,3 }: Primary6R3,
+	Index{ symbols.NT_Primary,6,4 }: Primary6R4,
+	Index{ symbols.NT_Primary,7,0 }: Primary7R0,
+	Index{ symbols.NT_Primary,7,1 }: Primary7R1,
+	Index{ symbols.NT_Primary,7,2 }: Primary7R2,
+	Index{ symbols.NT_Primary,7,3 }: Primary7R3,
+	Index{ symbols.NT_QUERY,0,0 }: QUERY0R0,
+	Index{ symbols.NT_QUERY,0,1 }: QUERY0R1,
+	Index{ symbols.NT_QUERY,0,2 }: QUERY0R2,
+	Index{ symbols.NT_QualifiedID,0,0 }: QualifiedID0R0,
+	Index{ symbols.NT_QualifiedID,0,1 }: QualifiedID0R1,
+	Index{ symbols.NT_QualifiedID,0,2 }: QualifiedID0R2,
+	Index{ symbols.NT_RBRK,0,0 }: RBRK0R0,
+	Index{ symbols.NT_RBRK,0,1 }: RBRK0R1,
+	Index{ symbols.NT_RBRK,0,2 }: RBRK0R2,
+	Index{ symbols.NT_RBRKAlts,0,0 }: RBRKAlts0R0,
+	Index{ symbols.NT_RBRKAlts,0,1 }: RBRKAlts0R1,
+	Index{ symbols.NT_RBRKAlts,0,2 }: RBRKAlts0R2,
+	Index{ symbols.NT_RBRKAlts,0,3 }: RBRKAlts0R3,
+	Index{ symbols.NT_RBRKAlts,0,4 }: RBRKAlts0R4,
+	Index{ symbols.NT_RBRKAlts,1,0 }: RBRKAlts1R0,
+	Index{ symbols.NT_RBRKAlts,1,1 }: RBRKAlts1R1,
+	Index{ symbols.NT_RBRKAlts,1,2 }: RBRKAlts1R2,
+	Index{ symbols.NT_RETURN,0,0 }: RETURN0R0,
+	Index{ symbols.NT_RETURN,0,1 }: RETURN0R1,
+	Index{ symbols.NT_RETURN,0,2 }: RETURN0R2,
+	Index{ symbols.NT_RPAR,0,0 }: RPAR0R0,
+	Index{ symbols.NT_RPAR,0,1 }: RPAR0R1,
+	Index{ symbols.NT_RPAR,0,2 }: RPAR0R2,
+	Index{ symbols.NT_RWING,0,0 }: RWING0R0,
+	Index{ symbols.NT_RWING,0,1 }: RWING0R1,
+	Index{ symbols.NT_RWING,0,2 }: RWING0R2,
+	Index{ symbols.NT_ReferenceType,0,0 }: ReferenceType0R0,
+	Index{ symbols.NT_ReferenceType,0,1 }: ReferenceType0R1,
+	Index{ symbols.NT_ReferenceType,0,2 }: ReferenceType0R2,
+	Index{ symbols.NT_ReferenceType,0,3 }: ReferenceType0R3,
+	Index{ symbols.NT_ReferenceType,1,0 }: ReferenceType1R0,
+	Index{ symbols.NT_ReferenceType,1,1 }: ReferenceType1R1,
+	Index{ symbols.NT_ReferenceType,1,2 }: ReferenceType1R2,
+	Index{ symbols.NT_RelateExpr,0,0 }: RelateExpr0R0,
+	Index{ symbols.NT_RelateExpr,0,1 }: RelateExpr0R1,
+	Index{ symbols.NT_RelateExpr,0,2 }: RelateExpr0R2,
+	Index{ symbols.NT_RepANDEq0x,0,0 }: RepANDEq0x0R0,
+	Index{ symbols.NT_RepANDEq0x,0,1 }: RepANDEq0x0R1,
+	Index{ symbols.NT_RepANDEq0x,0,2 }: RepANDEq0x0R2,
+	Index{ symbols.NT_RepANDEq0x,0,3 }: RepANDEq0x0R3,
+	Index{ symbols.NT_RepANDEq0x,1,0 }: RepANDEq0x1R0,
+	Index{ symbols.NT_RepANDIOR0x,0,0 }: RepANDIOR0x0R0,
+	Index{ symbols.NT_RepANDIOR0x,0,1 }: RepANDIOR0x0R1,
+	Index{ symbols.NT_RepANDIOR0x,0,2 }: RepANDIOR0x0R2,
+	Index{ symbols.NT_RepANDIOR0x,0,3 }: RepANDIOR0x0R3,
+	Index{ symbols.NT_RepANDIOR0x,1,0 }: RepANDIOR0x1R0,
+	Index{ symbols.NT_RepAddAltsMult0x,0,0 }: RepAddAltsMult0x0R0,
+	Index{ symbols.NT_RepAddAltsMult0x,0,1 }: RepAddAltsMult0x0R1,
+	Index{ symbols.NT_RepAddAltsMult0x,0,2 }: RepAddAltsMult0x0R2,
+	Index{ symbols.NT_RepAddAltsMult0x,1,0 }: RepAddAltsMult0x1R0,
+	Index{ symbols.NT_RepAsscExpr0x,0,0 }: RepAsscExpr0x0R0,
+	Index{ symbols.NT_RepAsscExpr0x,0,1 }: RepAsscExpr0x0R1,
+	Index{ symbols.NT_RepAsscExpr0x,0,2 }: RepAsscExpr0x0R2,
+	Index{ symbols.NT_RepAsscExpr0x,0,3 }: RepAsscExpr0x0R3,
+	Index{ symbols.NT_RepAsscExpr0x,1,0 }: RepAsscExpr0x1R0,
+	Index{ symbols.NT_RepBlkSt0x,0,0 }: RepBlkSt0x0R0,
+	Index{ symbols.NT_RepBlkSt0x,0,1 }: RepBlkSt0x0R1,
+	Index{ symbols.NT_RepBlkSt0x,0,2 }: RepBlkSt0x0R2,
+	Index{ symbols.NT_RepBlkSt0x,1,0 }: RepBlkSt0x1R0,
+	Index{ symbols.NT_RepCatch0x,0,0 }: RepCatch0x0R0,
+	Index{ symbols.NT_RepCatch0x,0,1 }: RepCatch0x0R1,
+	Index{ symbols.NT_RepCatch0x,0,2 }: RepCatch0x0R2,
+	Index{ symbols.NT_RepCatch0x,1,0 }: RepCatch0x1R0,
+	Index{ symbols.NT_RepClsBDecl0x,0,0 }: RepClsBDecl0x0R0,
+	Index{ symbols.NT_RepClsBDecl0x,0,1 }: RepClsBDecl0x0R1,
+	Index{ symbols.NT_RepClsBDecl0x,0,2 }: RepClsBDecl0x0R2,
+	Index{ symbols.NT_RepClsBDecl0x,1,0 }: RepClsBDecl0x1R0,
+	Index{ symbols.NT_RepComCls0x,0,0 }: RepComCls0x0R0,
+	Index{ symbols.NT_RepComCls0x,0,1 }: RepComCls0x0R1,
+	Index{ symbols.NT_RepComCls0x,0,2 }: RepComCls0x0R2,
+	Index{ symbols.NT_RepComCls0x,0,3 }: RepComCls0x0R3,
+	Index{ symbols.NT_RepComCls0x,1,0 }: RepComCls0x1R0,
+	Index{ symbols.NT_RepComCnstDecl0x,0,0 }: RepComCnstDecl0x0R0,
+	Index{ symbols.NT_RepComCnstDecl0x,0,1 }: RepComCnstDecl0x0R1,
+	Index{ symbols.NT_RepComCnstDecl0x,0,2 }: RepComCnstDecl0x0R2,
+	Index{ symbols.NT_RepComCnstDecl0x,0,3 }: RepComCnstDecl0x0R3,
+	Index{ symbols.NT_RepComCnstDecl0x,1,0 }: RepComCnstDecl0x1R0,
+	Index{ symbols.NT_RepComExp0x,0,0 }: RepComExp0x0R0,
+	Index{ symbols.NT_RepComExp0x,0,1 }: RepComExp0x0R1,
+	Index{ symbols.NT_RepComExp0x,0,2 }: RepComExp0x0R2,
+	Index{ symbols.NT_RepComExp0x,0,3 }: RepComExp0x0R3,
+	Index{ symbols.NT_RepComExp0x,1,0 }: RepComExp0x1R0,
+	Index{ symbols.NT_RepComInit0x,0,0 }: RepComInit0x0R0,
+	Index{ symbols.NT_RepComInit0x,0,1 }: RepComInit0x0R1,
+	Index{ symbols.NT_RepComInit0x,0,2 }: RepComInit0x0R2,
+	Index{ symbols.NT_RepComInit0x,0,3 }: RepComInit0x0R3,
+	Index{ symbols.NT_RepComInit0x,1,0 }: RepComInit0x1R0,
+	Index{ symbols.NT_RepComSExpr0x,0,0 }: RepComSExpr0x0R0,
+	Index{ symbols.NT_RepComSExpr0x,0,1 }: RepComSExpr0x0R1,
+	Index{ symbols.NT_RepComSExpr0x,0,2 }: RepComSExpr0x0R2,
+	Index{ symbols.NT_RepComSExpr0x,0,3 }: RepComSExpr0x0R3,
+	Index{ symbols.NT_RepComSExpr0x,1,0 }: RepComSExpr0x1R0,
+	Index{ symbols.NT_RepComVDecl0x,0,0 }: RepComVDecl0x0R0,
+	Index{ symbols.NT_RepComVDecl0x,0,1 }: RepComVDecl0x0R1,
+	Index{ symbols.NT_RepComVDecl0x,0,2 }: RepComVDecl0x0R2,
+	Index{ symbols.NT_RepComVDecl0x,0,3 }: RepComVDecl0x0R3,
+	Index{ symbols.NT_RepComVDecl0x,1,0 }: RepComVDecl0x1R0,
+	Index{ symbols.NT_RepCondition0x,0,0 }: RepCondition0x0R0,
+	Index{ symbols.NT_RepCondition0x,0,1 }: RepCondition0x0R1,
+	Index{ symbols.NT_RepCondition0x,0,2 }: RepCondition0x0R2,
+	Index{ symbols.NT_RepCondition0x,0,3 }: RepCondition0x0R3,
+	Index{ symbols.NT_RepCondition0x,0,4 }: RepCondition0x0R4,
+	Index{ symbols.NT_RepCondition0x,0,5 }: RepCondition0x0R5,
+	Index{ symbols.NT_RepCondition0x,1,0 }: RepCondition0x1R0,
+	Index{ symbols.NT_RepDig1xExp,0,0 }: RepDig1xExp0R0,
+	Index{ symbols.NT_RepDig1xExp,0,1 }: RepDig1xExp0R1,
+	Index{ symbols.NT_RepDig1xExp,0,2 }: RepDig1xExp0R2,
+	Index{ symbols.NT_RepDig1xOptExp,0,0 }: RepDig1xOptExp0R0,
+	Index{ symbols.NT_RepDig1xOptExp,0,1 }: RepDig1xOptExp0R1,
+	Index{ symbols.NT_RepDig1xOptExp,0,2 }: RepDig1xOptExp0R2,
+	Index{ symbols.NT_RepDim0x,0,0 }: RepDim0x0R0,
+	Index{ symbols.NT_RepDim0x,0,1 }: RepDim0x0R1,
+	Index{ symbols.NT_RepDim0x,0,2 }: RepDim0x0R2,
+	Index{ symbols.NT_RepDim0x,1,0 }: RepDim0x1R0,
+	Index{ symbols.NT_RepDimExpr0x,0,0 }: RepDimExpr0x0R0,
+	Index{ symbols.NT_RepDimExpr0x,0,1 }: RepDimExpr0x0R1,
+	Index{ symbols.NT_RepDimExpr0x,0,2 }: RepDimExpr0x0R2,
+	Index{ symbols.NT_RepDimExpr0x,1,0 }: RepDimExpr0x1R0,
+	Index{ symbols.NT_RepDotID0x,0,0 }: RepDotID0x0R0,
+	Index{ symbols.NT_RepDotID0x,0,1 }: RepDotID0x0R1,
+	Index{ symbols.NT_RepDotID0x,0,2 }: RepDotID0x0R2,
+	Index{ symbols.NT_RepDotID0x,0,3 }: RepDotID0x0R3,
+	Index{ symbols.NT_RepDotID0x,1,0 }: RepDotID0x1R0,
+	Index{ symbols.NT_RepESInst0x,0,0 }: RepESInst0x0R0,
+	Index{ symbols.NT_RepESInst0x,0,1 }: RepESInst0x0R1,
+	Index{ symbols.NT_RepESInst0x,0,2 }: RepESInst0x0R2,
+	Index{ symbols.NT_RepESInst0x,1,0 }: RepESInst0x1R0,
+	Index{ symbols.NT_RepEqExpr0x,0,0 }: RepEqExpr0x0R0,
+	Index{ symbols.NT_RepEqExpr0x,0,1 }: RepEqExpr0x0R1,
+	Index{ symbols.NT_RepEqExpr0x,0,2 }: RepEqExpr0x0R2,
+	Index{ symbols.NT_RepEqExpr0x,0,3 }: RepEqExpr0x0R3,
+	Index{ symbols.NT_RepEqExpr0x,1,0 }: RepEqExpr0x1R0,
+	Index{ symbols.NT_RepHatAND0x,0,0 }: RepHatAND0x0R0,
+	Index{ symbols.NT_RepHatAND0x,0,1 }: RepHatAND0x0R1,
+	Index{ symbols.NT_RepHatAND0x,0,2 }: RepHatAND0x0R2,
+	Index{ symbols.NT_RepHatAND0x,0,3 }: RepHatAND0x0R3,
+	Index{ symbols.NT_RepHatAND0x,1,0 }: RepHatAND0x1R0,
+	Index{ symbols.NT_RepHex0xDot,0,0 }: RepHex0xDot0R0,
+	Index{ symbols.NT_RepHex0xDot,0,1 }: RepHex0xDot0R1,
+	Index{ symbols.NT_RepHex0xDot,0,2 }: RepHex0xDot0R2,
+	Index{ symbols.NT_RepHex0xDot,0,3 }: RepHex0xDot0R3,
+	Index{ symbols.NT_RepImpDecl0x,0,0 }: RepImpDecl0x0R0,
+	Index{ symbols.NT_RepImpDecl0x,0,1 }: RepImpDecl0x0R1,
+	Index{ symbols.NT_RepImpDecl0x,0,2 }: RepImpDecl0x0R2,
+	Index{ symbols.NT_RepImpDecl0x,1,0 }: RepImpDecl0x1R0,
+	Index{ symbols.NT_RepInBodDecl0x,0,0 }: RepInBodDecl0x0R0,
+	Index{ symbols.NT_RepInBodDecl0x,0,1 }: RepInBodDecl0x0R1,
+	Index{ symbols.NT_RepInBodDecl0x,0,2 }: RepInBodDecl0x0R2,
+	Index{ symbols.NT_RepInBodDecl0x,1,0 }: RepInBodDecl0x1R0,
+	Index{ symbols.NT_RepLorD0x,0,0 }: RepLorD0x0R0,
+	Index{ symbols.NT_RepLorD0x,0,1 }: RepLorD0x0R1,
+	Index{ symbols.NT_RepLorD0x,0,2 }: RepLorD0x0R2,
+	Index{ symbols.NT_RepLorD0x,1,0 }: RepLorD0x1R0,
+	Index{ symbols.NT_RepModif0,0,0 }: RepModif00R0,
+	Index{ symbols.NT_RepModif0,0,1 }: RepModif00R1,
+	Index{ symbols.NT_RepModif0,0,2 }: RepModif00R2,
+	Index{ symbols.NT_RepModif0,1,0 }: RepModif01R0,
+	Index{ symbols.NT_RepORXOR0x,0,0 }: RepORXOR0x0R0,
+	Index{ symbols.NT_RepORXOR0x,0,1 }: RepORXOR0x0R1,
+	Index{ symbols.NT_RepORXOR0x,0,2 }: RepORXOR0x0R2,
+	Index{ symbols.NT_RepORXOR0x,1,0 }: RepORXOR0x1R0,
+	Index{ symbols.NT_RepORcAND0x,0,0 }: RepORcAND0x0R0,
+	Index{ symbols.NT_RepORcAND0x,0,1 }: RepORcAND0x0R1,
+	Index{ symbols.NT_RepORcAND0x,0,2 }: RepORcAND0x0R2,
+	Index{ symbols.NT_RepORcAND0x,0,3 }: RepORcAND0x0R3,
+	Index{ symbols.NT_RepORcAND0x,1,0 }: RepORcAND0x1R0,
+	Index{ symbols.NT_RepPfOp0x,0,0 }: RepPfOp0x0R0,
+	Index{ symbols.NT_RepPfOp0x,0,1 }: RepPfOp0x0R1,
+	Index{ symbols.NT_RepPfOp0x,0,2 }: RepPfOp0x0R2,
+	Index{ symbols.NT_RepPfOp0x,1,0 }: RepPfOp0x1R0,
+	Index{ symbols.NT_RepSDMUExpr0x,0,0 }: RepSDMUExpr0x0R0,
+	Index{ symbols.NT_RepSDMUExpr0x,0,1 }: RepSDMUExpr0x0R1,
+	Index{ symbols.NT_RepSDMUExpr0x,0,2 }: RepSDMUExpr0x0R2,
+	Index{ symbols.NT_RepSDMUExpr0x,0,3 }: RepSDMUExpr0x0R3,
+	Index{ symbols.NT_RepSDMUExpr0x,1,0 }: RepSDMUExpr0x1R0,
+	Index{ symbols.NT_RepSel0x,0,0 }: RepSel0x0R0,
+	Index{ symbols.NT_RepSel0x,0,1 }: RepSel0x0R1,
+	Index{ symbols.NT_RepSel0x,0,2 }: RepSel0x0R2,
+	Index{ symbols.NT_RepSel0x,1,0 }: RepSel0x1R0,
+	Index{ symbols.NT_RepSemiModDecl0x,0,0 }: RepSemiModDecl0x0R0,
+	Index{ symbols.NT_RepSemiModDecl0x,0,1 }: RepSemiModDecl0x0R1,
+	Index{ symbols.NT_RepSemiModDecl0x,0,2 }: RepSemiModDecl0x0R2,
+	Index{ symbols.NT_RepSemiModDecl0x,1,0 }: RepSemiModDecl0x1R0,
+	Index{ symbols.NT_RepSwBlkStmt0x,0,0 }: RepSwBlkStmt0x0R0,
+	Index{ symbols.NT_RepSwBlkStmt0x,0,1 }: RepSwBlkStmt0x0R1,
+	Index{ symbols.NT_RepSwBlkStmt0x,0,2 }: RepSwBlkStmt0x0R2,
+	Index{ symbols.NT_RepSwBlkStmt0x,1,0 }: RepSwBlkStmt0x1R0,
+	Index{ symbols.NT_SDM,0,0 }: SDM0R0,
+	Index{ symbols.NT_SDM,0,1 }: SDM0R1,
+	Index{ symbols.NT_SDM,1,0 }: SDM1R0,
+	Index{ symbols.NT_SDM,1,1 }: SDM1R1,
+	Index{ symbols.NT_SDM,2,0 }: SDM2R0,
+	Index{ symbols.NT_SDM,2,1 }: SDM2R1,
+	Index{ symbols.NT_SEMI,0,0 }: SEMI0R0,
+	Index{ symbols.NT_SEMI,0,1 }: SEMI0R1,
+	Index{ symbols.NT_SEMI,0,2 }: SEMI0R2,
+	Index{ symbols.NT_SL,0,0 }: SL0R0,
+	Index{ symbols.NT_SL,0,1 }: SL0R1,
+	Index{ symbols.NT_SL,0,2 }: SL0R2,
+	Index{ symbols.NT_SL,0,3 }: SL0R3,
+	Index{ symbols.NT_SL_EQU,0,0 }: SL_EQU0R0,
+	Index{ symbols.NT_SL_EQU,0,1 }: SL_EQU0R1,
+	Index{ symbols.NT_SL_EQU,0,2 }: SL_EQU0R2,
+	Index{ symbols.NT_SR,0,0 }: SR0R0,
+	Index{ symbols.NT_SR,0,1 }: SR0R1,
+	Index{ symbols.NT_SR,0,2 }: SR0R2,
+	Index{ symbols.NT_SR,0,3 }: SR0R3,
+	Index{ symbols.NT_SR_EQU,0,0 }: SR_EQU0R0,
+	Index{ symbols.NT_SR_EQU,0,1 }: SR_EQU0R1,
+	Index{ symbols.NT_SR_EQU,0,2 }: SR_EQU0R2,
+	Index{ symbols.NT_STAR,0,0 }: STAR0R0,
+	Index{ symbols.NT_STAR,0,1 }: STAR0R1,
+	Index{ symbols.NT_STAR,0,2 }: STAR0R2,
+	Index{ symbols.NT_STAR,0,3 }: STAR0R3,
+	Index{ symbols.NT_STAR_EQU,0,0 }: STAR_EQU0R0,
+	Index{ symbols.NT_STAR_EQU,0,1 }: STAR_EQU0R1,
+	Index{ symbols.NT_STAR_EQU,0,2 }: STAR_EQU0R2,
+	Index{ symbols.NT_STATIC,0,0 }: STATIC0R0,
+	Index{ symbols.NT_STATIC,0,1 }: STATIC0R1,
+	Index{ symbols.NT_STATIC,0,2 }: STATIC0R2,
+	Index{ symbols.NT_SUPER,0,0 }: SUPER0R0,
+	Index{ symbols.NT_SUPER,0,1 }: SUPER0R1,
+	Index{ symbols.NT_SUPER,0,2 }: SUPER0R2,
+	Index{ symbols.NT_SWITCH,0,0 }: SWITCH0R0,
+	Index{ symbols.NT_SWITCH,0,1 }: SWITCH0R1,
+	Index{ symbols.NT_SWITCH,0,2 }: SWITCH0R2,
+	Index{ symbols.NT_SYNCHRONIZED,0,0 }: SYNCHRONIZED0R0,
+	Index{ symbols.NT_SYNCHRONIZED,0,1 }: SYNCHRONIZED0R1,
+	Index{ symbols.NT_SYNCHRONIZED,0,2 }: SYNCHRONIZED0R2,
+	Index{ symbols.NT_Selector,0,0 }: Selector0R0,
+	Index{ symbols.NT_Selector,0,1 }: Selector0R1,
+	Index{ symbols.NT_Selector,0,2 }: Selector0R2,
+	Index{ symbols.NT_Selector,0,3 }: Selector0R3,
+	Index{ symbols.NT_Selector,1,0 }: Selector1R0,
+	Index{ symbols.NT_Selector,1,1 }: Selector1R1,
+	Index{ symbols.NT_Selector,1,2 }: Selector1R2,
+	Index{ symbols.NT_Selector,2,0 }: Selector2R0,
+	Index{ symbols.NT_Selector,2,1 }: Selector2R1,
+	Index{ symbols.NT_Selector,2,2 }: Selector2R2,
+	Index{ symbols.NT_Selector,2,3 }: Selector2R3,
+	Index{ symbols.NT_Selector,3,0 }: Selector3R0,
+	Index{ symbols.NT_Selector,3,1 }: Selector3R1,
+	Index{ symbols.NT_Selector,3,2 }: Selector3R2,
+	Index{ symbols.NT_Selector,3,3 }: Selector3R3,
+	Index{ symbols.NT_Selector,4,0 }: Selector4R0,
+	Index{ symbols.NT_Selector,4,1 }: Selector4R1,
+	Index{ symbols.NT_SemiModDecl,0,0 }: SemiModDecl0R0,
+	Index{ symbols.NT_SemiModDecl,0,1 }: SemiModDecl0R1,
+	Index{ symbols.NT_SemiModDecl,1,0 }: SemiModDecl1R0,
+	Index{ symbols.NT_SemiModDecl,1,1 }: SemiModDecl1R1,
+	Index{ symbols.NT_SemiModDecl,1,2 }: SemiModDecl1R2,
+	Index{ symbols.NT_ShiftAlts,0,0 }: ShiftAlts0R0,
+	Index{ symbols.NT_ShiftAlts,0,1 }: ShiftAlts0R1,
+	Index{ symbols.NT_ShiftAlts,0,2 }: ShiftAlts0R2,
+	Index{ symbols.NT_ShiftAlts,0,3 }: ShiftAlts0R3,
+	Index{ symbols.NT_ShiftAlts,1,0 }: ShiftAlts1R0,
+	Index{ symbols.NT_ShiftExpr,0,0 }: ShiftExpr0R0,
+	Index{ symbols.NT_ShiftExpr,0,1 }: ShiftExpr0R1,
+	Index{ symbols.NT_ShiftExpr,0,2 }: ShiftExpr0R2,
+	Index{ symbols.NT_Stmt,0,0 }: Stmt0R0,
+	Index{ symbols.NT_Stmt,0,1 }: Stmt0R1,
+	Index{ symbols.NT_Stmt,1,0 }: Stmt1R0,
+	Index{ symbols.NT_Stmt,1,1 }: Stmt1R1,
+	Index{ symbols.NT_Stmt,1,2 }: Stmt1R2,
+	Index{ symbols.NT_Stmt,1,3 }: Stmt1R3,
+	Index{ symbols.NT_Stmt,1,4 }: Stmt1R4,
+	Index{ symbols.NT_Stmt,2,0 }: Stmt2R0,
+	Index{ symbols.NT_Stmt,2,1 }: Stmt2R1,
+	Index{ symbols.NT_Stmt,2,2 }: Stmt2R2,
+	Index{ symbols.NT_Stmt,2,3 }: Stmt2R3,
+	Index{ symbols.NT_Stmt,2,4 }: Stmt2R4,
+	Index{ symbols.NT_Stmt,3,0 }: Stmt3R0,
+	Index{ symbols.NT_Stmt,3,1 }: Stmt3R1,
+	Index{ symbols.NT_Stmt,3,2 }: Stmt3R2,
+	Index{ symbols.NT_Stmt,3,3 }: Stmt3R3,
+	Index{ symbols.NT_Stmt,3,4 }: Stmt3R4,
+	Index{ symbols.NT_Stmt,3,5 }: Stmt3R5,
+	Index{ symbols.NT_Stmt,3,6 }: Stmt3R6,
+	Index{ symbols.NT_Stmt,3,7 }: Stmt3R7,
+	Index{ symbols.NT_Stmt,3,8 }: Stmt3R8,
+	Index{ symbols.NT_Stmt,3,9 }: Stmt3R9,
+	Index{ symbols.NT_Stmt,4,0 }: Stmt4R0,
+	Index{ symbols.NT_Stmt,4,1 }: Stmt4R1,
+	Index{ symbols.NT_Stmt,4,2 }: Stmt4R2,
+	Index{ symbols.NT_Stmt,4,3 }: Stmt4R3,
+	Index{ symbols.NT_Stmt,5,0 }: Stmt5R0,
+	Index{ symbols.NT_Stmt,5,1 }: Stmt5R1,
+	Index{ symbols.NT_Stmt,5,2 }: Stmt5R2,
+	Index{ symbols.NT_Stmt,5,3 }: Stmt5R3,
+	Index{ symbols.NT_Stmt,5,4 }: Stmt5R4,
+	Index{ symbols.NT_Stmt,5,5 }: Stmt5R5,
+	Index{ symbols.NT_Stmt,6,0 }: Stmt6R0,
+	Index{ symbols.NT_Stmt,6,1 }: Stmt6R1,
+	Index{ symbols.NT_Stmt,6,2 }: Stmt6R2,
+	Index{ symbols.NT_Stmt,6,3 }: Stmt6R3,
+	Index{ symbols.NT_Stmt,7,0 }: Stmt7R0,
+	Index{ symbols.NT_Stmt,7,1 }: Stmt7R1,
+	Index{ symbols.NT_Stmt,7,2 }: Stmt7R2,
+	Index{ symbols.NT_Stmt,7,3 }: Stmt7R3,
+	Index{ symbols.NT_Stmt,7,4 }: Stmt7R4,
+	Index{ symbols.NT_Stmt,7,5 }: Stmt7R5,
+	Index{ symbols.NT_Stmt,8,0 }: Stmt8R0,
+	Index{ symbols.NT_Stmt,8,1 }: Stmt8R1,
+	Index{ symbols.NT_Stmt,8,2 }: Stmt8R2,
+	Index{ symbols.NT_Stmt,8,3 }: Stmt8R3,
+	Index{ symbols.NT_Stmt,9,0 }: Stmt9R0,
+	Index{ symbols.NT_Stmt,9,1 }: Stmt9R1,
+	Index{ symbols.NT_Stmt,9,2 }: Stmt9R2,
+	Index{ symbols.NT_Stmt,9,3 }: Stmt9R3,
+	Index{ symbols.NT_Stmt,10,0 }: Stmt10R0,
+	Index{ symbols.NT_Stmt,10,1 }: Stmt10R1,
+	Index{ symbols.NT_Stmt,10,2 }: Stmt10R2,
+	Index{ symbols.NT_Stmt,10,3 }: Stmt10R3,
+	Index{ symbols.NT_Stmt,11,0 }: Stmt11R0,
+	Index{ symbols.NT_Stmt,11,1 }: Stmt11R1,
+	Index{ symbols.NT_Stmt,11,2 }: Stmt11R2,
+	Index{ symbols.NT_Stmt,11,3 }: Stmt11R3,
+	Index{ symbols.NT_Stmt,12,0 }: Stmt12R0,
+	Index{ symbols.NT_Stmt,12,1 }: Stmt12R1,
+	Index{ symbols.NT_Stmt,12,2 }: Stmt12R2,
+	Index{ symbols.NT_Stmt,12,3 }: Stmt12R3,
+	Index{ symbols.NT_Stmt,13,0 }: Stmt13R0,
+	Index{ symbols.NT_Stmt,13,1 }: Stmt13R1,
+	Index{ symbols.NT_Stmt,14,0 }: Stmt14R0,
+	Index{ symbols.NT_Stmt,14,1 }: Stmt14R1,
+	Index{ symbols.NT_Stmt,14,2 }: Stmt14R2,
+	Index{ symbols.NT_Stmt,15,0 }: Stmt15R0,
+	Index{ symbols.NT_Stmt,15,1 }: Stmt15R1,
+	Index{ symbols.NT_Stmt,15,2 }: Stmt15R2,
+	Index{ symbols.NT_Stmt,15,3 }: Stmt15R3,
+	Index{ symbols.NT_StmtExpr,0,0 }: StmtExpr0R0,
+	Index{ symbols.NT_StmtExpr,0,1 }: StmtExpr0R1,
+	Index{ symbols.NT_StrClose,0,0 }: StrClose0R0,
+	Index{ symbols.NT_StrClose,0,1 }: StrClose0R1,
+	Index{ symbols.NT_StrClose,1,0 }: StrClose1R0,
+	Index{ symbols.NT_StrClose,1,1 }: StrClose1R1,
+	Index{ symbols.NT_StrClose,1,2 }: StrClose1R2,
+	Index{ symbols.NT_StringLiteral,0,0 }: StringLiteral0R0,
+	Index{ symbols.NT_StringLiteral,0,1 }: StringLiteral0R1,
+	Index{ symbols.NT_StringLiteral,0,2 }: StringLiteral0R2,
+	Index{ symbols.NT_SuperSuffix,0,0 }: SuperSuffix0R0,
+	Index{ symbols.NT_SuperSuffix,0,1 }: SuperSuffix0R1,
+	Index{ symbols.NT_SuperSuffix,1,0 }: SuperSuffix1R0,
+	Index{ symbols.NT_SuperSuffix,1,1 }: SuperSuffix1R1,
+	Index{ symbols.NT_SuperSuffix,1,2 }: SuperSuffix1R2,
+	Index{ symbols.NT_SuperSuffix,1,3 }: SuperSuffix1R3,
+	Index{ symbols.NT_SwitchBlockStmtGrp,0,0 }: SwitchBlockStmtGrp0R0,
+	Index{ symbols.NT_SwitchBlockStmtGrp,0,1 }: SwitchBlockStmtGrp0R1,
+	Index{ symbols.NT_SwitchBlockStmtGrp,0,2 }: SwitchBlockStmtGrp0R2,
+	Index{ symbols.NT_SwitchLabel,0,0 }: SwitchLabel0R0,
+	Index{ symbols.NT_SwitchLabel,0,1 }: SwitchLabel0R1,
+	Index{ symbols.NT_SwitchLabel,0,2 }: SwitchLabel0R2,
+	Index{ symbols.NT_SwitchLabel,0,3 }: SwitchLabel0R3,
+	Index{ symbols.NT_SwitchLabel,1,0 }: SwitchLabel1R0,
+	Index{ symbols.NT_SwitchLabel,1,1 }: SwitchLabel1R1,
+	Index{ symbols.NT_SwitchLabel,1,2 }: SwitchLabel1R2,
+	Index{ symbols.NT_THIS,0,0 }: THIS0R0,
+	Index{ symbols.NT_THIS,0,1 }: THIS0R1,
+	Index{ symbols.NT_THIS,0,2 }: THIS0R2,
+	Index{ symbols.NT_THROW,0,0 }: THROW0R0,
+	Index{ symbols.NT_THROW,0,1 }: THROW0R1,
+	Index{ symbols.NT_THROW,0,2 }: THROW0R2,
+	Index{ symbols.NT_THROWS,0,0 }: THROWS0R0,
+	Index{ symbols.NT_THROWS,0,1 }: THROWS0R1,
+	Index{ symbols.NT_THROWS,0,2 }: THROWS0R2,
+	Index{ symbols.NT_TILDA,0,0 }: TILDA0R0,
+	Index{ symbols.NT_TILDA,0,1 }: TILDA0R1,
+	Index{ symbols.NT_TILDA,0,2 }: TILDA0R2,
+	Index{ symbols.NT_TRY,0,0 }: TRY0R0,
+	Index{ symbols.NT_TRY,0,1 }: TRY0R1,
+	Index{ symbols.NT_TRY,0,2 }: TRY0R2,
+	Index{ symbols.NT_Type,0,0 }: Type0R0,
+	Index{ symbols.NT_Type,0,1 }: Type0R1,
+	Index{ symbols.NT_Type,0,2 }: Type0R2,
+	Index{ symbols.NT_TypeAlts,0,0 }: TypeAlts0R0,
+	Index{ symbols.NT_TypeAlts,0,1 }: TypeAlts0R1,
+	Index{ symbols.NT_TypeAlts,1,0 }: TypeAlts1R0,
+	Index{ symbols.NT_TypeAlts,1,1 }: TypeAlts1R1,
+	Index{ symbols.NT_UnaryExpr,0,0 }: UnaryExpr0R0,
+	Index{ symbols.NT_UnaryExpr,0,1 }: UnaryExpr0R1,
+	Index{ symbols.NT_UnaryExpr,0,2 }: UnaryExpr0R2,
+	Index{ symbols.NT_UnaryExpr,1,0 }: UnaryExpr1R0,
+	Index{ symbols.NT_UnaryExpr,1,1 }: UnaryExpr1R1,
+	Index{ symbols.NT_UnaryExpr,1,2 }: UnaryExpr1R2,
+	Index{ symbols.NT_UnaryExpr,1,3 }: UnaryExpr1R3,
+	Index{ symbols.NT_UnaryExpr,1,4 }: UnaryExpr1R4,
+	Index{ symbols.NT_UnaryExpr,2,0 }: UnaryExpr2R0,
+	Index{ symbols.NT_UnaryExpr,2,1 }: UnaryExpr2R1,
+	Index{ symbols.NT_UnaryExpr,2,2 }: UnaryExpr2R2,
+	Index{ symbols.NT_UnaryExpr,2,3 }: UnaryExpr2R3,
+	Index{ symbols.NT_UnicodeEscape,0,0 }: UnicodeEscape0R0,
+	Index{ symbols.NT_UnicodeEscape,0,1 }: UnicodeEscape0R1,
+	Index{ symbols.NT_UnicodeEscape,0,2 }: UnicodeEscape0R2,
+	Index{ symbols.NT_UnicodeEscape,0,3 }: UnicodeEscape0R3,
+	Index{ symbols.NT_UnicodeEscape,0,4 }: UnicodeEscape0R4,
+	Index{ symbols.NT_UnicodeEscape,0,5 }: UnicodeEscape0R5,
+	Index{ symbols.NT_VOID,0,0 }: VOID0R0,
+	Index{ symbols.NT_VOID,0,1 }: VOID0R1,
+	Index{ symbols.NT_VOID,0,2 }: VOID0R2,
+	Index{ symbols.NT_VarDecl,0,0 }: VarDecl0R0,
+	Index{ symbols.NT_VarDecl,0,1 }: VarDecl0R1,
+	Index{ symbols.NT_VarDecl,0,2 }: VarDecl0R2,
+	Index{ symbols.NT_VarDecl,0,3 }: VarDecl0R3,
+	Index{ symbols.NT_VarDeclInit,0,0 }: VarDeclInit0R0,
+	Index{ symbols.NT_VarDeclInit,0,1 }: VarDeclInit0R1,
+	Index{ symbols.NT_VarDeclInit,0,2 }: VarDeclInit0R2,
+	Index{ symbols.NT_VarDelID,0,0 }: VarDelID0R0,
+	Index{ symbols.NT_VarDelID,0,1 }: VarDelID0R1,
+	Index{ symbols.NT_VarDelID,0,2 }: VarDelID0R2,
+	Index{ symbols.NT_VarInitial,0,0 }: VarInitial0R0,
+	Index{ symbols.NT_VarInitial,0,1 }: VarInitial0R1,
+	Index{ symbols.NT_VarInitial,1,0 }: VarInitial1R0,
+	Index{ symbols.NT_VarInitial,1,1 }: VarInitial1R1,
+	Index{ symbols.NT_VoidIntfMethDeclRst,0,0 }: VoidIntfMethDeclRst0R0,
+	Index{ symbols.NT_VoidIntfMethDeclRst,0,1 }: VoidIntfMethDeclRst0R1,
+	Index{ symbols.NT_VoidIntfMethDeclRst,0,2 }: VoidIntfMethDeclRst0R2,
+	Index{ symbols.NT_VoidIntfMethDeclRst,0,3 }: VoidIntfMethDeclRst0R3,
+	Index{ symbols.NT_WHILE,0,0 }: WHILE0R0,
+	Index{ symbols.NT_WHILE,0,1 }: WHILE0R1,
+	Index{ symbols.NT_WHILE,0,2 }: WHILE0R2,
+	Index{ symbols.NT_WS,0,0 }: WS0R0,
+	Index{ symbols.NT_WS,0,1 }: WS0R1,
+	Index{ symbols.NT_WS,1,0 }: WS1R0,
+	Index{ symbols.NT_XORExpr,0,0 }: XORExpr0R0,
+	Index{ symbols.NT_XORExpr,0,1 }: XORExpr0R1,
+	Index{ symbols.NT_XORExpr,0,2 }: XORExpr0R2,
 }
 
 var alternates = map[symbols.NT][]Label{ 
-	symbols.NT_Test:[]Label{ Test0R0 },
+	symbols.NT_CompUnit:[]Label{ CompUnit0R0 },
+	symbols.NT_OptPackDecl:[]Label{ OptPackDecl0R0,OptPackDecl1R0 },
+	symbols.NT_RepImpDecl0x:[]Label{ RepImpDecl0x0R0,RepImpDecl0x1R0 },
+	symbols.NT_RepSemiModDecl0x:[]Label{ RepSemiModDecl0x0R0,RepSemiModDecl0x1R0 },
+	symbols.NT_SemiModDecl:[]Label{ SemiModDecl0R0,SemiModDecl1R0 },
+	symbols.NT_DeclAlts:[]Label{ DeclAlts0R0,DeclAlts1R0 },
+	symbols.NT_PackDecl:[]Label{ PackDecl0R0 },
+	symbols.NT_ImportDecl:[]Label{ ImportDecl0R0 },
+	symbols.NT_OptDotStar:[]Label{ OptDotStar0R0,OptDotStar1R0 },
+	symbols.NT_ClsDecl:[]Label{ ClsDecl0R0 },
+	symbols.NT_OptExtClsType:[]Label{ OptExtClsType0R0,OptExtClsType1R0 },
+	symbols.NT_OptImpClsLst:[]Label{ OptImpClsLst0R0,OptImpClsLst1R0 },
+	symbols.NT_ClsBdy:[]Label{ ClsBdy0R0 },
+	symbols.NT_RepClsBDecl0x:[]Label{ RepClsBDecl0x0R0,RepClsBDecl0x1R0 },
+	symbols.NT_ClsBdyDecl:[]Label{ ClsBdyDecl0R0,ClsBdyDecl1R0,ClsBdyDecl2R0 },
+	symbols.NT_OptStatic:[]Label{ OptStatic0R0,OptStatic1R0 },
+	symbols.NT_MemDecl:[]Label{ MemDecl0R0,MemDecl1R0,MemDecl2R0,MemDecl3R0,MemDecl4R0,MemDecl5R0 },
+	symbols.NT_MemAlts:[]Label{ MemAlts0R0,MemAlts1R0 },
+	symbols.NT_IntfDecl:[]Label{ IntfDecl0R0 },
+	symbols.NT_OptExtendsClsLis:[]Label{ OptExtendsClsLis0R0,OptExtendsClsLis1R0 },
+	symbols.NT_IntfBdy:[]Label{ IntfBdy0R0 },
+	symbols.NT_RepInBodDecl0x:[]Label{ RepInBodDecl0x0R0,RepInBodDecl0x1R0 },
+	symbols.NT_IntfBdyDecl:[]Label{ IntfBdyDecl0R0,IntfBdyDecl1R0 },
+	symbols.NT_IntfMemDecl:[]Label{ IntfMemDecl0R0,IntfMemDecl1R0,IntfMemDecl2R0,IntfMemDecl3R0 },
+	symbols.NT_IntfMethFieldDecl:[]Label{ IntfMethFieldDecl0R0 },
+	symbols.NT_IntfMethFieldRest:[]Label{ IntfMethFieldRest0R0,IntfMethFieldRest1R0 },
+	symbols.NT_IntfMethDeclRest:[]Label{ IntfMethDeclRest0R0 },
+	symbols.NT_VoidIntfMethDeclRst:[]Label{ VoidIntfMethDeclRst0R0 },
+	symbols.NT_OptThrowClsTypLst:[]Label{ OptThrowClsTypLst0R0,OptThrowClsTypLst1R0 },
+	symbols.NT_ConstDeclsRest:[]Label{ ConstDeclsRest0R0 },
+	symbols.NT_RepComCnstDecl0x:[]Label{ RepComCnstDecl0x0R0,RepComCnstDecl0x1R0 },
+	symbols.NT_ConstDecl:[]Label{ ConstDecl0R0 },
+	symbols.NT_ConstDeclRest:[]Label{ ConstDeclRest0R0 },
+	symbols.NT_LocalVarDeclStmt:[]Label{ LocalVarDeclStmt0R0 },
+	symbols.NT_VarDecl:[]Label{ VarDecl0R0 },
+	symbols.NT_OptEqVarInit:[]Label{ OptEqVarInit0R0,OptEqVarInit1R0 },
+	symbols.NT_FormalParams:[]Label{ FormalParams0R0 },
+	symbols.NT_OptFormPDecl:[]Label{ OptFormPDecl0R0,OptFormPDecl1R0 },
+	symbols.NT_FormalParam:[]Label{ FormalParam0R0 },
+	symbols.NT_FormalParamDecls:[]Label{ FormalParamDecls0R0 },
+	symbols.NT_FormalParamDeclsRest:[]Label{ FormalParamDeclsRest0R0 },
+	symbols.NT_OptComFormPDecl:[]Label{ OptComFormPDecl0R0,OptComFormPDecl1R0 },
+	symbols.NT_VarDelID:[]Label{ VarDelID0R0 },
+	symbols.NT_Block:[]Label{ Block0R0 },
+	symbols.NT_RepBlkSt0x:[]Label{ RepBlkSt0x0R0,RepBlkSt0x1R0 },
+	symbols.NT_BlockStmt:[]Label{ BlockStmt0R0,BlockStmt1R0,BlockStmt2R0 },
+	symbols.NT_RepModif0:[]Label{ RepModif00R0,RepModif01R0 },
+	symbols.NT_Stmt:[]Label{ Stmt0R0,Stmt1R0,Stmt2R0,Stmt3R0,Stmt4R0,Stmt5R0,Stmt6R0,Stmt7R0,Stmt8R0,Stmt9R0,Stmt10R0,Stmt11R0,Stmt12R0,Stmt13R0,Stmt14R0,Stmt15R0 },
+	symbols.NT_OptColExpr:[]Label{ OptColExpr0R0,OptColExpr1R0 },
+	symbols.NT_OptElse:[]Label{ OptElse0R0,OptElse1R0 },
+	symbols.NT_OptForInit:[]Label{ OptForInit0R0,OptForInit1R0 },
+	symbols.NT_OptForUpd:[]Label{ OptForUpd0R0,OptForUpd1R0 },
+	symbols.NT_OptExpr:[]Label{ OptExpr0R0,OptExpr1R0 },
+	symbols.NT_CatchBlk:[]Label{ CatchBlk0R0,CatchBlk1R0 },
+	symbols.NT_RepCatch0x:[]Label{ RepCatch0x0R0,RepCatch0x1R0 },
+	symbols.NT_RepSwBlkStmt0x:[]Label{ RepSwBlkStmt0x0R0,RepSwBlkStmt0x1R0 },
+	symbols.NT_OptID:[]Label{ OptID0R0,OptID1R0 },
+	symbols.NT_Catch:[]Label{ Catch0R0 },
+	symbols.NT_Finally:[]Label{ Finally0R0 },
+	symbols.NT_SwitchBlockStmtGrp:[]Label{ SwitchBlockStmtGrp0R0 },
+	symbols.NT_SwitchLabel:[]Label{ SwitchLabel0R0,SwitchLabel1R0 },
+	symbols.NT_ForInit:[]Label{ ForInit0R0,ForInit1R0 },
+	symbols.NT_OptFinType:[]Label{ OptFinType0R0 },
+	symbols.NT_OptFin:[]Label{ OptFin0R0,OptFin1R0 },
+	symbols.NT_VarDeclInit:[]Label{ VarDeclInit0R0 },
+	symbols.NT_RepComVDecl0x:[]Label{ RepComVDecl0x0R0,RepComVDecl0x1R0 },
+	symbols.NT_ForUpdate:[]Label{ ForUpdate0R0 },
+	symbols.NT_RepComSExpr0x:[]Label{ RepComSExpr0x0R0,RepComSExpr0x1R0 },
+	symbols.NT_StmtExpr:[]Label{ StmtExpr0R0 },
+	symbols.NT_ConstExpr:[]Label{ ConstExpr0R0 },
+	symbols.NT_Expr:[]Label{ Expr0R0 },
+	symbols.NT_RepAsscExpr0x:[]Label{ RepAsscExpr0x0R0,RepAsscExpr0x1R0 },
+	symbols.NT_AssignOp:[]Label{ AssignOp0R0,AssignOp1R0,AssignOp2R0,AssignOp3R0,AssignOp4R0,AssignOp5R0,AssignOp6R0,AssignOp7R0,AssignOp8R0,AssignOp9R0,AssignOp10R0,AssignOp11R0 },
+	symbols.NT_CondExpr:[]Label{ CondExpr0R0 },
+	symbols.NT_RepCondition0x:[]Label{ RepCondition0x0R0,RepCondition0x1R0 },
+	symbols.NT_CondORExpr:[]Label{ CondORExpr0R0 },
+	symbols.NT_RepORcAND0x:[]Label{ RepORcAND0x0R0,RepORcAND0x1R0 },
+	symbols.NT_CondANDExpr:[]Label{ CondANDExpr0R0 },
+	symbols.NT_RepANDIOR0x:[]Label{ RepANDIOR0x0R0,RepANDIOR0x1R0 },
+	symbols.NT_IORExpr:[]Label{ IORExpr0R0 },
+	symbols.NT_RepORXOR0x:[]Label{ RepORXOR0x0R0,RepORXOR0x1R0 },
+	symbols.NT_ORXOR:[]Label{ ORXOR0R0 },
+	symbols.NT_XORExpr:[]Label{ XORExpr0R0 },
+	symbols.NT_RepHatAND0x:[]Label{ RepHatAND0x0R0,RepHatAND0x1R0 },
+	symbols.NT_ANDExpr:[]Label{ ANDExpr0R0 },
+	symbols.NT_RepANDEq0x:[]Label{ RepANDEq0x0R0,RepANDEq0x1R0 },
+	symbols.NT_EqualExpr:[]Label{ EqualExpr0R0 },
+	symbols.NT_RepEqExpr0x:[]Label{ RepEqExpr0x0R0,RepEqExpr0x1R0 },
+	symbols.NT_EqAlts:[]Label{ EqAlts0R0,EqAlts1R0 },
+	symbols.NT_RelateExpr:[]Label{ RelateExpr0R0 },
+	symbols.NT_RepESInst0x:[]Label{ RepESInst0x0R0,RepESInst0x1R0 },
+	symbols.NT_ESInst:[]Label{ ESInst0R0,ESInst1R0 },
+	symbols.NT_EqShift:[]Label{ EqShift0R0 },
+	symbols.NT_EqCheck:[]Label{ EqCheck0R0,EqCheck1R0,EqCheck2R0,EqCheck3R0 },
+	symbols.NT_ShiftExpr:[]Label{ ShiftExpr0R0 },
+	symbols.NT_CarrotAlts:[]Label{ CarrotAlts0R0,CarrotAlts1R0,CarrotAlts2R0 },
+	symbols.NT_ShiftAlts:[]Label{ ShiftAlts0R0,ShiftAlts1R0 },
+	symbols.NT_AddExpr:[]Label{ AddExpr0R0 },
+	symbols.NT_RepAddAltsMult0x:[]Label{ RepAddAltsMult0x0R0,RepAddAltsMult0x1R0 },
+	symbols.NT_AddAlts:[]Label{ AddAlts0R0,AddAlts1R0 },
+	symbols.NT_MultExpr:[]Label{ MultExpr0R0 },
+	symbols.NT_RepSDMUExpr0x:[]Label{ RepSDMUExpr0x0R0,RepSDMUExpr0x1R0 },
+	symbols.NT_SDM:[]Label{ SDM0R0,SDM1R0,SDM2R0 },
+	symbols.NT_UnaryExpr:[]Label{ UnaryExpr0R0,UnaryExpr1R0,UnaryExpr2R0 },
+	symbols.NT_RepSel0x:[]Label{ RepSel0x0R0,RepSel0x1R0 },
+	symbols.NT_RepPfOp0x:[]Label{ RepPfOp0x0R0,RepPfOp0x1R0 },
+	symbols.NT_Primary:[]Label{ Primary0R0,Primary1R0,Primary2R0,Primary3R0,Primary4R0,Primary5R0,Primary6R0,Primary7R0 },
+	symbols.NT_OptIDSuff:[]Label{ OptIDSuff0R0,OptIDSuff1R0 },
+	symbols.NT_IDSuffix:[]Label{ IDSuffix0R0,IDSuffix1R0,IDSuffix2R0 },
+	symbols.NT_RBRKAlts:[]Label{ RBRKAlts0R0,RBRKAlts1R0 },
+	symbols.NT_OtherAlts:[]Label{ OtherAlts0R0,OtherAlts1R0,OtherAlts2R0,OtherAlts3R0 },
+	symbols.NT_PrefixOp:[]Label{ PrefixOp0R0,PrefixOp1R0,PrefixOp2R0,PrefixOp3R0,PrefixOp4R0,PrefixOp5R0 },
+	symbols.NT_PostfixOp:[]Label{ PostfixOp0R0,PostfixOp1R0 },
+	symbols.NT_Selector:[]Label{ Selector0R0,Selector1R0,Selector2R0,Selector3R0,Selector4R0 },
+	symbols.NT_SuperSuffix:[]Label{ SuperSuffix0R0,SuperSuffix1R0 },
+	symbols.NT_OptArgs:[]Label{ OptArgs0R0,OptArgs1R0 },
+	symbols.NT_BasicType:[]Label{ BasicType0R0 },
+	symbols.NT_BasicTypeLit:[]Label{ BasicTypeLit0R0,BasicTypeLit1R0,BasicTypeLit2R0,BasicTypeLit3R0,BasicTypeLit4R0,BasicTypeLit5R0,BasicTypeLit6R0,BasicTypeLit7R0 },
+	symbols.NT_Arguments:[]Label{ Arguments0R0 },
+	symbols.NT_OptExprs:[]Label{ OptExprs0R0,OptExprs1R0 },
+	symbols.NT_RepComExp0x:[]Label{ RepComExp0x0R0,RepComExp0x1R0 },
+	symbols.NT_Creator:[]Label{ Creator0R0,Creator1R0 },
+	symbols.NT_CreatedName:[]Label{ CreatedName0R0 },
+	symbols.NT_InnerCreator:[]Label{ InnerCreator0R0 },
+	symbols.NT_ArrayCreatorRest:[]Label{ ArrayCreatorRest0R0 },
+	symbols.NT_ArrayRest:[]Label{ ArrayRest0R0,ArrayRest1R0 },
+	symbols.NT_RepDimExpr0x:[]Label{ RepDimExpr0x0R0,RepDimExpr0x1R0 },
+	symbols.NT_ClsCreatorRest:[]Label{ ClsCreatorRest0R0 },
+	symbols.NT_OptClsBdy:[]Label{ OptClsBdy0R0,OptClsBdy1R0 },
+	symbols.NT_ArrayInitializer:[]Label{ ArrayInitializer0R0 },
+	symbols.NT_OptVarInit:[]Label{ OptVarInit0R0,OptVarInit1R0 },
+	symbols.NT_RepComInit0x:[]Label{ RepComInit0x0R0,RepComInit0x1R0 },
+	symbols.NT_OptCom:[]Label{ OptCom0R0,OptCom1R0 },
+	symbols.NT_VarInitial:[]Label{ VarInitial0R0,VarInitial1R0 },
+	symbols.NT_ParExpr:[]Label{ ParExpr0R0 },
+	symbols.NT_QualifiedID:[]Label{ QualifiedID0R0 },
+	symbols.NT_Dim:[]Label{ Dim0R0 },
+	symbols.NT_DimExpr:[]Label{ DimExpr0R0 },
+	symbols.NT_Type:[]Label{ Type0R0 },
+	symbols.NT_TypeAlts:[]Label{ TypeAlts0R0,TypeAlts1R0 },
+	symbols.NT_ReferenceType:[]Label{ ReferenceType0R0,ReferenceType1R0 },
+	symbols.NT_RepDim0x:[]Label{ RepDim0x0R0,RepDim0x1R0 },
+	symbols.NT_ClsType:[]Label{ ClsType0R0 },
+	symbols.NT_RepDotID0x:[]Label{ RepDotID0x0R0,RepDotID0x1R0 },
+	symbols.NT_ClsTypeList:[]Label{ ClsTypeList0R0 },
+	symbols.NT_RepComCls0x:[]Label{ RepComCls0x0R0,RepComCls0x1R0 },
+	symbols.NT_Modifier:[]Label{ Modifier0R0 },
+	symbols.NT_Modifs:[]Label{ Modifs0R0,Modifs1R0,Modifs2R0,Modifs3R0,Modifs4R0,Modifs5R0,Modifs6R0,Modifs7R0,Modifs8R0,Modifs9R0,Modifs10R0 },
+	symbols.NT_ID:[]Label{ ID0R0 },
+	symbols.NT_LetterLorD:[]Label{ LetterLorD0R0 },
+	symbols.NT_RepLorD0x:[]Label{ RepLorD0x0R0,RepLorD0x1R0 },
+	symbols.NT_ASSERT:[]Label{ ASSERT0R0 },
+	symbols.NT_BREAK:[]Label{ BREAK0R0 },
+	symbols.NT_CASE:[]Label{ CASE0R0 },
+	symbols.NT_CATCH:[]Label{ CATCH0R0 },
+	symbols.NT_Cls:[]Label{ Cls0R0 },
+	symbols.NT_CONTINUE:[]Label{ CONTINUE0R0 },
+	symbols.NT_DEFAULT:[]Label{ DEFAULT0R0 },
+	symbols.NT_DO:[]Label{ DO0R0 },
+	symbols.NT_ELSE:[]Label{ ELSE0R0 },
+	symbols.NT_EXTENDS:[]Label{ EXTENDS0R0 },
+	symbols.NT_FINALLY:[]Label{ FINALLY0R0 },
+	symbols.NT_FINAL:[]Label{ FINAL0R0 },
+	symbols.NT_FOR:[]Label{ FOR0R0 },
+	symbols.NT_IF:[]Label{ IF0R0 },
+	symbols.NT_IMPLEMENTS:[]Label{ IMPLEMENTS0R0 },
+	symbols.NT_IMPORT:[]Label{ IMPORT0R0 },
+	symbols.NT_Intf:[]Label{ Intf0R0 },
+	symbols.NT_INSTANCEOF:[]Label{ INSTANCEOF0R0 },
+	symbols.NT_NEW:[]Label{ NEW0R0 },
+	symbols.NT_PACKAGE:[]Label{ PACKAGE0R0 },
+	symbols.NT_RETURN:[]Label{ RETURN0R0 },
+	symbols.NT_STATIC:[]Label{ STATIC0R0 },
+	symbols.NT_SUPER:[]Label{ SUPER0R0 },
+	symbols.NT_SWITCH:[]Label{ SWITCH0R0 },
+	symbols.NT_SYNCHRONIZED:[]Label{ SYNCHRONIZED0R0 },
+	symbols.NT_THIS:[]Label{ THIS0R0 },
+	symbols.NT_THROWS:[]Label{ THROWS0R0 },
+	symbols.NT_THROW:[]Label{ THROW0R0 },
+	symbols.NT_TRY:[]Label{ TRY0R0 },
+	symbols.NT_VOID:[]Label{ VOID0R0 },
+	symbols.NT_WHILE:[]Label{ WHILE0R0 },
+	symbols.NT_Literal:[]Label{ Literal0R0 },
+	symbols.NT_LitAlts:[]Label{ LitAlts0R0,LitAlts1R0,LitAlts2R0,LitAlts3R0,LitAlts4R0,LitAlts5R0,LitAlts6R0 },
+	symbols.NT_LorD:[]Label{ LorD0R0,LorD1R0 },
+	symbols.NT_Letter:[]Label{ Letter0R0,Letter1R0 },
+	symbols.NT_CharLiteral:[]Label{ CharLiteral0R0 },
+	symbols.NT_EscSlash:[]Label{ EscSlash0R0,EscSlash1R0 },
+	symbols.NT_EscUp:[]Label{ EscUp0R0,EscUp1R0,EscUp2R0 },
+	symbols.NT_StringLiteral:[]Label{ StringLiteral0R0 },
+	symbols.NT_StrClose:[]Label{ StrClose0R0,StrClose1R0 },
+	symbols.NT_OptEsc:[]Label{ OptEsc0R0,OptEsc1R0 },
+	symbols.NT_Escape:[]Label{ Escape0R0 },
+	symbols.NT_Escs:[]Label{ Escs0R0,Escs1R0,Escs2R0 },
+	symbols.NT_UnicodeEscape:[]Label{ UnicodeEscape0R0 },
+	symbols.NT_FloatLiteral:[]Label{ FloatLiteral0R0,FloatLiteral1R0 },
+	symbols.NT_IntegerLiteral:[]Label{ IntegerLiteral0R0 },
+	symbols.NT_NumeralAlts:[]Label{ NumeralAlts0R0,NumeralAlts1R0,NumeralAlts2R0 },
+	symbols.NT_DecimalFloat:[]Label{ DecimalFloat0R0,DecimalFloat1R0,DecimalFloat2R0,DecimalFloat3R0 },
+	symbols.NT_RepDig1xOptExp:[]Label{ RepDig1xOptExp0R0 },
+	symbols.NT_RepDig1xExp:[]Label{ RepDig1xExp0R0 },
+	symbols.NT_DecimalNumeral:[]Label{ DecimalNumeral0R0,DecimalNumeral1R0 },
+	symbols.NT_HexFloat:[]Label{ HexFloat0R0 },
+	symbols.NT_Beoptfd:[]Label{ Beoptfd0R0 },
+	symbols.NT_HexSignificand:[]Label{ HexSignificand0R0,HexSignificand1R0 },
+	symbols.NT_RepHex0xDot:[]Label{ RepHex0xDot0R0 },
+	symbols.NT_OptDot:[]Label{ OptDot0R0,OptDot1R0 },
+	symbols.NT_HexNumeral:[]Label{ HexNumeral0R0 },
+	symbols.NT_Any0xX:[]Label{ Any0xX0R0,Any0xX1R0,Any0xX2R0 },
+	symbols.NT_OctalEscape:[]Label{ OctalEscape0R0,OctalEscape1R0,OctalEscape2R0 },
+	symbols.NT_AND:[]Label{ AND0R0 },
+	symbols.NT_AND_AND:[]Label{ AND_AND0R0 },
+	symbols.NT_AND_EQU:[]Label{ AND_EQU0R0 },
+	symbols.NT_BANG:[]Label{ BANG0R0 },
+	symbols.NT_BSR:[]Label{ BSR0R0 },
+	symbols.NT_BSR_EQU:[]Label{ BSR_EQU0R0 },
+	symbols.NT_COLON:[]Label{ COLON0R0 },
+	symbols.NT_COMMA:[]Label{ COMMA0R0 },
+	symbols.NT_DEC:[]Label{ DEC0R0 },
+	symbols.NT_DIV:[]Label{ DIV0R0 },
+	symbols.NT_DIV_EQU:[]Label{ DIV_EQU0R0 },
+	symbols.NT_DOT:[]Label{ DOT0R0 },
+	symbols.NT_EQU:[]Label{ EQU0R0 },
+	symbols.NT_EQUAL:[]Label{ EQUAL0R0 },
+	symbols.NT_GE:[]Label{ GE0R0 },
+	symbols.NT_GT:[]Label{ GT0R0 },
+	symbols.NT_HAT:[]Label{ HAT0R0 },
+	symbols.NT_HAT_EQU:[]Label{ HAT_EQU0R0 },
+	symbols.NT_INC:[]Label{ INC0R0 },
+	symbols.NT_LBRK:[]Label{ LBRK0R0 },
+	symbols.NT_LE:[]Label{ LE0R0 },
+	symbols.NT_LPAR:[]Label{ LPAR0R0 },
+	symbols.NT_LT:[]Label{ LT0R0 },
+	symbols.NT_LWING:[]Label{ LWING0R0 },
+	symbols.NT_MINUS:[]Label{ MINUS0R0 },
+	symbols.NT_MINUS_EQU:[]Label{ MINUS_EQU0R0 },
+	symbols.NT_MOD:[]Label{ MOD0R0 },
+	symbols.NT_MOD_EQU:[]Label{ MOD_EQU0R0 },
+	symbols.NT_NOT_EQUAL:[]Label{ NOT_EQUAL0R0 },
+	symbols.NT_OR:[]Label{ OR0R0 },
+	symbols.NT_OR_EQU:[]Label{ OR_EQU0R0 },
+	symbols.NT_OR_OR:[]Label{ OR_OR0R0 },
+	symbols.NT_PLUS:[]Label{ PLUS0R0 },
+	symbols.NT_PLUS_EQU:[]Label{ PLUS_EQU0R0 },
+	symbols.NT_QUERY:[]Label{ QUERY0R0 },
+	symbols.NT_RBRK:[]Label{ RBRK0R0 },
+	symbols.NT_RPAR:[]Label{ RPAR0R0 },
+	symbols.NT_RWING:[]Label{ RWING0R0 },
+	symbols.NT_SEMI:[]Label{ SEMI0R0 },
+	symbols.NT_SL:[]Label{ SL0R0 },
+	symbols.NT_SL_EQU:[]Label{ SL_EQU0R0 },
+	symbols.NT_SR:[]Label{ SR0R0 },
+	symbols.NT_SR_EQU:[]Label{ SR_EQU0R0 },
+	symbols.NT_STAR:[]Label{ STAR0R0 },
+	symbols.NT_STAR_EQU:[]Label{ STAR_EQU0R0 },
+	symbols.NT_TILDA:[]Label{ TILDA0R0 },
+	symbols.NT_WS:[]Label{ WS0R0,WS1R0 },
+	symbols.NT_EscOrLineOrBlock:[]Label{ EscOrLineOrBlock0R0,EscOrLineOrBlock1R0,EscOrLineOrBlock2R0 },
 }
 
+var nullable = []bool { 
+	false, // AND0R0 
+	false, // AND0R1 
+	true, // AND0R2 
+	true, // AND0R3 
+	false, // ANDExpr0R0 
+	true, // ANDExpr0R1 
+	true, // ANDExpr0R2 
+	false, // AND_AND0R0 
+	true, // AND_AND0R1 
+	true, // AND_AND0R2 
+	false, // AND_EQU0R0 
+	true, // AND_EQU0R1 
+	true, // AND_EQU0R2 
+	false, // ASSERT0R0 
+	false, // ASSERT0R1 
+	true, // ASSERT0R2 
+	false, // AddAlts0R0 
+	true, // AddAlts0R1 
+	false, // AddAlts1R0 
+	true, // AddAlts1R1 
+	false, // AddExpr0R0 
+	true, // AddExpr0R1 
+	true, // AddExpr0R2 
+	false, // Any0xX0R0 
+	true, // Any0xX0R1 
+	false, // Any0xX1R0 
+	true, // Any0xX1R1 
+	false, // Any0xX2R0 
+	true, // Any0xX2R1 
+	false, // Arguments0R0 
+	false, // Arguments0R1 
+	false, // Arguments0R2 
+	true, // Arguments0R3 
+	false, // ArrayCreatorRest0R0 
+	false, // ArrayCreatorRest0R1 
+	true, // ArrayCreatorRest0R2 
+	false, // ArrayInitializer0R0 
+	false, // ArrayInitializer0R1 
+	false, // ArrayInitializer0R2 
+	true, // ArrayInitializer0R3 
+	false, // ArrayRest0R0 
+	false, // ArrayRest0R1 
+	false, // ArrayRest0R2 
+	true, // ArrayRest0R3 
+	false, // ArrayRest1R0 
+	false, // ArrayRest1R1 
+	true, // ArrayRest1R2 
+	true, // ArrayRest1R3 
+	true, // ArrayRest1R4 
+	false, // AssignOp0R0 
+	true, // AssignOp0R1 
+	false, // AssignOp1R0 
+	true, // AssignOp1R1 
+	false, // AssignOp2R0 
+	true, // AssignOp2R1 
+	false, // AssignOp3R0 
+	true, // AssignOp3R1 
+	false, // AssignOp4R0 
+	true, // AssignOp4R1 
+	false, // AssignOp5R0 
+	true, // AssignOp5R1 
+	false, // AssignOp6R0 
+	true, // AssignOp6R1 
+	false, // AssignOp7R0 
+	true, // AssignOp7R1 
+	false, // AssignOp8R0 
+	true, // AssignOp8R1 
+	false, // AssignOp9R0 
+	true, // AssignOp9R1 
+	false, // AssignOp10R0 
+	true, // AssignOp10R1 
+	false, // AssignOp11R0 
+	true, // AssignOp11R1 
+	false, // BANG0R0 
+	false, // BANG0R1 
+	true, // BANG0R2 
+	true, // BANG0R3 
+	false, // BREAK0R0 
+	false, // BREAK0R1 
+	true, // BREAK0R2 
+	false, // BSR0R0 
+	false, // BSR0R1 
+	true, // BSR0R2 
+	true, // BSR0R3 
+	false, // BSR_EQU0R0 
+	true, // BSR_EQU0R1 
+	true, // BSR_EQU0R2 
+	false, // BasicType0R0 
+	false, // BasicType0R1 
+	true, // BasicType0R2 
+	false, // BasicTypeLit0R0 
+	true, // BasicTypeLit0R1 
+	false, // BasicTypeLit1R0 
+	true, // BasicTypeLit1R1 
+	false, // BasicTypeLit2R0 
+	true, // BasicTypeLit2R1 
+	false, // BasicTypeLit3R0 
+	true, // BasicTypeLit3R1 
+	false, // BasicTypeLit4R0 
+	true, // BasicTypeLit4R1 
+	false, // BasicTypeLit5R0 
+	true, // BasicTypeLit5R1 
+	false, // BasicTypeLit6R0 
+	true, // BasicTypeLit6R1 
+	false, // BasicTypeLit7R0 
+	true, // BasicTypeLit7R1 
+	false, // Beoptfd0R0 
+	false, // Beoptfd0R1 
+	true, // Beoptfd0R2 
+	false, // Block0R0 
+	false, // Block0R1 
+	false, // Block0R2 
+	true, // Block0R3 
+	false, // BlockStmt0R0 
+	true, // BlockStmt0R1 
+	false, // BlockStmt1R0 
+	false, // BlockStmt1R1 
+	true, // BlockStmt1R2 
+	false, // BlockStmt2R0 
+	true, // BlockStmt2R1 
+	false, // CASE0R0 
+	false, // CASE0R1 
+	true, // CASE0R2 
+	false, // CATCH0R0 
+	false, // CATCH0R1 
+	true, // CATCH0R2 
+	false, // COLON0R0 
+	true, // COLON0R1 
+	true, // COLON0R2 
+	false, // COMMA0R0 
+	true, // COMMA0R1 
+	true, // COMMA0R2 
+	false, // CONTINUE0R0 
+	false, // CONTINUE0R1 
+	true, // CONTINUE0R2 
+	false, // CarrotAlts0R0 
+	true, // CarrotAlts0R1 
+	false, // CarrotAlts1R0 
+	true, // CarrotAlts1R1 
+	false, // CarrotAlts2R0 
+	true, // CarrotAlts2R1 
+	false, // Catch0R0 
+	false, // Catch0R1 
+	false, // Catch0R2 
+	false, // Catch0R3 
+	false, // Catch0R4 
+	true, // Catch0R5 
+	false, // CatchBlk0R0 
+	true, // CatchBlk0R1 
+	true, // CatchBlk0R2 
+	true, // CatchBlk0R3 
+	false, // CatchBlk1R0 
+	true, // CatchBlk1R1 
+	false, // CharLiteral0R0 
+	false, // CharLiteral0R1 
+	false, // CharLiteral0R2 
+	true, // CharLiteral0R3 
+	false, // Cls0R0 
+	false, // Cls0R1 
+	true, // Cls0R2 
+	false, // ClsBdy0R0 
+	false, // ClsBdy0R1 
+	false, // ClsBdy0R2 
+	true, // ClsBdy0R3 
+	false, // ClsBdyDecl0R0 
+	true, // ClsBdyDecl0R1 
+	false, // ClsBdyDecl1R0 
+	false, // ClsBdyDecl1R1 
+	true, // ClsBdyDecl1R2 
+	false, // ClsBdyDecl2R0 
+	false, // ClsBdyDecl2R1 
+	true, // ClsBdyDecl2R2 
+	false, // ClsCreatorRest0R0 
+	true, // ClsCreatorRest0R1 
+	true, // ClsCreatorRest0R2 
+	false, // ClsDecl0R0 
+	false, // ClsDecl0R1 
+	false, // ClsDecl0R2 
+	false, // ClsDecl0R3 
+	false, // ClsDecl0R4 
+	true, // ClsDecl0R5 
+	false, // ClsType0R0 
+	true, // ClsType0R1 
+	true, // ClsType0R2 
+	false, // ClsTypeList0R0 
+	true, // ClsTypeList0R1 
+	true, // ClsTypeList0R2 
+	true, // CompUnit0R0 
+	true, // CompUnit0R1 
+	true, // CompUnit0R2 
+	true, // CompUnit0R3 
+	true, // CompUnit0R4 
+	false, // CondANDExpr0R0 
+	true, // CondANDExpr0R1 
+	true, // CondANDExpr0R2 
+	false, // CondExpr0R0 
+	true, // CondExpr0R1 
+	true, // CondExpr0R2 
+	false, // CondORExpr0R0 
+	true, // CondORExpr0R1 
+	true, // CondORExpr0R2 
+	false, // ConstDecl0R0 
+	false, // ConstDecl0R1 
+	true, // ConstDecl0R2 
+	false, // ConstDeclRest0R0 
+	false, // ConstDeclRest0R1 
+	false, // ConstDeclRest0R2 
+	true, // ConstDeclRest0R3 
+	false, // ConstDeclsRest0R0 
+	true, // ConstDeclsRest0R1 
+	true, // ConstDeclsRest0R2 
+	false, // ConstExpr0R0 
+	true, // ConstExpr0R1 
+	false, // CreatedName0R0 
+	true, // CreatedName0R1 
+	true, // CreatedName0R2 
+	false, // Creator0R0 
+	false, // Creator0R1 
+	true, // Creator0R2 
+	false, // Creator1R0 
+	false, // Creator1R1 
+	true, // Creator1R2 
+	false, // DEC0R0 
+	true, // DEC0R1 
+	true, // DEC0R2 
+	false, // DEFAULT0R0 
+	false, // DEFAULT0R1 
+	true, // DEFAULT0R2 
+	false, // DIV0R0 
+	false, // DIV0R1 
+	true, // DIV0R2 
+	true, // DIV0R3 
+	false, // DIV_EQU0R0 
+	true, // DIV_EQU0R1 
+	true, // DIV_EQU0R2 
+	false, // DO0R0 
+	false, // DO0R1 
+	true, // DO0R2 
+	false, // DOT0R0 
+	true, // DOT0R1 
+	true, // DOT0R2 
+	false, // DecimalFloat0R0 
+	false, // DecimalFloat0R1 
+	false, // DecimalFloat0R2 
+	false, // DecimalFloat0R3 
+	false, // DecimalFloat0R4 
+	true, // DecimalFloat0R5 
+	false, // DecimalFloat1R0 
+	false, // DecimalFloat1R1 
+	true, // DecimalFloat1R2 
+	false, // DecimalFloat2R0 
+	false, // DecimalFloat2R1 
+	true, // DecimalFloat2R2 
+	false, // DecimalFloat3R0 
+	false, // DecimalFloat3R1 
+	true, // DecimalFloat3R2 
+	false, // DecimalNumeral0R0 
+	true, // DecimalNumeral0R1 
+	false, // DecimalNumeral1R0 
+	false, // DecimalNumeral1R1 
+	true, // DecimalNumeral1R2 
+	false, // DeclAlts0R0 
+	true, // DeclAlts0R1 
+	false, // DeclAlts1R0 
+	true, // DeclAlts1R1 
+	false, // Dim0R0 
+	false, // Dim0R1 
+	true, // Dim0R2 
+	false, // DimExpr0R0 
+	false, // DimExpr0R1 
+	false, // DimExpr0R2 
+	true, // DimExpr0R3 
+	false, // ELSE0R0 
+	false, // ELSE0R1 
+	true, // ELSE0R2 
+	false, // EQU0R0 
+	false, // EQU0R1 
+	true, // EQU0R2 
+	true, // EQU0R3 
+	false, // EQUAL0R0 
+	true, // EQUAL0R1 
+	true, // EQUAL0R2 
+	false, // ESInst0R0 
+	true, // ESInst0R1 
+	false, // ESInst1R0 
+	false, // ESInst1R1 
+	true, // ESInst1R2 
+	false, // EXTENDS0R0 
+	false, // EXTENDS0R1 
+	true, // EXTENDS0R2 
+	false, // EqAlts0R0 
+	true, // EqAlts0R1 
+	false, // EqAlts1R0 
+	true, // EqAlts1R1 
+	false, // EqCheck0R0 
+	true, // EqCheck0R1 
+	false, // EqCheck1R0 
+	true, // EqCheck1R1 
+	false, // EqCheck2R0 
+	true, // EqCheck2R1 
+	false, // EqCheck3R0 
+	true, // EqCheck3R1 
+	false, // EqShift0R0 
+	false, // EqShift0R1 
+	true, // EqShift0R2 
+	false, // EqualExpr0R0 
+	true, // EqualExpr0R1 
+	true, // EqualExpr0R2 
+	false, // EscOrLineOrBlock0R0 
+	true, // EscOrLineOrBlock0R1 
+	false, // EscOrLineOrBlock1R0 
+	true, // EscOrLineOrBlock1R1 
+	false, // EscOrLineOrBlock2R0 
+	true, // EscOrLineOrBlock2R1 
+	false, // EscSlash0R0 
+	true, // EscSlash0R1 
+	false, // EscSlash1R0 
+	true, // EscSlash1R1 
+	false, // EscUp0R0 
+	true, // EscUp0R1 
+	false, // EscUp1R0 
+	true, // EscUp1R1 
+	false, // EscUp2R0 
+	true, // EscUp2R1 
+	false, // Escape0R0 
+	false, // Escape0R1 
+	true, // Escape0R2 
+	false, // Escs0R0 
+	true, // Escs0R1 
+	false, // Escs1R0 
+	true, // Escs1R1 
+	false, // Escs2R0 
+	true, // Escs2R1 
+	false, // Expr0R0 
+	true, // Expr0R1 
+	true, // Expr0R2 
+	false, // FINAL0R0 
+	false, // FINAL0R1 
+	true, // FINAL0R2 
+	false, // FINALLY0R0 
+	false, // FINALLY0R1 
+	true, // FINALLY0R2 
+	false, // FOR0R0 
+	false, // FOR0R1 
+	true, // FOR0R2 
+	false, // Finally0R0 
+	false, // Finally0R1 
+	true, // Finally0R2 
+	false, // FloatLiteral0R0 
+	true, // FloatLiteral0R1 
+	false, // FloatLiteral1R0 
+	true, // FloatLiteral1R1 
+	false, // ForInit0R0 
+	false, // ForInit0R1 
+	false, // ForInit0R2 
+	true, // ForInit0R3 
+	false, // ForInit1R0 
+	true, // ForInit1R1 
+	true, // ForInit1R2 
+	false, // ForUpdate0R0 
+	true, // ForUpdate0R1 
+	true, // ForUpdate0R2 
+	false, // FormalParam0R0 
+	false, // FormalParam0R1 
+	true, // FormalParam0R2 
+	false, // FormalParamDecls0R0 
+	false, // FormalParamDecls0R1 
+	true, // FormalParamDecls0R2 
+	false, // FormalParamDeclsRest0R0 
+	true, // FormalParamDeclsRest0R1 
+	true, // FormalParamDeclsRest0R2 
+	false, // FormalParams0R0 
+	false, // FormalParams0R1 
+	false, // FormalParams0R2 
+	true, // FormalParams0R3 
+	false, // GE0R0 
+	true, // GE0R1 
+	true, // GE0R2 
+	false, // GT0R0 
+	false, // GT0R1 
+	true, // GT0R2 
+	true, // GT0R3 
+	false, // HAT0R0 
+	false, // HAT0R1 
+	true, // HAT0R2 
+	true, // HAT0R3 
+	false, // HAT_EQU0R0 
+	true, // HAT_EQU0R1 
+	true, // HAT_EQU0R2 
+	false, // HexFloat0R0 
+	false, // HexFloat0R1 
+	true, // HexFloat0R2 
+	false, // HexNumeral0R0 
+	false, // HexNumeral0R1 
+	true, // HexNumeral0R2 
+	false, // HexSignificand0R0 
+	true, // HexSignificand0R1 
+	true, // HexSignificand0R2 
+	false, // HexSignificand1R0 
+	false, // HexSignificand1R1 
+	false, // HexSignificand1R2 
+	true, // HexSignificand1R3 
+	false, // ID0R0 
+	true, // ID0R1 
+	true, // ID0R2 
+	false, // IDSuffix0R0 
+	false, // IDSuffix0R1 
+	true, // IDSuffix0R2 
+	false, // IDSuffix1R0 
+	true, // IDSuffix1R1 
+	false, // IDSuffix2R0 
+	false, // IDSuffix2R1 
+	true, // IDSuffix2R2 
+	false, // IF0R0 
+	false, // IF0R1 
+	true, // IF0R2 
+	false, // IMPLEMENTS0R0 
+	false, // IMPLEMENTS0R1 
+	true, // IMPLEMENTS0R2 
+	false, // IMPORT0R0 
+	false, // IMPORT0R1 
+	true, // IMPORT0R2 
+	false, // INC0R0 
+	true, // INC0R1 
+	true, // INC0R2 
+	false, // INSTANCEOF0R0 
+	false, // INSTANCEOF0R1 
+	true, // INSTANCEOF0R2 
+	false, // IORExpr0R0 
+	true, // IORExpr0R1 
+	true, // IORExpr0R2 
+	false, // ImportDecl0R0 
+	false, // ImportDecl0R1 
+	false, // ImportDecl0R2 
+	false, // ImportDecl0R3 
+	false, // ImportDecl0R4 
+	true, // ImportDecl0R5 
+	false, // InnerCreator0R0 
+	false, // InnerCreator0R1 
+	true, // InnerCreator0R2 
+	false, // IntegerLiteral0R0 
+	false, // IntegerLiteral0R1 
+	true, // IntegerLiteral0R2 
+	false, // Intf0R0 
+	false, // Intf0R1 
+	true, // Intf0R2 
+	false, // IntfBdy0R0 
+	false, // IntfBdy0R1 
+	false, // IntfBdy0R2 
+	true, // IntfBdy0R3 
+	false, // IntfBdyDecl0R0 
+	false, // IntfBdyDecl0R1 
+	true, // IntfBdyDecl0R2 
+	false, // IntfBdyDecl1R0 
+	true, // IntfBdyDecl1R1 
+	false, // IntfDecl0R0 
+	false, // IntfDecl0R1 
+	false, // IntfDecl0R2 
+	false, // IntfDecl0R3 
+	true, // IntfDecl0R4 
+	false, // IntfMemDecl0R0 
+	true, // IntfMemDecl0R1 
+	false, // IntfMemDecl1R0 
+	false, // IntfMemDecl1R1 
+	false, // IntfMemDecl1R2 
+	true, // IntfMemDecl1R3 
+	false, // IntfMemDecl2R0 
+	true, // IntfMemDecl2R1 
+	false, // IntfMemDecl3R0 
+	true, // IntfMemDecl3R1 
+	false, // IntfMethDeclRest0R0 
+	false, // IntfMethDeclRest0R1 
+	false, // IntfMethDeclRest0R2 
+	false, // IntfMethDeclRest0R3 
+	true, // IntfMethDeclRest0R4 
+	false, // IntfMethFieldDecl0R0 
+	false, // IntfMethFieldDecl0R1 
+	false, // IntfMethFieldDecl0R2 
+	true, // IntfMethFieldDecl0R3 
+	false, // IntfMethFieldRest0R0 
+	false, // IntfMethFieldRest0R1 
+	true, // IntfMethFieldRest0R2 
+	false, // IntfMethFieldRest1R0 
+	true, // IntfMethFieldRest1R1 
+	false, // LBRK0R0 
+	true, // LBRK0R1 
+	true, // LBRK0R2 
+	false, // LE0R0 
+	true, // LE0R1 
+	true, // LE0R2 
+	false, // LPAR0R0 
+	true, // LPAR0R1 
+	true, // LPAR0R2 
+	false, // LT0R0 
+	false, // LT0R1 
+	true, // LT0R2 
+	true, // LT0R3 
+	false, // LWING0R0 
+	true, // LWING0R1 
+	true, // LWING0R2 
+	false, // Letter0R0 
+	true, // Letter0R1 
+	true, // Letter1R0 
+	true, // Letter1R1 
+	true, // LetterLorD0R0 
+	true, // LetterLorD0R1 
+	true, // LetterLorD0R2 
+	true, // LetterLorD0R3 
+	false, // LitAlts0R0 
+	true, // LitAlts0R1 
+	false, // LitAlts1R0 
+	true, // LitAlts1R1 
+	false, // LitAlts2R0 
+	true, // LitAlts2R1 
+	false, // LitAlts3R0 
+	true, // LitAlts3R1 
+	false, // LitAlts4R0 
+	false, // LitAlts4R1 
+	true, // LitAlts4R2 
+	false, // LitAlts5R0 
+	false, // LitAlts5R1 
+	true, // LitAlts5R2 
+	false, // LitAlts6R0 
+	false, // LitAlts6R1 
+	true, // LitAlts6R2 
+	false, // Literal0R0 
+	true, // Literal0R1 
+	true, // Literal0R2 
+	false, // LocalVarDeclStmt0R0 
+	false, // LocalVarDeclStmt0R1 
+	false, // LocalVarDeclStmt0R2 
+	false, // LocalVarDeclStmt0R3 
+	true, // LocalVarDeclStmt0R4 
+	true, // LorD0R0 
+	true, // LorD0R1 
+	false, // LorD1R0 
+	true, // LorD1R1 
+	false, // MINUS0R0 
+	false, // MINUS0R1 
+	true, // MINUS0R2 
+	true, // MINUS0R3 
+	false, // MINUS_EQU0R0 
+	true, // MINUS_EQU0R1 
+	true, // MINUS_EQU0R2 
+	false, // MOD0R0 
+	false, // MOD0R1 
+	true, // MOD0R2 
+	true, // MOD0R3 
+	false, // MOD_EQU0R0 
+	true, // MOD_EQU0R1 
+	true, // MOD_EQU0R2 
+	false, // MemAlts0R0 
+	true, // MemAlts0R1 
+	false, // MemAlts1R0 
+	true, // MemAlts1R1 
+	false, // MemDecl0R0 
+	false, // MemDecl0R1 
+	false, // MemDecl0R2 
+	false, // MemDecl0R3 
+	false, // MemDecl0R4 
+	false, // MemDecl0R5 
+	true, // MemDecl0R6 
+	false, // MemDecl1R0 
+	false, // MemDecl1R1 
+	false, // MemDecl1R2 
+	false, // MemDecl1R3 
+	false, // MemDecl1R4 
+	true, // MemDecl1R5 
+	false, // MemDecl2R0 
+	false, // MemDecl2R1 
+	false, // MemDecl2R2 
+	false, // MemDecl2R3 
+	true, // MemDecl2R4 
+	false, // MemDecl3R0 
+	true, // MemDecl3R1 
+	false, // MemDecl4R0 
+	true, // MemDecl4R1 
+	false, // MemDecl5R0 
+	false, // MemDecl5R1 
+	true, // MemDecl5R2 
+	true, // MemDecl5R3 
+	false, // Modifier0R0 
+	false, // Modifier0R1 
+	true, // Modifier0R2 
+	false, // Modifs0R0 
+	true, // Modifs0R1 
+	false, // Modifs1R0 
+	true, // Modifs1R1 
+	false, // Modifs2R0 
+	true, // Modifs2R1 
+	false, // Modifs3R0 
+	true, // Modifs3R1 
+	false, // Modifs4R0 
+	true, // Modifs4R1 
+	false, // Modifs5R0 
+	true, // Modifs5R1 
+	false, // Modifs6R0 
+	true, // Modifs6R1 
+	false, // Modifs7R0 
+	true, // Modifs7R1 
+	false, // Modifs8R0 
+	true, // Modifs8R1 
+	false, // Modifs9R0 
+	true, // Modifs9R1 
+	false, // Modifs10R0 
+	true, // Modifs10R1 
+	false, // MultExpr0R0 
+	true, // MultExpr0R1 
+	true, // MultExpr0R2 
+	false, // NEW0R0 
+	false, // NEW0R1 
+	true, // NEW0R2 
+	false, // NOT_EQUAL0R0 
+	true, // NOT_EQUAL0R1 
+	true, // NOT_EQUAL0R2 
+	false, // NumeralAlts0R0 
+	true, // NumeralAlts0R1 
+	false, // NumeralAlts1R0 
+	true, // NumeralAlts1R1 
+	false, // NumeralAlts2R0 
+	true, // NumeralAlts2R1 
+	false, // OR0R0 
+	false, // OR0R1 
+	true, // OR0R2 
+	true, // OR0R3 
+	false, // ORXOR0R0 
+	false, // ORXOR0R1 
+	true, // ORXOR0R2 
+	false, // OR_EQU0R0 
+	true, // OR_EQU0R1 
+	true, // OR_EQU0R2 
+	false, // OR_OR0R0 
+	true, // OR_OR0R1 
+	true, // OR_OR0R2 
+	false, // OctalEscape0R0 
+	true, // OctalEscape0R1 
+	false, // OctalEscape1R0 
+	true, // OctalEscape1R1 
+	false, // OctalEscape2R0 
+	true, // OctalEscape2R1 
+	false, // OptArgs0R0 
+	true, // OptArgs0R1 
+	true, // OptArgs1R0 
+	false, // OptClsBdy0R0 
+	true, // OptClsBdy0R1 
+	true, // OptClsBdy1R0 
+	false, // OptColExpr0R0 
+	false, // OptColExpr0R1 
+	true, // OptColExpr0R2 
+	true, // OptColExpr1R0 
+	false, // OptCom0R0 
+	true, // OptCom0R1 
+	true, // OptCom1R0 
+	false, // OptComFormPDecl0R0 
+	false, // OptComFormPDecl0R1 
+	true, // OptComFormPDecl0R2 
+	true, // OptComFormPDecl1R0 
+	false, // OptDot0R0 
+	true, // OptDot0R1 
+	true, // OptDot1R0 
+	false, // OptDotStar0R0 
+	false, // OptDotStar0R1 
+	true, // OptDotStar0R2 
+	true, // OptDotStar1R0 
+	false, // OptElse0R0 
+	false, // OptElse0R1 
+	true, // OptElse0R2 
+	true, // OptElse1R0 
+	false, // OptEqVarInit0R0 
+	false, // OptEqVarInit0R1 
+	true, // OptEqVarInit0R2 
+	true, // OptEqVarInit1R0 
+	false, // OptEsc0R0 
+	true, // OptEsc0R1 
+	false, // OptEsc1R0 
+	true, // OptEsc1R1 
+	false, // OptExpr0R0 
+	true, // OptExpr0R1 
+	true, // OptExpr1R0 
+	false, // OptExprs0R0 
+	true, // OptExprs0R1 
+	true, // OptExprs0R2 
+	true, // OptExprs1R0 
+	false, // OptExtClsType0R0 
+	false, // OptExtClsType0R1 
+	true, // OptExtClsType0R2 
+	true, // OptExtClsType1R0 
+	false, // OptExtendsClsLis0R0 
+	false, // OptExtendsClsLis0R1 
+	true, // OptExtendsClsLis0R2 
+	true, // OptExtendsClsLis1R0 
+	false, // OptFin0R0 
+	true, // OptFin0R1 
+	true, // OptFin1R0 
+	false, // OptFinType0R0 
+	false, // OptFinType0R1 
+	true, // OptFinType0R2 
+	false, // OptForInit0R0 
+	true, // OptForInit0R1 
+	true, // OptForInit1R0 
+	false, // OptForUpd0R0 
+	true, // OptForUpd0R1 
+	true, // OptForUpd1R0 
+	false, // OptFormPDecl0R0 
+	true, // OptFormPDecl0R1 
+	true, // OptFormPDecl1R0 
+	false, // OptID0R0 
+	true, // OptID0R1 
+	true, // OptID1R0 
+	false, // OptIDSuff0R0 
+	true, // OptIDSuff0R1 
+	true, // OptIDSuff1R0 
+	false, // OptImpClsLst0R0 
+	false, // OptImpClsLst0R1 
+	true, // OptImpClsLst0R2 
+	true, // OptImpClsLst1R0 
+	false, // OptPackDecl0R0 
+	true, // OptPackDecl0R1 
+	true, // OptPackDecl1R0 
+	false, // OptStatic0R0 
+	true, // OptStatic0R1 
+	true, // OptStatic1R0 
+	false, // OptThrowClsTypLst0R0 
+	false, // OptThrowClsTypLst0R1 
+	true, // OptThrowClsTypLst0R2 
+	true, // OptThrowClsTypLst1R0 
+	false, // OptVarInit0R0 
+	true, // OptVarInit0R1 
+	true, // OptVarInit0R2 
+	true, // OptVarInit0R3 
+	true, // OptVarInit1R0 
+	false, // OtherAlts0R0 
+	true, // OtherAlts0R1 
+	false, // OtherAlts1R0 
+	true, // OtherAlts1R1 
+	false, // OtherAlts2R0 
+	false, // OtherAlts2R1 
+	true, // OtherAlts2R2 
+	false, // OtherAlts3R0 
+	false, // OtherAlts3R1 
+	true, // OtherAlts3R2 
+	false, // PACKAGE0R0 
+	false, // PACKAGE0R1 
+	true, // PACKAGE0R2 
+	false, // PLUS0R0 
+	false, // PLUS0R1 
+	true, // PLUS0R2 
+	true, // PLUS0R3 
+	false, // PLUS_EQU0R0 
+	true, // PLUS_EQU0R1 
+	true, // PLUS_EQU0R2 
+	false, // PackDecl0R0 
+	false, // PackDecl0R1 
+	false, // PackDecl0R2 
+	true, // PackDecl0R3 
+	false, // ParExpr0R0 
+	false, // ParExpr0R1 
+	false, // ParExpr0R2 
+	true, // ParExpr0R3 
+	false, // PostfixOp0R0 
+	true, // PostfixOp0R1 
+	false, // PostfixOp1R0 
+	true, // PostfixOp1R1 
+	false, // PrefixOp0R0 
+	true, // PrefixOp0R1 
+	false, // PrefixOp1R0 
+	true, // PrefixOp1R1 
+	false, // PrefixOp2R0 
+	true, // PrefixOp2R1 
+	false, // PrefixOp3R0 
+	true, // PrefixOp3R1 
+	false, // PrefixOp4R0 
+	true, // PrefixOp4R1 
+	false, // PrefixOp5R0 
+	true, // PrefixOp5R1 
+	false, // Primary0R0 
+	true, // Primary0R1 
+	false, // Primary1R0 
+	true, // Primary1R1 
+	true, // Primary1R2 
+	false, // Primary2R0 
+	false, // Primary2R1 
+	true, // Primary2R2 
+	false, // Primary3R0 
+	true, // Primary3R1 
+	false, // Primary4R0 
+	false, // Primary4R1 
+	true, // Primary4R2 
+	false, // Primary5R0 
+	true, // Primary5R1 
+	true, // Primary5R2 
+	false, // Primary6R0 
+	false, // Primary6R1 
+	false, // Primary6R2 
+	false, // Primary6R3 
+	true, // Primary6R4 
+	false, // Primary7R0 
+	false, // Primary7R1 
+	false, // Primary7R2 
+	true, // Primary7R3 
+	false, // QUERY0R0 
+	true, // QUERY0R1 
+	true, // QUERY0R2 
+	false, // QualifiedID0R0 
+	true, // QualifiedID0R1 
+	true, // QualifiedID0R2 
+	false, // RBRK0R0 
+	true, // RBRK0R1 
+	true, // RBRK0R2 
+	false, // RBRKAlts0R0 
+	false, // RBRKAlts0R1 
+	false, // RBRKAlts0R2 
+	false, // RBRKAlts0R3 
+	true, // RBRKAlts0R4 
+	false, // RBRKAlts1R0 
+	false, // RBRKAlts1R1 
+	true, // RBRKAlts1R2 
+	false, // RETURN0R0 
+	false, // RETURN0R1 
+	true, // RETURN0R2 
+	false, // RPAR0R0 
+	true, // RPAR0R1 
+	true, // RPAR0R2 
+	false, // RWING0R0 
+	true, // RWING0R1 
+	true, // RWING0R2 
+	false, // ReferenceType0R0 
+	false, // ReferenceType0R1 
+	true, // ReferenceType0R2 
+	true, // ReferenceType0R3 
+	false, // ReferenceType1R0 
+	true, // ReferenceType1R1 
+	true, // ReferenceType1R2 
+	false, // RelateExpr0R0 
+	true, // RelateExpr0R1 
+	true, // RelateExpr0R2 
+	false, // RepANDEq0x0R0 
+	false, // RepANDEq0x0R1 
+	true, // RepANDEq0x0R2 
+	true, // RepANDEq0x0R3 
+	true, // RepANDEq0x1R0 
+	false, // RepANDIOR0x0R0 
+	false, // RepANDIOR0x0R1 
+	true, // RepANDIOR0x0R2 
+	true, // RepANDIOR0x0R3 
+	true, // RepANDIOR0x1R0 
+	false, // RepAddAltsMult0x0R0 
+	false, // RepAddAltsMult0x0R1 
+	true, // RepAddAltsMult0x0R2 
+	true, // RepAddAltsMult0x1R0 
+	false, // RepAsscExpr0x0R0 
+	false, // RepAsscExpr0x0R1 
+	true, // RepAsscExpr0x0R2 
+	true, // RepAsscExpr0x0R3 
+	true, // RepAsscExpr0x1R0 
+	false, // RepBlkSt0x0R0 
+	true, // RepBlkSt0x0R1 
+	true, // RepBlkSt0x0R2 
+	true, // RepBlkSt0x1R0 
+	false, // RepCatch0x0R0 
+	true, // RepCatch0x0R1 
+	true, // RepCatch0x0R2 
+	true, // RepCatch0x1R0 
+	false, // RepClsBDecl0x0R0 
+	true, // RepClsBDecl0x0R1 
+	true, // RepClsBDecl0x0R2 
+	true, // RepClsBDecl0x1R0 
+	false, // RepComCls0x0R0 
+	false, // RepComCls0x0R1 
+	true, // RepComCls0x0R2 
+	true, // RepComCls0x0R3 
+	true, // RepComCls0x1R0 
+	false, // RepComCnstDecl0x0R0 
+	false, // RepComCnstDecl0x0R1 
+	true, // RepComCnstDecl0x0R2 
+	true, // RepComCnstDecl0x0R3 
+	true, // RepComCnstDecl0x1R0 
+	false, // RepComExp0x0R0 
+	false, // RepComExp0x0R1 
+	true, // RepComExp0x0R2 
+	true, // RepComExp0x0R3 
+	true, // RepComExp0x1R0 
+	false, // RepComInit0x0R0 
+	false, // RepComInit0x0R1 
+	true, // RepComInit0x0R2 
+	true, // RepComInit0x0R3 
+	true, // RepComInit0x1R0 
+	false, // RepComSExpr0x0R0 
+	false, // RepComSExpr0x0R1 
+	true, // RepComSExpr0x0R2 
+	true, // RepComSExpr0x0R3 
+	true, // RepComSExpr0x1R0 
+	false, // RepComVDecl0x0R0 
+	false, // RepComVDecl0x0R1 
+	true, // RepComVDecl0x0R2 
+	true, // RepComVDecl0x0R3 
+	true, // RepComVDecl0x1R0 
+	false, // RepCondition0x0R0 
+	false, // RepCondition0x0R1 
+	false, // RepCondition0x0R2 
+	false, // RepCondition0x0R3 
+	true, // RepCondition0x0R4 
+	true, // RepCondition0x0R5 
+	true, // RepCondition0x1R0 
+	false, // RepDig1xExp0R0 
+	false, // RepDig1xExp0R1 
+	true, // RepDig1xExp0R2 
+	false, // RepDig1xOptExp0R0 
+	false, // RepDig1xOptExp0R1 
+	true, // RepDig1xOptExp0R2 
+	false, // RepDim0x0R0 
+	true, // RepDim0x0R1 
+	true, // RepDim0x0R2 
+	true, // RepDim0x1R0 
+	false, // RepDimExpr0x0R0 
+	true, // RepDimExpr0x0R1 
+	true, // RepDimExpr0x0R2 
+	true, // RepDimExpr0x1R0 
+	false, // RepDotID0x0R0 
+	false, // RepDotID0x0R1 
+	true, // RepDotID0x0R2 
+	true, // RepDotID0x0R3 
+	true, // RepDotID0x1R0 
+	false, // RepESInst0x0R0 
+	true, // RepESInst0x0R1 
+	true, // RepESInst0x0R2 
+	true, // RepESInst0x1R0 
+	false, // RepEqExpr0x0R0 
+	false, // RepEqExpr0x0R1 
+	true, // RepEqExpr0x0R2 
+	true, // RepEqExpr0x0R3 
+	true, // RepEqExpr0x1R0 
+	false, // RepHatAND0x0R0 
+	false, // RepHatAND0x0R1 
+	true, // RepHatAND0x0R2 
+	true, // RepHatAND0x0R3 
+	true, // RepHatAND0x1R0 
+	false, // RepHex0xDot0R0 
+	false, // RepHex0xDot0R1 
+	false, // RepHex0xDot0R2 
+	true, // RepHex0xDot0R3 
+	false, // RepImpDecl0x0R0 
+	true, // RepImpDecl0x0R1 
+	true, // RepImpDecl0x0R2 
+	true, // RepImpDecl0x1R0 
+	false, // RepInBodDecl0x0R0 
+	true, // RepInBodDecl0x0R1 
+	true, // RepInBodDecl0x0R2 
+	true, // RepInBodDecl0x1R0 
+	true, // RepLorD0x0R0 
+	true, // RepLorD0x0R1 
+	true, // RepLorD0x0R2 
+	true, // RepLorD0x1R0 
+	false, // RepModif00R0 
+	true, // RepModif00R1 
+	true, // RepModif00R2 
+	true, // RepModif01R0 
+	false, // RepORXOR0x0R0 
+	true, // RepORXOR0x0R1 
+	true, // RepORXOR0x0R2 
+	true, // RepORXOR0x1R0 
+	false, // RepORcAND0x0R0 
+	false, // RepORcAND0x0R1 
+	true, // RepORcAND0x0R2 
+	true, // RepORcAND0x0R3 
+	true, // RepORcAND0x1R0 
+	false, // RepPfOp0x0R0 
+	true, // RepPfOp0x0R1 
+	true, // RepPfOp0x0R2 
+	true, // RepPfOp0x1R0 
+	false, // RepSDMUExpr0x0R0 
+	false, // RepSDMUExpr0x0R1 
+	true, // RepSDMUExpr0x0R2 
+	true, // RepSDMUExpr0x0R3 
+	true, // RepSDMUExpr0x1R0 
+	false, // RepSel0x0R0 
+	true, // RepSel0x0R1 
+	true, // RepSel0x0R2 
+	true, // RepSel0x1R0 
+	false, // RepSemiModDecl0x0R0 
+	true, // RepSemiModDecl0x0R1 
+	true, // RepSemiModDecl0x0R2 
+	true, // RepSemiModDecl0x1R0 
+	false, // RepSwBlkStmt0x0R0 
+	true, // RepSwBlkStmt0x0R1 
+	true, // RepSwBlkStmt0x0R2 
+	true, // RepSwBlkStmt0x1R0 
+	false, // SDM0R0 
+	true, // SDM0R1 
+	false, // SDM1R0 
+	true, // SDM1R1 
+	false, // SDM2R0 
+	true, // SDM2R1 
+	false, // SEMI0R0 
+	true, // SEMI0R1 
+	true, // SEMI0R2 
+	false, // SL0R0 
+	false, // SL0R1 
+	true, // SL0R2 
+	true, // SL0R3 
+	false, // SL_EQU0R0 
+	true, // SL_EQU0R1 
+	true, // SL_EQU0R2 
+	false, // SR0R0 
+	false, // SR0R1 
+	true, // SR0R2 
+	true, // SR0R3 
+	false, // SR_EQU0R0 
+	true, // SR_EQU0R1 
+	true, // SR_EQU0R2 
+	false, // STAR0R0 
+	false, // STAR0R1 
+	true, // STAR0R2 
+	true, // STAR0R3 
+	false, // STAR_EQU0R0 
+	true, // STAR_EQU0R1 
+	true, // STAR_EQU0R2 
+	false, // STATIC0R0 
+	false, // STATIC0R1 
+	true, // STATIC0R2 
+	false, // SUPER0R0 
+	false, // SUPER0R1 
+	true, // SUPER0R2 
+	false, // SWITCH0R0 
+	false, // SWITCH0R1 
+	true, // SWITCH0R2 
+	false, // SYNCHRONIZED0R0 
+	false, // SYNCHRONIZED0R1 
+	true, // SYNCHRONIZED0R2 
+	false, // Selector0R0 
+	false, // Selector0R1 
+	true, // Selector0R2 
+	true, // Selector0R3 
+	false, // Selector1R0 
+	false, // Selector1R1 
+	true, // Selector1R2 
+	false, // Selector2R0 
+	false, // Selector2R1 
+	false, // Selector2R2 
+	true, // Selector2R3 
+	false, // Selector3R0 
+	false, // Selector3R1 
+	false, // Selector3R2 
+	true, // Selector3R3 
+	false, // Selector4R0 
+	true, // Selector4R1 
+	false, // SemiModDecl0R0 
+	true, // SemiModDecl0R1 
+	false, // SemiModDecl1R0 
+	false, // SemiModDecl1R1 
+	true, // SemiModDecl1R2 
+	false, // ShiftAlts0R0 
+	false, // ShiftAlts0R1 
+	true, // ShiftAlts0R2 
+	true, // ShiftAlts0R3 
+	true, // ShiftAlts1R0 
+	false, // ShiftExpr0R0 
+	true, // ShiftExpr0R1 
+	true, // ShiftExpr0R2 
+	false, // Stmt0R0 
+	true, // Stmt0R1 
+	false, // Stmt1R0 
+	false, // Stmt1R1 
+	false, // Stmt1R2 
+	false, // Stmt1R3 
+	true, // Stmt1R4 
+	false, // Stmt2R0 
+	false, // Stmt2R1 
+	false, // Stmt2R2 
+	true, // Stmt2R3 
+	true, // Stmt2R4 
+	false, // Stmt3R0 
+	false, // Stmt3R1 
+	false, // Stmt3R2 
+	false, // Stmt3R3 
+	false, // Stmt3R4 
+	false, // Stmt3R5 
+	false, // Stmt3R6 
+	false, // Stmt3R7 
+	false, // Stmt3R8 
+	true, // Stmt3R9 
+	false, // Stmt4R0 
+	false, // Stmt4R1 
+	false, // Stmt4R2 
+	true, // Stmt4R3 
+	false, // Stmt5R0 
+	false, // Stmt5R1 
+	false, // Stmt5R2 
+	false, // Stmt5R3 
+	false, // Stmt5R4 
+	true, // Stmt5R5 
+	false, // Stmt6R0 
+	false, // Stmt6R1 
+	false, // Stmt6R2 
+	true, // Stmt6R3 
+	false, // Stmt7R0 
+	false, // Stmt7R1 
+	false, // Stmt7R2 
+	false, // Stmt7R3 
+	false, // Stmt7R4 
+	true, // Stmt7R5 
+	false, // Stmt8R0 
+	false, // Stmt8R1 
+	false, // Stmt8R2 
+	true, // Stmt8R3 
+	false, // Stmt9R0 
+	false, // Stmt9R1 
+	false, // Stmt9R2 
+	true, // Stmt9R3 
+	false, // Stmt10R0 
+	false, // Stmt10R1 
+	false, // Stmt10R2 
+	true, // Stmt10R3 
+	false, // Stmt11R0 
+	false, // Stmt11R1 
+	false, // Stmt11R2 
+	true, // Stmt11R3 
+	false, // Stmt12R0 
+	false, // Stmt12R1 
+	false, // Stmt12R2 
+	true, // Stmt12R3 
+	false, // Stmt13R0 
+	true, // Stmt13R1 
+	false, // Stmt14R0 
+	false, // Stmt14R1 
+	true, // Stmt14R2 
+	false, // Stmt15R0 
+	false, // Stmt15R1 
+	false, // Stmt15R2 
+	true, // Stmt15R3 
+	false, // StmtExpr0R0 
+	true, // StmtExpr0R1 
+	false, // StrClose0R0 
+	true, // StrClose0R1 
+	false, // StrClose1R0 
+	false, // StrClose1R1 
+	true, // StrClose1R2 
+	false, // StringLiteral0R0 
+	false, // StringLiteral0R1 
+	true, // StringLiteral0R2 
+	false, // SuperSuffix0R0 
+	true, // SuperSuffix0R1 
+	false, // SuperSuffix1R0 
+	false, // SuperSuffix1R1 
+	true, // SuperSuffix1R2 
+	true, // SuperSuffix1R3 
+	false, // SwitchBlockStmtGrp0R0 
+	true, // SwitchBlockStmtGrp0R1 
+	true, // SwitchBlockStmtGrp0R2 
+	false, // SwitchLabel0R0 
+	false, // SwitchLabel0R1 
+	false, // SwitchLabel0R2 
+	true, // SwitchLabel0R3 
+	false, // SwitchLabel1R0 
+	false, // SwitchLabel1R1 
+	true, // SwitchLabel1R2 
+	false, // THIS0R0 
+	false, // THIS0R1 
+	true, // THIS0R2 
+	false, // THROW0R0 
+	false, // THROW0R1 
+	true, // THROW0R2 
+	false, // THROWS0R0 
+	false, // THROWS0R1 
+	true, // THROWS0R2 
+	false, // TILDA0R0 
+	true, // TILDA0R1 
+	true, // TILDA0R2 
+	false, // TRY0R0 
+	false, // TRY0R1 
+	true, // TRY0R2 
+	false, // Type0R0 
+	true, // Type0R1 
+	true, // Type0R2 
+	false, // TypeAlts0R0 
+	true, // TypeAlts0R1 
+	false, // TypeAlts1R0 
+	true, // TypeAlts1R1 
+	false, // UnaryExpr0R0 
+	false, // UnaryExpr0R1 
+	true, // UnaryExpr0R2 
+	false, // UnaryExpr1R0 
+	false, // UnaryExpr1R1 
+	false, // UnaryExpr1R2 
+	false, // UnaryExpr1R3 
+	true, // UnaryExpr1R4 
+	false, // UnaryExpr2R0 
+	true, // UnaryExpr2R1 
+	true, // UnaryExpr2R2 
+	true, // UnaryExpr2R3 
+	false, // UnicodeEscape0R0 
+	false, // UnicodeEscape0R1 
+	false, // UnicodeEscape0R2 
+	false, // UnicodeEscape0R3 
+	false, // UnicodeEscape0R4 
+	true, // UnicodeEscape0R5 
+	false, // VOID0R0 
+	false, // VOID0R1 
+	true, // VOID0R2 
+	false, // VarDecl0R0 
+	true, // VarDecl0R1 
+	true, // VarDecl0R2 
+	true, // VarDecl0R3 
+	false, // VarDeclInit0R0 
+	true, // VarDeclInit0R1 
+	true, // VarDeclInit0R2 
+	false, // VarDelID0R0 
+	true, // VarDelID0R1 
+	true, // VarDelID0R2 
+	false, // VarInitial0R0 
+	true, // VarInitial0R1 
+	false, // VarInitial1R0 
+	true, // VarInitial1R1 
+	false, // VoidIntfMethDeclRst0R0 
+	false, // VoidIntfMethDeclRst0R1 
+	false, // VoidIntfMethDeclRst0R2 
+	true, // VoidIntfMethDeclRst0R3 
+	false, // WHILE0R0 
+	false, // WHILE0R1 
+	true, // WHILE0R2 
+	false, // WS0R0 
+	true, // WS0R1 
+	true, // WS1R0 
+	false, // XORExpr0R0 
+	true, // XORExpr0R1 
+	true, // XORExpr0R2 
+}
+
+var firstT = []map[token.Type]bool { 
+	{  token.T_4: true,  }, // AND0R0 
+	{  token.T_91: true,  }, // AND0R1 
+	{  token.T_66: true,  token.T_85: true,  token.T_49: true,  }, // AND0R2 
+	{  }, // AND0R3 
+	{  token.T_7: true,  token.T_111: true,  token.T_0: true,  token.T_15: true,  token.T_56: true,  token.T_131: true,  token.T_16: true,  token.T_39: true,  token.T_116: true,  token.T_134: true,  token.T_70: true,  token.T_86: true,  token.T_135: true,  token.T_97: true,  token.T_120: true,  token.T_73: true,  token.T_102: true,  token.T_61: true,  token.T_21: true,  token.T_101: true,  token.T_50: true,  token.T_52: true,  token.T_12: true,  token.T_123: true,  token.T_117: true,  token.T_89: true,  token.T_141: true,  token.T_127: true,  token.T_62: true,  token.T_11: true,  token.T_60: true,  token.T_80: true,  token.T_99: true,  }, // ANDExpr0R0 
+	{  token.T_4: true,  }, // ANDExpr0R1 
+	{  }, // ANDExpr0R2 
+	{  token.T_5: true,  }, // AND_AND0R0 
+	{  token.T_66: true,  token.T_85: true,  token.T_49: true,  }, // AND_AND0R1 
+	{  }, // AND_AND0R2 
+	{  token.T_6: true,  }, // AND_EQU0R0 
+	{  token.T_85: true,  token.T_49: true,  token.T_66: true,  }, // AND_EQU0R1 
+	{  }, // AND_EQU0R2 
+	{  token.T_47: true,  }, // ASSERT0R0 
+	{  token.T_98: true,  }, // ASSERT0R1 
+	{  }, // ASSERT0R2 
+	{  token.T_11: true,  }, // AddAlts0R0 
+	{  }, // AddAlts0R1 
+	{  token.T_15: true,  }, // AddAlts1R0 
+	{  }, // AddAlts1R1 
+	{  token.T_56: true,  token.T_21: true,  token.T_111: true,  token.T_134: true,  token.T_99: true,  token.T_15: true,  token.T_97: true,  token.T_141: true,  token.T_39: true,  token.T_11: true,  token.T_50: true,  token.T_0: true,  token.T_60: true,  token.T_135: true,  token.T_62: true,  token.T_131: true,  token.T_73: true,  token.T_16: true,  token.T_123: true,  token.T_61: true,  token.T_102: true,  token.T_70: true,  token.T_7: true,  token.T_89: true,  token.T_101: true,  token.T_127: true,  token.T_86: true,  token.T_52: true,  token.T_120: true,  token.T_80: true,  token.T_12: true,  token.T_117: true,  token.T_116: true,  }, // AddExpr0R0 
+	{  token.T_11: true,  token.T_15: true,  }, // AddExpr0R1 
+	{  }, // AddExpr0R2 
+	{  token.T_21: true,  }, // Any0xX0R0 
+	{  }, // Any0xX0R1 
+	{  token.T_134: true,  }, // Any0xX1R0 
+	{  }, // Any0xX1R1 
+	{  token.T_39: true,  }, // Any0xX2R0 
+	{  }, // Any0xX2R1 
+	{  token.T_7: true,  }, // Arguments0R0 
+	{  token.T_101: true,  token.T_70: true,  token.T_15: true,  token.T_21: true,  token.T_135: true,  token.T_116: true,  token.T_117: true,  token.T_7: true,  token.T_123: true,  token.T_60: true,  token.T_127: true,  token.T_16: true,  token.T_120: true,  token.T_99: true,  token.T_61: true,  token.T_141: true,  token.T_0: true,  token.T_80: true,  token.T_134: true,  token.T_12: true,  token.T_97: true,  token.T_86: true,  token.T_8: true,  token.T_89: true,  token.T_73: true,  token.T_11: true,  token.T_56: true,  token.T_111: true,  token.T_52: true,  token.T_102: true,  token.T_50: true,  token.T_39: true,  token.T_62: true,  token.T_131: true,  }, // Arguments0R1 
+	{  token.T_8: true,  }, // Arguments0R2 
+	{  }, // Arguments0R3 
+	{  token.T_40: true,  }, // ArrayCreatorRest0R0 
+	{  token.T_52: true,  token.T_134: true,  token.T_89: true,  token.T_131: true,  token.T_101: true,  token.T_102: true,  token.T_99: true,  token.T_80: true,  token.T_50: true,  token.T_141: true,  token.T_62: true,  token.T_39: true,  token.T_116: true,  token.T_120: true,  token.T_0: true,  token.T_117: true,  token.T_61: true,  token.T_56: true,  token.T_97: true,  token.T_15: true,  token.T_123: true,  token.T_73: true,  token.T_86: true,  token.T_111: true,  token.T_12: true,  token.T_135: true,  token.T_21: true,  token.T_60: true,  token.T_11: true,  token.T_41: true,  token.T_70: true,  token.T_127: true,  token.T_7: true,  token.T_16: true,  }, // ArrayCreatorRest0R1 
+	{  }, // ArrayCreatorRest0R2 
+	{  token.T_136: true,  }, // ArrayInitializer0R0 
+	{  token.T_60: true,  token.T_140: true,  token.T_7: true,  token.T_73: true,  token.T_89: true,  token.T_135: true,  token.T_21: true,  token.T_70: true,  token.T_141: true,  token.T_61: true,  token.T_134: true,  token.T_16: true,  token.T_120: true,  token.T_39: true,  token.T_102: true,  token.T_131: true,  token.T_12: true,  token.T_136: true,  token.T_123: true,  token.T_127: true,  token.T_116: true,  token.T_80: true,  token.T_86: true,  token.T_15: true,  token.T_99: true,  token.T_0: true,  token.T_56: true,  token.T_50: true,  token.T_117: true,  token.T_97: true,  token.T_101: true,  token.T_52: true,  token.T_111: true,  token.T_11: true,  token.T_62: true,  }, // ArrayInitializer0R1 
+	{  token.T_140: true,  }, // ArrayInitializer0R2 
+	{  }, // ArrayInitializer0R3 
+	{  token.T_41: true,  }, // ArrayRest0R0 
+	{  token.T_40: true,  token.T_136: true,  }, // ArrayRest0R1 
+	{  token.T_136: true,  }, // ArrayRest0R2 
+	{  }, // ArrayRest0R3 
+	{  token.T_7: true,  token.T_123: true,  token.T_89: true,  token.T_11: true,  token.T_0: true,  token.T_56: true,  token.T_73: true,  token.T_127: true,  token.T_15: true,  token.T_141: true,  token.T_102: true,  token.T_21: true,  token.T_134: true,  token.T_39: true,  token.T_86: true,  token.T_120: true,  token.T_62: true,  token.T_116: true,  token.T_131: true,  token.T_16: true,  token.T_135: true,  token.T_52: true,  token.T_50: true,  token.T_60: true,  token.T_12: true,  token.T_70: true,  token.T_117: true,  token.T_97: true,  token.T_61: true,  token.T_99: true,  token.T_111: true,  token.T_101: true,  token.T_80: true,  }, // ArrayRest1R0 
+	{  token.T_41: true,  }, // ArrayRest1R1 
+	{  token.T_40: true,  }, // ArrayRest1R2 
+	{  token.T_40: true,  }, // ArrayRest1R3 
+	{  }, // ArrayRest1R4 
+	{  token.T_28: true,  }, // AssignOp0R0 
+	{  }, // AssignOp0R1 
+	{  token.T_13: true,  }, // AssignOp1R0 
+	{  }, // AssignOp1R1 
+	{  token.T_17: true,  }, // AssignOp2R0 
+	{  }, // AssignOp2R1 
+	{  token.T_10: true,  }, // AssignOp3R0 
+	{  }, // AssignOp3R1 
+	{  token.T_20: true,  }, // AssignOp4R0 
+	{  }, // AssignOp4R1 
+	{  token.T_6: true,  }, // AssignOp5R0 
+	{  }, // AssignOp5R1 
+	{  token.T_138: true,  }, // AssignOp6R0 
+	{  }, // AssignOp6R1 
+	{  token.T_43: true,  }, // AssignOp7R0 
+	{  }, // AssignOp7R1 
+	{  token.T_3: true,  }, // AssignOp8R0 
+	{  }, // AssignOp8R1 
+	{  token.T_26: true,  }, // AssignOp9R0 
+	{  }, // AssignOp9R1 
+	{  token.T_33: true,  }, // AssignOp10R0 
+	{  }, // AssignOp10R1 
+	{  token.T_35: true,  }, // AssignOp11R0 
+	{  }, // AssignOp11R1 
+	{  token.T_0: true,  }, // BANG0R0 
+	{  token.T_87: true,  }, // BANG0R1 
+	{  token.T_49: true,  token.T_66: true,  token.T_85: true,  }, // BANG0R2 
+	{  }, // BANG0R3 
+	{  token.T_51: true,  }, // BREAK0R0 
+	{  token.T_98: true,  }, // BREAK0R1 
+	{  }, // BREAK0R2 
+	{  token.T_34: true,  }, // BSR0R0 
+	{  token.T_87: true,  }, // BSR0R1 
+	{  token.T_49: true,  token.T_66: true,  token.T_85: true,  }, // BSR0R2 
+	{  }, // BSR0R3 
+	{  token.T_35: true,  }, // BSR_EQU0R0 
+	{  token.T_66: true,  token.T_85: true,  token.T_49: true,  }, // BSR_EQU0R1 
+	{  }, // BSR_EQU0R2 
+	{  token.T_116: true,  token.T_56: true,  token.T_80: true,  token.T_86: true,  token.T_73: true,  token.T_61: true,  token.T_50: true,  token.T_52: true,  }, // BasicType0R0 
+	{  token.T_98: true,  }, // BasicType0R1 
+	{  }, // BasicType0R2 
+	{  token.T_52: true,  }, // BasicTypeLit0R0 
+	{  }, // BasicTypeLit0R1 
+	{  token.T_116: true,  }, // BasicTypeLit1R0 
+	{  }, // BasicTypeLit1R1 
+	{  token.T_56: true,  }, // BasicTypeLit2R0 
+	{  }, // BasicTypeLit2R1 
+	{  token.T_80: true,  }, // BasicTypeLit3R0 
+	{  }, // BasicTypeLit3R1 
+	{  token.T_86: true,  }, // BasicTypeLit4R0 
+	{  }, // BasicTypeLit4R1 
+	{  token.T_73: true,  }, // BasicTypeLit5R0 
+	{  }, // BasicTypeLit5R1 
+	{  token.T_61: true,  }, // BasicTypeLit6R0 
+	{  }, // BasicTypeLit6R1 
+	{  token.T_50: true,  }, // BasicTypeLit7R0 
+	{  }, // BasicTypeLit7R1 
+	{  token.T_48: true,  }, // Beoptfd0R0 
+	{  token.T_105: true,  }, // Beoptfd0R1 
+	{  }, // Beoptfd0R2 
+	{  token.T_136: true,  }, // Block0R0 
+	{  token.T_109: true,  token.T_111: true,  token.T_21: true,  token.T_118: true,  token.T_88: true,  token.T_89: true,  token.T_11: true,  token.T_52: true,  token.T_12: true,  token.T_62: true,  token.T_131: true,  token.T_56: true,  token.T_61: true,  token.T_122: true,  token.T_121: true,  token.T_7: true,  token.T_108: true,  token.T_135: true,  token.T_128: true,  token.T_71: true,  token.T_16: true,  token.T_107: true,  token.T_73: true,  token.T_97: true,  token.T_102: true,  token.T_70: true,  token.T_39: true,  token.T_86: true,  token.T_123: true,  token.T_47: true,  token.T_134: true,  token.T_115: true,  token.T_60: true,  token.T_44: true,  token.T_117: true,  token.T_119: true,  token.T_76: true,  token.T_126: true,  token.T_0: true,  token.T_136: true,  token.T_141: true,  token.T_124: true,  token.T_80: true,  token.T_127: true,  token.T_132: true,  token.T_15: true,  token.T_59: true,  token.T_120: true,  token.T_133: true,  token.T_116: true,  token.T_50: true,  token.T_101: true,  token.T_23: true,  token.T_74: true,  token.T_37: true,  token.T_51: true,  token.T_140: true,  token.T_99: true,  token.T_57: true,  }, // Block0R1 
+	{  token.T_140: true,  }, // Block0R2 
+	{  }, // Block0R3 
+	{  token.T_71: true,  }, // BlockStmt0R0 
+	{  }, // BlockStmt0R1 
+	{  token.T_109: true,  token.T_119: true,  token.T_132: true,  token.T_107: true,  token.T_37: true,  token.T_126: true,  token.T_122: true,  token.T_108: true,  token.T_71: true,  token.T_44: true,  token.T_88: true,  token.T_118: true,  }, // BlockStmt1R0 
+	{  token.T_37: true,  }, // BlockStmt1R1 
+	{  }, // BlockStmt1R2 
+	{  token.T_141: true,  token.T_16: true,  token.T_21: true,  token.T_134: true,  token.T_74: true,  token.T_57: true,  token.T_70: true,  token.T_128: true,  token.T_61: true,  token.T_0: true,  token.T_122: true,  token.T_52: true,  token.T_12: true,  token.T_15: true,  token.T_135: true,  token.T_115: true,  token.T_116: true,  token.T_99: true,  token.T_89: true,  token.T_86: true,  token.T_117: true,  token.T_7: true,  token.T_97: true,  token.T_133: true,  token.T_47: true,  token.T_73: true,  token.T_50: true,  token.T_39: true,  token.T_127: true,  token.T_60: true,  token.T_124: true,  token.T_102: true,  token.T_123: true,  token.T_76: true,  token.T_121: true,  token.T_131: true,  token.T_11: true,  token.T_62: true,  token.T_120: true,  token.T_80: true,  token.T_111: true,  token.T_101: true,  token.T_23: true,  token.T_136: true,  token.T_59: true,  token.T_51: true,  token.T_56: true,  }, // BlockStmt2R0 
+	{  }, // BlockStmt2R1 
+	{  token.T_54: true,  }, // CASE0R0 
+	{  token.T_98: true,  }, // CASE0R1 
+	{  }, // CASE0R2 
+	{  token.T_55: true,  }, // CATCH0R0 
+	{  token.T_98: true,  }, // CATCH0R1 
+	{  }, // CATCH0R2 
+	{  token.T_22: true,  }, // COLON0R0 
+	{  token.T_85: true,  token.T_49: true,  token.T_66: true,  }, // COLON0R1 
+	{  }, // COLON0R2 
+	{  token.T_14: true,  }, // COMMA0R0 
+	{  token.T_49: true,  token.T_66: true,  token.T_85: true,  }, // COMMA0R1 
+	{  }, // COMMA0R2 
+	{  token.T_57: true,  }, // CONTINUE0R0 
+	{  token.T_98: true,  }, // CONTINUE0R1 
+	{  }, // CONTINUE0R2 
+	{  token.T_25: true,  }, // CarrotAlts0R0 
+	{  }, // CarrotAlts0R1 
+	{  token.T_32: true,  }, // CarrotAlts1R0 
+	{  }, // CarrotAlts1R1 
+	{  token.T_34: true,  }, // CarrotAlts2R0 
+	{  }, // CarrotAlts2R1 
+	{  token.T_55: true,  }, // Catch0R0 
+	{  token.T_7: true,  }, // Catch0R1 
+	{  token.T_71: true,  }, // Catch0R2 
+	{  token.T_8: true,  }, // Catch0R3 
+	{  token.T_136: true,  }, // Catch0R4 
+	{  }, // Catch0R5 
+	{  token.T_55: true,  }, // CatchBlk0R0 
+	{  token.T_55: true,  token.T_71: true,  }, // CatchBlk0R1 
+	{  token.T_71: true,  }, // CatchBlk0R2 
+	{  }, // CatchBlk0R3 
+	{  token.T_72: true,  }, // CatchBlk1R0 
+	{  }, // CatchBlk1R1 
+	{  token.T_117: true,  }, // CharLiteral0R0 
+	{  token.T_117: true,  token.T_42: true,  token.T_63: true,  }, // CharLiteral0R1 
+	{  token.T_117: true,  }, // CharLiteral0R2 
+	{  }, // CharLiteral0R3 
+	{  token.T_37: true,  }, // Cls0R0 
+	{  token.T_98: true,  }, // Cls0R1 
+	{  }, // Cls0R2 
+	{  token.T_136: true,  }, // ClsBdy0R0 
+	{  token.T_61: true,  token.T_37: true,  token.T_136: true,  token.T_131: true,  token.T_86: true,  token.T_71: true,  token.T_119: true,  token.T_140: true,  token.T_108: true,  token.T_107: true,  token.T_52: true,  token.T_122: true,  token.T_50: true,  token.T_23: true,  token.T_116: true,  token.T_44: true,  token.T_38: true,  token.T_73: true,  token.T_97: true,  token.T_80: true,  token.T_109: true,  token.T_56: true,  token.T_132: true,  token.T_88: true,  token.T_118: true,  token.T_126: true,  }, // ClsBdy0R1 
+	{  token.T_140: true,  }, // ClsBdy0R2 
+	{  }, // ClsBdy0R3 
+	{  token.T_23: true,  }, // ClsBdyDecl0R0 
+	{  }, // ClsBdyDecl0R1 
+	{  token.T_136: true,  token.T_118: true,  }, // ClsBdyDecl1R0 
+	{  token.T_136: true,  }, // ClsBdyDecl1R1 
+	{  }, // ClsBdyDecl1R2 
+	{  token.T_108: true,  token.T_126: true,  token.T_50: true,  token.T_116: true,  token.T_86: true,  token.T_37: true,  token.T_119: true,  token.T_132: true,  token.T_107: true,  token.T_118: true,  token.T_52: true,  token.T_61: true,  token.T_44: true,  token.T_122: true,  token.T_71: true,  token.T_56: true,  token.T_109: true,  token.T_73: true,  token.T_80: true,  token.T_97: true,  token.T_131: true,  token.T_38: true,  token.T_88: true,  }, // ClsBdyDecl2R0 
+	{  token.T_97: true,  token.T_73: true,  token.T_52: true,  token.T_131: true,  token.T_61: true,  token.T_37: true,  token.T_116: true,  token.T_86: true,  token.T_80: true,  token.T_50: true,  token.T_56: true,  token.T_38: true,  }, // ClsBdyDecl2R1 
+	{  }, // ClsBdyDecl2R2 
+	{  token.T_7: true,  }, // ClsCreatorRest0R0 
+	{  token.T_136: true,  }, // ClsCreatorRest0R1 
+	{  }, // ClsCreatorRest0R2 
+	{  token.T_37: true,  }, // ClsDecl0R0 
+	{  token.T_97: true,  }, // ClsDecl0R1 
+	{  token.T_136: true,  token.T_68: true,  token.T_77: true,  }, // ClsDecl0R2 
+	{  token.T_77: true,  token.T_136: true,  }, // ClsDecl0R3 
+	{  token.T_136: true,  }, // ClsDecl0R4 
+	{  }, // ClsDecl0R5 
+	{  token.T_97: true,  }, // ClsType0R0 
+	{  token.T_18: true,  }, // ClsType0R1 
+	{  }, // ClsType0R2 
+	{  token.T_97: true,  }, // ClsTypeList0R0 
+	{  token.T_14: true,  }, // ClsTypeList0R1 
+	{  }, // ClsTypeList0R2 
+	{  token.T_78: true,  token.T_109: true,  token.T_132: true,  token.T_71: true,  token.T_85: true,  token.T_108: true,  token.T_37: true,  token.T_44: true,  token.T_23: true,  token.T_122: true,  token.T_119: true,  token.T_88: true,  token.T_126: true,  token.T_106: true,  token.T_107: true,  token.T_38: true,  token.T_118: true,  token.T_66: true,  token.T_49: true,  }, // CompUnit0R0 
+	{  token.T_23: true,  token.T_37: true,  token.T_119: true,  token.T_107: true,  token.T_44: true,  token.T_118: true,  token.T_132: true,  token.T_71: true,  token.T_106: true,  token.T_78: true,  token.T_108: true,  token.T_109: true,  token.T_122: true,  token.T_126: true,  token.T_88: true,  token.T_38: true,  }, // CompUnit0R1 
+	{  token.T_122: true,  token.T_107: true,  token.T_109: true,  token.T_78: true,  token.T_71: true,  token.T_119: true,  token.T_44: true,  token.T_132: true,  token.T_126: true,  token.T_37: true,  token.T_38: true,  token.T_118: true,  token.T_88: true,  token.T_23: true,  token.T_108: true,  }, // CompUnit0R2 
+	{  token.T_126: true,  token.T_23: true,  token.T_37: true,  token.T_108: true,  token.T_132: true,  token.T_107: true,  token.T_122: true,  token.T_119: true,  token.T_109: true,  token.T_71: true,  token.T_118: true,  token.T_44: true,  token.T_88: true,  token.T_38: true,  }, // CompUnit0R3 
+	{  }, // CompUnit0R4 
+	{  token.T_131: true,  token.T_127: true,  token.T_11: true,  token.T_120: true,  token.T_39: true,  token.T_116: true,  token.T_80: true,  token.T_99: true,  token.T_12: true,  token.T_70: true,  token.T_15: true,  token.T_123: true,  token.T_61: true,  token.T_102: true,  token.T_60: true,  token.T_89: true,  token.T_134: true,  token.T_86: true,  token.T_97: true,  token.T_16: true,  token.T_7: true,  token.T_62: true,  token.T_73: true,  token.T_21: true,  token.T_111: true,  token.T_0: true,  token.T_56: true,  token.T_52: true,  token.T_101: true,  token.T_141: true,  token.T_135: true,  token.T_50: true,  token.T_117: true,  }, // CondANDExpr0R0 
+	{  token.T_5: true,  }, // CondANDExpr0R1 
+	{  }, // CondANDExpr0R2 
+	{  token.T_111: true,  token.T_73: true,  token.T_86: true,  token.T_117: true,  token.T_61: true,  token.T_52: true,  token.T_12: true,  token.T_62: true,  token.T_0: true,  token.T_89: true,  token.T_102: true,  token.T_99: true,  token.T_15: true,  token.T_97: true,  token.T_21: true,  token.T_120: true,  token.T_60: true,  token.T_70: true,  token.T_50: true,  token.T_11: true,  token.T_16: true,  token.T_80: true,  token.T_135: true,  token.T_131: true,  token.T_7: true,  token.T_116: true,  token.T_101: true,  token.T_127: true,  token.T_134: true,  token.T_56: true,  token.T_39: true,  token.T_123: true,  token.T_141: true,  }, // CondExpr0R0 
+	{  token.T_36: true,  }, // CondExpr0R1 
+	{  }, // CondExpr0R2 
+	{  token.T_80: true,  token.T_97: true,  token.T_52: true,  token.T_111: true,  token.T_134: true,  token.T_117: true,  token.T_15: true,  token.T_135: true,  token.T_7: true,  token.T_102: true,  token.T_60: true,  token.T_11: true,  token.T_70: true,  token.T_101: true,  token.T_99: true,  token.T_16: true,  token.T_50: true,  token.T_141: true,  token.T_62: true,  token.T_120: true,  token.T_61: true,  token.T_116: true,  token.T_21: true,  token.T_0: true,  token.T_123: true,  token.T_89: true,  token.T_131: true,  token.T_12: true,  token.T_39: true,  token.T_73: true,  token.T_56: true,  token.T_86: true,  token.T_127: true,  }, // CondORExpr0R0 
+	{  token.T_139: true,  }, // CondORExpr0R1 
+	{  }, // CondORExpr0R2 
+	{  token.T_97: true,  }, // ConstDecl0R0 
+	{  token.T_40: true,  token.T_28: true,  }, // ConstDecl0R1 
+	{  }, // ConstDecl0R2 
+	{  token.T_40: true,  token.T_28: true,  }, // ConstDeclRest0R0 
+	{  token.T_28: true,  }, // ConstDeclRest0R1 
+	{  token.T_56: true,  token.T_11: true,  token.T_0: true,  token.T_21: true,  token.T_60: true,  token.T_80: true,  token.T_70: true,  token.T_102: true,  token.T_52: true,  token.T_99: true,  token.T_15: true,  token.T_123: true,  token.T_117: true,  token.T_61: true,  token.T_86: true,  token.T_134: true,  token.T_12: true,  token.T_39: true,  token.T_97: true,  token.T_131: true,  token.T_135: true,  token.T_120: true,  token.T_62: true,  token.T_141: true,  token.T_101: true,  token.T_116: true,  token.T_7: true,  token.T_127: true,  token.T_16: true,  token.T_73: true,  token.T_89: true,  token.T_111: true,  token.T_50: true,  token.T_136: true,  }, // ConstDeclRest0R2 
+	{  }, // ConstDeclRest0R3 
+	{  token.T_40: true,  token.T_28: true,  }, // ConstDeclsRest0R0 
+	{  token.T_14: true,  }, // ConstDeclsRest0R1 
+	{  }, // ConstDeclsRest0R2 
+	{  token.T_15: true,  token.T_21: true,  token.T_131: true,  token.T_56: true,  token.T_99: true,  token.T_0: true,  token.T_60: true,  token.T_134: true,  token.T_7: true,  token.T_70: true,  token.T_89: true,  token.T_73: true,  token.T_127: true,  token.T_52: true,  token.T_120: true,  token.T_116: true,  token.T_97: true,  token.T_80: true,  token.T_12: true,  token.T_117: true,  token.T_123: true,  token.T_111: true,  token.T_101: true,  token.T_62: true,  token.T_11: true,  token.T_50: true,  token.T_141: true,  token.T_102: true,  token.T_39: true,  token.T_86: true,  token.T_61: true,  token.T_16: true,  token.T_135: true,  }, // ConstExpr0R0 
+	{  }, // ConstExpr0R1 
+	{  token.T_97: true,  }, // CreatedName0R0 
+	{  token.T_18: true,  }, // CreatedName0R1 
+	{  }, // CreatedName0R2 
+	{  token.T_97: true,  }, // Creator0R0 
+	{  token.T_7: true,  }, // Creator0R1 
+	{  }, // Creator0R2 
+	{  token.T_116: true,  token.T_56: true,  token.T_50: true,  token.T_86: true,  token.T_52: true,  token.T_80: true,  token.T_73: true,  token.T_61: true,  token.T_97: true,  }, // Creator1R0 
+	{  token.T_40: true,  }, // Creator1R1 
+	{  }, // Creator1R2 
+	{  token.T_16: true,  }, // DEC0R0 
+	{  token.T_49: true,  token.T_66: true,  token.T_85: true,  }, // DEC0R1 
+	{  }, // DEC0R2 
+	{  token.T_58: true,  }, // DEFAULT0R0 
+	{  token.T_98: true,  }, // DEFAULT0R1 
+	{  }, // DEFAULT0R2 
+	{  token.T_19: true,  }, // DIV0R0 
+	{  token.T_87: true,  }, // DIV0R1 
+	{  token.T_66: true,  token.T_85: true,  token.T_49: true,  }, // DIV0R2 
+	{  }, // DIV0R3 
+	{  token.T_20: true,  }, // DIV_EQU0R0 
+	{  token.T_85: true,  token.T_49: true,  token.T_66: true,  }, // DIV_EQU0R1 
+	{  }, // DIV_EQU0R2 
+	{  token.T_59: true,  }, // DO0R0 
+	{  token.T_98: true,  }, // DO0R1 
+	{  }, // DO0R2 
+	{  token.T_18: true,  }, // DOT0R0 
+	{  token.T_85: true,  token.T_49: true,  token.T_66: true,  }, // DOT0R1 
+	{  }, // DOT0R2 
+	{  token.T_111: true,  }, // DecimalFloat0R0 
+	{  token.T_60: true,  }, // DecimalFloat0R1 
+	{  token.T_110: true,  }, // DecimalFloat0R2 
+	{  token.T_103: true,  }, // DecimalFloat0R3 
+	{  token.T_69: true,  }, // DecimalFloat0R4 
+	{  }, // DecimalFloat0R5 
+	{  token.T_60: true,  }, // DecimalFloat1R0 
+	{  token.T_111: true,  }, // DecimalFloat1R1 
+	{  }, // DecimalFloat1R2 
+	{  token.T_111: true,  }, // DecimalFloat2R0 
+	{  token.T_69: true,  }, // DecimalFloat2R1 
+	{  }, // DecimalFloat2R2 
+	{  token.T_111: true,  }, // DecimalFloat3R0 
+	{  token.T_69: true,  }, // DecimalFloat3R1 
+	{  }, // DecimalFloat3R2 
+	{  token.T_135: true,  }, // DecimalNumeral0R0 
+	{  }, // DecimalNumeral0R1 
+	{  token.T_102: true,  }, // DecimalNumeral1R0 
+	{  token.T_114: true,  }, // DecimalNumeral1R1 
+	{  }, // DecimalNumeral1R2 
+	{  token.T_37: true,  }, // DeclAlts0R0 
+	{  }, // DeclAlts0R1 
+	{  token.T_38: true,  }, // DeclAlts1R0 
+	{  }, // DeclAlts1R1 
+	{  token.T_40: true,  }, // Dim0R0 
+	{  token.T_41: true,  }, // Dim0R1 
+	{  }, // Dim0R2 
+	{  token.T_40: true,  }, // DimExpr0R0 
+	{  token.T_39: true,  token.T_141: true,  token.T_50: true,  token.T_0: true,  token.T_134: true,  token.T_99: true,  token.T_97: true,  token.T_89: true,  token.T_135: true,  token.T_73: true,  token.T_111: true,  token.T_7: true,  token.T_123: true,  token.T_80: true,  token.T_102: true,  token.T_16: true,  token.T_120: true,  token.T_86: true,  token.T_60: true,  token.T_131: true,  token.T_11: true,  token.T_117: true,  token.T_127: true,  token.T_52: true,  token.T_21: true,  token.T_56: true,  token.T_101: true,  token.T_62: true,  token.T_12: true,  token.T_61: true,  token.T_15: true,  token.T_116: true,  token.T_70: true,  }, // DimExpr0R1 
+	{  token.T_41: true,  }, // DimExpr0R2 
+	{  }, // DimExpr0R3 
+	{  token.T_64: true,  }, // ELSE0R0 
+	{  token.T_98: true,  }, // ELSE0R1 
+	{  }, // ELSE0R2 
+	{  token.T_28: true,  }, // EQU0R0 
+	{  token.T_87: true,  }, // EQU0R1 
+	{  token.T_49: true,  token.T_66: true,  token.T_85: true,  }, // EQU0R2 
+	{  }, // EQU0R3 
+	{  token.T_29: true,  }, // EQUAL0R0 
+	{  token.T_85: true,  token.T_49: true,  token.T_66: true,  }, // EQUAL0R1 
+	{  }, // EQUAL0R2 
+	{  token.T_27: true,  token.T_31: true,  token.T_24: true,  token.T_30: true,  }, // ESInst0R0 
+	{  }, // ESInst0R1 
+	{  token.T_79: true,  }, // ESInst1R0 
+	{  token.T_97: true,  token.T_50: true,  token.T_61: true,  token.T_52: true,  token.T_80: true,  token.T_116: true,  token.T_56: true,  token.T_86: true,  token.T_73: true,  }, // ESInst1R1 
+	{  }, // ESInst1R2 
+	{  token.T_68: true,  }, // EXTENDS0R0 
+	{  token.T_98: true,  }, // EXTENDS0R1 
+	{  }, // EXTENDS0R2 
+	{  token.T_29: true,  }, // EqAlts0R0 
+	{  }, // EqAlts0R1 
+	{  token.T_1: true,  }, // EqAlts1R0 
+	{  }, // EqAlts1R1 
+	{  token.T_27: true,  }, // EqCheck0R0 
+	{  }, // EqCheck0R1 
+	{  token.T_31: true,  }, // EqCheck1R0 
+	{  }, // EqCheck1R1 
+	{  token.T_24: true,  }, // EqCheck2R0 
+	{  }, // EqCheck2R1 
+	{  token.T_30: true,  }, // EqCheck3R0 
+	{  }, // EqCheck3R1 
+	{  token.T_27: true,  token.T_31: true,  token.T_24: true,  token.T_30: true,  }, // EqShift0R0 
+	{  token.T_61: true,  token.T_52: true,  token.T_99: true,  token.T_123: true,  token.T_127: true,  token.T_21: true,  token.T_60: true,  token.T_15: true,  token.T_7: true,  token.T_101: true,  token.T_86: true,  token.T_73: true,  token.T_120: true,  token.T_39: true,  token.T_0: true,  token.T_50: true,  token.T_80: true,  token.T_131: true,  token.T_135: true,  token.T_89: true,  token.T_62: true,  token.T_16: true,  token.T_12: true,  token.T_70: true,  token.T_111: true,  token.T_134: true,  token.T_102: true,  token.T_117: true,  token.T_141: true,  token.T_97: true,  token.T_11: true,  token.T_116: true,  token.T_56: true,  }, // EqShift0R1 
+	{  }, // EqShift0R2 
+	{  token.T_62: true,  token.T_70: true,  token.T_50: true,  token.T_15: true,  token.T_7: true,  token.T_134: true,  token.T_11: true,  token.T_60: true,  token.T_131: true,  token.T_52: true,  token.T_89: true,  token.T_135: true,  token.T_102: true,  token.T_61: true,  token.T_80: true,  token.T_16: true,  token.T_116: true,  token.T_0: true,  token.T_97: true,  token.T_127: true,  token.T_101: true,  token.T_21: true,  token.T_117: true,  token.T_86: true,  token.T_141: true,  token.T_12: true,  token.T_56: true,  token.T_123: true,  token.T_99: true,  token.T_73: true,  token.T_111: true,  token.T_120: true,  token.T_39: true,  }, // EqualExpr0R0 
+	{  token.T_29: true,  token.T_1: true,  }, // EqualExpr0R1 
+	{  }, // EqualExpr0R2 
+	{  token.T_85: true,  }, // EscOrLineOrBlock0R0 
+	{  }, // EscOrLineOrBlock0R1 
+	{  token.T_49: true,  }, // EscOrLineOrBlock1R0 
+	{  }, // EscOrLineOrBlock1R1 
+	{  token.T_66: true,  }, // EscOrLineOrBlock2R0 
+	{  }, // EscOrLineOrBlock2R1 
+	{  token.T_63: true,  }, // EscSlash0R0 
+	{  }, // EscSlash0R1 
+	{  token.T_63: true,  token.T_42: true,  token.T_117: true,  }, // EscSlash1R0 
+	{  }, // EscSlash1R1 
+	{  token.T_42: true,  }, // EscUp0R0 
+	{  }, // EscUp0R1 
+	{  token.T_117: true,  }, // EscUp1R0 
+	{  }, // EscUp1R1 
+	{  token.T_63: true,  }, // EscUp2R0 
+	{  }, // EscUp2R1 
+	{  token.T_63: true,  }, // Escape0R0 
+	{  token.T_65: true,  token.T_129: true,  token.T_83: true,  token.T_82: true,  token.T_130: true,  }, // Escape0R1 
+	{  }, // Escape0R2 
+	{  token.T_65: true,  }, // Escs0R0 
+	{  }, // Escs0R1 
+	{  token.T_82: true,  token.T_129: true,  token.T_83: true,  }, // Escs1R0 
+	{  }, // Escs1R1 
+	{  token.T_130: true,  }, // Escs2R0 
+	{  }, // Escs2R1 
+	{  token.T_97: true,  token.T_70: true,  token.T_116: true,  token.T_141: true,  token.T_99: true,  token.T_0: true,  token.T_127: true,  token.T_12: true,  token.T_21: true,  token.T_89: true,  token.T_123: true,  token.T_52: true,  token.T_39: true,  token.T_11: true,  token.T_62: true,  token.T_60: true,  token.T_101: true,  token.T_15: true,  token.T_73: true,  token.T_56: true,  token.T_50: true,  token.T_102: true,  token.T_111: true,  token.T_134: true,  token.T_61: true,  token.T_7: true,  token.T_135: true,  token.T_80: true,  token.T_16: true,  token.T_120: true,  token.T_131: true,  token.T_86: true,  token.T_117: true,  }, // Expr0R0 
+	{  token.T_43: true,  token.T_28: true,  token.T_26: true,  token.T_35: true,  token.T_6: true,  token.T_138: true,  token.T_33: true,  token.T_3: true,  token.T_17: true,  token.T_20: true,  token.T_13: true,  token.T_10: true,  }, // Expr0R1 
+	{  }, // Expr0R2 
+	{  token.T_71: true,  }, // FINAL0R0 
+	{  token.T_98: true,  }, // FINAL0R1 
+	{  }, // FINAL0R2 
+	{  token.T_72: true,  }, // FINALLY0R0 
+	{  token.T_98: true,  }, // FINALLY0R1 
+	{  }, // FINALLY0R2 
+	{  token.T_74: true,  }, // FOR0R0 
+	{  token.T_98: true,  }, // FOR0R1 
+	{  }, // FOR0R2 
+	{  token.T_72: true,  }, // Finally0R0 
+	{  token.T_136: true,  }, // Finally0R1 
+	{  }, // Finally0R2 
+	{  token.T_21: true,  token.T_134: true,  token.T_39: true,  }, // FloatLiteral0R0 
+	{  }, // FloatLiteral0R1 
+	{  token.T_111: true,  token.T_60: true,  }, // FloatLiteral1R0 
+	{  }, // FloatLiteral1R1 
+	{  token.T_71: true,  }, // ForInit0R0 
+	{  token.T_86: true,  token.T_80: true,  token.T_116: true,  token.T_61: true,  token.T_56: true,  token.T_97: true,  token.T_52: true,  token.T_73: true,  token.T_50: true,  }, // ForInit0R1 
+	{  token.T_97: true,  }, // ForInit0R2 
+	{  }, // ForInit0R3 
+	{  token.T_80: true,  token.T_89: true,  token.T_141: true,  token.T_7: true,  token.T_56: true,  token.T_102: true,  token.T_50: true,  token.T_11: true,  token.T_135: true,  token.T_61: true,  token.T_127: true,  token.T_131: true,  token.T_21: true,  token.T_16: true,  token.T_73: true,  token.T_101: true,  token.T_62: true,  token.T_117: true,  token.T_99: true,  token.T_111: true,  token.T_12: true,  token.T_52: true,  token.T_15: true,  token.T_86: true,  token.T_116: true,  token.T_60: true,  token.T_134: true,  token.T_123: true,  token.T_97: true,  token.T_70: true,  token.T_120: true,  token.T_39: true,  token.T_0: true,  }, // ForInit1R0 
+	{  token.T_14: true,  }, // ForInit1R1 
+	{  }, // ForInit1R2 
+	{  token.T_101: true,  token.T_56: true,  token.T_131: true,  token.T_80: true,  token.T_62: true,  token.T_86: true,  token.T_89: true,  token.T_117: true,  token.T_141: true,  token.T_16: true,  token.T_123: true,  token.T_39: true,  token.T_15: true,  token.T_134: true,  token.T_50: true,  token.T_99: true,  token.T_116: true,  token.T_111: true,  token.T_52: true,  token.T_0: true,  token.T_21: true,  token.T_127: true,  token.T_120: true,  token.T_7: true,  token.T_12: true,  token.T_102: true,  token.T_73: true,  token.T_60: true,  token.T_11: true,  token.T_70: true,  token.T_61: true,  token.T_135: true,  token.T_97: true,  }, // ForUpdate0R0 
+	{  token.T_14: true,  }, // ForUpdate0R1 
+	{  }, // ForUpdate0R2 
+	{  token.T_71: true,  }, // FormalParam0R0 
+	{  token.T_97: true,  }, // FormalParam0R1 
+	{  }, // FormalParam0R2 
+	{  token.T_71: true,  }, // FormalParamDecls0R0 
+	{  token.T_97: true,  }, // FormalParamDecls0R1 
+	{  }, // FormalParamDecls0R2 
+	{  token.T_97: true,  }, // FormalParamDeclsRest0R0 
+	{  token.T_14: true,  }, // FormalParamDeclsRest0R1 
+	{  }, // FormalParamDeclsRest0R2 
+	{  token.T_7: true,  }, // FormalParams0R0 
+	{  token.T_71: true,  token.T_8: true,  }, // FormalParams0R1 
+	{  token.T_8: true,  }, // FormalParams0R2 
+	{  }, // FormalParams0R3 
+	{  token.T_31: true,  }, // GE0R0 
+	{  token.T_49: true,  token.T_66: true,  token.T_85: true,  }, // GE0R1 
+	{  }, // GE0R2 
+	{  token.T_30: true,  }, // GT0R0 
+	{  token.T_92: true,  }, // GT0R1 
+	{  token.T_66: true,  token.T_85: true,  token.T_49: true,  }, // GT0R2 
+	{  }, // GT0R3 
+	{  token.T_42: true,  }, // HAT0R0 
+	{  token.T_87: true,  }, // HAT0R1 
+	{  token.T_66: true,  token.T_85: true,  token.T_49: true,  }, // HAT0R2 
+	{  }, // HAT0R3 
+	{  token.T_43: true,  }, // HAT_EQU0R0 
+	{  token.T_66: true,  token.T_85: true,  token.T_49: true,  }, // HAT_EQU0R1 
+	{  }, // HAT_EQU0R2 
+	{  token.T_39: true,  token.T_21: true,  token.T_134: true,  }, // HexFloat0R0 
+	{  token.T_48: true,  }, // HexFloat0R1 
+	{  }, // HexFloat0R2 
+	{  token.T_21: true,  token.T_134: true,  token.T_39: true,  }, // HexNumeral0R0 
+	{  token.T_113: true,  }, // HexNumeral0R1 
+	{  }, // HexNumeral0R2 
+	{  token.T_21: true,  token.T_134: true,  token.T_39: true,  }, // HexSignificand0R0 
+	{  token.T_18: true,  }, // HexSignificand0R1 
+	{  }, // HexSignificand0R2 
+	{  token.T_39: true,  token.T_21: true,  token.T_134: true,  }, // HexSignificand1R0 
+	{  token.T_75: true,  }, // HexSignificand1R1 
+	{  token.T_112: true,  }, // HexSignificand1R2 
+	{  }, // HexSignificand1R3 
+	{  token.T_97: true,  }, // ID0R0 
+	{  token.T_100: true,  token.T_84: true,  token.T_49: true,  token.T_66: true,  token.T_85: true,  }, // ID0R1 
+	{  }, // ID0R2 
+	{  token.T_40: true,  }, // IDSuffix0R0 
+	{  token.T_89: true,  token.T_99: true,  token.T_41: true,  token.T_60: true,  token.T_50: true,  token.T_52: true,  token.T_61: true,  token.T_97: true,  token.T_16: true,  token.T_101: true,  token.T_134: true,  token.T_116: true,  token.T_21: true,  token.T_11: true,  token.T_7: true,  token.T_123: true,  token.T_127: true,  token.T_86: true,  token.T_12: true,  token.T_102: true,  token.T_80: true,  token.T_70: true,  token.T_131: true,  token.T_73: true,  token.T_141: true,  token.T_120: true,  token.T_62: true,  token.T_15: true,  token.T_117: true,  token.T_39: true,  token.T_111: true,  token.T_56: true,  token.T_135: true,  token.T_0: true,  }, // IDSuffix0R1 
+	{  }, // IDSuffix0R2 
+	{  token.T_7: true,  }, // IDSuffix1R0 
+	{  }, // IDSuffix1R1 
+	{  token.T_18: true,  }, // IDSuffix2R0 
+	{  token.T_123: true,  token.T_120: true,  token.T_89: true,  token.T_37: true,  }, // IDSuffix2R1 
+	{  }, // IDSuffix2R2 
+	{  token.T_76: true,  }, // IF0R0 
+	{  token.T_98: true,  }, // IF0R1 
+	{  }, // IF0R2 
+	{  token.T_77: true,  }, // IMPLEMENTS0R0 
+	{  token.T_98: true,  }, // IMPLEMENTS0R1 
+	{  }, // IMPLEMENTS0R2 
+	{  token.T_78: true,  }, // IMPORT0R0 
+	{  token.T_98: true,  }, // IMPORT0R1 
+	{  }, // IMPORT0R2 
+	{  token.T_12: true,  }, // INC0R0 
+	{  token.T_49: true,  token.T_66: true,  token.T_85: true,  }, // INC0R1 
+	{  }, // INC0R2 
+	{  token.T_79: true,  }, // INSTANCEOF0R0 
+	{  token.T_98: true,  }, // INSTANCEOF0R1 
+	{  }, // INSTANCEOF0R2 
+	{  token.T_12: true,  token.T_123: true,  token.T_135: true,  token.T_127: true,  token.T_16: true,  token.T_0: true,  token.T_7: true,  token.T_120: true,  token.T_101: true,  token.T_131: true,  token.T_86: true,  token.T_97: true,  token.T_99: true,  token.T_141: true,  token.T_117: true,  token.T_11: true,  token.T_52: true,  token.T_62: true,  token.T_50: true,  token.T_15: true,  token.T_80: true,  token.T_116: true,  token.T_61: true,  token.T_21: true,  token.T_60: true,  token.T_111: true,  token.T_89: true,  token.T_102: true,  token.T_70: true,  token.T_73: true,  token.T_56: true,  token.T_134: true,  token.T_39: true,  }, // IORExpr0R0 
+	{  token.T_137: true,  }, // IORExpr0R1 
+	{  }, // IORExpr0R2 
+	{  token.T_78: true,  }, // ImportDecl0R0 
+	{  token.T_97: true,  token.T_118: true,  }, // ImportDecl0R1 
+	{  token.T_97: true,  }, // ImportDecl0R2 
+	{  token.T_23: true,  token.T_18: true,  }, // ImportDecl0R3 
+	{  token.T_23: true,  }, // ImportDecl0R4 
+	{  }, // ImportDecl0R5 
+	{  token.T_97: true,  }, // InnerCreator0R0 
+	{  token.T_7: true,  }, // InnerCreator0R1 
+	{  }, // InnerCreator0R2 
+	{  token.T_39: true,  token.T_21: true,  token.T_101: true,  token.T_135: true,  token.T_102: true,  token.T_134: true,  }, // IntegerLiteral0R0 
+	{  token.T_104: true,  }, // IntegerLiteral0R1 
+	{  }, // IntegerLiteral0R2 
+	{  token.T_38: true,  }, // Intf0R0 
+	{  token.T_98: true,  }, // Intf0R1 
+	{  }, // Intf0R2 
+	{  token.T_136: true,  }, // IntfBdy0R0 
+	{  token.T_108: true,  token.T_131: true,  token.T_80: true,  token.T_23: true,  token.T_122: true,  token.T_52: true,  token.T_44: true,  token.T_73: true,  token.T_61: true,  token.T_86: true,  token.T_109: true,  token.T_119: true,  token.T_88: true,  token.T_71: true,  token.T_116: true,  token.T_132: true,  token.T_37: true,  token.T_97: true,  token.T_107: true,  token.T_118: true,  token.T_56: true,  token.T_38: true,  token.T_140: true,  token.T_50: true,  token.T_126: true,  }, // IntfBdy0R1 
+	{  token.T_140: true,  }, // IntfBdy0R2 
+	{  }, // IntfBdy0R3 
+	{  token.T_37: true,  token.T_38: true,  token.T_97: true,  token.T_109: true,  token.T_119: true,  token.T_122: true,  token.T_44: true,  token.T_61: true,  token.T_116: true,  token.T_52: true,  token.T_126: true,  token.T_118: true,  token.T_88: true,  token.T_107: true,  token.T_56: true,  token.T_50: true,  token.T_80: true,  token.T_73: true,  token.T_132: true,  token.T_131: true,  token.T_86: true,  token.T_71: true,  token.T_108: true,  }, // IntfBdyDecl0R0 
+	{  token.T_73: true,  token.T_50: true,  token.T_131: true,  token.T_38: true,  token.T_61: true,  token.T_116: true,  token.T_86: true,  token.T_56: true,  token.T_97: true,  token.T_52: true,  token.T_80: true,  token.T_37: true,  }, // IntfBdyDecl0R1 
+	{  }, // IntfBdyDecl0R2 
+	{  token.T_23: true,  }, // IntfBdyDecl1R0 
+	{  }, // IntfBdyDecl1R1 
+	{  token.T_38: true,  }, // IntfDecl0R0 
+	{  token.T_97: true,  }, // IntfDecl0R1 
+	{  token.T_68: true,  token.T_136: true,  }, // IntfDecl0R2 
+	{  token.T_136: true,  }, // IntfDecl0R3 
+	{  }, // IntfDecl0R4 
+	{  token.T_86: true,  token.T_56: true,  token.T_52: true,  token.T_116: true,  token.T_97: true,  token.T_50: true,  token.T_61: true,  token.T_80: true,  token.T_73: true,  }, // IntfMemDecl0R0 
+	{  }, // IntfMemDecl0R1 
+	{  token.T_131: true,  }, // IntfMemDecl1R0 
+	{  token.T_97: true,  }, // IntfMemDecl1R1 
+	{  token.T_7: true,  }, // IntfMemDecl1R2 
+	{  }, // IntfMemDecl1R3 
+	{  token.T_38: true,  }, // IntfMemDecl2R0 
+	{  }, // IntfMemDecl2R1 
+	{  token.T_37: true,  }, // IntfMemDecl3R0 
+	{  }, // IntfMemDecl3R1 
+	{  token.T_7: true,  }, // IntfMethDeclRest0R0 
+	{  token.T_40: true,  token.T_125: true,  token.T_23: true,  }, // IntfMethDeclRest0R1 
+	{  token.T_125: true,  token.T_23: true,  }, // IntfMethDeclRest0R2 
+	{  token.T_23: true,  }, // IntfMethDeclRest0R3 
+	{  }, // IntfMethDeclRest0R4 
+	{  token.T_86: true,  token.T_97: true,  token.T_80: true,  token.T_116: true,  token.T_52: true,  token.T_73: true,  token.T_61: true,  token.T_50: true,  token.T_56: true,  }, // IntfMethFieldDecl0R0 
+	{  token.T_97: true,  }, // IntfMethFieldDecl0R1 
+	{  token.T_40: true,  token.T_28: true,  token.T_7: true,  }, // IntfMethFieldDecl0R2 
+	{  }, // IntfMethFieldDecl0R3 
+	{  token.T_40: true,  token.T_28: true,  }, // IntfMethFieldRest0R0 
+	{  token.T_23: true,  }, // IntfMethFieldRest0R1 
+	{  }, // IntfMethFieldRest0R2 
+	{  token.T_7: true,  }, // IntfMethFieldRest1R0 
+	{  }, // IntfMethFieldRest1R1 
+	{  token.T_40: true,  }, // LBRK0R0 
+	{  token.T_49: true,  token.T_66: true,  token.T_85: true,  }, // LBRK0R1 
+	{  }, // LBRK0R2 
+	{  token.T_27: true,  }, // LE0R0 
+	{  token.T_49: true,  token.T_66: true,  token.T_85: true,  }, // LE0R1 
+	{  }, // LE0R2 
+	{  token.T_7: true,  }, // LPAR0R0 
+	{  token.T_66: true,  token.T_85: true,  token.T_49: true,  }, // LPAR0R1 
+	{  }, // LPAR0R2 
+	{  token.T_24: true,  }, // LT0R0 
+	{  token.T_93: true,  }, // LT0R1 
+	{  token.T_66: true,  token.T_85: true,  token.T_49: true,  }, // LT0R2 
+	{  }, // LT0R3 
+	{  token.T_136: true,  }, // LWING0R0 
+	{  token.T_49: true,  token.T_66: true,  token.T_85: true,  }, // LWING0R1 
+	{  }, // LWING0R2 
+	{  token.T_84: true,  }, // Letter0R0 
+	{  }, // Letter0R1 
+	{  token.T_49: true,  token.T_66: true,  token.T_85: true,  }, // Letter1R0 
+	{  }, // Letter1R1 
+	{  token.T_66: true,  token.T_85: true,  token.T_100: true,  token.T_84: true,  token.T_49: true,  }, // LetterLorD0R0 
+	{  token.T_84: true,  token.T_49: true,  token.T_66: true,  token.T_85: true,  token.T_100: true,  }, // LetterLorD0R1 
+	{  token.T_49: true,  token.T_66: true,  token.T_85: true,  }, // LetterLorD0R2 
+	{  }, // LetterLorD0R3 
+	{  token.T_60: true,  token.T_21: true,  token.T_134: true,  token.T_39: true,  token.T_111: true,  }, // LitAlts0R0 
+	{  }, // LitAlts0R1 
+	{  token.T_102: true,  token.T_134: true,  token.T_39: true,  token.T_21: true,  token.T_101: true,  token.T_135: true,  }, // LitAlts1R0 
+	{  }, // LitAlts1R1 
+	{  token.T_117: true,  }, // LitAlts2R0 
+	{  }, // LitAlts2R1 
+	{  token.T_62: true,  }, // LitAlts3R0 
+	{  }, // LitAlts3R1 
+	{  token.T_127: true,  }, // LitAlts4R0 
+	{  token.T_98: true,  }, // LitAlts4R1 
+	{  }, // LitAlts4R2 
+	{  token.T_70: true,  }, // LitAlts5R0 
+	{  token.T_98: true,  }, // LitAlts5R1 
+	{  }, // LitAlts5R2 
+	{  token.T_99: true,  }, // LitAlts6R0 
+	{  token.T_98: true,  }, // LitAlts6R1 
+	{  }, // LitAlts6R2 
+	{  token.T_21: true,  token.T_39: true,  token.T_117: true,  token.T_127: true,  token.T_60: true,  token.T_135: true,  token.T_62: true,  token.T_99: true,  token.T_111: true,  token.T_134: true,  token.T_70: true,  token.T_102: true,  token.T_101: true,  }, // Literal0R0 
+	{  token.T_66: true,  token.T_85: true,  token.T_49: true,  }, // Literal0R1 
+	{  }, // Literal0R2 
+	{  token.T_71: true,  }, // LocalVarDeclStmt0R0 
+	{  token.T_97: true,  }, // LocalVarDeclStmt0R1 
+	{  token.T_14: true,  token.T_23: true,  }, // LocalVarDeclStmt0R2 
+	{  token.T_23: true,  }, // LocalVarDeclStmt0R3 
+	{  }, // LocalVarDeclStmt0R4 
+	{  token.T_85: true,  token.T_84: true,  token.T_49: true,  token.T_66: true,  }, // LorD0R0 
+	{  }, // LorD0R1 
+	{  token.T_100: true,  }, // LorD1R0 
+	{  }, // LorD1R1 
+	{  token.T_15: true,  }, // MINUS0R0 
+	{  token.T_96: true,  }, // MINUS0R1 
+	{  token.T_49: true,  token.T_66: true,  token.T_85: true,  }, // MINUS0R2 
+	{  }, // MINUS0R3 
+	{  token.T_17: true,  }, // MINUS_EQU0R0 
+	{  token.T_49: true,  token.T_66: true,  token.T_85: true,  }, // MINUS_EQU0R1 
+	{  }, // MINUS_EQU0R2 
+	{  token.T_2: true,  }, // MOD0R0 
+	{  token.T_87: true,  }, // MOD0R1 
+	{  token.T_49: true,  token.T_66: true,  token.T_85: true,  }, // MOD0R2 
+	{  }, // MOD0R3 
+	{  token.T_3: true,  }, // MOD_EQU0R0 
+	{  token.T_85: true,  token.T_49: true,  token.T_66: true,  }, // MOD_EQU0R1 
+	{  }, // MOD_EQU0R2 
+	{  token.T_23: true,  }, // MemAlts0R0 
+	{  }, // MemAlts0R1 
+	{  token.T_136: true,  }, // MemAlts1R0 
+	{  }, // MemAlts1R1 
+	{  token.T_73: true,  token.T_97: true,  token.T_52: true,  token.T_80: true,  token.T_116: true,  token.T_61: true,  token.T_56: true,  token.T_50: true,  token.T_86: true,  }, // MemDecl0R0 
+	{  token.T_97: true,  }, // MemDecl0R1 
+	{  token.T_7: true,  }, // MemDecl0R2 
+	{  token.T_40: true,  token.T_125: true,  token.T_23: true,  token.T_136: true,  }, // MemDecl0R3 
+	{  token.T_125: true,  token.T_23: true,  token.T_136: true,  }, // MemDecl0R4 
+	{  token.T_23: true,  token.T_136: true,  }, // MemDecl0R5 
+	{  }, // MemDecl0R6 
+	{  token.T_131: true,  }, // MemDecl1R0 
+	{  token.T_97: true,  }, // MemDecl1R1 
+	{  token.T_7: true,  }, // MemDecl1R2 
+	{  token.T_23: true,  token.T_136: true,  token.T_125: true,  }, // MemDecl1R3 
+	{  token.T_136: true,  token.T_23: true,  }, // MemDecl1R4 
+	{  }, // MemDecl1R5 
+	{  token.T_97: true,  }, // MemDecl2R0 
+	{  token.T_7: true,  }, // MemDecl2R1 
+	{  token.T_125: true,  token.T_136: true,  }, // MemDecl2R2 
+	{  token.T_136: true,  }, // MemDecl2R3 
+	{  }, // MemDecl2R4 
+	{  token.T_38: true,  }, // MemDecl3R0 
+	{  }, // MemDecl3R1 
+	{  token.T_37: true,  }, // MemDecl4R0 
+	{  }, // MemDecl4R1 
+	{  token.T_50: true,  token.T_80: true,  token.T_116: true,  token.T_73: true,  token.T_97: true,  token.T_56: true,  token.T_61: true,  token.T_52: true,  token.T_86: true,  }, // MemDecl5R0 
+	{  token.T_97: true,  }, // MemDecl5R1 
+	{  token.T_14: true,  }, // MemDecl5R2 
+	{  }, // MemDecl5R3 
+	{  token.T_119: true,  token.T_122: true,  token.T_132: true,  token.T_109: true,  token.T_107: true,  token.T_88: true,  token.T_126: true,  token.T_108: true,  token.T_118: true,  token.T_44: true,  token.T_71: true,  }, // Modifier0R0 
+	{  token.T_98: true,  }, // Modifier0R1 
+	{  }, // Modifier0R2 
+	{  token.T_109: true,  }, // Modifs0R0 
+	{  }, // Modifs0R1 
+	{  token.T_108: true,  }, // Modifs1R0 
+	{  }, // Modifs1R1 
+	{  token.T_107: true,  }, // Modifs2R0 
+	{  }, // Modifs2R1 
+	{  token.T_118: true,  }, // Modifs3R0 
+	{  }, // Modifs3R1 
+	{  token.T_44: true,  }, // Modifs4R0 
+	{  }, // Modifs4R1 
+	{  token.T_71: true,  }, // Modifs5R0 
+	{  }, // Modifs5R1 
+	{  token.T_88: true,  }, // Modifs6R0 
+	{  }, // Modifs6R1 
+	{  token.T_122: true,  }, // Modifs7R0 
+	{  }, // Modifs7R1 
+	{  token.T_126: true,  }, // Modifs8R0 
+	{  }, // Modifs8R1 
+	{  token.T_132: true,  }, // Modifs9R0 
+	{  }, // Modifs9R1 
+	{  token.T_119: true,  }, // Modifs10R0 
+	{  }, // Modifs10R1 
+	{  token.T_7: true,  token.T_52: true,  token.T_16: true,  token.T_21: true,  token.T_134: true,  token.T_70: true,  token.T_11: true,  token.T_39: true,  token.T_111: true,  token.T_102: true,  token.T_86: true,  token.T_97: true,  token.T_135: true,  token.T_101: true,  token.T_50: true,  token.T_73: true,  token.T_116: true,  token.T_89: true,  token.T_56: true,  token.T_15: true,  token.T_127: true,  token.T_117: true,  token.T_123: true,  token.T_61: true,  token.T_131: true,  token.T_99: true,  token.T_62: true,  token.T_12: true,  token.T_141: true,  token.T_80: true,  token.T_120: true,  token.T_60: true,  token.T_0: true,  }, // MultExpr0R0 
+	{  token.T_9: true,  token.T_19: true,  token.T_2: true,  }, // MultExpr0R1 
+	{  }, // MultExpr0R2 
+	{  token.T_89: true,  }, // NEW0R0 
+	{  token.T_98: true,  }, // NEW0R1 
+	{  }, // NEW0R2 
+	{  token.T_1: true,  }, // NOT_EQUAL0R0 
+	{  token.T_66: true,  token.T_85: true,  token.T_49: true,  }, // NOT_EQUAL0R1 
+	{  }, // NOT_EQUAL0R2 
+	{  token.T_21: true,  token.T_134: true,  token.T_39: true,  }, // NumeralAlts0R0 
+	{  }, // NumeralAlts0R1 
+	{  token.T_101: true,  }, // NumeralAlts1R0 
+	{  }, // NumeralAlts1R1 
+	{  token.T_135: true,  token.T_102: true,  }, // NumeralAlts2R0 
+	{  }, // NumeralAlts2R1 
+	{  token.T_137: true,  }, // OR0R0 
+	{  token.T_94: true,  }, // OR0R1 
+	{  token.T_85: true,  token.T_49: true,  token.T_66: true,  }, // OR0R2 
+	{  }, // OR0R3 
+	{  token.T_137: true,  }, // ORXOR0R0 
+	{  token.T_141: true,  token.T_101: true,  token.T_117: true,  token.T_56: true,  token.T_116: true,  token.T_123: true,  token.T_135: true,  token.T_99: true,  token.T_120: true,  token.T_73: true,  token.T_97: true,  token.T_61: true,  token.T_39: true,  token.T_12: true,  token.T_16: true,  token.T_131: true,  token.T_15: true,  token.T_102: true,  token.T_52: true,  token.T_7: true,  token.T_111: true,  token.T_89: true,  token.T_50: true,  token.T_134: true,  token.T_86: true,  token.T_60: true,  token.T_127: true,  token.T_80: true,  token.T_11: true,  token.T_21: true,  token.T_62: true,  token.T_0: true,  token.T_70: true,  }, // ORXOR0R1 
+	{  }, // ORXOR0R2 
+	{  token.T_138: true,  }, // OR_EQU0R0 
+	{  token.T_49: true,  token.T_66: true,  token.T_85: true,  }, // OR_EQU0R1 
+	{  }, // OR_EQU0R2 
+	{  token.T_139: true,  }, // OR_OR0R0 
+	{  token.T_49: true,  token.T_66: true,  token.T_85: true,  }, // OR_OR0R1 
+	{  }, // OR_OR0R2 
+	{  token.T_82: true,  }, // OctalEscape0R0 
+	{  }, // OctalEscape0R1 
+	{  token.T_129: true,  }, // OctalEscape1R0 
+	{  }, // OctalEscape1R1 
+	{  token.T_83: true,  }, // OctalEscape2R0 
+	{  }, // OctalEscape2R1 
+	{  token.T_7: true,  }, // OptArgs0R0 
+	{  }, // OptArgs0R1 
+	{  }, // OptArgs1R0 
+	{  token.T_136: true,  }, // OptClsBdy0R0 
+	{  }, // OptClsBdy0R1 
+	{  }, // OptClsBdy1R0 
+	{  token.T_22: true,  }, // OptColExpr0R0 
+	{  token.T_116: true,  token.T_7: true,  token.T_70: true,  token.T_21: true,  token.T_97: true,  token.T_127: true,  token.T_141: true,  token.T_50: true,  token.T_12: true,  token.T_61: true,  token.T_135: true,  token.T_120: true,  token.T_102: true,  token.T_99: true,  token.T_15: true,  token.T_52: true,  token.T_86: true,  token.T_80: true,  token.T_0: true,  token.T_62: true,  token.T_123: true,  token.T_117: true,  token.T_73: true,  token.T_39: true,  token.T_11: true,  token.T_56: true,  token.T_101: true,  token.T_89: true,  token.T_134: true,  token.T_111: true,  token.T_60: true,  token.T_131: true,  token.T_16: true,  }, // OptColExpr0R1 
+	{  }, // OptColExpr0R2 
+	{  }, // OptColExpr1R0 
+	{  token.T_14: true,  }, // OptCom0R0 
+	{  }, // OptCom0R1 
+	{  }, // OptCom1R0 
+	{  token.T_14: true,  }, // OptComFormPDecl0R0 
+	{  token.T_71: true,  }, // OptComFormPDecl0R1 
+	{  }, // OptComFormPDecl0R2 
+	{  }, // OptComFormPDecl1R0 
+	{  token.T_18: true,  }, // OptDot0R0 
+	{  }, // OptDot0R1 
+	{  }, // OptDot1R0 
+	{  token.T_18: true,  }, // OptDotStar0R0 
+	{  token.T_9: true,  }, // OptDotStar0R1 
+	{  }, // OptDotStar0R2 
+	{  }, // OptDotStar1R0 
+	{  token.T_64: true,  }, // OptElse0R0 
+	{  token.T_0: true,  token.T_97: true,  token.T_133: true,  token.T_141: true,  token.T_115: true,  token.T_123: true,  token.T_134: true,  token.T_60: true,  token.T_80: true,  token.T_15: true,  token.T_89: true,  token.T_136: true,  token.T_59: true,  token.T_51: true,  token.T_99: true,  token.T_127: true,  token.T_117: true,  token.T_120: true,  token.T_23: true,  token.T_131: true,  token.T_62: true,  token.T_61: true,  token.T_74: true,  token.T_86: true,  token.T_111: true,  token.T_116: true,  token.T_12: true,  token.T_39: true,  token.T_102: true,  token.T_76: true,  token.T_57: true,  token.T_70: true,  token.T_50: true,  token.T_52: true,  token.T_101: true,  token.T_7: true,  token.T_16: true,  token.T_128: true,  token.T_122: true,  token.T_56: true,  token.T_21: true,  token.T_47: true,  token.T_73: true,  token.T_121: true,  token.T_135: true,  token.T_124: true,  token.T_11: true,  }, // OptElse0R1 
+	{  }, // OptElse0R2 
+	{  }, // OptElse1R0 
+	{  token.T_28: true,  }, // OptEqVarInit0R0 
+	{  token.T_56: true,  token.T_0: true,  token.T_70: true,  token.T_73: true,  token.T_50: true,  token.T_11: true,  token.T_134: true,  token.T_127: true,  token.T_135: true,  token.T_141: true,  token.T_39: true,  token.T_123: true,  token.T_131: true,  token.T_101: true,  token.T_136: true,  token.T_120: true,  token.T_86: true,  token.T_89: true,  token.T_97: true,  token.T_116: true,  token.T_21: true,  token.T_80: true,  token.T_111: true,  token.T_12: true,  token.T_102: true,  token.T_52: true,  token.T_99: true,  token.T_15: true,  token.T_60: true,  token.T_7: true,  token.T_61: true,  token.T_16: true,  token.T_62: true,  token.T_117: true,  }, // OptEqVarInit0R1 
+	{  }, // OptEqVarInit0R2 
+	{  }, // OptEqVarInit1R0 
+	{  token.T_63: true,  }, // OptEsc0R0 
+	{  }, // OptEsc0R1 
+	{  token.T_46: true,  }, // OptEsc1R0 
+	{  }, // OptEsc1R1 
+	{  token.T_16: true,  token.T_127: true,  token.T_80: true,  token.T_102: true,  token.T_116: true,  token.T_135: true,  token.T_86: true,  token.T_7: true,  token.T_131: true,  token.T_89: true,  token.T_56: true,  token.T_61: true,  token.T_99: true,  token.T_15: true,  token.T_111: true,  token.T_60: true,  token.T_134: true,  token.T_141: true,  token.T_62: true,  token.T_21: true,  token.T_97: true,  token.T_120: true,  token.T_12: true,  token.T_123: true,  token.T_117: true,  token.T_52: true,  token.T_101: true,  token.T_70: true,  token.T_73: true,  token.T_39: true,  token.T_0: true,  token.T_11: true,  token.T_50: true,  }, // OptExpr0R0 
+	{  }, // OptExpr0R1 
+	{  }, // OptExpr1R0 
+	{  token.T_60: true,  token.T_111: true,  token.T_52: true,  token.T_134: true,  token.T_89: true,  token.T_101: true,  token.T_99: true,  token.T_117: true,  token.T_39: true,  token.T_21: true,  token.T_123: true,  token.T_15: true,  token.T_0: true,  token.T_62: true,  token.T_73: true,  token.T_127: true,  token.T_70: true,  token.T_61: true,  token.T_7: true,  token.T_131: true,  token.T_12: true,  token.T_56: true,  token.T_80: true,  token.T_116: true,  token.T_141: true,  token.T_120: true,  token.T_86: true,  token.T_97: true,  token.T_135: true,  token.T_11: true,  token.T_16: true,  token.T_50: true,  token.T_102: true,  }, // OptExprs0R0 
+	{  token.T_14: true,  }, // OptExprs0R1 
+	{  }, // OptExprs0R2 
+	{  }, // OptExprs1R0 
+	{  token.T_68: true,  }, // OptExtClsType0R0 
+	{  token.T_97: true,  }, // OptExtClsType0R1 
+	{  }, // OptExtClsType0R2 
+	{  }, // OptExtClsType1R0 
+	{  token.T_68: true,  }, // OptExtendsClsLis0R0 
+	{  token.T_97: true,  }, // OptExtendsClsLis0R1 
+	{  }, // OptExtendsClsLis0R2 
+	{  }, // OptExtendsClsLis1R0 
+	{  token.T_71: true,  }, // OptFin0R0 
+	{  }, // OptFin0R1 
+	{  }, // OptFin1R0 
+	{  token.T_71: true,  }, // OptFinType0R0 
+	{  token.T_52: true,  token.T_73: true,  token.T_61: true,  token.T_50: true,  token.T_80: true,  token.T_116: true,  token.T_86: true,  token.T_97: true,  token.T_56: true,  }, // OptFinType0R1 
+	{  }, // OptFinType0R2 
+	{  token.T_21: true,  token.T_120: true,  token.T_52: true,  token.T_131: true,  token.T_134: true,  token.T_15: true,  token.T_135: true,  token.T_86: true,  token.T_99: true,  token.T_102: true,  token.T_141: true,  token.T_117: true,  token.T_127: true,  token.T_73: true,  token.T_111: true,  token.T_101: true,  token.T_116: true,  token.T_61: true,  token.T_16: true,  token.T_71: true,  token.T_39: true,  token.T_56: true,  token.T_123: true,  token.T_97: true,  token.T_50: true,  token.T_11: true,  token.T_80: true,  token.T_0: true,  token.T_60: true,  token.T_89: true,  token.T_7: true,  token.T_62: true,  token.T_12: true,  token.T_70: true,  }, // OptForInit0R0 
+	{  }, // OptForInit0R1 
+	{  }, // OptForInit1R0 
+	{  token.T_141: true,  token.T_70: true,  token.T_11: true,  token.T_73: true,  token.T_134: true,  token.T_80: true,  token.T_99: true,  token.T_21: true,  token.T_61: true,  token.T_50: true,  token.T_116: true,  token.T_111: true,  token.T_101: true,  token.T_102: true,  token.T_0: true,  token.T_62: true,  token.T_89: true,  token.T_16: true,  token.T_120: true,  token.T_131: true,  token.T_127: true,  token.T_97: true,  token.T_123: true,  token.T_135: true,  token.T_7: true,  token.T_86: true,  token.T_117: true,  token.T_15: true,  token.T_60: true,  token.T_39: true,  token.T_52: true,  token.T_12: true,  token.T_56: true,  }, // OptForUpd0R0 
+	{  }, // OptForUpd0R1 
+	{  }, // OptForUpd1R0 
+	{  token.T_71: true,  }, // OptFormPDecl0R0 
+	{  }, // OptFormPDecl0R1 
+	{  }, // OptFormPDecl1R0 
+	{  token.T_97: true,  }, // OptID0R0 
+	{  }, // OptID0R1 
+	{  }, // OptID1R0 
+	{  token.T_18: true,  token.T_40: true,  token.T_7: true,  }, // OptIDSuff0R0 
+	{  }, // OptIDSuff0R1 
+	{  }, // OptIDSuff1R0 
+	{  token.T_77: true,  }, // OptImpClsLst0R0 
+	{  token.T_97: true,  }, // OptImpClsLst0R1 
+	{  }, // OptImpClsLst0R2 
+	{  }, // OptImpClsLst1R0 
+	{  token.T_106: true,  }, // OptPackDecl0R0 
+	{  }, // OptPackDecl0R1 
+	{  }, // OptPackDecl1R0 
+	{  token.T_118: true,  }, // OptStatic0R0 
+	{  }, // OptStatic0R1 
+	{  }, // OptStatic1R0 
+	{  token.T_125: true,  }, // OptThrowClsTypLst0R0 
+	{  token.T_97: true,  }, // OptThrowClsTypLst0R1 
+	{  }, // OptThrowClsTypLst0R2 
+	{  }, // OptThrowClsTypLst1R0 
+	{  token.T_39: true,  token.T_86: true,  token.T_80: true,  token.T_89: true,  token.T_136: true,  token.T_102: true,  token.T_16: true,  token.T_52: true,  token.T_15: true,  token.T_123: true,  token.T_116: true,  token.T_60: true,  token.T_12: true,  token.T_120: true,  token.T_11: true,  token.T_0: true,  token.T_111: true,  token.T_50: true,  token.T_127: true,  token.T_21: true,  token.T_73: true,  token.T_56: true,  token.T_7: true,  token.T_131: true,  token.T_61: true,  token.T_141: true,  token.T_117: true,  token.T_97: true,  token.T_101: true,  token.T_135: true,  token.T_62: true,  token.T_134: true,  token.T_70: true,  token.T_99: true,  }, // OptVarInit0R0 
+	{  token.T_14: true,  }, // OptVarInit0R1 
+	{  token.T_14: true,  }, // OptVarInit0R2 
+	{  }, // OptVarInit0R3 
+	{  }, // OptVarInit1R0 
+	{  token.T_37: true,  }, // OtherAlts0R0 
+	{  }, // OtherAlts0R1 
+	{  token.T_123: true,  }, // OtherAlts1R0 
+	{  }, // OtherAlts1R1 
+	{  token.T_120: true,  }, // OtherAlts2R0 
+	{  token.T_7: true,  }, // OtherAlts2R1 
+	{  }, // OtherAlts2R2 
+	{  token.T_89: true,  }, // OtherAlts3R0 
+	{  token.T_97: true,  }, // OtherAlts3R1 
+	{  }, // OtherAlts3R2 
+	{  token.T_106: true,  }, // PACKAGE0R0 
+	{  token.T_98: true,  }, // PACKAGE0R1 
+	{  }, // PACKAGE0R2 
+	{  token.T_11: true,  }, // PLUS0R0 
+	{  token.T_95: true,  }, // PLUS0R1 
+	{  token.T_49: true,  token.T_66: true,  token.T_85: true,  }, // PLUS0R2 
+	{  }, // PLUS0R3 
+	{  token.T_13: true,  }, // PLUS_EQU0R0 
+	{  token.T_85: true,  token.T_49: true,  token.T_66: true,  }, // PLUS_EQU0R1 
+	{  }, // PLUS_EQU0R2 
+	{  token.T_106: true,  }, // PackDecl0R0 
+	{  token.T_97: true,  }, // PackDecl0R1 
+	{  token.T_23: true,  }, // PackDecl0R2 
+	{  }, // PackDecl0R3 
+	{  token.T_7: true,  }, // ParExpr0R0 
+	{  token.T_7: true,  token.T_16: true,  token.T_80: true,  token.T_11: true,  token.T_21: true,  token.T_61: true,  token.T_89: true,  token.T_86: true,  token.T_120: true,  token.T_39: true,  token.T_62: true,  token.T_60: true,  token.T_116: true,  token.T_12: true,  token.T_70: true,  token.T_99: true,  token.T_135: true,  token.T_50: true,  token.T_101: true,  token.T_56: true,  token.T_134: true,  token.T_73: true,  token.T_127: true,  token.T_117: true,  token.T_15: true,  token.T_102: true,  token.T_131: true,  token.T_141: true,  token.T_0: true,  token.T_123: true,  token.T_97: true,  token.T_52: true,  token.T_111: true,  }, // ParExpr0R1 
+	{  token.T_8: true,  }, // ParExpr0R2 
+	{  }, // ParExpr0R3 
+	{  token.T_12: true,  }, // PostfixOp0R0 
+	{  }, // PostfixOp0R1 
+	{  token.T_16: true,  }, // PostfixOp1R0 
+	{  }, // PostfixOp1R1 
+	{  token.T_12: true,  }, // PrefixOp0R0 
+	{  }, // PrefixOp0R1 
+	{  token.T_16: true,  }, // PrefixOp1R0 
+	{  }, // PrefixOp1R1 
+	{  token.T_0: true,  }, // PrefixOp2R0 
+	{  }, // PrefixOp2R1 
+	{  token.T_141: true,  }, // PrefixOp3R0 
+	{  }, // PrefixOp3R1 
+	{  token.T_11: true,  }, // PrefixOp4R0 
+	{  }, // PrefixOp4R1 
+	{  token.T_15: true,  }, // PrefixOp5R0 
+	{  }, // PrefixOp5R1 
+	{  token.T_7: true,  }, // Primary0R0 
+	{  }, // Primary0R1 
+	{  token.T_123: true,  }, // Primary1R0 
+	{  token.T_7: true,  }, // Primary1R1 
+	{  }, // Primary1R2 
+	{  token.T_120: true,  }, // Primary2R0 
+	{  token.T_7: true,  token.T_18: true,  }, // Primary2R1 
+	{  }, // Primary2R2 
+	{  token.T_21: true,  token.T_70: true,  token.T_135: true,  token.T_60: true,  token.T_99: true,  token.T_117: true,  token.T_101: true,  token.T_62: true,  token.T_127: true,  token.T_111: true,  token.T_134: true,  token.T_102: true,  token.T_39: true,  }, // Primary3R0 
+	{  }, // Primary3R1 
+	{  token.T_89: true,  }, // Primary4R0 
+	{  token.T_86: true,  token.T_80: true,  token.T_116: true,  token.T_50: true,  token.T_61: true,  token.T_56: true,  token.T_52: true,  token.T_97: true,  token.T_73: true,  }, // Primary4R1 
+	{  }, // Primary4R2 
+	{  token.T_97: true,  }, // Primary5R0 
+	{  token.T_18: true,  token.T_40: true,  token.T_7: true,  }, // Primary5R1 
+	{  }, // Primary5R2 
+	{  token.T_50: true,  token.T_52: true,  token.T_116: true,  token.T_56: true,  token.T_80: true,  token.T_86: true,  token.T_73: true,  token.T_61: true,  }, // Primary6R0 
+	{  token.T_40: true,  token.T_18: true,  }, // Primary6R1 
+	{  token.T_18: true,  }, // Primary6R2 
+	{  token.T_37: true,  }, // Primary6R3 
+	{  }, // Primary6R4 
+	{  token.T_131: true,  }, // Primary7R0 
+	{  token.T_18: true,  }, // Primary7R1 
+	{  token.T_37: true,  }, // Primary7R2 
+	{  }, // Primary7R3 
+	{  token.T_36: true,  }, // QUERY0R0 
+	{  token.T_85: true,  token.T_49: true,  token.T_66: true,  }, // QUERY0R1 
+	{  }, // QUERY0R2 
+	{  token.T_97: true,  }, // QualifiedID0R0 
+	{  token.T_18: true,  }, // QualifiedID0R1 
+	{  }, // QualifiedID0R2 
+	{  token.T_41: true,  }, // RBRK0R0 
+	{  token.T_66: true,  token.T_85: true,  token.T_49: true,  }, // RBRK0R1 
+	{  }, // RBRK0R2 
+	{  token.T_41: true,  }, // RBRKAlts0R0 
+	{  token.T_40: true,  token.T_18: true,  }, // RBRKAlts0R1 
+	{  token.T_18: true,  }, // RBRKAlts0R2 
+	{  token.T_37: true,  }, // RBRKAlts0R3 
+	{  }, // RBRKAlts0R4 
+	{  token.T_62: true,  token.T_21: true,  token.T_127: true,  token.T_111: true,  token.T_52: true,  token.T_39: true,  token.T_101: true,  token.T_116: true,  token.T_99: true,  token.T_120: true,  token.T_131: true,  token.T_11: true,  token.T_73: true,  token.T_97: true,  token.T_86: true,  token.T_60: true,  token.T_7: true,  token.T_70: true,  token.T_123: true,  token.T_89: true,  token.T_15: true,  token.T_134: true,  token.T_117: true,  token.T_50: true,  token.T_141: true,  token.T_0: true,  token.T_56: true,  token.T_16: true,  token.T_61: true,  token.T_80: true,  token.T_102: true,  token.T_12: true,  token.T_135: true,  }, // RBRKAlts1R0 
+	{  token.T_41: true,  }, // RBRKAlts1R1 
+	{  }, // RBRKAlts1R2 
+	{  token.T_115: true,  }, // RETURN0R0 
+	{  token.T_98: true,  }, // RETURN0R1 
+	{  }, // RETURN0R2 
+	{  token.T_8: true,  }, // RPAR0R0 
+	{  token.T_85: true,  token.T_49: true,  token.T_66: true,  }, // RPAR0R1 
+	{  }, // RPAR0R2 
+	{  token.T_140: true,  }, // RWING0R0 
+	{  token.T_66: true,  token.T_85: true,  token.T_49: true,  }, // RWING0R1 
+	{  }, // RWING0R2 
+	{  token.T_56: true,  token.T_80: true,  token.T_86: true,  token.T_73: true,  token.T_61: true,  token.T_50: true,  token.T_52: true,  token.T_116: true,  }, // ReferenceType0R0 
+	{  token.T_40: true,  }, // ReferenceType0R1 
+	{  token.T_40: true,  }, // ReferenceType0R2 
+	{  }, // ReferenceType0R3 
+	{  token.T_97: true,  }, // ReferenceType1R0 
+	{  token.T_40: true,  }, // ReferenceType1R1 
+	{  }, // ReferenceType1R2 
+	{  token.T_97: true,  token.T_39: true,  token.T_0: true,  token.T_120: true,  token.T_56: true,  token.T_62: true,  token.T_111: true,  token.T_102: true,  token.T_116: true,  token.T_89: true,  token.T_60: true,  token.T_123: true,  token.T_70: true,  token.T_50: true,  token.T_141: true,  token.T_12: true,  token.T_21: true,  token.T_131: true,  token.T_16: true,  token.T_61: true,  token.T_7: true,  token.T_127: true,  token.T_73: true,  token.T_15: true,  token.T_117: true,  token.T_134: true,  token.T_11: true,  token.T_52: true,  token.T_135: true,  token.T_99: true,  token.T_101: true,  token.T_86: true,  token.T_80: true,  }, // RelateExpr0R0 
+	{  token.T_27: true,  token.T_31: true,  token.T_24: true,  token.T_79: true,  token.T_30: true,  }, // RelateExpr0R1 
+	{  }, // RelateExpr0R2 
+	{  token.T_4: true,  }, // RepANDEq0x0R0 
+	{  token.T_86: true,  token.T_135: true,  token.T_73: true,  token.T_131: true,  token.T_12: true,  token.T_141: true,  token.T_62: true,  token.T_16: true,  token.T_56: true,  token.T_102: true,  token.T_15: true,  token.T_111: true,  token.T_89: true,  token.T_39: true,  token.T_134: true,  token.T_0: true,  token.T_50: true,  token.T_21: true,  token.T_97: true,  token.T_52: true,  token.T_116: true,  token.T_60: true,  token.T_7: true,  token.T_101: true,  token.T_120: true,  token.T_123: true,  token.T_70: true,  token.T_11: true,  token.T_127: true,  token.T_99: true,  token.T_117: true,  token.T_61: true,  token.T_80: true,  }, // RepANDEq0x0R1 
+	{  token.T_4: true,  }, // RepANDEq0x0R2 
+	{  }, // RepANDEq0x0R3 
+	{  }, // RepANDEq0x1R0 
+	{  token.T_5: true,  }, // RepANDIOR0x0R0 
+	{  token.T_123: true,  token.T_89: true,  token.T_101: true,  token.T_86: true,  token.T_80: true,  token.T_70: true,  token.T_62: true,  token.T_11: true,  token.T_60: true,  token.T_15: true,  token.T_127: true,  token.T_0: true,  token.T_102: true,  token.T_16: true,  token.T_52: true,  token.T_120: true,  token.T_50: true,  token.T_39: true,  token.T_56: true,  token.T_135: true,  token.T_12: true,  token.T_141: true,  token.T_111: true,  token.T_134: true,  token.T_117: true,  token.T_131: true,  token.T_99: true,  token.T_73: true,  token.T_21: true,  token.T_61: true,  token.T_116: true,  token.T_7: true,  token.T_97: true,  }, // RepANDIOR0x0R1 
+	{  token.T_5: true,  }, // RepANDIOR0x0R2 
+	{  }, // RepANDIOR0x0R3 
+	{  }, // RepANDIOR0x1R0 
+	{  token.T_15: true,  token.T_11: true,  }, // RepAddAltsMult0x0R0 
+	{  token.T_89: true,  token.T_21: true,  token.T_73: true,  token.T_141: true,  token.T_120: true,  token.T_12: true,  token.T_97: true,  token.T_80: true,  token.T_50: true,  token.T_117: true,  token.T_16: true,  token.T_56: true,  token.T_101: true,  token.T_99: true,  token.T_111: true,  token.T_0: true,  token.T_61: true,  token.T_62: true,  token.T_116: true,  token.T_134: true,  token.T_39: true,  token.T_135: true,  token.T_131: true,  token.T_102: true,  token.T_86: true,  token.T_123: true,  token.T_7: true,  token.T_52: true,  token.T_60: true,  token.T_11: true,  token.T_127: true,  token.T_15: true,  token.T_70: true,  }, // RepAddAltsMult0x0R1 
+	{  }, // RepAddAltsMult0x0R2 
+	{  }, // RepAddAltsMult0x1R0 
+	{  token.T_20: true,  token.T_138: true,  token.T_3: true,  token.T_17: true,  token.T_10: true,  token.T_26: true,  token.T_35: true,  token.T_28: true,  token.T_13: true,  token.T_33: true,  token.T_6: true,  token.T_43: true,  }, // RepAsscExpr0x0R0 
+	{  token.T_120: true,  token.T_134: true,  token.T_86: true,  token.T_16: true,  token.T_97: true,  token.T_50: true,  token.T_56: true,  token.T_116: true,  token.T_135: true,  token.T_11: true,  token.T_62: true,  token.T_21: true,  token.T_0: true,  token.T_89: true,  token.T_123: true,  token.T_52: true,  token.T_117: true,  token.T_70: true,  token.T_101: true,  token.T_7: true,  token.T_102: true,  token.T_80: true,  token.T_73: true,  token.T_39: true,  token.T_61: true,  token.T_12: true,  token.T_111: true,  token.T_60: true,  token.T_141: true,  token.T_15: true,  token.T_127: true,  token.T_131: true,  token.T_99: true,  }, // RepAsscExpr0x0R1 
+	{  token.T_17: true,  token.T_20: true,  token.T_28: true,  token.T_138: true,  token.T_33: true,  token.T_3: true,  token.T_43: true,  token.T_13: true,  token.T_26: true,  token.T_10: true,  token.T_35: true,  token.T_6: true,  }, // RepAsscExpr0x0R2 
+	{  }, // RepAsscExpr0x0R3 
+	{  }, // RepAsscExpr0x1R0 
+	{  token.T_12: true,  token.T_51: true,  token.T_61: true,  token.T_133: true,  token.T_124: true,  token.T_127: true,  token.T_60: true,  token.T_59: true,  token.T_141: true,  token.T_134: true,  token.T_111: true,  token.T_47: true,  token.T_44: true,  token.T_62: true,  token.T_50: true,  token.T_15: true,  token.T_107: true,  token.T_16: true,  token.T_23: true,  token.T_101: true,  token.T_21: true,  token.T_122: true,  token.T_108: true,  token.T_89: true,  token.T_126: true,  token.T_120: true,  token.T_73: true,  token.T_39: true,  token.T_56: true,  token.T_99: true,  token.T_109: true,  token.T_128: true,  token.T_71: true,  token.T_88: true,  token.T_118: true,  token.T_119: true,  token.T_132: true,  token.T_80: true,  token.T_70: true,  token.T_37: true,  token.T_7: true,  token.T_0: true,  token.T_136: true,  token.T_74: true,  token.T_131: true,  token.T_135: true,  token.T_123: true,  token.T_121: true,  token.T_11: true,  token.T_116: true,  token.T_76: true,  token.T_102: true,  token.T_117: true,  token.T_115: true,  token.T_52: true,  token.T_97: true,  token.T_86: true,  token.T_57: true,  }, // RepBlkSt0x0R0 
+	{  token.T_76: true,  token.T_0: true,  token.T_62: true,  token.T_136: true,  token.T_16: true,  token.T_127: true,  token.T_117: true,  token.T_57: true,  token.T_133: true,  token.T_39: true,  token.T_44: true,  token.T_108: true,  token.T_134: true,  token.T_21: true,  token.T_61: true,  token.T_109: true,  token.T_71: true,  token.T_135: true,  token.T_131: true,  token.T_15: true,  token.T_120: true,  token.T_7: true,  token.T_128: true,  token.T_126: true,  token.T_88: true,  token.T_122: true,  token.T_52: true,  token.T_60: true,  token.T_37: true,  token.T_132: true,  token.T_74: true,  token.T_121: true,  token.T_56: true,  token.T_119: true,  token.T_102: true,  token.T_118: true,  token.T_116: true,  token.T_123: true,  token.T_80: true,  token.T_70: true,  token.T_11: true,  token.T_51: true,  token.T_115: true,  token.T_111: true,  token.T_23: true,  token.T_73: true,  token.T_107: true,  token.T_86: true,  token.T_97: true,  token.T_12: true,  token.T_101: true,  token.T_124: true,  token.T_89: true,  token.T_99: true,  token.T_50: true,  token.T_47: true,  token.T_141: true,  token.T_59: true,  }, // RepBlkSt0x0R1 
+	{  }, // RepBlkSt0x0R2 
+	{  }, // RepBlkSt0x1R0 
+	{  token.T_55: true,  }, // RepCatch0x0R0 
+	{  token.T_55: true,  }, // RepCatch0x0R1 
+	{  }, // RepCatch0x0R2 
+	{  }, // RepCatch0x1R0 
+	{  token.T_119: true,  token.T_86: true,  token.T_56: true,  token.T_50: true,  token.T_131: true,  token.T_122: true,  token.T_126: true,  token.T_88: true,  token.T_61: true,  token.T_73: true,  token.T_118: true,  token.T_116: true,  token.T_136: true,  token.T_132: true,  token.T_37: true,  token.T_23: true,  token.T_44: true,  token.T_107: true,  token.T_97: true,  token.T_80: true,  token.T_38: true,  token.T_52: true,  token.T_108: true,  token.T_71: true,  token.T_109: true,  }, // RepClsBDecl0x0R0 
+	{  token.T_71: true,  token.T_73: true,  token.T_50: true,  token.T_119: true,  token.T_136: true,  token.T_126: true,  token.T_109: true,  token.T_116: true,  token.T_44: true,  token.T_61: true,  token.T_38: true,  token.T_88: true,  token.T_107: true,  token.T_56: true,  token.T_132: true,  token.T_131: true,  token.T_37: true,  token.T_122: true,  token.T_80: true,  token.T_108: true,  token.T_86: true,  token.T_97: true,  token.T_118: true,  token.T_23: true,  token.T_52: true,  }, // RepClsBDecl0x0R1 
+	{  }, // RepClsBDecl0x0R2 
+	{  }, // RepClsBDecl0x1R0 
+	{  token.T_14: true,  }, // RepComCls0x0R0 
+	{  token.T_97: true,  }, // RepComCls0x0R1 
+	{  token.T_14: true,  }, // RepComCls0x0R2 
+	{  }, // RepComCls0x0R3 
+	{  }, // RepComCls0x1R0 
+	{  token.T_14: true,  }, // RepComCnstDecl0x0R0 
+	{  token.T_97: true,  }, // RepComCnstDecl0x0R1 
+	{  token.T_14: true,  }, // RepComCnstDecl0x0R2 
+	{  }, // RepComCnstDecl0x0R3 
+	{  }, // RepComCnstDecl0x1R0 
+	{  token.T_14: true,  }, // RepComExp0x0R0 
+	{  token.T_135: true,  token.T_117: true,  token.T_15: true,  token.T_0: true,  token.T_102: true,  token.T_70: true,  token.T_21: true,  token.T_61: true,  token.T_60: true,  token.T_120: true,  token.T_50: true,  token.T_101: true,  token.T_80: true,  token.T_134: true,  token.T_99: true,  token.T_89: true,  token.T_127: true,  token.T_111: true,  token.T_7: true,  token.T_52: true,  token.T_16: true,  token.T_123: true,  token.T_97: true,  token.T_11: true,  token.T_131: true,  token.T_39: true,  token.T_86: true,  token.T_141: true,  token.T_73: true,  token.T_62: true,  token.T_12: true,  token.T_56: true,  token.T_116: true,  }, // RepComExp0x0R1 
+	{  token.T_14: true,  }, // RepComExp0x0R2 
+	{  }, // RepComExp0x0R3 
+	{  }, // RepComExp0x1R0 
+	{  token.T_14: true,  }, // RepComInit0x0R0 
+	{  token.T_73: true,  token.T_15: true,  token.T_86: true,  token.T_135: true,  token.T_7: true,  token.T_102: true,  token.T_62: true,  token.T_0: true,  token.T_21: true,  token.T_60: true,  token.T_89: true,  token.T_111: true,  token.T_80: true,  token.T_99: true,  token.T_127: true,  token.T_131: true,  token.T_117: true,  token.T_97: true,  token.T_120: true,  token.T_116: true,  token.T_141: true,  token.T_70: true,  token.T_12: true,  token.T_39: true,  token.T_11: true,  token.T_50: true,  token.T_56: true,  token.T_101: true,  token.T_61: true,  token.T_136: true,  token.T_123: true,  token.T_16: true,  token.T_134: true,  token.T_52: true,  }, // RepComInit0x0R1 
+	{  token.T_14: true,  }, // RepComInit0x0R2 
+	{  }, // RepComInit0x0R3 
+	{  }, // RepComInit0x1R0 
+	{  token.T_14: true,  }, // RepComSExpr0x0R0 
+	{  token.T_70: true,  token.T_0: true,  token.T_131: true,  token.T_134: true,  token.T_50: true,  token.T_15: true,  token.T_117: true,  token.T_99: true,  token.T_141: true,  token.T_123: true,  token.T_11: true,  token.T_16: true,  token.T_60: true,  token.T_61: true,  token.T_62: true,  token.T_86: true,  token.T_97: true,  token.T_135: true,  token.T_56: true,  token.T_39: true,  token.T_102: true,  token.T_89: true,  token.T_120: true,  token.T_7: true,  token.T_12: true,  token.T_52: true,  token.T_111: true,  token.T_101: true,  token.T_21: true,  token.T_127: true,  token.T_116: true,  token.T_73: true,  token.T_80: true,  }, // RepComSExpr0x0R1 
+	{  token.T_14: true,  }, // RepComSExpr0x0R2 
+	{  }, // RepComSExpr0x0R3 
+	{  }, // RepComSExpr0x1R0 
+	{  token.T_14: true,  }, // RepComVDecl0x0R0 
+	{  token.T_97: true,  }, // RepComVDecl0x0R1 
+	{  token.T_14: true,  }, // RepComVDecl0x0R2 
+	{  }, // RepComVDecl0x0R3 
+	{  }, // RepComVDecl0x1R0 
+	{  token.T_36: true,  }, // RepCondition0x0R0 
+	{  token.T_102: true,  token.T_61: true,  token.T_97: true,  token.T_73: true,  token.T_101: true,  token.T_86: true,  token.T_116: true,  token.T_52: true,  token.T_120: true,  token.T_131: true,  token.T_11: true,  token.T_123: true,  token.T_15: true,  token.T_60: true,  token.T_12: true,  token.T_56: true,  token.T_99: true,  token.T_80: true,  token.T_0: true,  token.T_62: true,  token.T_134: true,  token.T_21: true,  token.T_89: true,  token.T_111: true,  token.T_39: true,  token.T_7: true,  token.T_70: true,  token.T_127: true,  token.T_16: true,  token.T_117: true,  token.T_135: true,  token.T_141: true,  token.T_50: true,  }, // RepCondition0x0R1 
+	{  token.T_22: true,  }, // RepCondition0x0R2 
+	{  token.T_99: true,  token.T_80: true,  token.T_131: true,  token.T_52: true,  token.T_111: true,  token.T_70: true,  token.T_61: true,  token.T_21: true,  token.T_60: true,  token.T_102: true,  token.T_117: true,  token.T_101: true,  token.T_7: true,  token.T_134: true,  token.T_116: true,  token.T_123: true,  token.T_15: true,  token.T_39: true,  token.T_97: true,  token.T_127: true,  token.T_89: true,  token.T_120: true,  token.T_86: true,  token.T_141: true,  token.T_56: true,  token.T_50: true,  token.T_0: true,  token.T_73: true,  token.T_12: true,  token.T_135: true,  token.T_62: true,  token.T_16: true,  token.T_11: true,  }, // RepCondition0x0R3 
+	{  token.T_36: true,  }, // RepCondition0x0R4 
+	{  }, // RepCondition0x0R5 
+	{  }, // RepCondition0x1R0 
+	{  token.T_111: true,  }, // RepDig1xExp0R0 
+	{  token.T_67: true,  }, // RepDig1xExp0R1 
+	{  }, // RepDig1xExp0R2 
+	{  token.T_111: true,  }, // RepDig1xOptExp0R0 
+	{  token.T_103: true,  }, // RepDig1xOptExp0R1 
+	{  }, // RepDig1xOptExp0R2 
+	{  token.T_40: true,  }, // RepDim0x0R0 
+	{  token.T_40: true,  }, // RepDim0x0R1 
+	{  }, // RepDim0x0R2 
+	{  }, // RepDim0x1R0 
+	{  token.T_40: true,  }, // RepDimExpr0x0R0 
+	{  token.T_40: true,  }, // RepDimExpr0x0R1 
+	{  }, // RepDimExpr0x0R2 
+	{  }, // RepDimExpr0x1R0 
+	{  token.T_18: true,  }, // RepDotID0x0R0 
+	{  token.T_97: true,  }, // RepDotID0x0R1 
+	{  token.T_18: true,  }, // RepDotID0x0R2 
+	{  }, // RepDotID0x0R3 
+	{  }, // RepDotID0x1R0 
+	{  token.T_30: true,  token.T_27: true,  token.T_31: true,  token.T_24: true,  token.T_79: true,  }, // RepESInst0x0R0 
+	{  token.T_79: true,  token.T_30: true,  token.T_27: true,  token.T_31: true,  token.T_24: true,  }, // RepESInst0x0R1 
+	{  }, // RepESInst0x0R2 
+	{  }, // RepESInst0x1R0 
+	{  token.T_29: true,  token.T_1: true,  }, // RepEqExpr0x0R0 
+	{  token.T_62: true,  token.T_39: true,  token.T_116: true,  token.T_60: true,  token.T_61: true,  token.T_89: true,  token.T_12: true,  token.T_135: true,  token.T_111: true,  token.T_123: true,  token.T_15: true,  token.T_73: true,  token.T_11: true,  token.T_16: true,  token.T_127: true,  token.T_99: true,  token.T_50: true,  token.T_117: true,  token.T_97: true,  token.T_70: true,  token.T_102: true,  token.T_80: true,  token.T_86: true,  token.T_7: true,  token.T_141: true,  token.T_52: true,  token.T_134: true,  token.T_56: true,  token.T_101: true,  token.T_120: true,  token.T_131: true,  token.T_21: true,  token.T_0: true,  }, // RepEqExpr0x0R1 
+	{  token.T_1: true,  token.T_29: true,  }, // RepEqExpr0x0R2 
+	{  }, // RepEqExpr0x0R3 
+	{  }, // RepEqExpr0x1R0 
+	{  token.T_42: true,  }, // RepHatAND0x0R0 
+	{  token.T_60: true,  token.T_141: true,  token.T_7: true,  token.T_131: true,  token.T_120: true,  token.T_127: true,  token.T_86: true,  token.T_135: true,  token.T_89: true,  token.T_62: true,  token.T_50: true,  token.T_73: true,  token.T_12: true,  token.T_117: true,  token.T_80: true,  token.T_70: true,  token.T_11: true,  token.T_99: true,  token.T_111: true,  token.T_101: true,  token.T_52: true,  token.T_39: true,  token.T_97: true,  token.T_16: true,  token.T_134: true,  token.T_56: true,  token.T_0: true,  token.T_102: true,  token.T_15: true,  token.T_21: true,  token.T_61: true,  token.T_123: true,  token.T_116: true,  }, // RepHatAND0x0R1 
+	{  token.T_42: true,  }, // RepHatAND0x0R2 
+	{  }, // RepHatAND0x0R3 
+	{  }, // RepHatAND0x1R0 
+	{  token.T_134: true,  token.T_39: true,  token.T_21: true,  }, // RepHex0xDot0R0 
+	{  token.T_112: true,  }, // RepHex0xDot0R1 
+	{  token.T_18: true,  }, // RepHex0xDot0R2 
+	{  }, // RepHex0xDot0R3 
+	{  token.T_78: true,  }, // RepImpDecl0x0R0 
+	{  token.T_78: true,  }, // RepImpDecl0x0R1 
+	{  }, // RepImpDecl0x0R2 
+	{  }, // RepImpDecl0x1R0 
+	{  token.T_107: true,  token.T_126: true,  token.T_44: true,  token.T_118: true,  token.T_61: true,  token.T_122: true,  token.T_71: true,  token.T_86: true,  token.T_23: true,  token.T_73: true,  token.T_109: true,  token.T_132: true,  token.T_108: true,  token.T_80: true,  token.T_50: true,  token.T_38: true,  token.T_52: true,  token.T_88: true,  token.T_131: true,  token.T_116: true,  token.T_56: true,  token.T_97: true,  token.T_37: true,  token.T_119: true,  }, // RepInBodDecl0x0R0 
+	{  token.T_116: true,  token.T_56: true,  token.T_52: true,  token.T_86: true,  token.T_108: true,  token.T_118: true,  token.T_131: true,  token.T_88: true,  token.T_122: true,  token.T_132: true,  token.T_71: true,  token.T_37: true,  token.T_44: true,  token.T_119: true,  token.T_80: true,  token.T_23: true,  token.T_107: true,  token.T_38: true,  token.T_61: true,  token.T_109: true,  token.T_50: true,  token.T_73: true,  token.T_126: true,  token.T_97: true,  }, // RepInBodDecl0x0R1 
+	{  }, // RepInBodDecl0x0R2 
+	{  }, // RepInBodDecl0x1R0 
+	{  token.T_85: true,  token.T_100: true,  token.T_84: true,  token.T_49: true,  token.T_66: true,  }, // RepLorD0x0R0 
+	{  token.T_66: true,  token.T_85: true,  token.T_100: true,  token.T_84: true,  token.T_49: true,  }, // RepLorD0x0R1 
+	{  }, // RepLorD0x0R2 
+	{  }, // RepLorD0x1R0 
+	{  token.T_119: true,  token.T_108: true,  token.T_107: true,  token.T_71: true,  token.T_88: true,  token.T_132: true,  token.T_109: true,  token.T_44: true,  token.T_126: true,  token.T_118: true,  token.T_122: true,  }, // RepModif00R0 
+	{  token.T_132: true,  token.T_109: true,  token.T_119: true,  token.T_118: true,  token.T_122: true,  token.T_108: true,  token.T_88: true,  token.T_107: true,  token.T_44: true,  token.T_126: true,  token.T_71: true,  }, // RepModif00R1 
+	{  }, // RepModif00R2 
+	{  }, // RepModif01R0 
+	{  token.T_137: true,  }, // RepORXOR0x0R0 
+	{  token.T_137: true,  }, // RepORXOR0x0R1 
+	{  }, // RepORXOR0x0R2 
+	{  }, // RepORXOR0x1R0 
+	{  token.T_139: true,  }, // RepORcAND0x0R0 
+	{  token.T_11: true,  token.T_117: true,  token.T_12: true,  token.T_80: true,  token.T_61: true,  token.T_73: true,  token.T_120: true,  token.T_101: true,  token.T_16: true,  token.T_89: true,  token.T_70: true,  token.T_56: true,  token.T_131: true,  token.T_127: true,  token.T_99: true,  token.T_102: true,  token.T_134: true,  token.T_62: true,  token.T_52: true,  token.T_7: true,  token.T_60: true,  token.T_111: true,  token.T_15: true,  token.T_39: true,  token.T_0: true,  token.T_97: true,  token.T_86: true,  token.T_50: true,  token.T_123: true,  token.T_135: true,  token.T_116: true,  token.T_141: true,  token.T_21: true,  }, // RepORcAND0x0R1 
+	{  token.T_139: true,  }, // RepORcAND0x0R2 
+	{  }, // RepORcAND0x0R3 
+	{  }, // RepORcAND0x1R0 
+	{  token.T_12: true,  token.T_16: true,  }, // RepPfOp0x0R0 
+	{  token.T_12: true,  token.T_16: true,  }, // RepPfOp0x0R1 
+	{  }, // RepPfOp0x0R2 
+	{  }, // RepPfOp0x1R0 
+	{  token.T_2: true,  token.T_9: true,  token.T_19: true,  }, // RepSDMUExpr0x0R0 
+	{  token.T_135: true,  token.T_89: true,  token.T_21: true,  token.T_80: true,  token.T_116: true,  token.T_12: true,  token.T_127: true,  token.T_123: true,  token.T_61: true,  token.T_73: true,  token.T_39: true,  token.T_111: true,  token.T_86: true,  token.T_70: true,  token.T_131: true,  token.T_52: true,  token.T_117: true,  token.T_50: true,  token.T_11: true,  token.T_56: true,  token.T_15: true,  token.T_16: true,  token.T_141: true,  token.T_120: true,  token.T_60: true,  token.T_97: true,  token.T_0: true,  token.T_7: true,  token.T_102: true,  token.T_101: true,  token.T_99: true,  token.T_62: true,  token.T_134: true,  }, // RepSDMUExpr0x0R1 
+	{  token.T_9: true,  token.T_19: true,  token.T_2: true,  }, // RepSDMUExpr0x0R2 
+	{  }, // RepSDMUExpr0x0R3 
+	{  }, // RepSDMUExpr0x1R0 
+	{  token.T_40: true,  token.T_18: true,  }, // RepSel0x0R0 
+	{  token.T_18: true,  token.T_40: true,  }, // RepSel0x0R1 
+	{  }, // RepSel0x0R2 
+	{  }, // RepSel0x1R0 
+	{  token.T_126: true,  token.T_37: true,  token.T_23: true,  token.T_38: true,  token.T_44: true,  token.T_119: true,  token.T_71: true,  token.T_108: true,  token.T_118: true,  token.T_109: true,  token.T_122: true,  token.T_107: true,  token.T_132: true,  token.T_88: true,  }, // RepSemiModDecl0x0R0 
+	{  token.T_23: true,  token.T_107: true,  token.T_119: true,  token.T_118: true,  token.T_88: true,  token.T_108: true,  token.T_44: true,  token.T_109: true,  token.T_38: true,  token.T_71: true,  token.T_126: true,  token.T_37: true,  token.T_122: true,  token.T_132: true,  }, // RepSemiModDecl0x0R1 
+	{  }, // RepSemiModDecl0x0R2 
+	{  }, // RepSemiModDecl0x1R0 
+	{  token.T_58: true,  token.T_54: true,  }, // RepSwBlkStmt0x0R0 
+	{  token.T_54: true,  token.T_58: true,  }, // RepSwBlkStmt0x0R1 
+	{  }, // RepSwBlkStmt0x0R2 
+	{  }, // RepSwBlkStmt0x1R0 
+	{  token.T_9: true,  }, // SDM0R0 
+	{  }, // SDM0R1 
+	{  token.T_19: true,  }, // SDM1R0 
+	{  }, // SDM1R1 
+	{  token.T_2: true,  }, // SDM2R0 
+	{  }, // SDM2R1 
+	{  token.T_23: true,  }, // SEMI0R0 
+	{  token.T_49: true,  token.T_66: true,  token.T_85: true,  }, // SEMI0R1 
+	{  }, // SEMI0R2 
+	{  token.T_25: true,  }, // SL0R0 
+	{  token.T_87: true,  }, // SL0R1 
+	{  token.T_49: true,  token.T_66: true,  token.T_85: true,  }, // SL0R2 
+	{  }, // SL0R3 
+	{  token.T_26: true,  }, // SL_EQU0R0 
+	{  token.T_49: true,  token.T_66: true,  token.T_85: true,  }, // SL_EQU0R1 
+	{  }, // SL_EQU0R2 
+	{  token.T_32: true,  }, // SR0R0 
+	{  token.T_92: true,  }, // SR0R1 
+	{  token.T_85: true,  token.T_49: true,  token.T_66: true,  }, // SR0R2 
+	{  }, // SR0R3 
+	{  token.T_33: true,  }, // SR_EQU0R0 
+	{  token.T_66: true,  token.T_85: true,  token.T_49: true,  }, // SR_EQU0R1 
+	{  }, // SR_EQU0R2 
+	{  token.T_9: true,  }, // STAR0R0 
+	{  token.T_87: true,  }, // STAR0R1 
+	{  token.T_49: true,  token.T_66: true,  token.T_85: true,  }, // STAR0R2 
+	{  }, // STAR0R3 
+	{  token.T_10: true,  }, // STAR_EQU0R0 
+	{  token.T_49: true,  token.T_66: true,  token.T_85: true,  }, // STAR_EQU0R1 
+	{  }, // STAR_EQU0R2 
+	{  token.T_118: true,  }, // STATIC0R0 
+	{  token.T_98: true,  }, // STATIC0R1 
+	{  }, // STATIC0R2 
+	{  token.T_120: true,  }, // SUPER0R0 
+	{  token.T_98: true,  }, // SUPER0R1 
+	{  }, // SUPER0R2 
+	{  token.T_121: true,  }, // SWITCH0R0 
+	{  token.T_98: true,  }, // SWITCH0R1 
+	{  }, // SWITCH0R2 
+	{  token.T_122: true,  }, // SYNCHRONIZED0R0 
+	{  token.T_98: true,  }, // SYNCHRONIZED0R1 
+	{  }, // SYNCHRONIZED0R2 
+	{  token.T_18: true,  }, // Selector0R0 
+	{  token.T_97: true,  }, // Selector0R1 
+	{  token.T_7: true,  }, // Selector0R2 
+	{  }, // Selector0R3 
+	{  token.T_18: true,  }, // Selector1R0 
+	{  token.T_123: true,  }, // Selector1R1 
+	{  }, // Selector1R2 
+	{  token.T_18: true,  }, // Selector2R0 
+	{  token.T_120: true,  }, // Selector2R1 
+	{  token.T_7: true,  token.T_18: true,  }, // Selector2R2 
+	{  }, // Selector2R3 
+	{  token.T_18: true,  }, // Selector3R0 
+	{  token.T_89: true,  }, // Selector3R1 
+	{  token.T_97: true,  }, // Selector3R2 
+	{  }, // Selector3R3 
+	{  token.T_40: true,  }, // Selector4R0 
+	{  }, // Selector4R1 
+	{  token.T_23: true,  }, // SemiModDecl0R0 
+	{  }, // SemiModDecl0R1 
+	{  token.T_126: true,  token.T_118: true,  token.T_122: true,  token.T_107: true,  token.T_119: true,  token.T_88: true,  token.T_71: true,  token.T_44: true,  token.T_38: true,  token.T_108: true,  token.T_109: true,  token.T_132: true,  token.T_37: true,  }, // SemiModDecl1R0 
+	{  token.T_37: true,  token.T_38: true,  }, // SemiModDecl1R1 
+	{  }, // SemiModDecl1R2 
+	{  token.T_25: true,  token.T_32: true,  token.T_34: true,  }, // ShiftAlts0R0 
+	{  token.T_134: true,  token.T_131: true,  token.T_116: true,  token.T_15: true,  token.T_101: true,  token.T_61: true,  token.T_86: true,  token.T_70: true,  token.T_21: true,  token.T_123: true,  token.T_11: true,  token.T_127: true,  token.T_111: true,  token.T_73: true,  token.T_60: true,  token.T_117: true,  token.T_12: true,  token.T_62: true,  token.T_7: true,  token.T_39: true,  token.T_141: true,  token.T_16: true,  token.T_135: true,  token.T_99: true,  token.T_50: true,  token.T_97: true,  token.T_102: true,  token.T_56: true,  token.T_80: true,  token.T_120: true,  token.T_0: true,  token.T_52: true,  token.T_89: true,  }, // ShiftAlts0R1 
+	{  token.T_25: true,  token.T_32: true,  token.T_34: true,  }, // ShiftAlts0R2 
+	{  }, // ShiftAlts0R3 
+	{  }, // ShiftAlts1R0 
+	{  token.T_16: true,  token.T_117: true,  token.T_97: true,  token.T_89: true,  token.T_123: true,  token.T_70: true,  token.T_56: true,  token.T_52: true,  token.T_60: true,  token.T_0: true,  token.T_131: true,  token.T_116: true,  token.T_101: true,  token.T_127: true,  token.T_111: true,  token.T_12: true,  token.T_86: true,  token.T_134: true,  token.T_62: true,  token.T_15: true,  token.T_11: true,  token.T_102: true,  token.T_99: true,  token.T_39: true,  token.T_73: true,  token.T_135: true,  token.T_80: true,  token.T_141: true,  token.T_120: true,  token.T_50: true,  token.T_61: true,  token.T_7: true,  token.T_21: true,  }, // ShiftExpr0R0 
+	{  token.T_25: true,  token.T_32: true,  token.T_34: true,  }, // ShiftExpr0R1 
+	{  }, // ShiftExpr0R2 
+	{  token.T_136: true,  }, // Stmt0R0 
+	{  }, // Stmt0R1 
+	{  token.T_47: true,  }, // Stmt1R0 
+	{  token.T_131: true,  token.T_123: true,  token.T_97: true,  token.T_134: true,  token.T_11: true,  token.T_21: true,  token.T_50: true,  token.T_116: true,  token.T_86: true,  token.T_141: true,  token.T_70: true,  token.T_135: true,  token.T_111: true,  token.T_12: true,  token.T_99: true,  token.T_52: true,  token.T_101: true,  token.T_60: true,  token.T_127: true,  token.T_15: true,  token.T_16: true,  token.T_39: true,  token.T_0: true,  token.T_62: true,  token.T_7: true,  token.T_102: true,  token.T_89: true,  token.T_120: true,  token.T_80: true,  token.T_56: true,  token.T_61: true,  token.T_73: true,  token.T_117: true,  }, // Stmt1R1 
+	{  token.T_23: true,  token.T_22: true,  }, // Stmt1R2 
+	{  token.T_23: true,  }, // Stmt1R3 
+	{  }, // Stmt1R4 
+	{  token.T_76: true,  }, // Stmt2R0 
+	{  token.T_7: true,  }, // Stmt2R1 
+	{  token.T_61: true,  token.T_135: true,  token.T_115: true,  token.T_39: true,  token.T_86: true,  token.T_47: true,  token.T_99: true,  token.T_116: true,  token.T_102: true,  token.T_73: true,  token.T_12: true,  token.T_11: true,  token.T_62: true,  token.T_0: true,  token.T_60: true,  token.T_21: true,  token.T_101: true,  token.T_23: true,  token.T_80: true,  token.T_121: true,  token.T_124: true,  token.T_123: true,  token.T_56: true,  token.T_52: true,  token.T_117: true,  token.T_7: true,  token.T_89: true,  token.T_134: true,  token.T_57: true,  token.T_50: true,  token.T_16: true,  token.T_97: true,  token.T_127: true,  token.T_120: true,  token.T_128: true,  token.T_141: true,  token.T_51: true,  token.T_15: true,  token.T_122: true,  token.T_76: true,  token.T_133: true,  token.T_136: true,  token.T_59: true,  token.T_131: true,  token.T_70: true,  token.T_74: true,  token.T_111: true,  }, // Stmt2R2 
+	{  token.T_64: true,  }, // Stmt2R3 
+	{  }, // Stmt2R4 
+	{  token.T_74: true,  }, // Stmt3R0 
+	{  token.T_7: true,  }, // Stmt3R1 
+	{  token.T_11: true,  token.T_15: true,  token.T_102: true,  token.T_117: true,  token.T_23: true,  token.T_12: true,  token.T_16: true,  token.T_39: true,  token.T_56: true,  token.T_116: true,  token.T_70: true,  token.T_120: true,  token.T_99: true,  token.T_101: true,  token.T_131: true,  token.T_97: true,  token.T_50: true,  token.T_71: true,  token.T_86: true,  token.T_111: true,  token.T_134: true,  token.T_141: true,  token.T_60: true,  token.T_21: true,  token.T_61: true,  token.T_135: true,  token.T_127: true,  token.T_73: true,  token.T_52: true,  token.T_62: true,  token.T_7: true,  token.T_0: true,  token.T_80: true,  token.T_123: true,  token.T_89: true,  }, // Stmt3R2 
+	{  token.T_23: true,  }, // Stmt3R3 
+	{  token.T_117: true,  token.T_80: true,  token.T_111: true,  token.T_15: true,  token.T_141: true,  token.T_127: true,  token.T_12: true,  token.T_134: true,  token.T_50: true,  token.T_39: true,  token.T_131: true,  token.T_21: true,  token.T_60: true,  token.T_102: true,  token.T_120: true,  token.T_62: true,  token.T_97: true,  token.T_99: true,  token.T_73: true,  token.T_56: true,  token.T_86: true,  token.T_101: true,  token.T_11: true,  token.T_52: true,  token.T_16: true,  token.T_89: true,  token.T_116: true,  token.T_0: true,  token.T_70: true,  token.T_7: true,  token.T_61: true,  token.T_135: true,  token.T_123: true,  token.T_23: true,  }, // Stmt3R4 
+	{  token.T_23: true,  }, // Stmt3R5 
+	{  token.T_97: true,  token.T_70: true,  token.T_15: true,  token.T_120: true,  token.T_141: true,  token.T_134: true,  token.T_102: true,  token.T_73: true,  token.T_21: true,  token.T_116: true,  token.T_8: true,  token.T_127: true,  token.T_62: true,  token.T_12: true,  token.T_135: true,  token.T_39: true,  token.T_50: true,  token.T_99: true,  token.T_61: true,  token.T_80: true,  token.T_52: true,  token.T_60: true,  token.T_16: true,  token.T_117: true,  token.T_131: true,  token.T_101: true,  token.T_86: true,  token.T_111: true,  token.T_0: true,  token.T_11: true,  token.T_56: true,  token.T_123: true,  token.T_89: true,  token.T_7: true,  }, // Stmt3R6 
+	{  token.T_8: true,  }, // Stmt3R7 
+	{  token.T_76: true,  token.T_86: true,  token.T_12: true,  token.T_11: true,  token.T_135: true,  token.T_123: true,  token.T_16: true,  token.T_51: true,  token.T_89: true,  token.T_117: true,  token.T_56: true,  token.T_141: true,  token.T_122: true,  token.T_57: true,  token.T_128: true,  token.T_61: true,  token.T_115: true,  token.T_102: true,  token.T_62: true,  token.T_70: true,  token.T_101: true,  token.T_80: true,  token.T_116: true,  token.T_99: true,  token.T_131: true,  token.T_15: true,  token.T_0: true,  token.T_52: true,  token.T_97: true,  token.T_127: true,  token.T_21: true,  token.T_59: true,  token.T_121: true,  token.T_39: true,  token.T_134: true,  token.T_74: true,  token.T_73: true,  token.T_136: true,  token.T_133: true,  token.T_47: true,  token.T_111: true,  token.T_120: true,  token.T_124: true,  token.T_60: true,  token.T_23: true,  token.T_50: true,  token.T_7: true,  }, // Stmt3R8 
+	{  }, // Stmt3R9 
+	{  token.T_133: true,  }, // Stmt4R0 
+	{  token.T_7: true,  }, // Stmt4R1 
+	{  token.T_12: true,  token.T_16: true,  token.T_21: true,  token.T_56: true,  token.T_133: true,  token.T_73: true,  token.T_23: true,  token.T_102: true,  token.T_122: true,  token.T_57: true,  token.T_86: true,  token.T_60: true,  token.T_15: true,  token.T_39: true,  token.T_62: true,  token.T_97: true,  token.T_127: true,  token.T_76: true,  token.T_101: true,  token.T_80: true,  token.T_47: true,  token.T_99: true,  token.T_121: true,  token.T_11: true,  token.T_124: true,  token.T_89: true,  token.T_52: true,  token.T_50: true,  token.T_59: true,  token.T_61: true,  token.T_135: true,  token.T_115: true,  token.T_123: true,  token.T_74: true,  token.T_7: true,  token.T_131: true,  token.T_70: true,  token.T_120: true,  token.T_128: true,  token.T_51: true,  token.T_0: true,  token.T_111: true,  token.T_136: true,  token.T_134: true,  token.T_117: true,  token.T_116: true,  token.T_141: true,  }, // Stmt4R2 
+	{  }, // Stmt4R3 
+	{  token.T_59: true,  }, // Stmt5R0 
+	{  token.T_74: true,  token.T_50: true,  token.T_99: true,  token.T_61: true,  token.T_102: true,  token.T_76: true,  token.T_136: true,  token.T_15: true,  token.T_80: true,  token.T_120: true,  token.T_56: true,  token.T_111: true,  token.T_73: true,  token.T_121: true,  token.T_115: true,  token.T_134: true,  token.T_60: true,  token.T_133: true,  token.T_11: true,  token.T_89: true,  token.T_57: true,  token.T_86: true,  token.T_52: true,  token.T_23: true,  token.T_59: true,  token.T_51: true,  token.T_141: true,  token.T_135: true,  token.T_47: true,  token.T_116: true,  token.T_128: true,  token.T_124: true,  token.T_123: true,  token.T_16: true,  token.T_97: true,  token.T_7: true,  token.T_62: true,  token.T_122: true,  token.T_70: true,  token.T_101: true,  token.T_127: true,  token.T_117: true,  token.T_21: true,  token.T_12: true,  token.T_131: true,  token.T_0: true,  token.T_39: true,  }, // Stmt5R1 
+	{  token.T_133: true,  }, // Stmt5R2 
+	{  token.T_7: true,  }, // Stmt5R3 
+	{  token.T_23: true,  }, // Stmt5R4 
+	{  }, // Stmt5R5 
+	{  token.T_128: true,  }, // Stmt6R0 
+	{  token.T_136: true,  }, // Stmt6R1 
+	{  token.T_55: true,  token.T_72: true,  }, // Stmt6R2 
+	{  }, // Stmt6R3 
+	{  token.T_121: true,  }, // Stmt7R0 
+	{  token.T_7: true,  }, // Stmt7R1 
+	{  token.T_136: true,  }, // Stmt7R2 
+	{  token.T_54: true,  token.T_58: true,  token.T_140: true,  }, // Stmt7R3 
+	{  token.T_140: true,  }, // Stmt7R4 
+	{  }, // Stmt7R5 
+	{  token.T_122: true,  }, // Stmt8R0 
+	{  token.T_7: true,  }, // Stmt8R1 
+	{  token.T_136: true,  }, // Stmt8R2 
+	{  }, // Stmt8R3 
+	{  token.T_115: true,  }, // Stmt9R0 
+	{  token.T_21: true,  token.T_60: true,  token.T_52: true,  token.T_80: true,  token.T_7: true,  token.T_56: true,  token.T_134: true,  token.T_123: true,  token.T_16: true,  token.T_116: true,  token.T_15: true,  token.T_0: true,  token.T_99: true,  token.T_61: true,  token.T_73: true,  token.T_62: true,  token.T_39: true,  token.T_23: true,  token.T_70: true,  token.T_120: true,  token.T_131: true,  token.T_89: true,  token.T_50: true,  token.T_11: true,  token.T_127: true,  token.T_101: true,  token.T_97: true,  token.T_141: true,  token.T_117: true,  token.T_102: true,  token.T_111: true,  token.T_12: true,  token.T_135: true,  token.T_86: true,  }, // Stmt9R1 
+	{  token.T_23: true,  }, // Stmt9R2 
+	{  }, // Stmt9R3 
+	{  token.T_124: true,  }, // Stmt10R0 
+	{  token.T_73: true,  token.T_52: true,  token.T_86: true,  token.T_134: true,  token.T_16: true,  token.T_117: true,  token.T_89: true,  token.T_0: true,  token.T_80: true,  token.T_60: true,  token.T_12: true,  token.T_97: true,  token.T_50: true,  token.T_62: true,  token.T_56: true,  token.T_21: true,  token.T_15: true,  token.T_120: true,  token.T_39: true,  token.T_61: true,  token.T_123: true,  token.T_7: true,  token.T_135: true,  token.T_111: true,  token.T_102: true,  token.T_131: true,  token.T_116: true,  token.T_99: true,  token.T_127: true,  token.T_101: true,  token.T_141: true,  token.T_11: true,  token.T_70: true,  }, // Stmt10R1 
+	{  token.T_23: true,  }, // Stmt10R2 
+	{  }, // Stmt10R3 
+	{  token.T_51: true,  }, // Stmt11R0 
+	{  token.T_97: true,  token.T_23: true,  }, // Stmt11R1 
+	{  token.T_23: true,  }, // Stmt11R2 
+	{  }, // Stmt11R3 
+	{  token.T_57: true,  }, // Stmt12R0 
+	{  token.T_97: true,  token.T_23: true,  }, // Stmt12R1 
+	{  token.T_23: true,  }, // Stmt12R2 
+	{  }, // Stmt12R3 
+	{  token.T_23: true,  }, // Stmt13R0 
+	{  }, // Stmt13R1 
+	{  token.T_56: true,  token.T_0: true,  token.T_116: true,  token.T_120: true,  token.T_97: true,  token.T_111: true,  token.T_131: true,  token.T_86: true,  token.T_61: true,  token.T_102: true,  token.T_50: true,  token.T_127: true,  token.T_60: true,  token.T_80: true,  token.T_135: true,  token.T_70: true,  token.T_7: true,  token.T_52: true,  token.T_15: true,  token.T_123: true,  token.T_16: true,  token.T_73: true,  token.T_11: true,  token.T_12: true,  token.T_101: true,  token.T_21: true,  token.T_117: true,  token.T_89: true,  token.T_39: true,  token.T_62: true,  token.T_99: true,  token.T_134: true,  token.T_141: true,  }, // Stmt14R0 
+	{  token.T_23: true,  }, // Stmt14R1 
+	{  }, // Stmt14R2 
+	{  token.T_97: true,  }, // Stmt15R0 
+	{  token.T_22: true,  }, // Stmt15R1 
+	{  token.T_117: true,  token.T_21: true,  token.T_99: true,  token.T_123: true,  token.T_120: true,  token.T_59: true,  token.T_136: true,  token.T_124: true,  token.T_0: true,  token.T_62: true,  token.T_115: true,  token.T_86: true,  token.T_23: true,  token.T_50: true,  token.T_131: true,  token.T_121: true,  token.T_89: true,  token.T_16: true,  token.T_122: true,  token.T_52: true,  token.T_116: true,  token.T_73: true,  token.T_101: true,  token.T_56: true,  token.T_111: true,  token.T_128: true,  token.T_12: true,  token.T_102: true,  token.T_135: true,  token.T_97: true,  token.T_141: true,  token.T_11: true,  token.T_57: true,  token.T_70: true,  token.T_76: true,  token.T_61: true,  token.T_60: true,  token.T_7: true,  token.T_127: true,  token.T_133: true,  token.T_80: true,  token.T_47: true,  token.T_15: true,  token.T_39: true,  token.T_134: true,  token.T_74: true,  token.T_51: true,  }, // Stmt15R2 
+	{  }, // Stmt15R3 
+	{  token.T_50: true,  token.T_116: true,  token.T_15: true,  token.T_120: true,  token.T_11: true,  token.T_80: true,  token.T_0: true,  token.T_60: true,  token.T_134: true,  token.T_89: true,  token.T_127: true,  token.T_70: true,  token.T_16: true,  token.T_7: true,  token.T_102: true,  token.T_12: true,  token.T_56: true,  token.T_97: true,  token.T_117: true,  token.T_111: true,  token.T_141: true,  token.T_86: true,  token.T_131: true,  token.T_135: true,  token.T_73: true,  token.T_52: true,  token.T_39: true,  token.T_101: true,  token.T_62: true,  token.T_21: true,  token.T_61: true,  token.T_123: true,  token.T_99: true,  }, // StmtExpr0R0 
+	{  }, // StmtExpr0R1 
+	{  token.T_62: true,  }, // StrClose0R0 
+	{  }, // StrClose0R1 
+	{  token.T_46: true,  token.T_63: true,  }, // StrClose1R0 
+	{  token.T_46: true,  token.T_63: true,  token.T_62: true,  }, // StrClose1R1 
+	{  }, // StrClose1R2 
+	{  token.T_62: true,  }, // StringLiteral0R0 
+	{  token.T_46: true,  token.T_63: true,  token.T_62: true,  }, // StringLiteral0R1 
+	{  }, // StringLiteral0R2 
+	{  token.T_7: true,  }, // SuperSuffix0R0 
+	{  }, // SuperSuffix0R1 
+	{  token.T_18: true,  }, // SuperSuffix1R0 
+	{  token.T_97: true,  }, // SuperSuffix1R1 
+	{  token.T_7: true,  }, // SuperSuffix1R2 
+	{  }, // SuperSuffix1R3 
+	{  token.T_58: true,  token.T_54: true,  }, // SwitchBlockStmtGrp0R0 
+	{  token.T_119: true,  token.T_131: true,  token.T_0: true,  token.T_136: true,  token.T_107: true,  token.T_11: true,  token.T_135: true,  token.T_121: true,  token.T_76: true,  token.T_16: true,  token.T_102: true,  token.T_133: true,  token.T_141: true,  token.T_59: true,  token.T_57: true,  token.T_60: true,  token.T_61: true,  token.T_47: true,  token.T_62: true,  token.T_109: true,  token.T_15: true,  token.T_21: true,  token.T_86: true,  token.T_51: true,  token.T_52: true,  token.T_115: true,  token.T_44: true,  token.T_70: true,  token.T_101: true,  token.T_108: true,  token.T_39: true,  token.T_89: true,  token.T_23: true,  token.T_134: true,  token.T_97: true,  token.T_73: true,  token.T_56: true,  token.T_127: true,  token.T_132: true,  token.T_74: true,  token.T_71: true,  token.T_88: true,  token.T_50: true,  token.T_111: true,  token.T_116: true,  token.T_37: true,  token.T_7: true,  token.T_123: true,  token.T_80: true,  token.T_99: true,  token.T_12: true,  token.T_126: true,  token.T_124: true,  token.T_118: true,  token.T_122: true,  token.T_117: true,  token.T_120: true,  token.T_128: true,  }, // SwitchBlockStmtGrp0R1 
+	{  }, // SwitchBlockStmtGrp0R2 
+	{  token.T_54: true,  }, // SwitchLabel0R0 
+	{  token.T_117: true,  token.T_52: true,  token.T_89: true,  token.T_73: true,  token.T_141: true,  token.T_101: true,  token.T_123: true,  token.T_60: true,  token.T_12: true,  token.T_102: true,  token.T_127: true,  token.T_99: true,  token.T_0: true,  token.T_62: true,  token.T_56: true,  token.T_131: true,  token.T_11: true,  token.T_15: true,  token.T_135: true,  token.T_111: true,  token.T_120: true,  token.T_61: true,  token.T_21: true,  token.T_80: true,  token.T_39: true,  token.T_97: true,  token.T_16: true,  token.T_134: true,  token.T_7: true,  token.T_70: true,  token.T_86: true,  token.T_50: true,  token.T_116: true,  }, // SwitchLabel0R1 
+	{  token.T_22: true,  }, // SwitchLabel0R2 
+	{  }, // SwitchLabel0R3 
+	{  token.T_58: true,  }, // SwitchLabel1R0 
+	{  token.T_22: true,  }, // SwitchLabel1R1 
+	{  }, // SwitchLabel1R2 
+	{  token.T_123: true,  }, // THIS0R0 
+	{  token.T_98: true,  }, // THIS0R1 
+	{  }, // THIS0R2 
+	{  token.T_124: true,  }, // THROW0R0 
+	{  token.T_98: true,  }, // THROW0R1 
+	{  }, // THROW0R2 
+	{  token.T_125: true,  }, // THROWS0R0 
+	{  token.T_98: true,  }, // THROWS0R1 
+	{  }, // THROWS0R2 
+	{  token.T_141: true,  }, // TILDA0R0 
+	{  token.T_66: true,  token.T_85: true,  token.T_49: true,  }, // TILDA0R1 
+	{  }, // TILDA0R2 
+	{  token.T_128: true,  }, // TRY0R0 
+	{  token.T_98: true,  }, // TRY0R1 
+	{  }, // TRY0R2 
+	{  token.T_86: true,  token.T_97: true,  token.T_52: true,  token.T_61: true,  token.T_50: true,  token.T_116: true,  token.T_56: true,  token.T_80: true,  token.T_73: true,  }, // Type0R0 
+	{  token.T_40: true,  }, // Type0R1 
+	{  }, // Type0R2 
+	{  token.T_116: true,  token.T_56: true,  token.T_80: true,  token.T_86: true,  token.T_73: true,  token.T_61: true,  token.T_50: true,  token.T_52: true,  }, // TypeAlts0R0 
+	{  }, // TypeAlts0R1 
+	{  token.T_97: true,  }, // TypeAlts1R0 
+	{  }, // TypeAlts1R1 
+	{  token.T_11: true,  token.T_15: true,  token.T_12: true,  token.T_16: true,  token.T_0: true,  token.T_141: true,  }, // UnaryExpr0R0 
+	{  token.T_117: true,  token.T_70: true,  token.T_7: true,  token.T_86: true,  token.T_123: true,  token.T_21: true,  token.T_111: true,  token.T_116: true,  token.T_101: true,  token.T_61: true,  token.T_135: true,  token.T_16: true,  token.T_12: true,  token.T_50: true,  token.T_97: true,  token.T_15: true,  token.T_89: true,  token.T_99: true,  token.T_56: true,  token.T_131: true,  token.T_0: true,  token.T_141: true,  token.T_102: true,  token.T_120: true,  token.T_127: true,  token.T_62: true,  token.T_73: true,  token.T_80: true,  token.T_134: true,  token.T_60: true,  token.T_11: true,  token.T_52: true,  token.T_39: true,  }, // UnaryExpr0R1 
+	{  }, // UnaryExpr0R2 
+	{  token.T_7: true,  }, // UnaryExpr1R0 
+	{  token.T_86: true,  token.T_56: true,  token.T_61: true,  token.T_116: true,  token.T_80: true,  token.T_73: true,  token.T_50: true,  token.T_97: true,  token.T_52: true,  }, // UnaryExpr1R1 
+	{  token.T_8: true,  }, // UnaryExpr1R2 
+	{  token.T_116: true,  token.T_123: true,  token.T_56: true,  token.T_111: true,  token.T_73: true,  token.T_50: true,  token.T_141: true,  token.T_52: true,  token.T_0: true,  token.T_39: true,  token.T_99: true,  token.T_62: true,  token.T_70: true,  token.T_61: true,  token.T_11: true,  token.T_15: true,  token.T_89: true,  token.T_80: true,  token.T_60: true,  token.T_16: true,  token.T_21: true,  token.T_101: true,  token.T_134: true,  token.T_12: true,  token.T_131: true,  token.T_86: true,  token.T_97: true,  token.T_135: true,  token.T_102: true,  token.T_127: true,  token.T_120: true,  token.T_117: true,  token.T_7: true,  }, // UnaryExpr1R3 
+	{  }, // UnaryExpr1R4 
+	{  token.T_50: true,  token.T_111: true,  token.T_62: true,  token.T_52: true,  token.T_7: true,  token.T_80: true,  token.T_117: true,  token.T_61: true,  token.T_101: true,  token.T_89: true,  token.T_102: true,  token.T_99: true,  token.T_116: true,  token.T_86: true,  token.T_70: true,  token.T_60: true,  token.T_21: true,  token.T_134: true,  token.T_135: true,  token.T_123: true,  token.T_97: true,  token.T_56: true,  token.T_131: true,  token.T_39: true,  token.T_120: true,  token.T_127: true,  token.T_73: true,  }, // UnaryExpr2R0 
+	{  token.T_12: true,  token.T_16: true,  token.T_40: true,  token.T_18: true,  }, // UnaryExpr2R1 
+	{  token.T_16: true,  token.T_12: true,  }, // UnaryExpr2R2 
+	{  }, // UnaryExpr2R3 
+	{  token.T_130: true,  }, // UnicodeEscape0R0 
+	{  token.T_75: true,  }, // UnicodeEscape0R1 
+	{  token.T_75: true,  }, // UnicodeEscape0R2 
+	{  token.T_75: true,  }, // UnicodeEscape0R3 
+	{  token.T_75: true,  }, // UnicodeEscape0R4 
+	{  }, // UnicodeEscape0R5 
+	{  token.T_131: true,  }, // VOID0R0 
+	{  token.T_98: true,  }, // VOID0R1 
+	{  }, // VOID0R2 
+	{  token.T_97: true,  }, // VarDecl0R0 
+	{  token.T_40: true,  token.T_28: true,  }, // VarDecl0R1 
+	{  token.T_28: true,  }, // VarDecl0R2 
+	{  }, // VarDecl0R3 
+	{  token.T_97: true,  }, // VarDeclInit0R0 
+	{  token.T_14: true,  }, // VarDeclInit0R1 
+	{  }, // VarDeclInit0R2 
+	{  token.T_97: true,  }, // VarDelID0R0 
+	{  token.T_40: true,  }, // VarDelID0R1 
+	{  }, // VarDelID0R2 
+	{  token.T_136: true,  }, // VarInitial0R0 
+	{  }, // VarInitial0R1 
+	{  token.T_70: true,  token.T_99: true,  token.T_89: true,  token.T_127: true,  token.T_60: true,  token.T_0: true,  token.T_16: true,  token.T_131: true,  token.T_21: true,  token.T_50: true,  token.T_116: true,  token.T_123: true,  token.T_135: true,  token.T_120: true,  token.T_39: true,  token.T_141: true,  token.T_62: true,  token.T_80: true,  token.T_56: true,  token.T_97: true,  token.T_86: true,  token.T_7: true,  token.T_117: true,  token.T_73: true,  token.T_15: true,  token.T_134: true,  token.T_12: true,  token.T_11: true,  token.T_61: true,  token.T_111: true,  token.T_52: true,  token.T_101: true,  token.T_102: true,  }, // VarInitial1R0 
+	{  }, // VarInitial1R1 
+	{  token.T_7: true,  }, // VoidIntfMethDeclRst0R0 
+	{  token.T_125: true,  token.T_23: true,  }, // VoidIntfMethDeclRst0R1 
+	{  token.T_23: true,  }, // VoidIntfMethDeclRst0R2 
+	{  }, // VoidIntfMethDeclRst0R3 
+	{  token.T_133: true,  }, // WHILE0R0 
+	{  token.T_98: true,  }, // WHILE0R1 
+	{  }, // WHILE0R2 
+	{  token.T_49: true,  token.T_66: true,  token.T_85: true,  }, // WS0R0 
+	{  }, // WS0R1 
+	{  }, // WS1R0 
+	{  token.T_99: true,  token.T_116: true,  token.T_101: true,  token.T_135: true,  token.T_80: true,  token.T_0: true,  token.T_120: true,  token.T_123: true,  token.T_50: true,  token.T_12: true,  token.T_15: true,  token.T_134: true,  token.T_52: true,  token.T_117: true,  token.T_127: true,  token.T_73: true,  token.T_97: true,  token.T_11: true,  token.T_16: true,  token.T_62: true,  token.T_70: true,  token.T_61: true,  token.T_89: true,  token.T_102: true,  token.T_7: true,  token.T_39: true,  token.T_86: true,  token.T_60: true,  token.T_131: true,  token.T_56: true,  token.T_141: true,  token.T_21: true,  token.T_111: true,  }, // XORExpr0R0 
+	{  token.T_42: true,  }, // XORExpr0R1 
+	{  }, // XORExpr0R2 
+}

@@ -7,15 +7,19 @@ import (
 	"JSON/parser"
 )
 
-//Should match
-const t1 = `{
-    "fruit": "Apple",
-    "size": "Large",
-    "color": "Red"
-}`
+//Matches
+const bracket_test 	= `{ }`
+const simple_test 	= `{ "name" : "John" }`
+const num_test		= `{ "num" : "N123" }` 
+const empty_test = `{ "num" : "" }` 
+	// issue with reading numbers
+	// issue with empty string 
 
-//Should fail to match
-const t2 = `not JSON ~~`
+//Doesn't Match
+//const t2 = `123`
+//const t3 = `not JSON ~~`
+ // doesn't accept repeated letters
+//const t4 = `{ "name" : "Johhn" }` 
 
 func parse(s []rune) bool {
 	// run GLL parser
@@ -25,7 +29,7 @@ func parse(s []rune) bool {
 		return false
 	}
 	// check that root covers whole input
-	root := bsrSet.GetRoots()
+	root := bsrSet.GetRoot()
 	return root.RightExtent() == bsrSet.GetRightExtent()
 }
 
@@ -38,6 +42,11 @@ func parseAndPrint(s string) {
 }
 
 func main() {
-	parseAndPrint(t1)
-	parseAndPrint(t2)
+	parseAndPrint(bracket_test)
+	parseAndPrint(simple_test)
+	parseAndPrint(num_test)
+	parseAndPrint(empty_test)
+	//parseAndPrint(t2)
+	//parseAndPrint(t3)
+	//parseAndPrint(t4) 
 }

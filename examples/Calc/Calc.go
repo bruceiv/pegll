@@ -17,19 +17,19 @@ import (
  * that it is functioning properly
  */
 // should match
-const single_num  	= `1`			// passed
-const plus_test 	= `8+6`			// passed
-const minus_test 	= `8 -6 `		// passed
-const mult_test 	= `8 * 6`		// passed
-const div_test 		= `8 / 2`		// passed
-const plusMult_test = "8 + 1 * 2" 	// passed
-const minusDiv_test = "8 / 1 -12" 	// passed
-const parens_test 	= "(8 + 1)*2"   // passed
+const single_num = `1`            // passed
+const plus_test = `8+6`           // passed
+const minus_test = `8 -6 `        // passed
+const mult_test = `8 * 6`         // passed
+const div_test = `8 / 2`          // passed
+const plusMult_test = "8 + 1 * 2" // passed
+const minusDiv_test = "8 / 1 -12" // passed
+const parens_test = "(8 + 1)*2"   // passed
 
 // should fail to match
-const incomp_expr 	= "12 +"		// did not pass
-const incomp_parens = `((1+3)-1`    // did not pass
-const space 		= " "
+const incomp_expr = "12 +"       // did not pass
+const incomp_parens = `((1+3)-1` // did not pass
+const space = " "
 
 /* CALCULATOR FUNCTIONS */
 // Calculates the value of the input
@@ -74,13 +74,10 @@ func repPLUSorMINUS(val int, pORmrep bsr.BSR) int {
 	//self-assignment aspect of RepPLUSorMINUS0x NT
 	repChild := pORmrep.GetNTChildI(1)
 
-	//alt0 -> addition
-	if pORm.Alternate() == 0 {
-		return repPLUSorMINUS((val + product(prod)), repChild)
-	}
 
-	//alt1 -> subtraction
-	if pORm.Alternate() == 1 {
+	if pORm.Alternate() == 0 { //alt0 -> addition
+		return repPLUSorMINUS((val + product(prod)), repChild)
+	} else if pORm.Alternate() == 1 { //alt1 -> subtraction
 		return repPLUSorMINUS((val - product(prod)), repChild)
 	}
 
@@ -124,13 +121,10 @@ func repTIMESorDIV(val int, tORdrep bsr.BSR) int {
 	//self-assignment aspect of RepTIMESorDIVIDE0x NT
 	repChild := tORdrep.GetNTChildI(1)
 
-	//alt0 -> multiplication
-	if tORd.Alternate() == 0 {
-		return repTIMESorDIV((val * element(elem)), repChild)
-	}
 
-	//alt1 -> division
-	if tORd.Alternate() == 1 {
+	if tORd.Alternate() == 0 { //alt0 -> multiplication
+		return repTIMESorDIV((val * element(elem)), repChild)
+	} else if tORd.Alternate() == 1 { //alt1 -> division
 		return repTIMESorDIV((val / element(elem)), repChild)
 	}
 
@@ -141,18 +135,15 @@ func repTIMESorDIV(val int, tORdrep bsr.BSR) int {
 //ELEMENT : OPEN SUM CLOSE
 //        | Number ;
 func element(e bsr.BSR) int {
-	//Alt1 - OPEN SUM CLOSE
-	if e.Alternate() == 0 {
+	if e.Alternate() == 0 { //Alt1 - OPEN SUM CLOSE
 		//Get SUM NT
 		su := e.GetNTChildI(1)
 		//Calculate SUM
 		val := sum(su)
 		//return value of SUM
 		return val
-	}
 
-	//Alt2 - Number
-	if e.Alternate() == 1 {
+	} else if e.Alternate() == 1 { //Alt2 - Number
 		//Get Number NT
 		num := e.GetNTChildI(0)
 		//Get value of Number
@@ -228,68 +219,10 @@ func main() {
 	parseAndPrint(minusDiv_test)
 	parseAndPrint(parens_test)
 
-	// should not match 
+	// should not match
 	fmt.Println("\nshould fail to match")
 	parseAndPrint(incomp_expr)
 	parseAndPrint(incomp_parens)
 	parseAndPrint(space)
 
 }
-
-/*func Test1(t *testing.T) { //Match test
-	bsrSet, errs := parser.Parse(lexer.New([]rune(a)))
-	if len(errs) > 0 {
-		fail(errs)
-	}
-
-	if bsrSet == nil {
-		panic("BSRSet == nil")
-	}
-
-	for i, r := range bsrSet.GetRoots() {
-		fmt.Printf("%d: %s\n", i, calculate(r))
-	}
-}
-
-func Test2(t *testing.T) { //Fail to match test
-	bsrSet, errs := parser.Parse(lexer.New([]rune(f)))
-	if len(errs) > 0 {
-		fail(errs)
-	}
-
-	if bsrSet == nil {
-		panic("BSRSet == nil")
-	}
-
-	for i, r := range bsrSet.GetRoots() {
-		fmt.Printf("%d: %s\n", i, calculate(r))
-	}
-}
-*/
-/*
-Need a way to recognize each important NT (function for each one)
-	-> SUM, PRODUCT, ELEM,
-	-> maybe TIMESorDIVIDE and PLUSorMINUS
-
-Need to go from recognizing the NT to actually performing
-the operation (???)
-	- Perform mults first
-
-Might be helpful:
-	bsr.getTchild
-		.getNTchild
-	   .isNonTerminal
-	   .dump (for testing)
-*/
-/*
-
-func fail(errs []*parser.Error) {
-	ln := errs[0].Line
-	fmt.Println("Parse Error:")
-	for _, e := range errs {
-		if e.Line == ln {
-			fmt.Println(e)
-		}
-	}
-	os.Exit(1)
-}*/

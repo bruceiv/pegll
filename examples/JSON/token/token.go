@@ -106,31 +106,27 @@ func (t Type) ID() string {
 const(
     Error  Type = iota  // Error 
     EOF  // $ 
-    T_0  // , 
-    T_1  // : 
-    T_2  // [ 
-    T_3  // ] 
-    T_4  // aA_fF 
-    T_5  // bSlash 
-    T_6  // block_comment 
-    T_7  // carrotSlash 
-    T_8  // dQuote 
-    T_9  // esc 
-    T_10  // escChar 
-    T_11  // escCharSpace 
-    T_12  // exp 
-    T_13  // false 
-    T_14  // frac 
-    T_15  // integer 
-    T_16  // line_comment 
-    T_17  // newLine 
-    T_18  // null 
-    T_19  // optNeg 
-    T_20  // true 
-    T_21  // u 
-    T_22  // zero 
-    T_23  // { 
-    T_24  // } 
+    T_0  // + 
+    T_1  // , 
+    T_2  // - 
+    T_3  // . 
+    T_4  // 0 
+    T_5  // : 
+    T_6  // [ 
+    T_7  // ] 
+    T_8  // block_comment 
+    T_9  // eE 
+    T_10  // escCharSpace 
+    T_11  // false 
+    T_12  // hex 
+    T_13  // line_comment 
+    T_14  // nonZero 
+    T_15  // null 
+    T_16  // repNum1x 
+    T_17  // string_ns 
+    T_18  // true 
+    T_19  // { 
+    T_20  // } 
 )
 
 var TypeToString = []string{ 
@@ -157,10 +153,6 @@ var TypeToString = []string{
     "T_18",
     "T_19",
     "T_20",
-    "T_21",
-    "T_22",
-    "T_23",
-    "T_24",
 }
 
 var StringToType = map[string] Type { 
@@ -187,38 +179,30 @@ var StringToType = map[string] Type {
     "T_18" : T_18, 
     "T_19" : T_19, 
     "T_20" : T_20, 
-    "T_21" : T_21, 
-    "T_22" : T_22, 
-    "T_23" : T_23, 
-    "T_24" : T_24, 
 }
 
 var TypeToID = []string { 
     "Error", 
     "$", 
+    "+", 
     ",", 
+    "-", 
+    ".", 
+    "0", 
     ":", 
     "[", 
     "]", 
-    "aA_fF", 
-    "bSlash", 
     "block_comment", 
-    "carrotSlash", 
-    "dQuote", 
-    "esc", 
-    "escChar", 
+    "eE", 
     "escCharSpace", 
-    "exp", 
     "false", 
-    "frac", 
-    "integer", 
+    "hex", 
     "line_comment", 
-    "newLine", 
+    "nonZero", 
     "null", 
-    "optNeg", 
+    "repNum1x", 
+    "string_ns", 
     "true", 
-    "u", 
-    "zero", 
     "{", 
     "}", 
 }
@@ -232,14 +216,6 @@ var Suppress = []bool {
     false, 
     false, 
     false, 
-    true, 
-    false, 
-    false, 
-    false, 
-    false, 
-    false, 
-    false, 
-    false, 
     false, 
     false, 
     true, 
@@ -247,7 +223,11 @@ var Suppress = []bool {
     false, 
     false, 
     false, 
+    true, 
     false, 
+    false, 
+    false, 
+    true, 
     false, 
     false, 
     false, 

@@ -334,6 +334,14 @@ func (bld *builder) unicodeClass(b bsr.BSR) *UnicodeClass {
 
 /*** Syntax Rules ***/
 
+// SynOptional : SyntaxAtom "?"
+func (bld *builder) synOptional(b bsr.BSR) *SynOptional {
+	return &SynOptional{
+		tok:        b.GetTChildI(1),  // ?
+		Alternates: b.GetNTChildI(0), // rule
+	}
+}
+
 // SyntaxAlternate
 //     :   SyntaxSymbols
 //     |   "empty"
@@ -350,6 +358,7 @@ func (bld *builder) syntaxAlternate(b bsr.BSR) *SyntaxAlternate {
 //     :   SyntaxAlternate
 //     |   SyntaxAlternate "|" UnorderedAlternates
 //     |   SyntaxAlternate "/" OrderedAlternates
+/*     |   SynOptional                          */
 //     ;
 // (boolean is true if an ordered alternate list)
 func (bld *builder) syntaxAlternates(b bsr.BSR) ([]*SyntaxAlternate, bool) {
@@ -363,7 +372,7 @@ func (bld *builder) syntaxAlternates(b bsr.BSR) ([]*SyntaxAlternate, bool) {
 		return append(alts, bld.unorderedAlternates(b.GetNTChild(symbols.NT_UnorderedAlternates, 0))...), false
 	case 2:
 		return append(alts, bld.orderedAlternates(b.GetNTChild(symbols.NT_OrderedAlternates, 0))...), true
-	}
+	} //Add SynOptional??
 	panic("invalid SyntaxAlternates")
 }
 

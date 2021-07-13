@@ -25,40 +25,36 @@ package "XML"
 Document                : Prolog Element RepMisc0x              ;
 
 Prolog 	                : OptXMLDecl RepMisc0x                  ;
-XMLDecl                 : xmlDeclStart VersionInfo OptEncodDecl 
-                        optSpaceEsc xmlDeclEnd                  ;
+XMLDecl                 : "<?xml" VersionInfo OptEncDecl 
+                         optSpaceEsc "?>"                       ;     
         OptXMLDecl      : XMLDecl 
                         / empty                                 ;
-        xmlDeclStart    : '<' '?' 'x' 'm' 'l'                   ;
-        xmlDeclEnd      :  '?' '>'                              ;
 
-        VersionInfo     : spaceEsc version Eq QuoVerNum         ;
-        QuoVerNum       : sinQu VersionNum sinQu  
+        VersionInfo     : spaceEsc "version" Eq QuoVerNum       ;
+        QuoVerNum       : "'" VersionNum "'"  
                         | dubQu VersionNum dubQu                ;
 
-VersionNum              : NAME_CHAR NameCharRep                 ;
-        NameCharRep     : NAME_CHAR NameCharRep
-                        / empty                                 ;
+VersionNum              : NAME_CHAR RepNameChar0x               ;
 
-EncodingDecl            : spaceEsc encoding Eq QuoEncNam        ;
-        QuoEncNam       : sinQu EncName sinQu  
+EncodingDecl            : spaceEsc "encoding" Eq QuoEncNam      ;
+        QuoEncNam       : "'" EncName "'"  
                         | dubQu EncName dubQu                   ;
-        OptEncodDecl    : EncodingDecl 
+        OptEncDecl      : EncodingDecl 
                         / empty                                 ;
-        encoding        : 'e' 'n' 'c' 'o' 'd' 'i' 'n' 'g'       ;
-        version         : 'v' 'e' 'r' 's' 'i' 'o' 'n'           ;
+        
 ```
 #### ***Values and References***
+sinQu isn't necessary but there is an error in the lexer if it is not there
 ```
-ATT_VALUE               : dubQu DubCondClose 
-                        | sinQu SinCondClose                    ;
-        SinCondClose    : sinQu
-                        / SymRefAlts SinCondClose               ;
-        DubCondClose    : dubQu 
-                        / SymRefAlts DubCondClose               ;
-        SymRefAlts      : andCarrs
+ATT_VALUE               : dubQu DubConClose 
+                        | "'" SinConClose                       ;
+        SinConClose     : "'"
+                        / SymRefAlts SinConClose                ;
+        DubConClose     : dubQu 
+                        / SymRefAlts DubConClose                ;
+        SymRefAlts      : andCars
                         | REFERENCE                             ;
-        andCarrs        : any "^<&"                             ;
+        andCars         : any "^<&"                             ;
         dubQu           : '"'                                   ;
         sinQu           : '\''                                  ;
 
@@ -78,67 +74,74 @@ CHAR_REF                : "&#x" Hex ";"
         aA_fF           : any "abcdefABCDEF"                    ;
 ```
 #### ***Commenting, Elements, and Attributes***
+- issue with element - says accepts multiple strings if put in "<" instead of left angle token
+- infinite loop if exclamation is removed even though it is never called? 
+- tried making optional space or escape using ordered choice to empty got duplicate token error 
+modified from this version of comment - not sure if broken by earlier issues or this grammar (NOTE: neither version works)
+COMMENT                 : ComStart ComEnd ">"               ;
+        ComStart        : "<!--"                                ;
+        DubDash         : "--"                                  ;
+        ComEnd          : DubDash 
+                        / let ComEnd                            ; 
 ```
 Content                 : ContentAlts Content
                         / empty                                 ;
-        ContentAlts     : COMMENT 
+        ContentAlts     : comment 
                         | Element 
                         | REFERENCE 
                         | charData                              ;
-Misc                    : COMMENT 
+Misc                    : comment 
                         | spaceEsc                              ; 
         RepMisc0x       : Misc RepMisc0x 
                         / empty                                 ;
 
-COMMENT                 : ComStart ComEnterior angRBrk          ;
-        ComStart        : angLBrk exclamation DubDash           ;
-        DubDash         : "--"                                  ;
-        ComEnterior     : DubDash 
-                        / let ComEnterior                       ;
+!comment                : '<''!''-''-'
+                        { not "-->"
+                        | '-' not "->"
+                        | '-''-' not ">"
+                        } '-''-''>'                           ;  
 
 
 Element                 : angLBrk NAME RepSAttx0x optSpaceEsc 
-                        ElemCloseAlts                           ;
+                         ElemCloseAlts                           ;
         SAtt            : spaceEsc Attribute                    ;      
         RepSAttx0x      : SAtt RepSAttx0x  
                         / empty                                 ;
-        ElemCloseAlts   : angRBrk Content slashAngLBrk NAME optSpaceEsc angRBrk 
-                        | slashAngRBrk                          ;
+        ElemCloseAlts   : ">" Content "</" NAME optSpaceEsc ">" 
+                        | "</"                                  ;
         angLBrk         : '<'                                   ;
-        slashAngLBrk    : '<' '/'                               ;
-        angRBrk         : '>'                                   ;
-        slashAngRBrk    : '/' '>'                               ;
         exclamation     : '!'                                   ;
 
-Attribute               : NAME optSpaceEsc eq optSpaceEsc 
-                        ATT_VALUE                               ;
-        Eq              : optSpaceEsc eq optSpaceEsc            ;
-        optSpaceEsc     : [ < any " \t\r\n" > ]                 ;
+Attribute               : NAME optSpaceEsc "=" optSpaceEsc 
+                         ATT_VALUE                               ;
+        Eq              : optSpaceEsc "=" optSpaceEsc           ;
+        optSpaceEsc     : [ any " \t\r\n" ]                     ;
         spaceEsc        : < any " \t\r\n" >                     ;
-        charData        :  < any "^<&" >                        ;
-        eq              : '='                                   ;
+        charData        : < any "^<&" >                         ;
 ```
 #### ***Names, Encoding, and (Whitespace/Escape) Characters***
 ```
 NAME                    : LetColonAlts RepNameChar0x            ;
         LetColonAlts    : let 
-                        | col_                                  ;
-        RepNameChar0x   :  NAME_CHAR RepNameChar0x 
-                        / empty                                 ;
-        col_            : any "_:"                              ; 
+                        | ":"
+                        | "_"                                   ;
+        RepNameChar0x   : NAME_CHAR RepNameChar0x 
+                        / empty                                 ; 
 
 NAME_CHAR               : let 
                         | num
-                        | dot_BSlashDashCol                     ;
-      dot_BSlashDashCol : any "\\-._:"                          ;
+                        | ":"
+                        | "_"
+                        | dot_BSlashDash                        ;
 
 EncName                 : let RepLDSAlts0x                      ;
         RepLDSAlts0x    : LetDigSymAlts RepLDSAlts0x
                         / empty                                 ;
         LetDigSymAlts   : let   
                         | num
+                        | "_"
                         | dot_BSlashDash                        ;       
-        dot_BSlashDash  : any "._\\-"                           ;
+        dot_BSlashDash  : any ".\\-"                            ;
         let             : letter                                ;
         num             : number                                ;
 
