@@ -4,9 +4,9 @@ import (
 	"bytes"
 	"fmt"
 
-	"github.com/goccmack/gogll/ast"
-	"github.com/goccmack/gogll/lr1/basicprod"
-	"github.com/goccmack/gogll/symbols"
+	"github.com/bruceiv/pegll/ast"
+	"github.com/bruceiv/pegll/lr1/basicprod"
+	"github.com/bruceiv/pegll/symbols"
 )
 
 type First struct {

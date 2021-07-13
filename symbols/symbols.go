@@ -21,7 +21,7 @@ package symbols
 import (
 	"fmt"
 
-	"github.com/goccmack/gogll/ast"
+	"github.com/bruceiv/pegll/ast"
 )
 
 // Symbol is T or NT
@@ -29,6 +29,9 @@ type Symbol interface {
 	isSymbol()
 	// IsNonTerminal returns true iff this symbol is a non-terminal
 	IsNonTerminal() bool
+
+	// IsLookahead return true iff this symbol is a lookahead expression
+	IsLookahead() bool
 
 	// Literal returns the literal value of the symbol in the grammar
 	Literal() string
@@ -44,12 +47,21 @@ type Symbol interface {
 
 func (NT) isSymbol() {}
 func (T) isSymbol()  {}
+func (L) isSymbol()  {}
 
 // NT is the type of a non-terminal symbol
 type NT int
 
 // T is the type of a terminal symbol
 type T int
+
+// L is the type of a lookahead symbol
+type L struct {
+	// The subexpression to look ahead at
+	Expr Symbol
+	// true for positive (&) lookahead, false for negative (!) lookahead
+	Positive bool
+}
 
 const (
 	Error T = iota
@@ -134,6 +146,24 @@ func FromASTString(astSym string) Symbol {
 	if !initialisized {
 		panic("Uninitialised")
 	}
+	switch astSym[0] {
+	case '&':
+		return &L{
+			Expr:     fromASTAtom(astSym[1:]),
+			Positive: true,
+		}
+	case '!':
+		return &L{
+			Expr:     fromASTAtom(astSym[1:]),
+			Positive: false,
+		}
+	default:
+		return fromASTAtom(astSym)
+	}
+}
+
+// fromASTAtom translates a (non-lookahead) AST symbol string to Symbol
+func fromASTAtom(astSym string) Symbol {
 	if nt, exist := literalToNT[astSym]; exist {
 		return nt
 	}
@@ -158,6 +188,14 @@ func (NT) IsNonTerminal() bool {
 		panic("Uninitialised")
 	}
 	return true
+}
+
+// IsLookahead always returns false if the symbol is a non-terminal
+func (NT) IsLookahead() bool {
+	if !initialisized {
+		panic("Uninitialised")
+	}
+	return false
 }
 
 // Literal returns the literal value of nt in the grammar
@@ -186,6 +224,14 @@ func (nt NT) String() string {
 
 // IsNonTerminal always returns false if the symbol is a terminal
 func (T) IsNonTerminal() bool {
+	if !initialisized {
+		panic("Uninitialised")
+	}
+	return false
+}
+
+// IsLookahead always returns false if the symbol is a terminal
+func (T) IsLookahead() bool {
 	if !initialisized {
 		panic("Uninitialised")
 	}
@@ -231,6 +277,54 @@ func (t T) String() string {
 // Suppress returns true iff t is suppressed by the lexer
 func (t T) Suppress() bool {
 	return tSuppress[t]
+}
+
+// IsNonTerminal always returns false if the symbol is a lookahead expression
+func (L) IsNonTerminal() bool {
+	if !initialisized {
+		panic("Uninitialised")
+	}
+	return false
+}
+
+// IsLookahead always returns true if the symbol is a lookahead expression
+func (L) IsLookahead() bool {
+	if !initialisized {
+		panic("Uninitialised")
+	}
+	return false
+}
+
+// Literal returns the literal of the contained symbol, prefixed by its
+// operator
+func (e L) Literal() string {
+	if e.Positive {
+		return "&" + e.Expr.Literal()
+	} else {
+		return "!" + e.Expr.Literal()
+	}
+}
+
+// GoString returns the Go representation of e used by code generation modules
+func (e L) GoString() string {
+	if !initialisized {
+		panic("Uninitialised")
+	}
+
+	if e.Positive {
+		return "LP_" + e.Expr.GoString()
+	} else {
+		return "LN_" + e.Expr.GoString()
+	}
+}
+
+// String returns the string representation of e used by code generation modules
+func (e L) String() string {
+	if !initialisized {
+		panic("Uninitialised")
+	}
+
+	return e.Literal()
 }
 
 /***/

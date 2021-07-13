@@ -23,11 +23,11 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/goccmack/gogll/lexer"
-	"github.com/goccmack/gogll/parser/bsr"
-	"github.com/goccmack/gogll/parser/symbols"
-	"github.com/goccmack/gogll/token"
-	"github.com/goccmack/gogll/util/runeset"
+	"github.com/bruceiv/pegll/lexer"
+	"github.com/bruceiv/pegll/parser/bsr"
+	"github.com/bruceiv/pegll/parser/symbols"
+	"github.com/bruceiv/pegll/token"
+	"github.com/bruceiv/pegll/util/runeset"
 	"github.com/goccmack/goutil/stringset"
 )
 
@@ -55,6 +55,7 @@ func Build(root bsr.BSR, l *lexer.Lexer) *GoGLL {
 	gogll.NonTerminals = bld.nonTerminals(gogll.SyntaxRules)
 	gogll.StringLiterals = bld.getStringLiterals(gogll.SyntaxRules)
 	gogll.Terminals = bld.terminals(gogll, gogll.GetStringLiterals())
+	gogll.Lookaheads = bld.lookaheads(gogll)
 	return gogll
 }
 
@@ -120,6 +121,20 @@ func (bld *builder) terminals(g *GoGLL, stringLiterals []string) *stringset.Stri
 	terminals := bld.getLexRuleIDs(g.LexRules)
 	terminals.Add(stringLiterals...)
 	return terminals
+}
+
+func (bld *builder) lookaheads(g *GoGLL) *stringset.StringSet {
+	ls := stringset.New()
+	for _, r := range g.SyntaxRules {
+		for _, a := range r.Alternates {
+			for _, s := range a.Symbols {
+				if l, ok := s.(*Lookahead); ok {
+					ls.Add(l.ID())
+				}
+			}
+		}
+	}
+	return ls
 }
 
 func (bld *builder) getLexRuleIDs(rules []*LexRule) *stringset.StringSet {
@@ -399,8 +414,26 @@ func (bld *builder) syntaxRule(b bsr.BSR) brule {
 	}
 }
 
-// SyntaxSymbol : nt | tokid | string_lit ;
+// SyntaxSymbol
+//     : "&" SyntaxAtom
+//     | "!" SyntaxAtom
+//     | SyntaxAtom
+//     ;
 func (bld *builder) symbol(b bsr.BSR) SyntaxSymbol {
+	switch b.Alternate() {
+	case 0, 1:
+		return &Lookahead{
+			Op:   b.GetTChildI(0),
+			Expr: bld.atom(b.GetNTChildI(1)),
+		}
+	case 2:
+		return bld.atom(b.GetNTChildI(0))
+	}
+	panic(fmt.Sprintf("invalid alternate %d", b.Alternate()))
+}
+
+// SyntaxAtom : nt | tokid | string_lit ;
+func (bld *builder) atom(b bsr.BSR) SyntaxSymbol {
 	switch b.Alternate() {
 	case 0:
 		return bld.nt(b.GetTChildI(0))
@@ -412,7 +445,7 @@ func (bld *builder) symbol(b bsr.BSR) SyntaxSymbol {
 	panic(fmt.Sprintf("invalid alternate %d", b.Alternate()))
 }
 
-// SyntaxSyntaxSymbols
+// SyntaxSymbols
 //     :   SyntaxSymbol
 //     |   SyntaxSymbol SyntaxSymbols
 //     ;

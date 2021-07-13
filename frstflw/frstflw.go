@@ -16,7 +16,7 @@
 package frstflw
 
 import (
-	"github.com/goccmack/gogll/ast"
+	"github.com/bruceiv/pegll/ast"
 	"github.com/goccmack/goutil/stringset"
 	"github.com/goccmack/goutil/stringslice"
 )
@@ -58,6 +58,8 @@ func (ff *FF) FirstOfString(str []string) *stringset.StringSet {
 	}
 
 	first := stringset.New()
+	// TODO add special handling for lookaheads to intersect first sets of X and Y in
+	// &X Y
 	for _, s := range str {
 		fs := ff.FirstOfSymbol(s)
 		first.AddSet(fs)
@@ -137,10 +139,27 @@ func (ff *FF) getFirstOfSymbol(s string) *stringset.StringSet {
 		fst := stringset.New(s)
 		// fmt.Println("  T: ", stringset.New(s))
 		return fst
+	} else if ff.g.NonTerminals.Contain(s) {
+		fst := ff.getFirstOfNonTerminal(s)
+		// fmt.Println("  NT", fst)
+		return fst
+	} else {
+		// assume lookahead expression
+		switch s[0] {
+		case '!':
+			// not sure what does match, but is nullable
+			fst := stringset.New(Empty)
+			return fst
+		case '&':
+			// first set of underlying symbol, plus ϵ for nullability
+			fst := ff.getFirstOfSymbol(s[1:])
+			fst.Add(Empty)
+			return fst
+		default:
+			// unknown symbol
+			panic("unknown symbol `" + s + "'")
+		}
 	}
-	fst := ff.getFirstOfNonTerminal(s)
-	// fmt.Println("  NT", fst)
-	return fst
 }
 
 func (ff *FF) getFirstOfAlternate(a *ast.SyntaxAlternate) *stringset.StringSet {
@@ -195,6 +214,14 @@ func (ff *FF) getLeftOf(nt string) *stringset.StringSet {
 					left.AddSet(ff.leftSets[oid])
 				}
 			}
+			// add any nonterminals contained in lookaheads
+			if lk, ok := s.(*ast.Lookahead); ok {
+				oid := lk.Expr.ID()
+				if !left.Contain(oid) && ff.g.NonTerminals.Contain(oid) {
+					left.Add(oid)
+					left.AddSet(ff.leftSets[oid])
+				}
+			}
 			// break when you hit a non-nullable symbol
 			if !ff.IsNullable(sid) {
 				break
@@ -212,7 +239,7 @@ func (ff *FF) initLeftRec() {
 }
 
 /*
-Dragon book algorithm used for Follow
+Modified Dragon book algorithm used for Follow
 */
 func (ff *FF) genFollow() {
 	ff.initFollowSets()
@@ -245,6 +272,12 @@ func (ff *FF) genFollowOf(nt string) *stringset.StringSet {
 					// fmt.Printf("  add folow(%s)\n", r.Head.StringValue())
 					follow.AddSet(ff.Follow(r.Head.ID()))
 				}
+			}
+			// no telling where lookahead expression will end, but PEG generation
+			// doesn't check follow sets on match, so we just need to indicate that
+			// the nonterminal is called
+			if stringslice.Contains(bs, "&"+nt) || stringslice.Contains(bs, "!"+nt) {
+				follow.Add("$")
 			}
 		}
 	}

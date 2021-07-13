@@ -26,9 +26,9 @@ import (
 
 	"github.com/iancoleman/strcase"
 
-	"github.com/goccmack/gogll/ast"
-	"github.com/goccmack/gogll/cfg"
-	"github.com/goccmack/gogll/lr1/basicprod"
+	"github.com/bruceiv/pegll/ast"
+	"github.com/bruceiv/pegll/cfg"
+	"github.com/bruceiv/pegll/lr1/basicprod"
 	"github.com/goccmack/goutil/ioutil"
 )
 

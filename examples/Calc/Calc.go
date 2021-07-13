@@ -1,5 +1,5 @@
 /* calc TEST */
-// tests functionality of simple calculator
+// tests functionality of simple calculator 
 package main
 
 import (
@@ -74,6 +74,7 @@ func repPLUSorMINUS(val int, pORmrep bsr.BSR) int {
 	//self-assignment aspect of RepPLUSorMINUS0x NT
 	repChild := pORmrep.GetNTChildI(1)
 
+
 	if pORm.Alternate() == 0 { //alt0 -> addition
 		return repPLUSorMINUS((val + product(prod)), repChild)
 	} else if pORm.Alternate() == 1 { //alt1 -> subtraction
@@ -120,6 +121,7 @@ func repTIMESorDIV(val int, tORdrep bsr.BSR) int {
 	//self-assignment aspect of RepTIMESorDIVIDE0x NT
 	repChild := tORdrep.GetNTChildI(1)
 
+
 	if tORd.Alternate() == 0 { //alt0 -> multiplication
 		return repTIMESorDIV((val * element(elem)), repChild)
 	} else if tORd.Alternate() == 1 { //alt1 -> division
@@ -140,6 +142,7 @@ func element(e bsr.BSR) int {
 		val := sum(su)
 		//return value of SUM
 		return val
+
 	} else if e.Alternate() == 1 { //Alt2 - Number
 		//Get Number NT
 		num := e.GetNTChildI(0)
@@ -168,7 +171,6 @@ func number(n bsr.BSR) int {
 	// convert the string version of the number to numberic
 	num_digits, err := strconv.Atoi(num_string)
 
-	fmt.Println(num_digits)
 	// return the numeric version if no error
 	if err == nil {
 		return num_digits
@@ -208,7 +210,7 @@ func parseAndPrint(s string) {
 func main() {
 	// should match and print result
 	fmt.Println("should match")
-	parseAndPrint(single_num)
+	parseAndPrint(single_num) 
 	parseAndPrint(plus_test)
 	parseAndPrint(minus_test)
 	parseAndPrint(mult_test)
@@ -224,61 +226,3 @@ func main() {
 	parseAndPrint(space)
 
 }
-
-/*func Test1(t *testing.T) { //Match test
-	bsrSet, errs := parser.Parse(lexer.New([]rune(a)))
-	if len(errs) > 0 {
-		fail(errs)
-	}
-
-	if bsrSet == nil {
-		panic("BSRSet == nil")
-	}
-
-	for i, r := range bsrSet.GetRoots() {
-		fmt.Printf("%d: %s\n", i, calculate(r))
-	}
-}
-
-func Test2(t *testing.T) { //Fail to match test
-	bsrSet, errs := parser.Parse(lexer.New([]rune(f)))
-	if len(errs) > 0 {
-		fail(errs)
-	}
-
-	if bsrSet == nil {
-		panic("BSRSet == nil")
-	}
-
-	for i, r := range bsrSet.GetRoots() {
-		fmt.Printf("%d: %s\n", i, calculate(r))
-	}
-}
-*/
-/*
-Need a way to recognize each important NT (function for each one)
-	-> SUM, PRODUCT, ELEM,
-	-> maybe TIMESorDIVIDE and PLUSorMINUS
-
-Need to go from recognizing the NT to actually performing
-the operation (???)
-	- Perform mults first
-
-Might be helpful:
-	bsr.getTchild
-		.getNTchild
-	   .isNonTerminal
-	   .dump (for testing)
-*/
-/*
-
-func fail(errs []*parser.Error) {
-	ln := errs[0].Line
-	fmt.Println("Parse Error:")
-	for _, e := range errs {
-		if e.Line == ln {
-			fmt.Println(e)
-		}
-	}
-	os.Exit(1)
-}*/

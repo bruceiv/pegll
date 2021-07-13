@@ -29,9 +29,9 @@ import (
 	"sort"
 	"unicode"
 
-	"github.com/goccmack/gogll/ast"
-	"github.com/goccmack/gogll/lex/item"
-	"github.com/goccmack/gogll/util/runeset"
+	"github.com/bruceiv/pegll/ast"
+	"github.com/bruceiv/pegll/lex/item"
+	"github.com/bruceiv/pegll/util/runeset"
 )
 
 // TriState has range: {True, False, Undefined}

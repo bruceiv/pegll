@@ -20,8 +20,8 @@ import (
 	"path"
 	"text/template"
 
-	"github.com/goccmack/gogll/lr1/states"
-	"github.com/goccmack/gogll/symbols"
+	"github.com/bruceiv/pegll/lr1/states"
+	"github.com/bruceiv/pegll/symbols"
 	"github.com/goccmack/goutil/ioutil"
 )
 

@@ -21,10 +21,10 @@ import (
 	"strings"
 	"text/template"
 
-	"github.com/goccmack/gogll/cfg"
-	"github.com/goccmack/gogll/lr1/basicprod"
-	"github.com/goccmack/gogll/lr1/states"
-	"github.com/goccmack/gogll/symbols"
+	"github.com/bruceiv/pegll/cfg"
+	"github.com/bruceiv/pegll/lr1/basicprod"
+	"github.com/bruceiv/pegll/lr1/states"
+	"github.com/bruceiv/pegll/symbols"
 	"github.com/goccmack/goutil/ioutil"
 	"github.com/iancoleman/strcase"
 )

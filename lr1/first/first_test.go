@@ -3,11 +3,11 @@ package first
 import (
 	"testing"
 
-	"github.com/goccmack/gogll/ast"
-	"github.com/goccmack/gogll/ast/rewrite"
-	"github.com/goccmack/gogll/frontend/lexer"
-	"github.com/goccmack/gogll/frontend/parser"
-	"github.com/goccmack/gogll/parser/symbols"
+	"github.com/bruceiv/pegll/ast"
+	"github.com/bruceiv/pegll/ast/rewrite"
+	"github.com/bruceiv/pegll/frontend/lexer"
+	"github.com/bruceiv/pegll/frontend/parser"
+	"github.com/bruceiv/pegll/parser/symbols"
 )
 
 const src = `

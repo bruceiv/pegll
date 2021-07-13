@@ -1,4 +1,4 @@
-module github.com/goccmack/gogll
+module github.com/bruceiv/pegll
 
 go 1.14
 
