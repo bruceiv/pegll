@@ -318,7 +318,8 @@ func (bld *builder) unicodeClass(b bsr.BSR) *UnicodeClass {
 }
 
 /*** Syntax Rules ***/
-// SynOptional : SyntaxAlternate "?"
+
+// SynOptional : SyntaxAtom "?"
 func (bld *builder) synOptional(b bsr.BSR) *SynOptional {
 	return &SynOptional{
 		tok:        b.GetTChildI(1),  // ?

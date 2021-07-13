@@ -47,7 +47,7 @@ type SyntaxSymbol interface {
 	String() string
 }
 
-func (*SynOptional) isSyntaxSymbol() {} // I believe this gets it included in the list
+//func (*SynOptional) isSyntaxSymbol() {} // I believe this gets it included in the list
 
 func (*NT) isSyntaxSymbol() {}
 
