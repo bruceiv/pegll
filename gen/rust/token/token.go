@@ -19,7 +19,7 @@ import (
 	"bytes"
 	"text/template"
 
-	"github.com/goccmack/gogll/symbols"
+	"github.com/bruceiv/pegll/symbols"
 	"github.com/goccmack/goutil/ioutil"
 )
 

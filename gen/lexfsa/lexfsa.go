@@ -23,7 +23,7 @@ import (
 
 	"github.com/goccmack/goutil/ioutil"
 
-	"github.com/goccmack/gogll/lex/items"
+	"github.com/bruceiv/pegll/lex/items"
 )
 
 func Gen(fname string, ls *items.Sets) {

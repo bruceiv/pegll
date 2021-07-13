@@ -133,7 +133,7 @@ Gogll v3 has a BNF grammar. See [gogll.md](gogll.md)
 
 # Installation
 1. Install Go from [https://golang.org](https://golang.org)
-1. `go get github.com/goccmack/gogll` or 
+1. `go get github.com/bruceiv/pegll` or 
 1. Clone this repository and run `go install` in the root of the directory where
 it is installed.
 
@@ -223,7 +223,7 @@ The code of following example can be found at [examples/boolx](examples/boolx/bo
 The example has the following grammar: [boolx.md](examples/boolx/boolx.md), which generates boolean expressions such as: `a | b & c | d & e`:
 
 ```
-package "github.com/goccmack/gogll/examples/boolx"
+package "github.com/bruceiv/pegll/examples/boolx"
 
 Expr :   var
      |   Expr Op Expr

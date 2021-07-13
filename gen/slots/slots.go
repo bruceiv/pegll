@@ -23,8 +23,8 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/goccmack/gogll/cfg"
-	"github.com/goccmack/gogll/gslot"
+	"github.com/bruceiv/pegll/cfg"
+	"github.com/bruceiv/pegll/gslot"
 	"github.com/goccmack/goutil/ioutil"
 )
 

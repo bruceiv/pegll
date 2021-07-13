@@ -3,10 +3,10 @@ package items
 import (
 	"testing"
 
-	"github.com/goccmack/gogll/ast"
-	"github.com/goccmack/gogll/lexer"
-	"github.com/goccmack/gogll/parser"
-	"github.com/goccmack/gogll/parser/bsr"
+	"github.com/bruceiv/pegll/ast"
+	"github.com/bruceiv/pegll/lexer"
+	"github.com/bruceiv/pegll/parser"
+	"github.com/bruceiv/pegll/parser/bsr"
 )
 
 const src = `package "names"

@@ -18,8 +18,8 @@ import (
 	"bytes"
 	"text/template"
 
-	"github.com/goccmack/gogll/ast"
-	"github.com/goccmack/gogll/gslot"
+	"github.com/bruceiv/pegll/ast"
+	"github.com/bruceiv/pegll/gslot"
 )
 
 func (g *gen) genAlternatesCode() string {

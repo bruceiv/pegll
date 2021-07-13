@@ -1,5 +1,5 @@
 # Test closure
 ```
-package "github.com/goccmack/gogll/test/lex/lex1"
+package "github.com/bruceiv/pegll/test/lex/lex1"
 rule1: ['a'] 'b' ;
 ```

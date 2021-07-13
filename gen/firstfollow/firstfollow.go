@@ -21,9 +21,9 @@ import (
 	"os"
 	"path"
 
-	"github.com/goccmack/gogll/ast"
-	"github.com/goccmack/gogll/cfg"
-	"github.com/goccmack/gogll/frstflw"
+	"github.com/bruceiv/pegll/ast"
+	"github.com/bruceiv/pegll/cfg"
+	"github.com/bruceiv/pegll/frstflw"
 	"github.com/goccmack/goutil/ioutil"
 )
 

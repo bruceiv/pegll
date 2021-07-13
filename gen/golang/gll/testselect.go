@@ -22,9 +22,9 @@ import (
 	"sort"
 	"text/template"
 
-	"github.com/goccmack/gogll/frstflw"
-	"github.com/goccmack/gogll/gslot"
-	"github.com/goccmack/gogll/symbols"
+	"github.com/bruceiv/pegll/frstflw"
+	"github.com/bruceiv/pegll/gslot"
+	"github.com/bruceiv/pegll/symbols"
 )
 
 func (g *gen) genTestSelect() string {

@@ -18,13 +18,13 @@ package gll
 import (
 	"path/filepath"
 
-	"github.com/goccmack/gogll/ast"
-	"github.com/goccmack/gogll/frstflw"
-	"github.com/goccmack/gogll/gen/rust/gll/bsr"
-	"github.com/goccmack/gogll/gen/rust/gll/parser"
-	"github.com/goccmack/gogll/gen/rust/gll/slot"
-	"github.com/goccmack/gogll/gen/rust/gll/symbols"
-	"github.com/goccmack/gogll/gslot"
+	"github.com/bruceiv/pegll/ast"
+	"github.com/bruceiv/pegll/frstflw"
+	"github.com/bruceiv/pegll/gen/rust/gll/bsr"
+	"github.com/bruceiv/pegll/gen/rust/gll/parser"
+	"github.com/bruceiv/pegll/gen/rust/gll/slot"
+	"github.com/bruceiv/pegll/gen/rust/gll/symbols"
+	"github.com/bruceiv/pegll/gslot"
 )
 
 func Gen(parserDir string, g *ast.GoGLL, gs *gslot.GSlot, ff *frstflw.FF) {

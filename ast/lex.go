@@ -22,8 +22,8 @@ import (
 	"bytes"
 	"fmt"
 
-	"github.com/goccmack/gogll/token"
-	"github.com/goccmack/gogll/util/runeset"
+	"github.com/bruceiv/pegll/token"
+	"github.com/bruceiv/pegll/util/runeset"
 )
 
 // This file contains the AST components for lexical rules

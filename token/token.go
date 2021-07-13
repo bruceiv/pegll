@@ -107,31 +107,32 @@ const(
     Error  Type = iota  // Error 
     EOF  // $ 
     T_0  // ! 
-    T_1  // ( 
-    T_2  // ) 
-    T_3  // . 
-    T_4  // / 
-    T_5  // : 
-    T_6  // ; 
-    T_7  // < 
-    T_8  // > 
-    T_9  // [ 
-    T_10  // ] 
-    T_11  // any 
-    T_12  // char_lit 
-    T_13  // empty 
-    T_14  // letter 
-    T_15  // lowcase 
-    T_16  // not 
-    T_17  // nt 
-    T_18  // number 
-    T_19  // package 
-    T_20  // string_lit 
-    T_21  // tokid 
-    T_22  // upcase 
-    T_23  // { 
-    T_24  // | 
-    T_25  // } 
+    T_1  // & 
+    T_2  // ( 
+    T_3  // ) 
+    T_4  // . 
+    T_5  // / 
+    T_6  // : 
+    T_7  // ; 
+    T_8  // < 
+    T_9  // > 
+    T_10  // [ 
+    T_11  // ] 
+    T_12  // any 
+    T_13  // char_lit 
+    T_14  // empty 
+    T_15  // letter 
+    T_16  // lowcase 
+    T_17  // not 
+    T_18  // nt 
+    T_19  // number 
+    T_20  // package 
+    T_21  // string_lit 
+    T_22  // tokid 
+    T_23  // upcase 
+    T_24  // { 
+    T_25  // | 
+    T_26  // } 
 )
 
 var TypeToString = []string{ 
@@ -163,6 +164,7 @@ var TypeToString = []string{
     "T_23",
     "T_24",
     "T_25",
+    "T_26",
 }
 
 var StringToType = map[string] Type { 
@@ -194,12 +196,14 @@ var StringToType = map[string] Type {
     "T_23" : T_23, 
     "T_24" : T_24, 
     "T_25" : T_25, 
+    "T_26" : T_26, 
 }
 
 var TypeToID = []string { 
     "Error", 
     "$", 
     "!", 
+    "&", 
     "(", 
     ")", 
     ".", 
@@ -228,6 +232,7 @@ var TypeToID = []string {
 }
 
 var Suppress = []bool { 
+    false, 
     false, 
     false, 
     false, 

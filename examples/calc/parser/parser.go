@@ -77,7 +77,11 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.CLOSE0R2, cU, p.cI)
 		case slot.CLOSE0R2: // CLOSE : ) WS ∙
 
-			p.rtn(symbols.NT_CLOSE, cU, p.cI)
+			if p.follow(symbols.NT_CLOSE) {
+				p.rtn(symbols.NT_CLOSE, cU, p.cI)
+			} else {
+				p.parseError(slot.CLOSE0R0, p.cI, followSets[symbols.NT_CLOSE])
+			}
 		case slot.DIVIDE0R0: // DIVIDE : ∙/ WS
 
 			p.bsrSet.Add(slot.DIVIDE0R1, cU, p.cI, p.cI+1)
@@ -90,7 +94,12 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.DIVIDE0R2, cU, p.cI)
 		case slot.DIVIDE0R2: // DIVIDE : / WS ∙
 
-			p.rtn(symbols.NT_DIVIDE, cU, p.cI)
+			if p.follow(symbols.NT_DIVIDE) {
+				p.rtn(symbols.NT_DIVIDE, cU, p.cI)
+			} else {
+				p.parseError(slot.DIVIDE0R0, p.cI, followSets[symbols.NT_DIVIDE])
+			}
+
 		case slot.ELEMENT0R0: // ELEMENT : ∙OPEN SUM CLOSE
 
 			p.call(slot.ELEMENT0R1, cU, p.cI)
@@ -118,7 +127,11 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.ELEMENT1R1, cU, p.cI)
 		case slot.ELEMENT1R1: // ELEMENT : Number ∙
 
-			p.rtn(symbols.NT_ELEMENT, cU, p.cI)
+			if p.follow(symbols.NT_ELEMENT) {
+				p.rtn(symbols.NT_ELEMENT, cU, p.cI)
+			} else {
+				p.parseError(slot.ELEMENT1R0, p.cI, followSets[symbols.NT_ELEMENT])
+			}
 		case slot.EXPR0R0: // EXPR : ∙WS SUM
 
 			p.call(slot.EXPR0R1, cU, p.cI)
@@ -132,7 +145,12 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.EXPR0R2, cU, p.cI)
 		case slot.EXPR0R2: // EXPR : WS SUM ∙
 
-			p.rtn(symbols.NT_EXPR, cU, p.cI)
+			if p.follow(symbols.NT_EXPR) {
+				p.rtn(symbols.NT_EXPR, cU, p.cI)
+			} else {
+				p.parseError(slot.EXPR0R0, p.cI, followSets[symbols.NT_EXPR])
+			}
+
 		case slot.MINUS0R0: // MINUS : ∙- WS
 
 			p.bsrSet.Add(slot.MINUS0R1, cU, p.cI, p.cI+1)
@@ -145,7 +163,11 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.MINUS0R2, cU, p.cI)
 		case slot.MINUS0R2: // MINUS : - WS ∙
 
-			p.rtn(symbols.NT_MINUS, cU, p.cI)
+			if p.follow(symbols.NT_MINUS) {
+				p.rtn(symbols.NT_MINUS, cU, p.cI)
+			} else {
+				p.parseError(slot.MINUS0R0, p.cI, followSets[symbols.NT_MINUS])
+			}
 		case slot.Number0R0: // Number : ∙repNumber1x WS
 
 			p.bsrSet.Add(slot.Number0R1, cU, p.cI, p.cI+1)
@@ -158,7 +180,11 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.Number0R2, cU, p.cI)
 		case slot.Number0R2: // Number : repNumber1x WS ∙
 
-			p.rtn(symbols.NT_Number, cU, p.cI)
+			if p.follow(symbols.NT_Number) {
+				p.rtn(symbols.NT_Number, cU, p.cI)
+			} else {
+				p.parseError(slot.Number0R0, p.cI, followSets[symbols.NT_Number])
+			}
 		case slot.OPEN0R0: // OPEN : ∙( WS
 
 			p.bsrSet.Add(slot.OPEN0R1, cU, p.cI, p.cI+1)
@@ -171,7 +197,12 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.OPEN0R2, cU, p.cI)
 		case slot.OPEN0R2: // OPEN : ( WS ∙
 
-			p.rtn(symbols.NT_OPEN, cU, p.cI)
+			if p.follow(symbols.NT_OPEN) {
+				p.rtn(symbols.NT_OPEN, cU, p.cI)
+			} else {
+				p.parseError(slot.OPEN0R0, p.cI, followSets[symbols.NT_OPEN])
+			}
+
 		case slot.PLUS0R0: // PLUS : ∙+ WS
 
 			p.bsrSet.Add(slot.PLUS0R1, cU, p.cI, p.cI+1)
@@ -184,7 +215,12 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.PLUS0R2, cU, p.cI)
 		case slot.PLUS0R2: // PLUS : + WS ∙
 
-			p.rtn(symbols.NT_PLUS, cU, p.cI)
+			if p.follow(symbols.NT_PLUS) {
+				p.rtn(symbols.NT_PLUS, cU, p.cI)
+			} else {
+				p.parseError(slot.PLUS0R0, p.cI, followSets[symbols.NT_PLUS])
+			}
+
 		case slot.PLUSorMINUS0R0: // PLUSorMINUS : ∙PLUS PRODUCT
 
 			p.call(slot.PLUSorMINUS0R1, cU, p.cI)
@@ -276,7 +312,11 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.SUM0R2, cU, p.cI)
 		case slot.SUM0R2: // SUM : PRODUCT RepPLUSorMINUS0x ∙
 
-			p.rtn(symbols.NT_SUM, cU, p.cI)
+			if p.follow(symbols.NT_SUM) {
+				p.rtn(symbols.NT_SUM, cU, p.cI)
+			} else {
+				p.parseError(slot.SUM0R0, p.cI, followSets[symbols.NT_SUM])
+			}
 		case slot.TIMES0R0: // TIMES : ∙* WS
 
 			p.bsrSet.Add(slot.TIMES0R1, cU, p.cI, p.cI+1)
@@ -289,7 +329,12 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.TIMES0R2, cU, p.cI)
 		case slot.TIMES0R2: // TIMES : * WS ∙
 
-			p.rtn(symbols.NT_TIMES, cU, p.cI)
+			if p.follow(symbols.NT_TIMES) {
+				p.rtn(symbols.NT_TIMES, cU, p.cI)
+			} else {
+				p.parseError(slot.TIMES0R0, p.cI, followSets[symbols.NT_TIMES])
+			}
+
 		case slot.TIMESorDIVIDE0R0: // TIMESorDIVIDE : ∙TIMES ELEMENT
 
 			p.call(slot.TIMESorDIVIDE0R1, cU, p.cI)
@@ -317,17 +362,28 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.TIMESorDIVIDE1R2, cU, p.cI)
 		case slot.TIMESorDIVIDE1R2: // TIMESorDIVIDE : DIVIDE ELEMENT ∙
 
-			p.rtn(symbols.NT_TIMESorDIVIDE, cU, p.cI)
+			if p.follow(symbols.NT_TIMESorDIVIDE) {
+				p.rtn(symbols.NT_TIMESorDIVIDE, cU, p.cI)
+			} else {
+				p.parseError(slot.TIMESorDIVIDE1R0, p.cI, followSets[symbols.NT_TIMESorDIVIDE])
+			}
 		case slot.WS0R0: // WS : ∙sp
 
 			p.bsrSet.Add(slot.WS0R1, cU, p.cI, p.cI+1)
 			p.cI++
-			p.rtn(symbols.NT_WS, cU, p.cI)
+			if p.follow(symbols.NT_WS) {
+				p.rtn(symbols.NT_WS, cU, p.cI)
+			} else {
+				p.parseError(slot.WS0R0, p.cI, followSets[symbols.NT_WS])
+			}
 		case slot.WS1R0: // WS : ∙
 			p.bsrSet.AddEmpty(slot.WS1R0, p.cI)
 
-			p.rtn(symbols.NT_WS, cU, p.cI)
-
+			if p.follow(symbols.NT_WS) {
+				p.rtn(symbols.NT_WS, cU, p.cI)
+			} else {
+				p.parseError(slot.WS1R0, p.cI, followSets[symbols.NT_WS])
+			}
 		default:
 			panic("This must not happen")
 		}
@@ -575,13 +631,13 @@ var first = []map[token.Type]string{
 	},
 	// CLOSE : ) ∙WS
 	{
+		token.T_7: "sp",
 		token.EOF: "$",
 		token.T_1: ")",
 		token.T_2: "*",
 		token.T_3: "+",
 		token.T_4: "-",
 		token.T_5: "/",
-		token.T_7: "sp",
 	},
 	// CLOSE : ) WS ∙
 	{
@@ -598,9 +654,9 @@ var first = []map[token.Type]string{
 	},
 	// DIVIDE : / ∙WS
 	{
+		token.T_7: "sp",
 		token.T_0: "(",
 		token.T_6: "repNumber1x",
-		token.T_7: "sp",
 	},
 	// DIVIDE : / WS ∙
 	{
@@ -663,9 +719,9 @@ var first = []map[token.Type]string{
 	},
 	// MINUS : - ∙WS
 	{
+		token.T_7: "sp",
 		token.T_0: "(",
 		token.T_6: "repNumber1x",
-		token.T_7: "sp",
 	},
 	// MINUS : - WS ∙
 	{
@@ -678,13 +734,13 @@ var first = []map[token.Type]string{
 	},
 	// Number : repNumber1x ∙WS
 	{
+		token.T_7: "sp",
 		token.EOF: "$",
 		token.T_1: ")",
 		token.T_2: "*",
 		token.T_3: "+",
 		token.T_4: "-",
 		token.T_5: "/",
-		token.T_7: "sp",
 	},
 	// Number : repNumber1x WS ∙
 	{
@@ -701,9 +757,9 @@ var first = []map[token.Type]string{
 	},
 	// OPEN : ( ∙WS
 	{
+		token.T_7: "sp",
 		token.T_0: "(",
 		token.T_6: "repNumber1x",
-		token.T_7: "sp",
 	},
 	// OPEN : ( WS ∙
 	{
@@ -716,9 +772,9 @@ var first = []map[token.Type]string{
 	},
 	// PLUS : + ∙WS
 	{
+		token.T_7: "sp",
 		token.T_0: "(",
 		token.T_6: "repNumber1x",
-		token.T_7: "sp",
 	},
 	// PLUS : + WS ∙
 	{
@@ -851,9 +907,9 @@ var first = []map[token.Type]string{
 	},
 	// TIMES : * ∙WS
 	{
+		token.T_7: "sp",
 		token.T_0: "(",
 		token.T_6: "repNumber1x",
-		token.T_7: "sp",
 	},
 	// TIMES : * WS ∙
 	{

@@ -642,6 +642,11 @@ func (s *Set) FilterByOrderedChoice() {
 		for len(finished) < symbols.NumNTs {
 			for ni := 0; ni < symbols.NumNTs; ni++ {
 				nt := symbols.NT(ni)
+				// skip unordered choices
+				if !nt.IsOrdered() {
+					finished[nt] = true
+					continue
+				}
 				// skip nonterminals that are not ready yet
 				if !allFinished(nt, finished) {
 					continue

@@ -4,8 +4,8 @@ import (
 	"bytes"
 	"fmt"
 
-	"github.com/goccmack/gogll/ast"
-	"github.com/goccmack/gogll/lr1/basicprod"
+	"github.com/bruceiv/pegll/ast"
+	"github.com/bruceiv/pegll/lr1/basicprod"
 )
 
 type Items struct {

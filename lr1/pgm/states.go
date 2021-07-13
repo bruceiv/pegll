@@ -1,10 +1,10 @@
 package pgm
 
 import (
-	"github.com/goccmack/gogll/lr1/first"
-	"github.com/goccmack/gogll/lr1/items"
-	"github.com/goccmack/gogll/lr1/states"
-	"github.com/goccmack/gogll/lr1/symbolsuccessors"
+	"github.com/bruceiv/pegll/lr1/first"
+	"github.com/bruceiv/pegll/lr1/items"
+	"github.com/bruceiv/pegll/lr1/states"
+	"github.com/bruceiv/pegll/lr1/symbolsuccessors"
 )
 
 func States(symbols []string, lr0items *items.Items, first *first.First) *states.States {

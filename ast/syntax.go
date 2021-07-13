@@ -17,7 +17,9 @@ limitations under the License.
 
 package ast
 
-import "github.com/goccmack/gogll/token"
+import (
+	"github.com/bruceiv/pegll/token"
+)
 
 // The syntax part of the AST
 type SynOptional struct { //Where do we get it to connect to the '?' ????  --> similar to Lext function in lex.go??
@@ -47,13 +49,40 @@ type SyntaxSymbol interface {
 	String() string
 }
 
-//func (*SynOptional) isSyntaxSymbol() {} // I believe this gets it included in the list
 
-func (*NT) isSyntaxSymbol() {}
+// A lookahead expression
+type Lookahead struct {
+	// operator for expression
+	Op *token.Token
+	// operator subexpression. (should not be lookahead)
+	Expr SyntaxSymbol
+}
+
+func (*NT) isSyntaxSymbol()        {}
+func (*Lookahead) isSyntaxSymbol() {}
+
+//func (*SynOptional) isSyntaxSymbol() {} // I believe this gets it included in the list
 
 // Terminals
 func (*TokID) isSyntaxSymbol()     {}
 func (*StringLit) isSyntaxSymbol() {}
+
+func (e *Lookahead) Lext() int {
+	return e.Op.Lext()
+}
+
+func (e *Lookahead) ID() string {
+	return e.Op.LiteralString() + e.Expr.ID()
+}
+
+func (e *Lookahead) String() string {
+	return e.Op.LiteralString() + e.Expr.String()
+}
+
+// true for positive (&) lookahead, false for negative (!) lookahead
+func (e *Lookahead) Positive() bool {
+	return e.Op.LiteralString() == "&"
+}
 
 func (a *SyntaxAlternate) GetSymbols() []string {
 	symbols := make([]string, len(a.Symbols))
