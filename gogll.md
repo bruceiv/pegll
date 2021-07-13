@@ -171,4 +171,5 @@ SyntaxSymbols
     ;
 
 SyntaxSymbol : nt | tokid | string_lit ;
+
 ```
