@@ -71,7 +71,118 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 
 		for {
 			switch L {
-			case slot.Ident0R0: // Ident : ∙!Keyword idChar RepidChar0x
+			case slot.IdChar0R0: // IdChar : ∙i
+
+				if !p.testSelect(slot.IdChar0R0) {
+					p.parseError(slot.IdChar0R0, p.cI, first[slot.IdChar0R0])
+					L, p.cI = slot.IdChar1R0, cU
+					goto nextSlot
+				}
+				p.bsrSet.Add(slot.IdChar0R1, cU, p.cI, p.cI+1)
+				p.cI++
+				p.rtn(symbols.NT_IdChar, cU, p.cI)
+				L, p.cI = slot.IdChar1M0, cU
+				goto nextSlot
+
+			case slot.IdChar1R0: // IdChar : ∙f
+
+				if !p.testSelect(slot.IdChar1R0) {
+					p.parseError(slot.IdChar1R0, p.cI, first[slot.IdChar1R0])
+					L, p.cI = slot.IdChar2R0, cU
+					goto nextSlot
+				}
+				p.bsrSet.Add(slot.IdChar1R1, cU, p.cI, p.cI+1)
+				p.cI++
+				p.rtn(symbols.NT_IdChar, cU, p.cI)
+				L, p.cI = slot.IdChar2M0, cU
+				goto nextSlot
+			case slot.IdChar1M0: // IdChar : ∙f  [with previous match]
+
+				if !p.testSelect(slot.IdChar1R0) {
+					p.parseError(slot.IdChar1R0, p.cI, first[slot.IdChar1R0])
+					L, p.cI = slot.IdChar2M0, cU
+					goto nextSlot
+				}
+				p.bsrSet.Add(slot.IdChar1R1, cU, p.cI, p.cI+1)
+				p.cI++
+				p.rtn(symbols.NT_IdChar, cU, p.cI)
+				L, p.cI = slot.IdChar2M0, cU
+				goto nextSlot
+
+			case slot.IdChar2R0: // IdChar : ∙o
+
+				if !p.testSelect(slot.IdChar2R0) {
+					p.parseError(slot.IdChar2R0, p.cI, first[slot.IdChar2R0])
+					L, p.cI = slot.IdChar3R0, cU
+					goto nextSlot
+				}
+				p.bsrSet.Add(slot.IdChar2R1, cU, p.cI, p.cI+1)
+				p.cI++
+				p.rtn(symbols.NT_IdChar, cU, p.cI)
+				L, p.cI = slot.IdChar3M0, cU
+				goto nextSlot
+			case slot.IdChar2M0: // IdChar : ∙o  [with previous match]
+
+				if !p.testSelect(slot.IdChar2R0) {
+					p.parseError(slot.IdChar2R0, p.cI, first[slot.IdChar2R0])
+					L, p.cI = slot.IdChar3M0, cU
+					goto nextSlot
+				}
+				p.bsrSet.Add(slot.IdChar2R1, cU, p.cI, p.cI+1)
+				p.cI++
+				p.rtn(symbols.NT_IdChar, cU, p.cI)
+				L, p.cI = slot.IdChar3M0, cU
+				goto nextSlot
+
+			case slot.IdChar3R0: // IdChar : ∙r
+
+				if !p.testSelect(slot.IdChar3R0) {
+					p.parseError(slot.IdChar3R0, p.cI, first[slot.IdChar3R0])
+					L, p.cI = slot.IdChar4R0, cU
+					goto nextSlot
+				}
+				p.bsrSet.Add(slot.IdChar3R1, cU, p.cI, p.cI+1)
+				p.cI++
+				p.rtn(symbols.NT_IdChar, cU, p.cI)
+				L, p.cI = slot.IdChar4M0, cU
+				goto nextSlot
+			case slot.IdChar3M0: // IdChar : ∙r  [with previous match]
+
+				if !p.testSelect(slot.IdChar3R0) {
+					p.parseError(slot.IdChar3R0, p.cI, first[slot.IdChar3R0])
+					L, p.cI = slot.IdChar4M0, cU
+					goto nextSlot
+				}
+				p.bsrSet.Add(slot.IdChar3R1, cU, p.cI, p.cI+1)
+				p.cI++
+				p.rtn(symbols.NT_IdChar, cU, p.cI)
+				L, p.cI = slot.IdChar4M0, cU
+				goto nextSlot
+
+			case slot.IdChar4R0: // IdChar : ∙idChar
+
+				if !p.testSelect(slot.IdChar4R0) {
+					p.parseError(slot.IdChar4R0, p.cI, first[slot.IdChar4R0])
+					L, p.cI = slot.IdChar5F0, cU
+					goto nextSlot
+				}
+				p.bsrSet.Add(slot.IdChar4R1, cU, p.cI, p.cI+1)
+				p.cI++
+				p.rtn(symbols.NT_IdChar, cU, p.cI)
+
+			case slot.IdChar4M0: // IdChar : ∙idChar  [with previous match]
+
+				if !p.testSelect(slot.IdChar4R0) {
+					p.parseError(slot.IdChar4R0, p.cI, first[slot.IdChar4R0])
+
+				}
+				p.bsrSet.Add(slot.IdChar4R1, cU, p.cI, p.cI+1)
+				p.cI++
+				p.rtn(symbols.NT_IdChar, cU, p.cI)
+
+			case slot.IdChar5F0: // IdChar failure case
+				p.rtn(symbols.NT_IdChar, cU, failInd)
+			case slot.Ident0R0: // Ident : ∙!Keyword IdChar RepidChar0x
 
 				if !p.testSelect(slot.Ident0R0) {
 					p.parseError(slot.Ident0R0, p.cI, first[slot.Ident0R0])
@@ -79,22 +190,23 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 					goto nextSlot
 				}
 				p.call(slot.Ident1F0, slot.Ident0R1, symbols.NT_Keyword, cU, p.cI)
-			case slot.Ident0R1: // Ident : !Keyword ∙idChar RepidChar0x
+			case slot.Ident0R1: // Ident : !Keyword ∙IdChar RepidChar0x
 
 				if !p.testSelect(slot.Ident0R1) {
 					p.parseError(slot.Ident0R1, p.cI, first[slot.Ident0R1])
 					L, p.cI = slot.Ident1F0, cU
 					goto nextSlot
 				}
-				p.bsrSet.Add(slot.Ident0R2, cU, p.cI, p.cI+1)
-				p.cI++
+				p.call(slot.Ident0R2, slot.Ident1F0, symbols.NT_IdChar, cU, p.cI)
+			case slot.Ident0R2: // Ident : !Keyword IdChar ∙RepidChar0x
+
 				if !p.testSelect(slot.Ident0R2) {
 					p.parseError(slot.Ident0R2, p.cI, first[slot.Ident0R2])
 					L, p.cI = slot.Ident1F0, cU
 					goto nextSlot
 				}
 				p.call(slot.Ident0R3, slot.Ident1F0, symbols.NT_RepidChar0x, cU, p.cI)
-			case slot.Ident0R3: // Ident : !Keyword idChar RepidChar0x ∙
+			case slot.Ident0R3: // Ident : !Keyword IdChar RepidChar0x ∙
 
 				p.rtn(symbols.NT_Ident, cU, p.cI)
 			case slot.Ident1F0: // Ident failure case
@@ -179,22 +291,23 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 
 			case slot.Keyword2F0: // Keyword failure case
 				p.rtn(symbols.NT_Keyword, cU, failInd)
-			case slot.RepidChar0x0R0: // RepidChar0x : ∙idChar RepidChar0x
+			case slot.RepidChar0x0R0: // RepidChar0x : ∙IdChar RepidChar0x
 
 				if !p.testSelect(slot.RepidChar0x0R0) {
 					p.parseError(slot.RepidChar0x0R0, p.cI, first[slot.RepidChar0x0R0])
 					L, p.cI = slot.RepidChar0x1R0, cU
 					goto nextSlot
 				}
-				p.bsrSet.Add(slot.RepidChar0x0R1, cU, p.cI, p.cI+1)
-				p.cI++
+				p.call(slot.RepidChar0x0R1, slot.RepidChar0x1R0, symbols.NT_IdChar, cU, p.cI)
+			case slot.RepidChar0x0R1: // RepidChar0x : IdChar ∙RepidChar0x
+
 				if !p.testSelect(slot.RepidChar0x0R1) {
 					p.parseError(slot.RepidChar0x0R1, p.cI, first[slot.RepidChar0x0R1])
 					L, p.cI = slot.RepidChar0x1R0, cU
 					goto nextSlot
 				}
 				p.call(slot.RepidChar0x0R2, slot.RepidChar0x1R0, symbols.NT_RepidChar0x, cU, p.cI)
-			case slot.RepidChar0x0R2: // RepidChar0x : idChar RepidChar0x ∙
+			case slot.RepidChar0x0R2: // RepidChar0x : IdChar RepidChar0x ∙
 
 				p.rtn(symbols.NT_RepidChar0x, cU, p.cI)
 			case slot.RepidChar0x1R0: // RepidChar0x : ∙
@@ -449,20 +562,122 @@ func (p *parser) testSelect(l slot.Label) bool {
 }
 
 var first = []map[token.Type]string{
-	// Ident : ∙!Keyword idChar RepidChar0x
+	// IdChar : ∙i
 	{
-		token.T_2: "idChar",
+		token.T_1: "i",
 	},
-	// Ident : !Keyword ∙idChar RepidChar0x
-	{
-		token.T_2: "idChar",
-	},
-	// Ident : !Keyword idChar ∙RepidChar0x
+	// IdChar : i ∙
 	{
 		token.EOF: "$",
+		token.T_0: "f",
+		token.T_1: "i",
+		token.T_2: "idChar",
+		token.T_3: "o",
+		token.T_4: "r",
+	},
+	// IdChar : ∙f
+	{
+		token.T_0: "f",
+	},
+	// IdChar : ∙f
+	{
+		token.T_0: "f",
+	},
+	// IdChar : f ∙
+	{
+		token.EOF: "$",
+		token.T_0: "f",
+		token.T_1: "i",
+		token.T_2: "idChar",
+		token.T_3: "o",
+		token.T_4: "r",
+	},
+	// IdChar : ∙o
+	{
+		token.T_3: "o",
+	},
+	// IdChar : ∙o
+	{
+		token.T_3: "o",
+	},
+	// IdChar : o ∙
+	{
+		token.EOF: "$",
+		token.T_0: "f",
+		token.T_1: "i",
+		token.T_2: "idChar",
+		token.T_3: "o",
+		token.T_4: "r",
+	},
+	// IdChar : ∙r
+	{
+		token.T_4: "r",
+	},
+	// IdChar : ∙r
+	{
+		token.T_4: "r",
+	},
+	// IdChar : r ∙
+	{
+		token.EOF: "$",
+		token.T_0: "f",
+		token.T_1: "i",
+		token.T_2: "idChar",
+		token.T_3: "o",
+		token.T_4: "r",
+	},
+	// IdChar : ∙idChar
+	{
 		token.T_2: "idChar",
 	},
-	// Ident : !Keyword idChar RepidChar0x ∙
+	// IdChar : ∙idChar
+	{
+		token.T_2: "idChar",
+	},
+	// IdChar : idChar ∙
+	{
+		token.EOF: "$",
+		token.T_0: "f",
+		token.T_1: "i",
+		token.T_2: "idChar",
+		token.T_3: "o",
+		token.T_4: "r",
+	},
+	// IdChar : ∙
+	{
+		token.EOF: "$",
+		token.T_0: "f",
+		token.T_1: "i",
+		token.T_2: "idChar",
+		token.T_3: "o",
+		token.T_4: "r",
+	},
+	// Ident : ∙!Keyword IdChar RepidChar0x
+	{
+		token.T_0: "f",
+		token.T_1: "i",
+		token.T_2: "idChar",
+		token.T_3: "o",
+		token.T_4: "r",
+	},
+	// Ident : !Keyword ∙IdChar RepidChar0x
+	{
+		token.T_0: "f",
+		token.T_1: "i",
+		token.T_2: "idChar",
+		token.T_3: "o",
+		token.T_4: "r",
+	},
+	// Ident : !Keyword IdChar ∙RepidChar0x
+	{
+		token.EOF: "$",
+		token.T_0: "f",
+		token.T_1: "i",
+		token.T_2: "idChar",
+		token.T_3: "o",
+		token.T_4: "r",
+	},
+	// Ident : !Keyword IdChar RepidChar0x ∙
 	{
 		token.EOF: "$",
 	},
@@ -506,16 +721,24 @@ var first = []map[token.Type]string{
 	{
 		token.EOF: "$",
 	},
-	// RepidChar0x : ∙idChar RepidChar0x
+	// RepidChar0x : ∙IdChar RepidChar0x
 	{
+		token.T_0: "f",
+		token.T_1: "i",
 		token.T_2: "idChar",
+		token.T_3: "o",
+		token.T_4: "r",
 	},
-	// RepidChar0x : idChar ∙RepidChar0x
+	// RepidChar0x : IdChar ∙RepidChar0x
 	{
 		token.EOF: "$",
+		token.T_0: "f",
+		token.T_1: "i",
 		token.T_2: "idChar",
+		token.T_3: "o",
+		token.T_4: "r",
 	},
-	// RepidChar0x : idChar RepidChar0x ∙
+	// RepidChar0x : IdChar RepidChar0x ∙
 	{
 		token.EOF: "$",
 	},
@@ -526,6 +749,15 @@ var first = []map[token.Type]string{
 }
 
 var followSets = []map[token.Type]string{
+	// IdChar
+	{
+		token.EOF: "$",
+		token.T_0: "f",
+		token.T_1: "i",
+		token.T_2: "idChar",
+		token.T_3: "o",
+		token.T_4: "r",
+	},
 	// Ident
 	{
 		token.EOF: "$",

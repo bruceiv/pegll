@@ -13,7 +13,22 @@ import(
 type Label int
 
 const(
-	Ident0R0 Label = iota
+	IdChar0R0 Label = iota
+	IdChar0R1
+	IdChar1M0
+	IdChar1R0
+	IdChar1R1
+	IdChar2M0
+	IdChar2R0
+	IdChar2R1
+	IdChar3M0
+	IdChar3R0
+	IdChar3R1
+	IdChar4M0
+	IdChar4R0
+	IdChar4R1
+	IdChar5F0
+	Ident0R0
 	Ident0R1
 	Ident0R2
 	Ident0R3
@@ -142,11 +157,115 @@ func (s *Slot) String() string {
 }
 
 var slots = map[Label]*Slot{ 
+	IdChar0R0: {
+		symbols.NT_IdChar, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_1,
+		}, 
+		IdChar0R0, 
+	},
+	IdChar0R1: {
+		symbols.NT_IdChar, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_1,
+		}, 
+		IdChar0R1, 
+	},
+	IdChar1M0: {
+		symbols.NT_IdChar, 1, 0, 
+		symbols.Symbols{  
+			symbols.T_0,
+		}, 
+		IdChar1M0, 
+	},
+	IdChar1R0: {
+		symbols.NT_IdChar, 1, 0, 
+		symbols.Symbols{  
+			symbols.T_0,
+		}, 
+		IdChar1R0, 
+	},
+	IdChar1R1: {
+		symbols.NT_IdChar, 1, 1, 
+		symbols.Symbols{  
+			symbols.T_0,
+		}, 
+		IdChar1R1, 
+	},
+	IdChar2M0: {
+		symbols.NT_IdChar, 2, 0, 
+		symbols.Symbols{  
+			symbols.T_3,
+		}, 
+		IdChar2M0, 
+	},
+	IdChar2R0: {
+		symbols.NT_IdChar, 2, 0, 
+		symbols.Symbols{  
+			symbols.T_3,
+		}, 
+		IdChar2R0, 
+	},
+	IdChar2R1: {
+		symbols.NT_IdChar, 2, 1, 
+		symbols.Symbols{  
+			symbols.T_3,
+		}, 
+		IdChar2R1, 
+	},
+	IdChar3M0: {
+		symbols.NT_IdChar, 3, 0, 
+		symbols.Symbols{  
+			symbols.T_4,
+		}, 
+		IdChar3M0, 
+	},
+	IdChar3R0: {
+		symbols.NT_IdChar, 3, 0, 
+		symbols.Symbols{  
+			symbols.T_4,
+		}, 
+		IdChar3R0, 
+	},
+	IdChar3R1: {
+		symbols.NT_IdChar, 3, 1, 
+		symbols.Symbols{  
+			symbols.T_4,
+		}, 
+		IdChar3R1, 
+	},
+	IdChar4M0: {
+		symbols.NT_IdChar, 4, 0, 
+		symbols.Symbols{  
+			symbols.T_2,
+		}, 
+		IdChar4M0, 
+	},
+	IdChar4R0: {
+		symbols.NT_IdChar, 4, 0, 
+		symbols.Symbols{  
+			symbols.T_2,
+		}, 
+		IdChar4R0, 
+	},
+	IdChar4R1: {
+		symbols.NT_IdChar, 4, 1, 
+		symbols.Symbols{  
+			symbols.T_2,
+		}, 
+		IdChar4R1, 
+	},
+	IdChar5F0: {
+		symbols.NT_IdChar, 5, 0, 
+		symbols.Symbols{ 
+		}, 
+		IdChar5F0, 
+	},
 	Ident0R0: {
 		symbols.NT_Ident, 0, 0, 
 		symbols.Symbols{  
 			symbols.LN_NT_Keyword, 
-			symbols.T_2, 
+			symbols.NT_IdChar, 
 			symbols.NT_RepidChar0x,
 		}, 
 		Ident0R0, 
@@ -155,7 +274,7 @@ var slots = map[Label]*Slot{
 		symbols.NT_Ident, 0, 1, 
 		symbols.Symbols{  
 			symbols.LN_NT_Keyword, 
-			symbols.T_2, 
+			symbols.NT_IdChar, 
 			symbols.NT_RepidChar0x,
 		}, 
 		Ident0R1, 
@@ -164,7 +283,7 @@ var slots = map[Label]*Slot{
 		symbols.NT_Ident, 0, 2, 
 		symbols.Symbols{  
 			symbols.LN_NT_Keyword, 
-			symbols.T_2, 
+			symbols.NT_IdChar, 
 			symbols.NT_RepidChar0x,
 		}, 
 		Ident0R2, 
@@ -173,7 +292,7 @@ var slots = map[Label]*Slot{
 		symbols.NT_Ident, 0, 3, 
 		symbols.Symbols{  
 			symbols.LN_NT_Keyword, 
-			symbols.T_2, 
+			symbols.NT_IdChar, 
 			symbols.NT_RepidChar0x,
 		}, 
 		Ident0R3, 
@@ -262,7 +381,7 @@ var slots = map[Label]*Slot{
 	RepidChar0x0R0: {
 		symbols.NT_RepidChar0x, 0, 0, 
 		symbols.Symbols{  
-			symbols.T_2, 
+			symbols.NT_IdChar, 
 			symbols.NT_RepidChar0x,
 		}, 
 		RepidChar0x0R0, 
@@ -270,7 +389,7 @@ var slots = map[Label]*Slot{
 	RepidChar0x0R1: {
 		symbols.NT_RepidChar0x, 0, 1, 
 		symbols.Symbols{  
-			symbols.T_2, 
+			symbols.NT_IdChar, 
 			symbols.NT_RepidChar0x,
 		}, 
 		RepidChar0x0R1, 
@@ -278,7 +397,7 @@ var slots = map[Label]*Slot{
 	RepidChar0x0R2: {
 		symbols.NT_RepidChar0x, 0, 2, 
 		symbols.Symbols{  
-			symbols.T_2, 
+			symbols.NT_IdChar, 
 			symbols.NT_RepidChar0x,
 		}, 
 		RepidChar0x0R2, 
@@ -292,6 +411,21 @@ var slots = map[Label]*Slot{
 }
 
 var slotIndex = map[Index]Label { 
+	Index{ symbols.NT_IdChar,0,0 }: IdChar0R0,
+	Index{ symbols.NT_IdChar,0,1 }: IdChar0R1,
+	Index{ symbols.NT_IdChar,1,0 }: IdChar1M0,
+	Index{ symbols.NT_IdChar,1,0 }: IdChar1R0,
+	Index{ symbols.NT_IdChar,1,1 }: IdChar1R1,
+	Index{ symbols.NT_IdChar,2,0 }: IdChar2M0,
+	Index{ symbols.NT_IdChar,2,0 }: IdChar2R0,
+	Index{ symbols.NT_IdChar,2,1 }: IdChar2R1,
+	Index{ symbols.NT_IdChar,3,0 }: IdChar3M0,
+	Index{ symbols.NT_IdChar,3,0 }: IdChar3R0,
+	Index{ symbols.NT_IdChar,3,1 }: IdChar3R1,
+	Index{ symbols.NT_IdChar,4,0 }: IdChar4M0,
+	Index{ symbols.NT_IdChar,4,0 }: IdChar4R0,
+	Index{ symbols.NT_IdChar,4,1 }: IdChar4R1,
+	Index{ symbols.NT_IdChar,5,0 }: IdChar5F0,
 	Index{ symbols.NT_Ident,0,0 }: Ident0R0,
 	Index{ symbols.NT_Ident,0,1 }: Ident0R1,
 	Index{ symbols.NT_Ident,0,2 }: Ident0R2,
@@ -315,10 +449,26 @@ var slotIndex = map[Index]Label {
 var alternates = map[symbols.NT][]Label{ 
 	symbols.NT_Ident:[]Label{ Ident0R0 },
 	symbols.NT_Keyword:[]Label{ Keyword0R0,Keyword1R0 },
+	symbols.NT_IdChar:[]Label{ IdChar0R0,IdChar1R0,IdChar2R0,IdChar3R0,IdChar4R0 },
 	symbols.NT_RepidChar0x:[]Label{ RepidChar0x0R0,RepidChar0x1R0 },
 }
 
 var nullable = []bool { 
+	false, // IdChar0R0 
+	true, // IdChar0R1 
+	false, // IdChar1M0 
+	false, // IdChar1R0 
+	true, // IdChar1R1 
+	false, // IdChar2M0 
+	false, // IdChar2R0 
+	true, // IdChar2R1 
+	false, // IdChar3M0 
+	false, // IdChar3R0 
+	true, // IdChar3R1 
+	false, // IdChar4M0 
+	false, // IdChar4R0 
+	true, // IdChar4R1 
+	false, // IdChar5F0 
 	false, // Ident0R0 
 	false, // Ident0R1 
 	true, // Ident0R2 
@@ -340,9 +490,24 @@ var nullable = []bool {
 }
 
 var firstT = []map[token.Type]bool { 
-	{  token.T_2: true,  }, // Ident0R0 
-	{  token.T_2: true,  }, // Ident0R1 
-	{  token.T_2: true,  }, // Ident0R2 
+	{  token.T_1: true,  }, // IdChar0R0 
+	{  }, // IdChar0R1 
+	{  token.T_0: true,  }, // IdChar1M0 
+	{  token.T_0: true,  }, // IdChar1R0 
+	{  }, // IdChar1R1 
+	{  token.T_3: true,  }, // IdChar2M0 
+	{  token.T_3: true,  }, // IdChar2R0 
+	{  }, // IdChar2R1 
+	{  token.T_4: true,  }, // IdChar3M0 
+	{  token.T_4: true,  }, // IdChar3R0 
+	{  }, // IdChar3R1 
+	{  token.T_2: true,  }, // IdChar4M0 
+	{  token.T_2: true,  }, // IdChar4R0 
+	{  }, // IdChar4R1 
+	{  }, // IdChar5F0 
+	{  token.T_1: true,  token.T_0: true,  token.T_3: true,  token.T_4: true,  token.T_2: true,  }, // Ident0R0 
+	{  token.T_0: true,  token.T_3: true,  token.T_4: true,  token.T_2: true,  token.T_1: true,  }, // Ident0R1 
+	{  token.T_2: true,  token.T_1: true,  token.T_0: true,  token.T_3: true,  token.T_4: true,  }, // Ident0R2 
 	{  }, // Ident0R3 
 	{  }, // Ident1F0 
 	{  token.T_1: true,  }, // Keyword0R0 
@@ -354,8 +519,8 @@ var firstT = []map[token.Type]bool {
 	{  token.T_4: true,  }, // Keyword1R2 
 	{  }, // Keyword1R3 
 	{  }, // Keyword2F0 
-	{  token.T_2: true,  }, // RepidChar0x0R0 
-	{  token.T_2: true,  }, // RepidChar0x0R1 
+	{  token.T_1: true,  token.T_0: true,  token.T_3: true,  token.T_4: true,  token.T_2: true,  }, // RepidChar0x0R0 
+	{  token.T_4: true,  token.T_2: true,  token.T_1: true,  token.T_0: true,  token.T_3: true,  }, // RepidChar0x0R1 
 	{  }, // RepidChar0x0R2 
 	{  }, // RepidChar0x1R0 
 }

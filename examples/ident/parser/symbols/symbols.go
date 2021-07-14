@@ -16,12 +16,13 @@ func (L) isSymbol() {}
 // NT is the type of non-terminals symbols
 type NT int
 const( 
-	NT_Ident NT = iota
+	NT_IdChar NT = iota
+	NT_Ident 
 	NT_Keyword 
 	NT_RepidChar0x 
 )
 
-const NumNTs = 3
+const NumNTs = 4
 
 type NTs []NT
 
@@ -128,6 +129,7 @@ func (lk L) ArgSymbol() Symbol {
 }
 
 var ntToString = []string { 
+	"IdChar", /* NT_IdChar */
 	"Ident", /* NT_Ident */
 	"Keyword", /* NT_Keyword */
 	"RepidChar0x", /* NT_RepidChar0x */ 
@@ -142,15 +144,17 @@ var tToString = []string {
 }
 
 var stringNT = map[string]NT{ 
+	"IdChar":NT_IdChar,
 	"Ident":NT_Ident,
 	"Keyword":NT_Keyword,
 	"RepidChar0x":NT_RepidChar0x,
 }
 
 var leftRec = map[NT]NTs { 
-	NT_Ident: NTs {  NT_Keyword,  },
+	NT_IdChar: NTs {  },
+	NT_Ident: NTs {  NT_IdChar,  NT_Keyword,  },
 	NT_Keyword: NTs {  },
-	NT_RepidChar0x: NTs {  },
+	NT_RepidChar0x: NTs {  NT_IdChar,  },
 }
 
 var ordered = map[NT]bool { 
