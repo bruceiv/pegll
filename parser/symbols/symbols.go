@@ -28,6 +28,7 @@ const(
 	NT_RegExp 
 	NT_Rule 
 	NT_Rules 
+	NT_SynOptional 
 	NT_SyntaxAlternate 
 	NT_SyntaxAlternates 
 	NT_SyntaxAtom 
@@ -38,7 +39,7 @@ const(
 	NT_UnorderedAlternates 
 )
 
-const NumNTs = 22
+const NumNTs = 23
 
 type NTs []NT
 
@@ -55,23 +56,24 @@ const(
 	T_7  // ; 
 	T_8  // < 
 	T_9  // > 
-	T_10  // [ 
-	T_11  // ] 
-	T_12  // any 
-	T_13  // char_lit 
-	T_14  // empty 
-	T_15  // letter 
-	T_16  // lowcase 
-	T_17  // not 
-	T_18  // nt 
-	T_19  // number 
-	T_20  // package 
-	T_21  // string_lit 
-	T_22  // tokid 
-	T_23  // upcase 
-	T_24  // { 
-	T_25  // | 
-	T_26  // } 
+	T_10  // ? 
+	T_11  // [ 
+	T_12  // ] 
+	T_13  // any 
+	T_14  // char_lit 
+	T_15  // empty 
+	T_16  // letter 
+	T_17  // lowcase 
+	T_18  // not 
+	T_19  // nt 
+	T_20  // number 
+	T_21  // package 
+	T_22  // string_lit 
+	T_23  // tokid 
+	T_24  // upcase 
+	T_25  // { 
+	T_26  // | 
+	T_27  // } 
 )
 
 type Symbols []Symbol
@@ -104,10 +106,6 @@ func (nt NT) LeftRec() NTs {
 	return leftRec[nt]
 }
 
-func (nt NT) IsOrdered() bool {
-	return ordered[nt]
-}
-
 var ntToString = []string { 
 	"GoGLL", /* NT_GoGLL */
 	"LexAlternates", /* NT_LexAlternates */
@@ -123,6 +121,7 @@ var ntToString = []string {
 	"RegExp", /* NT_RegExp */
 	"Rule", /* NT_Rule */
 	"Rules", /* NT_Rules */
+	"SynOptional", /* NT_SynOptional */
 	"SyntaxAlternate", /* NT_SyntaxAlternate */
 	"SyntaxAlternates", /* NT_SyntaxAlternates */
 	"SyntaxAtom", /* NT_SyntaxAtom */
@@ -144,23 +143,24 @@ var tToString = []string {
 	";", /* T_7 */
 	"<", /* T_8 */
 	">", /* T_9 */
-	"[", /* T_10 */
-	"]", /* T_11 */
-	"any", /* T_12 */
-	"char_lit", /* T_13 */
-	"empty", /* T_14 */
-	"letter", /* T_15 */
-	"lowcase", /* T_16 */
-	"not", /* T_17 */
-	"nt", /* T_18 */
-	"number", /* T_19 */
-	"package", /* T_20 */
-	"string_lit", /* T_21 */
-	"tokid", /* T_22 */
-	"upcase", /* T_23 */
-	"{", /* T_24 */
-	"|", /* T_25 */
-	"}", /* T_26 */ 
+	"?", /* T_10 */
+	"[", /* T_11 */
+	"]", /* T_12 */
+	"any", /* T_13 */
+	"char_lit", /* T_14 */
+	"empty", /* T_15 */
+	"letter", /* T_16 */
+	"lowcase", /* T_17 */
+	"not", /* T_18 */
+	"nt", /* T_19 */
+	"number", /* T_20 */
+	"package", /* T_21 */
+	"string_lit", /* T_22 */
+	"tokid", /* T_23 */
+	"upcase", /* T_24 */
+	"{", /* T_25 */
+	"|", /* T_26 */
+	"}", /* T_27 */ 
 }
 
 var stringNT = map[string]NT{ 
@@ -178,6 +178,7 @@ var stringNT = map[string]NT{
 	"RegExp":NT_RegExp,
 	"Rule":NT_Rule,
 	"Rules":NT_Rules,
+	"SynOptional":NT_SynOptional,
 	"SyntaxAlternate":NT_SyntaxAlternate,
 	"SyntaxAlternates":NT_SyntaxAlternates,
 	"SyntaxAtom":NT_SyntaxAtom,
@@ -190,28 +191,26 @@ var stringNT = map[string]NT{
 
 var leftRec = map[NT]NTs { 
 	NT_GoGLL: NTs {  NT_Package,  },
-	NT_LexAlternates: NTs {  NT_LexBracket,  NT_LexGroup,  NT_LexOptional,  NT_LexZeroOrMore,  NT_LexOneOrMore,  NT_RegExp,  NT_UnicodeClass,  NT_LexSymbol,  },
+	NT_LexAlternates: NTs {  NT_RegExp,  NT_LexOptional,  NT_LexZeroOrMore,  NT_LexOneOrMore,  NT_LexGroup,  NT_UnicodeClass,  NT_LexSymbol,  NT_LexBracket,  },
 	NT_LexBracket: NTs {  NT_LexGroup,  NT_LexOptional,  NT_LexZeroOrMore,  NT_LexOneOrMore,  },
 	NT_LexGroup: NTs {  },
 	NT_LexOneOrMore: NTs {  },
 	NT_LexOptional: NTs {  },
 	NT_LexRule: NTs {  },
-	NT_LexSymbol: NTs {  NT_LexBracket,  NT_LexGroup,  NT_LexOptional,  NT_LexZeroOrMore,  NT_LexOneOrMore,  NT_UnicodeClass,  },
+	NT_LexSymbol: NTs {  NT_LexGroup,  NT_UnicodeClass,  NT_LexBracket,  NT_LexOptional,  NT_LexZeroOrMore,  NT_LexOneOrMore,  },
 	NT_LexZeroOrMore: NTs {  },
-	NT_OrderedAlternates: NTs {  NT_SyntaxAtom,  NT_SyntaxAlternate,  NT_SyntaxSymbols,  NT_SyntaxSymbol,  },
+	NT_OrderedAlternates: NTs {  NT_SyntaxSymbol,  NT_SyntaxAtom,  NT_SynOptional,  NT_SyntaxAlternate,  NT_SyntaxSymbols,  },
 	NT_Package: NTs {  },
-	NT_RegExp: NTs {  NT_LexSymbol,  NT_LexBracket,  NT_LexGroup,  NT_LexOptional,  NT_LexZeroOrMore,  NT_LexOneOrMore,  NT_UnicodeClass,  },
+	NT_RegExp: NTs {  NT_LexOptional,  NT_LexZeroOrMore,  NT_LexOneOrMore,  NT_LexGroup,  NT_UnicodeClass,  NT_LexSymbol,  NT_LexBracket,  },
 	NT_Rule: NTs {  NT_LexRule,  NT_SyntaxRule,  },
 	NT_Rules: NTs {  NT_SyntaxRule,  NT_Rule,  NT_LexRule,  },
-	NT_SyntaxAlternate: NTs {  NT_SyntaxSymbols,  NT_SyntaxSymbol,  NT_SyntaxAtom,  },
-	NT_SyntaxAlternates: NTs {  NT_SyntaxAtom,  NT_SyntaxAlternate,  NT_SyntaxSymbols,  NT_SyntaxSymbol,  },
+	NT_SynOptional: NTs {  NT_SyntaxAtom,  },
+	NT_SyntaxAlternate: NTs {  NT_SyntaxSymbols,  NT_SyntaxSymbol,  NT_SyntaxAtom,  NT_SynOptional,  },
+	NT_SyntaxAlternates: NTs {  NT_SyntaxAlternate,  NT_SyntaxSymbol,  NT_SyntaxAtom,  NT_SynOptional,  NT_SyntaxSymbols,  },
 	NT_SyntaxAtom: NTs {  },
 	NT_SyntaxRule: NTs {  },
-	NT_SyntaxSymbol: NTs {  NT_SyntaxAtom,  },
-	NT_SyntaxSymbols: NTs {  NT_SyntaxAtom,  NT_SyntaxSymbol,  },
+	NT_SyntaxSymbol: NTs {  NT_SyntaxAtom,  NT_SynOptional,  },
+	NT_SyntaxSymbols: NTs {  NT_SyntaxSymbol,  NT_SyntaxAtom,  NT_SynOptional,  },
 	NT_UnicodeClass: NTs {  },
-	NT_UnorderedAlternates: NTs {  NT_SyntaxSymbol,  NT_SyntaxAtom,  NT_SyntaxSymbols,  NT_SyntaxAlternate,  },
-}
-
-var ordered = map[NT]bool { 
+	NT_UnorderedAlternates: NTs {  NT_SyntaxSymbol,  NT_SyntaxAtom,  NT_SynOptional,  NT_SyntaxAlternate,  NT_SyntaxSymbols,  },
 }

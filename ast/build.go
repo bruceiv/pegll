@@ -268,6 +268,7 @@ func (bld *builder) lexGroup(b bsr.BSR) *LexBracket {
 	}
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////////
 // LexOptional : "[" LexAlternates "]" ;
 func (bld *builder) lexOptional(b bsr.BSR) *LexBracket {
 	return &LexBracket{
@@ -276,6 +277,8 @@ func (bld *builder) lexOptional(b bsr.BSR) *LexBracket {
 		Alternates:  bld.lexAlternates(b.GetNTChildI(1)),
 	}
 }
+
+////////////////////////////////////////////////////////////////////////////////////////////////
 
 // LexZeroOrMore : "{" LexAlternates "}" ;
 func (bld *builder) lexZeroOrMore(b bsr.BSR) *LexBracket {
@@ -334,12 +337,27 @@ func (bld *builder) unicodeClass(b bsr.BSR) *UnicodeClass {
 
 /*** Syntax Rules ***/
 
-// SynOptional : SyntaxAtom "?"
-func (bld *builder) synOptional(b bsr.BSR) *SynOptional {
-	return &SynOptional{
-		tok:        b.GetTChildI(1),  // ?
-		Alternates: b.GetNTChildI(0), // rule
-	}
+// SynOptional : SyntaxAtom "?" ;
+/*
+Rule : Opt_rule? ;
+Rule_alt : Opt_rule?
+		/ Other_rule ;
+Rule_right : ( Opt_rule
+		   / empty )
+		   / Other_rule ;
+*/
+func (bld *builder) synOptional(b bsr.BSR) SyntaxSymbol {
+	/* return SynOptional{
+		Tok:  b.GetTChildI(1),            // "?"
+		Expr: bld.atom(b.GetNTChildI(0)), // rule
+	} */
+	expr :=  []*SyntaxSymbol
+	expr = bld.atom(b.GetNTChildI(0))
+	expr = append(expr, &SyntaxAlternate{})
+	return 
+	// return bld.atom() + (pipe empty node)
+	//// rule?
+	//// rule / empty
 }
 
 // SyntaxAlternate
@@ -358,7 +376,6 @@ func (bld *builder) syntaxAlternate(b bsr.BSR) *SyntaxAlternate {
 //     :   SyntaxAlternate
 //     |   SyntaxAlternate "|" UnorderedAlternates
 //     |   SyntaxAlternate "/" OrderedAlternates
-/*     |   SynOptional                          */
 //     ;
 // (boolean is true if an ordered alternate list)
 func (bld *builder) syntaxAlternates(b bsr.BSR) ([]*SyntaxAlternate, bool) {
@@ -372,7 +389,7 @@ func (bld *builder) syntaxAlternates(b bsr.BSR) ([]*SyntaxAlternate, bool) {
 		return append(alts, bld.unorderedAlternates(b.GetNTChild(symbols.NT_UnorderedAlternates, 0))...), false
 	case 2:
 		return append(alts, bld.orderedAlternates(b.GetNTChild(symbols.NT_OrderedAlternates, 0))...), true
-	} //Add SynOptional??
+	}
 	panic("invalid SyntaxAlternates")
 }
 
@@ -418,6 +435,7 @@ func (bld *builder) syntaxRule(b bsr.BSR) brule {
 //     : "&" SyntaxAtom
 //     | "!" SyntaxAtom
 //     | SyntaxAtom
+//	   | SynOptional
 //     ;
 func (bld *builder) symbol(b bsr.BSR) SyntaxSymbol {
 	switch b.Alternate() {
@@ -428,10 +446,13 @@ func (bld *builder) symbol(b bsr.BSR) SyntaxSymbol {
 		}
 	case 2:
 		return bld.atom(b.GetNTChildI(0))
+	case 3:
+		return bld.synOptional(b.GetNTChildI(0))
 	}
 	panic(fmt.Sprintf("invalid alternate %d", b.Alternate()))
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////////
 // SyntaxAtom : nt | tokid | string_lit ;
 func (bld *builder) atom(b bsr.BSR) SyntaxSymbol {
 	switch b.Alternate() {
@@ -444,6 +465,7 @@ func (bld *builder) atom(b bsr.BSR) SyntaxSymbol {
 	}
 	panic(fmt.Sprintf("invalid alternate %d", b.Alternate()))
 }
+////////////////////////////////////////////////////////////////////////////////////////////////
 
 // SyntaxSymbols
 //     :   SyntaxSymbol

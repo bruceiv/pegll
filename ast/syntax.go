@@ -23,8 +23,8 @@ import (
 
 // The syntax part of the AST
 type SynOptional struct { //Where do we get it to connect to the '?' ????  --> similar to Lext function in lex.go??
-	tok        *token.Token       //I think contains the ?
-	Alternates []*SyntaxAlternate //Contains the rule that is being made optional (we think)
+	Tok  *token.Token //I think contains the ?
+	Expr SyntaxSymbol //Contains the rule that is being made optional (we think)
 }
 
 type SyntaxAlternate struct {
@@ -49,7 +49,6 @@ type SyntaxSymbol interface {
 	String() string
 }
 
-
 // A lookahead expression
 type Lookahead struct {
 	// operator for expression
@@ -61,8 +60,21 @@ type Lookahead struct {
 func (*NT) isSyntaxSymbol()        {}
 func (*Lookahead) isSyntaxSymbol() {}
 
-//func (*SynOptional) isSyntaxSymbol() {} // I believe this gets it included in the list
+////////////////////////////////////////////////////////////////////////////////////////////////
+func (*SynOptional) isSyntaxSymbol() {}
 
+
+func (opt *SynOptional) Lext() int {
+	return opt.Tok.Lext()
+}
+func (opt *SynOptional) ID() string {
+	return opt.Tok.LiteralString() + opt.Expr.ID()
+}
+func (opt *SynOptional) String() string {
+	return opt.Tok.LiteralString() + opt.Expr.String()
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////
 // Terminals
 func (*TokID) isSyntaxSymbol()     {}
 func (*StringLit) isSyntaxSymbol() {}

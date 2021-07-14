@@ -182,7 +182,17 @@ SyntaxSymbol
     : "&" SyntaxAtom
     | "!" SyntaxAtom
     | SyntaxAtom
+    | SynOptional
     ;
 
 SyntaxAtom : nt | tokid | string_lit ;
+```
+
+A `SynOptional` is a syntax rule that is made optional (match 0 or 1 times) by a suffixed question mark operator `?`. `SynOptional` is a `SyntaxSymbol`. 
+May eventually be adapted to include other suffix syntax operators. 
+
+```
+
+SynOptional : SyntaxAtom "?" ;
+
 ```
