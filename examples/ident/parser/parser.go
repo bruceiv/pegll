@@ -57,16 +57,6 @@ func Parse(l *lexer.Lexer) (*bsr.Set, []*Error) {
 	return newParser(l).parse()
 }
 
-const lastSlot slot.Label = 14
-
-const (
-	_ slot.Label = iota + lastSlot
-
-	fail_Ident
-	fail_Keyword
-	pass_Keyword1R0
-)
-
 func (p *parser) parse() (*bsr.Set, []*Error) {
 	var L slot.Label
 	m, cU := len(p.lex.Tokens)-1, 0
@@ -85,29 +75,29 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 
 				if !p.testSelect(slot.Ident0R0) {
 					p.parseError(slot.Ident0R0, p.cI, first[slot.Ident0R0])
-					L, p.cI = fail_Ident, cU
+					L, p.cI = slot.Ident1F0, cU
 					goto nextSlot
 				}
-				p.call(fail_Ident, slot.Ident0R1, symbols.NT_Keyword, cU, p.cI)
+				p.call(slot.Ident1F0, slot.Ident0R1, symbols.NT_Keyword, cU, p.cI)
 			case slot.Ident0R1: // Ident : !Keyword ∙idChar RepidChar0x
 
 				if !p.testSelect(slot.Ident0R1) {
 					p.parseError(slot.Ident0R1, p.cI, first[slot.Ident0R1])
-					L, p.cI = fail_Ident, cU
+					L, p.cI = slot.Ident1F0, cU
 					goto nextSlot
 				}
 				p.bsrSet.Add(slot.Ident0R2, cU, p.cI, p.cI+1)
 				p.cI++
 				if !p.testSelect(slot.Ident0R2) {
 					p.parseError(slot.Ident0R2, p.cI, first[slot.Ident0R2])
-					L, p.cI = fail_Ident, cU
+					L, p.cI = slot.Ident1F0, cU
 					goto nextSlot
 				}
-				p.call(slot.Ident0R3, fail_Ident, symbols.NT_RepidChar0x, cU, p.cI)
+				p.call(slot.Ident0R3, slot.Ident1F0, symbols.NT_RepidChar0x, cU, p.cI)
 			case slot.Ident0R3: // Ident : !Keyword idChar RepidChar0x ∙
 
 				p.rtn(symbols.NT_Ident, cU, p.cI)
-			case fail_Ident: // Ident failure case
+			case slot.Ident1F0: // Ident failure case
 				p.rtn(symbols.NT_Ident, cU, failInd)
 			case slot.Keyword0R0: // Keyword : ∙i f
 
@@ -119,7 +109,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 				p.bsrSet.Add(slot.Keyword0R1, cU, p.cI, p.cI+1)
 				p.cI++
 				p.rtn(symbols.NT_Keyword, cU, p.cI)
-				L, p.cI = pass_Keyword1R0, cU
+				L, p.cI = slot.Keyword1M0, cU
 				goto nextSlot
 				if !p.testSelect(slot.Keyword0R1) {
 					p.parseError(slot.Keyword0R1, p.cI, first[slot.Keyword0R1])
@@ -129,14 +119,14 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 				p.bsrSet.Add(slot.Keyword0R2, cU, p.cI, p.cI+1)
 				p.cI++
 				p.rtn(symbols.NT_Keyword, cU, p.cI)
-				L, p.cI = pass_Keyword1R0, cU
+				L, p.cI = slot.Keyword1M0, cU
 				goto nextSlot
 
 			case slot.Keyword1R0: // Keyword : ∙f o r
 
 				if !p.testSelect(slot.Keyword1R0) {
 					p.parseError(slot.Keyword1R0, p.cI, first[slot.Keyword1R0])
-					L, p.cI = fail_Keyword, cU
+					L, p.cI = slot.Keyword2F0, cU
 					goto nextSlot
 				}
 				p.bsrSet.Add(slot.Keyword1R1, cU, p.cI, p.cI+1)
@@ -145,7 +135,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 
 				if !p.testSelect(slot.Keyword1R1) {
 					p.parseError(slot.Keyword1R1, p.cI, first[slot.Keyword1R1])
-					L, p.cI = fail_Keyword, cU
+					L, p.cI = slot.Keyword2F0, cU
 					goto nextSlot
 				}
 				p.bsrSet.Add(slot.Keyword1R2, cU, p.cI, p.cI+1)
@@ -154,14 +144,14 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 
 				if !p.testSelect(slot.Keyword1R2) {
 					p.parseError(slot.Keyword1R2, p.cI, first[slot.Keyword1R2])
-					L, p.cI = fail_Keyword, cU
+					L, p.cI = slot.Keyword2F0, cU
 					goto nextSlot
 				}
 				p.bsrSet.Add(slot.Keyword1R3, cU, p.cI, p.cI+1)
 				p.cI++
 				p.rtn(symbols.NT_Keyword, cU, p.cI)
 
-			case pass_Keyword1R0: // Keyword : ∙f o r
+			case slot.Keyword1M0: // Keyword : ∙f o r  [with previous match]
 
 				if !p.testSelect(slot.Keyword1R0) {
 					p.parseError(slot.Keyword1R0, p.cI, first[slot.Keyword1R0])
@@ -187,7 +177,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 				p.cI++
 				p.rtn(symbols.NT_Keyword, cU, p.cI)
 
-			case fail_Keyword: // Keyword failure case
+			case slot.Keyword2F0: // Keyword failure case
 				p.rtn(symbols.NT_Keyword, cU, failInd)
 			case slot.RepidChar0x0R0: // RepidChar0x : ∙idChar RepidChar0x
 
@@ -323,7 +313,7 @@ func (p *parser) rtn(X symbols.NT, k, j int) {
 
 func (p *parser) addMatch(L slot.Label, i, k, j int) {
 	p.bsrSet.Add(L, i, k, j)
-	if isLookahead(L) {
+	if L.IsLookahead() {
 		p.dscAdd(L, i, k)
 	} else {
 		p.dscAdd(L, i, j)
@@ -331,15 +321,11 @@ func (p *parser) addMatch(L slot.Label, i, k, j int) {
 }
 
 func (p *parser) addFail(L slot.Label, i, k int) {
-	if isLookahead(L) {
+	if L.IsLookahead() {
 		p.dscAdd(L, i, k)
 	} else {
 		p.dscAdd(L, i, i)
 	}
-}
-
-func isLookahead(L slot.Label) bool {
-	return L <= lastSlot && L.IsLookahead()
 }
 
 // func CRFString() string {
@@ -480,6 +466,10 @@ var first = []map[token.Type]string{
 	{
 		token.EOF: "$",
 	},
+	// Ident : ∙
+	{
+		token.EOF: "$",
+	},
 	// Keyword : ∙i f
 	{
 		token.T_1: "i",
@@ -496,6 +486,10 @@ var first = []map[token.Type]string{
 	{
 		token.T_0: "f",
 	},
+	// Keyword : ∙f o r
+	{
+		token.T_0: "f",
+	},
 	// Keyword : f ∙o r
 	{
 		token.T_3: "o",
@@ -505,6 +499,10 @@ var first = []map[token.Type]string{
 		token.T_4: "r",
 	},
 	// Keyword : f o r ∙
+	{
+		token.EOF: "$",
+	},
+	// Keyword : ∙
 	{
 		token.EOF: "$",
 	},

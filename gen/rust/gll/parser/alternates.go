@@ -31,7 +31,7 @@ func (g *gen) getAlternates() (alts []*Alternate) {
 
 func (g *gen) getAlternate(nt string, alt *ast.SyntaxAlternate, altI int) *Alternate {
 	// fmt.Printf("codex.getAltData %s[%d]\n", nt, altI)
-	L := gslot.NewLabel(nt, altI, 0, g.gs, g.ff)
+	L := gslot.NewLabel(nt, altI, 0, gslot.Unknown, g.gs, g.ff)
 	d := &Alternate{
 		NT:       nt,
 		AltLabel: L.Label(),
@@ -54,10 +54,10 @@ func (g *gen) getSlotsData(nt string, alt *ast.SyntaxAlternate, altI int) (data 
 }
 
 func (g *gen) getSlotData(nt string, altI int, symbol string, pos int) *SlotData {
-	preLabel := gslot.NewLabel(nt, altI, pos, g.gs, g.ff)
-	postLabel := gslot.NewLabel(nt, altI, pos+1, g.gs, g.ff)
+	preLabel := gslot.NewLabel(nt, altI, pos, gslot.Unknown, g.gs, g.ff)
+	postLabel := gslot.NewLabel(nt, altI, pos+1, gslot.Unknown, g.gs, g.ff)
 	sd := &SlotData{
-		AltLabel:  gslot.NewLabel(nt, altI, 0, g.gs, g.ff).Label(),
+		AltLabel:  gslot.NewLabel(nt, altI, 0, gslot.Unknown, g.gs, g.ff).Label(),
 		PreLabel:  preLabel.Label(),
 		PostLabel: postLabel.Label(),
 		Comment:   postLabel.String(),

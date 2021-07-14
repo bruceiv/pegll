@@ -52,18 +52,19 @@ func (g *gen) getRuleCode(nt string) string {
 	}
 	// finish with failure alternate for all nonterminals that don't end with an empty alternate
 	if !rule.AlwaysMatches() {
-		buf.WriteString(g.getFailAlternate(nt))
+		buf.WriteString(g.getFailAlternate(nt, len(rule.Alternates)))
 	}
 	return buf.String()
 }
 
 type AltData struct {
-	NT         string
-	AltLabel   string
-	AltComment string
-	HasPass    bool
-	Slots      []*SlotData
-	LastSlot   *SlotData
+	NT           string
+	AltLabel     string
+	PassAltLabel string
+	AltComment   string
+	HasPass      bool
+	Slots        []*SlotData
+	LastSlot     *SlotData
 }
 
 func (g *gen) getAlternateCode(nt string, alt *ast.SyntaxAlternate, altI, altN int, isOrdered bool) string {
@@ -89,12 +90,13 @@ func (g *gen) getAlternateCode(nt string, alt *ast.SyntaxAlternate, altI, altN i
 
 func (g *gen) getAltData(nt string, alt *ast.SyntaxAlternate, altI, altN int, isOrdered bool) *AltData {
 	// fmt.Printf("codex.getAltData %s[%d]\n", nt, altI)
-	L := gslot.NewLabel(nt, altI, 0, g.gs, g.ff)
+	L := gslot.NewLabel(nt, altI, 0, gslot.Unknown, g.gs, g.ff)
 	d := &AltData{
-		NT:         nt,
-		AltLabel:   L.Label(),
-		AltComment: L.String(),
-		HasPass:    altN > 1 && altI > 0,
+		NT:           nt,
+		AltLabel:     L.Label(),
+		PassAltLabel: gslot.LabelFor(nt, altI, 0, gslot.Match),
+		AltComment:   L.String(),
+		HasPass:      altN > 1 && altI > 0,
 	}
 	if !alt.Empty() {
 		d.Slots = g.getSlotsData(nt, alt, altI, altN, isOrdered)
@@ -112,30 +114,30 @@ func (g *gen) getSlotsData(nt string, alt *ast.SyntaxAlternate, altI, altN int, 
 }
 
 func (g *gen) getSlotData(nt string, altI, altN int, symbol string, pos int, isOrdered bool) *SlotData {
-	preLabel := gslot.NewLabel(nt, altI, pos, g.gs, g.ff)
-	postLabel := gslot.NewLabel(nt, altI, pos+1, g.gs, g.ff)
+	preLabel := gslot.NewLabel(nt, altI, pos, gslot.Unknown, g.gs, g.ff)
+	postLabel := gslot.NewLabel(nt, altI, pos+1, gslot.Unknown, g.gs, g.ff)
 	var failLabel string
 	var passLabel string
 	if altI+1 < altN {
-		nextAlt := gslot.NewLabel(nt, altI+1, 0, g.gs, g.ff).Label()
-		failLabel = `slot.` + nextAlt
-		passLabel = `pass_` + nextAlt
+		failLabel = `slot.` + gslot.LabelFor(nt, altI+1, 0, gslot.Unknown)
+		passLabel = `slot.` + gslot.LabelFor(nt, altI+1, 0, gslot.Match)
 	} else {
-		failLabel = `fail_` + nt
+		failLabel = `slot.` + gslot.LabelFor(nt, altN, 0, gslot.Fail)
 		passLabel = `failInd`
 	}
 	sd := &SlotData{
-		AltLabel:   gslot.NewLabel(nt, altI, 0, g.gs, g.ff).Label(),
-		PreLabel:   preLabel.Label(),
-		PostLabel:  postLabel.Label(),
-		FailLabel:  failLabel,
-		PassLabel:  passLabel,
-		Comment:    postLabel.String(),
-		NotLastAlt: altI+1 < altN,
-		IsNT:       false,
-		IsPLook:    false,
-		IsNLook:    false,
-		Head:       nt,
+		AltLabel:      gslot.LabelFor(nt, altI, 0, gslot.Unknown),
+		PreLabel:      preLabel.Label(),
+		PostLabel:     postLabel.Label(),
+		FailLabel:     failLabel,
+		PassLabel:     passLabel,
+		PassPostLabel: gslot.LabelFor(nt, altI, pos, gslot.Match),
+		Comment:       postLabel.String(),
+		NotLastAlt:    altI+1 < altN,
+		IsNT:          false,
+		IsPLook:       false,
+		IsNLook:       false,
+		Head:          nt,
 	}
 	if g.g.Terminals.Contain(symbol) {
 		sd.CallNT = "<error: not NT>"
@@ -158,25 +160,26 @@ func (g *gen) getSlotData(nt string, altI, altN int, symbol string, pos int, isO
 	return sd
 }
 
-func (g *gen) getFailAlternate(nt string) string {
-	return `		case fail_` + nt + `: // ` + nt + ` failure case
+func (g *gen) getFailAlternate(nt string, nAlt int) string {
+	return `		case slot.` + gslot.LabelFor(nt, nAlt, 0, gslot.Fail) + `: // ` + nt + ` failure case
 			p.rtn(symbols.NT_` + nt + `, cU, failInd)
 	`
 }
 
 type SlotData struct {
-	AltLabel   string
-	PreLabel   string
-	PostLabel  string
-	FailLabel  string
-	PassLabel  string
-	Comment    string
-	IsNT       bool
-	IsPLook    bool
-	IsNLook    bool
-	CallNT     string
-	NotLastAlt bool
-	Head       string
+	AltLabel      string
+	PreLabel      string
+	PostLabel     string
+	FailLabel     string
+	PassLabel     string
+	PassPostLabel string
+	Comment       string
+	IsNT          bool
+	IsPLook       bool
+	IsNLook       bool
+	CallNT        string
+	NotLastAlt    bool
+	Head          string
 }
 
 const eAltCodeTmpl = `case slot.{{.AltLabel}}: // {{.AltComment}}
@@ -220,15 +223,15 @@ const uAltCodeTmpl = `		case slot.{{.AltLabel}}: // {{.AltComment}}
 			p.rtn(symbols.NT_{{$slot.Head}}, cU, p.cI)
 			{{if .NotLastAlt}}L, p.cI = {{$slot.PassLabel}}, cU
 			goto nextSlot{{end}}{{end}}
-		{{if .HasPass}}case pass_{{.AltLabel}}: // {{.AltComment}}
+		{{if .HasPass}}case slot.{{.PassAltLabel}}: // {{.AltComment}} [with previous match]
 		{{range $i, $slot := .Slots}}
 		if !p.testSelect(slot.{{$slot.PreLabel}}){ 
 			p.parseError(slot.{{$slot.PreLabel}}, p.cI, first[slot.{{$slot.PreLabel}}])
 			{{if .NotLastAlt}}L, p.cI = {{$slot.PassLabel}}, cU
 			goto nextSlot{{end}}
 		}
-		{{if $slot.IsNT}}p.call(pass_{{$slot.PostLabel}}, {{$slot.PassLabel}}, symbols.NT_{{$slot.CallNT}}, cU, p.cI)
-	case pass_{{$slot.PostLabel}}: // {{$slot.Comment}} 
+		{{if $slot.IsNT}}p.call(slot.{{$slot.PassPostLabel}}, {{$slot.PassLabel}}, symbols.NT_{{$slot.CallNT}}, cU, p.cI)
+	case slot.{{$slot.PassPostLabel}}: // {{$slot.Comment}} 
 		{{else if $slot.IsPLook}}p.call(slot.{{$slot.PostLabel}}, {{$slot.PassLabel}}, symbols.NT_{{$slot.CallNT}}, cU, p.cI)
 	case slot.{{$slot.PostLabel}}: // {{$slot.Comment}}
 		{{else if $slot.IsNLook}}p.call({{$slot.PassLabel}}, slot.{{$slot.PostLabel}}, symbols.NT_{{$slot.CallNT}}, cU, p.cI)

@@ -76,39 +76,14 @@ func (g *gen) genParser(parserDir string) {
 type Data struct {
 	Package     string
 	StartSymbol string
-	ExtraLabels []string
-	LastSlot    int
 	CodeX       string
 	TestSelect  string
 }
 
 func (g *gen) getData(baseDir string) *Data {
-	extraLabels := make([]string, 0, g.g.NonTerminals.Len())
-	for _, nt := range g.g.SyntaxRules {
-		if !nt.AlwaysMatches() {
-			extraLabels = append(extraLabels, `fail_`+nt.ID())
-			if !nt.IsOrdered {
-				for i, alt := range nt.Alternates {
-					if i == 0 {
-						continue
-					}
-					for j, sym := range alt.Symbols {
-						if j == 0 {
-							extraLabels = append(extraLabels, `pass_`+gslot.LabelFor(nt.ID(), i, j))
-						}
-						if _, ok := sym.(*ast.NT); ok {
-							extraLabels = append(extraLabels, `pass_`+gslot.LabelFor(nt.ID(), i, j+1))
-						}
-					}
-				}
-			}
-		}
-	}
 	data := &Data{
 		Package:     g.g.Package.GetString(),
 		StartSymbol: g.g.StartSymbol(),
-		ExtraLabels: extraLabels,
-		LastSlot:    g.gs.Len() - 1,
 		CodeX:       g.genAlternatesCode(),
 		TestSelect:  g.genTestSelect(),
 	}
@@ -181,14 +156,6 @@ func newParser(l *lexer.Lexer) *parser {
 func Parse(l *lexer.Lexer) (*bsr.Set, []*Error) {
 	return newParser(l).parse()
 }
-
-const lastSlot slot.Label = {{.LastSlot}}
-
-const(
-	_ slot.Label = iota + lastSlot
-	{{range $i, $lbl := .ExtraLabels}}
-	{{$lbl}}{{end}}
-)
 
 func (p *parser) parse() (*bsr.Set, []*Error) {
 	var L slot.Label
@@ -318,7 +285,7 @@ func (p *parser) rtn(X symbols.NT, k, j int) {
 
 func (p *parser) addMatch(L slot.Label, i, k, j int) {
 	p.bsrSet.Add(L, i, k, j)
-	if isLookahead(L) {
+	if L.IsLookahead() {
 		p.dscAdd(L, i, k)
 	} else {
 		p.dscAdd(L, i, j)
@@ -326,15 +293,11 @@ func (p *parser) addMatch(L slot.Label, i, k, j int) {
 }
 
 func (p *parser) addFail(L slot.Label, i, k int) {
-	if isLookahead(L) {
+	if L.IsLookahead() {
 		p.dscAdd(L, i, k)
 	} else {
 		p.dscAdd(L, i, i)
 	}
-}
-
-func isLookahead(L slot.Label) bool {
-	return L <= lastSlot && L.IsLookahead()
 }
 
 // func CRFString() string {

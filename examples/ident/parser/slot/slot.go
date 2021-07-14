@@ -17,13 +17,16 @@ const(
 	Ident0R1
 	Ident0R2
 	Ident0R3
+	Ident1F0
 	Keyword0R0
 	Keyword0R1
 	Keyword0R2
+	Keyword1M0
 	Keyword1R0
 	Keyword1R1
 	Keyword1R2
 	Keyword1R3
+	Keyword2F0
 	RepidChar0x0R0
 	RepidChar0x0R1
 	RepidChar0x0R2
@@ -175,6 +178,12 @@ var slots = map[Label]*Slot{
 		}, 
 		Ident0R3, 
 	},
+	Ident1F0: {
+		symbols.NT_Ident, 1, 0, 
+		symbols.Symbols{ 
+		}, 
+		Ident1F0, 
+	},
 	Keyword0R0: {
 		symbols.NT_Keyword, 0, 0, 
 		symbols.Symbols{  
@@ -198,6 +207,15 @@ var slots = map[Label]*Slot{
 			symbols.T_0,
 		}, 
 		Keyword0R2, 
+	},
+	Keyword1M0: {
+		symbols.NT_Keyword, 1, 0, 
+		symbols.Symbols{  
+			symbols.T_0, 
+			symbols.T_3, 
+			symbols.T_4,
+		}, 
+		Keyword1M0, 
 	},
 	Keyword1R0: {
 		symbols.NT_Keyword, 1, 0, 
@@ -234,6 +252,12 @@ var slots = map[Label]*Slot{
 			symbols.T_4,
 		}, 
 		Keyword1R3, 
+	},
+	Keyword2F0: {
+		symbols.NT_Keyword, 2, 0, 
+		symbols.Symbols{ 
+		}, 
+		Keyword2F0, 
 	},
 	RepidChar0x0R0: {
 		symbols.NT_RepidChar0x, 0, 0, 
@@ -272,13 +296,16 @@ var slotIndex = map[Index]Label {
 	Index{ symbols.NT_Ident,0,1 }: Ident0R1,
 	Index{ symbols.NT_Ident,0,2 }: Ident0R2,
 	Index{ symbols.NT_Ident,0,3 }: Ident0R3,
+	Index{ symbols.NT_Ident,1,0 }: Ident1F0,
 	Index{ symbols.NT_Keyword,0,0 }: Keyword0R0,
 	Index{ symbols.NT_Keyword,0,1 }: Keyword0R1,
 	Index{ symbols.NT_Keyword,0,2 }: Keyword0R2,
+	Index{ symbols.NT_Keyword,1,0 }: Keyword1M0,
 	Index{ symbols.NT_Keyword,1,0 }: Keyword1R0,
 	Index{ symbols.NT_Keyword,1,1 }: Keyword1R1,
 	Index{ symbols.NT_Keyword,1,2 }: Keyword1R2,
 	Index{ symbols.NT_Keyword,1,3 }: Keyword1R3,
+	Index{ symbols.NT_Keyword,2,0 }: Keyword2F0,
 	Index{ symbols.NT_RepidChar0x,0,0 }: RepidChar0x0R0,
 	Index{ symbols.NT_RepidChar0x,0,1 }: RepidChar0x0R1,
 	Index{ symbols.NT_RepidChar0x,0,2 }: RepidChar0x0R2,
@@ -296,13 +323,16 @@ var nullable = []bool {
 	false, // Ident0R1 
 	true, // Ident0R2 
 	true, // Ident0R3 
+	false, // Ident1F0 
 	false, // Keyword0R0 
 	false, // Keyword0R1 
 	true, // Keyword0R2 
+	false, // Keyword1M0 
 	false, // Keyword1R0 
 	false, // Keyword1R1 
 	false, // Keyword1R2 
 	true, // Keyword1R3 
+	false, // Keyword2F0 
 	false, // RepidChar0x0R0 
 	true, // RepidChar0x0R1 
 	true, // RepidChar0x0R2 
@@ -314,13 +344,16 @@ var firstT = []map[token.Type]bool {
 	{  token.T_2: true,  }, // Ident0R1 
 	{  token.T_2: true,  }, // Ident0R2 
 	{  }, // Ident0R3 
+	{  }, // Ident1F0 
 	{  token.T_1: true,  }, // Keyword0R0 
 	{  token.T_0: true,  }, // Keyword0R1 
 	{  }, // Keyword0R2 
+	{  token.T_0: true,  }, // Keyword1M0 
 	{  token.T_0: true,  }, // Keyword1R0 
 	{  token.T_3: true,  }, // Keyword1R1 
 	{  token.T_4: true,  }, // Keyword1R2 
 	{  }, // Keyword1R3 
+	{  }, // Keyword2F0 
 	{  token.T_2: true,  }, // RepidChar0x0R0 
 	{  token.T_2: true,  }, // RepidChar0x0R1 
 	{  }, // RepidChar0x0R2 
