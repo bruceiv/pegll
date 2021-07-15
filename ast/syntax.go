@@ -27,6 +27,8 @@ type SynOptional struct { //Where do we get it to connect to the '?' ????  --> s
 	Expr SyntaxSymbol //Contains the rule that is being made optional (we think)
 }
 
+// Line 126 in build.go --> do to we need to add the symbol to a set? Do we need to do this????
+
 type SyntaxAlternate struct {
 	Symbols []SyntaxSymbol
 }
@@ -62,7 +64,6 @@ func (*Lookahead) isSyntaxSymbol() {}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
 func (*SynOptional) isSyntaxSymbol() {}
-
 
 func (opt *SynOptional) Lext() int {
 	return opt.Tok.Lext()

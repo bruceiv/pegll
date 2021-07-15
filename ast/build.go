@@ -347,17 +347,10 @@ Rule_right : ( Opt_rule
 		   / Other_rule ;
 */
 func (bld *builder) synOptional(b bsr.BSR) SyntaxSymbol {
-	/* return SynOptional{
-		Tok:  b.GetTChildI(1),            // "?"
-		Expr: bld.atom(b.GetNTChildI(0)), // rule
-	} */
-	expr :=  []*SyntaxSymbol
-	expr = bld.atom(b.GetNTChildI(0))
-	expr = append(expr, &SyntaxAlternate{})
-	return 
-	// return bld.atom() + (pipe empty node)
-	//// rule?
-	//// rule / empty
+	return SynOptional{
+		Tok:  b.GetTChildI(1),
+		Expr: bld.atom(b.GetNTChildI(0)),
+	}
 }
 
 // SyntaxAlternate
@@ -465,6 +458,7 @@ func (bld *builder) atom(b bsr.BSR) SyntaxSymbol {
 	}
 	panic(fmt.Sprintf("invalid alternate %d", b.Alternate()))
 }
+
 ////////////////////////////////////////////////////////////////////////////////////////////////
 
 // SyntaxSymbols
@@ -473,10 +467,20 @@ func (bld *builder) atom(b bsr.BSR) SyntaxSymbol {
 //     ;
 func (bld *builder) syntaxSymbols(b bsr.BSR) []SyntaxSymbol {
 	symbols := []SyntaxSymbol{bld.symbol(b.GetNTChildI(0))}
+	symbols = addOptNode(symbols) //Add SynOptional Nodes
 	if b.Alternate() == 1 {
 		symbols = append(symbols, bld.syntaxSymbols(b.GetNTChildI(1))...)
 	}
 	return symbols
+}
+
+func (bld *builder) addOptNode(symbols []SyntaxSymbols) []SyntaxSymbol {
+	//if most recent symbol is synOptional, then append(/empty)
+	if symbols[:(len(symbols)-1)].ID() == StringToType["?"] {
+
+		symbols = append(symbols /*, the ordered pipe to empty*/)
+	}
+
 }
 
 /*** Shared ***/
