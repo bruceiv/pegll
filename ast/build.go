@@ -426,9 +426,9 @@ func (bld *builder) syntaxRule(b bsr.BSR) brule {
 
 // SyntaxSymbol
 //     : "&" SyntaxAtom
-//     | "!" SyntaxAtom
-//     | SyntaxAtom
-//	   | SynOptional
+//     / "!" SyntaxAtom
+//	   / SynOptional
+//     / SyntaxAtom
 //     ;
 func (bld *builder) symbol(b bsr.BSR) SyntaxSymbol {
 	switch b.Alternate() {
@@ -438,9 +438,9 @@ func (bld *builder) symbol(b bsr.BSR) SyntaxSymbol {
 			Expr: bld.atom(b.GetNTChildI(1)),
 		}
 	case 2:
-		return bld.atom(b.GetNTChildI(0))
-	case 3:
 		return bld.synOptional(b.GetNTChildI(0))
+	case 3:
+		return bld.atom(b.GetNTChildI(0))
 	}
 	panic(fmt.Sprintf("invalid alternate %d", b.Alternate()))
 }
@@ -467,20 +467,20 @@ func (bld *builder) atom(b bsr.BSR) SyntaxSymbol {
 //     ;
 func (bld *builder) syntaxSymbols(b bsr.BSR) []SyntaxSymbol {
 	symbols := []SyntaxSymbol{bld.symbol(b.GetNTChildI(0))}
-	symbols = addOptNode(symbols) //Add SynOptional Nodes
+	symbols = bld.addOptNode(symbols) //Add SynOptional Nodes
 	if b.Alternate() == 1 {
 		symbols = append(symbols, bld.syntaxSymbols(b.GetNTChildI(1))...)
 	}
 	return symbols
 }
 
-func (bld *builder) addOptNode(symbols []SyntaxSymbols) []SyntaxSymbol {
-	//if most recent symbol is synOptional, then append(/empty)
-	if symbols[:(len(symbols)-1)].ID() == StringToType["?"] {
-
-		symbols = append(symbols /*, the ordered pipe to empty*/)
+func (bld *builder) addOptNode(symbols []SyntaxSymbol) []SyntaxSymbol {
+	//if most recent symbol is synOptional, then append(`/empty`)
+	if symbols[(len(symbols)-1)].ID() == "?" {
+		temp := SynOptional{}
+		symbols = append(symbols, temp)
 	}
-
+	return symbols
 }
 
 /*** Shared ***/

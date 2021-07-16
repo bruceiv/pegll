@@ -63,18 +63,19 @@ func (*NT) isSyntaxSymbol()        {}
 func (*Lookahead) isSyntaxSymbol() {}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
-func (*SynOptional) isSyntaxSymbol() {}
+func (SynOptional) isSyntaxSymbol() {}
 
-func (opt *SynOptional) Lext() int {
+func (opt SynOptional) Lext() int {
 	return opt.Tok.Lext()
 }
-func (opt *SynOptional) ID() string {
+func (opt SynOptional) ID() string {
 	return opt.Tok.LiteralString() + opt.Expr.ID()
 }
-func (opt *SynOptional) String() string {
+func (opt SynOptional) String() string {
 	return opt.Tok.LiteralString() + opt.Expr.String()
 }
 
+//// had to remove the pointers in order to compile
 ////////////////////////////////////////////////////////////////////////////////////////////////
 // Terminals
 func (*TokID) isSyntaxSymbol()     {}

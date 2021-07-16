@@ -548,16 +548,16 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 		case slot.SyntaxSymbol1R2: // SyntaxSymbol : ! SyntaxAtom ∙
 
 			p.rtn(symbols.NT_SyntaxSymbol, cU, p.cI)
-		case slot.SyntaxSymbol2R0: // SyntaxSymbol : ∙SyntaxAtom
+		case slot.SyntaxSymbol2R0: // SyntaxSymbol : ∙SynOptional
 
 			p.call(slot.SyntaxSymbol2R1, cU, p.cI)
-		case slot.SyntaxSymbol2R1: // SyntaxSymbol : SyntaxAtom ∙
+		case slot.SyntaxSymbol2R1: // SyntaxSymbol : SynOptional ∙
 
 			p.rtn(symbols.NT_SyntaxSymbol, cU, p.cI)
-		case slot.SyntaxSymbol3R0: // SyntaxSymbol : ∙SynOptional
+		case slot.SyntaxSymbol3R0: // SyntaxSymbol : ∙SyntaxAtom
 
 			p.call(slot.SyntaxSymbol3R1, cU, p.cI)
-		case slot.SyntaxSymbol3R1: // SyntaxSymbol : SynOptional ∙
+		case slot.SyntaxSymbol3R1: // SyntaxSymbol : SyntaxAtom ∙
 
 			p.rtn(symbols.NT_SyntaxSymbol, cU, p.cI)
 		case slot.SyntaxSymbols0R0: // SyntaxSymbols : ∙SyntaxSymbol
@@ -1851,13 +1851,13 @@ var first = []map[token.Type]string{
 		token.T_23: "tokid",
 		token.T_26: "|",
 	},
-	// SyntaxSymbol : ∙SyntaxAtom
+	// SyntaxSymbol : ∙SynOptional
 	{
 		token.T_19: "nt",
 		token.T_22: "string_lit",
 		token.T_23: "tokid",
 	},
-	// SyntaxSymbol : SyntaxAtom ∙
+	// SyntaxSymbol : SynOptional ∙
 	{
 		token.T_0:  "!",
 		token.T_1:  "&",
@@ -1868,13 +1868,13 @@ var first = []map[token.Type]string{
 		token.T_23: "tokid",
 		token.T_26: "|",
 	},
-	// SyntaxSymbol : ∙SynOptional
+	// SyntaxSymbol : ∙SyntaxAtom
 	{
 		token.T_19: "nt",
 		token.T_22: "string_lit",
 		token.T_23: "tokid",
 	},
-	// SyntaxSymbol : SynOptional ∙
+	// SyntaxSymbol : SyntaxAtom ∙
 	{
 		token.T_0:  "!",
 		token.T_1:  "&",
