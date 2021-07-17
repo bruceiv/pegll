@@ -338,42 +338,25 @@ func (bld *builder) unicodeClass(b bsr.BSR) *UnicodeClass {
 /*** Syntax Rules ***/
 
 // SynOptional : SyntaxAtom "?" ;
+// "?" : SyntaxAtom
+//		/ "empty"
+// function essentially determines whether empty or not
 func (bld *builder) synOptional(b bsr.BSR) *SynOptional {
 	/* return SynOptional{
 		Tok:  b.GetTChildI(1),
 		Expr: bld.atom(b.GetNTChildI(0)),
 	} */
-	// create an empty struct
+	return &SynOptional{
+		Expr:  bld.atom(b.GetNTChildI(0)),
+		Empty: &SyntaxAlternate{},
+	}
+	/* // create an empty struct
 	opt := &SynOptional{}
 	// if empty, SynOptional with be returned with empty atom
 	if b.Alternate() == 0 {
 		opt.Expr = bld.atom(b.GetNTChildI(0))
 	}
-	return opt
-}
-
-////////// this function will keep it from compiling right now
-func (bld *builder) addOptNode(b bsr.BSR) []*SynOptional {
-	/* 	//if most recent symbol is synOptional, then append(`/empty`)
-	   	if symbols[(len(symbols)-1)].ID() == "?" {
-	   		temp := SynOptional{}
-	   		symbols = append(symbols, temp)
-	   	}
-	   	return symbols */
-	optNode := []*SynOptional{
-		bld.synOptional(b.GetNTChild(symbols.NT_SynOptional, 0)),
-	}
-	/////// these may be switched since the question mark is after - if there
-	////// is not a token then it shouldn't append
-	switch b.Alternate() {
-	case 0:
-		return optNode
-	case 1:
-		/////////// this throws an error - not sure why since we are appending the same type
-		//return append(optNode, bld.synOptional(b.GetNTChild(symbols.NT_SynOptional, 0))...)
-		return optNode
-	}
-	panic("invalid SynOptional")
+	return opt*/
 }
 
 // SyntaxAlternate
@@ -490,11 +473,21 @@ func (bld *builder) atom(b bsr.BSR) SyntaxSymbol {
 //     ;
 func (bld *builder) syntaxSymbols(b bsr.BSR) []SyntaxSymbol {
 	symbols := []SyntaxSymbol{bld.symbol(b.GetNTChildI(0))}
-	//symbols = bld.addOptNode(symbols) //Add SynOptional Nodes
+	//if recent symbol is a syntaxOptional, then add an empty node
+	if symbols[(len(symbols)-1)].ID() == "?" { //Add SynOptional Empty Node
+		symbols = bld.addOptNode(symbols)
+	}
 	if b.Alternate() == 1 {
 		symbols = append(symbols, bld.syntaxSymbols(b.GetNTChildI(1))...)
 	}
 	return symbols
+}
+
+func (bld *builder) addOptNode(symbols []SyntaxSymbol) []SyntaxSymbol {
+	//Add empty node to slice
+	symbols = append(symbols, &SynOptional{})
+	return symbols
+	//panic("invalid SynOptional")
 }
 
 /*** Shared ***/

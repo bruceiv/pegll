@@ -25,7 +25,7 @@ S1       : Required             ;
 
 Required : "Required"           ;
 
-Optional : Base?                ;
+Optional : Base?               ;
 
 Base     : "Base"               ;
 

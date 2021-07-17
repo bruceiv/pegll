@@ -50,9 +50,7 @@ type SynOptional struct {
 	// expression made optional
 	Expr SyntaxSymbol
 	// alternate for empty
-	Alternates []*SyntaxAlternate
-	// always ordered - look for rule first before "empty"
-	//IsOrdered bool
+	Empty *SyntaxAlternate
 }
 
 // Line 126 in build.go --> do to we need to add the symbol to a set? Do we need to do this????
