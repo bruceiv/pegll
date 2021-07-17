@@ -14,6 +14,20 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
+/* build.go modifications (these are backwards sorry)
+ * line 489
+ 	- don't think we need to add SynOptional into the
+	syntaxSymbols function because it's being built in SyntaxSymbols
+ * line 350
+	- changed the struct so it has syntax symbols so we can traverse
+	through it and see if there is a "?" - see Moss's answer in Teams
+ * line 364
+	- the way that it is built in SyntaxSymbols we need to traverse
+	through the symbols, find the question mark, and then see if the
+	token exists - since we already have it built to return empty in
+	the synOptional function, we're simply checking for the existence of
+	the token and, if it's there, adding it to the Expr part of the struct
+*/
 
 package ast
 

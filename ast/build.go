@@ -352,12 +352,25 @@ func (bld *builder) synOptional(b bsr.BSR) *SynOptional {
 		Tok:  b.GetTChildI(1),
 		Expr: bld.atom(b.GetNTChildI(0)),
 	} */
+	// create an empty struct 
 	opt := &SynOptional{}
+	// if empty, SynOptional with be returned with empty atom
 	if b.Alternate() == 0 {
 		opt.Expr = bld.atom(b.GetNTChildI(0))
-	} // if empty, SynOptional with be returned with empty atom
+	} 
 	return opt
 }
+
+////////// this function will keep it from compiling right now
+// not sure if we need this function
+/* func (bld *builder) addOptNode(symbols []SyntaxSymbol) []SyntaxSymbol {
+	//if most recent symbol is synOptional, then append(`/empty`)
+	if symbols[(len(symbols)-1)].ID() == "?" {
+		temp := SynOptional{}
+		symbols = append(symbols, temp)
+	}
+	return symbols
+}  */
 
 // SyntaxAlternate
 //     :   SyntaxSymbols
@@ -479,16 +492,6 @@ func (bld *builder) syntaxSymbols(b bsr.BSR) []SyntaxSymbol {
 	}
 	return symbols
 }
-
-////////// this function will keep it from compiling right now
-/* func (bld *builder) addOptNode(symbols []SyntaxSymbol) []SyntaxSymbol {
-	//if most recent symbol is synOptional, then append(`/empty`)
-	if symbols[(len(symbols)-1)].ID() == "?" {
-		temp := SynOptional{}
-		symbols = append(symbols, temp)
-	}
-	return symbols
-} */
 
 /*** Shared ***/
 
