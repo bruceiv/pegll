@@ -338,39 +338,43 @@ func (bld *builder) unicodeClass(b bsr.BSR) *UnicodeClass {
 /*** Syntax Rules ***/
 
 // SynOptional : SyntaxAtom "?" ;
-/*
-Rule : Opt_rule? ;
-Rule_alt : Opt_rule?
-		/ Other_rule ;
-Rule_right : ( Opt_rule
-		   / empty )
-		   / Other_rule ;
-//// i think we need to add an alternates struct to cover the chance it's empty
-*/
 func (bld *builder) synOptional(b bsr.BSR) *SynOptional {
 	/* return SynOptional{
 		Tok:  b.GetTChildI(1),
 		Expr: bld.atom(b.GetNTChildI(0)),
 	} */
-	// create an empty struct 
+	// create an empty struct
 	opt := &SynOptional{}
 	// if empty, SynOptional with be returned with empty atom
 	if b.Alternate() == 0 {
 		opt.Expr = bld.atom(b.GetNTChildI(0))
-	} 
+	}
 	return opt
 }
 
 ////////// this function will keep it from compiling right now
-// not sure if we need this function
-/* func (bld *builder) addOptNode(symbols []SyntaxSymbol) []SyntaxSymbol {
-	//if most recent symbol is synOptional, then append(`/empty`)
-	if symbols[(len(symbols)-1)].ID() == "?" {
-		temp := SynOptional{}
-		symbols = append(symbols, temp)
+func (bld *builder) addOptNode(b bsr.BSR) []*SynOptional {
+	/* 	//if most recent symbol is synOptional, then append(`/empty`)
+	   	if symbols[(len(symbols)-1)].ID() == "?" {
+	   		temp := SynOptional{}
+	   		symbols = append(symbols, temp)
+	   	}
+	   	return symbols */
+	optNode := []*SynOptional{
+		bld.synOptional(b.GetNTChild(symbols.NT_SynOptional, 0)),
 	}
-	return symbols
-}  */
+	/////// these may be switched since the question mark is after - if there
+	////// is not a token then it shouldn't append
+	switch b.Alternate() {
+	case 0:
+		return optNode
+	case 1:
+		/////////// this throws an error - not sure why since we are appending the same type
+		//return append(optNode, bld.synOptional(b.GetNTChild(symbols.NT_SynOptional, 0))...)
+		return optNode
+	}
+	panic("invalid SynOptional")
+}
 
 // SyntaxAlternate
 //     :   SyntaxSymbols

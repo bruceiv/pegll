@@ -27,6 +27,9 @@ limitations under the License.
 	token exists - since we already have it built to return empty in
 	the synOptional function, we're simply checking for the existence of
 	the token and, if it's there, adding it to the Expr part of the struct
+
+
+	we need to figure out how to add NT_SynOptional
 */
 
 package ast
@@ -49,7 +52,7 @@ type SynOptional struct {
 	// alternate for empty
 	Alternates []*SyntaxAlternate
 	// always ordered - look for rule first before "empty"
-	IsOrdered bool
+	//IsOrdered bool
 }
 
 // Line 126 in build.go --> do to we need to add the symbol to a set? Do we need to do this????
