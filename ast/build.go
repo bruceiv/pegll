@@ -345,12 +345,18 @@ Rule_alt : Opt_rule?
 Rule_right : ( Opt_rule
 		   / empty )
 		   / Other_rule ;
+//// i think we need to add an alternates struct to cover the chance it's empty
 */
-func (bld *builder) synOptional(b bsr.BSR) SyntaxSymbol {
-	return SynOptional{
+func (bld *builder) synOptional(b bsr.BSR) *SynOptional {
+	/* return SynOptional{
 		Tok:  b.GetTChildI(1),
 		Expr: bld.atom(b.GetNTChildI(0)),
-	}
+	} */
+	opt := &SynOptional{}
+	if b.Alternate() == 0 {
+		opt.Expr = bld.atom(b.GetNTChildI(0))
+	} // if empty, SynOptional with be returned with empty atom
+	return opt
 }
 
 // SyntaxAlternate
@@ -361,7 +367,7 @@ func (bld *builder) syntaxAlternate(b bsr.BSR) *SyntaxAlternate {
 	alt := &SyntaxAlternate{}
 	if b.Alternate() == 0 {
 		alt.Symbols = bld.syntaxSymbols(b.GetNTChildI(0))
-	} // if alt = empty return alt with empty Symbols
+	} // if alt = empty return alt with empty symbols
 	return alt
 }
 
@@ -467,21 +473,22 @@ func (bld *builder) atom(b bsr.BSR) SyntaxSymbol {
 //     ;
 func (bld *builder) syntaxSymbols(b bsr.BSR) []SyntaxSymbol {
 	symbols := []SyntaxSymbol{bld.symbol(b.GetNTChildI(0))}
-	symbols = bld.addOptNode(symbols) //Add SynOptional Nodes
+	//symbols = bld.addOptNode(symbols) //Add SynOptional Nodes
 	if b.Alternate() == 1 {
 		symbols = append(symbols, bld.syntaxSymbols(b.GetNTChildI(1))...)
 	}
 	return symbols
 }
 
-func (bld *builder) addOptNode(symbols []SyntaxSymbol) []SyntaxSymbol {
+////////// this function will keep it from compiling right now
+/* func (bld *builder) addOptNode(symbols []SyntaxSymbol) []SyntaxSymbol {
 	//if most recent symbol is synOptional, then append(`/empty`)
 	if symbols[(len(symbols)-1)].ID() == "?" {
 		temp := SynOptional{}
 		symbols = append(symbols, temp)
 	}
 	return symbols
-}
+} */
 
 /*** Shared ***/
 

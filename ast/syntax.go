@@ -22,9 +22,20 @@ import (
 )
 
 // The syntax part of the AST
-type SynOptional struct { //Where do we get it to connect to the '?' ????  --> similar to Lext function in lex.go??
+///////////////////////////// trying something different - I don't think
+//////////////////////////// we need the token - I think we need the NT
+/* type SynOptional struct { //Where do we get it to connect to the '?' ????  --> similar to Lext function in lex.go??
 	Tok  *token.Token //I think contains the ?
 	Expr SyntaxSymbol //Contains the rule that is being made optional (we think)
+} */
+
+type SynOptional struct {
+	// expression made optional
+	Expr SyntaxSymbol
+	// alternate for empty
+	Alternates []*SyntaxAlternate
+	// always ordered - look for rule first before "empty"
+	IsOrdered bool
 }
 
 // Line 126 in build.go --> do to we need to add the symbol to a set? Do we need to do this????
@@ -65,14 +76,18 @@ func (*Lookahead) isSyntaxSymbol() {}
 ////////////////////////////////////////////////////////////////////////////////////////////////
 func (SynOptional) isSyntaxSymbol() {}
 
-func (opt SynOptional) Lext() int {
-	return opt.Tok.Lext()
+func (opt *SynOptional) ID() string {
+	// return opt.Tok.LiteralString() + opt.Expr.ID()
+	// i think we only need the ID and not the literal string
+	return opt.Expr.ID()
 }
-func (opt SynOptional) ID() string {
-	return opt.Tok.LiteralString() + opt.Expr.ID()
+func (opt *SynOptional) Lext() int {
+	// return opt.Tok.Lext()
+	return opt.Expr.Lext()
 }
-func (opt SynOptional) String() string {
-	return opt.Tok.LiteralString() + opt.Expr.String()
+func (opt *SynOptional) String() string {
+	//return opt.Tok.LiteralString() + opt.Expr.String()
+	return opt.Expr.ID()
 }
 
 //// had to remove the pointers in order to compile
