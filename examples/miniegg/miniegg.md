@@ -41,6 +41,7 @@ eq              : '='                           ;
 neq             : not "="                       ;
 
 ```
+^ not operator consumes a character 
 #
 ### **COPYRIGHT AND LICENSING INFORMATION**
 **Copyright 2021 Brynn Harrington and Emily Hoppe**

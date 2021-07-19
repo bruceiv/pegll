@@ -181,11 +181,9 @@ Stmt              : Block
                   / empty                             ;
       OptExpr     : Expr 
                   / empty                             ;
-      CatchBlk    : Catch RepCatch0x OptFinly  
+      CatchBlk    : Catch RepCatch0x OptFin  
                   | Finally                           ;
       RepCatch0x  : Catch RepCatch0x 
-                  / empty                             ;
-      OptFinly    : Finally 
                   / empty                             ;
    RepSwBlkStmt0x : SwitchBlockStmtGrp RepSwBlkStmt0x
                   / empty                             ;
@@ -500,7 +498,9 @@ ID                : notKeyword LetterLorD             ;
 
 ```
 #### ***Keywords***
-```
+Was in original but never used:
+
+ENUM              : "enum"         notLorD            ;
 Keyword           : Words notLorD                     ;
       Words       : "abstract" 
                   | "assert"   
@@ -553,6 +553,7 @@ Keyword           : Words notLorD                     ;
                   | "void"     
                   | "volatile" 
                   | "while"                           ;
+```
 
 ASSERT            : "assert"       notLorD            ; 
 BREAK             : "break"        notLorD            ;
@@ -563,7 +564,6 @@ CONTINUE          : "continue"     notLorD            ;
 DEFAULT           : "default"      notLorD            ;
 DO                : "do"           notLorD            ;
 ELSE              : "else"         notLorD            ;
-ENUM              : "enum"         notLorD            ;
 EXTENDS           : "extends"      notLorD            ;
 FINALLY           : "finally"      notLorD            ; 
 FINAL             : "final"        notLorD            ;
@@ -632,7 +632,7 @@ StringLiteral     : dubQuo StrClose                    ;
       sinQuo      : '\''                               ;
       OptEsc      : Escape 
                   | anyCarSl                           ;
-            anyCarSl : any "^\\" ;
+         anyCarSl : any "^\\"                          ;
 Escape            : dubSlash Escs                      ;
       Escs        : esc
                   | OctalEscape 
@@ -656,7 +656,7 @@ IntegerLiteral    : NumeralAlts optOneL               ;
                   | DecimalNumeral                    ;
       optOneL     : [ any "1L" ]                      ;
 
-DecimalFloat      :  repDig1x dot repDig0x optExpo fF_dD 
+DecimalFloat      : repDig1x dot repDig0x optExpo fF_dD 
                   | dot RepDig1xExp 
                   | RepDig1xExp fF_dD
                   | RepDig1xOptExp fF_dD                   ;
@@ -719,8 +719,12 @@ num             : number                                ;
 
 ```   
 #### ***Separators and Operators***
-```
+Was in original original but never used:
 AT                  :  "@"            WS                 ;
+LPOINT              :  "<"            WS                 ;
+RPOINT              :  ">"            WS                 ;
+```
+
 AND                 :  "&" notEqAnd   WS                 ;
 AND_AND             :  "&&"           WS                 ;
 AND_EQU             :  "&="           WS                 ;
@@ -746,7 +750,6 @@ INC                 :  "++"           WS                 ;
 LBRK                :  "["            WS                 ;
 LE                  :  "<="           WS                 ;
 LPAR                :  "("            WS                 ;
-LPOINT              :  "<"            WS                 ;
 LT                  :  "<" notEqCar2  WS                 ;
 LWING               :  "{"            WS                 ;
 MINUS               : "-" notEqSlDash WS                 ;
@@ -768,7 +771,6 @@ notEqSlDash         :  not "=" not "\\" not "-"          ;
 QUERY               :  "?"            WS                 ;
 RBRK                :  "]"            WS                 ;
 RPAR                :  ")"            WS                 ;
-RPOINT              :  ">"            WS                 ;
 RWING               :  "}"            WS                 ;
 SEMI                :  ";"            WS                 ;
 SL                  :  "<<" nEq       WS                 ;

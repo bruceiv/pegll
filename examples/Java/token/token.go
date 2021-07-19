@@ -143,113 +143,111 @@ const(
     T_34  // >>> 
     T_35  // >>>= 
     T_36  // ? 
-    T_37  // @ 
-    T_38  // Cls 
-    T_39  // Intf 
-    T_40  // X 
-    T_41  // [ 
-    T_42  // ] 
-    T_43  // ^ 
-    T_44  // ^= 
-    T_45  // abstract 
-    T_46  // any4567 
-    T_47  // anyCarSl 
-    T_48  // assert 
-    T_49  // binaryExponent 
-    T_50  // block_comment 
-    T_51  // boolean 
-    T_52  // break 
-    T_53  // byte 
-    T_54  // carrot 
-    T_55  // case 
-    T_56  // catch 
-    T_57  // char 
-    T_58  // continue 
-    T_59  // default 
-    T_60  // do 
-    T_61  // dot 
-    T_62  // double 
-    T_63  // dubQuo 
-    T_64  // dubSlash 
-    T_65  // else 
-    T_66  // enum 
-    T_67  // esc 
-    T_68  // escCharSp 
-    T_69  // exponent 
-    T_70  // extends 
-    T_71  // fF_dD 
-    T_72  // false 
-    T_73  // final 
-    T_74  // finally 
-    T_75  // float 
-    T_76  // for 
-    T_77  // hexDigit 
-    T_78  // if 
-    T_79  // implements 
-    T_80  // import 
-    T_81  // instanceof 
-    T_82  // int 
-    T_83  // int03 
-    T_84  // int03Two07 
-    T_85  // int07 
-    T_86  // let 
-    T_87  // line_comment 
-    T_88  // long 
-    T_89  // nEq 
-    T_90  // native 
-    T_91  // new 
-    T_92  // newline 
-    T_93  // notEqAnd 
-    T_94  // notEqCar 
-    T_95  // notEqCar2 
-    T_96  // notEqPipe 
-    T_97  // notEqPlus 
-    T_98  // notEqSlDash 
-    T_99  // notKeyword 
-    T_100  // notLorD 
-    T_101  // null 
-    T_102  // num 
-    T_103  // octalNumeral 
-    T_104  // onenine 
-    T_105  // optExpo 
-    T_106  // optOneL 
-    T_107  // optfFdD 
-    T_108  // package 
-    T_109  // private 
-    T_110  // protected 
-    T_111  // public 
-    T_112  // repDig0x 
-    T_113  // repDig1x 
-    T_114  // repHex0x 
-    T_115  // repHex1x 
-    T_116  // repNumx0 
-    T_117  // return 
-    T_118  // short 
-    T_119  // sinQuo 
-    T_120  // static 
-    T_121  // strictfp 
-    T_122  // super 
-    T_123  // switch 
-    T_124  // synchronized 
-    T_125  // this 
-    T_126  // throw 
-    T_127  // throws 
-    T_128  // transient 
-    T_129  // true 
-    T_130  // try 
-    T_131  // two07 
-    T_132  // u 
-    T_133  // void 
-    T_134  // volatile 
-    T_135  // while 
-    T_136  // x 
-    T_137  // ze 
-    T_138  // { 
-    T_139  // | 
-    T_140  // |= 
-    T_141  // || 
-    T_142  // } 
-    T_143  // ~ 
+    T_37  // Cls 
+    T_38  // Intf 
+    T_39  // X 
+    T_40  // [ 
+    T_41  // ] 
+    T_42  // ^ 
+    T_43  // ^= 
+    T_44  // abstract 
+    T_45  // any4567 
+    T_46  // anyCarSl 
+    T_47  // assert 
+    T_48  // binaryExponent 
+    T_49  // block_comment 
+    T_50  // boolean 
+    T_51  // break 
+    T_52  // byte 
+    T_53  // carrot 
+    T_54  // case 
+    T_55  // catch 
+    T_56  // char 
+    T_57  // continue 
+    T_58  // default 
+    T_59  // do 
+    T_60  // dot 
+    T_61  // double 
+    T_62  // dubQuo 
+    T_63  // dubSlash 
+    T_64  // else 
+    T_65  // esc 
+    T_66  // escCharSp 
+    T_67  // exponent 
+    T_68  // extends 
+    T_69  // fF_dD 
+    T_70  // false 
+    T_71  // final 
+    T_72  // finally 
+    T_73  // float 
+    T_74  // for 
+    T_75  // hexDigit 
+    T_76  // if 
+    T_77  // implements 
+    T_78  // import 
+    T_79  // instanceof 
+    T_80  // int 
+    T_81  // int03 
+    T_82  // int03Two07 
+    T_83  // int07 
+    T_84  // let 
+    T_85  // line_comment 
+    T_86  // long 
+    T_87  // nEq 
+    T_88  // native 
+    T_89  // new 
+    T_90  // newline 
+    T_91  // notEqAnd 
+    T_92  // notEqCar 
+    T_93  // notEqCar2 
+    T_94  // notEqPipe 
+    T_95  // notEqPlus 
+    T_96  // notEqSlDash 
+    T_97  // notKeyword 
+    T_98  // notLorD 
+    T_99  // null 
+    T_100  // num 
+    T_101  // octalNumeral 
+    T_102  // onenine 
+    T_103  // optExpo 
+    T_104  // optOneL 
+    T_105  // optfFdD 
+    T_106  // package 
+    T_107  // private 
+    T_108  // protected 
+    T_109  // public 
+    T_110  // repDig0x 
+    T_111  // repDig1x 
+    T_112  // repHex0x 
+    T_113  // repHex1x 
+    T_114  // repNumx0 
+    T_115  // return 
+    T_116  // short 
+    T_117  // sinQuo 
+    T_118  // static 
+    T_119  // strictfp 
+    T_120  // super 
+    T_121  // switch 
+    T_122  // synchronized 
+    T_123  // this 
+    T_124  // throw 
+    T_125  // throws 
+    T_126  // transient 
+    T_127  // true 
+    T_128  // try 
+    T_129  // two07 
+    T_130  // u 
+    T_131  // void 
+    T_132  // volatile 
+    T_133  // while 
+    T_134  // x 
+    T_135  // ze 
+    T_136  // { 
+    T_137  // | 
+    T_138  // |= 
+    T_139  // || 
+    T_140  // } 
+    T_141  // ~ 
 )
 
 var TypeToString = []string{ 
@@ -397,8 +395,6 @@ var TypeToString = []string{
     "T_139",
     "T_140",
     "T_141",
-    "T_142",
-    "T_143",
 }
 
 var StringToType = map[string] Type { 
@@ -546,8 +542,6 @@ var StringToType = map[string] Type {
     "T_139" : T_139, 
     "T_140" : T_140, 
     "T_141" : T_141, 
-    "T_142" : T_142, 
-    "T_143" : T_143, 
 }
 
 var TypeToID = []string { 
@@ -590,7 +584,6 @@ var TypeToID = []string {
     ">>>", 
     ">>>=", 
     "?", 
-    "@", 
     "Cls", 
     "Intf", 
     "X", 
@@ -619,7 +612,6 @@ var TypeToID = []string {
     "dubQuo", 
     "dubSlash", 
     "else", 
-    "enum", 
     "esc", 
     "escCharSp", 
     "exponent", 
@@ -751,9 +743,7 @@ var Suppress = []bool {
     false, 
     false, 
     false, 
-    false, 
     true, 
-    false, 
     false, 
     false, 
     false, 

@@ -32,6 +32,10 @@ const(
 	NT_WS 
 )
 
+const NumNTs = 16
+
+type NTs []NT
+
 // T is the type of terminals symbols
 type T int
 const( 
@@ -69,6 +73,10 @@ func (nt NT) String() string {
 
 func (t T) String() string {
 	return tToString[t]
+}
+
+func (nt NT) LeftRec() NTs {
+	return leftRec[nt]
 }
 
 var ntToString = []string { 

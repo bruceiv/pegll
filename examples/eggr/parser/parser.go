@@ -132,7 +132,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 		case slot.CharClass0R4: // CharClass : [ UnclosedChars ] WS ∙
 
 			p.rtn(symbols.NT_CharClass, cU, p.cI)
-		case slot.CharLiteral0R0: // CharLiteral : ∙sQuote Character sQuote
+		case slot.CharLiteral0R0: // CharLiteral : ∙sQuote Character sQuote WS
 
 			p.bsrSet.Add(slot.CharLiteral0R1, cU, p.cI, p.cI+1)
 			p.cI++
@@ -142,7 +142,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			}
 
 			p.call(slot.CharLiteral0R2, cU, p.cI)
-		case slot.CharLiteral0R2: // CharLiteral : sQuote Character ∙sQuote
+		case slot.CharLiteral0R2: // CharLiteral : sQuote Character ∙sQuote WS
 
 			if !p.testSelect(slot.CharLiteral0R2) {
 				p.parseError(slot.CharLiteral0R2, p.cI, first[slot.CharLiteral0R2])
@@ -151,13 +151,21 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 
 			p.bsrSet.Add(slot.CharLiteral0R3, cU, p.cI, p.cI+1)
 			p.cI++
+			if !p.testSelect(slot.CharLiteral0R3) {
+				p.parseError(slot.CharLiteral0R3, p.cI, first[slot.CharLiteral0R3])
+				break
+			}
+
+			p.call(slot.CharLiteral0R4, cU, p.cI)
+		case slot.CharLiteral0R4: // CharLiteral : sQuote Character sQuote WS ∙
+
 			p.rtn(symbols.NT_CharLiteral, cU, p.cI)
-		case slot.Character0R0: // Character : ∙notQuotesEsc
+		case slot.Character0R0: // Character : ∙esc
 
 			p.bsrSet.Add(slot.Character0R1, cU, p.cI, p.cI+1)
 			p.cI++
 			p.rtn(symbols.NT_Character, cU, p.cI)
-		case slot.Character1R0: // Character : ∙esc
+		case slot.Character1R0: // Character : ∙notQuotesEsc
 
 			p.bsrSet.Add(slot.Character1R1, cU, p.cI, p.cI+1)
 			p.cI++
@@ -1098,20 +1106,27 @@ var first = []map[token.Type]string{
 		token.T_22: "space",
 		token.T_23: "|",
 	},
-	// CharLiteral : ∙sQuote Character sQuote
+	// CharLiteral : ∙sQuote Character sQuote WS
 	{
 		token.T_21: "sQuote",
 	},
-	// CharLiteral : sQuote ∙Character sQuote
+	// CharLiteral : sQuote ∙Character sQuote WS
 	{
 		token.T_14: "esc",
 		token.T_18: "notQuotesEsc",
 	},
-	// CharLiteral : sQuote Character ∙sQuote
+	// CharLiteral : sQuote Character ∙sQuote WS
 	{
 		token.T_21: "sQuote",
 	},
-	// CharLiteral : sQuote Character sQuote ∙
+	// CharLiteral : sQuote Character sQuote ∙WS
+	{
+		token.T_6:  ";",
+		token.T_11: "blockComment",
+		token.T_16: "lineComment",
+		token.T_22: "space",
+	},
+	// CharLiteral : sQuote Character sQuote WS ∙
 	{
 		token.T_0:  "!",
 		token.EOF:  "$",
@@ -1131,11 +1146,11 @@ var first = []map[token.Type]string{
 		token.T_22: "space",
 		token.T_23: "|",
 	},
-	// Character : ∙notQuotesEsc
+	// Character : ∙esc
 	{
-		token.T_18: "notQuotesEsc",
+		token.T_14: "esc",
 	},
-	// Character : notQuotesEsc ∙
+	// Character : esc ∙
 	{
 		token.T_10: "]",
 		token.T_12: "dQuote",
@@ -1144,11 +1159,11 @@ var first = []map[token.Type]string{
 		token.T_19: "notSqBk",
 		token.T_21: "sQuote",
 	},
-	// Character : ∙esc
+	// Character : ∙notQuotesEsc
 	{
-		token.T_14: "esc",
+		token.T_18: "notQuotesEsc",
 	},
-	// Character : esc ∙
+	// Character : notQuotesEsc ∙
 	{
 		token.T_10: "]",
 		token.T_12: "dQuote",

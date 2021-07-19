@@ -1,0 +1,119 @@
+
+L:String : ∙Content , cI:0, I[p.cI]:open (0,1) (, cU:0
+R:
+U:
+ String : ∙Content ,0,0
+
+L:Content : ∙, cI:0, I[p.cI]:open (0,1) (, cU:0
+R:
+ Content : ∙ParensOrChar Content ,0,0
+U:
+ String : ∙Content ,0,0
+ Content : ∙ParensOrChar Content ,0,0
+ Content : ∙,0,0
+
+L:String : Content ∙, cI:0, I[p.cI]:open (0,1) (, cU:0
+R:
+ Content : ∙ParensOrChar Content ,0,0
+U:
+ String : ∙Content ,0,0
+ Content : ∙ParensOrChar Content ,0,0
+ Content : ∙,0,0
+ String : Content ∙,0,0
+
+L:Content : ∙ParensOrChar Content , cI:0, I[p.cI]:open (0,1) (, cU:0
+R:
+U:
+ String : ∙Content ,0,0
+ Content : ∙ParensOrChar Content ,0,0
+ Content : ∙,0,0
+ String : Content ∙,0,0
+
+L:ParensOrChar : ∙Parens , cI:0, I[p.cI]:open (0,1) (, cU:0
+R:
+U:
+ String : ∙Content ,0,0
+ Content : ∙ParensOrChar Content ,0,0
+ Content : ∙,0,0
+ String : Content ∙,0,0
+ ParensOrChar : ∙Parens ,0,0
+
+L:Parens : ∙open Content close , cI:0, I[p.cI]:open (0,1) (, cU:0
+R:
+U:
+ String : ∙Content ,0,0
+ Content : ∙ParensOrChar Content ,0,0
+ Content : ∙,0,0
+ String : Content ∙,0,0
+ ParensOrChar : ∙Parens ,0,0
+ Parens : ∙open Content close ,0,0
+
+L:Content : ∙, cI:1, I[p.cI]:open (1,2) (, cU:1
+R:
+ Content : ∙ParensOrChar Content ,1,1
+U:
+ String : ∙Content ,0,0
+ Content : ∙ParensOrChar Content ,0,0
+ Content : ∙,0,0
+ String : Content ∙,0,0
+ ParensOrChar : ∙Parens ,0,0
+ Parens : ∙open Content close ,0,0
+ Content : ∙ParensOrChar Content ,1,1
+ Content : ∙,1,1
+
+L:Parens : open Content ∙close , cI:1, I[p.cI]:open (1,2) (, cU:0
+R:
+ Content : ∙ParensOrChar Content ,1,1
+U:
+ String : ∙Content ,0,0
+ Content : ∙ParensOrChar Content ,0,0
+ Content : ∙,0,0
+ String : Content ∙,0,0
+ ParensOrChar : ∙Parens ,0,0
+ Parens : ∙open Content close ,0,0
+ Content : ∙ParensOrChar Content ,1,1
+ Content : ∙,1,1
+ Parens : open Content ∙close ,0,1
+
+L:Content : ∙ParensOrChar Content , cI:1, I[p.cI]:open (1,2) (, cU:1
+R:
+U:
+ String : ∙Content ,0,0
+ Content : ∙ParensOrChar Content ,0,0
+ Content : ∙,0,0
+ String : Content ∙,0,0
+ ParensOrChar : ∙Parens ,0,0
+ Parens : ∙open Content close ,0,0
+ Content : ∙ParensOrChar Content ,1,1
+ Content : ∙,1,1
+ Parens : open Content ∙close ,0,1
+
+L:ParensOrChar : ∙Parens , cI:1, I[p.cI]:open (1,2) (, cU:1
+R:
+U:
+ String : ∙Content ,0,0
+ Content : ∙ParensOrChar Content ,0,0
+ Content : ∙,0,0
+ String : Content ∙,0,0
+ ParensOrChar : ∙Parens ,0,0
+ Parens : ∙open Content close ,0,0
+ Content : ∙ParensOrChar Content ,1,1
+ Content : ∙,1,1
+ Parens : open Content ∙close ,0,1
+ ParensOrChar : ∙Parens ,1,1
+
+L:Parens : ∙open Content close , cI:1, I[p.cI]:open (1,2) (, cU:1
+R:
+U:
+ String : ∙Content ,0,0
+ Content : ∙ParensOrChar Content ,0,0
+ Content : ∙,0,0
+ String : Content ∙,0,0
+ ParensOrChar : ∙Parens ,0,0
+ Parens : ∙open Content close ,0,0
+ Content : ∙ParensOrChar Content ,1,1
+ Content : ∙,1,1
+ Parens : open Content ∙close ,0,1
+ ParensOrChar : ∙Parens ,1,1
+ Parens : ∙open Content close ,1,1
+`((` DID NOT match

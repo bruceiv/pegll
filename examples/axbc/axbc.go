@@ -23,6 +23,7 @@ func parse(s []rune) bool {
 	//bsrSet.FilterByOrderedChoice()
 	// fmt.Println("=====")
 	// bsrSet.FlatDump()
+
 	// check that single root covers whole input
 	roots := bsrSet.GetRoots()
 	switch len(roots) {

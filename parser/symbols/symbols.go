@@ -104,10 +104,6 @@ func (nt NT) LeftRec() NTs {
 	return leftRec[nt]
 }
 
-func (nt NT) IsOrdered() bool {
-	return ordered[nt]
-}
-
 var ntToString = []string { 
 	"GoGLL", /* NT_GoGLL */
 	"LexAlternates", /* NT_LexAlternates */
@@ -190,7 +186,7 @@ var stringNT = map[string]NT{
 
 var leftRec = map[NT]NTs { 
 	NT_GoGLL: NTs {  NT_Package,  },
-	NT_LexAlternates: NTs {  NT_LexBracket,  NT_LexGroup,  NT_LexOptional,  NT_LexZeroOrMore,  NT_LexOneOrMore,  NT_RegExp,  NT_UnicodeClass,  NT_LexSymbol,  },
+	NT_LexAlternates: NTs {  NT_LexZeroOrMore,  NT_LexOneOrMore,  NT_LexSymbol,  NT_UnicodeClass,  NT_LexBracket,  NT_RegExp,  NT_LexGroup,  NT_LexOptional,  },
 	NT_LexBracket: NTs {  NT_LexGroup,  NT_LexOptional,  NT_LexZeroOrMore,  NT_LexOneOrMore,  },
 	NT_LexGroup: NTs {  },
 	NT_LexOneOrMore: NTs {  },
@@ -198,20 +194,17 @@ var leftRec = map[NT]NTs {
 	NT_LexRule: NTs {  },
 	NT_LexSymbol: NTs {  NT_LexBracket,  NT_LexGroup,  NT_LexOptional,  NT_LexZeroOrMore,  NT_LexOneOrMore,  NT_UnicodeClass,  },
 	NT_LexZeroOrMore: NTs {  },
-	NT_OrderedAlternates: NTs {  NT_SyntaxAtom,  NT_SyntaxAlternate,  NT_SyntaxSymbols,  NT_SyntaxSymbol,  },
+	NT_OrderedAlternates: NTs {  NT_SyntaxSymbol,  NT_SyntaxAtom,  NT_SyntaxAlternate,  NT_SyntaxSymbols,  },
 	NT_Package: NTs {  },
-	NT_RegExp: NTs {  NT_LexSymbol,  NT_LexBracket,  NT_LexGroup,  NT_LexOptional,  NT_LexZeroOrMore,  NT_LexOneOrMore,  NT_UnicodeClass,  },
+	NT_RegExp: NTs {  NT_LexZeroOrMore,  NT_LexOneOrMore,  NT_LexSymbol,  NT_UnicodeClass,  NT_LexBracket,  NT_LexGroup,  NT_LexOptional,  },
 	NT_Rule: NTs {  NT_LexRule,  NT_SyntaxRule,  },
-	NT_Rules: NTs {  NT_SyntaxRule,  NT_Rule,  NT_LexRule,  },
+	NT_Rules: NTs {  NT_Rule,  NT_SyntaxRule,  NT_LexRule,  },
 	NT_SyntaxAlternate: NTs {  NT_SyntaxSymbols,  NT_SyntaxSymbol,  NT_SyntaxAtom,  },
 	NT_SyntaxAlternates: NTs {  NT_SyntaxAtom,  NT_SyntaxAlternate,  NT_SyntaxSymbols,  NT_SyntaxSymbol,  },
 	NT_SyntaxAtom: NTs {  },
 	NT_SyntaxRule: NTs {  },
 	NT_SyntaxSymbol: NTs {  NT_SyntaxAtom,  },
-	NT_SyntaxSymbols: NTs {  NT_SyntaxAtom,  NT_SyntaxSymbol,  },
+	NT_SyntaxSymbols: NTs {  NT_SyntaxSymbol,  NT_SyntaxAtom,  },
 	NT_UnicodeClass: NTs {  },
-	NT_UnorderedAlternates: NTs {  NT_SyntaxSymbol,  NT_SyntaxAtom,  NT_SyntaxSymbols,  NT_SyntaxAlternate,  },
-}
-
-var ordered = map[NT]bool { 
+	NT_UnorderedAlternates: NTs {  NT_SyntaxAlternate,  NT_SyntaxSymbols,  NT_SyntaxSymbol,  NT_SyntaxAtom,  },
 }

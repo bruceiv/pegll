@@ -1,0 +1,22 @@
+0: String : Content ∙,0,0,9 - (a(b(c)))
+    1: Content : ParensOrChar Content ∙,0,9,9 - (a(b(c)))
+        2: ParensOrChar : Parens ∙,0,0,9 - (a(b(c)))
+            3: Parens : open Content close ∙,0,8,9 - (a(b(c)))
+                4: Content : ParensOrChar Content ∙,1,2,8 - a(b(c))
+                    5: ParensOrChar : char ∙,1,1,2 - a
+                    5: Content : ParensOrChar Content ∙,2,8,8 - (b(c))
+                        6: ParensOrChar : Parens ∙,2,2,8 - (b(c))
+                            7: Parens : open Content close ∙,2,7,8 - (b(c))
+                                8: Content : ParensOrChar Content ∙,3,4,7 - b(c)
+                                    9: ParensOrChar : char ∙,3,3,4 - b
+                                    9: Content : ParensOrChar Content ∙,4,7,7 - (c)
+                                        10: ParensOrChar : Parens ∙,4,4,7 - (c)
+                                            11: Parens : open Content close ∙,4,6,7 - (c)
+                                                12: Content : ParensOrChar Content ∙,5,6,6 - c
+                                                    13: ParensOrChar : char ∙,5,5,6 - c
+                                                    13: Content : ∙,6,6,6 - 
+                                        10: Content : ∙,7,7,7 - 
+                        6: Content : ∙,8,8,8 - 
+        2: Content : ∙,9,9,9 - 
+=====
+`(a(b(c)))` matched

@@ -14,15 +14,415 @@ func (T) isSymbol() {}
 // NT is the type of non-terminals symbols
 type NT int
 const( 
-	NT_Test NT = iota
+	NT_AND NT = iota
+	NT_ANDExpr 
+	NT_AND_AND 
+	NT_AND_EQU 
+	NT_ASSERT 
+	NT_AddAlts 
+	NT_AddExpr 
+	NT_Any0xX 
+	NT_Arguments 
+	NT_ArrayCreatorRest 
+	NT_ArrayInitializer 
+	NT_ArrayRest 
+	NT_AssignOp 
+	NT_BANG 
+	NT_BREAK 
+	NT_BSR 
+	NT_BSR_EQU 
+	NT_BasicType 
+	NT_BasicTypeLit 
+	NT_Beoptfd 
+	NT_Block 
+	NT_BlockStmt 
+	NT_CASE 
+	NT_CATCH 
+	NT_COLON 
+	NT_COMMA 
+	NT_CONTINUE 
+	NT_CarrotAlts 
+	NT_Catch 
+	NT_CatchBlk 
+	NT_CharLiteral 
+	NT_Cls 
+	NT_ClsBdy 
+	NT_ClsBdyDecl 
+	NT_ClsCreatorRest 
+	NT_ClsDecl 
+	NT_ClsType 
+	NT_ClsTypeList 
+	NT_CompUnit 
+	NT_CondANDExpr 
+	NT_CondExpr 
+	NT_CondORExpr 
+	NT_ConstDecl 
+	NT_ConstDeclRest 
+	NT_ConstDeclsRest 
+	NT_ConstExpr 
+	NT_CreatedName 
+	NT_Creator 
+	NT_DEC 
+	NT_DEFAULT 
+	NT_DIV 
+	NT_DIV_EQU 
+	NT_DO 
+	NT_DOT 
+	NT_DecimalFloat 
+	NT_DecimalNumeral 
+	NT_DeclAlts 
+	NT_Dim 
+	NT_DimExpr 
+	NT_ELSE 
+	NT_EQU 
+	NT_EQUAL 
+	NT_ESInst 
+	NT_EXTENDS 
+	NT_EqAlts 
+	NT_EqCheck 
+	NT_EqShift 
+	NT_EqualExpr 
+	NT_EscOrLineOrBlock 
+	NT_EscSlash 
+	NT_EscUp 
+	NT_Escape 
+	NT_Escs 
+	NT_Expr 
+	NT_FINAL 
+	NT_FINALLY 
+	NT_FOR 
+	NT_Finally 
+	NT_FloatLiteral 
+	NT_ForInit 
+	NT_ForUpdate 
+	NT_FormalParam 
+	NT_FormalParamDecls 
+	NT_FormalParamDeclsRest 
+	NT_FormalParams 
+	NT_GE 
+	NT_GT 
+	NT_HAT 
+	NT_HAT_EQU 
+	NT_HexFloat 
+	NT_HexNumeral 
+	NT_HexSignificand 
+	NT_ID 
+	NT_IDSuffix 
+	NT_IF 
+	NT_IMPLEMENTS 
+	NT_IMPORT 
+	NT_INC 
+	NT_INSTANCEOF 
+	NT_IORExpr 
+	NT_ImportDecl 
+	NT_InnerCreator 
+	NT_IntegerLiteral 
+	NT_Intf 
+	NT_IntfBdy 
+	NT_IntfBdyDecl 
+	NT_IntfDecl 
+	NT_IntfMemDecl 
+	NT_IntfMethDeclRest 
+	NT_IntfMethFieldDecl 
+	NT_IntfMethFieldRest 
+	NT_LBRK 
+	NT_LE 
+	NT_LPAR 
+	NT_LT 
+	NT_LWING 
+	NT_Letter 
+	NT_LetterLorD 
+	NT_LitAlts 
+	NT_Literal 
+	NT_LocalVarDeclStmt 
+	NT_LorD 
+	NT_MINUS 
+	NT_MINUS_EQU 
+	NT_MOD 
+	NT_MOD_EQU 
+	NT_MemAlts 
+	NT_MemDecl 
+	NT_Modifier 
+	NT_Modifs 
+	NT_MultExpr 
+	NT_NEW 
+	NT_NOT_EQUAL 
+	NT_NumeralAlts 
+	NT_OR 
+	NT_ORXOR 
+	NT_OR_EQU 
+	NT_OR_OR 
+	NT_OctalEscape 
+	NT_OptArgs 
+	NT_OptClsBdy 
+	NT_OptColExpr 
+	NT_OptCom 
+	NT_OptComFormPDecl 
+	NT_OptDot 
+	NT_OptDotStar 
+	NT_OptElse 
+	NT_OptEqVarInit 
+	NT_OptEsc 
+	NT_OptExpr 
+	NT_OptExprs 
+	NT_OptExtClsType 
+	NT_OptExtendsClsLis 
+	NT_OptFin 
+	NT_OptFinType 
+	NT_OptForInit 
+	NT_OptForUpd 
+	NT_OptFormPDecl 
+	NT_OptID 
+	NT_OptIDSuff 
+	NT_OptImpClsLst 
+	NT_OptPackDecl 
+	NT_OptStatic 
+	NT_OptThrowClsTypLst 
+	NT_OptVarInit 
+	NT_OtherAlts 
+	NT_PACKAGE 
+	NT_PLUS 
+	NT_PLUS_EQU 
+	NT_PackDecl 
+	NT_ParExpr 
+	NT_PostfixOp 
+	NT_PrefixOp 
+	NT_Primary 
+	NT_QUERY 
+	NT_QualifiedID 
+	NT_RBRK 
+	NT_RBRKAlts 
+	NT_RETURN 
+	NT_RPAR 
+	NT_RWING 
+	NT_ReferenceType 
+	NT_RelateExpr 
+	NT_RepANDEq0x 
+	NT_RepANDIOR0x 
+	NT_RepAddAltsMult0x 
+	NT_RepAsscExpr0x 
+	NT_RepBlkSt0x 
+	NT_RepCatch0x 
+	NT_RepClsBDecl0x 
+	NT_RepComCls0x 
+	NT_RepComCnstDecl0x 
+	NT_RepComExp0x 
+	NT_RepComInit0x 
+	NT_RepComSExpr0x 
+	NT_RepComVDecl0x 
+	NT_RepCondition0x 
+	NT_RepDig1xExp 
+	NT_RepDig1xOptExp 
+	NT_RepDim0x 
+	NT_RepDimExpr0x 
+	NT_RepDotID0x 
+	NT_RepESInst0x 
+	NT_RepEqExpr0x 
+	NT_RepHatAND0x 
+	NT_RepHex0xDot 
+	NT_RepImpDecl0x 
+	NT_RepInBodDecl0x 
+	NT_RepLorD0x 
+	NT_RepModif0 
+	NT_RepORXOR0x 
+	NT_RepORcAND0x 
+	NT_RepPfOp0x 
+	NT_RepSDMUExpr0x 
+	NT_RepSel0x 
+	NT_RepSemiModDecl0x 
+	NT_RepSwBlkStmt0x 
+	NT_SDM 
+	NT_SEMI 
+	NT_SL 
+	NT_SL_EQU 
+	NT_SR 
+	NT_SR_EQU 
+	NT_STAR 
+	NT_STAR_EQU 
+	NT_STATIC 
+	NT_SUPER 
+	NT_SWITCH 
+	NT_SYNCHRONIZED 
+	NT_Selector 
+	NT_SemiModDecl 
+	NT_ShiftAlts 
+	NT_ShiftExpr 
+	NT_Stmt 
+	NT_StmtExpr 
+	NT_StrClose 
+	NT_StringLiteral 
+	NT_SuperSuffix 
+	NT_SwitchBlockStmtGrp 
+	NT_SwitchLabel 
+	NT_THIS 
+	NT_THROW 
+	NT_THROWS 
+	NT_TILDA 
+	NT_TRY 
+	NT_Type 
+	NT_TypeAlts 
+	NT_UnaryExpr 
+	NT_UnicodeEscape 
+	NT_VOID 
+	NT_VarDecl 
+	NT_VarDeclInit 
+	NT_VarDelID 
+	NT_VarInitial 
+	NT_VoidIntfMethDeclRst 
+	NT_WHILE 
+	NT_WS 
+	NT_XORExpr 
 )
+
+const NumNTs = 258
+
+type NTs []NT
 
 // T is the type of terminals symbols
 type T int
 const( 
-	T_0 T = iota // binaryExponent 
-	T_1  // exponent 
-	T_2  // num 
+	T_0 T = iota // ! 
+	T_1  // != 
+	T_2  // % 
+	T_3  // %= 
+	T_4  // & 
+	T_5  // && 
+	T_6  // &= 
+	T_7  // ( 
+	T_8  // ) 
+	T_9  // * 
+	T_10  // *= 
+	T_11  // + 
+	T_12  // ++ 
+	T_13  // += 
+	T_14  // , 
+	T_15  // - 
+	T_16  // -- 
+	T_17  // -= 
+	T_18  // . 
+	T_19  // / 
+	T_20  // /= 
+	T_21  // 0 
+	T_22  // : 
+	T_23  // ; 
+	T_24  // < 
+	T_25  // << 
+	T_26  // <<= 
+	T_27  // <= 
+	T_28  // = 
+	T_29  // == 
+	T_30  // > 
+	T_31  // >= 
+	T_32  // >> 
+	T_33  // >>= 
+	T_34  // >>> 
+	T_35  // >>>= 
+	T_36  // ? 
+	T_37  // Cls 
+	T_38  // Intf 
+	T_39  // X 
+	T_40  // [ 
+	T_41  // ] 
+	T_42  // ^ 
+	T_43  // ^= 
+	T_44  // abstract 
+	T_45  // any4567 
+	T_46  // anyCarSl 
+	T_47  // assert 
+	T_48  // binaryExponent 
+	T_49  // block_comment 
+	T_50  // boolean 
+	T_51  // break 
+	T_52  // byte 
+	T_53  // carrot 
+	T_54  // case 
+	T_55  // catch 
+	T_56  // char 
+	T_57  // continue 
+	T_58  // default 
+	T_59  // do 
+	T_60  // dot 
+	T_61  // double 
+	T_62  // dubQuo 
+	T_63  // dubSlash 
+	T_64  // else 
+	T_65  // esc 
+	T_66  // escCharSp 
+	T_67  // exponent 
+	T_68  // extends 
+	T_69  // fF_dD 
+	T_70  // false 
+	T_71  // final 
+	T_72  // finally 
+	T_73  // float 
+	T_74  // for 
+	T_75  // hexDigit 
+	T_76  // if 
+	T_77  // implements 
+	T_78  // import 
+	T_79  // instanceof 
+	T_80  // int 
+	T_81  // int03 
+	T_82  // int03Two07 
+	T_83  // int07 
+	T_84  // let 
+	T_85  // line_comment 
+	T_86  // long 
+	T_87  // nEq 
+	T_88  // native 
+	T_89  // new 
+	T_90  // newline 
+	T_91  // notEqAnd 
+	T_92  // notEqCar 
+	T_93  // notEqCar2 
+	T_94  // notEqPipe 
+	T_95  // notEqPlus 
+	T_96  // notEqSlDash 
+	T_97  // notKeyword 
+	T_98  // notLorD 
+	T_99  // null 
+	T_100  // num 
+	T_101  // octalNumeral 
+	T_102  // onenine 
+	T_103  // optExpo 
+	T_104  // optOneL 
+	T_105  // optfFdD 
+	T_106  // package 
+	T_107  // private 
+	T_108  // protected 
+	T_109  // public 
+	T_110  // repDig0x 
+	T_111  // repDig1x 
+	T_112  // repHex0x 
+	T_113  // repHex1x 
+	T_114  // repNumx0 
+	T_115  // return 
+	T_116  // short 
+	T_117  // sinQuo 
+	T_118  // static 
+	T_119  // strictfp 
+	T_120  // super 
+	T_121  // switch 
+	T_122  // synchronized 
+	T_123  // this 
+	T_124  // throw 
+	T_125  // throws 
+	T_126  // transient 
+	T_127  // true 
+	T_128  // try 
+	T_129  // two07 
+	T_130  // u 
+	T_131  // void 
+	T_132  // volatile 
+	T_133  // while 
+	T_134  // x 
+	T_135  // ze 
+	T_136  // { 
+	T_137  // | 
+	T_138  // |= 
+	T_139  // || 
+	T_140  // } 
+	T_141  // ~ 
 )
 
 type Symbols []Symbol
@@ -51,16 +451,934 @@ func (t T) String() string {
 	return tToString[t]
 }
 
+func (nt NT) LeftRec() NTs {
+	return leftRec[nt]
+}
+
 var ntToString = []string { 
-	"Test", /* NT_Test */ 
+	"AND", /* NT_AND */
+	"ANDExpr", /* NT_ANDExpr */
+	"AND_AND", /* NT_AND_AND */
+	"AND_EQU", /* NT_AND_EQU */
+	"ASSERT", /* NT_ASSERT */
+	"AddAlts", /* NT_AddAlts */
+	"AddExpr", /* NT_AddExpr */
+	"Any0xX", /* NT_Any0xX */
+	"Arguments", /* NT_Arguments */
+	"ArrayCreatorRest", /* NT_ArrayCreatorRest */
+	"ArrayInitializer", /* NT_ArrayInitializer */
+	"ArrayRest", /* NT_ArrayRest */
+	"AssignOp", /* NT_AssignOp */
+	"BANG", /* NT_BANG */
+	"BREAK", /* NT_BREAK */
+	"BSR", /* NT_BSR */
+	"BSR_EQU", /* NT_BSR_EQU */
+	"BasicType", /* NT_BasicType */
+	"BasicTypeLit", /* NT_BasicTypeLit */
+	"Beoptfd", /* NT_Beoptfd */
+	"Block", /* NT_Block */
+	"BlockStmt", /* NT_BlockStmt */
+	"CASE", /* NT_CASE */
+	"CATCH", /* NT_CATCH */
+	"COLON", /* NT_COLON */
+	"COMMA", /* NT_COMMA */
+	"CONTINUE", /* NT_CONTINUE */
+	"CarrotAlts", /* NT_CarrotAlts */
+	"Catch", /* NT_Catch */
+	"CatchBlk", /* NT_CatchBlk */
+	"CharLiteral", /* NT_CharLiteral */
+	"Cls", /* NT_Cls */
+	"ClsBdy", /* NT_ClsBdy */
+	"ClsBdyDecl", /* NT_ClsBdyDecl */
+	"ClsCreatorRest", /* NT_ClsCreatorRest */
+	"ClsDecl", /* NT_ClsDecl */
+	"ClsType", /* NT_ClsType */
+	"ClsTypeList", /* NT_ClsTypeList */
+	"CompUnit", /* NT_CompUnit */
+	"CondANDExpr", /* NT_CondANDExpr */
+	"CondExpr", /* NT_CondExpr */
+	"CondORExpr", /* NT_CondORExpr */
+	"ConstDecl", /* NT_ConstDecl */
+	"ConstDeclRest", /* NT_ConstDeclRest */
+	"ConstDeclsRest", /* NT_ConstDeclsRest */
+	"ConstExpr", /* NT_ConstExpr */
+	"CreatedName", /* NT_CreatedName */
+	"Creator", /* NT_Creator */
+	"DEC", /* NT_DEC */
+	"DEFAULT", /* NT_DEFAULT */
+	"DIV", /* NT_DIV */
+	"DIV_EQU", /* NT_DIV_EQU */
+	"DO", /* NT_DO */
+	"DOT", /* NT_DOT */
+	"DecimalFloat", /* NT_DecimalFloat */
+	"DecimalNumeral", /* NT_DecimalNumeral */
+	"DeclAlts", /* NT_DeclAlts */
+	"Dim", /* NT_Dim */
+	"DimExpr", /* NT_DimExpr */
+	"ELSE", /* NT_ELSE */
+	"EQU", /* NT_EQU */
+	"EQUAL", /* NT_EQUAL */
+	"ESInst", /* NT_ESInst */
+	"EXTENDS", /* NT_EXTENDS */
+	"EqAlts", /* NT_EqAlts */
+	"EqCheck", /* NT_EqCheck */
+	"EqShift", /* NT_EqShift */
+	"EqualExpr", /* NT_EqualExpr */
+	"EscOrLineOrBlock", /* NT_EscOrLineOrBlock */
+	"EscSlash", /* NT_EscSlash */
+	"EscUp", /* NT_EscUp */
+	"Escape", /* NT_Escape */
+	"Escs", /* NT_Escs */
+	"Expr", /* NT_Expr */
+	"FINAL", /* NT_FINAL */
+	"FINALLY", /* NT_FINALLY */
+	"FOR", /* NT_FOR */
+	"Finally", /* NT_Finally */
+	"FloatLiteral", /* NT_FloatLiteral */
+	"ForInit", /* NT_ForInit */
+	"ForUpdate", /* NT_ForUpdate */
+	"FormalParam", /* NT_FormalParam */
+	"FormalParamDecls", /* NT_FormalParamDecls */
+	"FormalParamDeclsRest", /* NT_FormalParamDeclsRest */
+	"FormalParams", /* NT_FormalParams */
+	"GE", /* NT_GE */
+	"GT", /* NT_GT */
+	"HAT", /* NT_HAT */
+	"HAT_EQU", /* NT_HAT_EQU */
+	"HexFloat", /* NT_HexFloat */
+	"HexNumeral", /* NT_HexNumeral */
+	"HexSignificand", /* NT_HexSignificand */
+	"ID", /* NT_ID */
+	"IDSuffix", /* NT_IDSuffix */
+	"IF", /* NT_IF */
+	"IMPLEMENTS", /* NT_IMPLEMENTS */
+	"IMPORT", /* NT_IMPORT */
+	"INC", /* NT_INC */
+	"INSTANCEOF", /* NT_INSTANCEOF */
+	"IORExpr", /* NT_IORExpr */
+	"ImportDecl", /* NT_ImportDecl */
+	"InnerCreator", /* NT_InnerCreator */
+	"IntegerLiteral", /* NT_IntegerLiteral */
+	"Intf", /* NT_Intf */
+	"IntfBdy", /* NT_IntfBdy */
+	"IntfBdyDecl", /* NT_IntfBdyDecl */
+	"IntfDecl", /* NT_IntfDecl */
+	"IntfMemDecl", /* NT_IntfMemDecl */
+	"IntfMethDeclRest", /* NT_IntfMethDeclRest */
+	"IntfMethFieldDecl", /* NT_IntfMethFieldDecl */
+	"IntfMethFieldRest", /* NT_IntfMethFieldRest */
+	"LBRK", /* NT_LBRK */
+	"LE", /* NT_LE */
+	"LPAR", /* NT_LPAR */
+	"LT", /* NT_LT */
+	"LWING", /* NT_LWING */
+	"Letter", /* NT_Letter */
+	"LetterLorD", /* NT_LetterLorD */
+	"LitAlts", /* NT_LitAlts */
+	"Literal", /* NT_Literal */
+	"LocalVarDeclStmt", /* NT_LocalVarDeclStmt */
+	"LorD", /* NT_LorD */
+	"MINUS", /* NT_MINUS */
+	"MINUS_EQU", /* NT_MINUS_EQU */
+	"MOD", /* NT_MOD */
+	"MOD_EQU", /* NT_MOD_EQU */
+	"MemAlts", /* NT_MemAlts */
+	"MemDecl", /* NT_MemDecl */
+	"Modifier", /* NT_Modifier */
+	"Modifs", /* NT_Modifs */
+	"MultExpr", /* NT_MultExpr */
+	"NEW", /* NT_NEW */
+	"NOT_EQUAL", /* NT_NOT_EQUAL */
+	"NumeralAlts", /* NT_NumeralAlts */
+	"OR", /* NT_OR */
+	"ORXOR", /* NT_ORXOR */
+	"OR_EQU", /* NT_OR_EQU */
+	"OR_OR", /* NT_OR_OR */
+	"OctalEscape", /* NT_OctalEscape */
+	"OptArgs", /* NT_OptArgs */
+	"OptClsBdy", /* NT_OptClsBdy */
+	"OptColExpr", /* NT_OptColExpr */
+	"OptCom", /* NT_OptCom */
+	"OptComFormPDecl", /* NT_OptComFormPDecl */
+	"OptDot", /* NT_OptDot */
+	"OptDotStar", /* NT_OptDotStar */
+	"OptElse", /* NT_OptElse */
+	"OptEqVarInit", /* NT_OptEqVarInit */
+	"OptEsc", /* NT_OptEsc */
+	"OptExpr", /* NT_OptExpr */
+	"OptExprs", /* NT_OptExprs */
+	"OptExtClsType", /* NT_OptExtClsType */
+	"OptExtendsClsLis", /* NT_OptExtendsClsLis */
+	"OptFin", /* NT_OptFin */
+	"OptFinType", /* NT_OptFinType */
+	"OptForInit", /* NT_OptForInit */
+	"OptForUpd", /* NT_OptForUpd */
+	"OptFormPDecl", /* NT_OptFormPDecl */
+	"OptID", /* NT_OptID */
+	"OptIDSuff", /* NT_OptIDSuff */
+	"OptImpClsLst", /* NT_OptImpClsLst */
+	"OptPackDecl", /* NT_OptPackDecl */
+	"OptStatic", /* NT_OptStatic */
+	"OptThrowClsTypLst", /* NT_OptThrowClsTypLst */
+	"OptVarInit", /* NT_OptVarInit */
+	"OtherAlts", /* NT_OtherAlts */
+	"PACKAGE", /* NT_PACKAGE */
+	"PLUS", /* NT_PLUS */
+	"PLUS_EQU", /* NT_PLUS_EQU */
+	"PackDecl", /* NT_PackDecl */
+	"ParExpr", /* NT_ParExpr */
+	"PostfixOp", /* NT_PostfixOp */
+	"PrefixOp", /* NT_PrefixOp */
+	"Primary", /* NT_Primary */
+	"QUERY", /* NT_QUERY */
+	"QualifiedID", /* NT_QualifiedID */
+	"RBRK", /* NT_RBRK */
+	"RBRKAlts", /* NT_RBRKAlts */
+	"RETURN", /* NT_RETURN */
+	"RPAR", /* NT_RPAR */
+	"RWING", /* NT_RWING */
+	"ReferenceType", /* NT_ReferenceType */
+	"RelateExpr", /* NT_RelateExpr */
+	"RepANDEq0x", /* NT_RepANDEq0x */
+	"RepANDIOR0x", /* NT_RepANDIOR0x */
+	"RepAddAltsMult0x", /* NT_RepAddAltsMult0x */
+	"RepAsscExpr0x", /* NT_RepAsscExpr0x */
+	"RepBlkSt0x", /* NT_RepBlkSt0x */
+	"RepCatch0x", /* NT_RepCatch0x */
+	"RepClsBDecl0x", /* NT_RepClsBDecl0x */
+	"RepComCls0x", /* NT_RepComCls0x */
+	"RepComCnstDecl0x", /* NT_RepComCnstDecl0x */
+	"RepComExp0x", /* NT_RepComExp0x */
+	"RepComInit0x", /* NT_RepComInit0x */
+	"RepComSExpr0x", /* NT_RepComSExpr0x */
+	"RepComVDecl0x", /* NT_RepComVDecl0x */
+	"RepCondition0x", /* NT_RepCondition0x */
+	"RepDig1xExp", /* NT_RepDig1xExp */
+	"RepDig1xOptExp", /* NT_RepDig1xOptExp */
+	"RepDim0x", /* NT_RepDim0x */
+	"RepDimExpr0x", /* NT_RepDimExpr0x */
+	"RepDotID0x", /* NT_RepDotID0x */
+	"RepESInst0x", /* NT_RepESInst0x */
+	"RepEqExpr0x", /* NT_RepEqExpr0x */
+	"RepHatAND0x", /* NT_RepHatAND0x */
+	"RepHex0xDot", /* NT_RepHex0xDot */
+	"RepImpDecl0x", /* NT_RepImpDecl0x */
+	"RepInBodDecl0x", /* NT_RepInBodDecl0x */
+	"RepLorD0x", /* NT_RepLorD0x */
+	"RepModif0", /* NT_RepModif0 */
+	"RepORXOR0x", /* NT_RepORXOR0x */
+	"RepORcAND0x", /* NT_RepORcAND0x */
+	"RepPfOp0x", /* NT_RepPfOp0x */
+	"RepSDMUExpr0x", /* NT_RepSDMUExpr0x */
+	"RepSel0x", /* NT_RepSel0x */
+	"RepSemiModDecl0x", /* NT_RepSemiModDecl0x */
+	"RepSwBlkStmt0x", /* NT_RepSwBlkStmt0x */
+	"SDM", /* NT_SDM */
+	"SEMI", /* NT_SEMI */
+	"SL", /* NT_SL */
+	"SL_EQU", /* NT_SL_EQU */
+	"SR", /* NT_SR */
+	"SR_EQU", /* NT_SR_EQU */
+	"STAR", /* NT_STAR */
+	"STAR_EQU", /* NT_STAR_EQU */
+	"STATIC", /* NT_STATIC */
+	"SUPER", /* NT_SUPER */
+	"SWITCH", /* NT_SWITCH */
+	"SYNCHRONIZED", /* NT_SYNCHRONIZED */
+	"Selector", /* NT_Selector */
+	"SemiModDecl", /* NT_SemiModDecl */
+	"ShiftAlts", /* NT_ShiftAlts */
+	"ShiftExpr", /* NT_ShiftExpr */
+	"Stmt", /* NT_Stmt */
+	"StmtExpr", /* NT_StmtExpr */
+	"StrClose", /* NT_StrClose */
+	"StringLiteral", /* NT_StringLiteral */
+	"SuperSuffix", /* NT_SuperSuffix */
+	"SwitchBlockStmtGrp", /* NT_SwitchBlockStmtGrp */
+	"SwitchLabel", /* NT_SwitchLabel */
+	"THIS", /* NT_THIS */
+	"THROW", /* NT_THROW */
+	"THROWS", /* NT_THROWS */
+	"TILDA", /* NT_TILDA */
+	"TRY", /* NT_TRY */
+	"Type", /* NT_Type */
+	"TypeAlts", /* NT_TypeAlts */
+	"UnaryExpr", /* NT_UnaryExpr */
+	"UnicodeEscape", /* NT_UnicodeEscape */
+	"VOID", /* NT_VOID */
+	"VarDecl", /* NT_VarDecl */
+	"VarDeclInit", /* NT_VarDeclInit */
+	"VarDelID", /* NT_VarDelID */
+	"VarInitial", /* NT_VarInitial */
+	"VoidIntfMethDeclRst", /* NT_VoidIntfMethDeclRst */
+	"WHILE", /* NT_WHILE */
+	"WS", /* NT_WS */
+	"XORExpr", /* NT_XORExpr */ 
 }
 
 var tToString = []string { 
-	"binaryExponent", /* T_0 */
-	"exponent", /* T_1 */
-	"num", /* T_2 */ 
+	"!", /* T_0 */
+	"!=", /* T_1 */
+	"%", /* T_2 */
+	"%=", /* T_3 */
+	"&", /* T_4 */
+	"&&", /* T_5 */
+	"&=", /* T_6 */
+	"(", /* T_7 */
+	")", /* T_8 */
+	"*", /* T_9 */
+	"*=", /* T_10 */
+	"+", /* T_11 */
+	"++", /* T_12 */
+	"+=", /* T_13 */
+	",", /* T_14 */
+	"-", /* T_15 */
+	"--", /* T_16 */
+	"-=", /* T_17 */
+	".", /* T_18 */
+	"/", /* T_19 */
+	"/=", /* T_20 */
+	"0", /* T_21 */
+	":", /* T_22 */
+	";", /* T_23 */
+	"<", /* T_24 */
+	"<<", /* T_25 */
+	"<<=", /* T_26 */
+	"<=", /* T_27 */
+	"=", /* T_28 */
+	"==", /* T_29 */
+	">", /* T_30 */
+	">=", /* T_31 */
+	">>", /* T_32 */
+	">>=", /* T_33 */
+	">>>", /* T_34 */
+	">>>=", /* T_35 */
+	"?", /* T_36 */
+	"Cls", /* T_37 */
+	"Intf", /* T_38 */
+	"X", /* T_39 */
+	"[", /* T_40 */
+	"]", /* T_41 */
+	"^", /* T_42 */
+	"^=", /* T_43 */
+	"abstract", /* T_44 */
+	"any4567", /* T_45 */
+	"anyCarSl", /* T_46 */
+	"assert", /* T_47 */
+	"binaryExponent", /* T_48 */
+	"block_comment", /* T_49 */
+	"boolean", /* T_50 */
+	"break", /* T_51 */
+	"byte", /* T_52 */
+	"carrot", /* T_53 */
+	"case", /* T_54 */
+	"catch", /* T_55 */
+	"char", /* T_56 */
+	"continue", /* T_57 */
+	"default", /* T_58 */
+	"do", /* T_59 */
+	"dot", /* T_60 */
+	"double", /* T_61 */
+	"dubQuo", /* T_62 */
+	"dubSlash", /* T_63 */
+	"else", /* T_64 */
+	"esc", /* T_65 */
+	"escCharSp", /* T_66 */
+	"exponent", /* T_67 */
+	"extends", /* T_68 */
+	"fF_dD", /* T_69 */
+	"false", /* T_70 */
+	"final", /* T_71 */
+	"finally", /* T_72 */
+	"float", /* T_73 */
+	"for", /* T_74 */
+	"hexDigit", /* T_75 */
+	"if", /* T_76 */
+	"implements", /* T_77 */
+	"import", /* T_78 */
+	"instanceof", /* T_79 */
+	"int", /* T_80 */
+	"int03", /* T_81 */
+	"int03Two07", /* T_82 */
+	"int07", /* T_83 */
+	"let", /* T_84 */
+	"line_comment", /* T_85 */
+	"long", /* T_86 */
+	"nEq", /* T_87 */
+	"native", /* T_88 */
+	"new", /* T_89 */
+	"newline", /* T_90 */
+	"notEqAnd", /* T_91 */
+	"notEqCar", /* T_92 */
+	"notEqCar2", /* T_93 */
+	"notEqPipe", /* T_94 */
+	"notEqPlus", /* T_95 */
+	"notEqSlDash", /* T_96 */
+	"notKeyword", /* T_97 */
+	"notLorD", /* T_98 */
+	"null", /* T_99 */
+	"num", /* T_100 */
+	"octalNumeral", /* T_101 */
+	"onenine", /* T_102 */
+	"optExpo", /* T_103 */
+	"optOneL", /* T_104 */
+	"optfFdD", /* T_105 */
+	"package", /* T_106 */
+	"private", /* T_107 */
+	"protected", /* T_108 */
+	"public", /* T_109 */
+	"repDig0x", /* T_110 */
+	"repDig1x", /* T_111 */
+	"repHex0x", /* T_112 */
+	"repHex1x", /* T_113 */
+	"repNumx0", /* T_114 */
+	"return", /* T_115 */
+	"short", /* T_116 */
+	"sinQuo", /* T_117 */
+	"static", /* T_118 */
+	"strictfp", /* T_119 */
+	"super", /* T_120 */
+	"switch", /* T_121 */
+	"synchronized", /* T_122 */
+	"this", /* T_123 */
+	"throw", /* T_124 */
+	"throws", /* T_125 */
+	"transient", /* T_126 */
+	"true", /* T_127 */
+	"try", /* T_128 */
+	"two07", /* T_129 */
+	"u", /* T_130 */
+	"void", /* T_131 */
+	"volatile", /* T_132 */
+	"while", /* T_133 */
+	"x", /* T_134 */
+	"ze", /* T_135 */
+	"{", /* T_136 */
+	"|", /* T_137 */
+	"|=", /* T_138 */
+	"||", /* T_139 */
+	"}", /* T_140 */
+	"~", /* T_141 */ 
 }
 
 var stringNT = map[string]NT{ 
-	"Test":NT_Test,
+	"AND":NT_AND,
+	"ANDExpr":NT_ANDExpr,
+	"AND_AND":NT_AND_AND,
+	"AND_EQU":NT_AND_EQU,
+	"ASSERT":NT_ASSERT,
+	"AddAlts":NT_AddAlts,
+	"AddExpr":NT_AddExpr,
+	"Any0xX":NT_Any0xX,
+	"Arguments":NT_Arguments,
+	"ArrayCreatorRest":NT_ArrayCreatorRest,
+	"ArrayInitializer":NT_ArrayInitializer,
+	"ArrayRest":NT_ArrayRest,
+	"AssignOp":NT_AssignOp,
+	"BANG":NT_BANG,
+	"BREAK":NT_BREAK,
+	"BSR":NT_BSR,
+	"BSR_EQU":NT_BSR_EQU,
+	"BasicType":NT_BasicType,
+	"BasicTypeLit":NT_BasicTypeLit,
+	"Beoptfd":NT_Beoptfd,
+	"Block":NT_Block,
+	"BlockStmt":NT_BlockStmt,
+	"CASE":NT_CASE,
+	"CATCH":NT_CATCH,
+	"COLON":NT_COLON,
+	"COMMA":NT_COMMA,
+	"CONTINUE":NT_CONTINUE,
+	"CarrotAlts":NT_CarrotAlts,
+	"Catch":NT_Catch,
+	"CatchBlk":NT_CatchBlk,
+	"CharLiteral":NT_CharLiteral,
+	"Cls":NT_Cls,
+	"ClsBdy":NT_ClsBdy,
+	"ClsBdyDecl":NT_ClsBdyDecl,
+	"ClsCreatorRest":NT_ClsCreatorRest,
+	"ClsDecl":NT_ClsDecl,
+	"ClsType":NT_ClsType,
+	"ClsTypeList":NT_ClsTypeList,
+	"CompUnit":NT_CompUnit,
+	"CondANDExpr":NT_CondANDExpr,
+	"CondExpr":NT_CondExpr,
+	"CondORExpr":NT_CondORExpr,
+	"ConstDecl":NT_ConstDecl,
+	"ConstDeclRest":NT_ConstDeclRest,
+	"ConstDeclsRest":NT_ConstDeclsRest,
+	"ConstExpr":NT_ConstExpr,
+	"CreatedName":NT_CreatedName,
+	"Creator":NT_Creator,
+	"DEC":NT_DEC,
+	"DEFAULT":NT_DEFAULT,
+	"DIV":NT_DIV,
+	"DIV_EQU":NT_DIV_EQU,
+	"DO":NT_DO,
+	"DOT":NT_DOT,
+	"DecimalFloat":NT_DecimalFloat,
+	"DecimalNumeral":NT_DecimalNumeral,
+	"DeclAlts":NT_DeclAlts,
+	"Dim":NT_Dim,
+	"DimExpr":NT_DimExpr,
+	"ELSE":NT_ELSE,
+	"EQU":NT_EQU,
+	"EQUAL":NT_EQUAL,
+	"ESInst":NT_ESInst,
+	"EXTENDS":NT_EXTENDS,
+	"EqAlts":NT_EqAlts,
+	"EqCheck":NT_EqCheck,
+	"EqShift":NT_EqShift,
+	"EqualExpr":NT_EqualExpr,
+	"EscOrLineOrBlock":NT_EscOrLineOrBlock,
+	"EscSlash":NT_EscSlash,
+	"EscUp":NT_EscUp,
+	"Escape":NT_Escape,
+	"Escs":NT_Escs,
+	"Expr":NT_Expr,
+	"FINAL":NT_FINAL,
+	"FINALLY":NT_FINALLY,
+	"FOR":NT_FOR,
+	"Finally":NT_Finally,
+	"FloatLiteral":NT_FloatLiteral,
+	"ForInit":NT_ForInit,
+	"ForUpdate":NT_ForUpdate,
+	"FormalParam":NT_FormalParam,
+	"FormalParamDecls":NT_FormalParamDecls,
+	"FormalParamDeclsRest":NT_FormalParamDeclsRest,
+	"FormalParams":NT_FormalParams,
+	"GE":NT_GE,
+	"GT":NT_GT,
+	"HAT":NT_HAT,
+	"HAT_EQU":NT_HAT_EQU,
+	"HexFloat":NT_HexFloat,
+	"HexNumeral":NT_HexNumeral,
+	"HexSignificand":NT_HexSignificand,
+	"ID":NT_ID,
+	"IDSuffix":NT_IDSuffix,
+	"IF":NT_IF,
+	"IMPLEMENTS":NT_IMPLEMENTS,
+	"IMPORT":NT_IMPORT,
+	"INC":NT_INC,
+	"INSTANCEOF":NT_INSTANCEOF,
+	"IORExpr":NT_IORExpr,
+	"ImportDecl":NT_ImportDecl,
+	"InnerCreator":NT_InnerCreator,
+	"IntegerLiteral":NT_IntegerLiteral,
+	"Intf":NT_Intf,
+	"IntfBdy":NT_IntfBdy,
+	"IntfBdyDecl":NT_IntfBdyDecl,
+	"IntfDecl":NT_IntfDecl,
+	"IntfMemDecl":NT_IntfMemDecl,
+	"IntfMethDeclRest":NT_IntfMethDeclRest,
+	"IntfMethFieldDecl":NT_IntfMethFieldDecl,
+	"IntfMethFieldRest":NT_IntfMethFieldRest,
+	"LBRK":NT_LBRK,
+	"LE":NT_LE,
+	"LPAR":NT_LPAR,
+	"LT":NT_LT,
+	"LWING":NT_LWING,
+	"Letter":NT_Letter,
+	"LetterLorD":NT_LetterLorD,
+	"LitAlts":NT_LitAlts,
+	"Literal":NT_Literal,
+	"LocalVarDeclStmt":NT_LocalVarDeclStmt,
+	"LorD":NT_LorD,
+	"MINUS":NT_MINUS,
+	"MINUS_EQU":NT_MINUS_EQU,
+	"MOD":NT_MOD,
+	"MOD_EQU":NT_MOD_EQU,
+	"MemAlts":NT_MemAlts,
+	"MemDecl":NT_MemDecl,
+	"Modifier":NT_Modifier,
+	"Modifs":NT_Modifs,
+	"MultExpr":NT_MultExpr,
+	"NEW":NT_NEW,
+	"NOT_EQUAL":NT_NOT_EQUAL,
+	"NumeralAlts":NT_NumeralAlts,
+	"OR":NT_OR,
+	"ORXOR":NT_ORXOR,
+	"OR_EQU":NT_OR_EQU,
+	"OR_OR":NT_OR_OR,
+	"OctalEscape":NT_OctalEscape,
+	"OptArgs":NT_OptArgs,
+	"OptClsBdy":NT_OptClsBdy,
+	"OptColExpr":NT_OptColExpr,
+	"OptCom":NT_OptCom,
+	"OptComFormPDecl":NT_OptComFormPDecl,
+	"OptDot":NT_OptDot,
+	"OptDotStar":NT_OptDotStar,
+	"OptElse":NT_OptElse,
+	"OptEqVarInit":NT_OptEqVarInit,
+	"OptEsc":NT_OptEsc,
+	"OptExpr":NT_OptExpr,
+	"OptExprs":NT_OptExprs,
+	"OptExtClsType":NT_OptExtClsType,
+	"OptExtendsClsLis":NT_OptExtendsClsLis,
+	"OptFin":NT_OptFin,
+	"OptFinType":NT_OptFinType,
+	"OptForInit":NT_OptForInit,
+	"OptForUpd":NT_OptForUpd,
+	"OptFormPDecl":NT_OptFormPDecl,
+	"OptID":NT_OptID,
+	"OptIDSuff":NT_OptIDSuff,
+	"OptImpClsLst":NT_OptImpClsLst,
+	"OptPackDecl":NT_OptPackDecl,
+	"OptStatic":NT_OptStatic,
+	"OptThrowClsTypLst":NT_OptThrowClsTypLst,
+	"OptVarInit":NT_OptVarInit,
+	"OtherAlts":NT_OtherAlts,
+	"PACKAGE":NT_PACKAGE,
+	"PLUS":NT_PLUS,
+	"PLUS_EQU":NT_PLUS_EQU,
+	"PackDecl":NT_PackDecl,
+	"ParExpr":NT_ParExpr,
+	"PostfixOp":NT_PostfixOp,
+	"PrefixOp":NT_PrefixOp,
+	"Primary":NT_Primary,
+	"QUERY":NT_QUERY,
+	"QualifiedID":NT_QualifiedID,
+	"RBRK":NT_RBRK,
+	"RBRKAlts":NT_RBRKAlts,
+	"RETURN":NT_RETURN,
+	"RPAR":NT_RPAR,
+	"RWING":NT_RWING,
+	"ReferenceType":NT_ReferenceType,
+	"RelateExpr":NT_RelateExpr,
+	"RepANDEq0x":NT_RepANDEq0x,
+	"RepANDIOR0x":NT_RepANDIOR0x,
+	"RepAddAltsMult0x":NT_RepAddAltsMult0x,
+	"RepAsscExpr0x":NT_RepAsscExpr0x,
+	"RepBlkSt0x":NT_RepBlkSt0x,
+	"RepCatch0x":NT_RepCatch0x,
+	"RepClsBDecl0x":NT_RepClsBDecl0x,
+	"RepComCls0x":NT_RepComCls0x,
+	"RepComCnstDecl0x":NT_RepComCnstDecl0x,
+	"RepComExp0x":NT_RepComExp0x,
+	"RepComInit0x":NT_RepComInit0x,
+	"RepComSExpr0x":NT_RepComSExpr0x,
+	"RepComVDecl0x":NT_RepComVDecl0x,
+	"RepCondition0x":NT_RepCondition0x,
+	"RepDig1xExp":NT_RepDig1xExp,
+	"RepDig1xOptExp":NT_RepDig1xOptExp,
+	"RepDim0x":NT_RepDim0x,
+	"RepDimExpr0x":NT_RepDimExpr0x,
+	"RepDotID0x":NT_RepDotID0x,
+	"RepESInst0x":NT_RepESInst0x,
+	"RepEqExpr0x":NT_RepEqExpr0x,
+	"RepHatAND0x":NT_RepHatAND0x,
+	"RepHex0xDot":NT_RepHex0xDot,
+	"RepImpDecl0x":NT_RepImpDecl0x,
+	"RepInBodDecl0x":NT_RepInBodDecl0x,
+	"RepLorD0x":NT_RepLorD0x,
+	"RepModif0":NT_RepModif0,
+	"RepORXOR0x":NT_RepORXOR0x,
+	"RepORcAND0x":NT_RepORcAND0x,
+	"RepPfOp0x":NT_RepPfOp0x,
+	"RepSDMUExpr0x":NT_RepSDMUExpr0x,
+	"RepSel0x":NT_RepSel0x,
+	"RepSemiModDecl0x":NT_RepSemiModDecl0x,
+	"RepSwBlkStmt0x":NT_RepSwBlkStmt0x,
+	"SDM":NT_SDM,
+	"SEMI":NT_SEMI,
+	"SL":NT_SL,
+	"SL_EQU":NT_SL_EQU,
+	"SR":NT_SR,
+	"SR_EQU":NT_SR_EQU,
+	"STAR":NT_STAR,
+	"STAR_EQU":NT_STAR_EQU,
+	"STATIC":NT_STATIC,
+	"SUPER":NT_SUPER,
+	"SWITCH":NT_SWITCH,
+	"SYNCHRONIZED":NT_SYNCHRONIZED,
+	"Selector":NT_Selector,
+	"SemiModDecl":NT_SemiModDecl,
+	"ShiftAlts":NT_ShiftAlts,
+	"ShiftExpr":NT_ShiftExpr,
+	"Stmt":NT_Stmt,
+	"StmtExpr":NT_StmtExpr,
+	"StrClose":NT_StrClose,
+	"StringLiteral":NT_StringLiteral,
+	"SuperSuffix":NT_SuperSuffix,
+	"SwitchBlockStmtGrp":NT_SwitchBlockStmtGrp,
+	"SwitchLabel":NT_SwitchLabel,
+	"THIS":NT_THIS,
+	"THROW":NT_THROW,
+	"THROWS":NT_THROWS,
+	"TILDA":NT_TILDA,
+	"TRY":NT_TRY,
+	"Type":NT_Type,
+	"TypeAlts":NT_TypeAlts,
+	"UnaryExpr":NT_UnaryExpr,
+	"UnicodeEscape":NT_UnicodeEscape,
+	"VOID":NT_VOID,
+	"VarDecl":NT_VarDecl,
+	"VarDeclInit":NT_VarDeclInit,
+	"VarDelID":NT_VarDelID,
+	"VarInitial":NT_VarInitial,
+	"VoidIntfMethDeclRst":NT_VoidIntfMethDeclRst,
+	"WHILE":NT_WHILE,
+	"WS":NT_WS,
+	"XORExpr":NT_XORExpr,
+}
+
+var leftRec = map[NT]NTs { 
+	NT_AND: NTs {  },
+	NT_ANDExpr: NTs {  NT_PLUS,  NT_ID,  NT_HexFloat,  NT_HexNumeral,  NT_RepDig1xExp,  NT_AddExpr,  NT_BasicType,  NT_QualifiedID,  NT_FloatLiteral,  NT_RelateExpr,  NT_DecimalFloat,  NT_UnaryExpr,  NT_PrefixOp,  NT_HexSignificand,  NT_NumeralAlts,  NT_IntegerLiteral,  NT_Literal,  NT_LitAlts,  NT_DEC,  NT_LPAR,  NT_Any0xX,  NT_TILDA,  NT_MultExpr,  NT_StringLiteral,  NT_THIS,  NT_ParExpr,  NT_NEW,  NT_MINUS,  NT_RepDig1xOptExp,  NT_DecimalNumeral,  NT_CharLiteral,  NT_BasicTypeLit,  NT_RepHex0xDot,  NT_Primary,  NT_ShiftExpr,  NT_BANG,  NT_INC,  NT_EqualExpr,  NT_VOID,  NT_SUPER,  },
+	NT_AND_AND: NTs {  },
+	NT_AND_EQU: NTs {  },
+	NT_ASSERT: NTs {  },
+	NT_AddAlts: NTs {  NT_PLUS,  NT_MINUS,  },
+	NT_AddExpr: NTs {  NT_Any0xX,  NT_Literal,  NT_CharLiteral,  NT_HexNumeral,  NT_RepHex0xDot,  NT_DEC,  NT_TILDA,  NT_UnaryExpr,  NT_BasicTypeLit,  NT_RepDig1xOptExp,  NT_MINUS,  NT_PLUS,  NT_PrefixOp,  NT_INC,  NT_HexFloat,  NT_FloatLiteral,  NT_THIS,  NT_LPAR,  NT_SUPER,  NT_ParExpr,  NT_MultExpr,  NT_ID,  NT_IntegerLiteral,  NT_BasicType,  NT_DecimalFloat,  NT_RepDig1xExp,  NT_DecimalNumeral,  NT_Primary,  NT_NumeralAlts,  NT_HexSignificand,  NT_LitAlts,  NT_VOID,  NT_QualifiedID,  NT_StringLiteral,  NT_NEW,  NT_BANG,  },
+	NT_Any0xX: NTs {  },
+	NT_Arguments: NTs {  NT_LPAR,  },
+	NT_ArrayCreatorRest: NTs {  NT_LBRK,  },
+	NT_ArrayInitializer: NTs {  NT_LWING,  },
+	NT_ArrayRest: NTs {  NT_CondORExpr,  NT_RepHex0xDot,  NT_DecimalFloat,  NT_Any0xX,  NT_NumeralAlts,  NT_AddExpr,  NT_Primary,  NT_ANDExpr,  NT_ShiftExpr,  NT_TILDA,  NT_CondANDExpr,  NT_DEC,  NT_ID,  NT_RelateExpr,  NT_RBRK,  NT_INC,  NT_CondExpr,  NT_MultExpr,  NT_BasicTypeLit,  NT_SUPER,  NT_Literal,  NT_XORExpr,  NT_MINUS,  NT_StringLiteral,  NT_LPAR,  NT_UnaryExpr,  NT_IntegerLiteral,  NT_RepDig1xOptExp,  NT_ParExpr,  NT_Expr,  NT_VOID,  NT_RepDig1xExp,  NT_EqualExpr,  NT_BasicType,  NT_PrefixOp,  NT_HexSignificand,  NT_CharLiteral,  NT_HexNumeral,  NT_FloatLiteral,  NT_IORExpr,  NT_PLUS,  NT_BANG,  NT_THIS,  NT_NEW,  NT_HexFloat,  NT_LitAlts,  NT_QualifiedID,  NT_DecimalNumeral,  },
+	NT_AssignOp: NTs {  NT_AND_EQU,  NT_OR_EQU,  NT_MOD_EQU,  NT_SL_EQU,  NT_BSR_EQU,  NT_MINUS_EQU,  NT_PLUS_EQU,  NT_STAR_EQU,  NT_DIV_EQU,  NT_HAT_EQU,  NT_SR_EQU,  NT_EQU,  },
+	NT_BANG: NTs {  },
+	NT_BREAK: NTs {  },
+	NT_BSR: NTs {  },
+	NT_BSR_EQU: NTs {  },
+	NT_BasicType: NTs {  NT_BasicTypeLit,  },
+	NT_BasicTypeLit: NTs {  },
+	NT_Beoptfd: NTs {  },
+	NT_Block: NTs {  NT_LWING,  },
+	NT_BlockStmt: NTs {  NT_CharLiteral,  NT_XORExpr,  NT_ASSERT,  NT_Literal,  NT_SYNCHRONIZED,  NT_Primary,  NT_ID,  NT_NEW,  NT_RelateExpr,  NT_IF,  NT_EqualExpr,  NT_RepHex0xDot,  NT_THIS,  NT_StmtExpr,  NT_CondORExpr,  NT_AddExpr,  NT_HexNumeral,  NT_RepDig1xExp,  NT_OptFinType,  NT_Expr,  NT_MultExpr,  NT_DecimalFloat,  NT_DecimalNumeral,  NT_NumeralAlts,  NT_UnaryExpr,  NT_BANG,  NT_RepModif0,  NT_BasicType,  NT_FOR,  NT_CONTINUE,  NT_SUPER,  NT_DEC,  NT_Modifier,  NT_Any0xX,  NT_IntegerLiteral,  NT_ParExpr,  NT_LitAlts,  NT_FINAL,  NT_Cls,  NT_SEMI,  NT_BasicTypeLit,  NT_RepDig1xOptExp,  NT_Stmt,  NT_LWING,  NT_FloatLiteral,  NT_ANDExpr,  NT_CondExpr,  NT_Modifs,  NT_TILDA,  NT_IORExpr,  NT_QualifiedID,  NT_MINUS,  NT_Block,  NT_PLUS,  NT_BREAK,  NT_TRY,  NT_PrefixOp,  NT_HexFloat,  NT_LPAR,  NT_SWITCH,  NT_INC,  NT_CondANDExpr,  NT_VOID,  NT_DO,  NT_StringLiteral,  NT_HexSignificand,  NT_RETURN,  NT_ShiftExpr,  NT_WHILE,  NT_ClsDecl,  NT_THROW,  NT_LocalVarDeclStmt,  },
+	NT_CASE: NTs {  },
+	NT_CATCH: NTs {  },
+	NT_COLON: NTs {  },
+	NT_COMMA: NTs {  },
+	NT_CONTINUE: NTs {  },
+	NT_CarrotAlts: NTs {  NT_SL,  NT_SR,  NT_BSR,  },
+	NT_Catch: NTs {  NT_CATCH,  },
+	NT_CatchBlk: NTs {  NT_Finally,  NT_FINALLY,  NT_Catch,  NT_CATCH,  },
+	NT_CharLiteral: NTs {  },
+	NT_Cls: NTs {  },
+	NT_ClsBdy: NTs {  NT_LWING,  },
+	NT_ClsBdyDecl: NTs {  NT_SEMI,  NT_STATIC,  NT_Modifier,  NT_MemDecl,  NT_Type,  NT_OptStatic,  NT_Block,  NT_LWING,  NT_ID,  NT_IntfDecl,  NT_RepModif0,  NT_Modifs,  NT_VOID,  NT_Intf,  NT_Cls,  NT_BasicType,  NT_ClsType,  NT_BasicTypeLit,  NT_ClsDecl,  NT_TypeAlts,  },
+	NT_ClsCreatorRest: NTs {  NT_Arguments,  NT_LPAR,  },
+	NT_ClsDecl: NTs {  NT_Cls,  },
+	NT_ClsType: NTs {  NT_ID,  },
+	NT_ClsTypeList: NTs {  NT_ClsType,  NT_ID,  },
+	NT_CompUnit: NTs {  NT_SEMI,  NT_RepSemiModDecl0x,  NT_SemiModDecl,  NT_IMPORT,  NT_Modifier,  NT_ClsDecl,  NT_IntfDecl,  NT_WS,  NT_OptPackDecl,  NT_RepImpDecl0x,  NT_ImportDecl,  NT_Modifs,  NT_Intf,  NT_DeclAlts,  NT_EscOrLineOrBlock,  NT_PackDecl,  NT_Cls,  NT_PACKAGE,  NT_RepModif0,  },
+	NT_CondANDExpr: NTs {  NT_HexNumeral,  NT_DecimalFloat,  NT_NumeralAlts,  NT_LitAlts,  NT_MINUS,  NT_BasicType,  NT_FloatLiteral,  NT_BasicTypeLit,  NT_PrefixOp,  NT_RepDig1xExp,  NT_UnaryExpr,  NT_XORExpr,  NT_ID,  NT_RepDig1xOptExp,  NT_PLUS,  NT_DecimalNumeral,  NT_TILDA,  NT_THIS,  NT_NEW,  NT_RelateExpr,  NT_ANDExpr,  NT_HexSignificand,  NT_IORExpr,  NT_Literal,  NT_DEC,  NT_INC,  NT_AddExpr,  NT_RepHex0xDot,  NT_MultExpr,  NT_HexFloat,  NT_LPAR,  NT_CharLiteral,  NT_Any0xX,  NT_Primary,  NT_BANG,  NT_ShiftExpr,  NT_ParExpr,  NT_StringLiteral,  NT_EqualExpr,  NT_SUPER,  NT_IntegerLiteral,  NT_QualifiedID,  NT_VOID,  },
+	NT_CondExpr: NTs {  NT_PrefixOp,  NT_LitAlts,  NT_VOID,  NT_BANG,  NT_IORExpr,  NT_HexSignificand,  NT_CharLiteral,  NT_THIS,  NT_NumeralAlts,  NT_CondANDExpr,  NT_DecimalFloat,  NT_QualifiedID,  NT_RepHex0xDot,  NT_ID,  NT_INC,  NT_CondORExpr,  NT_HexFloat,  NT_RelateExpr,  NT_EqualExpr,  NT_AddExpr,  NT_UnaryExpr,  NT_DecimalNumeral,  NT_BasicType,  NT_RepDig1xOptExp,  NT_Primary,  NT_ParExpr,  NT_XORExpr,  NT_MultExpr,  NT_RepDig1xExp,  NT_DEC,  NT_IntegerLiteral,  NT_Any0xX,  NT_ShiftExpr,  NT_TILDA,  NT_FloatLiteral,  NT_PLUS,  NT_Literal,  NT_SUPER,  NT_StringLiteral,  NT_NEW,  NT_MINUS,  NT_LPAR,  NT_HexNumeral,  NT_ANDExpr,  NT_BasicTypeLit,  },
+	NT_CondORExpr: NTs {  NT_MINUS,  NT_RepHex0xDot,  NT_Literal,  NT_SUPER,  NT_IntegerLiteral,  NT_ANDExpr,  NT_LPAR,  NT_StringLiteral,  NT_BasicTypeLit,  NT_ID,  NT_DecimalNumeral,  NT_THIS,  NT_NumeralAlts,  NT_NEW,  NT_INC,  NT_Any0xX,  NT_MultExpr,  NT_RepDig1xExp,  NT_ShiftExpr,  NT_PrefixOp,  NT_HexFloat,  NT_CondANDExpr,  NT_DecimalFloat,  NT_LitAlts,  NT_BasicType,  NT_HexNumeral,  NT_TILDA,  NT_RepDig1xOptExp,  NT_RelateExpr,  NT_VOID,  NT_BANG,  NT_DEC,  NT_EqualExpr,  NT_QualifiedID,  NT_IORExpr,  NT_AddExpr,  NT_Primary,  NT_ParExpr,  NT_XORExpr,  NT_FloatLiteral,  NT_PLUS,  NT_HexSignificand,  NT_CharLiteral,  NT_UnaryExpr,  },
+	NT_ConstDecl: NTs {  NT_ID,  },
+	NT_ConstDeclRest: NTs {  NT_RepDim0x,  NT_Dim,  NT_LBRK,  NT_EQU,  },
+	NT_ConstDeclsRest: NTs {  NT_RepDim0x,  NT_Dim,  NT_LBRK,  NT_EQU,  NT_ConstDeclRest,  },
+	NT_ConstExpr: NTs {  NT_HexNumeral,  NT_BasicType,  NT_HexFloat,  NT_DecimalFloat,  NT_DecimalNumeral,  NT_XORExpr,  NT_VOID,  NT_RepDig1xOptExp,  NT_AddExpr,  NT_Expr,  NT_MINUS,  NT_ID,  NT_StringLiteral,  NT_QualifiedID,  NT_NumeralAlts,  NT_Literal,  NT_THIS,  NT_NEW,  NT_CondANDExpr,  NT_RepHex0xDot,  NT_LitAlts,  NT_TILDA,  NT_INC,  NT_PrefixOp,  NT_RepDig1xExp,  NT_FloatLiteral,  NT_LPAR,  NT_Primary,  NT_BANG,  NT_SUPER,  NT_IORExpr,  NT_CondORExpr,  NT_RelateExpr,  NT_ANDExpr,  NT_EqualExpr,  NT_IntegerLiteral,  NT_MultExpr,  NT_ShiftExpr,  NT_UnaryExpr,  NT_ParExpr,  NT_BasicTypeLit,  NT_CharLiteral,  NT_DEC,  NT_CondExpr,  NT_Any0xX,  NT_PLUS,  NT_HexSignificand,  },
+	NT_CreatedName: NTs {  NT_ID,  },
+	NT_Creator: NTs {  NT_BasicType,  NT_BasicTypeLit,  NT_ClsType,  NT_CreatedName,  NT_ID,  NT_TypeAlts,  },
+	NT_DEC: NTs {  },
+	NT_DEFAULT: NTs {  },
+	NT_DIV: NTs {  },
+	NT_DIV_EQU: NTs {  },
+	NT_DO: NTs {  },
+	NT_DOT: NTs {  },
+	NT_DecimalFloat: NTs {  NT_RepDig1xExp,  NT_RepDig1xOptExp,  },
+	NT_DecimalNumeral: NTs {  },
+	NT_DeclAlts: NTs {  NT_ClsDecl,  NT_Cls,  NT_IntfDecl,  NT_Intf,  },
+	NT_Dim: NTs {  NT_LBRK,  },
+	NT_DimExpr: NTs {  NT_LBRK,  },
+	NT_ELSE: NTs {  },
+	NT_EQU: NTs {  },
+	NT_EQUAL: NTs {  },
+	NT_ESInst: NTs {  NT_EqShift,  NT_EqCheck,  NT_LE,  NT_GE,  NT_LT,  NT_GT,  NT_INSTANCEOF,  },
+	NT_EXTENDS: NTs {  },
+	NT_EqAlts: NTs {  NT_EQUAL,  NT_NOT_EQUAL,  },
+	NT_EqCheck: NTs {  NT_LE,  NT_GE,  NT_LT,  NT_GT,  },
+	NT_EqShift: NTs {  NT_EqCheck,  NT_LE,  NT_GE,  NT_LT,  NT_GT,  },
+	NT_EqualExpr: NTs {  NT_SUPER,  NT_CharLiteral,  NT_HexNumeral,  NT_MINUS,  NT_ShiftExpr,  NT_HexFloat,  NT_RepDig1xOptExp,  NT_BasicType,  NT_DEC,  NT_RepDig1xExp,  NT_FloatLiteral,  NT_LPAR,  NT_Any0xX,  NT_RelateExpr,  NT_IntegerLiteral,  NT_VOID,  NT_NumeralAlts,  NT_TILDA,  NT_PLUS,  NT_DecimalNumeral,  NT_DecimalFloat,  NT_UnaryExpr,  NT_AddExpr,  NT_MultExpr,  NT_BANG,  NT_ID,  NT_NEW,  NT_ParExpr,  NT_PrefixOp,  NT_INC,  NT_StringLiteral,  NT_BasicTypeLit,  NT_HexSignificand,  NT_THIS,  NT_RepHex0xDot,  NT_Primary,  NT_Literal,  NT_LitAlts,  NT_QualifiedID,  },
+	NT_EscOrLineOrBlock: NTs {  },
+	NT_EscSlash: NTs {  NT_Escape,  NT_EscUp,  },
+	NT_EscUp: NTs {  },
+	NT_Escape: NTs {  },
+	NT_Escs: NTs {  NT_OctalEscape,  NT_UnicodeEscape,  },
+	NT_Expr: NTs {  NT_FloatLiteral,  NT_LitAlts,  NT_QualifiedID,  NT_EqualExpr,  NT_BasicType,  NT_IntegerLiteral,  NT_Any0xX,  NT_LPAR,  NT_NumeralAlts,  NT_Primary,  NT_MultExpr,  NT_DecimalNumeral,  NT_UnaryExpr,  NT_RepDig1xOptExp,  NT_ShiftExpr,  NT_PLUS,  NT_BANG,  NT_IORExpr,  NT_AddExpr,  NT_ParExpr,  NT_SUPER,  NT_BasicTypeLit,  NT_THIS,  NT_PrefixOp,  NT_HexSignificand,  NT_CondORExpr,  NT_Literal,  NT_NEW,  NT_TILDA,  NT_CharLiteral,  NT_VOID,  NT_CondANDExpr,  NT_RepHex0xDot,  NT_INC,  NT_XORExpr,  NT_RepDig1xExp,  NT_DEC,  NT_CondExpr,  NT_MINUS,  NT_HexNumeral,  NT_ID,  NT_HexFloat,  NT_RelateExpr,  NT_ANDExpr,  NT_DecimalFloat,  NT_StringLiteral,  },
+	NT_FINAL: NTs {  },
+	NT_FINALLY: NTs {  },
+	NT_FOR: NTs {  },
+	NT_Finally: NTs {  NT_FINALLY,  },
+	NT_FloatLiteral: NTs {  NT_RepDig1xExp,  NT_RepDig1xOptExp,  NT_HexFloat,  NT_HexSignificand,  NT_HexNumeral,  NT_Any0xX,  NT_RepHex0xDot,  NT_DecimalFloat,  },
+	NT_ForInit: NTs {  NT_LitAlts,  NT_ParExpr,  NT_AddExpr,  NT_Literal,  NT_FloatLiteral,  NT_Primary,  NT_StmtExpr,  NT_CondExpr,  NT_CondORExpr,  NT_IntegerLiteral,  NT_THIS,  NT_HexSignificand,  NT_Expr,  NT_EqualExpr,  NT_DEC,  NT_LPAR,  NT_DecimalNumeral,  NT_RepDig1xOptExp,  NT_ANDExpr,  NT_CharLiteral,  NT_StringLiteral,  NT_NumeralAlts,  NT_BasicTypeLit,  NT_ID,  NT_SUPER,  NT_MINUS,  NT_MultExpr,  NT_RepDig1xExp,  NT_VOID,  NT_Any0xX,  NT_QualifiedID,  NT_RelateExpr,  NT_IORExpr,  NT_TILDA,  NT_DecimalFloat,  NT_BasicType,  NT_OptFinType,  NT_HexNumeral,  NT_ShiftExpr,  NT_INC,  NT_RepHex0xDot,  NT_NEW,  NT_CondANDExpr,  NT_XORExpr,  NT_FINAL,  NT_PLUS,  NT_BANG,  NT_HexFloat,  NT_UnaryExpr,  NT_PrefixOp,  },
+	NT_ForUpdate: NTs {  NT_DEC,  NT_StmtExpr,  NT_CondORExpr,  NT_ID,  NT_BasicType,  NT_UnaryExpr,  NT_BANG,  NT_TILDA,  NT_Any0xX,  NT_XORExpr,  NT_Expr,  NT_AddExpr,  NT_RepHex0xDot,  NT_FloatLiteral,  NT_BasicTypeLit,  NT_LitAlts,  NT_RelateExpr,  NT_EqualExpr,  NT_PrefixOp,  NT_MINUS,  NT_PLUS,  NT_CondExpr,  NT_ShiftExpr,  NT_SUPER,  NT_INC,  NT_Primary,  NT_NEW,  NT_HexNumeral,  NT_StringLiteral,  NT_HexSignificand,  NT_IORExpr,  NT_THIS,  NT_QualifiedID,  NT_ParExpr,  NT_RepDig1xExp,  NT_MultExpr,  NT_Literal,  NT_HexFloat,  NT_CharLiteral,  NT_ANDExpr,  NT_LPAR,  NT_DecimalNumeral,  NT_NumeralAlts,  NT_RepDig1xOptExp,  NT_CondANDExpr,  NT_IntegerLiteral,  NT_DecimalFloat,  NT_VOID,  },
+	NT_FormalParam: NTs {  NT_OptFinType,  NT_FINAL,  },
+	NT_FormalParamDecls: NTs {  NT_FINAL,  NT_OptFinType,  },
+	NT_FormalParamDeclsRest: NTs {  NT_VarDelID,  NT_ID,  },
+	NT_FormalParams: NTs {  NT_LPAR,  },
+	NT_GE: NTs {  },
+	NT_GT: NTs {  },
+	NT_HAT: NTs {  },
+	NT_HAT_EQU: NTs {  },
+	NT_HexFloat: NTs {  NT_HexNumeral,  NT_Any0xX,  NT_RepHex0xDot,  NT_HexSignificand,  },
+	NT_HexNumeral: NTs {  NT_Any0xX,  },
+	NT_HexSignificand: NTs {  NT_HexNumeral,  NT_Any0xX,  NT_RepHex0xDot,  },
+	NT_ID: NTs {  },
+	NT_IDSuffix: NTs {  NT_LBRK,  NT_Arguments,  NT_LPAR,  NT_DOT,  },
+	NT_IF: NTs {  },
+	NT_IMPLEMENTS: NTs {  },
+	NT_IMPORT: NTs {  },
+	NT_INC: NTs {  },
+	NT_INSTANCEOF: NTs {  },
+	NT_IORExpr: NTs {  NT_PrefixOp,  NT_RepDig1xExp,  NT_HexFloat,  NT_RelateExpr,  NT_HexNumeral,  NT_INC,  NT_NEW,  NT_RepDig1xOptExp,  NT_LPAR,  NT_CharLiteral,  NT_DecimalFloat,  NT_StringLiteral,  NT_ANDExpr,  NT_UnaryExpr,  NT_SUPER,  NT_Any0xX,  NT_EqualExpr,  NT_LitAlts,  NT_MINUS,  NT_XORExpr,  NT_DecimalNumeral,  NT_HexSignificand,  NT_AddExpr,  NT_PLUS,  NT_NumeralAlts,  NT_Primary,  NT_TILDA,  NT_FloatLiteral,  NT_MultExpr,  NT_RepHex0xDot,  NT_BANG,  NT_ID,  NT_VOID,  NT_THIS,  NT_ShiftExpr,  NT_IntegerLiteral,  NT_Literal,  NT_BasicType,  NT_DEC,  NT_ParExpr,  NT_BasicTypeLit,  NT_QualifiedID,  },
+	NT_ImportDecl: NTs {  NT_IMPORT,  },
+	NT_InnerCreator: NTs {  NT_ID,  },
+	NT_IntegerLiteral: NTs {  NT_DecimalNumeral,  NT_NumeralAlts,  NT_HexNumeral,  NT_Any0xX,  },
+	NT_Intf: NTs {  },
+	NT_IntfBdy: NTs {  NT_LWING,  },
+	NT_IntfBdyDecl: NTs {  NT_VOID,  NT_ClsDecl,  NT_IntfMethFieldDecl,  NT_BasicTypeLit,  NT_SEMI,  NT_Modifs,  NT_ID,  NT_Cls,  NT_IntfMemDecl,  NT_IntfDecl,  NT_TypeAlts,  NT_BasicType,  NT_RepModif0,  NT_Type,  NT_ClsType,  NT_Intf,  NT_Modifier,  },
+	NT_IntfDecl: NTs {  NT_Intf,  },
+	NT_IntfMemDecl: NTs {  NT_Cls,  NT_IntfMethFieldDecl,  NT_BasicType,  NT_BasicTypeLit,  NT_TypeAlts,  NT_Intf,  NT_ClsDecl,  NT_Type,  NT_ClsType,  NT_ID,  NT_VOID,  NT_IntfDecl,  },
+	NT_IntfMethDeclRest: NTs {  NT_FormalParams,  NT_LPAR,  },
+	NT_IntfMethFieldDecl: NTs {  NT_BasicType,  NT_BasicTypeLit,  NT_Type,  NT_ClsType,  NT_ID,  NT_TypeAlts,  },
+	NT_IntfMethFieldRest: NTs {  NT_ConstDeclsRest,  NT_ConstDeclRest,  NT_EQU,  NT_IntfMethDeclRest,  NT_LPAR,  NT_FormalParams,  NT_RepDim0x,  NT_Dim,  NT_LBRK,  },
+	NT_LBRK: NTs {  },
+	NT_LE: NTs {  },
+	NT_LPAR: NTs {  },
+	NT_LT: NTs {  },
+	NT_LWING: NTs {  },
+	NT_Letter: NTs {  NT_WS,  NT_EscOrLineOrBlock,  },
+	NT_LetterLorD: NTs {  NT_WS,  NT_EscOrLineOrBlock,  NT_RepLorD0x,  NT_LorD,  NT_Letter,  },
+	NT_LitAlts: NTs {  NT_NumeralAlts,  NT_StringLiteral,  NT_Any0xX,  NT_RepDig1xOptExp,  NT_RepHex0xDot,  NT_IntegerLiteral,  NT_DecimalNumeral,  NT_CharLiteral,  NT_HexFloat,  NT_HexSignificand,  NT_RepDig1xExp,  NT_FloatLiteral,  NT_DecimalFloat,  NT_HexNumeral,  },
+	NT_Literal: NTs {  NT_CharLiteral,  NT_RepHex0xDot,  NT_StringLiteral,  NT_RepDig1xOptExp,  NT_NumeralAlts,  NT_IntegerLiteral,  NT_LitAlts,  NT_DecimalFloat,  NT_RepDig1xExp,  NT_Any0xX,  NT_DecimalNumeral,  NT_HexFloat,  NT_HexSignificand,  NT_FloatLiteral,  NT_HexNumeral,  },
+	NT_LocalVarDeclStmt: NTs {  NT_FINAL,  NT_OptFinType,  },
+	NT_LorD: NTs {  NT_Letter,  NT_WS,  NT_EscOrLineOrBlock,  },
+	NT_MINUS: NTs {  },
+	NT_MINUS_EQU: NTs {  },
+	NT_MOD: NTs {  },
+	NT_MOD_EQU: NTs {  },
+	NT_MemAlts: NTs {  NT_SEMI,  NT_Block,  NT_LWING,  },
+	NT_MemDecl: NTs {  NT_Intf,  NT_ClsDecl,  NT_BasicTypeLit,  NT_VOID,  NT_BasicType,  NT_ClsType,  NT_ID,  NT_IntfDecl,  NT_Cls,  NT_Type,  NT_TypeAlts,  },
+	NT_Modifier: NTs {  NT_Modifs,  },
+	NT_Modifs: NTs {  },
+	NT_MultExpr: NTs {  NT_PLUS,  NT_THIS,  NT_PrefixOp,  NT_LPAR,  NT_DecimalFloat,  NT_CharLiteral,  NT_HexNumeral,  NT_HexFloat,  NT_RepHex0xDot,  NT_RepDig1xExp,  NT_StringLiteral,  NT_NEW,  NT_DecimalNumeral,  NT_Primary,  NT_DEC,  NT_Any0xX,  NT_ParExpr,  NT_BANG,  NT_INC,  NT_BasicType,  NT_HexSignificand,  NT_IntegerLiteral,  NT_TILDA,  NT_UnaryExpr,  NT_LitAlts,  NT_SUPER,  NT_VOID,  NT_Literal,  NT_NumeralAlts,  NT_QualifiedID,  NT_BasicTypeLit,  NT_ID,  NT_FloatLiteral,  NT_RepDig1xOptExp,  NT_MINUS,  },
+	NT_NEW: NTs {  },
+	NT_NOT_EQUAL: NTs {  },
+	NT_NumeralAlts: NTs {  NT_HexNumeral,  NT_Any0xX,  NT_DecimalNumeral,  },
+	NT_OR: NTs {  },
+	NT_ORXOR: NTs {  NT_OR,  },
+	NT_OR_EQU: NTs {  },
+	NT_OR_OR: NTs {  },
+	NT_OctalEscape: NTs {  },
+	NT_OptArgs: NTs {  NT_Arguments,  NT_LPAR,  },
+	NT_OptClsBdy: NTs {  NT_LWING,  NT_ClsBdy,  },
+	NT_OptColExpr: NTs {  NT_COLON,  },
+	NT_OptCom: NTs {  NT_COMMA,  },
+	NT_OptComFormPDecl: NTs {  NT_COMMA,  },
+	NT_OptDot: NTs {  },
+	NT_OptDotStar: NTs {  NT_DOT,  },
+	NT_OptElse: NTs {  NT_ELSE,  },
+	NT_OptEqVarInit: NTs {  NT_EQU,  },
+	NT_OptEsc: NTs {  NT_Escape,  },
+	NT_OptExpr: NTs {  NT_LitAlts,  NT_RepDig1xOptExp,  NT_ShiftExpr,  NT_INC,  NT_XORExpr,  NT_FloatLiteral,  NT_SUPER,  NT_RepDig1xExp,  NT_CondExpr,  NT_DecimalFloat,  NT_QualifiedID,  NT_Expr,  NT_VOID,  NT_HexFloat,  NT_RelateExpr,  NT_ANDExpr,  NT_DEC,  NT_EqualExpr,  NT_Any0xX,  NT_UnaryExpr,  NT_PrefixOp,  NT_Literal,  NT_CondANDExpr,  NT_ID,  NT_MultExpr,  NT_PLUS,  NT_MINUS,  NT_NumeralAlts,  NT_HexSignificand,  NT_CondORExpr,  NT_RepHex0xDot,  NT_IntegerLiteral,  NT_StringLiteral,  NT_BasicType,  NT_Primary,  NT_DecimalNumeral,  NT_AddExpr,  NT_ParExpr,  NT_TILDA,  NT_HexNumeral,  NT_CharLiteral,  NT_LPAR,  NT_BANG,  NT_IORExpr,  NT_BasicTypeLit,  NT_THIS,  NT_NEW,  },
+	NT_OptExprs: NTs {  NT_SUPER,  NT_RepHex0xDot,  NT_XORExpr,  NT_CondExpr,  NT_RelateExpr,  NT_DecimalNumeral,  NT_Expr,  NT_CondANDExpr,  NT_MINUS,  NT_ANDExpr,  NT_DecimalFloat,  NT_NumeralAlts,  NT_Primary,  NT_RepDig1xOptExp,  NT_RepDig1xExp,  NT_ID,  NT_IntegerLiteral,  NT_ShiftExpr,  NT_BANG,  NT_IORExpr,  NT_AddExpr,  NT_INC,  NT_Any0xX,  NT_MultExpr,  NT_PrefixOp,  NT_HexSignificand,  NT_CharLiteral,  NT_HexFloat,  NT_QualifiedID,  NT_BasicType,  NT_VOID,  NT_LitAlts,  NT_EqualExpr,  NT_CondORExpr,  NT_TILDA,  NT_FloatLiteral,  NT_UnaryExpr,  NT_StringLiteral,  NT_ParExpr,  NT_BasicTypeLit,  NT_THIS,  NT_Literal,  NT_NEW,  NT_DEC,  NT_HexNumeral,  NT_LPAR,  NT_PLUS,  },
+	NT_OptExtClsType: NTs {  NT_EXTENDS,  },
+	NT_OptExtendsClsLis: NTs {  NT_EXTENDS,  },
+	NT_OptFin: NTs {  NT_FINAL,  },
+	NT_OptFinType: NTs {  NT_FINAL,  },
+	NT_OptForInit: NTs {  NT_MultExpr,  NT_VOID,  NT_UnaryExpr,  NT_Literal,  NT_FloatLiteral,  NT_LitAlts,  NT_CondExpr,  NT_IntegerLiteral,  NT_QualifiedID,  NT_PLUS,  NT_HexFloat,  NT_THIS,  NT_SUPER,  NT_StmtExpr,  NT_LPAR,  NT_CharLiteral,  NT_OptFinType,  NT_XORExpr,  NT_PrefixOp,  NT_AddExpr,  NT_ParExpr,  NT_StringLiteral,  NT_DEC,  NT_DecimalNumeral,  NT_TILDA,  NT_DecimalFloat,  NT_BasicType,  NT_RelateExpr,  NT_NEW,  NT_CondORExpr,  NT_BasicTypeLit,  NT_HexSignificand,  NT_NumeralAlts,  NT_ForInit,  NT_Any0xX,  NT_ShiftExpr,  NT_INC,  NT_CondANDExpr,  NT_RepDig1xOptExp,  NT_ID,  NT_IORExpr,  NT_BANG,  NT_RepHex0xDot,  NT_EqualExpr,  NT_MINUS,  NT_RepDig1xExp,  NT_HexNumeral,  NT_FINAL,  NT_Primary,  NT_Expr,  NT_ANDExpr,  },
+	NT_OptForUpd: NTs {  NT_RelateExpr,  NT_ShiftExpr,  NT_ParExpr,  NT_FloatLiteral,  NT_SUPER,  NT_HexFloat,  NT_BANG,  NT_StmtExpr,  NT_BasicType,  NT_Any0xX,  NT_XORExpr,  NT_Expr,  NT_CondExpr,  NT_Literal,  NT_UnaryExpr,  NT_QualifiedID,  NT_EqualExpr,  NT_StringLiteral,  NT_THIS,  NT_IntegerLiteral,  NT_LitAlts,  NT_CondORExpr,  NT_AddExpr,  NT_BasicTypeLit,  NT_HexSignificand,  NT_RepDig1xExp,  NT_MultExpr,  NT_ForUpdate,  NT_HexNumeral,  NT_IORExpr,  NT_LPAR,  NT_DecimalNumeral,  NT_CondANDExpr,  NT_VOID,  NT_ID,  NT_DEC,  NT_RepHex0xDot,  NT_PrefixOp,  NT_MINUS,  NT_Primary,  NT_RepDig1xOptExp,  NT_DecimalFloat,  NT_TILDA,  NT_NEW,  NT_INC,  NT_CharLiteral,  NT_ANDExpr,  NT_NumeralAlts,  NT_PLUS,  },
+	NT_OptFormPDecl: NTs {  NT_FormalParamDecls,  NT_OptFinType,  NT_FINAL,  },
+	NT_OptID: NTs {  NT_ID,  },
+	NT_OptIDSuff: NTs {  NT_LBRK,  NT_Arguments,  NT_LPAR,  NT_DOT,  NT_IDSuffix,  },
+	NT_OptImpClsLst: NTs {  NT_IMPLEMENTS,  },
+	NT_OptPackDecl: NTs {  NT_PackDecl,  NT_PACKAGE,  },
+	NT_OptStatic: NTs {  NT_STATIC,  },
+	NT_OptThrowClsTypLst: NTs {  NT_THROWS,  },
+	NT_OptVarInit: NTs {  NT_THIS,  NT_HexNumeral,  NT_PLUS,  NT_DEC,  NT_Literal,  NT_CondANDExpr,  NT_PrefixOp,  NT_MINUS,  NT_FloatLiteral,  NT_SUPER,  NT_NumeralAlts,  NT_XORExpr,  NT_BANG,  NT_NEW,  NT_RepHex0xDot,  NT_Any0xX,  NT_MultExpr,  NT_CondExpr,  NT_BasicType,  NT_VOID,  NT_IORExpr,  NT_TILDA,  NT_EqualExpr,  NT_HexSignificand,  NT_BasicTypeLit,  NT_Expr,  NT_ID,  NT_ParExpr,  NT_VarInitial,  NT_IntegerLiteral,  NT_ANDExpr,  NT_LWING,  NT_HexFloat,  NT_Primary,  NT_INC,  NT_CondORExpr,  NT_DecimalFloat,  NT_RelateExpr,  NT_ShiftExpr,  NT_RepDig1xExp,  NT_LPAR,  NT_RepDig1xOptExp,  NT_DecimalNumeral,  NT_ArrayInitializer,  NT_StringLiteral,  NT_LitAlts,  NT_QualifiedID,  NT_CharLiteral,  NT_UnaryExpr,  NT_AddExpr,  },
+	NT_OtherAlts: NTs {  NT_Cls,  NT_THIS,  NT_SUPER,  NT_NEW,  },
+	NT_PACKAGE: NTs {  },
+	NT_PLUS: NTs {  },
+	NT_PLUS_EQU: NTs {  },
+	NT_PackDecl: NTs {  NT_PACKAGE,  },
+	NT_ParExpr: NTs {  NT_LPAR,  },
+	NT_PostfixOp: NTs {  NT_INC,  NT_DEC,  },
+	NT_PrefixOp: NTs {  NT_TILDA,  NT_PLUS,  NT_MINUS,  NT_INC,  NT_DEC,  NT_BANG,  },
+	NT_Primary: NTs {  NT_LPAR,  NT_Literal,  NT_DecimalNumeral,  NT_HexFloat,  NT_VOID,  NT_DecimalFloat,  NT_Any0xX,  NT_QualifiedID,  NT_THIS,  NT_HexNumeral,  NT_CharLiteral,  NT_RepHex0xDot,  NT_StringLiteral,  NT_BasicType,  NT_BasicTypeLit,  NT_RepDig1xOptExp,  NT_NumeralAlts,  NT_LitAlts,  NT_ID,  NT_HexSignificand,  NT_NEW,  NT_ParExpr,  NT_SUPER,  NT_FloatLiteral,  NT_IntegerLiteral,  NT_RepDig1xExp,  },
+	NT_QUERY: NTs {  },
+	NT_QualifiedID: NTs {  NT_ID,  },
+	NT_RBRK: NTs {  },
+	NT_RBRKAlts: NTs {  NT_RBRK,  NT_StringLiteral,  NT_BasicType,  NT_FloatLiteral,  NT_QualifiedID,  NT_SUPER,  NT_BasicTypeLit,  NT_XORExpr,  NT_CharLiteral,  NT_RepDig1xExp,  NT_DEC,  NT_NEW,  NT_RelateExpr,  NT_EqualExpr,  NT_BANG,  NT_RepDig1xOptExp,  NT_PLUS,  NT_IORExpr,  NT_PrefixOp,  NT_TILDA,  NT_MINUS,  NT_CondExpr,  NT_ANDExpr,  NT_LPAR,  NT_HexSignificand,  NT_VOID,  NT_DecimalFloat,  NT_LitAlts,  NT_MultExpr,  NT_AddExpr,  NT_THIS,  NT_CondORExpr,  NT_Expr,  NT_RepHex0xDot,  NT_INC,  NT_Any0xX,  NT_ParExpr,  NT_CondANDExpr,  NT_HexNumeral,  NT_IntegerLiteral,  NT_Primary,  NT_ShiftExpr,  NT_DecimalNumeral,  NT_Literal,  NT_ID,  NT_HexFloat,  NT_NumeralAlts,  NT_UnaryExpr,  },
+	NT_RETURN: NTs {  },
+	NT_RPAR: NTs {  },
+	NT_RWING: NTs {  },
+	NT_ReferenceType: NTs {  NT_BasicType,  NT_BasicTypeLit,  NT_ClsType,  NT_ID,  },
+	NT_RelateExpr: NTs {  NT_BANG,  NT_TILDA,  NT_StringLiteral,  NT_PLUS,  NT_LPAR,  NT_ID,  NT_NEW,  NT_HexNumeral,  NT_Primary,  NT_RepDig1xExp,  NT_MINUS,  NT_LitAlts,  NT_DEC,  NT_QualifiedID,  NT_Any0xX,  NT_BasicTypeLit,  NT_THIS,  NT_ParExpr,  NT_Literal,  NT_ShiftExpr,  NT_IntegerLiteral,  NT_DecimalNumeral,  NT_HexFloat,  NT_RepDig1xOptExp,  NT_DecimalFloat,  NT_PrefixOp,  NT_UnaryExpr,  NT_VOID,  NT_HexSignificand,  NT_BasicType,  NT_MultExpr,  NT_AddExpr,  NT_CharLiteral,  NT_FloatLiteral,  NT_NumeralAlts,  NT_SUPER,  NT_RepHex0xDot,  NT_INC,  },
+	NT_RepANDEq0x: NTs {  NT_AND,  },
+	NT_RepANDIOR0x: NTs {  NT_AND_AND,  },
+	NT_RepAddAltsMult0x: NTs {  NT_AddAlts,  NT_PLUS,  NT_MINUS,  },
+	NT_RepAsscExpr0x: NTs {  NT_SR_EQU,  NT_MOD_EQU,  NT_BSR_EQU,  NT_MINUS_EQU,  NT_AND_EQU,  NT_DIV_EQU,  NT_PLUS_EQU,  NT_STAR_EQU,  NT_AssignOp,  NT_SL_EQU,  NT_OR_EQU,  NT_HAT_EQU,  NT_EQU,  },
+	NT_RepBlkSt0x: NTs {  NT_IORExpr,  NT_PLUS,  NT_CharLiteral,  NT_EqualExpr,  NT_DEC,  NT_FOR,  NT_BasicTypeLit,  NT_TRY,  NT_SWITCH,  NT_VOID,  NT_ParExpr,  NT_BlockStmt,  NT_TILDA,  NT_Literal,  NT_AddExpr,  NT_Stmt,  NT_StringLiteral,  NT_LitAlts,  NT_RepDig1xOptExp,  NT_BREAK,  NT_RETURN,  NT_RepModif0,  NT_IntegerLiteral,  NT_QualifiedID,  NT_ID,  NT_DecimalNumeral,  NT_BasicType,  NT_LWING,  NT_ANDExpr,  NT_WHILE,  NT_THIS,  NT_UnaryExpr,  NT_CONTINUE,  NT_XORExpr,  NT_IF,  NT_HexNumeral,  NT_CondORExpr,  NT_Modifier,  NT_PrefixOp,  NT_CondANDExpr,  NT_Any0xX,  NT_FINAL,  NT_DecimalFloat,  NT_CondExpr,  NT_Block,  NT_ShiftExpr,  NT_LocalVarDeclStmt,  NT_Primary,  NT_ASSERT,  NT_NEW,  NT_MINUS,  NT_DO,  NT_INC,  NT_HexSignificand,  NT_RepDig1xExp,  NT_Expr,  NT_MultExpr,  NT_Cls,  NT_SEMI,  NT_LPAR,  NT_SYNCHRONIZED,  NT_BANG,  NT_SUPER,  NT_HexFloat,  NT_ClsDecl,  NT_THROW,  NT_RelateExpr,  NT_RepHex0xDot,  NT_StmtExpr,  NT_OptFinType,  NT_FloatLiteral,  NT_Modifs,  NT_NumeralAlts,  },
+	NT_RepCatch0x: NTs {  NT_Catch,  NT_CATCH,  },
+	NT_RepClsBDecl0x: NTs {  NT_VOID,  NT_BasicType,  NT_ClsDecl,  NT_ClsBdyDecl,  NT_Modifier,  NT_Type,  NT_TypeAlts,  NT_SEMI,  NT_STATIC,  NT_ID,  NT_IntfDecl,  NT_RepModif0,  NT_Modifs,  NT_Intf,  NT_Cls,  NT_OptStatic,  NT_Block,  NT_LWING,  NT_MemDecl,  NT_ClsType,  NT_BasicTypeLit,  },
+	NT_RepComCls0x: NTs {  NT_COMMA,  },
+	NT_RepComCnstDecl0x: NTs {  NT_COMMA,  },
+	NT_RepComExp0x: NTs {  NT_COMMA,  },
+	NT_RepComInit0x: NTs {  NT_COMMA,  },
+	NT_RepComSExpr0x: NTs {  NT_COMMA,  },
+	NT_RepComVDecl0x: NTs {  NT_COMMA,  },
+	NT_RepCondition0x: NTs {  NT_QUERY,  },
+	NT_RepDig1xExp: NTs {  },
+	NT_RepDig1xOptExp: NTs {  },
+	NT_RepDim0x: NTs {  NT_Dim,  NT_LBRK,  },
+	NT_RepDimExpr0x: NTs {  NT_DimExpr,  NT_LBRK,  },
+	NT_RepDotID0x: NTs {  NT_DOT,  },
+	NT_RepESInst0x: NTs {  NT_LT,  NT_GT,  NT_INSTANCEOF,  NT_ESInst,  NT_EqShift,  NT_EqCheck,  NT_LE,  NT_GE,  },
+	NT_RepEqExpr0x: NTs {  NT_EqAlts,  NT_EQUAL,  NT_NOT_EQUAL,  },
+	NT_RepHatAND0x: NTs {  NT_HAT,  },
+	NT_RepHex0xDot: NTs {  NT_Any0xX,  },
+	NT_RepImpDecl0x: NTs {  NT_ImportDecl,  NT_IMPORT,  },
+	NT_RepInBodDecl0x: NTs {  NT_IntfMethFieldDecl,  NT_Cls,  NT_TypeAlts,  NT_Intf,  NT_BasicTypeLit,  NT_RepModif0,  NT_Modifier,  NT_ClsType,  NT_BasicType,  NT_Type,  NT_VOID,  NT_ClsDecl,  NT_SEMI,  NT_IntfMemDecl,  NT_IntfBdyDecl,  NT_Modifs,  NT_ID,  NT_IntfDecl,  },
+	NT_RepLorD0x: NTs {  NT_RepLorD0x,  NT_LorD,  NT_Letter,  NT_WS,  NT_EscOrLineOrBlock,  },
+	NT_RepModif0: NTs {  NT_Modifier,  NT_Modifs,  },
+	NT_RepORXOR0x: NTs {  NT_ORXOR,  NT_OR,  },
+	NT_RepORcAND0x: NTs {  NT_OR_OR,  },
+	NT_RepPfOp0x: NTs {  NT_PostfixOp,  NT_INC,  NT_DEC,  },
+	NT_RepSDMUExpr0x: NTs {  NT_SDM,  NT_DIV,  NT_MOD,  NT_STAR,  },
+	NT_RepSel0x: NTs {  NT_Selector,  NT_DOT,  NT_DimExpr,  NT_LBRK,  },
+	NT_RepSemiModDecl0x: NTs {  NT_SemiModDecl,  NT_DeclAlts,  NT_SEMI,  NT_Modifs,  NT_Cls,  NT_IntfDecl,  NT_Intf,  NT_RepModif0,  NT_Modifier,  NT_ClsDecl,  },
+	NT_RepSwBlkStmt0x: NTs {  NT_SwitchBlockStmtGrp,  NT_DEFAULT,  NT_SwitchLabel,  NT_CASE,  },
+	NT_SDM: NTs {  NT_MOD,  NT_STAR,  NT_DIV,  },
+	NT_SEMI: NTs {  },
+	NT_SL: NTs {  },
+	NT_SL_EQU: NTs {  },
+	NT_SR: NTs {  },
+	NT_SR_EQU: NTs {  },
+	NT_STAR: NTs {  },
+	NT_STAR_EQU: NTs {  },
+	NT_STATIC: NTs {  },
+	NT_SUPER: NTs {  },
+	NT_SWITCH: NTs {  },
+	NT_SYNCHRONIZED: NTs {  },
+	NT_Selector: NTs {  NT_DOT,  NT_DimExpr,  NT_LBRK,  },
+	NT_SemiModDecl: NTs {  NT_SEMI,  NT_RepModif0,  NT_Modifier,  NT_ClsDecl,  NT_Intf,  NT_Modifs,  NT_DeclAlts,  NT_Cls,  NT_IntfDecl,  },
+	NT_ShiftAlts: NTs {  NT_CarrotAlts,  NT_SL,  NT_SR,  NT_BSR,  },
+	NT_ShiftExpr: NTs {  NT_CharLiteral,  NT_INC,  NT_PLUS,  NT_LPAR,  NT_ParExpr,  NT_BANG,  NT_QualifiedID,  NT_FloatLiteral,  NT_RepDig1xExp,  NT_VOID,  NT_Literal,  NT_SUPER,  NT_IntegerLiteral,  NT_ID,  NT_NumeralAlts,  NT_Any0xX,  NT_RepDig1xOptExp,  NT_MINUS,  NT_DecimalFloat,  NT_DecimalNumeral,  NT_NEW,  NT_TILDA,  NT_HexNumeral,  NT_PrefixOp,  NT_LitAlts,  NT_DEC,  NT_HexSignificand,  NT_HexFloat,  NT_Primary,  NT_BasicType,  NT_RepHex0xDot,  NT_MultExpr,  NT_UnaryExpr,  NT_BasicTypeLit,  NT_THIS,  NT_AddExpr,  NT_StringLiteral,  },
+	NT_Stmt: NTs {  NT_Block,  NT_IF,  NT_PLUS,  NT_AddExpr,  NT_SWITCH,  NT_SEMI,  NT_DecimalFloat,  NT_ShiftExpr,  NT_BREAK,  NT_Primary,  NT_DecimalNumeral,  NT_EqualExpr,  NT_SUPER,  NT_HexNumeral,  NT_QualifiedID,  NT_LitAlts,  NT_INC,  NT_WHILE,  NT_DO,  NT_BasicTypeLit,  NT_ID,  NT_NumeralAlts,  NT_RepHex0xDot,  NT_UnaryExpr,  NT_RepDig1xOptExp,  NT_DEC,  NT_TRY,  NT_THROW,  NT_RepDig1xExp,  NT_BANG,  NT_StringLiteral,  NT_PrefixOp,  NT_TILDA,  NT_LWING,  NT_CharLiteral,  NT_THIS,  NT_BasicType,  NT_Any0xX,  NT_XORExpr,  NT_ASSERT,  NT_FOR,  NT_FloatLiteral,  NT_CondANDExpr,  NT_HexSignificand,  NT_IORExpr,  NT_CONTINUE,  NT_Expr,  NT_Literal,  NT_MultExpr,  NT_RETURN,  NT_StmtExpr,  NT_HexFloat,  NT_IntegerLiteral,  NT_SYNCHRONIZED,  NT_NEW,  NT_CondORExpr,  NT_ParExpr,  NT_ANDExpr,  NT_LPAR,  NT_VOID,  NT_CondExpr,  NT_RelateExpr,  NT_MINUS,  },
+	NT_StmtExpr: NTs {  NT_RepDig1xOptExp,  NT_THIS,  NT_RepHex0xDot,  NT_NEW,  NT_CharLiteral,  NT_VOID,  NT_HexNumeral,  NT_NumeralAlts,  NT_StringLiteral,  NT_CondExpr,  NT_BasicTypeLit,  NT_CondANDExpr,  NT_CondORExpr,  NT_IntegerLiteral,  NT_Any0xX,  NT_LitAlts,  NT_QualifiedID,  NT_HexSignificand,  NT_ID,  NT_BasicType,  NT_EqualExpr,  NT_ShiftExpr,  NT_ParExpr,  NT_XORExpr,  NT_RelateExpr,  NT_Expr,  NT_PrefixOp,  NT_SUPER,  NT_INC,  NT_UnaryExpr,  NT_PLUS,  NT_AddExpr,  NT_Literal,  NT_RepDig1xExp,  NT_MINUS,  NT_ANDExpr,  NT_MultExpr,  NT_IORExpr,  NT_TILDA,  NT_DEC,  NT_BANG,  NT_Primary,  NT_LPAR,  NT_DecimalNumeral,  NT_HexFloat,  NT_DecimalFloat,  NT_FloatLiteral,  },
+	NT_StrClose: NTs {  NT_OptEsc,  NT_Escape,  },
+	NT_StringLiteral: NTs {  },
+	NT_SuperSuffix: NTs {  NT_Arguments,  NT_LPAR,  NT_DOT,  },
+	NT_SwitchBlockStmtGrp: NTs {  NT_SwitchLabel,  NT_CASE,  NT_DEFAULT,  },
+	NT_SwitchLabel: NTs {  NT_CASE,  NT_DEFAULT,  },
+	NT_THIS: NTs {  },
+	NT_THROW: NTs {  },
+	NT_THROWS: NTs {  },
+	NT_TILDA: NTs {  },
+	NT_TRY: NTs {  },
+	NT_Type: NTs {  NT_TypeAlts,  NT_BasicType,  NT_BasicTypeLit,  NT_ClsType,  NT_ID,  },
+	NT_TypeAlts: NTs {  NT_ClsType,  NT_ID,  NT_BasicType,  NT_BasicTypeLit,  },
+	NT_UnaryExpr: NTs {  NT_StringLiteral,  NT_NEW,  NT_DecimalNumeral,  NT_SUPER,  NT_BasicTypeLit,  NT_ID,  NT_LitAlts,  NT_VOID,  NT_BANG,  NT_Primary,  NT_DecimalFloat,  NT_HexFloat,  NT_INC,  NT_BasicType,  NT_HexSignificand,  NT_Literal,  NT_PLUS,  NT_THIS,  NT_CharLiteral,  NT_IntegerLiteral,  NT_FloatLiteral,  NT_PrefixOp,  NT_DEC,  NT_Any0xX,  NT_RepHex0xDot,  NT_RepDig1xOptExp,  NT_QualifiedID,  NT_HexNumeral,  NT_NumeralAlts,  NT_RepDig1xExp,  NT_ParExpr,  NT_MINUS,  NT_TILDA,  NT_LPAR,  },
+	NT_UnicodeEscape: NTs {  },
+	NT_VOID: NTs {  },
+	NT_VarDecl: NTs {  NT_ID,  },
+	NT_VarDeclInit: NTs {  NT_ID,  NT_VarDecl,  },
+	NT_VarDelID: NTs {  NT_ID,  },
+	NT_VarInitial: NTs {  NT_CondANDExpr,  NT_XORExpr,  NT_DecimalFloat,  NT_ANDExpr,  NT_IntegerLiteral,  NT_BANG,  NT_PrefixOp,  NT_CondORExpr,  NT_ArrayInitializer,  NT_LWING,  NT_MINUS,  NT_HexFloat,  NT_CondExpr,  NT_StringLiteral,  NT_BasicType,  NT_UnaryExpr,  NT_AddExpr,  NT_Expr,  NT_NEW,  NT_RelateExpr,  NT_FloatLiteral,  NT_Primary,  NT_ShiftExpr,  NT_INC,  NT_ID,  NT_RepDig1xExp,  NT_LitAlts,  NT_ParExpr,  NT_THIS,  NT_HexSignificand,  NT_HexNumeral,  NT_QualifiedID,  NT_LPAR,  NT_PLUS,  NT_BasicTypeLit,  NT_VOID,  NT_RepHex0xDot,  NT_Any0xX,  NT_IORExpr,  NT_MultExpr,  NT_RepDig1xOptExp,  NT_TILDA,  NT_CharLiteral,  NT_DEC,  NT_EqualExpr,  NT_NumeralAlts,  NT_DecimalNumeral,  NT_Literal,  NT_SUPER,  },
+	NT_VoidIntfMethDeclRst: NTs {  NT_FormalParams,  NT_LPAR,  },
+	NT_WHILE: NTs {  },
+	NT_WS: NTs {  NT_EscOrLineOrBlock,  },
+	NT_XORExpr: NTs {  NT_ParExpr,  NT_Primary,  NT_BasicTypeLit,  NT_HexFloat,  NT_UnaryExpr,  NT_LPAR,  NT_FloatLiteral,  NT_RelateExpr,  NT_DecimalNumeral,  NT_HexNumeral,  NT_MultExpr,  NT_THIS,  NT_ShiftExpr,  NT_INC,  NT_SUPER,  NT_HexSignificand,  NT_RepHex0xDot,  NT_NEW,  NT_CharLiteral,  NT_AddExpr,  NT_QualifiedID,  NT_Any0xX,  NT_IntegerLiteral,  NT_RepDig1xOptExp,  NT_BANG,  NT_ID,  NT_PLUS,  NT_DecimalFloat,  NT_TILDA,  NT_StringLiteral,  NT_BasicType,  NT_PrefixOp,  NT_Literal,  NT_NumeralAlts,  NT_DEC,  NT_LitAlts,  NT_MINUS,  NT_EqualExpr,  NT_ANDExpr,  NT_VOID,  NT_RepDig1xExp,  },
 }

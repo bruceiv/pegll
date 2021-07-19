@@ -1,4 +1,5 @@
 # **`eggr` GRAMMAR**
+TODO: SINGLE QUOTES ISSUES
 
 ### **AUTHORSHIP INFORMATION**
 #### *Author :* Brynn Harrington and Emily Hoppe Copyright (C) 2021
@@ -25,10 +26,10 @@ The following sections handles the grammar, rules, and choices:
 - `Rule` is an identifier equal to a choice;
 - `Choice` is zero or more piped sequences. 
 ```
-Grammar                 : WS Rule RepRule0x             ;
+Grammar                 : WS  Rule RepRule0x            ;
         RepRule0x       : Rule RepRule0x
                         / empty                         ; 
-Rule                    : Identifier EQUAL Choice ;
+Rule                    : Identifier EQUAL Choice       ;
 
 Choice                  : Sequence RepPipedSeq0x        ;
      RepPipedSeq0x      : PIPE Sequence RepPipedSeq0x
@@ -85,7 +86,7 @@ StringLiteral           : dQuote String dQuote WS       ;
         String          : Character String
                         / empty                         ;
 
-CharLiteral             : sQuote Character sQuote       ;
+CharLiteral             : sQuote Character sQuote WS    ;
 
 CharClass               : "[" UnclosedChars "]" WS      ;
         UnclosedChars   : UnclosedChar UnclosedChars 
@@ -93,24 +94,24 @@ CharClass               : "[" UnclosedChars "]" WS      ;
         UnclosedChar    : notSqBk Character             ;
         notSqBk         : not "]"                       ;
 
-Character               : notQuotesEsc
-                        | esc                           ;  
-   notQuotesEsc         : not "'\"\\"                   ;
+Character               : esc
+                        / notQuotesEsc                  ;  
+   notQuotesEsc         : not "'\"\\" letter            ;
         esc             :'\\' any "nrt'\"\\"            ;  
 ```
 The following section handles `EQUAL`, `NEQUAL` `PIPE`, `and`, `not`, `OPT`, `STAR`, `PLUS`, `OPEN`, `CLOSE`, `ANY`, and `EMPTY`, where:
-- `EQUAL` is a semantic rule representing the character '=' followed by whitespace;
+- `EQUAL`  is a semantic rule representing the character '=' followed by whitespace;
 - `NEQUAL` is a semantic rule representing any character except '=' followed by whitespace;
-- `PIPE` is a semantic rule representing the character '|' followed by whitespace;
-- `AND` is a semantic rule representing the character '&' followed by whitespace;
-- `NOT` is a semantic rule representing the character '!' followed by whitespace;
-- `OPT` is a semantic rule representing the character '?' followed by whitespace;
-- `STAR` is a semantic rule representing the character '*' followed by whitespace;
-- `PLUS` is a semantic rule representing the character '+' followed by whitespace;
-- `OPEN` is a semantic rule representing the character '(' followed by whitespace;
-- `CLOSE` is a semantic rule representing the character ')' followed by whitespace;
-- `ANY` is a semantic rule representing the character '.' followed by whitespace;
-- `EMPTY` is a semantic rule representing the character ';' followed by whitespace.
+- `PIPE`   is a semantic rule representing the character '|' followed by whitespace;
+- `AND`    is a semantic rule representing the character '&' followed by whitespace;
+- `NOT`    is a semantic rule representing the character '!' followed by whitespace;
+- `OPT`    is a semantic rule representing the character '?' followed by whitespace;
+- `STAR`   is a semantic rule representing the character '*' followed by whitespace;
+- `PLUS`   is a semantic rule representing the character '+' followed by whitespace;
+- `OPEN`   is a semantic rule representing the character '(' followed by whitespace;
+- `CLOSE`  is a semantic rule representing the character ')' followed by whitespace;
+- `ANY`    is a semantic rule representing the character '.' followed by whitespace;
+- `EMPTY`  is a semantic rule representing the character ';' followed by whitespace.
 ```
 EQUAL                   : "="   WS                      ;
 NEQUAL                  : neq   WS                      ;

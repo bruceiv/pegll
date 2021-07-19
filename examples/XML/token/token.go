@@ -109,31 +109,31 @@ const(
     T_0  // & 
     T_1  // &# 
     T_2  // &#x 
-    T_3  // -- 
-    T_4  // ; 
-    T_5  // aA_fF 
-    T_6  // andCarrs 
-    T_7  // angLBrk 
-    T_8  // angRBrk 
-    T_9  // charData 
-    T_10  // col_ 
-    T_11  // dot_BSlashDash 
-    T_12  // dot_BSlashDashCol 
-    T_13  // dubQu 
-    T_14  // encoding 
-    T_15  // eq 
-    T_16  // exclamation 
-    T_17  // let 
-    T_18  // num 
-    T_19  // optSpaceEsc 
-    T_20  // repNum1x 
-    T_21  // sinQu 
-    T_22  // slashAngLBrk 
-    T_23  // slashAngRBrk 
-    T_24  // spaceEsc 
-    T_25  // version 
-    T_26  // xmlDeclEnd 
-    T_27  // xmlDeclStart 
+    T_3  // ' 
+    T_4  // : 
+    T_5  // ; 
+    T_6  // </ 
+    T_7  // <?xml 
+    T_8  // = 
+    T_9  // > 
+    T_10  // ?> 
+    T_11  // _ 
+    T_12  // aA_fF 
+    T_13  // andCars 
+    T_14  // angLBrk 
+    T_15  // charData 
+    T_16  // comment 
+    T_17  // dot_BSlashDash 
+    T_18  // dubQu 
+    T_19  // encoding 
+    T_20  // exclamation 
+    T_21  // let 
+    T_22  // num 
+    T_23  // optSpaceEsc 
+    T_24  // repNum1x 
+    T_25  // sinQu 
+    T_26  // spaceEsc 
+    T_27  // version 
 )
 
 var TypeToString = []string{ 
@@ -208,31 +208,31 @@ var TypeToID = []string {
     "&", 
     "&#", 
     "&#x", 
-    "--", 
+    "'", 
+    ":", 
     ";", 
+    "</", 
+    "<?xml", 
+    "=", 
+    ">", 
+    "?>", 
+    "_", 
     "aA_fF", 
-    "andCarrs", 
+    "andCars", 
     "angLBrk", 
-    "angRBrk", 
     "charData", 
-    "col_", 
+    "comment", 
     "dot_BSlashDash", 
-    "dot_BSlashDashCol", 
     "dubQu", 
     "encoding", 
-    "eq", 
     "exclamation", 
     "let", 
     "num", 
     "optSpaceEsc", 
     "repNum1x", 
     "sinQu", 
-    "slashAngLBrk", 
-    "slashAngRBrk", 
     "spaceEsc", 
     "version", 
-    "xmlDeclEnd", 
-    "xmlDeclStart", 
 }
 
 var Suppress = []bool { 
@@ -254,7 +254,7 @@ var Suppress = []bool {
     false, 
     false, 
     false, 
-    false, 
+    true, 
     false, 
     false, 
     false, 

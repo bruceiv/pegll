@@ -17,6 +17,10 @@ const(
 	NT_Repa0x NT = iota
 )
 
+const NumNTs = 1
+
+type NTs []NT
+
 // T is the type of terminals symbols
 type T int
 const( 
@@ -49,6 +53,10 @@ func (t T) String() string {
 	return tToString[t]
 }
 
+func (nt NT) LeftRec() NTs {
+	return leftRec[nt]
+}
+
 var ntToString = []string { 
 	"Repa0x", /* NT_Repa0x */ 
 }
@@ -59,4 +67,8 @@ var tToString = []string {
 
 var stringNT = map[string]NT{ 
 	"Repa0x":NT_Repa0x,
+}
+
+var leftRec = map[NT]NTs { 
+	NT_Repa0x: NTs {  },
 }

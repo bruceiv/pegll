@@ -7,6 +7,7 @@ import(
 	"fmt"
 	
 	"miniegg/parser/symbols"
+	"miniegg/token"
 )
 
 type Label int
@@ -102,8 +103,25 @@ func (l Label) Symbols() symbols.Symbols {
 	return l.Slot().Symbols
 }
 
+func (l Label) IsNullable() bool {
+	return nullable[l]
+}
+
+func (l Label) FirstContains(typ token.Type) bool {
+	return firstT[l][typ]
+}
+
 func (s *Slot) EoR() bool {
 	return s.Pos >= len(s.Symbols)
+}
+
+func (s *Slot) Successor() *Slot {
+	if s.EoR() {
+		return nil
+	} else {
+		// TODO try slots[s.Label + 1]
+		return slots[slotIndex[Index{s.NT,s.Alt,s.Pos+1}]]
+	}
 }
 
 func (s *Slot) String() string {
@@ -342,3 +360,50 @@ var alternates = map[symbols.NT][]Label{
 	symbols.NT_Expr:[]Label{ Expr0R0 },
 }
 
+var nullable = []bool { 
+	false, // Expr0R0 
+	false, // Expr0R1 
+	true, // Expr0R2 
+	false, // Grammar0R0 
+	false, // Grammar0R1 
+	true, // Grammar0R2 
+	true, // Grammar0R3 
+	false, // RepExpr0x0R0 
+	true, // RepExpr0x0R1 
+	true, // RepExpr0x0R2 
+	true, // RepExpr0x1R0 
+	false, // RepRule0x0R0 
+	true, // RepRule0x0R1 
+	true, // RepRule0x0R2 
+	true, // RepRule0x1R0 
+	false, // Rule0R0 
+	false, // Rule0R1 
+	false, // Rule0R2 
+	false, // Rule0R3 
+	true, // Rule0R4 
+	true, // Rule0R5 
+}
+
+var firstT = []map[token.Type]bool { 
+	{  token.T_2: true,  }, // Expr0R0 
+	{  token.T_3: true,  }, // Expr0R1 
+	{  }, // Expr0R2 
+	{  token.T_0: true,  }, // Grammar0R0 
+	{  token.T_2: true,  }, // Grammar0R1 
+	{  token.T_2: true,  }, // Grammar0R2 
+	{  }, // Grammar0R3 
+	{  token.T_2: true,  }, // RepExpr0x0R0 
+	{  token.T_2: true,  }, // RepExpr0x0R1 
+	{  }, // RepExpr0x0R2 
+	{  }, // RepExpr0x1R0 
+	{  token.T_2: true,  }, // RepRule0x0R0 
+	{  token.T_2: true,  }, // RepRule0x0R1 
+	{  }, // RepRule0x0R2 
+	{  }, // RepRule0x1R0 
+	{  token.T_2: true,  }, // Rule0R0 
+	{  token.T_1: true,  }, // Rule0R1 
+	{  token.T_0: true,  }, // Rule0R2 
+	{  token.T_2: true,  }, // Rule0R3 
+	{  token.T_2: true,  }, // Rule0R4 
+	{  }, // Rule0R5 
+}

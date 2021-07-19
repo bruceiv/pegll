@@ -8,15 +8,19 @@ import (
 )
 
 //Should match
-const t1 = `<note>
-<to>Tove</to>
-<from>Jani</from>
-<heading>Reminder</heading>
-<body>Don't forget me this weekend!</body>
+const t0 = `<?xml version="1.0" encoding="UTF-8"?>`
+const t1 = `<?xml version="1.0" encoding="UTF-8"?> 
+<note>
+<to> & Tove ; </to>
+<from> & Jani ; </from>
+<heading> & Reminder ; </heading>
+<body> & Don't forget me this weekend! ; </body>
 </note>`
+const comment = `<!--Students grades are uploaded by months-->`
+const t3 = `<?xml version="1.0" encoding="UTF-8"?> <note> & name ; </note>`
 
 //Should fail to match
-const t2 = `not XML ~~`
+const t2 = `not XML ~~` //Infinite loop
 
 func parse(s []rune) bool {
 	// run GLL parser
@@ -26,7 +30,7 @@ func parse(s []rune) bool {
 		return false
 	}
 	// check that root covers whole input
-	root := bsrSet.GetRoots()
+	root := bsrSet.GetRoot()
 	return root.RightExtent() == bsrSet.GetRightExtent()
 }
 
@@ -39,6 +43,8 @@ func parseAndPrint(s string) {
 }
 
 func main() {
-	parseAndPrint(t1)
-	parseAndPrint(t2)
+	//parseAndPrint(t1)
+	//parseAndPrint(t2)
+	parseAndPrint(t3)
+	parseAndPrint(comment)
 }

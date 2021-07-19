@@ -1,0 +1,330 @@
+R:
+ Document : ∙Prolog Element RepMisc0x ,0,0
+U:
+ Document : ∙Prolog Element RepMisc0x ,0,0
+
+L:Document : ∙Prolog Element RepMisc0x , cI:0, I[p.cI]:<?xml (0,5) <?xml, cU:0
+R:
+U:
+ Document : ∙Prolog Element RepMisc0x ,0,0
+
+L:Prolog : ∙OptXMLDecl RepMisc0x , cI:0, I[p.cI]:<?xml (0,5) <?xml, cU:0
+R:
+U:
+ Document : ∙Prolog Element RepMisc0x ,0,0
+ Prolog : ∙OptXMLDecl RepMisc0x ,0,0
+
+L:OptXMLDecl : ∙, cI:0, I[p.cI]:<?xml (0,5) <?xml, cU:0
+R:
+ OptXMLDecl : ∙XMLDecl ,0,0
+U:
+ Document : ∙Prolog Element RepMisc0x ,0,0
+ Prolog : ∙OptXMLDecl RepMisc0x ,0,0
+ OptXMLDecl : ∙XMLDecl ,0,0
+ OptXMLDecl : ∙,0,0
+
+L:Prolog : OptXMLDecl ∙RepMisc0x , cI:0, I[p.cI]:<?xml (0,5) <?xml, cU:0
+R:
+ OptXMLDecl : ∙XMLDecl ,0,0
+U:
+ Document : ∙Prolog Element RepMisc0x ,0,0
+ Prolog : ∙OptXMLDecl RepMisc0x ,0,0
+ OptXMLDecl : ∙XMLDecl ,0,0
+ OptXMLDecl : ∙,0,0
+ Prolog : OptXMLDecl ∙RepMisc0x ,0,0
+
+L:RepMisc0x : ∙, cI:0, I[p.cI]:<?xml (0,5) <?xml, cU:0
+R:
+ OptXMLDecl : ∙XMLDecl ,0,0
+U:
+ Document : ∙Prolog Element RepMisc0x ,0,0
+ Prolog : ∙OptXMLDecl RepMisc0x ,0,0
+ OptXMLDecl : ∙XMLDecl ,0,0
+ OptXMLDecl : ∙,0,0
+ Prolog : OptXMLDecl ∙RepMisc0x ,0,0
+ RepMisc0x : ∙,0,0
+
+L:Prolog : OptXMLDecl RepMisc0x ∙, cI:0, I[p.cI]:<?xml (0,5) <?xml, cU:0
+R:
+ OptXMLDecl : ∙XMLDecl ,0,0
+U:
+ Document : ∙Prolog Element RepMisc0x ,0,0
+ Prolog : ∙OptXMLDecl RepMisc0x ,0,0
+ OptXMLDecl : ∙XMLDecl ,0,0
+ OptXMLDecl : ∙,0,0
+ Prolog : OptXMLDecl ∙RepMisc0x ,0,0
+ RepMisc0x : ∙,0,0
+ Prolog : OptXMLDecl RepMisc0x ∙,0,0
+
+L:Document : Prolog ∙Element RepMisc0x , cI:0, I[p.cI]:<?xml (0,5) <?xml, cU:0
+R:
+ OptXMLDecl : ∙XMLDecl ,0,0
+U:
+ Document : ∙Prolog Element RepMisc0x ,0,0
+ Prolog : ∙OptXMLDecl RepMisc0x ,0,0
+ OptXMLDecl : ∙XMLDecl ,0,0
+ OptXMLDecl : ∙,0,0
+ Prolog : OptXMLDecl ∙RepMisc0x ,0,0
+ RepMisc0x : ∙,0,0
+ Prolog : OptXMLDecl RepMisc0x ∙,0,0
+ Document : Prolog ∙Element RepMisc0x ,0,0
+
+L:OptXMLDecl : ∙XMLDecl , cI:0, I[p.cI]:<?xml (0,5) <?xml, cU:0
+R:
+U:
+ Document : ∙Prolog Element RepMisc0x ,0,0
+ Prolog : ∙OptXMLDecl RepMisc0x ,0,0
+ OptXMLDecl : ∙XMLDecl ,0,0
+ OptXMLDecl : ∙,0,0
+ Prolog : OptXMLDecl ∙RepMisc0x ,0,0
+ RepMisc0x : ∙,0,0
+ Prolog : OptXMLDecl RepMisc0x ∙,0,0
+ Document : Prolog ∙Element RepMisc0x ,0,0
+
+L:XMLDecl : ∙XmlDeclStart VersionInfo OptEncodDecl OptSpaceEsc XmlDeclEnd , cI:0, I[p.cI]:<?xml (0,5) <?xml, cU:0
+R:
+U:
+ Document : ∙Prolog Element RepMisc0x ,0,0
+ Prolog : ∙OptXMLDecl RepMisc0x ,0,0
+ OptXMLDecl : ∙XMLDecl ,0,0
+ OptXMLDecl : ∙,0,0
+ Prolog : OptXMLDecl ∙RepMisc0x ,0,0
+ RepMisc0x : ∙,0,0
+ Prolog : OptXMLDecl RepMisc0x ∙,0,0
+ Document : Prolog ∙Element RepMisc0x ,0,0
+ XMLDecl : ∙XmlDeclStart VersionInfo OptEncodDecl OptSpaceEsc XmlDeclEnd ,0,0
+
+L:XmlDeclStart : ∙<?xml , cI:0, I[p.cI]:<?xml (0,5) <?xml, cU:0
+R:
+U:
+ Document : ∙Prolog Element RepMisc0x ,0,0
+ Prolog : ∙OptXMLDecl RepMisc0x ,0,0
+ OptXMLDecl : ∙XMLDecl ,0,0
+ OptXMLDecl : ∙,0,0
+ Prolog : OptXMLDecl ∙RepMisc0x ,0,0
+ RepMisc0x : ∙,0,0
+ Prolog : OptXMLDecl RepMisc0x ∙,0,0
+ Document : Prolog ∙Element RepMisc0x ,0,0
+ XMLDecl : ∙XmlDeclStart VersionInfo OptEncodDecl OptSpaceEsc XmlDeclEnd ,0,0
+ XmlDeclStart : ∙<?xml ,0,0
+
+L:XMLDecl : XmlDeclStart ∙VersionInfo OptEncodDecl OptSpaceEsc XmlDeclEnd , cI:1, I[p.cI]:version (6,13) version, cU:0
+R:
+U:
+ Document : ∙Prolog Element RepMisc0x ,0,0
+ Prolog : ∙OptXMLDecl RepMisc0x ,0,0
+ OptXMLDecl : ∙XMLDecl ,0,0
+ OptXMLDecl : ∙,0,0
+ Prolog : OptXMLDecl ∙RepMisc0x ,0,0
+ RepMisc0x : ∙,0,0
+ Prolog : OptXMLDecl RepMisc0x ∙,0,0
+ Document : Prolog ∙Element RepMisc0x ,0,0
+ XMLDecl : ∙XmlDeclStart VersionInfo OptEncodDecl OptSpaceEsc XmlDeclEnd ,0,0
+ XmlDeclStart : ∙<?xml ,0,0
+ XMLDecl : XmlDeclStart ∙VersionInfo OptEncodDecl OptSpaceEsc XmlDeclEnd ,0,1
+
+L:VersionInfo : ∙Version = QuoVerNum , cI:1, I[p.cI]:version (6,13) version, cU:1
+R:
+U:
+ Document : ∙Prolog Element RepMisc0x ,0,0
+ Prolog : ∙OptXMLDecl RepMisc0x ,0,0
+ OptXMLDecl : ∙XMLDecl ,0,0
+ OptXMLDecl : ∙,0,0
+ Prolog : OptXMLDecl ∙RepMisc0x ,0,0
+ RepMisc0x : ∙,0,0
+ Prolog : OptXMLDecl RepMisc0x ∙,0,0
+ Document : Prolog ∙Element RepMisc0x ,0,0
+ XMLDecl : ∙XmlDeclStart VersionInfo OptEncodDecl OptSpaceEsc XmlDeclEnd ,0,0
+ XmlDeclStart : ∙<?xml ,0,0
+ XMLDecl : XmlDeclStart ∙VersionInfo OptEncodDecl OptSpaceEsc XmlDeclEnd ,0,1
+ VersionInfo : ∙Version = QuoVerNum ,1,1
+
+L:Version : ∙version , cI:1, I[p.cI]:version (6,13) version, cU:1
+R:
+U:
+ Document : ∙Prolog Element RepMisc0x ,0,0
+ Prolog : ∙OptXMLDecl RepMisc0x ,0,0
+ OptXMLDecl : ∙XMLDecl ,0,0
+ OptXMLDecl : ∙,0,0
+ Prolog : OptXMLDecl ∙RepMisc0x ,0,0
+ RepMisc0x : ∙,0,0
+ Prolog : OptXMLDecl RepMisc0x ∙,0,0
+ Document : Prolog ∙Element RepMisc0x ,0,0
+ XMLDecl : ∙XmlDeclStart VersionInfo OptEncodDecl OptSpaceEsc XmlDeclEnd ,0,0
+ XmlDeclStart : ∙<?xml ,0,0
+ XMLDecl : XmlDeclStart ∙VersionInfo OptEncodDecl OptSpaceEsc XmlDeclEnd ,0,1
+ VersionInfo : ∙Version = QuoVerNum ,1,1
+ Version : ∙version ,1,1
+
+L:VersionInfo : Version ∙= QuoVerNum , cI:2, I[p.cI]:= (13,14) =, cU:1
+R:
+U:
+ Document : ∙Prolog Element RepMisc0x ,0,0
+ Prolog : ∙OptXMLDecl RepMisc0x ,0,0
+ OptXMLDecl : ∙XMLDecl ,0,0
+ OptXMLDecl : ∙,0,0
+ Prolog : OptXMLDecl ∙RepMisc0x ,0,0
+ RepMisc0x : ∙,0,0
+ Prolog : OptXMLDecl RepMisc0x ∙,0,0
+ Document : Prolog ∙Element RepMisc0x ,0,0
+ XMLDecl : ∙XmlDeclStart VersionInfo OptEncodDecl OptSpaceEsc XmlDeclEnd ,0,0
+ XmlDeclStart : ∙<?xml ,0,0
+ XMLDecl : XmlDeclStart ∙VersionInfo OptEncodDecl OptSpaceEsc XmlDeclEnd ,0,1
+ VersionInfo : ∙Version = QuoVerNum ,1,1
+ Version : ∙version ,1,1
+ VersionInfo : Version ∙= QuoVerNum ,1,2
+
+L:QuoVerNum : ∙dubQu VersionNum dubQu , cI:3, I[p.cI]:dubQu (14,15) ", cU:3
+R:
+U:
+ Document : ∙Prolog Element RepMisc0x ,0,0
+ Prolog : ∙OptXMLDecl RepMisc0x ,0,0
+ OptXMLDecl : ∙XMLDecl ,0,0
+ OptXMLDecl : ∙,0,0
+ Prolog : OptXMLDecl ∙RepMisc0x ,0,0
+ RepMisc0x : ∙,0,0
+ Prolog : OptXMLDecl RepMisc0x ∙,0,0
+ Document : Prolog ∙Element RepMisc0x ,0,0
+ XMLDecl : ∙XmlDeclStart VersionInfo OptEncodDecl OptSpaceEsc XmlDeclEnd ,0,0
+ XmlDeclStart : ∙<?xml ,0,0
+ XMLDecl : XmlDeclStart ∙VersionInfo OptEncodDecl OptSpaceEsc XmlDeclEnd ,0,1
+ VersionInfo : ∙Version = QuoVerNum ,1,1
+ Version : ∙version ,1,1
+ VersionInfo : Version ∙= QuoVerNum ,1,2
+ QuoVerNum : ∙dubQu VersionNum dubQu ,3,3
+
+L:VersionNum : ∙NAME_CHAR NameCharRep , cI:4, I[p.cI]:num (15,16) 1, cU:4
+R:
+U:
+ Document : ∙Prolog Element RepMisc0x ,0,0
+ Prolog : ∙OptXMLDecl RepMisc0x ,0,0
+ OptXMLDecl : ∙XMLDecl ,0,0
+ OptXMLDecl : ∙,0,0
+ Prolog : OptXMLDecl ∙RepMisc0x ,0,0
+ RepMisc0x : ∙,0,0
+ Prolog : OptXMLDecl RepMisc0x ∙,0,0
+ Document : Prolog ∙Element RepMisc0x ,0,0
+ XMLDecl : ∙XmlDeclStart VersionInfo OptEncodDecl OptSpaceEsc XmlDeclEnd ,0,0
+ XmlDeclStart : ∙<?xml ,0,0
+ XMLDecl : XmlDeclStart ∙VersionInfo OptEncodDecl OptSpaceEsc XmlDeclEnd ,0,1
+ VersionInfo : ∙Version = QuoVerNum ,1,1
+ Version : ∙version ,1,1
+ VersionInfo : Version ∙= QuoVerNum ,1,2
+ QuoVerNum : ∙dubQu VersionNum dubQu ,3,3
+ VersionNum : ∙NAME_CHAR NameCharRep ,4,4
+
+L:NAME_CHAR : ∙num , cI:4, I[p.cI]:num (15,16) 1, cU:4
+R:
+U:
+ Document : ∙Prolog Element RepMisc0x ,0,0
+ Prolog : ∙OptXMLDecl RepMisc0x ,0,0
+ OptXMLDecl : ∙XMLDecl ,0,0
+ OptXMLDecl : ∙,0,0
+ Prolog : OptXMLDecl ∙RepMisc0x ,0,0
+ RepMisc0x : ∙,0,0
+ Prolog : OptXMLDecl RepMisc0x ∙,0,0
+ Document : Prolog ∙Element RepMisc0x ,0,0
+ XMLDecl : ∙XmlDeclStart VersionInfo OptEncodDecl OptSpaceEsc XmlDeclEnd ,0,0
+ XmlDeclStart : ∙<?xml ,0,0
+ XMLDecl : XmlDeclStart ∙VersionInfo OptEncodDecl OptSpaceEsc XmlDeclEnd ,0,1
+ VersionInfo : ∙Version = QuoVerNum ,1,1
+ Version : ∙version ,1,1
+ VersionInfo : Version ∙= QuoVerNum ,1,2
+ QuoVerNum : ∙dubQu VersionNum dubQu ,3,3
+ VersionNum : ∙NAME_CHAR NameCharRep ,4,4
+ NAME_CHAR : ∙num ,4,4
+
+L:VersionNum : NAME_CHAR ∙NameCharRep , cI:5, I[p.cI]:dot_BSlashDash (16,17) ., cU:4
+R:
+U:
+ Document : ∙Prolog Element RepMisc0x ,0,0
+ Prolog : ∙OptXMLDecl RepMisc0x ,0,0
+ OptXMLDecl : ∙XMLDecl ,0,0
+ OptXMLDecl : ∙,0,0
+ Prolog : OptXMLDecl ∙RepMisc0x ,0,0
+ RepMisc0x : ∙,0,0
+ Prolog : OptXMLDecl RepMisc0x ∙,0,0
+ Document : Prolog ∙Element RepMisc0x ,0,0
+ XMLDecl : ∙XmlDeclStart VersionInfo OptEncodDecl OptSpaceEsc XmlDeclEnd ,0,0
+ XmlDeclStart : ∙<?xml ,0,0
+ XMLDecl : XmlDeclStart ∙VersionInfo OptEncodDecl OptSpaceEsc XmlDeclEnd ,0,1
+ VersionInfo : ∙Version = QuoVerNum ,1,1
+ Version : ∙version ,1,1
+ VersionInfo : Version ∙= QuoVerNum ,1,2
+ QuoVerNum : ∙dubQu VersionNum dubQu ,3,3
+ VersionNum : ∙NAME_CHAR NameCharRep ,4,4
+ NAME_CHAR : ∙num ,4,4
+ VersionNum : NAME_CHAR ∙NameCharRep ,4,5
+
+L:NameCharRep : ∙, cI:5, I[p.cI]:dot_BSlashDash (16,17) ., cU:5
+R:
+U:
+ Document : ∙Prolog Element RepMisc0x ,0,0
+ Prolog : ∙OptXMLDecl RepMisc0x ,0,0
+ OptXMLDecl : ∙XMLDecl ,0,0
+ OptXMLDecl : ∙,0,0
+ Prolog : OptXMLDecl ∙RepMisc0x ,0,0
+ RepMisc0x : ∙,0,0
+ Prolog : OptXMLDecl RepMisc0x ∙,0,0
+ Document : Prolog ∙Element RepMisc0x ,0,0
+ XMLDecl : ∙XmlDeclStart VersionInfo OptEncodDecl OptSpaceEsc XmlDeclEnd ,0,0
+ XmlDeclStart : ∙<?xml ,0,0
+ XMLDecl : XmlDeclStart ∙VersionInfo OptEncodDecl OptSpaceEsc XmlDeclEnd ,0,1
+ VersionInfo : ∙Version = QuoVerNum ,1,1
+ Version : ∙version ,1,1
+ VersionInfo : Version ∙= QuoVerNum ,1,2
+ QuoVerNum : ∙dubQu VersionNum dubQu ,3,3
+ VersionNum : ∙NAME_CHAR NameCharRep ,4,4
+ NAME_CHAR : ∙num ,4,4
+ VersionNum : NAME_CHAR ∙NameCharRep ,4,5
+ NameCharRep : ∙,5,5
+
+L:VersionNum : NAME_CHAR NameCharRep ∙, cI:5, I[p.cI]:dot_BSlashDash (16,17) ., cU:4
+R:
+U:
+ Document : ∙Prolog Element RepMisc0x ,0,0
+ Prolog : ∙OptXMLDecl RepMisc0x ,0,0
+ OptXMLDecl : ∙XMLDecl ,0,0
+ OptXMLDecl : ∙,0,0
+ Prolog : OptXMLDecl ∙RepMisc0x ,0,0
+ RepMisc0x : ∙,0,0
+ Prolog : OptXMLDecl RepMisc0x ∙,0,0
+ Document : Prolog ∙Element RepMisc0x ,0,0
+ XMLDecl : ∙XmlDeclStart VersionInfo OptEncodDecl OptSpaceEsc XmlDeclEnd ,0,0
+ XmlDeclStart : ∙<?xml ,0,0
+ XMLDecl : XmlDeclStart ∙VersionInfo OptEncodDecl OptSpaceEsc XmlDeclEnd ,0,1
+ VersionInfo : ∙Version = QuoVerNum ,1,1
+ Version : ∙version ,1,1
+ VersionInfo : Version ∙= QuoVerNum ,1,2
+ QuoVerNum : ∙dubQu VersionNum dubQu ,3,3
+ VersionNum : ∙NAME_CHAR NameCharRep ,4,4
+ NAME_CHAR : ∙num ,4,4
+ VersionNum : NAME_CHAR ∙NameCharRep ,4,5
+ NameCharRep : ∙,5,5
+ VersionNum : NAME_CHAR NameCharRep ∙,4,5
+
+L:QuoVerNum : dubQu VersionNum ∙dubQu , cI:5, I[p.cI]:dot_BSlashDash (16,17) ., cU:3
+R:
+U:
+ Document : ∙Prolog Element RepMisc0x ,0,0
+ Prolog : ∙OptXMLDecl RepMisc0x ,0,0
+ OptXMLDecl : ∙XMLDecl ,0,0
+ OptXMLDecl : ∙,0,0
+ Prolog : OptXMLDecl ∙RepMisc0x ,0,0
+ RepMisc0x : ∙,0,0
+ Prolog : OptXMLDecl RepMisc0x ∙,0,0
+ Document : Prolog ∙Element RepMisc0x ,0,0
+ XMLDecl : ∙XmlDeclStart VersionInfo OptEncodDecl OptSpaceEsc XmlDeclEnd ,0,0
+ XmlDeclStart : ∙<?xml ,0,0
+ XMLDecl : XmlDeclStart ∙VersionInfo OptEncodDecl OptSpaceEsc XmlDeclEnd ,0,1
+ VersionInfo : ∙Version = QuoVerNum ,1,1
+ Version : ∙version ,1,1
+ VersionInfo : Version ∙= QuoVerNum ,1,2
+ QuoVerNum : ∙dubQu VersionNum dubQu ,3,3
+ VersionNum : ∙NAME_CHAR NameCharRep ,4,4
+ NAME_CHAR : ∙num ,4,4
+ VersionNum : NAME_CHAR ∙NameCharRep ,4,5
+ NameCharRep : ∙,5,5
+ VersionNum : NAME_CHAR NameCharRep ∙,4,5
+ QuoVerNum : dubQu VersionNum ∙dubQu ,3,5
+`<?xml version="1.0" encoding="UTF-8"?>` DID NOT match

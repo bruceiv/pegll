@@ -60,9 +60,9 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 	for !p.R.empty() {
 		L, cU, p.cI = p.R.remove()
 
-		// fmt.Println()
-		// fmt.Printf("L:%s, cI:%d, I[p.cI]:%s, cU:%d\n", L, p.cI, p.lex.Tokens[p.cI], cU)
-		// p.DumpDescriptors()
+		fmt.Println()
+		fmt.Printf("L:%s, cI:%d, I[p.cI]:%s, cU:%d\n", L, p.cI, p.lex.Tokens[p.cI], cU)
+		p.DumpDescriptors()
 
 		switch L {
 		case slot.Content0R0: // Content : ∙ParensOrChar Content
@@ -78,19 +78,11 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			p.call(slot.Content0R2, cU, p.cI)
 		case slot.Content0R2: // Content : ParensOrChar Content ∙
 
-			if p.follow(symbols.NT_Content) {
-				p.rtn(symbols.NT_Content, cU, p.cI)
-			} else {
-				p.parseError(slot.Content0R0, p.cI, followSets[symbols.NT_Content])
-			}
+			p.rtn(symbols.NT_Content, cU, p.cI)
 		case slot.Content1R0: // Content : ∙
 			p.bsrSet.AddEmpty(slot.Content1R0, p.cI)
 
-			if p.follow(symbols.NT_Content) {
-				p.rtn(symbols.NT_Content, cU, p.cI)
-			} else {
-				p.parseError(slot.Content1R0, p.cI, followSets[symbols.NT_Content])
-			}
+			p.rtn(symbols.NT_Content, cU, p.cI)
 		case slot.Parens0R0: // Parens : ∙open Content close
 
 			p.bsrSet.Add(slot.Parens0R1, cU, p.cI, p.cI+1)
@@ -110,40 +102,24 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 
 			p.bsrSet.Add(slot.Parens0R3, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_Parens) {
-				p.rtn(symbols.NT_Parens, cU, p.cI)
-			} else {
-				p.parseError(slot.Parens0R0, p.cI, followSets[symbols.NT_Parens])
-			}
+			p.rtn(symbols.NT_Parens, cU, p.cI)
 		case slot.ParensOrChar0R0: // ParensOrChar : ∙Parens
 
 			p.call(slot.ParensOrChar0R1, cU, p.cI)
 		case slot.ParensOrChar0R1: // ParensOrChar : Parens ∙
 
-			if p.follow(symbols.NT_ParensOrChar) {
-				p.rtn(symbols.NT_ParensOrChar, cU, p.cI)
-			} else {
-				p.parseError(slot.ParensOrChar0R0, p.cI, followSets[symbols.NT_ParensOrChar])
-			}
+			p.rtn(symbols.NT_ParensOrChar, cU, p.cI)
 		case slot.ParensOrChar1R0: // ParensOrChar : ∙char
 
 			p.bsrSet.Add(slot.ParensOrChar1R1, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_ParensOrChar) {
-				p.rtn(symbols.NT_ParensOrChar, cU, p.cI)
-			} else {
-				p.parseError(slot.ParensOrChar1R0, p.cI, followSets[symbols.NT_ParensOrChar])
-			}
+			p.rtn(symbols.NT_ParensOrChar, cU, p.cI)
 		case slot.String0R0: // String : ∙Content
 
 			p.call(slot.String0R1, cU, p.cI)
 		case slot.String0R1: // String : Content ∙
 
-			if p.follow(symbols.NT_String) {
-				p.rtn(symbols.NT_String, cU, p.cI)
-			} else {
-				p.parseError(slot.String0R0, p.cI, followSets[symbols.NT_String])
-			}
+			p.rtn(symbols.NT_String, cU, p.cI)
 
 		default:
 			panic("This must not happen")
@@ -380,9 +356,9 @@ func (p *parser) follow(nt symbols.NT) bool {
 }
 
 func (p *parser) testSelect(l slot.Label) bool {
-	_, exist := first[l][p.lex.Tokens[p.cI].Type()]
-	// fmt.Printf("testSelect(%s) = %t\n", l, exist)
-	return exist
+	return l.IsNullable() || l.FirstContains(p.lex.Tokens[p.cI].Type())
+	// _, exist := first[l][p.lex.Tokens[p.cI].Type()]
+	// return exist
 }
 
 var first = []map[token.Type]string{
@@ -393,10 +369,10 @@ var first = []map[token.Type]string{
 	},
 	// Content : ParensOrChar ∙Content
 	{
-		token.T_0: "char",
-		token.T_2: "open",
 		token.EOF: "$",
+		token.T_0: "char",
 		token.T_1: "close",
+		token.T_2: "open",
 	},
 	// Content : ParensOrChar Content ∙
 	{
@@ -453,9 +429,9 @@ var first = []map[token.Type]string{
 	},
 	// String : ∙Content
 	{
+		token.EOF: "$",
 		token.T_0: "char",
 		token.T_2: "open",
-		token.EOF: "$",
 	},
 	// String : Content ∙
 	{

@@ -7,6 +7,7 @@ import(
 	"fmt"
 	
 	"ax/parser/symbols"
+	"ax/token"
 )
 
 type Label int
@@ -83,8 +84,25 @@ func (l Label) Symbols() symbols.Symbols {
 	return l.Slot().Symbols
 }
 
+func (l Label) IsNullable() bool {
+	return nullable[l]
+}
+
+func (l Label) FirstContains(typ token.Type) bool {
+	return firstT[l][typ]
+}
+
 func (s *Slot) EoR() bool {
 	return s.Pos >= len(s.Symbols)
+}
+
+func (s *Slot) Successor() *Slot {
+	if s.EoR() {
+		return nil
+	} else {
+		// TODO try slots[s.Label + 1]
+		return slots[slotIndex[Index{s.NT,s.Alt,s.Pos+1}]]
+	}
 }
 
 func (s *Slot) String() string {
@@ -128,3 +146,12 @@ var alternates = map[symbols.NT][]Label{
 	symbols.NT_Repa0x:[]Label{ Repa0x0R0 },
 }
 
+var nullable = []bool { 
+	false, // Repa0x0R0 
+	true, // Repa0x0R1 
+}
+
+var firstT = []map[token.Type]bool { 
+	{  token.T_0: true,  }, // Repa0x0R0 
+	{  }, // Repa0x0R1 
+}

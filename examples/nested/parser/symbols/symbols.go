@@ -20,6 +20,10 @@ const(
 	NT_String 
 )
 
+const NumNTs = 4
+
+type NTs []NT
+
 // T is the type of terminals symbols
 type T int
 const( 
@@ -54,6 +58,10 @@ func (t T) String() string {
 	return tToString[t]
 }
 
+func (nt NT) LeftRec() NTs {
+	return leftRec[nt]
+}
+
 var ntToString = []string { 
 	"Content", /* NT_Content */
 	"Parens", /* NT_Parens */
@@ -72,4 +80,11 @@ var stringNT = map[string]NT{
 	"Parens":NT_Parens,
 	"ParensOrChar":NT_ParensOrChar,
 	"String":NT_String,
+}
+
+var leftRec = map[NT]NTs { 
+	NT_Content: NTs {  NT_ParensOrChar,  NT_Parens,  },
+	NT_Parens: NTs {  },
+	NT_ParensOrChar: NTs {  NT_Parens,  },
+	NT_String: NTs {  NT_Content,  NT_ParensOrChar,  NT_Parens,  },
 }
