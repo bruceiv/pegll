@@ -192,7 +192,9 @@ A `SynOptional` is a syntax rule that is made optional (match 0 or 1 times) by a
 May eventually be adapted to include other suffix syntax operators. 
 
 
+
 ```
+
 SynOptional : SyntaxAtom "?" ;
 
 ```

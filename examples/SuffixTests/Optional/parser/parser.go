@@ -65,15 +65,33 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 		// p.DumpDescriptors()
 
 		switch L {
+		case slot.Base0R0: // Base : ∙Base
+
+			p.bsrSet.Add(slot.Base0R1, cU, p.cI, p.cI+1)
+			p.cI++
+			p.rtn(symbols.NT_Base, cU, p.cI)
+		case slot.Optional0R0: // Optional : ∙Base
+
+			p.bsrSet.Add(slot.Optional0R1, cU, p.cI, p.cI+1)
+			p.cI++
+			p.rtn(symbols.NT_Optional, cU, p.cI)
 		case slot.Required0R0: // Required : ∙Required
 
 			p.bsrSet.Add(slot.Required0R1, cU, p.cI, p.cI+1)
 			p.cI++
 			p.rtn(symbols.NT_Required, cU, p.cI)
-		case slot.S10R0: // S1 : ∙Required
+		case slot.S10R0: // S1 : ∙Required Optional
 
 			p.bsrSet.Add(slot.S10R1, cU, p.cI, p.cI+1)
 			p.cI++
+			if !p.testSelect(slot.S10R1) {
+				p.parseError(slot.S10R1, p.cI, first[slot.S10R1])
+				break
+			}
+
+			p.call(slot.S10R2, cU, p.cI)
+		case slot.S10R2: // S1 : Required Optional ∙
+
 			p.rtn(symbols.NT_S1, cU, p.cI)
 
 		default:
@@ -317,28 +335,56 @@ func (p *parser) testSelect(l slot.Label) bool {
 }
 
 var first = []map[token.Type]string{
-	// Required : ∙Required
+	// Base : ∙Base
 	{
-		token.T_0: "Required",
+		token.T_0: "Base",
 	},
-	// Required : Required ∙
+	// Base : Base ∙
 	{
 		token.EOF: "$",
 	},
-	// S1 : ∙Required
+	// Optional : ∙Base
 	{
-		token.T_0: "Required",
+		token.T_0: "Base",
 	},
-	// S1 : Required ∙
+	// Optional : Base ∙
+	{
+		token.EOF: "$",
+	},
+	// Required : ∙Required
+	{
+		token.T_1: "Required",
+	},
+	// Required : Required ∙
+	{
+		token.T_0: "Base",
+	},
+	// S1 : ∙Required Optional
+	{
+		token.T_1: "Required",
+	},
+	// S1 : Required ∙Optional
+	{
+		token.T_0: "Base",
+	},
+	// S1 : Required Optional ∙
 	{
 		token.EOF: "$",
 	},
 }
 
 var followSets = []map[token.Type]string{
-	// Required
+	// Base
 	{
 		token.EOF: "$",
+	},
+	// Optional
+	{
+		token.EOF: "$",
+	},
+	// Required
+	{
+		token.T_0: "Base",
 	},
 	// S1
 	{

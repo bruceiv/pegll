@@ -13,10 +13,15 @@ import(
 type Label int
 
 const(
-	Required0R0 Label = iota
+	Base0R0 Label = iota
+	Base0R1
+	Optional0R0
+	Optional0R1
+	Required0R0
 	Required0R1
 	S10R0
 	S10R1
+	S10R2
 )
 
 type Slot struct {
@@ -123,6 +128,34 @@ func (s *Slot) String() string {
 }
 
 var slots = map[Label]*Slot{ 
+	Base0R0: {
+		symbols.NT_Base, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_Base,
+		}, 
+		Base0R0, 
+	},
+	Base0R1: {
+		symbols.NT_Base, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_Base,
+		}, 
+		Base0R1, 
+	},
+	Optional0R0: {
+		symbols.NT_Optional, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_Base,
+		}, 
+		Optional0R0, 
+	},
+	Optional0R1: {
+		symbols.NT_Optional, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_Base,
+		}, 
+		Optional0R1, 
+	},
 	Required0R0: {
 		symbols.NT_Required, 0, 0, 
 		symbols.Symbols{  
@@ -140,41 +173,68 @@ var slots = map[Label]*Slot{
 	S10R0: {
 		symbols.NT_S1, 0, 0, 
 		symbols.Symbols{  
-			symbols.NT_Required,
+			symbols.NT_Required, 
+			symbols.NT_Optional,
 		}, 
 		S10R0, 
 	},
 	S10R1: {
 		symbols.NT_S1, 0, 1, 
 		symbols.Symbols{  
-			symbols.NT_Required,
+			symbols.NT_Required, 
+			symbols.NT_Optional,
 		}, 
 		S10R1, 
+	},
+	S10R2: {
+		symbols.NT_S1, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_Required, 
+			symbols.NT_Optional,
+		}, 
+		S10R2, 
 	},
 }
 
 var slotIndex = map[Index]Label { 
+	Index{ symbols.NT_Base,0,0 }: Base0R0,
+	Index{ symbols.NT_Base,0,1 }: Base0R1,
+	Index{ symbols.NT_Optional,0,0 }: Optional0R0,
+	Index{ symbols.NT_Optional,0,1 }: Optional0R1,
 	Index{ symbols.NT_Required,0,0 }: Required0R0,
 	Index{ symbols.NT_Required,0,1 }: Required0R1,
 	Index{ symbols.NT_S1,0,0 }: S10R0,
 	Index{ symbols.NT_S1,0,1 }: S10R1,
+	Index{ symbols.NT_S1,0,2 }: S10R2,
 }
 
 var alternates = map[symbols.NT][]Label{ 
 	symbols.NT_S1:[]Label{ S10R0 },
 	symbols.NT_Required:[]Label{ Required0R0 },
+	symbols.NT_Optional:[]Label{ Optional0R0 },
+	symbols.NT_Base:[]Label{ Base0R0 },
 }
 
 var nullable = []bool { 
+	false, // Base0R0 
+	true, // Base0R1 
+	false, // Optional0R0 
+	true, // Optional0R1 
 	false, // Required0R0 
 	true, // Required0R1 
 	false, // S10R0 
-	true, // S10R1 
+	false, // S10R1 
+	true, // S10R2 
 }
 
 var firstT = []map[token.Type]bool { 
-	{  token.T_0: true,  }, // Required0R0 
+	{  token.T_0: true,  }, // Base0R0 
+	{  }, // Base0R1 
+	{  token.T_0: true,  }, // Optional0R0 
+	{  }, // Optional0R1 
+	{  token.T_1: true,  }, // Required0R0 
 	{  }, // Required0R1 
-	{  token.T_0: true,  }, // S10R0 
-	{  }, // S10R1 
+	{  token.T_1: true,  }, // S10R0 
+	{  token.T_0: true,  }, // S10R1 
+	{  }, // S10R2 
 }

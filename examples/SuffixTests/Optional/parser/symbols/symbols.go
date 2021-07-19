@@ -14,18 +14,21 @@ func (T) isSymbol() {}
 // NT is the type of non-terminals symbols
 type NT int
 const( 
-	NT_Required NT = iota
+	NT_Base NT = iota
+	NT_Optional 
+	NT_Required 
 	NT_S1 
 )
 
-const NumNTs = 2
+const NumNTs = 4
 
 type NTs []NT
 
 // T is the type of terminals symbols
 type T int
 const( 
-	T_0 T = iota // Required 
+	T_0 T = iota // Base 
+	T_1  // Required 
 )
 
 type Symbols []Symbol
@@ -58,21 +61,35 @@ func (nt NT) LeftRec() NTs {
 	return leftRec[nt]
 }
 
+func (nt NT) IsOrdered() bool {
+	return ordered[nt]
+}
+
 var ntToString = []string { 
+	"Base", /* NT_Base */
+	"Optional", /* NT_Optional */
 	"Required", /* NT_Required */
 	"S1", /* NT_S1 */ 
 }
 
 var tToString = []string { 
-	"Required", /* T_0 */ 
+	"Base", /* T_0 */
+	"Required", /* T_1 */ 
 }
 
 var stringNT = map[string]NT{ 
+	"Base":NT_Base,
+	"Optional":NT_Optional,
 	"Required":NT_Required,
 	"S1":NT_S1,
 }
 
 var leftRec = map[NT]NTs { 
+	NT_Base: NTs {  },
+	NT_Optional: NTs {  },
 	NT_Required: NTs {  },
 	NT_S1: NTs {  NT_Required,  },
+}
+
+var ordered = map[NT]bool { 
 }
