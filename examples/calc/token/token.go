@@ -113,7 +113,7 @@ const(
     T_4  // - 
     T_5  // / 
     T_6  // repNumber1x 
-    T_7  // space 
+    T_7  // sp 
 )
 
 var TypeToString = []string{ 
@@ -152,7 +152,7 @@ var TypeToID = []string {
     "-", 
     "/", 
     "repNumber1x", 
-    "space", 
+    "sp", 
 }
 
 var Suppress = []bool { 

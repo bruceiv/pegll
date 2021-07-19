@@ -29,6 +29,7 @@ const(
 	NT_SUM 
 	NT_TIMES 
 	NT_TIMESorDIVIDE 
+	NT_WS 
 )
 
 // T is the type of terminals symbols
@@ -41,7 +42,7 @@ const(
 	T_4  // - 
 	T_5  // / 
 	T_6  // repNumber1x 
-	T_7  // space 
+	T_7  // sp 
 )
 
 type Symbols []Symbol
@@ -85,7 +86,8 @@ var ntToString = []string {
 	"RepTIMESorDIV0x", /* NT_RepTIMESorDIV0x */
 	"SUM", /* NT_SUM */
 	"TIMES", /* NT_TIMES */
-	"TIMESorDIVIDE", /* NT_TIMESorDIVIDE */ 
+	"TIMESorDIVIDE", /* NT_TIMESorDIVIDE */
+	"WS", /* NT_WS */ 
 }
 
 var tToString = []string { 
@@ -96,7 +98,7 @@ var tToString = []string {
 	"-", /* T_4 */
 	"/", /* T_5 */
 	"repNumber1x", /* T_6 */
-	"space", /* T_7 */ 
+	"sp", /* T_7 */ 
 }
 
 var stringNT = map[string]NT{ 
@@ -115,4 +117,5 @@ var stringNT = map[string]NT{
 	"SUM":NT_SUM,
 	"TIMES":NT_TIMES,
 	"TIMESorDIVIDE":NT_TIMESorDIVIDE,
+	"WS":NT_WS,
 }
