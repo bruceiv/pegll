@@ -1,3 +1,4 @@
+//  Copyright 2021 Aaron Moss
 //  Copyright 2019 Marius Ackerman
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
@@ -25,10 +26,20 @@ import (
 	"github.com/bruceiv/pegll/symbols"
 )
 
+const (
+	// Slot mode for unknown parse status
+	Unknown = 'R'
+	// Slot mode for parse failure
+	Fail = 'F'
+	// Slot mode for matching parse
+	Match = 'M'
+)
+
 type Label struct {
 	Head      string
 	Alternate int
 	Pos       int
+	Mode      rune
 	gs        *GSlot
 	ff        *frstflw.FF
 }
@@ -51,11 +62,12 @@ func New(g *ast.GoGLL, ff *frstflw.FF) *GSlot {
 	return gs
 }
 
-func NewLabel(head string, alt, pos int, gs *GSlot, ff *frstflw.FF) *Label {
+func NewLabel(head string, alt, pos int, mode rune, gs *GSlot, ff *frstflw.FF) *Label {
 	return &Label{
 		Head:      head,
 		Alternate: alt,
 		Pos:       pos,
+		Mode:      mode,
 		gs:        gs,
 		ff:        ff,
 	}
@@ -71,7 +83,11 @@ func (gs *GSlot) Slots() Slots {
 }
 
 func (s Label) Label() string {
-	return fmt.Sprintf("%s%dR%d", s.Head, s.Alternate, s.Pos)
+	return LabelFor(s.Head, s.Alternate, s.Pos, s.Mode)
+}
+
+func LabelFor(head string, alt, pos int, mode rune) string {
+	return fmt.Sprintf("%s%d%c%d", head, alt, mode, pos)
 }
 
 func (s Label) IsEoR() bool {
@@ -137,6 +153,10 @@ func (ss Slots) Less(i, j int) bool {
 			if ss[i].Pos < ss[j].Pos {
 				return true
 			}
+
+			if ss[i].Pos == ss[j].Pos {
+				return ss[i].Mode < ss[j].Mode
+			}
 		}
 	}
 	return false
@@ -155,30 +175,64 @@ func (gs *GSlot) genSlots() {
 }
 
 func (gs *GSlot) genSlotsOfRule(r *ast.SyntaxRule) {
+	nt := r.Head.ID()
+	// add normal rule slots
 	for i, a := range r.Alternates {
-		gs.genSlotsOfAlternate(r.Head.ID(), i, getSymbols(a.GetSymbols())...)
+		syms := getSymbols(a.GetSymbols())
+		gs.genSlotsOfAlternate(nt, i, syms...)
+	}
+	if !r.AlwaysMatches() {
+		// add fail slot to failable rules
+		gs.genSlot(nt, len(r.Alternates), 0, Fail, []symbols.Symbol{}...)
+
+		// add pass labels to failable unordered rules
+		if !r.IsOrdered {
+			for i, a := range r.Alternates {
+				// no pass label for first alternate
+				if i == 0 {
+					continue
+				}
+				syms := getSymbols(a.GetSymbols())
+				for j, sym := range syms {
+					// first symbol always gets pass label
+					if j == 0 {
+						gs.genSlot(nt, i, j, Match, syms...)
+					}
+					// slots after nonterminal calls also get
+					// pass label
+					if sym.IsNonTerminal() || sym.IsLookahead() {
+						gs.genSlot(nt, i, j+1, Match, syms...)
+					}
+				}
+			}
+		}
 	}
 }
 
 func (gs *GSlot) genSlotsOfAlternate(nt string, altI int, symbls ...symbols.Symbol) {
 	if len(symbls) == 0 {
-		gs.genSlot(nt, altI, 0, []symbols.Symbol{}...)
+		gs.genSlot(nt, altI, 0, Unknown, []symbols.Symbol{}...)
 	} else {
 		for pos := 0; pos <= len(symbls); pos++ {
-			gs.genSlot(nt, altI, pos, symbls...)
+			gs.genSlot(nt, altI, pos, Unknown, symbls...)
 		}
 	}
 }
 
-func (gs *GSlot) genSlot(nt string, altI, pos int, symbols ...symbols.Symbol) {
+func (gs *GSlot) genSlot(nt string, altI, pos int, mode rune, symbols ...symbols.Symbol) {
 	slot := Label{
 		Head:      nt,
 		Alternate: altI,
 		Pos:       pos,
+		Mode:      mode,
 		gs:        gs,
 		ff:        gs.ff,
 	}
 	gs.slots[slot] = symbols
+}
+
+func (gs *GSlot) Len() int {
+	return len(gs.slots)
 }
 
 // getSymbols translates AST symbol strings to symbols.Symbol

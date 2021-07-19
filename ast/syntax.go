@@ -148,3 +148,8 @@ func (r *SyntaxRule) ID() string {
 func (r *SyntaxRule) Lext() int {
 	return r.Head.Lext()
 }
+
+// true if always matches; false if unable to guarantee always matches
+func (r *SyntaxRule) AlwaysMatches() bool {
+	return r.Alternates[len(r.Alternates)-1].Empty()
+}

@@ -20,9 +20,11 @@ const(
 	A11R0
 	A11R1
 	A11R2
+	A12F0
 	Ac0R0
 	Ac0R1
 	Ac0R2
+	Ac1F0
 	B10R0
 	B10R1
 	B10R2
@@ -30,11 +32,13 @@ const(
 	B11R0
 	B11R1
 	B11R2
+	B12F0
 	G10R0
 	G10R1
 	G10R2
 	G10R3
 	G10R4
+	G11F0
 	Repa0x0R0
 	Repa0x0R1
 	Repa0x0R2
@@ -114,6 +118,11 @@ func (l Label) IsNullable() bool {
 
 func (l Label) FirstContains(typ token.Type) bool {
 	return firstT[l][typ]
+}
+
+func (l Label) IsLookahead() bool {
+	s := l.Slot()
+	return s.Pos > 0 && s.Symbols[s.Pos-1].IsLookahead()
 }
 
 func (s *Slot) EoR() bool {
@@ -205,6 +214,12 @@ var slots = map[Label]*Slot{
 		}, 
 		A11R2, 
 	},
+	A12F0: {
+		symbols.NT_A1, 2, 0, 
+		symbols.Symbols{ 
+		}, 
+		A12F0, 
+	},
 	Ac0R0: {
 		symbols.NT_Ac, 0, 0, 
 		symbols.Symbols{  
@@ -228,6 +243,12 @@ var slots = map[Label]*Slot{
 			symbols.T_2,
 		}, 
 		Ac0R2, 
+	},
+	Ac1F0: {
+		symbols.NT_Ac, 1, 0, 
+		symbols.Symbols{ 
+		}, 
+		Ac1F0, 
 	},
 	B10R0: {
 		symbols.NT_B1, 0, 0, 
@@ -289,6 +310,12 @@ var slots = map[Label]*Slot{
 		}, 
 		B11R2, 
 	},
+	B12F0: {
+		symbols.NT_B1, 2, 0, 
+		symbols.Symbols{ 
+		}, 
+		B12F0, 
+	},
 	G10R0: {
 		symbols.NT_G1, 0, 0, 
 		symbols.Symbols{  
@@ -339,6 +366,12 @@ var slots = map[Label]*Slot{
 		}, 
 		G10R4, 
 	},
+	G11F0: {
+		symbols.NT_G1, 1, 0, 
+		symbols.Symbols{ 
+		}, 
+		G11F0, 
+	},
 	Repa0x0R0: {
 		symbols.NT_Repa0x, 0, 0, 
 		symbols.Symbols{  
@@ -379,9 +412,11 @@ var slotIndex = map[Index]Label {
 	Index{ symbols.NT_A1,1,0 }: A11R0,
 	Index{ symbols.NT_A1,1,1 }: A11R1,
 	Index{ symbols.NT_A1,1,2 }: A11R2,
+	Index{ symbols.NT_A1,2,0 }: A12F0,
 	Index{ symbols.NT_Ac,0,0 }: Ac0R0,
 	Index{ symbols.NT_Ac,0,1 }: Ac0R1,
 	Index{ symbols.NT_Ac,0,2 }: Ac0R2,
+	Index{ symbols.NT_Ac,1,0 }: Ac1F0,
 	Index{ symbols.NT_B1,0,0 }: B10R0,
 	Index{ symbols.NT_B1,0,1 }: B10R1,
 	Index{ symbols.NT_B1,0,2 }: B10R2,
@@ -389,11 +424,13 @@ var slotIndex = map[Index]Label {
 	Index{ symbols.NT_B1,1,0 }: B11R0,
 	Index{ symbols.NT_B1,1,1 }: B11R1,
 	Index{ symbols.NT_B1,1,2 }: B11R2,
+	Index{ symbols.NT_B1,2,0 }: B12F0,
 	Index{ symbols.NT_G1,0,0 }: G10R0,
 	Index{ symbols.NT_G1,0,1 }: G10R1,
 	Index{ symbols.NT_G1,0,2 }: G10R2,
 	Index{ symbols.NT_G1,0,3 }: G10R3,
 	Index{ symbols.NT_G1,0,4 }: G10R4,
+	Index{ symbols.NT_G1,1,0 }: G11F0,
 	Index{ symbols.NT_Repa0x,0,0 }: Repa0x0R0,
 	Index{ symbols.NT_Repa0x,0,1 }: Repa0x0R1,
 	Index{ symbols.NT_Repa0x,0,2 }: Repa0x0R2,
@@ -416,9 +453,11 @@ var nullable = []bool {
 	false, // A11R0 
 	false, // A11R1 
 	true, // A11R2 
+	false, // A12F0 
 	false, // Ac0R0 
 	false, // Ac0R1 
 	true, // Ac0R2 
+	false, // Ac1F0 
 	false, // B10R0 
 	false, // B10R1 
 	false, // B10R2 
@@ -426,11 +465,13 @@ var nullable = []bool {
 	false, // B11R0 
 	false, // B11R1 
 	true, // B11R2 
+	false, // B12F0 
 	false, // G10R0 
 	false, // G10R1 
 	false, // G10R2 
 	false, // G10R3 
 	true, // G10R4 
+	false, // G11F0 
 	false, // Repa0x0R0 
 	true, // Repa0x0R1 
 	true, // Repa0x0R2 
@@ -445,9 +486,11 @@ var firstT = []map[token.Type]bool {
 	{  token.T_0: true,  }, // A11R0 
 	{  token.T_1: true,  }, // A11R1 
 	{  }, // A11R2 
+	{  }, // A12F0 
 	{  token.T_0: true,  }, // Ac0R0 
 	{  token.T_2: true,  }, // Ac0R1 
 	{  }, // Ac0R2 
+	{  }, // Ac1F0 
 	{  token.T_1: true,  }, // B10R0 
 	{  token.T_1: true,  }, // B10R1 
 	{  token.T_2: true,  }, // B10R2 
@@ -455,11 +498,13 @@ var firstT = []map[token.Type]bool {
 	{  token.T_1: true,  }, // B11R0 
 	{  token.T_2: true,  }, // B11R1 
 	{  }, // B11R2 
+	{  }, // B12F0 
 	{  token.T_0: true,  }, // G10R0 
 	{  token.T_0: true,  }, // G10R1 
-	{  token.T_1: true,  token.T_0: true,  }, // G10R2 
+	{  token.T_0: true,  token.T_1: true,  }, // G10R2 
 	{  token.T_1: true,  }, // G10R3 
 	{  }, // G10R4 
+	{  }, // G11F0 
 	{  token.T_0: true,  }, // Repa0x0R0 
 	{  token.T_0: true,  }, // Repa0x0R1 
 	{  }, // Repa0x0R2 

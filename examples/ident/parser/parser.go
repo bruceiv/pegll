@@ -21,7 +21,8 @@ type parser struct {
 	U *descriptors
 
 	popped   map[poppedNode]bool
-	crf      map[clusterNode][]*crfNode
+	crf_m    map[clusterNode][]*crfNode
+	crf_f    map[clusterNode][]*crfNode
 	crfNodes map[crfNode]*crfNode
 
 	lex         *lexer.Lexer
@@ -30,6 +31,9 @@ type parser struct {
 	bsrSet *bsr.Set
 }
 
+// index used for non-matches
+const failInd = -1
+
 func newParser(l *lexer.Lexer) *parser {
 	return &parser{
 		cI:     0,
@@ -37,9 +41,10 @@ func newParser(l *lexer.Lexer) *parser {
 		R:      &descriptors{},
 		U:      &descriptors{},
 		popped: make(map[poppedNode]bool),
-		crf: map[clusterNode][]*crfNode{
+		crf_m: map[clusterNode][]*crfNode{
 			{symbols.NT_Ident, 0}: {},
 		},
+		crf_f:       map[clusterNode][]*crfNode{},
 		crfNodes:    map[crfNode]*crfNode{},
 		bsrSet:      bsr.New(symbols.NT_Ident, l),
 		parseErrors: nil,
@@ -64,79 +69,259 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 		// fmt.Printf("L:%s, cI:%d, I[p.cI]:%s, cU:%d\n", L, p.cI, p.lex.Tokens[p.cI], cU)
 		// p.DumpDescriptors()
 
-		switch L {
-		case slot.Ident0R0: // Ident : ∙!Keyword idChar RepidChar0x
+		for {
+			switch L {
+			case slot.IdChar0R0: // IdChar : ∙i
 
-			p.call(slot.Ident0R1, cU, p.cI)
-		case slot.Ident0R1: // Ident : !Keyword ∙idChar RepidChar0x
+				if !p.testSelect(slot.IdChar0R0) {
+					p.parseError(slot.IdChar0R0, p.cI, first[slot.IdChar0R0])
+					L, p.cI = slot.IdChar1R0, cU
+					goto nextSlot
+				}
+				p.bsrSet.Add(slot.IdChar0R1, cU, p.cI, p.cI+1)
+				p.cI++
+				p.rtn(symbols.NT_IdChar, cU, p.cI)
+				L, p.cI = slot.IdChar1M0, cU
+				goto nextSlot
 
-			if !p.testSelect(slot.Ident0R1) {
-				p.parseError(slot.Ident0R1, p.cI, first[slot.Ident0R1])
-				break
+			case slot.IdChar1R0: // IdChar : ∙f
+
+				if !p.testSelect(slot.IdChar1R0) {
+					p.parseError(slot.IdChar1R0, p.cI, first[slot.IdChar1R0])
+					L, p.cI = slot.IdChar2R0, cU
+					goto nextSlot
+				}
+				p.bsrSet.Add(slot.IdChar1R1, cU, p.cI, p.cI+1)
+				p.cI++
+				p.rtn(symbols.NT_IdChar, cU, p.cI)
+				L, p.cI = slot.IdChar2M0, cU
+				goto nextSlot
+			case slot.IdChar1M0: // IdChar : ∙f  [with previous match]
+
+				if !p.testSelect(slot.IdChar1R0) {
+					p.parseError(slot.IdChar1R0, p.cI, first[slot.IdChar1R0])
+					L, p.cI = slot.IdChar2M0, cU
+					goto nextSlot
+				}
+				p.bsrSet.Add(slot.IdChar1R1, cU, p.cI, p.cI+1)
+				p.cI++
+				p.rtn(symbols.NT_IdChar, cU, p.cI)
+				L, p.cI = slot.IdChar2M0, cU
+				goto nextSlot
+
+			case slot.IdChar2R0: // IdChar : ∙o
+
+				if !p.testSelect(slot.IdChar2R0) {
+					p.parseError(slot.IdChar2R0, p.cI, first[slot.IdChar2R0])
+					L, p.cI = slot.IdChar3R0, cU
+					goto nextSlot
+				}
+				p.bsrSet.Add(slot.IdChar2R1, cU, p.cI, p.cI+1)
+				p.cI++
+				p.rtn(symbols.NT_IdChar, cU, p.cI)
+				L, p.cI = slot.IdChar3M0, cU
+				goto nextSlot
+			case slot.IdChar2M0: // IdChar : ∙o  [with previous match]
+
+				if !p.testSelect(slot.IdChar2R0) {
+					p.parseError(slot.IdChar2R0, p.cI, first[slot.IdChar2R0])
+					L, p.cI = slot.IdChar3M0, cU
+					goto nextSlot
+				}
+				p.bsrSet.Add(slot.IdChar2R1, cU, p.cI, p.cI+1)
+				p.cI++
+				p.rtn(symbols.NT_IdChar, cU, p.cI)
+				L, p.cI = slot.IdChar3M0, cU
+				goto nextSlot
+
+			case slot.IdChar3R0: // IdChar : ∙r
+
+				if !p.testSelect(slot.IdChar3R0) {
+					p.parseError(slot.IdChar3R0, p.cI, first[slot.IdChar3R0])
+					L, p.cI = slot.IdChar4R0, cU
+					goto nextSlot
+				}
+				p.bsrSet.Add(slot.IdChar3R1, cU, p.cI, p.cI+1)
+				p.cI++
+				p.rtn(symbols.NT_IdChar, cU, p.cI)
+				L, p.cI = slot.IdChar4M0, cU
+				goto nextSlot
+			case slot.IdChar3M0: // IdChar : ∙r  [with previous match]
+
+				if !p.testSelect(slot.IdChar3R0) {
+					p.parseError(slot.IdChar3R0, p.cI, first[slot.IdChar3R0])
+					L, p.cI = slot.IdChar4M0, cU
+					goto nextSlot
+				}
+				p.bsrSet.Add(slot.IdChar3R1, cU, p.cI, p.cI+1)
+				p.cI++
+				p.rtn(symbols.NT_IdChar, cU, p.cI)
+				L, p.cI = slot.IdChar4M0, cU
+				goto nextSlot
+
+			case slot.IdChar4R0: // IdChar : ∙idChar
+
+				if !p.testSelect(slot.IdChar4R0) {
+					p.parseError(slot.IdChar4R0, p.cI, first[slot.IdChar4R0])
+					L, p.cI = slot.IdChar5F0, cU
+					goto nextSlot
+				}
+				p.bsrSet.Add(slot.IdChar4R1, cU, p.cI, p.cI+1)
+				p.cI++
+				p.rtn(symbols.NT_IdChar, cU, p.cI)
+
+			case slot.IdChar4M0: // IdChar : ∙idChar  [with previous match]
+
+				if !p.testSelect(slot.IdChar4R0) {
+					p.parseError(slot.IdChar4R0, p.cI, first[slot.IdChar4R0])
+
+				}
+				p.bsrSet.Add(slot.IdChar4R1, cU, p.cI, p.cI+1)
+				p.cI++
+				p.rtn(symbols.NT_IdChar, cU, p.cI)
+
+			case slot.IdChar5F0: // IdChar failure case
+				p.rtn(symbols.NT_IdChar, cU, failInd)
+			case slot.Ident0R0: // Ident : ∙!Keyword IdChar RepidChar0x
+
+				if !p.testSelect(slot.Ident0R0) {
+					p.parseError(slot.Ident0R0, p.cI, first[slot.Ident0R0])
+					L, p.cI = slot.Ident1F0, cU
+					goto nextSlot
+				}
+				p.call(slot.Ident1F0, slot.Ident0R1, symbols.NT_Keyword, cU, p.cI)
+			case slot.Ident0R1: // Ident : !Keyword ∙IdChar RepidChar0x
+
+				if !p.testSelect(slot.Ident0R1) {
+					p.parseError(slot.Ident0R1, p.cI, first[slot.Ident0R1])
+					L, p.cI = slot.Ident1F0, cU
+					goto nextSlot
+				}
+				p.call(slot.Ident0R2, slot.Ident1F0, symbols.NT_IdChar, cU, p.cI)
+			case slot.Ident0R2: // Ident : !Keyword IdChar ∙RepidChar0x
+
+				if !p.testSelect(slot.Ident0R2) {
+					p.parseError(slot.Ident0R2, p.cI, first[slot.Ident0R2])
+					L, p.cI = slot.Ident1F0, cU
+					goto nextSlot
+				}
+				p.call(slot.Ident0R3, slot.Ident1F0, symbols.NT_RepidChar0x, cU, p.cI)
+			case slot.Ident0R3: // Ident : !Keyword IdChar RepidChar0x ∙
+
+				p.rtn(symbols.NT_Ident, cU, p.cI)
+			case slot.Ident1F0: // Ident failure case
+				p.rtn(symbols.NT_Ident, cU, failInd)
+			case slot.Keyword0R0: // Keyword : ∙i f
+
+				if !p.testSelect(slot.Keyword0R0) {
+					p.parseError(slot.Keyword0R0, p.cI, first[slot.Keyword0R0])
+					L, p.cI = slot.Keyword1R0, cU
+					goto nextSlot
+				}
+				p.bsrSet.Add(slot.Keyword0R1, cU, p.cI, p.cI+1)
+				p.cI++
+				p.rtn(symbols.NT_Keyword, cU, p.cI)
+				L, p.cI = slot.Keyword1M0, cU
+				goto nextSlot
+				if !p.testSelect(slot.Keyword0R1) {
+					p.parseError(slot.Keyword0R1, p.cI, first[slot.Keyword0R1])
+					L, p.cI = slot.Keyword1R0, cU
+					goto nextSlot
+				}
+				p.bsrSet.Add(slot.Keyword0R2, cU, p.cI, p.cI+1)
+				p.cI++
+				p.rtn(symbols.NT_Keyword, cU, p.cI)
+				L, p.cI = slot.Keyword1M0, cU
+				goto nextSlot
+
+			case slot.Keyword1R0: // Keyword : ∙f o r
+
+				if !p.testSelect(slot.Keyword1R0) {
+					p.parseError(slot.Keyword1R0, p.cI, first[slot.Keyword1R0])
+					L, p.cI = slot.Keyword2F0, cU
+					goto nextSlot
+				}
+				p.bsrSet.Add(slot.Keyword1R1, cU, p.cI, p.cI+1)
+				p.cI++
+				p.rtn(symbols.NT_Keyword, cU, p.cI)
+
+				if !p.testSelect(slot.Keyword1R1) {
+					p.parseError(slot.Keyword1R1, p.cI, first[slot.Keyword1R1])
+					L, p.cI = slot.Keyword2F0, cU
+					goto nextSlot
+				}
+				p.bsrSet.Add(slot.Keyword1R2, cU, p.cI, p.cI+1)
+				p.cI++
+				p.rtn(symbols.NT_Keyword, cU, p.cI)
+
+				if !p.testSelect(slot.Keyword1R2) {
+					p.parseError(slot.Keyword1R2, p.cI, first[slot.Keyword1R2])
+					L, p.cI = slot.Keyword2F0, cU
+					goto nextSlot
+				}
+				p.bsrSet.Add(slot.Keyword1R3, cU, p.cI, p.cI+1)
+				p.cI++
+				p.rtn(symbols.NT_Keyword, cU, p.cI)
+
+			case slot.Keyword1M0: // Keyword : ∙f o r  [with previous match]
+
+				if !p.testSelect(slot.Keyword1R0) {
+					p.parseError(slot.Keyword1R0, p.cI, first[slot.Keyword1R0])
+
+				}
+				p.bsrSet.Add(slot.Keyword1R1, cU, p.cI, p.cI+1)
+				p.cI++
+				p.rtn(symbols.NT_Keyword, cU, p.cI)
+
+				if !p.testSelect(slot.Keyword1R1) {
+					p.parseError(slot.Keyword1R1, p.cI, first[slot.Keyword1R1])
+
+				}
+				p.bsrSet.Add(slot.Keyword1R2, cU, p.cI, p.cI+1)
+				p.cI++
+				p.rtn(symbols.NT_Keyword, cU, p.cI)
+
+				if !p.testSelect(slot.Keyword1R2) {
+					p.parseError(slot.Keyword1R2, p.cI, first[slot.Keyword1R2])
+
+				}
+				p.bsrSet.Add(slot.Keyword1R3, cU, p.cI, p.cI+1)
+				p.cI++
+				p.rtn(symbols.NT_Keyword, cU, p.cI)
+
+			case slot.Keyword2F0: // Keyword failure case
+				p.rtn(symbols.NT_Keyword, cU, failInd)
+			case slot.RepidChar0x0R0: // RepidChar0x : ∙IdChar RepidChar0x
+
+				if !p.testSelect(slot.RepidChar0x0R0) {
+					p.parseError(slot.RepidChar0x0R0, p.cI, first[slot.RepidChar0x0R0])
+					L, p.cI = slot.RepidChar0x1R0, cU
+					goto nextSlot
+				}
+				p.call(slot.RepidChar0x0R1, slot.RepidChar0x1R0, symbols.NT_IdChar, cU, p.cI)
+			case slot.RepidChar0x0R1: // RepidChar0x : IdChar ∙RepidChar0x
+
+				if !p.testSelect(slot.RepidChar0x0R1) {
+					p.parseError(slot.RepidChar0x0R1, p.cI, first[slot.RepidChar0x0R1])
+					L, p.cI = slot.RepidChar0x1R0, cU
+					goto nextSlot
+				}
+				p.call(slot.RepidChar0x0R2, slot.RepidChar0x1R0, symbols.NT_RepidChar0x, cU, p.cI)
+			case slot.RepidChar0x0R2: // RepidChar0x : IdChar RepidChar0x ∙
+
+				p.rtn(symbols.NT_RepidChar0x, cU, p.cI)
+			case slot.RepidChar0x1R0: // RepidChar0x : ∙
+				p.bsrSet.AddEmpty(slot.RepidChar0x1R0, p.cI)
+				p.rtn(symbols.NT_RepidChar0x, cU, p.cI)
+
+			default:
+				panic("This must not happen")
 			}
-
-			p.bsrSet.Add(slot.Ident0R2, cU, p.cI, p.cI+1)
-			p.cI++
-			if !p.testSelect(slot.Ident0R2) {
-				p.parseError(slot.Ident0R2, p.cI, first[slot.Ident0R2])
-				break
-			}
-
-			p.call(slot.Ident0R3, cU, p.cI)
-		case slot.Ident0R3: // Ident : !Keyword idChar RepidChar0x ∙
-
-			p.rtn(symbols.NT_Ident, cU, p.cI)
-		case slot.Keyword0R0: // Keyword : ∙i f
-
-			p.bsrSet.Add(slot.Keyword0R1, cU, p.cI, p.cI+1)
-			p.cI++
-			if !p.testSelect(slot.Keyword0R1) {
-				p.parseError(slot.Keyword0R1, p.cI, first[slot.Keyword0R1])
-				break
-			}
-
-			p.bsrSet.Add(slot.Keyword0R2, cU, p.cI, p.cI+1)
-			p.cI++
-			p.rtn(symbols.NT_Keyword, cU, p.cI)
-		case slot.Keyword1R0: // Keyword : ∙f o r
-
-			p.bsrSet.Add(slot.Keyword1R1, cU, p.cI, p.cI+1)
-			p.cI++
-			if !p.testSelect(slot.Keyword1R1) {
-				p.parseError(slot.Keyword1R1, p.cI, first[slot.Keyword1R1])
-				break
-			}
-
-			p.bsrSet.Add(slot.Keyword1R2, cU, p.cI, p.cI+1)
-			p.cI++
-			if !p.testSelect(slot.Keyword1R2) {
-				p.parseError(slot.Keyword1R2, p.cI, first[slot.Keyword1R2])
-				break
-			}
-
-			p.bsrSet.Add(slot.Keyword1R3, cU, p.cI, p.cI+1)
-			p.cI++
-			p.rtn(symbols.NT_Keyword, cU, p.cI)
-		case slot.RepidChar0x0R0: // RepidChar0x : ∙idChar RepidChar0x
-
-			p.bsrSet.Add(slot.RepidChar0x0R1, cU, p.cI, p.cI+1)
-			p.cI++
-			if !p.testSelect(slot.RepidChar0x0R1) {
-				p.parseError(slot.RepidChar0x0R1, p.cI, first[slot.RepidChar0x0R1])
-				break
-			}
-
-			p.call(slot.RepidChar0x0R2, cU, p.cI)
-		case slot.RepidChar0x0R2: // RepidChar0x : idChar RepidChar0x ∙
-
-			p.rtn(symbols.NT_RepidChar0x, cU, p.cI)
-		case slot.RepidChar0x1R0: // RepidChar0x : ∙
-			p.bsrSet.AddEmpty(slot.RepidChar0x1R0, p.cI)
-
-			p.rtn(symbols.NT_RepidChar0x, cU, p.cI)
-
-		default:
-			panic("This must not happen")
+			// if exit switch normally, also exit loop and proceed to next
+			// descriptor; if exit with goto nextSlot, repeat switch at next
+			// slot
+			break
+		nextSlot:
 		}
 	}
 	if !p.bsrSet.Contain(symbols.NT_Ident, 0, m) {
@@ -147,24 +332,8 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 }
 
 func (p *parser) ntAdd(nt symbols.NT, j int) {
-	// fmt.Printf("p.ntAdd(%s, %d)\n", nt, j)
-	failed := true
-	expected := map[token.Type]string{}
-	for _, l := range slot.GetAlternates(nt) {
-		if p.testSelect(l) {
-			p.dscAdd(l, j, j)
-			failed = false
-		} else {
-			for k, v := range first[l] {
-				expected[k] = v
-			}
-		}
-	}
-	if failed {
-		for _, l := range slot.GetAlternates(nt) {
-			p.parseError(l, j, expected)
-		}
-	}
+	l := slot.GetAlternates(nt)[0]
+	p.dscAdd(l, j, j)
 }
 
 /*** Call Return Forest ***/
@@ -184,50 +353,45 @@ type crfNode struct {
 	i int
 }
 
-/*
-suppose that L is Y ::=αX ·β
-if there is no CRF node labelled (L,i)
-	create one let u be the CRF node labelled (L,i)
-if there is no CRF node labelled (X, j) {
-	create a CRF node v labelled (X, j)
-	create an edge from v to u
-	ntAdd(X, j)
-} else {
-	let v be the CRF node labelled (X, j)
-	if there is not an edge from v to u {
-		create an edge from v to u
-		for all ((X, j,h)∈P) {
-			dscAdd(L, i, h);
-			bsrAdd(L, i, j, h)
-		}
-	}
-}
-*/
-func (p *parser) call(L slot.Label, i, j int) {
+func (p *parser) call(Lm, Lf slot.Label, X symbols.NT, i, j int) {
 	// fmt.Printf("p.call(%s,%d,%d)\n", L,i,j)
-	u, exist := p.crfNodes[crfNode{L, i}]
+	um, exist := p.crfNodes[crfNode{Lm, i}]
 	// fmt.Printf("  u exist=%t\n", exist)
 	if !exist {
-		u = &crfNode{L, i}
-		p.crfNodes[*u] = u
+		um = &crfNode{Lm, i}
+		p.crfNodes[*um] = um
 	}
-	X := L.Symbols()[L.Pos()-1].(symbols.NT)
-	ndV := clusterNode{X, j}
-	v, exist := p.crf[ndV]
+	uf, exist := p.crfNodes[crfNode{Lf, i}]
 	if !exist {
+		uf = &crfNode{Lf, i}
+		p.crfNodes[*uf] = uf
+	}
+
+	ndV := clusterNode{X, j}
+	vm, existm := p.crf_m[ndV]
+	vf, existf := p.crf_f[ndV]
+	if !existm && !existf {
 		// fmt.Println("  v !exist")
-		p.crf[ndV] = []*crfNode{u}
+		p.crf_m[ndV] = []*crfNode{um}
+		p.crf_f[ndV] = []*crfNode{uf}
 		p.ntAdd(X, j)
 	} else {
 		// fmt.Println("  v exist")
-		if !existEdge(v, u) {
+		if !existEdge(vm, um) {
 			// fmt.Printf("  !existEdge(%v)\n", u)
-			p.crf[ndV] = append(v, u)
+			p.crf_m[ndV] = append(vm, um)
 			// fmt.Printf("|popped|=%d\n", len(popped))
 			for pnd := range p.popped {
-				if pnd.X == X && pnd.k == j {
-					p.dscAdd(L, i, pnd.j)
-					p.bsrSet.Add(L, i, j, pnd.j)
+				if pnd.X == X && pnd.k == j && pnd.j != failInd {
+					p.addMatch(Lm, i, j, pnd.j)
+				}
+			}
+		}
+		if !existEdge(vf, uf) {
+			p.crf_f[ndV] = append(vf, uf)
+			for pnd := range p.popped {
+				if pnd.X == X && pnd.k == j && pnd.j == failInd {
+					p.addFail(Lf, i, j)
 				}
 			}
 		}
@@ -248,10 +412,32 @@ func (p *parser) rtn(X symbols.NT, k, j int) {
 	pn := poppedNode{X, k, j}
 	if _, exist := p.popped[pn]; !exist {
 		p.popped[pn] = true
-		for _, nd := range p.crf[clusterNode{X, k}] {
-			p.dscAdd(nd.L, nd.i, j)
-			p.bsrSet.Add(nd.L, nd.i, k, j)
+		if j != failInd {
+			for _, nd := range p.crf_m[clusterNode{X, k}] {
+				p.addMatch(nd.L, nd.i, k, j)
+			}
+		} else {
+			for _, nd := range p.crf_f[clusterNode{X, k}] {
+				p.addFail(nd.L, nd.i, k)
+			}
 		}
+	}
+}
+
+func (p *parser) addMatch(L slot.Label, i, k, j int) {
+	p.bsrSet.Add(L, i, k, j)
+	if L.IsLookahead() {
+		p.dscAdd(L, i, k)
+	} else {
+		p.dscAdd(L, i, j)
+	}
+}
+
+func (p *parser) addFail(L slot.Label, i, k int) {
+	if L.IsLookahead() {
+		p.dscAdd(L, i, k)
+	} else {
+		p.dscAdd(L, i, i)
 	}
 }
 
@@ -376,20 +562,126 @@ func (p *parser) testSelect(l slot.Label) bool {
 }
 
 var first = []map[token.Type]string{
-	// Ident : ∙!Keyword idChar RepidChar0x
+	// IdChar : ∙i
 	{
-		token.T_2: "idChar",
+		token.T_1: "i",
 	},
-	// Ident : !Keyword ∙idChar RepidChar0x
-	{
-		token.T_2: "idChar",
-	},
-	// Ident : !Keyword idChar ∙RepidChar0x
+	// IdChar : i ∙
 	{
 		token.EOF: "$",
+		token.T_0: "f",
+		token.T_1: "i",
+		token.T_2: "idChar",
+		token.T_3: "o",
+		token.T_4: "r",
+	},
+	// IdChar : ∙f
+	{
+		token.T_0: "f",
+	},
+	// IdChar : ∙f
+	{
+		token.T_0: "f",
+	},
+	// IdChar : f ∙
+	{
+		token.EOF: "$",
+		token.T_0: "f",
+		token.T_1: "i",
+		token.T_2: "idChar",
+		token.T_3: "o",
+		token.T_4: "r",
+	},
+	// IdChar : ∙o
+	{
+		token.T_3: "o",
+	},
+	// IdChar : ∙o
+	{
+		token.T_3: "o",
+	},
+	// IdChar : o ∙
+	{
+		token.EOF: "$",
+		token.T_0: "f",
+		token.T_1: "i",
+		token.T_2: "idChar",
+		token.T_3: "o",
+		token.T_4: "r",
+	},
+	// IdChar : ∙r
+	{
+		token.T_4: "r",
+	},
+	// IdChar : ∙r
+	{
+		token.T_4: "r",
+	},
+	// IdChar : r ∙
+	{
+		token.EOF: "$",
+		token.T_0: "f",
+		token.T_1: "i",
+		token.T_2: "idChar",
+		token.T_3: "o",
+		token.T_4: "r",
+	},
+	// IdChar : ∙idChar
+	{
 		token.T_2: "idChar",
 	},
-	// Ident : !Keyword idChar RepidChar0x ∙
+	// IdChar : ∙idChar
+	{
+		token.T_2: "idChar",
+	},
+	// IdChar : idChar ∙
+	{
+		token.EOF: "$",
+		token.T_0: "f",
+		token.T_1: "i",
+		token.T_2: "idChar",
+		token.T_3: "o",
+		token.T_4: "r",
+	},
+	// IdChar : ∙
+	{
+		token.EOF: "$",
+		token.T_0: "f",
+		token.T_1: "i",
+		token.T_2: "idChar",
+		token.T_3: "o",
+		token.T_4: "r",
+	},
+	// Ident : ∙!Keyword IdChar RepidChar0x
+	{
+		token.T_0: "f",
+		token.T_1: "i",
+		token.T_2: "idChar",
+		token.T_3: "o",
+		token.T_4: "r",
+	},
+	// Ident : !Keyword ∙IdChar RepidChar0x
+	{
+		token.T_0: "f",
+		token.T_1: "i",
+		token.T_2: "idChar",
+		token.T_3: "o",
+		token.T_4: "r",
+	},
+	// Ident : !Keyword IdChar ∙RepidChar0x
+	{
+		token.EOF: "$",
+		token.T_0: "f",
+		token.T_1: "i",
+		token.T_2: "idChar",
+		token.T_3: "o",
+		token.T_4: "r",
+	},
+	// Ident : !Keyword IdChar RepidChar0x ∙
+	{
+		token.EOF: "$",
+	},
+	// Ident : ∙
 	{
 		token.EOF: "$",
 	},
@@ -409,6 +701,10 @@ var first = []map[token.Type]string{
 	{
 		token.T_0: "f",
 	},
+	// Keyword : ∙f o r
+	{
+		token.T_0: "f",
+	},
 	// Keyword : f ∙o r
 	{
 		token.T_3: "o",
@@ -421,16 +717,28 @@ var first = []map[token.Type]string{
 	{
 		token.EOF: "$",
 	},
-	// RepidChar0x : ∙idChar RepidChar0x
-	{
-		token.T_2: "idChar",
-	},
-	// RepidChar0x : idChar ∙RepidChar0x
+	// Keyword : ∙
 	{
 		token.EOF: "$",
-		token.T_2: "idChar",
 	},
-	// RepidChar0x : idChar RepidChar0x ∙
+	// RepidChar0x : ∙IdChar RepidChar0x
+	{
+		token.T_0: "f",
+		token.T_1: "i",
+		token.T_2: "idChar",
+		token.T_3: "o",
+		token.T_4: "r",
+	},
+	// RepidChar0x : IdChar ∙RepidChar0x
+	{
+		token.EOF: "$",
+		token.T_0: "f",
+		token.T_1: "i",
+		token.T_2: "idChar",
+		token.T_3: "o",
+		token.T_4: "r",
+	},
+	// RepidChar0x : IdChar RepidChar0x ∙
 	{
 		token.EOF: "$",
 	},
@@ -441,6 +749,15 @@ var first = []map[token.Type]string{
 }
 
 var followSets = []map[token.Type]string{
+	// IdChar
+	{
+		token.EOF: "$",
+		token.T_0: "f",
+		token.T_1: "i",
+		token.T_2: "idChar",
+		token.T_3: "o",
+		token.T_4: "r",
+	},
 	// Ident
 	{
 		token.EOF: "$",

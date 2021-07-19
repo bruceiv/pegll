@@ -10,9 +10,10 @@ To ensure tokenization does not interfere with the PEG semantics in this
 version of the grammar, all multi-character rules are semantic, rather than 
 lexical.
 ```
-Ident : !Keyword idChar RepidChar0x ;
+Ident : !Keyword IdChar RepidChar0x ;
 Keyword : "i" "f" | "f" "o" "r" ;
 
+IdChar : "i" | "f" | "o" | "r" | idChar ;
 idChar : ( letter | number ) ;
-RepidChar0x : idChar RepidChar0x / empty ;
+RepidChar0x : IdChar RepidChar0x / empty ;
 ```

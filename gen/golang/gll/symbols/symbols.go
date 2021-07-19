@@ -18,6 +18,7 @@ package symbols
 
 import (
 	"bytes"
+	"fmt"
 	"text/template"
 
 	"github.com/bruceiv/pegll/ast"
@@ -28,8 +29,11 @@ import (
 type Data struct {
 	NonTerminals []string
 	Terminals    []string
+	Lookaheads   []string
 	LeftRec      map[string][]string
 	Ordered      map[string]bool
+	LookModes    []string
+	LookSyms     []string
 }
 
 func Gen(fname string, g *ast.GoGLL, ff *frstflw.FF) {
@@ -49,6 +53,7 @@ func Gen(fname string, g *ast.GoGLL, ff *frstflw.FF) {
 func getData(g *ast.GoGLL, ff *frstflw.FF) *Data {
 	nts := g.NonTerminals.ElementsSorted()
 	ts := g.Terminals.ElementsSorted()
+	lks := g.Lookaheads.ElementsSorted()
 
 	lrs := make(map[string][]string)
 	for _, nt := range nts {
@@ -62,11 +67,55 @@ func getData(g *ast.GoGLL, ff *frstflw.FF) *Data {
 		}
 	}
 
+	// reverse lookup for terminal identifiers
+	tIds := make(map[string]string, len(ts))
+	for i, t := range ts {
+		tIds[t] = fmt.Sprint(i)
+	}
+
+	lkIdents := make([]string, len(lks))
+	lkModes := make([]string, len(lks))
+	lkSyms := make([]string, len(lks))
+	for i, lk := range lks {
+		lkSym := lk[1:]
+		switch lk[0] {
+		case '!':
+			// negative
+			if g.NonTerminals.Contain(lkSym) {
+				lkIdents[i] = "LN_NT_" + lkSym
+				lkModes[i] = "negNonterm"
+				lkSyms[i] = "NT_" + lkSym
+			} else {
+				tSym := tIds[lkSym]
+				lkIdents[i] = "LN_T_" + tSym
+				lkModes[i] = "negTerm"
+				lkSyms[i] = "T_" + tSym
+			}
+		case '&':
+			// positive
+			if g.NonTerminals.Contain(lkSym) {
+				lkIdents[i] = "LP_NT_" + lkSym
+				lkModes[i] = "posNonterm"
+				lkSyms[i] = "NT_" + lkSym
+			} else {
+				tSym := tIds[lkSym]
+				lkIdents[i] = "LP_T_" + tSym
+				lkModes[i] = "posTerm"
+				lkSyms[i] = "T_" + tSym
+			}
+		default:
+			panic("invalid lookahead symbol " + lk)
+		}
+	}
+
 	return &Data{
 		NonTerminals: nts,
 		Terminals:    ts,
+		Lookaheads:   lkIdents,
 		LeftRec:      lrs,
 		Ordered:      nto,
+		LookModes:    lkModes,
+		LookSyms:     lkSyms,
 	}
 }
 
@@ -81,11 +130,13 @@ package symbols
 type Symbol interface{
 	isSymbol()
 	IsNonTerminal() bool
+	IsLookahead() bool
 	String() string
 }
 
 func (NT) isSymbol() {}
 func (T) isSymbol() {}
+func (L) isSymbol() {}
 
 // NT is the type of non-terminals symbols
 type NT int
@@ -101,6 +152,12 @@ type NTs []NT
 type T int
 const( {{range $i, $t := .Terminals}}
 	T_{{$i}} {{if not $i}}T = iota{{end}} // {{$t}} {{end}}
+)
+
+// L is the type of lookahead symbols
+type L int
+const( {{range $i, $lk := .Lookaheads}}
+	{{$lk}} {{if not $i}}L = iota{{end}}{{end}}
 )
 
 type Symbols []Symbol
@@ -121,6 +178,22 @@ func (T) IsNonTerminal() bool {
 	return false
 }
 
+func (L) IsNonTerminal() bool {
+	return false
+}
+
+func (NT) IsLookahead() bool {
+	return false
+}
+
+func (T) IsLookahead() bool {
+	return false
+}
+
+func (L) IsLookahead() bool {
+	return true
+}
+
 func (nt NT) String() string {
 	return ntToString[nt]
 }
@@ -129,12 +202,48 @@ func (t T) String() string {
 	return tToString[t]
 }
 
+func (lk L) String() string {
+	if lk.IsNegative() {
+		return "!" + lk.ArgSymbol().String()
+	} else {
+		return "&" + lk.ArgSymbol().String()
+	}
+}
+
 func (nt NT) LeftRec() NTs {
 	return leftRec[nt]
 }
 
 func (nt NT) IsOrdered() bool {
 	return ordered[nt]
+}
+
+const(
+	negTerm    = 0
+	negNonterm = 1
+	posTerm    = 2
+	posNonterm = 3
+	isNonterm  = 1
+	isPos      = 2
+)
+
+func (lk L) IsNegative() bool {
+	return lkMode[lk] & isPos == 0
+}
+
+func (lk L) IsPositive() bool {
+	return lkMode[lk] & isPos != 0
+}
+
+func (lk L) ArgSymbol() Symbol {
+	switch lkMode[lk] & isNonterm {
+	case 0: // terminal
+		return T(lkSym[lk])
+	case 1: // nonterminal
+		return NT(lkSym[lk])
+	default:
+		panic("Invalid lookahead")
+	}
 }
 
 var ntToString = []string { {{range $nt := .NonTerminals}}
@@ -155,5 +264,13 @@ var leftRec = map[NT]NTs { {{range $sym, $lrs := .LeftRec}}
 
 var ordered = map[NT]bool { {{range $sym, $ord := .Ordered}}
 	NT_{{$sym}}:{{$ord}},{{end}}
+}
+
+var lkMode = []int { {{range $i, $lkmd := .LookModes}}
+	{{$lkmd}}, {{end}}
+}
+
+var lkSym = []int { {{range $i, $sym := .LookSyms}}
+	int({{$sym}}), {{end}}
 }
 `
