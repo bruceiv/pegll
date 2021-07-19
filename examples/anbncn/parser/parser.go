@@ -21,7 +21,8 @@ type parser struct {
 	U *descriptors
 
 	popped   map[poppedNode]bool
-	crf      map[clusterNode][]*crfNode
+	crf_m    map[clusterNode][]*crfNode
+	crf_f    map[clusterNode][]*crfNode
 	crfNodes map[crfNode]*crfNode
 
 	lex         *lexer.Lexer
@@ -30,6 +31,9 @@ type parser struct {
 	bsrSet *bsr.Set
 }
 
+// index used for non-matches
+const failInd = -1
+
 func newParser(l *lexer.Lexer) *parser {
 	return &parser{
 		cI:     0,
@@ -37,9 +41,10 @@ func newParser(l *lexer.Lexer) *parser {
 		R:      &descriptors{},
 		U:      &descriptors{},
 		popped: make(map[poppedNode]bool),
-		crf: map[clusterNode][]*crfNode{
+		crf_m: map[clusterNode][]*crfNode{
 			{symbols.NT_G1, 0}: {},
 		},
+		crf_f:       map[clusterNode][]*crfNode{},
 		crfNodes:    map[crfNode]*crfNode{},
 		bsrSet:      bsr.New(symbols.NT_G1, l),
 		parseErrors: nil,
@@ -64,133 +69,182 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 		// fmt.Printf("L:%s, cI:%d, I[p.cI]:%s, cU:%d\n", L, p.cI, p.lex.Tokens[p.cI], cU)
 		// p.DumpDescriptors()
 
-		switch L {
-		case slot.A10R0: // A1 : ∙a A1 b
+		for {
+			switch L {
+			case slot.A10R0: // A1 : ∙a A1 b
 
-			p.bsrSet.Add(slot.A10R1, cU, p.cI, p.cI+1)
-			p.cI++
-			if !p.testSelect(slot.A10R1) {
-				p.parseError(slot.A10R1, p.cI, first[slot.A10R1])
-				break
+				if !p.testSelect(slot.A10R0) {
+					p.parseError(slot.A10R0, p.cI, first[slot.A10R0])
+					L, p.cI = slot.A11R0, cU
+					goto nextSlot
+				}
+				p.bsrSet.Add(slot.A10R1, cU, p.cI, p.cI+1)
+				p.cI++
+				if !p.testSelect(slot.A10R1) {
+					p.parseError(slot.A10R1, p.cI, first[slot.A10R1])
+					L, p.cI = slot.A11R0, cU
+					goto nextSlot
+				}
+				p.call(slot.A10R2, slot.A11R0, symbols.NT_A1, cU, p.cI)
+			case slot.A10R2: // A1 : a A1 ∙b
+
+				if !p.testSelect(slot.A10R2) {
+					p.parseError(slot.A10R2, p.cI, first[slot.A10R2])
+					L, p.cI = slot.A11R0, cU
+					goto nextSlot
+				}
+				p.bsrSet.Add(slot.A10R3, cU, p.cI, p.cI+1)
+				p.cI++
+				p.rtn(symbols.NT_A1, cU, p.cI)
+			case slot.A11R0: // A1 : ∙a b
+
+				if !p.testSelect(slot.A11R0) {
+					p.parseError(slot.A11R0, p.cI, first[slot.A11R0])
+					L, p.cI = slot.A12F0, cU
+					goto nextSlot
+				}
+				p.bsrSet.Add(slot.A11R1, cU, p.cI, p.cI+1)
+				p.cI++
+				if !p.testSelect(slot.A11R1) {
+					p.parseError(slot.A11R1, p.cI, first[slot.A11R1])
+					L, p.cI = slot.A12F0, cU
+					goto nextSlot
+				}
+				p.bsrSet.Add(slot.A11R2, cU, p.cI, p.cI+1)
+				p.cI++
+				p.rtn(symbols.NT_A1, cU, p.cI)
+			case slot.A12F0: // A1 failure case
+				p.rtn(symbols.NT_A1, cU, failInd)
+			case slot.Ac0R0: // Ac : ∙A1 c
+
+				if !p.testSelect(slot.Ac0R0) {
+					p.parseError(slot.Ac0R0, p.cI, first[slot.Ac0R0])
+					L, p.cI = slot.Ac1F0, cU
+					goto nextSlot
+				}
+				p.call(slot.Ac0R1, slot.Ac1F0, symbols.NT_A1, cU, p.cI)
+			case slot.Ac0R1: // Ac : A1 ∙c
+
+				if !p.testSelect(slot.Ac0R1) {
+					p.parseError(slot.Ac0R1, p.cI, first[slot.Ac0R1])
+					L, p.cI = slot.Ac1F0, cU
+					goto nextSlot
+				}
+				p.bsrSet.Add(slot.Ac0R2, cU, p.cI, p.cI+1)
+				p.cI++
+				p.rtn(symbols.NT_Ac, cU, p.cI)
+			case slot.Ac1F0: // Ac failure case
+				p.rtn(symbols.NT_Ac, cU, failInd)
+			case slot.B10R0: // B1 : ∙b B1 c
+
+				if !p.testSelect(slot.B10R0) {
+					p.parseError(slot.B10R0, p.cI, first[slot.B10R0])
+					L, p.cI = slot.B11R0, cU
+					goto nextSlot
+				}
+				p.bsrSet.Add(slot.B10R1, cU, p.cI, p.cI+1)
+				p.cI++
+				if !p.testSelect(slot.B10R1) {
+					p.parseError(slot.B10R1, p.cI, first[slot.B10R1])
+					L, p.cI = slot.B11R0, cU
+					goto nextSlot
+				}
+				p.call(slot.B10R2, slot.B11R0, symbols.NT_B1, cU, p.cI)
+			case slot.B10R2: // B1 : b B1 ∙c
+
+				if !p.testSelect(slot.B10R2) {
+					p.parseError(slot.B10R2, p.cI, first[slot.B10R2])
+					L, p.cI = slot.B11R0, cU
+					goto nextSlot
+				}
+				p.bsrSet.Add(slot.B10R3, cU, p.cI, p.cI+1)
+				p.cI++
+				p.rtn(symbols.NT_B1, cU, p.cI)
+			case slot.B11R0: // B1 : ∙b c
+
+				if !p.testSelect(slot.B11R0) {
+					p.parseError(slot.B11R0, p.cI, first[slot.B11R0])
+					L, p.cI = slot.B12F0, cU
+					goto nextSlot
+				}
+				p.bsrSet.Add(slot.B11R1, cU, p.cI, p.cI+1)
+				p.cI++
+				if !p.testSelect(slot.B11R1) {
+					p.parseError(slot.B11R1, p.cI, first[slot.B11R1])
+					L, p.cI = slot.B12F0, cU
+					goto nextSlot
+				}
+				p.bsrSet.Add(slot.B11R2, cU, p.cI, p.cI+1)
+				p.cI++
+				p.rtn(symbols.NT_B1, cU, p.cI)
+			case slot.B12F0: // B1 failure case
+				p.rtn(symbols.NT_B1, cU, failInd)
+			case slot.G10R0: // G1 : ∙&Ac a Repa0x B1
+
+				if !p.testSelect(slot.G10R0) {
+					p.parseError(slot.G10R0, p.cI, first[slot.G10R0])
+					L, p.cI = slot.G11F0, cU
+					goto nextSlot
+				}
+				p.call(slot.G10R1, slot.G11F0, symbols.NT_Ac, cU, p.cI)
+			case slot.G10R1: // G1 : &Ac ∙a Repa0x B1
+
+				if !p.testSelect(slot.G10R1) {
+					p.parseError(slot.G10R1, p.cI, first[slot.G10R1])
+					L, p.cI = slot.G11F0, cU
+					goto nextSlot
+				}
+				p.bsrSet.Add(slot.G10R2, cU, p.cI, p.cI+1)
+				p.cI++
+				if !p.testSelect(slot.G10R2) {
+					p.parseError(slot.G10R2, p.cI, first[slot.G10R2])
+					L, p.cI = slot.G11F0, cU
+					goto nextSlot
+				}
+				p.call(slot.G10R3, slot.G11F0, symbols.NT_Repa0x, cU, p.cI)
+			case slot.G10R3: // G1 : &Ac a Repa0x ∙B1
+
+				if !p.testSelect(slot.G10R3) {
+					p.parseError(slot.G10R3, p.cI, first[slot.G10R3])
+					L, p.cI = slot.G11F0, cU
+					goto nextSlot
+				}
+				p.call(slot.G10R4, slot.G11F0, symbols.NT_B1, cU, p.cI)
+			case slot.G10R4: // G1 : &Ac a Repa0x B1 ∙
+
+				p.rtn(symbols.NT_G1, cU, p.cI)
+			case slot.G11F0: // G1 failure case
+				p.rtn(symbols.NT_G1, cU, failInd)
+			case slot.Repa0x0R0: // Repa0x : ∙a Repa0x
+
+				if !p.testSelect(slot.Repa0x0R0) {
+					p.parseError(slot.Repa0x0R0, p.cI, first[slot.Repa0x0R0])
+					L, p.cI = slot.Repa0x1R0, cU
+					goto nextSlot
+				}
+				p.bsrSet.Add(slot.Repa0x0R1, cU, p.cI, p.cI+1)
+				p.cI++
+				if !p.testSelect(slot.Repa0x0R1) {
+					p.parseError(slot.Repa0x0R1, p.cI, first[slot.Repa0x0R1])
+					L, p.cI = slot.Repa0x1R0, cU
+					goto nextSlot
+				}
+				p.call(slot.Repa0x0R2, slot.Repa0x1R0, symbols.NT_Repa0x, cU, p.cI)
+			case slot.Repa0x0R2: // Repa0x : a Repa0x ∙
+
+				p.rtn(symbols.NT_Repa0x, cU, p.cI)
+			case slot.Repa0x1R0: // Repa0x : ∙
+				p.bsrSet.AddEmpty(slot.Repa0x1R0, p.cI)
+				p.rtn(symbols.NT_Repa0x, cU, p.cI)
+
+			default:
+				panic("This must not happen")
 			}
-
-			p.call(slot.A10R2, cU, p.cI)
-		case slot.A10R2: // A1 : a A1 ∙b
-
-			if !p.testSelect(slot.A10R2) {
-				p.parseError(slot.A10R2, p.cI, first[slot.A10R2])
-				break
-			}
-
-			p.bsrSet.Add(slot.A10R3, cU, p.cI, p.cI+1)
-			p.cI++
-			p.rtn(symbols.NT_A1, cU, p.cI)
-		case slot.A11R0: // A1 : ∙a b
-
-			p.bsrSet.Add(slot.A11R1, cU, p.cI, p.cI+1)
-			p.cI++
-			if !p.testSelect(slot.A11R1) {
-				p.parseError(slot.A11R1, p.cI, first[slot.A11R1])
-				break
-			}
-
-			p.bsrSet.Add(slot.A11R2, cU, p.cI, p.cI+1)
-			p.cI++
-			p.rtn(symbols.NT_A1, cU, p.cI)
-		case slot.Ac0R0: // Ac : ∙A1 c
-
-			p.call(slot.Ac0R1, cU, p.cI)
-		case slot.Ac0R1: // Ac : A1 ∙c
-
-			if !p.testSelect(slot.Ac0R1) {
-				p.parseError(slot.Ac0R1, p.cI, first[slot.Ac0R1])
-				break
-			}
-
-			p.bsrSet.Add(slot.Ac0R2, cU, p.cI, p.cI+1)
-			p.cI++
-			p.rtn(symbols.NT_Ac, cU, p.cI)
-		case slot.B10R0: // B1 : ∙b B1 c
-
-			p.bsrSet.Add(slot.B10R1, cU, p.cI, p.cI+1)
-			p.cI++
-			if !p.testSelect(slot.B10R1) {
-				p.parseError(slot.B10R1, p.cI, first[slot.B10R1])
-				break
-			}
-
-			p.call(slot.B10R2, cU, p.cI)
-		case slot.B10R2: // B1 : b B1 ∙c
-
-			if !p.testSelect(slot.B10R2) {
-				p.parseError(slot.B10R2, p.cI, first[slot.B10R2])
-				break
-			}
-
-			p.bsrSet.Add(slot.B10R3, cU, p.cI, p.cI+1)
-			p.cI++
-			p.rtn(symbols.NT_B1, cU, p.cI)
-		case slot.B11R0: // B1 : ∙b c
-
-			p.bsrSet.Add(slot.B11R1, cU, p.cI, p.cI+1)
-			p.cI++
-			if !p.testSelect(slot.B11R1) {
-				p.parseError(slot.B11R1, p.cI, first[slot.B11R1])
-				break
-			}
-
-			p.bsrSet.Add(slot.B11R2, cU, p.cI, p.cI+1)
-			p.cI++
-			p.rtn(symbols.NT_B1, cU, p.cI)
-		case slot.G10R0: // G1 : ∙&Ac a Repa0x B1
-
-			p.call(slot.G10R1, cU, p.cI)
-		case slot.G10R1: // G1 : &Ac ∙a Repa0x B1
-
-			if !p.testSelect(slot.G10R1) {
-				p.parseError(slot.G10R1, p.cI, first[slot.G10R1])
-				break
-			}
-
-			p.bsrSet.Add(slot.G10R2, cU, p.cI, p.cI+1)
-			p.cI++
-			if !p.testSelect(slot.G10R2) {
-				p.parseError(slot.G10R2, p.cI, first[slot.G10R2])
-				break
-			}
-
-			p.call(slot.G10R3, cU, p.cI)
-		case slot.G10R3: // G1 : &Ac a Repa0x ∙B1
-
-			if !p.testSelect(slot.G10R3) {
-				p.parseError(slot.G10R3, p.cI, first[slot.G10R3])
-				break
-			}
-
-			p.call(slot.G10R4, cU, p.cI)
-		case slot.G10R4: // G1 : &Ac a Repa0x B1 ∙
-
-			p.rtn(symbols.NT_G1, cU, p.cI)
-		case slot.Repa0x0R0: // Repa0x : ∙a Repa0x
-
-			p.bsrSet.Add(slot.Repa0x0R1, cU, p.cI, p.cI+1)
-			p.cI++
-			if !p.testSelect(slot.Repa0x0R1) {
-				p.parseError(slot.Repa0x0R1, p.cI, first[slot.Repa0x0R1])
-				break
-			}
-
-			p.call(slot.Repa0x0R2, cU, p.cI)
-		case slot.Repa0x0R2: // Repa0x : a Repa0x ∙
-
-			p.rtn(symbols.NT_Repa0x, cU, p.cI)
-		case slot.Repa0x1R0: // Repa0x : ∙
-			p.bsrSet.AddEmpty(slot.Repa0x1R0, p.cI)
-
-			p.rtn(symbols.NT_Repa0x, cU, p.cI)
-
-		default:
-			panic("This must not happen")
+			// if exit switch normally, also exit loop and proceed to next
+			// descriptor; if exit with goto nextSlot, repeat switch at next
+			// slot
+			break
+		nextSlot:
 		}
 	}
 	if !p.bsrSet.Contain(symbols.NT_G1, 0, m) {
@@ -201,24 +255,8 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 }
 
 func (p *parser) ntAdd(nt symbols.NT, j int) {
-	// fmt.Printf("p.ntAdd(%s, %d)\n", nt, j)
-	failed := true
-	expected := map[token.Type]string{}
-	for _, l := range slot.GetAlternates(nt) {
-		if p.testSelect(l) {
-			p.dscAdd(l, j, j)
-			failed = false
-		} else {
-			for k, v := range first[l] {
-				expected[k] = v
-			}
-		}
-	}
-	if failed {
-		for _, l := range slot.GetAlternates(nt) {
-			p.parseError(l, j, expected)
-		}
-	}
+	l := slot.GetAlternates(nt)[0]
+	p.dscAdd(l, j, j)
 }
 
 /*** Call Return Forest ***/
@@ -238,50 +276,45 @@ type crfNode struct {
 	i int
 }
 
-/*
-suppose that L is Y ::=αX ·β
-if there is no CRF node labelled (L,i)
-	create one let u be the CRF node labelled (L,i)
-if there is no CRF node labelled (X, j) {
-	create a CRF node v labelled (X, j)
-	create an edge from v to u
-	ntAdd(X, j)
-} else {
-	let v be the CRF node labelled (X, j)
-	if there is not an edge from v to u {
-		create an edge from v to u
-		for all ((X, j,h)∈P) {
-			dscAdd(L, i, h);
-			bsrAdd(L, i, j, h)
-		}
-	}
-}
-*/
-func (p *parser) call(L slot.Label, i, j int) {
+func (p *parser) call(Lm, Lf slot.Label, X symbols.NT, i, j int) {
 	// fmt.Printf("p.call(%s,%d,%d)\n", L,i,j)
-	u, exist := p.crfNodes[crfNode{L, i}]
+	um, exist := p.crfNodes[crfNode{Lm, i}]
 	// fmt.Printf("  u exist=%t\n", exist)
 	if !exist {
-		u = &crfNode{L, i}
-		p.crfNodes[*u] = u
+		um = &crfNode{Lm, i}
+		p.crfNodes[*um] = um
 	}
-	X := L.Symbols()[L.Pos()-1].(symbols.NT)
-	ndV := clusterNode{X, j}
-	v, exist := p.crf[ndV]
+	uf, exist := p.crfNodes[crfNode{Lf, i}]
 	if !exist {
+		uf = &crfNode{Lf, i}
+		p.crfNodes[*uf] = uf
+	}
+
+	ndV := clusterNode{X, j}
+	vm, existm := p.crf_m[ndV]
+	vf, existf := p.crf_f[ndV]
+	if !existm && !existf {
 		// fmt.Println("  v !exist")
-		p.crf[ndV] = []*crfNode{u}
+		p.crf_m[ndV] = []*crfNode{um}
+		p.crf_f[ndV] = []*crfNode{uf}
 		p.ntAdd(X, j)
 	} else {
 		// fmt.Println("  v exist")
-		if !existEdge(v, u) {
+		if !existEdge(vm, um) {
 			// fmt.Printf("  !existEdge(%v)\n", u)
-			p.crf[ndV] = append(v, u)
+			p.crf_m[ndV] = append(vm, um)
 			// fmt.Printf("|popped|=%d\n", len(popped))
 			for pnd := range p.popped {
-				if pnd.X == X && pnd.k == j {
-					p.dscAdd(L, i, pnd.j)
-					p.bsrSet.Add(L, i, j, pnd.j)
+				if pnd.X == X && pnd.k == j && pnd.j != failInd {
+					p.addMatch(Lm, i, j, pnd.j)
+				}
+			}
+		}
+		if !existEdge(vf, uf) {
+			p.crf_f[ndV] = append(vf, uf)
+			for pnd := range p.popped {
+				if pnd.X == X && pnd.k == j && pnd.j == failInd {
+					p.addFail(Lf, i, j)
 				}
 			}
 		}
@@ -302,10 +335,32 @@ func (p *parser) rtn(X symbols.NT, k, j int) {
 	pn := poppedNode{X, k, j}
 	if _, exist := p.popped[pn]; !exist {
 		p.popped[pn] = true
-		for _, nd := range p.crf[clusterNode{X, k}] {
-			p.dscAdd(nd.L, nd.i, j)
-			p.bsrSet.Add(nd.L, nd.i, k, j)
+		if j != failInd {
+			for _, nd := range p.crf_m[clusterNode{X, k}] {
+				p.addMatch(nd.L, nd.i, k, j)
+			}
+		} else {
+			for _, nd := range p.crf_f[clusterNode{X, k}] {
+				p.addFail(nd.L, nd.i, k)
+			}
 		}
+	}
+}
+
+func (p *parser) addMatch(L slot.Label, i, k, j int) {
+	p.bsrSet.Add(L, i, k, j)
+	if L.IsLookahead() {
+		p.dscAdd(L, i, k)
+	} else {
+		p.dscAdd(L, i, j)
+	}
+}
+
+func (p *parser) addFail(L slot.Label, i, k int) {
+	if L.IsLookahead() {
+		p.dscAdd(L, i, k)
+	} else {
+		p.dscAdd(L, i, i)
 	}
 }
 
@@ -460,6 +515,11 @@ var first = []map[token.Type]string{
 		token.T_1: "b",
 		token.T_2: "c",
 	},
+	// A1 : ∙
+	{
+		token.T_1: "b",
+		token.T_2: "c",
+	},
 	// Ac : ∙A1 c
 	{
 		token.T_0: "a",
@@ -469,6 +529,10 @@ var first = []map[token.Type]string{
 		token.T_2: "c",
 	},
 	// Ac : A1 c ∙
+	{
+		token.EOF: "$",
+	},
+	// Ac : ∙
 	{
 		token.EOF: "$",
 	},
@@ -502,6 +566,11 @@ var first = []map[token.Type]string{
 		token.EOF: "$",
 		token.T_2: "c",
 	},
+	// B1 : ∙
+	{
+		token.EOF: "$",
+		token.T_2: "c",
+	},
 	// G1 : ∙&Ac a Repa0x B1
 	{
 		token.T_0: "a",
@@ -520,6 +589,10 @@ var first = []map[token.Type]string{
 		token.T_1: "b",
 	},
 	// G1 : &Ac a Repa0x B1 ∙
+	{
+		token.EOF: "$",
+	},
+	// G1 : ∙
 	{
 		token.EOF: "$",
 	},
