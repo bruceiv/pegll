@@ -88,7 +88,6 @@ type Lookahead struct {
 func (*NT) isSyntaxSymbol()        {}
 func (*Lookahead) isSyntaxSymbol() {}
 
-////////////////////////////////////////////////////////////////////////////////////////////////
 func (SynOptional) isSyntaxSymbol() {}
 
 func (opt *SynOptional) ID() string {
@@ -105,8 +104,6 @@ func (opt *SynOptional) String() string {
 	return opt.Expr.ID()
 }
 
-//// had to remove the pointers in order to compile
-////////////////////////////////////////////////////////////////////////////////////////////////
 // Terminals
 func (*TokID) isSyntaxSymbol()     {}
 func (*StringLit) isSyntaxSymbol() {}

@@ -349,14 +349,7 @@ func (bld *builder) synOptional(b bsr.BSR) *SynOptional {
 	return &SynOptional{
 		Expr:  bld.atom(b.GetNTChildI(0)),
 		Empty: &SyntaxAlternate{},
-	}
-	/* // create an empty struct
-	opt := &SynOptional{}
-	// if empty, SynOptional with be returned with empty atom
-	if b.Alternate() == 0 {
-		opt.Expr = bld.atom(b.GetNTChildI(0))
-	}
-	return opt*/
+	}/
 }
 
 // SyntaxAlternate
@@ -381,6 +374,7 @@ func (bld *builder) syntaxAlternates(b bsr.BSR) ([]*SyntaxAlternate, bool) {
 	alts := []*SyntaxAlternate{
 		bld.syntaxAlternate(b.GetNTChild(symbols.NT_SyntaxAlternate, 0)),
 	}
+	//If recent symbol is a syntaxOptional, then add an empty node
 	switch b.Alternate() {
 	case 0:
 		return alts, false
@@ -421,6 +415,7 @@ func (bld *builder) orderedAlternates(b bsr.BSR) []*SyntaxAlternate {
 }
 
 // SyntaxRule : nt ":" SyntaxAlternates ";"  ;
+//
 func (bld *builder) syntaxRule(b bsr.BSR) brule {
 	alts, ord := bld.syntaxAlternates(b.GetNTChild(symbols.NT_SyntaxAlternates, 0))
 	return &SyntaxRule{
@@ -473,8 +468,7 @@ func (bld *builder) atom(b bsr.BSR) SyntaxSymbol {
 //     ;
 func (bld *builder) syntaxSymbols(b bsr.BSR) []SyntaxSymbol {
 	symbols := []SyntaxSymbol{bld.symbol(b.GetNTChildI(0))}
-	//if recent symbol is a syntaxOptional, then add an empty node
-	if symbols[(len(symbols)-1)].ID() == "?" { //Add SynOptional Empty Node
+	if symbols[(len(symbols)-1)].ID() == "?" {
 		symbols = bld.addOptNode(symbols)
 	}
 	if b.Alternate() == 1 {
@@ -487,7 +481,6 @@ func (bld *builder) addOptNode(symbols []SyntaxSymbol) []SyntaxSymbol {
 	//Add empty node to slice
 	symbols = append(symbols, &SynOptional{})
 	return symbols
-	//panic("invalid SynOptional")
 }
 
 /*** Shared ***/
