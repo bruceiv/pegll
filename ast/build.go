@@ -341,15 +341,31 @@ func (bld *builder) unicodeClass(b bsr.BSR) *UnicodeClass {
 // "?" : SyntaxAtom
 //		/ "empty"
 // function essentially determines whether empty or not
-func (bld *builder) synOptional(b bsr.BSR) *SynOptional {
-	/* return SynOptional{
-		Tok:  b.GetTChildI(1),
+func (bld *builder) synOptional(b bsr.BSR) *SyntaxSymbol {
+	/* return &SynOptional{
 		Expr: bld.atom(b.GetNTChildI(0)),
+		Tok:  b.GetTChildI(1),
 	} */
-	return &SynOptional{
-		Expr:  bld.atom(b.GetNTChildI(0)),
-		Empty: &SyntaxAlternate{},
-	}/
+
+	opt := NT{
+		// placeholder
+		///need to have a syntax symbol pointer returned
+		tok: b.GetTChildI(1),
+	}
+	//opt_nt = "Base?"
+
+	expr := bld.syntaxAlternate(b.GetNTChildI(0))
+	tempAlts := []*SyntaxAlternate{expr, &SyntaxAlternate{}}
+	optRule := SyntaxRule{
+		Head:       &opt,
+		Alternates: tempAlts,
+		IsOrdered:  true,
+	}
+	// Base? : Base
+	//      / empty ;
+	bld.addSyntaxRule(&optRule, gogll)
+	return SyntaxSymbol{}
+
 }
 
 // SyntaxAlternate
@@ -423,7 +439,20 @@ func (bld *builder) syntaxRule(b bsr.BSR) brule {
 		Alternates: alts,
 		IsOrdered:  ord,
 	}
+
 }
+
+/*
+func (bld *builder) synOptionalRule(b bsr.BSR) *SyntaxRule {
+	tempEmpty := &SyntaxAlternate{}
+	tempExpr :=
+	tempAlts := []*SyntaxAlternate{tempEmpty}
+	return &SyntaxRule{
+		Head:       bld.nt(b.GetTChildI(0)),
+		Alternates: tempAlts,
+		IsOrdered:  true,
+	}
+} */
 
 // SyntaxSymbol
 //     : "&" SyntaxAtom
@@ -468,18 +497,9 @@ func (bld *builder) atom(b bsr.BSR) SyntaxSymbol {
 //     ;
 func (bld *builder) syntaxSymbols(b bsr.BSR) []SyntaxSymbol {
 	symbols := []SyntaxSymbol{bld.symbol(b.GetNTChildI(0))}
-	if symbols[(len(symbols)-1)].ID() == "?" {
-		symbols = bld.addOptNode(symbols)
-	}
 	if b.Alternate() == 1 {
 		symbols = append(symbols, bld.syntaxSymbols(b.GetNTChildI(1))...)
 	}
-	return symbols
-}
-
-func (bld *builder) addOptNode(symbols []SyntaxSymbol) []SyntaxSymbol {
-	//Add empty node to slice
-	symbols = append(symbols, &SynOptional{})
 	return symbols
 }
 
