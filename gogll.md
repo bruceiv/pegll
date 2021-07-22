@@ -180,9 +180,9 @@ Lookahead operators may not be nested, but the two provided operators are suffic
 ```
 SyntaxSymbol
     : "&" SyntaxAtom
-    | "!" SyntaxAtom
-    | SynOptional
-    | SyntaxAtom
+    / "!" SyntaxAtom
+    / SynOptional
+    / SyntaxAtom
     ;
 
 SyntaxAtom : nt | tokid | string_lit ;

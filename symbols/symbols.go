@@ -1,3 +1,4 @@
+//  Copyright 2021 Aaron Moss
 //  Copyright 2019 Marius Ackerman
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
@@ -24,7 +25,7 @@ import (
 	"github.com/bruceiv/pegll/ast"
 )
 
-// Symbol is T or NT
+// Symbol is T or NT or L
 type Symbol interface {
 	isSymbol()
 	// IsNonTerminal returns true iff this symbol is a non-terminal

@@ -3,13 +3,13 @@ package main
 import (
 	"fmt"
 
-	"axbc/lexer"
-	"axbc/parser"
+	"ident/lexer"
+	"ident/parser"
 )
 
-const aac = `aac`
-const abc = `abc`
-const aabc = `aabc`
+const ifs = `if`
+const ifxs = `ifx`
+const gos = `go`
 
 func parse(s []rune) bool {
 	// run GLL parser
@@ -20,10 +20,6 @@ func parse(s []rune) bool {
 	}
 	// Filter out results that violate ordered choice
 	// bsrSet.FlatDump()
-	//bsrSet.FilterByOrderedChoice()
-	// fmt.Println("=====")
-	// bsrSet.FlatDump()
-
 	// check that single root covers whole input
 	roots := bsrSet.GetRoots()
 	switch len(roots) {
@@ -47,8 +43,7 @@ func parseAndPrint(s string) {
 }
 
 func main() {
-	parseAndPrint(aac)
-	parseAndPrint(abc)
-	// TODO investigate lexer (?) infinite-loop
-	// parseAndPrint(aabc)
+	parseAndPrint(ifs)
+	parseAndPrint(ifxs)
+	parseAndPrint(gos)
 }

@@ -1,4 +1,4 @@
 .PHONY: go
 
 go:
-	gogll ident.md
+	pegll ident.md

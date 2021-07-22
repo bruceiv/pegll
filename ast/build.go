@@ -338,25 +338,43 @@ func (bld *builder) unicodeClass(b bsr.BSR) *UnicodeClass {
 /*** Syntax Rules ***/
 
 // SynOptional : SyntaxAtom "?" ;
-// "?" : SyntaxAtom
-//		/ "empty"
-// function essentially determines whether empty or not
-func (bld *builder) synOptional(b bsr.BSR) *SynOptional {
-	/* return SynOptional{
-		Tok:  b.GetTChildI(1),
-		Expr: bld.atom(b.GetNTChildI(0)),
-	} */
+func (bld *builder) synOptional(b bsr.BSR) SyntaxSymbol {
 	return &SynOptional{
-		Expr:  bld.atom(b.GetNTChildI(0)),
-		Empty: &SyntaxAlternate{},
+		Expr: bld.atom(b.GetNTChildI(0)),
+		Tok:  b.GetTChildI(1),
 	}
-	/* // create an empty struct
-	opt := &SynOptional{}
-	// if empty, SynOptional with be returned with empty atom
-	if b.Alternate() == 0 {
-		opt.Expr = bld.atom(b.GetNTChildI(0))
+
+	/* opt := NT{
+		tok: b.GetTChildI(1),
+	} */
+	// example:
+	// base? is replaced with ?
+	// ? is assigned as following =>
+	// ? : base / empty ;
+
+	//////Problem! token has to be unique for each optional!
+	///// otherwise they will all be processed the same
+	///// which is v bad
+
+	/* expr := bld.syntaxAlternate(b.GetNTChildI(0))
+	tempAlts := []*SyntaxAlternate{expr, &SyntaxAlternate{}}
+	optRule := SyntaxRule{
+		Head:       &opt,
+		Alternates: tempAlts,
+		IsOrdered:  true,
 	}
-	return opt*/
+	// Base? : Base
+	//      / empty ;
+	bld.addSyntaxRule(&optRule, gogll)  */
+	//Problem! can't access gogll
+	//Possibility 1: Set gogll variable as global
+	//		-> I think this would work, but involves messing with the base code
+	//Possibility 2: Make a global variable that's a slice of
+	// syntax rules, then add at the end of the first function
+	//     -> involves more coding, but pretty doable and doesn't touch base code
+	//	   -> Essentially I think less goes wrong here but it's more work
+	/* return &opt */
+
 }
 
 // SyntaxAlternate
@@ -381,6 +399,7 @@ func (bld *builder) syntaxAlternates(b bsr.BSR) ([]*SyntaxAlternate, bool) {
 	alts := []*SyntaxAlternate{
 		bld.syntaxAlternate(b.GetNTChild(symbols.NT_SyntaxAlternate, 0)),
 	}
+	//If recent symbol is a syntaxOptional, then add an empty node
 	switch b.Alternate() {
 	case 0:
 		return alts, false
@@ -428,6 +447,7 @@ func (bld *builder) syntaxRule(b bsr.BSR) brule {
 		Alternates: alts,
 		IsOrdered:  ord,
 	}
+
 }
 
 // SyntaxSymbol
@@ -473,8 +493,7 @@ func (bld *builder) atom(b bsr.BSR) SyntaxSymbol {
 //     ;
 func (bld *builder) syntaxSymbols(b bsr.BSR) []SyntaxSymbol {
 	symbols := []SyntaxSymbol{bld.symbol(b.GetNTChildI(0))}
-	//if recent symbol is a syntaxOptional, then add an empty node
-	if symbols[(len(symbols)-1)].ID() == "?" { //Add SynOptional Empty Node
+	if symbols[(len(symbols)-1)].ID() == "?" {
 		symbols = bld.addOptNode(symbols)
 	}
 	if b.Alternate() == 1 {
@@ -487,7 +506,6 @@ func (bld *builder) addOptNode(symbols []SyntaxSymbol) []SyntaxSymbol {
 	//Add empty node to slice
 	symbols = append(symbols, &SynOptional{})
 	return symbols
-	//panic("invalid SynOptional")
 }
 
 /*** Shared ***/

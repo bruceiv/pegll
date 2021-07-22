@@ -84,7 +84,7 @@ func getLabelList(rule *ast.SyntaxRule, g *ast.GoGLL, gs *gslot.GSlot, ff *frstf
 		if i > 0 {
 			buf.WriteString(",")
 		}
-		buf.WriteString(gslot.NewLabel(rule.Head.ID(), i, 0, gs, ff).Label())
+		buf.WriteString(gslot.NewLabel(rule.Head.ID(), i, 0, gslot.Unknown, gs, ff).Label())
 	}
 	return buf.String()
 }
@@ -108,6 +108,10 @@ func getSlotData(gs *gslot.GSlot, ff *frstflw.FF) (data []*SlotData) {
 // true if the remainder of the symbols in the sequence represented by this slot can
 // match while consuming no input
 func isNullable(s gslot.Label, ff *frstflw.FF) bool {
+	if s.Mode == gslot.Fail {
+		return false
+	}
+
 	syms := s.Symbols()
 	for i := s.Pos; i < len(syms); i++ {
 		if !ff.IsNullable(syms[i].String()) {
@@ -119,6 +123,9 @@ func isNullable(s gslot.Label, ff *frstflw.FF) bool {
 
 // gets FIRST set for a slot
 func firstT(s gslot.Label, ff *frstflw.FF) []string {
+	if s.Mode == gslot.Fail {
+		return make([]string, 0)
+	}
 	fsts := ff.FirstOfString(s.Symbols().Strings()[s.Pos:])
 	fsts.Remove(frstflw.Empty)
 	r := make([]string, 0, fsts.Len())
@@ -220,6 +227,11 @@ func (l Label) IsNullable() bool {
 
 func (l Label) FirstContains(typ token.Type) bool {
 	return firstT[l][typ]
+}
+
+func (l Label) IsLookahead() bool {
+	s := l.Slot()
+	return s.Pos > 0 && s.Symbols[s.Pos-1].IsLookahead()
 }
 
 func (s *Slot) EoR() bool {
