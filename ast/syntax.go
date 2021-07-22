@@ -49,8 +49,8 @@ import (
 type SynOptional struct {
 	// expression made optional
 	Expr SyntaxSymbol
-	// alternate for empty
-	Empty *SyntaxAlternate
+	//Token
+	Tok *token.Token
 }
 
 // Line 126 in build.go --> do to we need to add the symbol to a set? Do we need to do this????
@@ -88,7 +88,6 @@ type Lookahead struct {
 func (*NT) isSyntaxSymbol()        {}
 func (*Lookahead) isSyntaxSymbol() {}
 
-////////////////////////////////////////////////////////////////////////////////////////////////
 func (SynOptional) isSyntaxSymbol() {}
 
 func (opt *SynOptional) ID() string {
@@ -101,12 +100,10 @@ func (opt *SynOptional) Lext() int {
 	return opt.Expr.Lext()
 }
 func (opt *SynOptional) String() string {
-	//return opt.Tok.LiteralString() + opt.Expr.String()
-	return opt.Expr.ID()
+	return opt.Expr.String() + opt.Tok.LiteralString()
+	//return opt.Expr.ID()
 }
 
-//// had to remove the pointers in order to compile
-////////////////////////////////////////////////////////////////////////////////////////////////
 // Terminals
 func (*TokID) isSyntaxSymbol()     {}
 func (*StringLit) isSyntaxSymbol() {}
@@ -147,4 +144,9 @@ func (r *SyntaxRule) ID() string {
 
 func (r *SyntaxRule) Lext() int {
 	return r.Head.Lext()
+}
+
+// true if always matches; false if unable to guarantee always matches
+func (r *SyntaxRule) AlwaysMatches() bool {
+	return r.Alternates[len(r.Alternates)-1].Empty()
 }
