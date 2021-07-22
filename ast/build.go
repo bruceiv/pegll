@@ -340,8 +340,8 @@ func (bld *builder) unicodeClass(b bsr.BSR) *UnicodeClass {
 // SynOptional : SyntaxAtom "?" ;
 func (bld *builder) synOptional(b bsr.BSR) SyntaxSymbol {
 	return &SynOptional{
-		Expr: bld.atom(b.GetNTChildI(0)),
-		Tok:  b.GetTChildI(1),
+		Expr:  bld.atom(b.GetNTChildI(0)),
+		Empty: &SyntaxAlternate{},
 	}
 
 	/* opt := NT{

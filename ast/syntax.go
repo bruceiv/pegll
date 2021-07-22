@@ -50,7 +50,7 @@ type SynOptional struct {
 	// expression made optional
 	Expr SyntaxSymbol
 	//Token
-	Tok *token.Token
+	Empty *SyntaxAlternate
 }
 
 // Line 126 in build.go --> do to we need to add the symbol to a set? Do we need to do this????
@@ -100,8 +100,8 @@ func (opt *SynOptional) Lext() int {
 	return opt.Expr.Lext()
 }
 func (opt *SynOptional) String() string {
-	return opt.Expr.String() + opt.Tok.LiteralString()
-	//return opt.Expr.ID()
+	//return opt.Expr.String() + opt.Tok.LiteralString()
+	return opt.Expr.ID()
 }
 
 // Terminals
