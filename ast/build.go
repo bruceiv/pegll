@@ -52,6 +52,7 @@ func Build(root bsr.BSR, l *lexer.Lexer) *GoGLL {
 		charLiterals: stringset.New(),
 	}
 	gogll := bld.gogll(root)
+	bld.replaceSynOptional(gogll)
 	gogll.NonTerminals = bld.nonTerminals(gogll.SyntaxRules)
 	gogll.StringLiterals = bld.getStringLiterals(gogll.SyntaxRules)
 	gogll.Terminals = bld.terminals(gogll, gogll.GetStringLiterals())
@@ -75,6 +76,63 @@ func (bld *builder) gogll(b bsr.BSR) *GoGLL {
 		}
 	}
 	return gogll
+}
+
+/// gets token type for nonterminal ID
+func getNtToken() token.Type {
+	var tt = token.Type(-1)
+	for i, s := range token.TypeToID {
+		if s == "nt" {
+			tt = token.Type(i)
+			break
+		}
+	}
+	return tt
+}
+
+var ntToken = getNtToken()
+
+func ntTokenFromString(s string) *token.Token {
+	// return new token type for nonterminal
+	return token.New(ntToken, 0, len(s), []rune(s))
+}
+func nameForOpt(s SyntaxSymbol) string {
+	return "Opt01" + s.ID()
+}
+func (bld *builder) replaceSynOptional(g *GoGLL) {
+	generated := make(map[string]bool, 0)
+	for _, r := range g.SyntaxRules {
+		for _, a := range r.Alternates {
+			newSymbols := make([]SyntaxSymbol, len(a.Symbols))
+			for _, s := range a.Symbols {
+				if l, ok := s.(*SynOptional); ok {
+					name := nameForOpt(l.Expr)
+					if !generated[name] {
+						// make a new non-terminal for this optional
+						// TODO
+						opt := NT{
+							tok: ntTokenFromString(name),
+						}
+						expr := bld.syntaxAlternate(l.ExprNode)
+						empty := &SyntaxAlternate{}
+						tempAlts := []*SyntaxAlternate{expr, empty}
+						optRule := SyntaxRule{
+							Head:       &opt,
+							Alternates: tempAlts,
+							IsOrdered:  true,
+						}
+						//Adds new NT rule to list of syntax rules
+						bld.addSyntaxRule(&optRule, g)
+						// replace synoptional with non-terminal call
+						newSymbols = append(newSymbols, &opt)
+					}
+				} else {
+					newSymbols = append(newSymbols, s)
+				}
+			}
+			a.Symbols = newSymbols
+		}
+	}
 }
 
 // Package : "package" string_lit ;
@@ -340,41 +398,10 @@ func (bld *builder) unicodeClass(b bsr.BSR) *UnicodeClass {
 // SynOptional : SyntaxAtom "?" ;
 func (bld *builder) synOptional(b bsr.BSR) SyntaxSymbol {
 	return &SynOptional{
-		Expr:  bld.atom(b.GetNTChildI(0)),
-		Empty: &SyntaxAlternate{},
+		Expr:     bld.atom(b.GetNTChildI(0)),
+		ExprNode: b.GetNTChildI(0),
+		Tok:      b.GetTChildI(1),
 	}
-
-	/* opt := NT{
-		tok: b.GetTChildI(1),
-	} */
-	// example:
-	// base? is replaced with ?
-	// ? is assigned as following =>
-	// ? : base / empty ;
-
-	//////Problem! token has to be unique for each optional!
-	///// otherwise they will all be processed the same
-	///// which is v bad
-
-	/* expr := bld.syntaxAlternate(b.GetNTChildI(0))
-	tempAlts := []*SyntaxAlternate{expr, &SyntaxAlternate{}}
-	optRule := SyntaxRule{
-		Head:       &opt,
-		Alternates: tempAlts,
-		IsOrdered:  true,
-	}
-	// Base? : Base
-	//      / empty ;
-	bld.addSyntaxRule(&optRule, gogll)  */
-	//Problem! can't access gogll
-	//Possibility 1: Set gogll variable as global
-	//		-> I think this would work, but involves messing with the base code
-	//Possibility 2: Make a global variable that's a slice of
-	// syntax rules, then add at the end of the first function
-	//     -> involves more coding, but pretty doable and doesn't touch base code
-	//	   -> Essentially I think less goes wrong here but it's more work
-	/* return &opt */
-
 }
 
 // SyntaxAlternate
@@ -493,18 +520,9 @@ func (bld *builder) atom(b bsr.BSR) SyntaxSymbol {
 //     ;
 func (bld *builder) syntaxSymbols(b bsr.BSR) []SyntaxSymbol {
 	symbols := []SyntaxSymbol{bld.symbol(b.GetNTChildI(0))}
-	if symbols[(len(symbols)-1)].ID() == "?" {
-		symbols = bld.addOptNode(symbols)
-	}
 	if b.Alternate() == 1 {
 		symbols = append(symbols, bld.syntaxSymbols(b.GetNTChildI(1))...)
 	}
-	return symbols
-}
-
-func (bld *builder) addOptNode(symbols []SyntaxSymbol) []SyntaxSymbol {
-	//Add empty node to slice
-	symbols = append(symbols, &SynOptional{})
 	return symbols
 }
 

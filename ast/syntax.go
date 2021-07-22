@@ -35,6 +35,7 @@ limitations under the License.
 package ast
 
 import (
+	"github.com/bruceiv/pegll/parser/bsr"
 	"github.com/bruceiv/pegll/token"
 )
 
@@ -48,9 +49,9 @@ import (
 
 type SynOptional struct {
 	// expression made optional
-	Expr SyntaxSymbol
-	//Token
-	Empty *SyntaxAlternate
+	Expr     SyntaxSymbol
+	ExprNode bsr.BSR
+	Tok      *token.Token
 }
 
 // Line 126 in build.go --> do to we need to add the symbol to a set? Do we need to do this????
@@ -91,9 +92,10 @@ func (*Lookahead) isSyntaxSymbol() {}
 func (SynOptional) isSyntaxSymbol() {}
 
 func (opt *SynOptional) ID() string {
-	// return opt.Tok.LiteralString() + opt.Expr.ID()
-	// i think we only need the ID and not the literal string
 	return opt.Expr.ID()
+	// i think we only need the ID and not the literal string
+	//return opt.Expr.ID()
+	//return "?"
 }
 func (opt *SynOptional) Lext() int {
 	// return opt.Tok.Lext()

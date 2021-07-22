@@ -21,7 +21,7 @@ A grammar to test the added `?` operator in `Pegll`.
 ```
 package "Optional"
 
-S1       : Required Optional             ;
+S1       : Required Optional    ;
 
 Required : "Required"           ;
 
