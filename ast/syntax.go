@@ -100,8 +100,8 @@ func (opt *SynOptional) Lext() int {
 	return opt.Expr.Lext()
 }
 func (opt *SynOptional) String() string {
-	//return opt.Tok.LiteralString() + opt.Expr.String()
-	return opt.Expr.ID()
+	return opt.Expr.String() + opt.Tok.LiteralString()
+	//return opt.Expr.ID()
 }
 
 // Terminals
