@@ -21,8 +21,7 @@ type parser struct {
 	U *descriptors
 
 	popped   map[poppedNode]bool
-	crf_m    map[clusterNode][]*crfNode
-	crf_f    map[clusterNode][]*crfNode
+	crf      map[clusterNode][]*crfNode
 	crfNodes map[crfNode]*crfNode
 
 	lex         *lexer.Lexer
@@ -31,9 +30,6 @@ type parser struct {
 	bsrSet *bsr.Set
 }
 
-// index used for non-matches
-const failInd = -1
-
 func newParser(l *lexer.Lexer) *parser {
 	return &parser{
 		cI:     0,
@@ -41,10 +37,9 @@ func newParser(l *lexer.Lexer) *parser {
 		R:      &descriptors{},
 		U:      &descriptors{},
 		popped: make(map[poppedNode]bool),
-		crf_m: map[clusterNode][]*crfNode{
+		crf: map[clusterNode][]*crfNode{
 			{symbols.NT_S1, 0}: {},
 		},
-		crf_f:       map[clusterNode][]*crfNode{},
 		crfNodes:    map[crfNode]*crfNode{},
 		bsrSet:      bsr.New(symbols.NT_S1, l),
 		parseErrors: nil,
@@ -69,73 +64,20 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 		// fmt.Printf("L:%s, cI:%d, I[p.cI]:%s, cU:%d\n", L, p.cI, p.lex.Tokens[p.cI], cU)
 		// p.DumpDescriptors()
 
-		for {
-			switch L {
-			case slot.Base0R0: // Base : ∙Base
+		switch L {
+		case slot.Required0R0: // Required : ∙Required
 
-				if !p.testSelect(slot.Base0R0) {
-					p.parseError(slot.Base0R0, p.cI, first[slot.Base0R0])
-					L, p.cI = slot.Base1F0, cU
-					goto nextSlot
-				}
-				p.bsrSet.Add(slot.Base0R1, cU, p.cI, p.cI+1)
-				p.cI++
-				p.rtn(symbols.NT_Base, cU, p.cI)
-			case slot.Base1F0: // Base failure case
-				p.rtn(symbols.NT_Base, cU, failInd)
-			case slot.Optional0R0: // Optional : ∙Base
+			p.bsrSet.Add(slot.Required0R1, cU, p.cI, p.cI+1)
+			p.cI++
+			p.rtn(symbols.NT_Required, cU, p.cI)
+		case slot.S10R0: // S1 : ∙Required
 
-				if !p.testSelect(slot.Optional0R0) {
-					p.parseError(slot.Optional0R0, p.cI, first[slot.Optional0R0])
-					L, p.cI = slot.Optional1F0, cU
-					goto nextSlot
-				}
-				p.bsrSet.Add(slot.Optional0R1, cU, p.cI, p.cI+1)
-				p.cI++
-				p.rtn(symbols.NT_Optional, cU, p.cI)
-			case slot.Optional1F0: // Optional failure case
-				p.rtn(symbols.NT_Optional, cU, failInd)
-			case slot.Required0R0: // Required : ∙Required
+			p.bsrSet.Add(slot.S10R1, cU, p.cI, p.cI+1)
+			p.cI++
+			p.rtn(symbols.NT_S1, cU, p.cI)
 
-				if !p.testSelect(slot.Required0R0) {
-					p.parseError(slot.Required0R0, p.cI, first[slot.Required0R0])
-					L, p.cI = slot.Required1F0, cU
-					goto nextSlot
-				}
-				p.bsrSet.Add(slot.Required0R1, cU, p.cI, p.cI+1)
-				p.cI++
-				p.rtn(symbols.NT_Required, cU, p.cI)
-			case slot.Required1F0: // Required failure case
-				p.rtn(symbols.NT_Required, cU, failInd)
-			case slot.S10R0: // S1 : ∙Required Optional
-
-				if !p.testSelect(slot.S10R0) {
-					p.parseError(slot.S10R0, p.cI, first[slot.S10R0])
-					L, p.cI = slot.S11F0, cU
-					goto nextSlot
-				}
-				p.bsrSet.Add(slot.S10R1, cU, p.cI, p.cI+1)
-				p.cI++
-				if !p.testSelect(slot.S10R1) {
-					p.parseError(slot.S10R1, p.cI, first[slot.S10R1])
-					L, p.cI = slot.S11F0, cU
-					goto nextSlot
-				}
-				p.call(slot.S10R2, slot.S11F0, symbols.NT_Optional, cU, p.cI)
-			case slot.S10R2: // S1 : Required Optional ∙
-
-				p.rtn(symbols.NT_S1, cU, p.cI)
-			case slot.S11F0: // S1 failure case
-				p.rtn(symbols.NT_S1, cU, failInd)
-
-			default:
-				panic("This must not happen")
-			}
-			// if exit switch normally, also exit loop and proceed to next
-			// descriptor; if exit with goto nextSlot, repeat switch at next
-			// slot
-			break
-		nextSlot:
+		default:
+			panic("This must not happen")
 		}
 	}
 	if !p.bsrSet.Contain(symbols.NT_S1, 0, m) {
@@ -146,8 +88,24 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 }
 
 func (p *parser) ntAdd(nt symbols.NT, j int) {
-	l := slot.GetAlternates(nt)[0]
-	p.dscAdd(l, j, j)
+	// fmt.Printf("p.ntAdd(%s, %d)\n", nt, j)
+	failed := true
+	expected := map[token.Type]string{}
+	for _, l := range slot.GetAlternates(nt) {
+		if p.testSelect(l) {
+			p.dscAdd(l, j, j)
+			failed = false
+		} else {
+			for k, v := range first[l] {
+				expected[k] = v
+			}
+		}
+	}
+	if failed {
+		for _, l := range slot.GetAlternates(nt) {
+			p.parseError(l, j, expected)
+		}
+	}
 }
 
 /*** Call Return Forest ***/
@@ -167,45 +125,50 @@ type crfNode struct {
 	i int
 }
 
-func (p *parser) call(Lm, Lf slot.Label, X symbols.NT, i, j int) {
+/*
+suppose that L is Y ::=αX ·β
+if there is no CRF node labelled (L,i)
+	create one let u be the CRF node labelled (L,i)
+if there is no CRF node labelled (X, j) {
+	create a CRF node v labelled (X, j)
+	create an edge from v to u
+	ntAdd(X, j)
+} else {
+	let v be the CRF node labelled (X, j)
+	if there is not an edge from v to u {
+		create an edge from v to u
+		for all ((X, j,h)∈P) {
+			dscAdd(L, i, h);
+			bsrAdd(L, i, j, h)
+		}
+	}
+}
+*/
+func (p *parser) call(L slot.Label, i, j int) {
 	// fmt.Printf("p.call(%s,%d,%d)\n", L,i,j)
-	um, exist := p.crfNodes[crfNode{Lm, i}]
+	u, exist := p.crfNodes[crfNode{L, i}]
 	// fmt.Printf("  u exist=%t\n", exist)
 	if !exist {
-		um = &crfNode{Lm, i}
-		p.crfNodes[*um] = um
+		u = &crfNode{L, i}
+		p.crfNodes[*u] = u
 	}
-	uf, exist := p.crfNodes[crfNode{Lf, i}]
-	if !exist {
-		uf = &crfNode{Lf, i}
-		p.crfNodes[*uf] = uf
-	}
-
+	X := L.Symbols()[L.Pos()-1].(symbols.NT)
 	ndV := clusterNode{X, j}
-	vm, existm := p.crf_m[ndV]
-	vf, existf := p.crf_f[ndV]
-	if !existm && !existf {
+	v, exist := p.crf[ndV]
+	if !exist {
 		// fmt.Println("  v !exist")
-		p.crf_m[ndV] = []*crfNode{um}
-		p.crf_f[ndV] = []*crfNode{uf}
+		p.crf[ndV] = []*crfNode{u}
 		p.ntAdd(X, j)
 	} else {
 		// fmt.Println("  v exist")
-		if !existEdge(vm, um) {
+		if !existEdge(v, u) {
 			// fmt.Printf("  !existEdge(%v)\n", u)
-			p.crf_m[ndV] = append(vm, um)
+			p.crf[ndV] = append(v, u)
 			// fmt.Printf("|popped|=%d\n", len(popped))
 			for pnd := range p.popped {
-				if pnd.X == X && pnd.k == j && pnd.j != failInd {
-					p.addMatch(Lm, i, j, pnd.j)
-				}
-			}
-		}
-		if !existEdge(vf, uf) {
-			p.crf_f[ndV] = append(vf, uf)
-			for pnd := range p.popped {
-				if pnd.X == X && pnd.k == j && pnd.j == failInd {
-					p.addFail(Lf, i, j)
+				if pnd.X == X && pnd.k == j {
+					p.dscAdd(L, i, pnd.j)
+					p.bsrSet.Add(L, i, j, pnd.j)
 				}
 			}
 		}
@@ -226,32 +189,10 @@ func (p *parser) rtn(X symbols.NT, k, j int) {
 	pn := poppedNode{X, k, j}
 	if _, exist := p.popped[pn]; !exist {
 		p.popped[pn] = true
-		if j != failInd {
-			for _, nd := range p.crf_m[clusterNode{X, k}] {
-				p.addMatch(nd.L, nd.i, k, j)
-			}
-		} else {
-			for _, nd := range p.crf_f[clusterNode{X, k}] {
-				p.addFail(nd.L, nd.i, k)
-			}
+		for _, nd := range p.crf[clusterNode{X, k}] {
+			p.dscAdd(nd.L, nd.i, j)
+			p.bsrSet.Add(nd.L, nd.i, k, j)
 		}
-	}
-}
-
-func (p *parser) addMatch(L slot.Label, i, k, j int) {
-	p.bsrSet.Add(L, i, k, j)
-	if L.IsLookahead() {
-		p.dscAdd(L, i, k)
-	} else {
-		p.dscAdd(L, i, j)
-	}
-}
-
-func (p *parser) addFail(L slot.Label, i, k int) {
-	if L.IsLookahead() {
-		p.dscAdd(L, i, k)
-	} else {
-		p.dscAdd(L, i, i)
 	}
 }
 
@@ -376,72 +317,28 @@ func (p *parser) testSelect(l slot.Label) bool {
 }
 
 var first = []map[token.Type]string{
-	// Base : ∙Base
-	{
-		token.T_0: "Base",
-	},
-	// Base : Base ∙
-	{
-		token.EOF: "$",
-	},
-	// Base : ∙
-	{
-		token.EOF: "$",
-	},
-	// Optional : ∙Base
-	{
-		token.T_0: "Base",
-	},
-	// Optional : Base ∙
-	{
-		token.EOF: "$",
-	},
-	// Optional : ∙
-	{
-		token.EOF: "$",
-	},
 	// Required : ∙Required
 	{
-		token.T_1: "Required",
+		token.T_0: "Required",
 	},
 	// Required : Required ∙
 	{
-		token.T_0: "Base",
-	},
-	// Required : ∙
-	{
-		token.T_0: "Base",
-	},
-	// S1 : ∙Required Optional
-	{
-		token.T_1: "Required",
-	},
-	// S1 : Required ∙Optional
-	{
-		token.T_0: "Base",
-	},
-	// S1 : Required Optional ∙
-	{
 		token.EOF: "$",
 	},
-	// S1 : ∙
+	// S1 : ∙Required
+	{
+		token.T_0: "Required",
+	},
+	// S1 : Required ∙
 	{
 		token.EOF: "$",
 	},
 }
 
 var followSets = []map[token.Type]string{
-	// Base
-	{
-		token.EOF: "$",
-	},
-	// Optional
-	{
-		token.EOF: "$",
-	},
 	// Required
 	{
-		token.T_0: "Base",
+		token.EOF: "$",
 	},
 	// S1
 	{

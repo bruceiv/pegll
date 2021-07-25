@@ -80,14 +80,14 @@ func (bld *builder) gogll(b bsr.BSR) *GoGLL {
 
 /// gets token type for nonterminal ID
 func getNtToken() token.Type {
-	var tt = token.Type(-1)
+	var ntTok = token.Type(-1)
 	for i, s := range token.TypeToID {
 		if s == "nt" {
-			tt = token.Type(i)
+			ntTok = token.Type(i)
 			break
 		}
 	}
-	return tt
+	return ntTok
 }
 
 var ntToken = getNtToken()
@@ -97,36 +97,55 @@ func ntTokenFromString(s string) *token.Token {
 	return token.New(ntToken, 0, len(s), []rune(s))
 }
 func nameForOpt(s SyntaxSymbol) string {
-	return "Opt01" + s.ID()
+	return "Opt" + s.ID()
 }
+
+/* POSSIBLE ISSUES:
+- recreating each symbol is probably going to greatly increase runtime (mention)
+- do we need the 0 in the generated call to map?
+- is a token a list of symbols?
+*/
+// replace optional syntax rules with the rule and add an empty node
 func (bld *builder) replaceSynOptional(g *GoGLL) {
-	generated := make(map[string]bool, 0)
+	// map running list of symbol replacements to create list of generated syntax rules
+	generated := make(map[string]bool)
+	// loop through the syntax rules
 	for _, r := range g.SyntaxRules {
+		// loop through the alternates
 		for _, a := range r.Alternates {
+			// initialize new symbols for each alternate from its length
 			newSymbols := make([]SyntaxSymbol, len(a.Symbols))
+			// loop through the range of symbols to determine if syntax optional
 			for _, s := range a.Symbols {
+				// if synOptional, generate a new name for the optional rules
 				if l, ok := s.(*SynOptional); ok {
+					// if the name is not previously generated build the node
 					name := nameForOpt(l.Expr)
+					opt := NT{
+						tok: ntTokenFromString(name),
+					}
 					if !generated[name] {
-						// make a new non-terminal for this optional
-						// TODO
-						opt := NT{
-							tok: ntTokenFromString(name),
+						generated[name] = true
+						// slice of syntax symbols only containing a syntax atom
+						exprSym := []SyntaxSymbol{l.Expr}
+						// syntax alternate takes slice of syntax symbols
+						expr := &SyntaxAlternate{
+							Symbols: exprSym,
 						}
-						expr := bld.syntaxAlternate(l.ExprNode)
+						////// same as in syntax alternate func
 						empty := &SyntaxAlternate{}
 						tempAlts := []*SyntaxAlternate{expr, empty}
 						optRule := SyntaxRule{
-							Head:       &opt,
-							Alternates: tempAlts,
+							Head:       &opt,     // NT:
+							Alternates: tempAlts, // base / empty
 							IsOrdered:  true,
 						}
 						//Adds new NT rule to list of syntax rules
 						bld.addSyntaxRule(&optRule, g)
-						// replace synoptional with non-terminal call
-						newSymbols = append(newSymbols, &opt)
 					}
-				} else {
+					// append the new symbols created from SynOptional
+					newSymbols = append(newSymbols, &opt)
+				} else { // otherwise, append the symbols
 					newSymbols = append(newSymbols, s)
 				}
 			}
@@ -326,7 +345,6 @@ func (bld *builder) lexGroup(b bsr.BSR) *LexBracket {
 	}
 }
 
-////////////////////////////////////////////////////////////////////////////////////////////////
 // LexOptional : "[" LexAlternates "]" ;
 func (bld *builder) lexOptional(b bsr.BSR) *LexBracket {
 	return &LexBracket{
@@ -335,8 +353,6 @@ func (bld *builder) lexOptional(b bsr.BSR) *LexBracket {
 		Alternates:  bld.lexAlternates(b.GetNTChildI(1)),
 	}
 }
-
-////////////////////////////////////////////////////////////////////////////////////////////////
 
 // LexZeroOrMore : "{" LexAlternates "}" ;
 func (bld *builder) lexZeroOrMore(b bsr.BSR) *LexBracket {
@@ -398,9 +414,8 @@ func (bld *builder) unicodeClass(b bsr.BSR) *UnicodeClass {
 // SynOptional : SyntaxAtom "?" ;
 func (bld *builder) synOptional(b bsr.BSR) SyntaxSymbol {
 	return &SynOptional{
-		Expr:     bld.atom(b.GetNTChildI(0)),
-		ExprNode: b.GetNTChildI(0),
-		Tok:      b.GetTChildI(1),
+		Expr: bld.atom(b.GetNTChildI(0)),
+		Tok:  b.GetTChildI(1),
 	}
 }
 
@@ -498,7 +513,6 @@ func (bld *builder) symbol(b bsr.BSR) SyntaxSymbol {
 	panic(fmt.Sprintf("invalid alternate %d", b.Alternate()))
 }
 
-////////////////////////////////////////////////////////////////////////////////////////////////
 // SyntaxAtom : nt | tokid | string_lit ;
 func (bld *builder) atom(b bsr.BSR) SyntaxSymbol {
 	switch b.Alternate() {
@@ -511,8 +525,6 @@ func (bld *builder) atom(b bsr.BSR) SyntaxSymbol {
 	}
 	panic(fmt.Sprintf("invalid alternate %d", b.Alternate()))
 }
-
-////////////////////////////////////////////////////////////////////////////////////////////////
 
 // SyntaxSymbols
 //     :   SyntaxSymbol
