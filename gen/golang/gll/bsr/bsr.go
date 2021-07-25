@@ -639,7 +639,7 @@ func (p *pegBsr) deleteNodeAndSuccessors(b BSR) {
 	}
 	// otherwise look up successor nodes with continuation label,
 	// same left extent, pivoting on right extent, and delete
-	// TODO try succcessor label := b.Label + 1
+	// TODO try successor label := b.Label + 1
 	succK := succKey{slot.GetLabel(x.NT, x.Alt, x.Pos+1), b.leftExtent, b.rightExtent}
 	for _, b := range p.successors[succK] {
 		p.deleteNodeAndSuccessors(b)

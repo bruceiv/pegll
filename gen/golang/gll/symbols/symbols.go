@@ -30,10 +30,13 @@ type Data struct {
 	NonTerminals []string
 	Terminals    []string
 	Lookaheads   []string
+	SyntaxSuffs  []string
 	LeftRec      map[string][]string
 	Ordered      map[string]bool
 	LookModes    []string
 	LookSyms     []string
+	SuffModes    []string
+	SuffSyms     []string
 }
 
 func Gen(fname string, g *ast.GoGLL, ff *frstflw.FF) {
@@ -51,9 +54,14 @@ func Gen(fname string, g *ast.GoGLL, ff *frstflw.FF) {
 }
 
 func getData(g *ast.GoGLL, ff *frstflw.FF) *Data {
+	// get slice of nonterminal strings
 	nts := g.NonTerminals.ElementsSorted()
+	// get slice of terminal strings
 	ts := g.Terminals.ElementsSorted()
+	// get slice of lookaheads
 	lks := g.Lookaheads.ElementsSorted()
+	// get slice of syntax rule operations
+	suffs := g.SyntaxSuffs.ElementsSorted()
 
 	lrs := make(map[string][]string)
 	for _, nt := range nts {
@@ -107,15 +115,40 @@ func getData(g *ast.GoGLL, ff *frstflw.FF) *Data {
 			panic("invalid lookahead symbol " + lk)
 		}
 	}
+	//////// ? isn't the first symbol it's the last
+	// syntax suffix operators (only optional now)
+	// TODO: add other operators
+	suffIdents := make([]string, len(suffs))
+	suffModes := make([]string, len(suffs))
+	suffSyms := make([]string, len(suffs))
+	for i, suff := range suffs {
+		suffSym := suff[1:]
+		switch suff[len(suffs)-1] {
+		// optional operator
+		case '?':
+			// nonterminal
+			if g.NonTerminals.Contain(suffSym) {
+				suffIdents[i] = "OPT_" + suffSym
+				suffModes[i] = "optNonterm"
+				suffSyms[i] = "NT_" + suffSym
+
+			}
+		default:
+			panic("invalid syntax suffix " + suff)
+		}
+	}
 
 	return &Data{
 		NonTerminals: nts,
 		Terminals:    ts,
 		Lookaheads:   lkIdents,
+		SyntaxSuffs:  suffIdents,
 		LeftRec:      lrs,
 		Ordered:      nto,
 		LookModes:    lkModes,
 		LookSyms:     lkSyms,
+		SuffModes:    suffModes,
+		SuffSyms:     suffSyms,
 	}
 }
 
@@ -131,12 +164,14 @@ type Symbol interface{
 	isSymbol()
 	IsNonTerminal() bool
 	IsLookahead() bool
+	IsSyntaxSuff() bool
 	String() string
 }
 
 func (NT) isSymbol() {}
 func (T) isSymbol() {}
 func (L) isSymbol() {}
+func (S) isSymbol() {}
 
 // NT is the type of non-terminals symbols
 type NT int
@@ -160,8 +195,16 @@ const( {{range $i, $lk := .Lookaheads}}
 	{{$lk}} {{if not $i}}L = iota{{end}}{{end}}
 )
 
+// S is the type of syntax suffix for syntax operators
+type S int
+const( {{range $i, $suff := .SyntaxSuffs}}
+	{{$suff}} {{if not $i}}S = iota{{end}}{{end}}
+)
+
+// symbols slice
 type Symbols []Symbol
 
+// convert symbols to strings
 func (ss Symbols) Strings() []string {
 	strs := make([]string, len(ss))
 	for i, s := range ss {
@@ -170,38 +213,58 @@ func (ss Symbols) Strings() []string {
 	return strs
 }
 
+// functions to determine if nonterminal
 func (NT) IsNonTerminal() bool {
 	return true
 }
-
 func (T) IsNonTerminal() bool {
 	return false
 }
-
 func (L) IsNonTerminal() bool {
 	return false
 }
+func (S) IsNonTerminal() bool {
+	return false
+}
 
+// functions to determine if lookahead
 func (NT) IsLookahead() bool {
 	return false
 }
-
 func (T) IsLookahead() bool {
 	return false
 }
-
 func (L) IsLookahead() bool {
 	return true
 }
+func (S) IsLookahead() bool {
+	return false
+}
 
+// functions to determine if syntax suffix
+func (NT) IsSyntaxSuff() bool {
+	return false
+}
+func (T) IsSyntaxSuff() bool {
+	return false
+}
+func (L) IsSyntaxSuff() bool {
+	return false
+}
+func (S) IsSyntaxSuff() bool {
+	return true
+}
+
+// convert NT to string
 func (nt NT) String() string {
 	return ntToString[nt]
 }
-
+// convert T to string
 func (t T) String() string {
 	return tToString[t]
 }
 
+// convert lookahead to string
 func (lk L) String() string {
 	if lk.IsNegative() {
 		return "!" + lk.ArgSymbol().String()
@@ -210,14 +273,22 @@ func (lk L) String() string {
 	}
 }
 
+// convert syntax suffix to string
+func (lk L) String() string {
+	return lk.ArgSymbol().String() + "?"
+}
+
+// list of NTs
 func (nt NT) LeftRec() NTs {
 	return leftRec[nt]
 }
 
+// determine if NT is ordered
 func (nt NT) IsOrdered() bool {
 	return ordered[nt]
 }
 
+// types of lookaheads
 const(
 	negTerm    = 0
 	negNonterm = 1
@@ -226,15 +297,14 @@ const(
 	isNonterm  = 1
 	isPos      = 2
 )
-
+// determine if lookahead negative or positive
 func (lk L) IsNegative() bool {
 	return lkMode[lk] & isPos == 0
 }
-
 func (lk L) IsPositive() bool {
 	return lkMode[lk] & isPos != 0
 }
-
+// NT and T symbols from lookahead argument
 func (lk L) ArgSymbol() Symbol {
 	switch lkMode[lk] & isNonterm {
 	case 0: // terminal
@@ -246,31 +316,57 @@ func (lk L) ArgSymbol() Symbol {
 	}
 }
 
+/* HOW DOES IT VERIFY THAT THIS IS AN OPTIONAL SYMBOL? */
+// type of syntax suffix
+const(
+	isOpt	= 0
+)
+// determine if symbol is optional
+func (suff S) IsOptional() bool {
+	return suffMode[suff] & isOpt != 0
+}
+
+// NT symbols from syntax suffix argument
+func (suff S) SynSuffSymbol() Symbol {
+	 // nonterminal
+		return NT(suffSym[suff])
+	}
+}
+
+// NT string
 var ntToString = []string { {{range $nt := .NonTerminals}}
 	"{{$nt}}", /* NT_{{$nt}} */{{end}} 
 }
-
+// T string
 var tToString = []string { {{range $i, $t := .Terminals}}
 	"{{$t}}", /* T_{{$i}} */{{end}} 
 }
-
+// string of NT
 var stringNT = map[string]NT{ {{range $i, $sym := .NonTerminals}}
 	"{{$sym}}":NT_{{$sym}},{{end}}
 }
-
+// list of NTs
 var leftRec = map[NT]NTs { {{range $sym, $lrs := .LeftRec}}
 	NT_{{$sym}}: NTs { {{range $i, $l := $lrs}} NT_{{$l}}, {{end}} },{{end}}
 }
-
+// determine if NTs ordered
 var ordered = map[NT]bool { {{range $sym, $ord := .Ordered}}
 	NT_{{$sym}}:{{$ord}},{{end}}
 }
-
+// determine lookahead mode 
 var lkMode = []int { {{range $i, $lkmd := .LookModes}}
 	{{$lkmd}}, {{end}}
 }
-
+// determine lookahead symbols
 var lkSym = []int { {{range $i, $sym := .LookSyms}}
+	int({{$sym}}), {{end}}
+}
+// determine suffix mode 
+var suffMode = []int { {{range $i, $suffmd := .SuffModes}}
+	{{$suffmd}}, {{end}}
+}
+// determine suffix symbols
+var suffSym = []int { {{range $i, $sym := .SuffSyms}}
 	int({{$sym}}), {{end}}
 }
 `

@@ -16,7 +16,7 @@ limitations under the License.
 */
 /* build.go modifications (these are backwards sorry)
  * line 489
- 	- don't think we need to add SynOptional into the
+ 	- don't think we need to add SyntaxSuff into the
 	syntaxSymbols function because it's being built in SyntaxSymbols
  * line 350
 	- changed the struct so it has syntax symbols so we can traverse
@@ -35,25 +35,11 @@ limitations under the License.
 package ast
 
 import (
+	"github.com/bruceiv/pegll/parser/bsr"
 	"github.com/bruceiv/pegll/token"
 )
 
 // The syntax part of the AST
-///////////////////////////// trying something different - I don't think
-//////////////////////////// we need the token - I think we need the NT
-/* type SynOptional struct { //Where do we get it to connect to the '?' ????  --> similar to Lext function in lex.go??
-	Tok  *token.Token //I think contains the ?
-	Expr SyntaxSymbol //Contains the rule that is being made optional (we think)
-} */
-
-type SynOptional struct {
-	// expression made optional
-	Expr SyntaxSymbol
-	// alternate for empty
-	Empty *SyntaxAlternate
-}
-
-// Line 126 in build.go --> do to we need to add the symbol to a set? Do we need to do this????
 
 type SyntaxAlternate struct {
 	Symbols []SyntaxSymbol
@@ -85,28 +71,42 @@ type Lookahead struct {
 	Expr SyntaxSymbol
 }
 
+///////////////////////////// trying something different - I don't think
+//////////////////////////// we need the token - I think we need the NT
+/* type SyntaxSuff struct { //Where do we get it to connect to the '?' ????  --> similar to Lext function in lex.go??
+	Tok  *token.Token //I think contains the ?
+	Expr SyntaxSymbol //Contains the rule that is being made optional (we think)
+} */
+
+type SyntaxSuff struct {
+	// expression made optional
+	Suff     *token.Token
+	Expr     SyntaxSymbol
+	ExprNode bsr.BSR
+}
+
+// Line 126 in build.go --> do to we need to add the symbol to a set? Do we need to do this????
+
 func (*NT) isSyntaxSymbol()        {}
 func (*Lookahead) isSyntaxSymbol() {}
 
-////////////////////////////////////////////////////////////////////////////////////////////////
-func (SynOptional) isSyntaxSymbol() {}
+func (SyntaxSuff) isSyntaxSymbol() {}
 
-func (opt *SynOptional) ID() string {
-	// return opt.Tok.LiteralString() + opt.Expr.ID()
-	// i think we only need the ID and not the literal string
+func (opt *SyntaxSuff) ID() string {
 	return opt.Expr.ID()
+	// i think we only need the ID and not the literal string
+	//return opt.Expr.ID()
+	//return "?"
 }
-func (opt *SynOptional) Lext() int {
+func (opt *SyntaxSuff) Lext() int {
 	// return opt.Tok.Lext()
 	return opt.Expr.Lext()
 }
-func (opt *SynOptional) String() string {
-	//return opt.Tok.LiteralString() + opt.Expr.String()
+func (opt *SyntaxSuff) String() string {
+	//return opt.Expr.String() + opt.Tok.LiteralString()
 	return opt.Expr.ID()
 }
 
-//// had to remove the pointers in order to compile
-////////////////////////////////////////////////////////////////////////////////////////////////
 // Terminals
 func (*TokID) isSyntaxSymbol()     {}
 func (*StringLit) isSyntaxSymbol() {}
@@ -126,6 +126,10 @@ func (e *Lookahead) String() string {
 // true for positive (&) lookahead, false for negative (!) lookahead
 func (e *Lookahead) Positive() bool {
 	return e.Op.LiteralString() == "&"
+}
+
+func (e *SyntaxSuff) Optional() bool {
+	return e.Suff.LiteralString() == "?"
 }
 
 func (a *SyntaxAlternate) GetSymbols() []string {

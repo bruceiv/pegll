@@ -52,10 +52,12 @@ func Build(root bsr.BSR, l *lexer.Lexer) *GoGLL {
 		charLiterals: stringset.New(),
 	}
 	gogll := bld.gogll(root)
+	//bld.replaceSynOptional(gogll)
 	gogll.NonTerminals = bld.nonTerminals(gogll.SyntaxRules)
 	gogll.StringLiterals = bld.getStringLiterals(gogll.SyntaxRules)
 	gogll.Terminals = bld.terminals(gogll, gogll.GetStringLiterals())
 	gogll.Lookaheads = bld.lookaheads(gogll)
+	gogll.SyntaxSuffs = bld.suffixes(gogll)
 	return gogll
 }
 
@@ -135,6 +137,57 @@ func (bld *builder) lookaheads(g *GoGLL) *stringset.StringSet {
 		}
 	}
 	return ls
+}
+
+// definition
+// tokens
+// tokens -> types of tokens
+// -> creates slots for the types
+// slots -> bsr???
+// syntax & lex also build the build.go file
+// bsr -> build
+// build -> builds the abstract syntax tree
+
+/* Optional: NT?
+--- before this file is reached, there's syntax suffix created
+--- tokens -> nonterminal, lookahead...
+	--- creates a list of these "special types"
+---
+*/
+
+// application
+// tokens -> lexer
+// lexer -> parser
+
+func (bld *builder) suffixes(g *GoGLL) *stringset.StringSet {
+	suffs := stringset.New()
+	for _, r := range g.SyntaxRules {
+		for _, a := range r.Alternates {
+			for _, s := range a.Symbols {
+				if suff, ok := s.(*SyntaxSuff); ok {
+					// if syntax suffix add its ID
+					suffs.Add(suff.ID())
+					// check if the suffix is optional
+					if suff.Optional() {
+						// build the expression as an alternate
+						expr := bld.syntaxAlternate(suff.ExprNode)
+						// create an empty syntax alternate
+						empty := &SyntaxAlternate{}
+						// build the optional rule
+						ordOpt := []*SyntaxAlternate{expr, empty}
+						optRule := SyntaxRule{
+							Head:       bld.nt(suff.Suff),
+							Alternates: ordOpt,
+							IsOrdered:  true,
+						}
+						// add new rule to list of syntax rules
+						bld.addSyntaxRule(&optRule, g)
+					}
+				}
+			}
+		}
+	}
+	return suffs
 }
 
 func (bld *builder) getLexRuleIDs(rules []*LexRule) *stringset.StringSet {
@@ -268,7 +321,6 @@ func (bld *builder) lexGroup(b bsr.BSR) *LexBracket {
 	}
 }
 
-////////////////////////////////////////////////////////////////////////////////////////////////
 // LexOptional : "[" LexAlternates "]" ;
 func (bld *builder) lexOptional(b bsr.BSR) *LexBracket {
 	return &LexBracket{
@@ -277,8 +329,6 @@ func (bld *builder) lexOptional(b bsr.BSR) *LexBracket {
 		Alternates:  bld.lexAlternates(b.GetNTChildI(1)),
 	}
 }
-
-////////////////////////////////////////////////////////////////////////////////////////////////
 
 // LexZeroOrMore : "{" LexAlternates "}" ;
 func (bld *builder) lexZeroOrMore(b bsr.BSR) *LexBracket {
@@ -336,28 +386,15 @@ func (bld *builder) unicodeClass(b bsr.BSR) *UnicodeClass {
 }
 
 /*** Syntax Rules ***/
-
-// SynOptional : SyntaxAtom "?" ;
-// "?" : SyntaxAtom
-//		/ "empty"
-// function essentially determines whether empty or not
-func (bld *builder) synOptional(b bsr.BSR) *SynOptional {
-	/* return SynOptional{
-		Tok:  b.GetTChildI(1),
-		Expr: bld.atom(b.GetNTChildI(0)),
-	} */
-	return &SynOptional{
-		Expr:  bld.atom(b.GetNTChildI(0)),
-		Empty: &SyntaxAlternate{},
+/*
+// SyntaxSuff : SyntaxAtom "?" ;
+func (bld *builder) synOptional(b bsr.BSR) SyntaxSymbol {
+	return &SyntaxSuff{
+		Suff:     b.GetTChildI(1),
+		Expr:     bld.atom(b.GetNTChildI(0)),
+		ExprNode: b.GetNTChildI(0),
 	}
-	/* // create an empty struct
-	opt := &SynOptional{}
-	// if empty, SynOptional with be returned with empty atom
-	if b.Alternate() == 0 {
-		opt.Expr = bld.atom(b.GetNTChildI(0))
-	}
-	return opt*/
-}
+} */
 
 // SyntaxAlternate
 //     :   SyntaxSymbols
@@ -428,30 +465,35 @@ func (bld *builder) syntaxRule(b bsr.BSR) brule {
 		Alternates: alts,
 		IsOrdered:  ord,
 	}
+
 }
 
 // SyntaxSymbol
 //     : "&" SyntaxAtom
 //     / "!" SyntaxAtom
-//	   / SynOptional
+//	   / SyntaxSuff
 //     / SyntaxAtom
 //     ;
 func (bld *builder) symbol(b bsr.BSR) SyntaxSymbol {
 	switch b.Alternate() {
 	case 0, 1:
 		return &Lookahead{
-			Op:   b.GetTChildI(0),
-			Expr: bld.atom(b.GetNTChildI(1)),
+			Op:   b.GetTChildI(0),            // & or !
+			Expr: bld.atom(b.GetNTChildI(1)), // builds atom from rule
 		}
 	case 2:
-		return bld.synOptional(b.GetNTChildI(0))
+		//return bld.synOptional(b.GetNTChildI(0))
+		return &SyntaxSuff{
+			Suff:     b.GetNTChildI(0).GetTChildI(1), // get the suffix: ?, *, or +
+			Expr:     bld.atom(b.GetNTChildI(0).GetNTChildI(0)),
+			ExprNode: b.GetNTChildI(0),
+		}
 	case 3:
 		return bld.atom(b.GetNTChildI(0))
 	}
 	panic(fmt.Sprintf("invalid alternate %d", b.Alternate()))
 }
 
-////////////////////////////////////////////////////////////////////////////////////////////////
 // SyntaxAtom : nt | tokid | string_lit ;
 func (bld *builder) atom(b bsr.BSR) SyntaxSymbol {
 	switch b.Alternate() {
@@ -465,29 +507,16 @@ func (bld *builder) atom(b bsr.BSR) SyntaxSymbol {
 	panic(fmt.Sprintf("invalid alternate %d", b.Alternate()))
 }
 
-////////////////////////////////////////////////////////////////////////////////////////////////
-
 // SyntaxSymbols
 //     :   SyntaxSymbol
 //     |   SyntaxSymbol SyntaxSymbols
 //     ;
 func (bld *builder) syntaxSymbols(b bsr.BSR) []SyntaxSymbol {
 	symbols := []SyntaxSymbol{bld.symbol(b.GetNTChildI(0))}
-	//if recent symbol is a syntaxOptional, then add an empty node
-	if symbols[(len(symbols)-1)].ID() == "?" { //Add SynOptional Empty Node
-		symbols = bld.addOptNode(symbols)
-	}
 	if b.Alternate() == 1 {
 		symbols = append(symbols, bld.syntaxSymbols(b.GetNTChildI(1))...)
 	}
 	return symbols
-}
-
-func (bld *builder) addOptNode(symbols []SyntaxSymbol) []SyntaxSymbol {
-	//Add empty node to slice
-	symbols = append(symbols, &SynOptional{})
-	return symbols
-	//panic("invalid SynOptional")
 }
 
 /*** Shared ***/

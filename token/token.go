@@ -116,23 +116,24 @@ const(
     T_7  // ; 
     T_8  // < 
     T_9  // > 
-    T_10  // [ 
-    T_11  // ] 
-    T_12  // any 
-    T_13  // char_lit 
-    T_14  // empty 
-    T_15  // letter 
-    T_16  // lowcase 
-    T_17  // not 
-    T_18  // nt 
-    T_19  // number 
-    T_20  // package 
-    T_21  // string_lit 
-    T_22  // tokid 
-    T_23  // upcase 
-    T_24  // { 
-    T_25  // | 
-    T_26  // } 
+    T_10  // ? 
+    T_11  // [ 
+    T_12  // ] 
+    T_13  // any 
+    T_14  // char_lit 
+    T_15  // empty 
+    T_16  // letter 
+    T_17  // lowcase 
+    T_18  // not 
+    T_19  // nt 
+    T_20  // number 
+    T_21  // package 
+    T_22  // string_lit 
+    T_23  // tokid 
+    T_24  // upcase 
+    T_25  // { 
+    T_26  // | 
+    T_27  // } 
 )
 
 var TypeToString = []string{ 
@@ -165,6 +166,7 @@ var TypeToString = []string{
     "T_24",
     "T_25",
     "T_26",
+    "T_27",
 }
 
 var StringToType = map[string] Type { 
@@ -197,6 +199,7 @@ var StringToType = map[string] Type {
     "T_24" : T_24, 
     "T_25" : T_25, 
     "T_26" : T_26, 
+    "T_27" : T_27, 
 }
 
 var TypeToID = []string { 
@@ -212,6 +215,7 @@ var TypeToID = []string {
     ";", 
     "<", 
     ">", 
+    "?", 
     "[", 
     "]", 
     "any", 
@@ -232,6 +236,7 @@ var TypeToID = []string {
 }
 
 var Suppress = []bool { 
+    false, 
     false, 
     false, 
     false, 

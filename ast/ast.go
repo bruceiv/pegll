@@ -31,6 +31,7 @@ type GoGLL struct {
 	Terminals      *stringset.StringSet
 	NonTerminals   *stringset.StringSet
 	Lookaheads     *stringset.StringSet
+	SyntaxSuffs    *stringset.StringSet
 	StringLiterals map[string]*StringLit
 }
 
@@ -85,11 +86,13 @@ func (g *GoGLL) GetSyntaxRule(nt string) *SyntaxRule {
 	return nil
 }
 
+// get the string slice of syntax symbols
 func (g *GoGLL) GetSymbols() []string {
-	syms := make([]string, 0, g.Terminals.Len()+g.NonTerminals.Len()+g.Lookaheads.Len())
+	syms := make([]string, 0, g.Terminals.Len()+g.NonTerminals.Len()+g.Lookaheads.Len()+g.SyntaxSuffs.Len())
 	syms = append(syms, g.Terminals.Elements()...)
 	syms = append(syms, g.NonTerminals.Elements()...)
-	return append(syms, g.Lookaheads.Elements()...)
+	syms = append(syms, g.Lookaheads.Elements()...)
+	return append(syms, g.SyntaxSuffs.Elements()...)
 }
 
 func (g *GoGLL) StartSymbol() string {
