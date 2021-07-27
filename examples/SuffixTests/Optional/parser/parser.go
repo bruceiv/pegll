@@ -71,19 +71,44 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 
 		for {
 			switch L {
-			case slot.OptRequired0R0: // OptRequired : ∙Required
+			case slot.Base0R0: // Base : ∙Base
 
-				if !p.testSelect(slot.OptRequired0R0) {
-					p.parseError(slot.OptRequired0R0, p.cI, first[slot.OptRequired0R0])
-					L, p.cI = slot.OptRequired1R0, cU
+				if !p.testSelect(slot.Base0R0) {
+					p.parseError(slot.Base0R0, p.cI, first[slot.Base0R0])
+					L, p.cI = slot.Base1F0, cU
 					goto nextSlot
 				}
-				p.bsrSet.Add(slot.OptRequired0R1, cU, p.cI, p.cI+1)
+				p.bsrSet.Add(slot.Base0R1, cU, p.cI, p.cI+1)
 				p.cI++
-				p.rtn(symbols.NT_OptRequired, cU, p.cI)
-			case slot.OptRequired1R0: // OptRequired : ∙
-				p.bsrSet.AddEmpty(slot.OptRequired1R0, p.cI)
-				p.rtn(symbols.NT_OptRequired, cU, p.cI)
+				p.rtn(symbols.NT_Base, cU, p.cI)
+			case slot.Base1F0: // Base failure case
+				p.rtn(symbols.NT_Base, cU, failInd)
+			case slot.OptBase0R0: // OptBase : ∙Base
+
+				if !p.testSelect(slot.OptBase0R0) {
+					p.parseError(slot.OptBase0R0, p.cI, first[slot.OptBase0R0])
+					L, p.cI = slot.OptBase1R0, cU
+					goto nextSlot
+				}
+				p.bsrSet.Add(slot.OptBase0R1, cU, p.cI, p.cI+1)
+				p.cI++
+				p.rtn(symbols.NT_OptBase, cU, p.cI)
+			case slot.OptBase1R0: // OptBase : ∙
+				p.bsrSet.AddEmpty(slot.OptBase1R0, p.cI)
+				p.rtn(symbols.NT_OptBase, cU, p.cI)
+			case slot.Optional0R0: // Optional : ∙OptBase
+
+				if !p.testSelect(slot.Optional0R0) {
+					p.parseError(slot.Optional0R0, p.cI, first[slot.Optional0R0])
+					L, p.cI = slot.Optional1F0, cU
+					goto nextSlot
+				}
+				p.call(slot.Optional0R1, slot.Optional1F0, symbols.NT_OptBase, cU, p.cI)
+			case slot.Optional0R1: // Optional : OptBase ∙
+
+				p.rtn(symbols.NT_Optional, cU, p.cI)
+			case slot.Optional1F0: // Optional failure case
+				p.rtn(symbols.NT_Optional, cU, failInd)
 			case slot.Required0R0: // Required : ∙Required
 
 				if !p.testSelect(slot.Required0R0) {
@@ -96,16 +121,30 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 				p.rtn(symbols.NT_Required, cU, p.cI)
 			case slot.Required1F0: // Required failure case
 				p.rtn(symbols.NT_Required, cU, failInd)
-			case slot.S10R0: // S1 : ∙OptRequired
+			case slot.S10R0: // S1 : ∙Required Optional Required
 
 				if !p.testSelect(slot.S10R0) {
 					p.parseError(slot.S10R0, p.cI, first[slot.S10R0])
 					L, p.cI = slot.S11F0, cU
 					goto nextSlot
 				}
-				p.call(slot.S10R1, slot.S11F0, symbols.NT_OptRequired, cU, p.cI)
-			case slot.S10R1: // S1 : OptRequired ∙
+				p.bsrSet.Add(slot.S10R1, cU, p.cI, p.cI+1)
+				p.cI++
+				if !p.testSelect(slot.S10R1) {
+					p.parseError(slot.S10R1, p.cI, first[slot.S10R1])
+					L, p.cI = slot.S11F0, cU
+					goto nextSlot
+				}
+				p.call(slot.S10R2, slot.S11F0, symbols.NT_Optional, cU, p.cI)
+			case slot.S10R2: // S1 : Required Optional ∙Required
 
+				if !p.testSelect(slot.S10R2) {
+					p.parseError(slot.S10R2, p.cI, first[slot.S10R2])
+					L, p.cI = slot.S11F0, cU
+					goto nextSlot
+				}
+				p.bsrSet.Add(slot.S10R3, cU, p.cI, p.cI+1)
+				p.cI++
 				p.rtn(symbols.NT_S1, cU, p.cI)
 			case slot.S11F0: // S1 failure case
 				p.rtn(symbols.NT_S1, cU, failInd)
@@ -358,36 +397,73 @@ func (p *parser) testSelect(l slot.Label) bool {
 }
 
 var first = []map[token.Type]string{
-	// OptRequired : ∙Required
+	// Base : ∙Base
 	{
-		token.T_0: "Required",
+		token.T_0: "Base",
 	},
-	// OptRequired : Required ∙
+	// Base : Base ∙
 	{
-		token.EOF: "$",
+		token.T_1: "Required",
 	},
-	// OptRequired : ∙
+	// Base : ∙
 	{
-		token.EOF: "$",
+		token.T_1: "Required",
+	},
+	// OptBase : ∙Base
+	{
+		token.T_0: "Base",
+	},
+	// OptBase : Base ∙
+	{
+		token.T_1: "Required",
+	},
+	// OptBase : ∙
+	{
+		token.T_1: "Required",
+	},
+	// Optional : ∙OptBase
+	{
+		token.T_0: "Base",
+		token.T_1: "Required",
+	},
+	// Optional : OptBase ∙
+	{
+		token.T_1: "Required",
+	},
+	// Optional : ∙
+	{
+		token.T_1: "Required",
 	},
 	// Required : ∙Required
 	{
-		token.T_0: "Required",
+		token.T_1: "Required",
 	},
 	// Required : Required ∙
 	{
 		token.EOF: "$",
+		token.T_0: "Base",
+		token.T_1: "Required",
 	},
 	// Required : ∙
 	{
 		token.EOF: "$",
+		token.T_0: "Base",
+		token.T_1: "Required",
 	},
-	// S1 : ∙OptRequired
+	// S1 : ∙Required Optional Required
 	{
-		token.EOF: "$",
-		token.T_0: "Required",
+		token.T_1: "Required",
 	},
-	// S1 : OptRequired ∙
+	// S1 : Required ∙Optional Required
+	{
+		token.T_0: "Base",
+		token.T_1: "Required",
+	},
+	// S1 : Required Optional ∙Required
+	{
+		token.T_1: "Required",
+	},
+	// S1 : Required Optional Required ∙
 	{
 		token.EOF: "$",
 	},
@@ -398,13 +474,23 @@ var first = []map[token.Type]string{
 }
 
 var followSets = []map[token.Type]string{
-	// OptRequired
+	// Base
 	{
-		token.EOF: "$",
+		token.T_1: "Required",
+	},
+	// OptBase
+	{
+		token.T_1: "Required",
+	},
+	// Optional
+	{
+		token.T_1: "Required",
 	},
 	// Required
 	{
 		token.EOF: "$",
+		token.T_0: "Base",
+		token.T_1: "Required",
 	},
 	// S1
 	{

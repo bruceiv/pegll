@@ -1691,13 +1691,13 @@ var nullable = []bool {
 
 var firstT = []map[token.Type]bool { 
 	{  token.T_21: true,  }, // GoGLL0R0 
-	{  token.T_19: true,  token.T_0: true,  token.T_23: true,  }, // GoGLL0R1 
+	{  token.T_19: true,  token.T_23: true,  token.T_0: true,  }, // GoGLL0R1 
 	{  }, // GoGLL0R2 
-	{  token.T_14: true,  token.T_4: true,  token.T_8: true,  token.T_13: true,  token.T_18: true,  token.T_16: true,  token.T_11: true,  token.T_2: true,  token.T_17: true,  token.T_25: true,  token.T_24: true,  token.T_20: true,  }, // LexAlternates0R0 
+	{  token.T_2: true,  token.T_17: true,  token.T_4: true,  token.T_11: true,  token.T_8: true,  token.T_24: true,  token.T_16: true,  token.T_13: true,  token.T_18: true,  token.T_20: true,  token.T_14: true,  token.T_25: true,  }, // LexAlternates0R0 
 	{  }, // LexAlternates0R1 
-	{  token.T_25: true,  token.T_20: true,  token.T_14: true,  token.T_8: true,  token.T_13: true,  token.T_18: true,  token.T_24: true,  token.T_17: true,  token.T_16: true,  token.T_11: true,  token.T_2: true,  token.T_4: true,  }, // LexAlternates1R0 
+	{  token.T_8: true,  token.T_24: true,  token.T_16: true,  token.T_2: true,  token.T_11: true,  token.T_20: true,  token.T_13: true,  token.T_17: true,  token.T_4: true,  token.T_14: true,  token.T_18: true,  token.T_25: true,  }, // LexAlternates1R0 
 	{  token.T_26: true,  }, // LexAlternates1R1 
-	{  token.T_8: true,  token.T_16: true,  token.T_18: true,  token.T_4: true,  token.T_25: true,  token.T_24: true,  token.T_11: true,  token.T_17: true,  token.T_2: true,  token.T_20: true,  token.T_13: true,  token.T_14: true,  }, // LexAlternates1R2 
+	{  token.T_11: true,  token.T_18: true,  token.T_4: true,  token.T_13: true,  token.T_20: true,  token.T_24: true,  token.T_14: true,  token.T_17: true,  token.T_2: true,  token.T_16: true,  token.T_8: true,  token.T_25: true,  }, // LexAlternates1R2 
 	{  }, // LexAlternates1R3 
 	{  token.T_2: true,  }, // LexBracket0R0 
 	{  }, // LexBracket0R1 
@@ -1708,26 +1708,26 @@ var firstT = []map[token.Type]bool {
 	{  token.T_8: true,  }, // LexBracket3R0 
 	{  }, // LexBracket3R1 
 	{  token.T_2: true,  }, // LexGroup0R0 
-	{  token.T_4: true,  token.T_2: true,  token.T_24: true,  token.T_11: true,  token.T_8: true,  token.T_13: true,  token.T_25: true,  token.T_20: true,  token.T_18: true,  token.T_17: true,  token.T_14: true,  token.T_16: true,  }, // LexGroup0R1 
+	{  token.T_25: true,  token.T_8: true,  token.T_18: true,  token.T_4: true,  token.T_2: true,  token.T_11: true,  token.T_13: true,  token.T_20: true,  token.T_24: true,  token.T_14: true,  token.T_17: true,  token.T_16: true,  }, // LexGroup0R1 
 	{  token.T_3: true,  }, // LexGroup0R2 
 	{  }, // LexGroup0R3 
 	{  token.T_8: true,  }, // LexOneOrMore0R0 
-	{  token.T_16: true,  token.T_11: true,  token.T_24: true,  token.T_20: true,  token.T_4: true,  token.T_25: true,  token.T_14: true,  token.T_13: true,  token.T_17: true,  token.T_2: true,  token.T_18: true,  token.T_8: true,  }, // LexOneOrMore0R1 
+	{  token.T_2: true,  token.T_4: true,  token.T_11: true,  token.T_25: true,  token.T_13: true,  token.T_20: true,  token.T_8: true,  token.T_24: true,  token.T_16: true,  token.T_18: true,  token.T_14: true,  token.T_17: true,  }, // LexOneOrMore0R1 
 	{  token.T_9: true,  }, // LexOneOrMore0R2 
 	{  }, // LexOneOrMore0R3 
 	{  token.T_11: true,  }, // LexOptional0R0 
-	{  token.T_16: true,  token.T_4: true,  token.T_25: true,  token.T_24: true,  token.T_20: true,  token.T_17: true,  token.T_14: true,  token.T_13: true,  token.T_2: true,  token.T_18: true,  token.T_11: true,  token.T_8: true,  }, // LexOptional0R1 
+	{  token.T_16: true,  token.T_2: true,  token.T_20: true,  token.T_8: true,  token.T_18: true,  token.T_4: true,  token.T_24: true,  token.T_14: true,  token.T_17: true,  token.T_11: true,  token.T_25: true,  token.T_13: true,  }, // LexOptional0R1 
 	{  token.T_12: true,  }, // LexOptional0R2 
 	{  }, // LexOptional0R3 
 	{  token.T_23: true,  }, // LexRule0R0 
 	{  token.T_6: true,  }, // LexRule0R1 
-	{  token.T_17: true,  token.T_16: true,  token.T_11: true,  token.T_2: true,  token.T_18: true,  token.T_14: true,  token.T_24: true,  token.T_20: true,  token.T_4: true,  token.T_8: true,  token.T_13: true,  token.T_25: true,  }, // LexRule0R2 
+	{  token.T_14: true,  token.T_25: true,  token.T_16: true,  token.T_2: true,  token.T_11: true,  token.T_8: true,  token.T_4: true,  token.T_18: true,  token.T_20: true,  token.T_24: true,  token.T_17: true,  token.T_13: true,  }, // LexRule0R2 
 	{  token.T_7: true,  }, // LexRule0R3 
 	{  }, // LexRule0R4 
 	{  token.T_0: true,  }, // LexRule1R0 
 	{  token.T_23: true,  }, // LexRule1R1 
 	{  token.T_6: true,  }, // LexRule1R2 
-	{  token.T_14: true,  token.T_24: true,  token.T_20: true,  token.T_4: true,  token.T_16: true,  token.T_8: true,  token.T_11: true,  token.T_13: true,  token.T_25: true,  token.T_17: true,  token.T_2: true,  token.T_18: true,  }, // LexRule1R3 
+	{  token.T_24: true,  token.T_11: true,  token.T_18: true,  token.T_20: true,  token.T_4: true,  token.T_8: true,  token.T_16: true,  token.T_2: true,  token.T_25: true,  token.T_13: true,  token.T_17: true,  token.T_14: true,  }, // LexRule1R3 
 	{  token.T_7: true,  }, // LexRule1R4 
 	{  }, // LexRule1R5 
 	{  token.T_4: true,  }, // LexSymbol0R0 
@@ -1737,56 +1737,56 @@ var firstT = []map[token.Type]bool {
 	{  }, // LexSymbol1R2 
 	{  token.T_14: true,  }, // LexSymbol2R0 
 	{  }, // LexSymbol2R1 
-	{  token.T_2: true,  token.T_11: true,  token.T_25: true,  token.T_8: true,  }, // LexSymbol3R0 
+	{  token.T_25: true,  token.T_8: true,  token.T_2: true,  token.T_11: true,  }, // LexSymbol3R0 
 	{  }, // LexSymbol3R1 
 	{  token.T_18: true,  }, // LexSymbol4R0 
 	{  token.T_22: true,  }, // LexSymbol4R1 
 	{  }, // LexSymbol4R2 
-	{  token.T_20: true,  token.T_16: true,  token.T_24: true,  token.T_17: true,  }, // LexSymbol5R0 
+	{  token.T_16: true,  token.T_24: true,  token.T_17: true,  token.T_20: true,  }, // LexSymbol5R0 
 	{  }, // LexSymbol5R1 
 	{  token.T_25: true,  }, // LexZeroOrMore0R0 
-	{  token.T_13: true,  token.T_25: true,  token.T_2: true,  token.T_24: true,  token.T_4: true,  token.T_20: true,  token.T_11: true,  token.T_17: true,  token.T_14: true,  token.T_8: true,  token.T_16: true,  token.T_18: true,  }, // LexZeroOrMore0R1 
+	{  token.T_25: true,  token.T_13: true,  token.T_24: true,  token.T_2: true,  token.T_18: true,  token.T_4: true,  token.T_11: true,  token.T_20: true,  token.T_8: true,  token.T_14: true,  token.T_17: true,  token.T_16: true,  }, // LexZeroOrMore0R1 
 	{  token.T_27: true,  }, // LexZeroOrMore0R2 
 	{  }, // LexZeroOrMore0R3 
-	{  token.T_15: true,  token.T_23: true,  token.T_22: true,  token.T_19: true,  token.T_1: true,  token.T_0: true,  }, // OrderedAlternates0R0 
+	{  token.T_1: true,  token.T_15: true,  token.T_0: true,  token.T_19: true,  token.T_23: true,  token.T_22: true,  }, // OrderedAlternates0R0 
 	{  }, // OrderedAlternates0R1 
-	{  token.T_19: true,  token.T_1: true,  token.T_0: true,  token.T_15: true,  token.T_23: true,  token.T_22: true,  }, // OrderedAlternates1R0 
+	{  token.T_15: true,  token.T_0: true,  token.T_19: true,  token.T_23: true,  token.T_22: true,  token.T_1: true,  }, // OrderedAlternates1R0 
 	{  token.T_5: true,  }, // OrderedAlternates1R1 
-	{  token.T_23: true,  token.T_22: true,  token.T_19: true,  token.T_1: true,  token.T_0: true,  token.T_15: true,  }, // OrderedAlternates1R2 
+	{  token.T_0: true,  token.T_19: true,  token.T_23: true,  token.T_22: true,  token.T_1: true,  token.T_15: true,  }, // OrderedAlternates1R2 
 	{  }, // OrderedAlternates1R3 
 	{  token.T_21: true,  }, // Package0R0 
 	{  token.T_22: true,  }, // Package0R1 
 	{  }, // Package0R2 
-	{  token.T_4: true,  token.T_11: true,  token.T_25: true,  token.T_24: true,  token.T_2: true,  token.T_17: true,  token.T_20: true,  token.T_16: true,  token.T_13: true,  token.T_8: true,  token.T_18: true,  token.T_14: true,  }, // RegExp0R0 
+	{  token.T_16: true,  token.T_14: true,  token.T_25: true,  token.T_17: true,  token.T_13: true,  token.T_4: true,  token.T_8: true,  token.T_2: true,  token.T_11: true,  token.T_18: true,  token.T_24: true,  token.T_20: true,  }, // RegExp0R0 
 	{  }, // RegExp0R1 
-	{  token.T_18: true,  token.T_13: true,  token.T_11: true,  token.T_16: true,  token.T_2: true,  token.T_25: true,  token.T_4: true,  token.T_17: true,  token.T_20: true,  token.T_14: true,  token.T_24: true,  token.T_8: true,  }, // RegExp1R0 
-	{  token.T_25: true,  token.T_11: true,  token.T_2: true,  token.T_13: true,  token.T_4: true,  token.T_16: true,  token.T_17: true,  token.T_14: true,  token.T_18: true,  token.T_8: true,  token.T_20: true,  token.T_24: true,  }, // RegExp1R1 
+	{  token.T_16: true,  token.T_2: true,  token.T_25: true,  token.T_18: true,  token.T_24: true,  token.T_20: true,  token.T_11: true,  token.T_8: true,  token.T_17: true,  token.T_4: true,  token.T_13: true,  token.T_14: true,  }, // RegExp1R0 
+	{  token.T_11: true,  token.T_13: true,  token.T_4: true,  token.T_16: true,  token.T_2: true,  token.T_18: true,  token.T_20: true,  token.T_8: true,  token.T_17: true,  token.T_14: true,  token.T_25: true,  token.T_24: true,  }, // RegExp1R1 
 	{  }, // RegExp1R2 
 	{  token.T_23: true,  token.T_0: true,  }, // Rule0R0 
 	{  }, // Rule0R1 
 	{  token.T_19: true,  }, // Rule1R0 
 	{  }, // Rule1R1 
-	{  token.T_19: true,  token.T_0: true,  token.T_23: true,  }, // Rules0R0 
+	{  token.T_23: true,  token.T_0: true,  token.T_19: true,  }, // Rules0R0 
 	{  }, // Rules0R1 
-	{  token.T_0: true,  token.T_23: true,  token.T_19: true,  }, // Rules1R0 
-	{  token.T_19: true,  token.T_0: true,  token.T_23: true,  }, // Rules1R1 
+	{  token.T_23: true,  token.T_0: true,  token.T_19: true,  }, // Rules1R0 
+	{  token.T_0: true,  token.T_19: true,  token.T_23: true,  }, // Rules1R1 
 	{  }, // Rules1R2 
-	{  token.T_23: true,  token.T_22: true,  token.T_19: true,  }, // SynOptional0R0 
+	{  token.T_19: true,  token.T_23: true,  token.T_22: true,  }, // SynOptional0R0 
 	{  token.T_10: true,  }, // SynOptional0R1 
 	{  }, // SynOptional0R2 
-	{  token.T_23: true,  token.T_22: true,  token.T_19: true,  token.T_1: true,  token.T_0: true,  }, // SyntaxAlternate0R0 
+	{  token.T_0: true,  token.T_19: true,  token.T_23: true,  token.T_22: true,  token.T_1: true,  }, // SyntaxAlternate0R0 
 	{  }, // SyntaxAlternate0R1 
 	{  token.T_15: true,  }, // SyntaxAlternate1R0 
 	{  }, // SyntaxAlternate1R1 
-	{  token.T_23: true,  token.T_22: true,  token.T_19: true,  token.T_1: true,  token.T_0: true,  token.T_15: true,  }, // SyntaxAlternates0R0 
+	{  token.T_0: true,  token.T_19: true,  token.T_23: true,  token.T_22: true,  token.T_1: true,  token.T_15: true,  }, // SyntaxAlternates0R0 
 	{  }, // SyntaxAlternates0R1 
-	{  token.T_15: true,  token.T_23: true,  token.T_22: true,  token.T_19: true,  token.T_1: true,  token.T_0: true,  }, // SyntaxAlternates1R0 
+	{  token.T_22: true,  token.T_1: true,  token.T_15: true,  token.T_0: true,  token.T_19: true,  token.T_23: true,  }, // SyntaxAlternates1R0 
 	{  token.T_26: true,  }, // SyntaxAlternates1R1 
-	{  token.T_0: true,  token.T_15: true,  token.T_23: true,  token.T_22: true,  token.T_19: true,  token.T_1: true,  }, // SyntaxAlternates1R2 
+	{  token.T_0: true,  token.T_19: true,  token.T_23: true,  token.T_22: true,  token.T_1: true,  token.T_15: true,  }, // SyntaxAlternates1R2 
 	{  }, // SyntaxAlternates1R3 
-	{  token.T_22: true,  token.T_19: true,  token.T_1: true,  token.T_0: true,  token.T_15: true,  token.T_23: true,  }, // SyntaxAlternates2R0 
+	{  token.T_15: true,  token.T_0: true,  token.T_19: true,  token.T_23: true,  token.T_22: true,  token.T_1: true,  }, // SyntaxAlternates2R0 
 	{  token.T_5: true,  }, // SyntaxAlternates2R1 
-	{  token.T_15: true,  token.T_23: true,  token.T_22: true,  token.T_19: true,  token.T_1: true,  token.T_0: true,  }, // SyntaxAlternates2R2 
+	{  token.T_15: true,  token.T_0: true,  token.T_19: true,  token.T_23: true,  token.T_22: true,  token.T_1: true,  }, // SyntaxAlternates2R2 
 	{  }, // SyntaxAlternates2R3 
 	{  token.T_19: true,  }, // SyntaxAtom0R0 
 	{  }, // SyntaxAtom0R1 
@@ -1796,23 +1796,23 @@ var firstT = []map[token.Type]bool {
 	{  }, // SyntaxAtom2R1 
 	{  token.T_19: true,  }, // SyntaxRule0R0 
 	{  token.T_6: true,  }, // SyntaxRule0R1 
-	{  token.T_22: true,  token.T_19: true,  token.T_1: true,  token.T_0: true,  token.T_15: true,  token.T_23: true,  }, // SyntaxRule0R2 
+	{  token.T_0: true,  token.T_19: true,  token.T_23: true,  token.T_22: true,  token.T_1: true,  token.T_15: true,  }, // SyntaxRule0R2 
 	{  token.T_7: true,  }, // SyntaxRule0R3 
 	{  }, // SyntaxRule0R4 
 	{  token.T_1: true,  }, // SyntaxSymbol0R0 
-	{  token.T_19: true,  token.T_23: true,  token.T_22: true,  }, // SyntaxSymbol0R1 
+	{  token.T_22: true,  token.T_19: true,  token.T_23: true,  }, // SyntaxSymbol0R1 
 	{  }, // SyntaxSymbol0R2 
 	{  token.T_0: true,  }, // SyntaxSymbol1R0 
-	{  token.T_23: true,  token.T_22: true,  token.T_19: true,  }, // SyntaxSymbol1R1 
+	{  token.T_19: true,  token.T_23: true,  token.T_22: true,  }, // SyntaxSymbol1R1 
 	{  }, // SyntaxSymbol1R2 
-	{  token.T_23: true,  token.T_22: true,  token.T_19: true,  }, // SyntaxSymbol2R0 
+	{  token.T_19: true,  token.T_23: true,  token.T_22: true,  }, // SyntaxSymbol2R0 
 	{  }, // SyntaxSymbol2R1 
 	{  token.T_19: true,  token.T_23: true,  token.T_22: true,  }, // SyntaxSymbol3R0 
 	{  }, // SyntaxSymbol3R1 
-	{  token.T_23: true,  token.T_22: true,  token.T_19: true,  token.T_1: true,  token.T_0: true,  }, // SyntaxSymbols0R0 
+	{  token.T_1: true,  token.T_0: true,  token.T_19: true,  token.T_23: true,  token.T_22: true,  }, // SyntaxSymbols0R0 
 	{  }, // SyntaxSymbols0R1 
-	{  token.T_1: true,  token.T_0: true,  token.T_23: true,  token.T_22: true,  token.T_19: true,  }, // SyntaxSymbols1R0 
-	{  token.T_23: true,  token.T_22: true,  token.T_19: true,  token.T_1: true,  token.T_0: true,  }, // SyntaxSymbols1R1 
+	{  token.T_23: true,  token.T_22: true,  token.T_1: true,  token.T_0: true,  token.T_19: true,  }, // SyntaxSymbols1R0 
+	{  token.T_0: true,  token.T_19: true,  token.T_23: true,  token.T_22: true,  token.T_1: true,  }, // SyntaxSymbols1R1 
 	{  }, // SyntaxSymbols1R2 
 	{  token.T_16: true,  }, // UnicodeClass0R0 
 	{  }, // UnicodeClass0R1 
@@ -1822,10 +1822,10 @@ var firstT = []map[token.Type]bool {
 	{  }, // UnicodeClass2R1 
 	{  token.T_20: true,  }, // UnicodeClass3R0 
 	{  }, // UnicodeClass3R1 
-	{  token.T_19: true,  token.T_1: true,  token.T_0: true,  token.T_15: true,  token.T_23: true,  token.T_22: true,  }, // UnorderedAlternates0R0 
+	{  token.T_0: true,  token.T_19: true,  token.T_23: true,  token.T_22: true,  token.T_1: true,  token.T_15: true,  }, // UnorderedAlternates0R0 
 	{  }, // UnorderedAlternates0R1 
-	{  token.T_1: true,  token.T_0: true,  token.T_15: true,  token.T_23: true,  token.T_22: true,  token.T_19: true,  }, // UnorderedAlternates1R0 
+	{  token.T_0: true,  token.T_19: true,  token.T_23: true,  token.T_22: true,  token.T_1: true,  token.T_15: true,  }, // UnorderedAlternates1R0 
 	{  token.T_26: true,  }, // UnorderedAlternates1R1 
-	{  token.T_15: true,  token.T_23: true,  token.T_22: true,  token.T_19: true,  token.T_1: true,  token.T_0: true,  }, // UnorderedAlternates1R2 
+	{  token.T_19: true,  token.T_23: true,  token.T_22: true,  token.T_1: true,  token.T_15: true,  token.T_0: true,  }, // UnorderedAlternates1R2 
 	{  }, // UnorderedAlternates1R3 
 }

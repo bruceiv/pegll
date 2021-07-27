@@ -13,14 +13,22 @@ import(
 type Label int
 
 const(
-	OptRequired0R0 Label = iota
-	OptRequired0R1
-	OptRequired1R0
+	Base0R0 Label = iota
+	Base0R1
+	Base1F0
+	OptBase0R0
+	OptBase0R1
+	OptBase1R0
+	Optional0R0
+	Optional0R1
+	Optional1F0
 	Required0R0
 	Required0R1
 	Required1F0
 	S10R0
 	S10R1
+	S10R2
+	S10R3
 	S11F0
 )
 
@@ -133,25 +141,65 @@ func (s *Slot) String() string {
 }
 
 var slots = map[Label]*Slot{ 
-	OptRequired0R0: {
-		symbols.NT_OptRequired, 0, 0, 
+	Base0R0: {
+		symbols.NT_Base, 0, 0, 
 		symbols.Symbols{  
-			symbols.NT_Required,
+			symbols.NT_Base,
 		}, 
-		OptRequired0R0, 
+		Base0R0, 
 	},
-	OptRequired0R1: {
-		symbols.NT_OptRequired, 0, 1, 
+	Base0R1: {
+		symbols.NT_Base, 0, 1, 
 		symbols.Symbols{  
-			symbols.NT_Required,
+			symbols.NT_Base,
 		}, 
-		OptRequired0R1, 
+		Base0R1, 
 	},
-	OptRequired1R0: {
-		symbols.NT_OptRequired, 1, 0, 
+	Base1F0: {
+		symbols.NT_Base, 1, 0, 
 		symbols.Symbols{ 
 		}, 
-		OptRequired1R0, 
+		Base1F0, 
+	},
+	OptBase0R0: {
+		symbols.NT_OptBase, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_Base,
+		}, 
+		OptBase0R0, 
+	},
+	OptBase0R1: {
+		symbols.NT_OptBase, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_Base,
+		}, 
+		OptBase0R1, 
+	},
+	OptBase1R0: {
+		symbols.NT_OptBase, 1, 0, 
+		symbols.Symbols{ 
+		}, 
+		OptBase1R0, 
+	},
+	Optional0R0: {
+		symbols.NT_Optional, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_OptBase,
+		}, 
+		Optional0R0, 
+	},
+	Optional0R1: {
+		symbols.NT_Optional, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_OptBase,
+		}, 
+		Optional0R1, 
+	},
+	Optional1F0: {
+		symbols.NT_Optional, 1, 0, 
+		symbols.Symbols{ 
+		}, 
+		Optional1F0, 
 	},
 	Required0R0: {
 		symbols.NT_Required, 0, 0, 
@@ -176,16 +224,38 @@ var slots = map[Label]*Slot{
 	S10R0: {
 		symbols.NT_S1, 0, 0, 
 		symbols.Symbols{  
-			symbols.NT_OptRequired,
+			symbols.NT_Required, 
+			symbols.NT_Optional, 
+			symbols.NT_Required,
 		}, 
 		S10R0, 
 	},
 	S10R1: {
 		symbols.NT_S1, 0, 1, 
 		symbols.Symbols{  
-			symbols.NT_OptRequired,
+			symbols.NT_Required, 
+			symbols.NT_Optional, 
+			symbols.NT_Required,
 		}, 
 		S10R1, 
+	},
+	S10R2: {
+		symbols.NT_S1, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_Required, 
+			symbols.NT_Optional, 
+			symbols.NT_Required,
+		}, 
+		S10R2, 
+	},
+	S10R3: {
+		symbols.NT_S1, 0, 3, 
+		symbols.Symbols{  
+			symbols.NT_Required, 
+			symbols.NT_Optional, 
+			symbols.NT_Required,
+		}, 
+		S10R3, 
 	},
 	S11F0: {
 		symbols.NT_S1, 1, 0, 
@@ -196,43 +266,69 @@ var slots = map[Label]*Slot{
 }
 
 var slotIndex = map[Index]Label { 
-	Index{ symbols.NT_OptRequired,0,0 }: OptRequired0R0,
-	Index{ symbols.NT_OptRequired,0,1 }: OptRequired0R1,
-	Index{ symbols.NT_OptRequired,1,0 }: OptRequired1R0,
+	Index{ symbols.NT_Base,0,0 }: Base0R0,
+	Index{ symbols.NT_Base,0,1 }: Base0R1,
+	Index{ symbols.NT_Base,1,0 }: Base1F0,
+	Index{ symbols.NT_OptBase,0,0 }: OptBase0R0,
+	Index{ symbols.NT_OptBase,0,1 }: OptBase0R1,
+	Index{ symbols.NT_OptBase,1,0 }: OptBase1R0,
+	Index{ symbols.NT_Optional,0,0 }: Optional0R0,
+	Index{ symbols.NT_Optional,0,1 }: Optional0R1,
+	Index{ symbols.NT_Optional,1,0 }: Optional1F0,
 	Index{ symbols.NT_Required,0,0 }: Required0R0,
 	Index{ symbols.NT_Required,0,1 }: Required0R1,
 	Index{ symbols.NT_Required,1,0 }: Required1F0,
 	Index{ symbols.NT_S1,0,0 }: S10R0,
 	Index{ symbols.NT_S1,0,1 }: S10R1,
+	Index{ symbols.NT_S1,0,2 }: S10R2,
+	Index{ symbols.NT_S1,0,3 }: S10R3,
 	Index{ symbols.NT_S1,1,0 }: S11F0,
 }
 
 var alternates = map[symbols.NT][]Label{ 
 	symbols.NT_S1:[]Label{ S10R0 },
 	symbols.NT_Required:[]Label{ Required0R0 },
-	symbols.NT_OptRequired:[]Label{ OptRequired0R0,OptRequired1R0 },
+	symbols.NT_Optional:[]Label{ Optional0R0 },
+	symbols.NT_Base:[]Label{ Base0R0 },
+	symbols.NT_OptBase:[]Label{ OptBase0R0,OptBase1R0 },
 }
 
 var nullable = []bool { 
-	false, // OptRequired0R0 
-	true, // OptRequired0R1 
-	true, // OptRequired1R0 
+	false, // Base0R0 
+	true, // Base0R1 
+	false, // Base1F0 
+	false, // OptBase0R0 
+	true, // OptBase0R1 
+	true, // OptBase1R0 
+	true, // Optional0R0 
+	true, // Optional0R1 
+	false, // Optional1F0 
 	false, // Required0R0 
 	true, // Required0R1 
 	false, // Required1F0 
-	true, // S10R0 
-	true, // S10R1 
+	false, // S10R0 
+	false, // S10R1 
+	false, // S10R2 
+	true, // S10R3 
 	false, // S11F0 
 }
 
 var firstT = []map[token.Type]bool { 
-	{  token.T_0: true,  }, // OptRequired0R0 
-	{  }, // OptRequired0R1 
-	{  }, // OptRequired1R0 
-	{  token.T_0: true,  }, // Required0R0 
+	{  token.T_0: true,  }, // Base0R0 
+	{  }, // Base0R1 
+	{  }, // Base1F0 
+	{  token.T_0: true,  }, // OptBase0R0 
+	{  }, // OptBase0R1 
+	{  }, // OptBase1R0 
+	{  token.T_0: true,  }, // Optional0R0 
+	{  }, // Optional0R1 
+	{  }, // Optional1F0 
+	{  token.T_1: true,  }, // Required0R0 
 	{  }, // Required0R1 
 	{  }, // Required1F0 
-	{  token.T_0: true,  }, // S10R0 
-	{  }, // S10R1 
+	{  token.T_1: true,  }, // S10R0 
+	{  token.T_1: true,  token.T_0: true,  }, // S10R1 
+	{  token.T_1: true,  }, // S10R2 
+	{  }, // S10R3 
 	{  }, // S11F0 
 }

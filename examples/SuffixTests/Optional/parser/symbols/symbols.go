@@ -16,19 +16,22 @@ func (L) isSymbol() {}
 // NT is the type of non-terminals symbols
 type NT int
 const( 
-	NT_OptRequired NT = iota
+	NT_Base NT = iota
+	NT_OptBase 
+	NT_Optional 
 	NT_Required 
 	NT_S1 
 )
 
-const NumNTs = 3
+const NumNTs = 5
 
 type NTs []NT
 
 // T is the type of terminals symbols
 type T int
 const( 
-	T_0 T = iota // Required 
+	T_0 T = iota // Base 
+	T_1  // Required 
 )
 
 // L is the type of lookahead symbols
@@ -123,29 +126,36 @@ func (lk L) ArgSymbol() Symbol {
 }
 
 var ntToString = []string { 
-	"OptRequired", /* NT_OptRequired */
+	"Base", /* NT_Base */
+	"OptBase", /* NT_OptBase */
+	"Optional", /* NT_Optional */
 	"Required", /* NT_Required */
 	"S1", /* NT_S1 */ 
 }
 
 var tToString = []string { 
-	"Required", /* T_0 */ 
+	"Base", /* T_0 */
+	"Required", /* T_1 */ 
 }
 
 var stringNT = map[string]NT{ 
-	"OptRequired":NT_OptRequired,
+	"Base":NT_Base,
+	"OptBase":NT_OptBase,
+	"Optional":NT_Optional,
 	"Required":NT_Required,
 	"S1":NT_S1,
 }
 
 var leftRec = map[NT]NTs { 
-	NT_OptRequired: NTs {  NT_Required,  },
+	NT_Base: NTs {  },
+	NT_OptBase: NTs {  NT_Base,  },
+	NT_Optional: NTs {  NT_OptBase,  NT_Base,  },
 	NT_Required: NTs {  },
-	NT_S1: NTs {  NT_OptRequired,  NT_Required,  },
+	NT_S1: NTs {  NT_Required,  },
 }
 
 var ordered = map[NT]bool { 
-	NT_OptRequired:true,
+	NT_OptBase:true,
 }
 
 var lkMode = []int { 

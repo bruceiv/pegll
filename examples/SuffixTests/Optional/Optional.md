@@ -21,14 +21,14 @@ A grammar to test the added `?` operator in `Pegll`.
 ```
 package "Optional"
 
-S1       : Required?    ;
+S1       : Required Optional Required   ;
 
 Required : "Required"           ;
-```
-Optional : Base                 ;
+
+Optional : Base?                 ;
 
 Base     : "Base"               ;
-
+```
 
 #
 ### **COPYRIGHT AND LICENSING INFORMATION**
