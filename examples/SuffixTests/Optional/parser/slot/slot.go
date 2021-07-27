@@ -13,10 +13,15 @@ import(
 type Label int
 
 const(
-	Required0R0 Label = iota
+	OptRequired0R0 Label = iota
+	OptRequired0R1
+	OptRequired1R0
+	Required0R0
 	Required0R1
+	Required1F0
 	S10R0
 	S10R1
+	S11F0
 )
 
 type Slot struct {
@@ -94,6 +99,11 @@ func (l Label) FirstContains(typ token.Type) bool {
 	return firstT[l][typ]
 }
 
+func (l Label) IsLookahead() bool {
+	s := l.Slot()
+	return s.Pos > 0 && s.Symbols[s.Pos-1].IsLookahead()
+}
+
 func (s *Slot) EoR() bool {
 	return s.Pos >= len(s.Symbols)
 }
@@ -123,6 +133,26 @@ func (s *Slot) String() string {
 }
 
 var slots = map[Label]*Slot{ 
+	OptRequired0R0: {
+		symbols.NT_OptRequired, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_Required,
+		}, 
+		OptRequired0R0, 
+	},
+	OptRequired0R1: {
+		symbols.NT_OptRequired, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_Required,
+		}, 
+		OptRequired0R1, 
+	},
+	OptRequired1R0: {
+		symbols.NT_OptRequired, 1, 0, 
+		symbols.Symbols{ 
+		}, 
+		OptRequired1R0, 
+	},
 	Required0R0: {
 		symbols.NT_Required, 0, 0, 
 		symbols.Symbols{  
@@ -137,44 +167,72 @@ var slots = map[Label]*Slot{
 		}, 
 		Required0R1, 
 	},
+	Required1F0: {
+		symbols.NT_Required, 1, 0, 
+		symbols.Symbols{ 
+		}, 
+		Required1F0, 
+	},
 	S10R0: {
 		symbols.NT_S1, 0, 0, 
 		symbols.Symbols{  
-			symbols.NT_Required,
+			symbols.NT_OptRequired,
 		}, 
 		S10R0, 
 	},
 	S10R1: {
 		symbols.NT_S1, 0, 1, 
 		symbols.Symbols{  
-			symbols.NT_Required,
+			symbols.NT_OptRequired,
 		}, 
 		S10R1, 
+	},
+	S11F0: {
+		symbols.NT_S1, 1, 0, 
+		symbols.Symbols{ 
+		}, 
+		S11F0, 
 	},
 }
 
 var slotIndex = map[Index]Label { 
+	Index{ symbols.NT_OptRequired,0,0 }: OptRequired0R0,
+	Index{ symbols.NT_OptRequired,0,1 }: OptRequired0R1,
+	Index{ symbols.NT_OptRequired,1,0 }: OptRequired1R0,
 	Index{ symbols.NT_Required,0,0 }: Required0R0,
 	Index{ symbols.NT_Required,0,1 }: Required0R1,
+	Index{ symbols.NT_Required,1,0 }: Required1F0,
 	Index{ symbols.NT_S1,0,0 }: S10R0,
 	Index{ symbols.NT_S1,0,1 }: S10R1,
+	Index{ symbols.NT_S1,1,0 }: S11F0,
 }
 
 var alternates = map[symbols.NT][]Label{ 
 	symbols.NT_S1:[]Label{ S10R0 },
 	symbols.NT_Required:[]Label{ Required0R0 },
+	symbols.NT_OptRequired:[]Label{ OptRequired0R0,OptRequired1R0 },
 }
 
 var nullable = []bool { 
+	false, // OptRequired0R0 
+	true, // OptRequired0R1 
+	true, // OptRequired1R0 
 	false, // Required0R0 
 	true, // Required0R1 
-	false, // S10R0 
+	false, // Required1F0 
+	true, // S10R0 
 	true, // S10R1 
+	false, // S11F0 
 }
 
 var firstT = []map[token.Type]bool { 
+	{  token.T_0: true,  }, // OptRequired0R0 
+	{  }, // OptRequired0R1 
+	{  }, // OptRequired1R0 
 	{  token.T_0: true,  }, // Required0R0 
 	{  }, // Required0R1 
+	{  }, // Required1F0 
 	{  token.T_0: true,  }, // S10R0 
 	{  }, // S10R1 
+	{  }, // S11F0 
 }

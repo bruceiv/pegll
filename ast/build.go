@@ -114,7 +114,7 @@ func (bld *builder) replaceSynOptional(g *GoGLL) {
 		// loop through the alternates
 		for _, a := range r.Alternates {
 			// initialize new symbols for each alternate from its length
-			newSymbols := make([]SyntaxSymbol, len(a.Symbols))
+			newSymbols := make([]SyntaxSymbol, 0, len(a.Symbols))
 			// loop through the range of symbols to determine if syntax optional
 			for _, s := range a.Symbols {
 				// if synOptional, generate a new name for the optional rules
