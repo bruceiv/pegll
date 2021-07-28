@@ -136,23 +136,23 @@ func (bld *builder) replaceSyntaxSuffix(g *GoGLL) {
 							expr := &SyntaxAlternate{
 								Symbols: exprSym,
 							}
-							tempAlts = append(tempAlts, expr)
-							tempAlts = append(tempAlts, empty)
+							tempAlts = append(tempAlts, expr)  //expr
+							tempAlts = append(tempAlts, empty) //empty
 
 						} else if l.Type == 1 { //rep 0+ times "*"
-							// slice of syntax symbols only containing a syntax atom
+							// slice of syntax symbols containing the expression and the NT to repeat
 							exprSym := []SyntaxSymbol{l.Expr, &suff}
 							// syntax alternate takes slice of syntax symbols
 							expr := &SyntaxAlternate{
 								Symbols: exprSym,
 							}
-							tempAlts = append(tempAlts, expr)
-							tempAlts = append(tempAlts, empty)
+							tempAlts = append(tempAlts, expr)  // expr suff
+							tempAlts = append(tempAlts, empty) // empty
 						}
 
 						//Create new syntax rule
 						suffRule := SyntaxRule{
-							Head:       &suff,
+							Head:       &suff, //Nt
 							Alternates: tempAlts,
 							IsOrdered:  true,
 						}
