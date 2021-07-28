@@ -94,9 +94,6 @@ const(
 	Rules1R0
 	Rules1R1
 	Rules1R2
-	SynOptional0R0
-	SynOptional0R1
-	SynOptional0R2
 	SyntaxAlternate0R0
 	SyntaxAlternate0R1
 	SyntaxAlternate1R0
@@ -122,6 +119,12 @@ const(
 	SyntaxRule0R2
 	SyntaxRule0R3
 	SyntaxRule0R4
+	SyntaxSuffix0R0
+	SyntaxSuffix0R1
+	SyntaxSuffix0R2
+	SyntaxSuffix1R0
+	SyntaxSuffix1R1
+	SyntaxSuffix1R2
 	SyntaxSymbol0R0
 	SyntaxSymbol0R1
 	SyntaxSymbol0R2
@@ -299,7 +302,7 @@ var slots = map[Label]*Slot{
 		symbols.NT_LexAlternates, 1, 0, 
 		symbols.Symbols{  
 			symbols.NT_RegExp, 
-			symbols.T_26, 
+			symbols.T_27, 
 			symbols.NT_LexAlternates,
 		}, 
 		LexAlternates1R0, 
@@ -308,7 +311,7 @@ var slots = map[Label]*Slot{
 		symbols.NT_LexAlternates, 1, 1, 
 		symbols.Symbols{  
 			symbols.NT_RegExp, 
-			symbols.T_26, 
+			symbols.T_27, 
 			symbols.NT_LexAlternates,
 		}, 
 		LexAlternates1R1, 
@@ -317,7 +320,7 @@ var slots = map[Label]*Slot{
 		symbols.NT_LexAlternates, 1, 2, 
 		symbols.Symbols{  
 			symbols.NT_RegExp, 
-			symbols.T_26, 
+			symbols.T_27, 
 			symbols.NT_LexAlternates,
 		}, 
 		LexAlternates1R2, 
@@ -326,7 +329,7 @@ var slots = map[Label]*Slot{
 		symbols.NT_LexAlternates, 1, 3, 
 		symbols.Symbols{  
 			symbols.NT_RegExp, 
-			symbols.T_26, 
+			symbols.T_27, 
 			symbols.NT_LexAlternates,
 		}, 
 		LexAlternates1R3, 
@@ -426,122 +429,122 @@ var slots = map[Label]*Slot{
 	LexOneOrMore0R0: {
 		symbols.NT_LexOneOrMore, 0, 0, 
 		symbols.Symbols{  
-			symbols.T_8, 
+			symbols.T_9, 
 			symbols.NT_LexAlternates, 
-			symbols.T_9,
+			symbols.T_10,
 		}, 
 		LexOneOrMore0R0, 
 	},
 	LexOneOrMore0R1: {
 		symbols.NT_LexOneOrMore, 0, 1, 
 		symbols.Symbols{  
-			symbols.T_8, 
+			symbols.T_9, 
 			symbols.NT_LexAlternates, 
-			symbols.T_9,
+			symbols.T_10,
 		}, 
 		LexOneOrMore0R1, 
 	},
 	LexOneOrMore0R2: {
 		symbols.NT_LexOneOrMore, 0, 2, 
 		symbols.Symbols{  
-			symbols.T_8, 
+			symbols.T_9, 
 			symbols.NT_LexAlternates, 
-			symbols.T_9,
+			symbols.T_10,
 		}, 
 		LexOneOrMore0R2, 
 	},
 	LexOneOrMore0R3: {
 		symbols.NT_LexOneOrMore, 0, 3, 
 		symbols.Symbols{  
-			symbols.T_8, 
+			symbols.T_9, 
 			symbols.NT_LexAlternates, 
-			symbols.T_9,
+			symbols.T_10,
 		}, 
 		LexOneOrMore0R3, 
 	},
 	LexOptional0R0: {
 		symbols.NT_LexOptional, 0, 0, 
 		symbols.Symbols{  
-			symbols.T_11, 
+			symbols.T_12, 
 			symbols.NT_LexAlternates, 
-			symbols.T_12,
+			symbols.T_13,
 		}, 
 		LexOptional0R0, 
 	},
 	LexOptional0R1: {
 		symbols.NT_LexOptional, 0, 1, 
 		symbols.Symbols{  
-			symbols.T_11, 
+			symbols.T_12, 
 			symbols.NT_LexAlternates, 
-			symbols.T_12,
+			symbols.T_13,
 		}, 
 		LexOptional0R1, 
 	},
 	LexOptional0R2: {
 		symbols.NT_LexOptional, 0, 2, 
 		symbols.Symbols{  
-			symbols.T_11, 
+			symbols.T_12, 
 			symbols.NT_LexAlternates, 
-			symbols.T_12,
+			symbols.T_13,
 		}, 
 		LexOptional0R2, 
 	},
 	LexOptional0R3: {
 		symbols.NT_LexOptional, 0, 3, 
 		symbols.Symbols{  
-			symbols.T_11, 
+			symbols.T_12, 
 			symbols.NT_LexAlternates, 
-			symbols.T_12,
+			symbols.T_13,
 		}, 
 		LexOptional0R3, 
 	},
 	LexRule0R0: {
 		symbols.NT_LexRule, 0, 0, 
 		symbols.Symbols{  
-			symbols.T_23, 
-			symbols.T_6, 
+			symbols.T_24, 
+			symbols.T_7, 
 			symbols.NT_RegExp, 
-			symbols.T_7,
+			symbols.T_8,
 		}, 
 		LexRule0R0, 
 	},
 	LexRule0R1: {
 		symbols.NT_LexRule, 0, 1, 
 		symbols.Symbols{  
-			symbols.T_23, 
-			symbols.T_6, 
+			symbols.T_24, 
+			symbols.T_7, 
 			symbols.NT_RegExp, 
-			symbols.T_7,
+			symbols.T_8,
 		}, 
 		LexRule0R1, 
 	},
 	LexRule0R2: {
 		symbols.NT_LexRule, 0, 2, 
 		symbols.Symbols{  
-			symbols.T_23, 
-			symbols.T_6, 
+			symbols.T_24, 
+			symbols.T_7, 
 			symbols.NT_RegExp, 
-			symbols.T_7,
+			symbols.T_8,
 		}, 
 		LexRule0R2, 
 	},
 	LexRule0R3: {
 		symbols.NT_LexRule, 0, 3, 
 		symbols.Symbols{  
-			symbols.T_23, 
-			symbols.T_6, 
+			symbols.T_24, 
+			symbols.T_7, 
 			symbols.NT_RegExp, 
-			symbols.T_7,
+			symbols.T_8,
 		}, 
 		LexRule0R3, 
 	},
 	LexRule0R4: {
 		symbols.NT_LexRule, 0, 4, 
 		symbols.Symbols{  
-			symbols.T_23, 
-			symbols.T_6, 
+			symbols.T_24, 
+			symbols.T_7, 
 			symbols.NT_RegExp, 
-			symbols.T_7,
+			symbols.T_8,
 		}, 
 		LexRule0R4, 
 	},
@@ -549,10 +552,10 @@ var slots = map[Label]*Slot{
 		symbols.NT_LexRule, 1, 0, 
 		symbols.Symbols{  
 			symbols.T_0, 
-			symbols.T_23, 
-			symbols.T_6, 
+			symbols.T_24, 
+			symbols.T_7, 
 			symbols.NT_RegExp, 
-			symbols.T_7,
+			symbols.T_8,
 		}, 
 		LexRule1R0, 
 	},
@@ -560,10 +563,10 @@ var slots = map[Label]*Slot{
 		symbols.NT_LexRule, 1, 1, 
 		symbols.Symbols{  
 			symbols.T_0, 
-			symbols.T_23, 
-			symbols.T_6, 
+			symbols.T_24, 
+			symbols.T_7, 
 			symbols.NT_RegExp, 
-			symbols.T_7,
+			symbols.T_8,
 		}, 
 		LexRule1R1, 
 	},
@@ -571,10 +574,10 @@ var slots = map[Label]*Slot{
 		symbols.NT_LexRule, 1, 2, 
 		symbols.Symbols{  
 			symbols.T_0, 
-			symbols.T_23, 
-			symbols.T_6, 
+			symbols.T_24, 
+			symbols.T_7, 
 			symbols.NT_RegExp, 
-			symbols.T_7,
+			symbols.T_8,
 		}, 
 		LexRule1R2, 
 	},
@@ -582,10 +585,10 @@ var slots = map[Label]*Slot{
 		symbols.NT_LexRule, 1, 3, 
 		symbols.Symbols{  
 			symbols.T_0, 
-			symbols.T_23, 
-			symbols.T_6, 
+			symbols.T_24, 
+			symbols.T_7, 
 			symbols.NT_RegExp, 
-			symbols.T_7,
+			symbols.T_8,
 		}, 
 		LexRule1R3, 
 	},
@@ -593,10 +596,10 @@ var slots = map[Label]*Slot{
 		symbols.NT_LexRule, 1, 4, 
 		symbols.Symbols{  
 			symbols.T_0, 
-			symbols.T_23, 
-			symbols.T_6, 
+			symbols.T_24, 
+			symbols.T_7, 
 			symbols.NT_RegExp, 
-			symbols.T_7,
+			symbols.T_8,
 		}, 
 		LexRule1R4, 
 	},
@@ -604,62 +607,62 @@ var slots = map[Label]*Slot{
 		symbols.NT_LexRule, 1, 5, 
 		symbols.Symbols{  
 			symbols.T_0, 
-			symbols.T_23, 
-			symbols.T_6, 
+			symbols.T_24, 
+			symbols.T_7, 
 			symbols.NT_RegExp, 
-			symbols.T_7,
+			symbols.T_8,
 		}, 
 		LexRule1R5, 
 	},
 	LexSymbol0R0: {
 		symbols.NT_LexSymbol, 0, 0, 
 		symbols.Symbols{  
-			symbols.T_4,
+			symbols.T_5,
 		}, 
 		LexSymbol0R0, 
 	},
 	LexSymbol0R1: {
 		symbols.NT_LexSymbol, 0, 1, 
 		symbols.Symbols{  
-			symbols.T_4,
+			symbols.T_5,
 		}, 
 		LexSymbol0R1, 
 	},
 	LexSymbol1R0: {
 		symbols.NT_LexSymbol, 1, 0, 
 		symbols.Symbols{  
-			symbols.T_13, 
-			symbols.T_22,
+			symbols.T_14, 
+			symbols.T_23,
 		}, 
 		LexSymbol1R0, 
 	},
 	LexSymbol1R1: {
 		symbols.NT_LexSymbol, 1, 1, 
 		symbols.Symbols{  
-			symbols.T_13, 
-			symbols.T_22,
+			symbols.T_14, 
+			symbols.T_23,
 		}, 
 		LexSymbol1R1, 
 	},
 	LexSymbol1R2: {
 		symbols.NT_LexSymbol, 1, 2, 
 		symbols.Symbols{  
-			symbols.T_13, 
-			symbols.T_22,
+			symbols.T_14, 
+			symbols.T_23,
 		}, 
 		LexSymbol1R2, 
 	},
 	LexSymbol2R0: {
 		symbols.NT_LexSymbol, 2, 0, 
 		symbols.Symbols{  
-			symbols.T_14,
+			symbols.T_15,
 		}, 
 		LexSymbol2R0, 
 	},
 	LexSymbol2R1: {
 		symbols.NT_LexSymbol, 2, 1, 
 		symbols.Symbols{  
-			symbols.T_14,
+			symbols.T_15,
 		}, 
 		LexSymbol2R1, 
 	},
@@ -680,24 +683,24 @@ var slots = map[Label]*Slot{
 	LexSymbol4R0: {
 		symbols.NT_LexSymbol, 4, 0, 
 		symbols.Symbols{  
-			symbols.T_18, 
-			symbols.T_22,
+			symbols.T_19, 
+			symbols.T_23,
 		}, 
 		LexSymbol4R0, 
 	},
 	LexSymbol4R1: {
 		symbols.NT_LexSymbol, 4, 1, 
 		symbols.Symbols{  
-			symbols.T_18, 
-			symbols.T_22,
+			symbols.T_19, 
+			symbols.T_23,
 		}, 
 		LexSymbol4R1, 
 	},
 	LexSymbol4R2: {
 		symbols.NT_LexSymbol, 4, 2, 
 		symbols.Symbols{  
-			symbols.T_18, 
-			symbols.T_22,
+			symbols.T_19, 
+			symbols.T_23,
 		}, 
 		LexSymbol4R2, 
 	},
@@ -718,36 +721,36 @@ var slots = map[Label]*Slot{
 	LexZeroOrMore0R0: {
 		symbols.NT_LexZeroOrMore, 0, 0, 
 		symbols.Symbols{  
-			symbols.T_25, 
+			symbols.T_26, 
 			symbols.NT_LexAlternates, 
-			symbols.T_27,
+			symbols.T_28,
 		}, 
 		LexZeroOrMore0R0, 
 	},
 	LexZeroOrMore0R1: {
 		symbols.NT_LexZeroOrMore, 0, 1, 
 		symbols.Symbols{  
-			symbols.T_25, 
+			symbols.T_26, 
 			symbols.NT_LexAlternates, 
-			symbols.T_27,
+			symbols.T_28,
 		}, 
 		LexZeroOrMore0R1, 
 	},
 	LexZeroOrMore0R2: {
 		symbols.NT_LexZeroOrMore, 0, 2, 
 		symbols.Symbols{  
-			symbols.T_25, 
+			symbols.T_26, 
 			symbols.NT_LexAlternates, 
-			symbols.T_27,
+			symbols.T_28,
 		}, 
 		LexZeroOrMore0R2, 
 	},
 	LexZeroOrMore0R3: {
 		symbols.NT_LexZeroOrMore, 0, 3, 
 		symbols.Symbols{  
-			symbols.T_25, 
+			symbols.T_26, 
 			symbols.NT_LexAlternates, 
-			symbols.T_27,
+			symbols.T_28,
 		}, 
 		LexZeroOrMore0R3, 
 	},
@@ -769,7 +772,7 @@ var slots = map[Label]*Slot{
 		symbols.NT_OrderedAlternates, 1, 0, 
 		symbols.Symbols{  
 			symbols.NT_SyntaxAlternate, 
-			symbols.T_5, 
+			symbols.T_6, 
 			symbols.NT_OrderedAlternates,
 		}, 
 		OrderedAlternates1R0, 
@@ -778,7 +781,7 @@ var slots = map[Label]*Slot{
 		symbols.NT_OrderedAlternates, 1, 1, 
 		symbols.Symbols{  
 			symbols.NT_SyntaxAlternate, 
-			symbols.T_5, 
+			symbols.T_6, 
 			symbols.NT_OrderedAlternates,
 		}, 
 		OrderedAlternates1R1, 
@@ -787,7 +790,7 @@ var slots = map[Label]*Slot{
 		symbols.NT_OrderedAlternates, 1, 2, 
 		symbols.Symbols{  
 			symbols.NT_SyntaxAlternate, 
-			symbols.T_5, 
+			symbols.T_6, 
 			symbols.NT_OrderedAlternates,
 		}, 
 		OrderedAlternates1R2, 
@@ -796,7 +799,7 @@ var slots = map[Label]*Slot{
 		symbols.NT_OrderedAlternates, 1, 3, 
 		symbols.Symbols{  
 			symbols.NT_SyntaxAlternate, 
-			symbols.T_5, 
+			symbols.T_6, 
 			symbols.NT_OrderedAlternates,
 		}, 
 		OrderedAlternates1R3, 
@@ -804,24 +807,24 @@ var slots = map[Label]*Slot{
 	Package0R0: {
 		symbols.NT_Package, 0, 0, 
 		symbols.Symbols{  
-			symbols.T_21, 
-			symbols.T_22,
+			symbols.T_22, 
+			symbols.T_23,
 		}, 
 		Package0R0, 
 	},
 	Package0R1: {
 		symbols.NT_Package, 0, 1, 
 		symbols.Symbols{  
-			symbols.T_21, 
-			symbols.T_22,
+			symbols.T_22, 
+			symbols.T_23,
 		}, 
 		Package0R1, 
 	},
 	Package0R2: {
 		symbols.NT_Package, 0, 2, 
 		symbols.Symbols{  
-			symbols.T_21, 
-			symbols.T_22,
+			symbols.T_22, 
+			symbols.T_23,
 		}, 
 		Package0R2, 
 	},
@@ -929,30 +932,6 @@ var slots = map[Label]*Slot{
 		}, 
 		Rules1R2, 
 	},
-	SynOptional0R0: {
-		symbols.NT_SynOptional, 0, 0, 
-		symbols.Symbols{  
-			symbols.NT_SyntaxAtom, 
-			symbols.T_10,
-		}, 
-		SynOptional0R0, 
-	},
-	SynOptional0R1: {
-		symbols.NT_SynOptional, 0, 1, 
-		symbols.Symbols{  
-			symbols.NT_SyntaxAtom, 
-			symbols.T_10,
-		}, 
-		SynOptional0R1, 
-	},
-	SynOptional0R2: {
-		symbols.NT_SynOptional, 0, 2, 
-		symbols.Symbols{  
-			symbols.NT_SyntaxAtom, 
-			symbols.T_10,
-		}, 
-		SynOptional0R2, 
-	},
 	SyntaxAlternate0R0: {
 		symbols.NT_SyntaxAlternate, 0, 0, 
 		symbols.Symbols{  
@@ -970,14 +949,14 @@ var slots = map[Label]*Slot{
 	SyntaxAlternate1R0: {
 		symbols.NT_SyntaxAlternate, 1, 0, 
 		symbols.Symbols{  
-			symbols.T_15,
+			symbols.T_16,
 		}, 
 		SyntaxAlternate1R0, 
 	},
 	SyntaxAlternate1R1: {
 		symbols.NT_SyntaxAlternate, 1, 1, 
 		symbols.Symbols{  
-			symbols.T_15,
+			symbols.T_16,
 		}, 
 		SyntaxAlternate1R1, 
 	},
@@ -999,7 +978,7 @@ var slots = map[Label]*Slot{
 		symbols.NT_SyntaxAlternates, 1, 0, 
 		symbols.Symbols{  
 			symbols.NT_SyntaxAlternate, 
-			symbols.T_26, 
+			symbols.T_27, 
 			symbols.NT_UnorderedAlternates,
 		}, 
 		SyntaxAlternates1R0, 
@@ -1008,7 +987,7 @@ var slots = map[Label]*Slot{
 		symbols.NT_SyntaxAlternates, 1, 1, 
 		symbols.Symbols{  
 			symbols.NT_SyntaxAlternate, 
-			symbols.T_26, 
+			symbols.T_27, 
 			symbols.NT_UnorderedAlternates,
 		}, 
 		SyntaxAlternates1R1, 
@@ -1017,7 +996,7 @@ var slots = map[Label]*Slot{
 		symbols.NT_SyntaxAlternates, 1, 2, 
 		symbols.Symbols{  
 			symbols.NT_SyntaxAlternate, 
-			symbols.T_26, 
+			symbols.T_27, 
 			symbols.NT_UnorderedAlternates,
 		}, 
 		SyntaxAlternates1R2, 
@@ -1026,7 +1005,7 @@ var slots = map[Label]*Slot{
 		symbols.NT_SyntaxAlternates, 1, 3, 
 		symbols.Symbols{  
 			symbols.NT_SyntaxAlternate, 
-			symbols.T_26, 
+			symbols.T_27, 
 			symbols.NT_UnorderedAlternates,
 		}, 
 		SyntaxAlternates1R3, 
@@ -1035,7 +1014,7 @@ var slots = map[Label]*Slot{
 		symbols.NT_SyntaxAlternates, 2, 0, 
 		symbols.Symbols{  
 			symbols.NT_SyntaxAlternate, 
-			symbols.T_5, 
+			symbols.T_6, 
 			symbols.NT_OrderedAlternates,
 		}, 
 		SyntaxAlternates2R0, 
@@ -1044,7 +1023,7 @@ var slots = map[Label]*Slot{
 		symbols.NT_SyntaxAlternates, 2, 1, 
 		symbols.Symbols{  
 			symbols.NT_SyntaxAlternate, 
-			symbols.T_5, 
+			symbols.T_6, 
 			symbols.NT_OrderedAlternates,
 		}, 
 		SyntaxAlternates2R1, 
@@ -1053,7 +1032,7 @@ var slots = map[Label]*Slot{
 		symbols.NT_SyntaxAlternates, 2, 2, 
 		symbols.Symbols{  
 			symbols.NT_SyntaxAlternate, 
-			symbols.T_5, 
+			symbols.T_6, 
 			symbols.NT_OrderedAlternates,
 		}, 
 		SyntaxAlternates2R2, 
@@ -1062,7 +1041,7 @@ var slots = map[Label]*Slot{
 		symbols.NT_SyntaxAlternates, 2, 3, 
 		symbols.Symbols{  
 			symbols.NT_SyntaxAlternate, 
-			symbols.T_5, 
+			symbols.T_6, 
 			symbols.NT_OrderedAlternates,
 		}, 
 		SyntaxAlternates2R3, 
@@ -1070,94 +1049,142 @@ var slots = map[Label]*Slot{
 	SyntaxAtom0R0: {
 		symbols.NT_SyntaxAtom, 0, 0, 
 		symbols.Symbols{  
-			symbols.T_19,
+			symbols.T_20,
 		}, 
 		SyntaxAtom0R0, 
 	},
 	SyntaxAtom0R1: {
 		symbols.NT_SyntaxAtom, 0, 1, 
 		symbols.Symbols{  
-			symbols.T_19,
+			symbols.T_20,
 		}, 
 		SyntaxAtom0R1, 
 	},
 	SyntaxAtom1R0: {
 		symbols.NT_SyntaxAtom, 1, 0, 
 		symbols.Symbols{  
-			symbols.T_23,
+			symbols.T_24,
 		}, 
 		SyntaxAtom1R0, 
 	},
 	SyntaxAtom1R1: {
 		symbols.NT_SyntaxAtom, 1, 1, 
 		symbols.Symbols{  
-			symbols.T_23,
+			symbols.T_24,
 		}, 
 		SyntaxAtom1R1, 
 	},
 	SyntaxAtom2R0: {
 		symbols.NT_SyntaxAtom, 2, 0, 
 		symbols.Symbols{  
-			symbols.T_22,
+			symbols.T_23,
 		}, 
 		SyntaxAtom2R0, 
 	},
 	SyntaxAtom2R1: {
 		symbols.NT_SyntaxAtom, 2, 1, 
 		symbols.Symbols{  
-			symbols.T_22,
+			symbols.T_23,
 		}, 
 		SyntaxAtom2R1, 
 	},
 	SyntaxRule0R0: {
 		symbols.NT_SyntaxRule, 0, 0, 
 		symbols.Symbols{  
-			symbols.T_19, 
-			symbols.T_6, 
+			symbols.T_20, 
+			symbols.T_7, 
 			symbols.NT_SyntaxAlternates, 
-			symbols.T_7,
+			symbols.T_8,
 		}, 
 		SyntaxRule0R0, 
 	},
 	SyntaxRule0R1: {
 		symbols.NT_SyntaxRule, 0, 1, 
 		symbols.Symbols{  
-			symbols.T_19, 
-			symbols.T_6, 
+			symbols.T_20, 
+			symbols.T_7, 
 			symbols.NT_SyntaxAlternates, 
-			symbols.T_7,
+			symbols.T_8,
 		}, 
 		SyntaxRule0R1, 
 	},
 	SyntaxRule0R2: {
 		symbols.NT_SyntaxRule, 0, 2, 
 		symbols.Symbols{  
-			symbols.T_19, 
-			symbols.T_6, 
+			symbols.T_20, 
+			symbols.T_7, 
 			symbols.NT_SyntaxAlternates, 
-			symbols.T_7,
+			symbols.T_8,
 		}, 
 		SyntaxRule0R2, 
 	},
 	SyntaxRule0R3: {
 		symbols.NT_SyntaxRule, 0, 3, 
 		symbols.Symbols{  
-			symbols.T_19, 
-			symbols.T_6, 
+			symbols.T_20, 
+			symbols.T_7, 
 			symbols.NT_SyntaxAlternates, 
-			symbols.T_7,
+			symbols.T_8,
 		}, 
 		SyntaxRule0R3, 
 	},
 	SyntaxRule0R4: {
 		symbols.NT_SyntaxRule, 0, 4, 
 		symbols.Symbols{  
-			symbols.T_19, 
-			symbols.T_6, 
+			symbols.T_20, 
+			symbols.T_7, 
 			symbols.NT_SyntaxAlternates, 
-			symbols.T_7,
+			symbols.T_8,
 		}, 
 		SyntaxRule0R4, 
+	},
+	SyntaxSuffix0R0: {
+		symbols.NT_SyntaxSuffix, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_SyntaxAtom, 
+			symbols.T_11,
+		}, 
+		SyntaxSuffix0R0, 
+	},
+	SyntaxSuffix0R1: {
+		symbols.NT_SyntaxSuffix, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_SyntaxAtom, 
+			symbols.T_11,
+		}, 
+		SyntaxSuffix0R1, 
+	},
+	SyntaxSuffix0R2: {
+		symbols.NT_SyntaxSuffix, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_SyntaxAtom, 
+			symbols.T_11,
+		}, 
+		SyntaxSuffix0R2, 
+	},
+	SyntaxSuffix1R0: {
+		symbols.NT_SyntaxSuffix, 1, 0, 
+		symbols.Symbols{  
+			symbols.NT_SyntaxAtom, 
+			symbols.T_4,
+		}, 
+		SyntaxSuffix1R0, 
+	},
+	SyntaxSuffix1R1: {
+		symbols.NT_SyntaxSuffix, 1, 1, 
+		symbols.Symbols{  
+			symbols.NT_SyntaxAtom, 
+			symbols.T_4,
+		}, 
+		SyntaxSuffix1R1, 
+	},
+	SyntaxSuffix1R2: {
+		symbols.NT_SyntaxSuffix, 1, 2, 
+		symbols.Symbols{  
+			symbols.NT_SyntaxAtom, 
+			symbols.T_4,
+		}, 
+		SyntaxSuffix1R2, 
 	},
 	SyntaxSymbol0R0: {
 		symbols.NT_SyntaxSymbol, 0, 0, 
@@ -1210,14 +1237,14 @@ var slots = map[Label]*Slot{
 	SyntaxSymbol2R0: {
 		symbols.NT_SyntaxSymbol, 2, 0, 
 		symbols.Symbols{  
-			symbols.NT_SynOptional,
+			symbols.NT_SyntaxSuffix,
 		}, 
 		SyntaxSymbol2R0, 
 	},
 	SyntaxSymbol2R1: {
 		symbols.NT_SyntaxSymbol, 2, 1, 
 		symbols.Symbols{  
-			symbols.NT_SynOptional,
+			symbols.NT_SyntaxSuffix,
 		}, 
 		SyntaxSymbol2R1, 
 	},
@@ -1276,56 +1303,56 @@ var slots = map[Label]*Slot{
 	UnicodeClass0R0: {
 		symbols.NT_UnicodeClass, 0, 0, 
 		symbols.Symbols{  
-			symbols.T_16,
+			symbols.T_17,
 		}, 
 		UnicodeClass0R0, 
 	},
 	UnicodeClass0R1: {
 		symbols.NT_UnicodeClass, 0, 1, 
 		symbols.Symbols{  
-			symbols.T_16,
+			symbols.T_17,
 		}, 
 		UnicodeClass0R1, 
 	},
 	UnicodeClass1R0: {
 		symbols.NT_UnicodeClass, 1, 0, 
 		symbols.Symbols{  
-			symbols.T_24,
+			symbols.T_25,
 		}, 
 		UnicodeClass1R0, 
 	},
 	UnicodeClass1R1: {
 		symbols.NT_UnicodeClass, 1, 1, 
 		symbols.Symbols{  
-			symbols.T_24,
+			symbols.T_25,
 		}, 
 		UnicodeClass1R1, 
 	},
 	UnicodeClass2R0: {
 		symbols.NT_UnicodeClass, 2, 0, 
 		symbols.Symbols{  
-			symbols.T_17,
+			symbols.T_18,
 		}, 
 		UnicodeClass2R0, 
 	},
 	UnicodeClass2R1: {
 		symbols.NT_UnicodeClass, 2, 1, 
 		symbols.Symbols{  
-			symbols.T_17,
+			symbols.T_18,
 		}, 
 		UnicodeClass2R1, 
 	},
 	UnicodeClass3R0: {
 		symbols.NT_UnicodeClass, 3, 0, 
 		symbols.Symbols{  
-			symbols.T_20,
+			symbols.T_21,
 		}, 
 		UnicodeClass3R0, 
 	},
 	UnicodeClass3R1: {
 		symbols.NT_UnicodeClass, 3, 1, 
 		symbols.Symbols{  
-			symbols.T_20,
+			symbols.T_21,
 		}, 
 		UnicodeClass3R1, 
 	},
@@ -1347,7 +1374,7 @@ var slots = map[Label]*Slot{
 		symbols.NT_UnorderedAlternates, 1, 0, 
 		symbols.Symbols{  
 			symbols.NT_SyntaxAlternate, 
-			symbols.T_26, 
+			symbols.T_27, 
 			symbols.NT_UnorderedAlternates,
 		}, 
 		UnorderedAlternates1R0, 
@@ -1356,7 +1383,7 @@ var slots = map[Label]*Slot{
 		symbols.NT_UnorderedAlternates, 1, 1, 
 		symbols.Symbols{  
 			symbols.NT_SyntaxAlternate, 
-			symbols.T_26, 
+			symbols.T_27, 
 			symbols.NT_UnorderedAlternates,
 		}, 
 		UnorderedAlternates1R1, 
@@ -1365,7 +1392,7 @@ var slots = map[Label]*Slot{
 		symbols.NT_UnorderedAlternates, 1, 2, 
 		symbols.Symbols{  
 			symbols.NT_SyntaxAlternate, 
-			symbols.T_26, 
+			symbols.T_27, 
 			symbols.NT_UnorderedAlternates,
 		}, 
 		UnorderedAlternates1R2, 
@@ -1374,7 +1401,7 @@ var slots = map[Label]*Slot{
 		symbols.NT_UnorderedAlternates, 1, 3, 
 		symbols.Symbols{  
 			symbols.NT_SyntaxAlternate, 
-			symbols.T_26, 
+			symbols.T_27, 
 			symbols.NT_UnorderedAlternates,
 		}, 
 		UnorderedAlternates1R3, 
@@ -1463,9 +1490,6 @@ var slotIndex = map[Index]Label {
 	Index{ symbols.NT_Rules,1,0 }: Rules1R0,
 	Index{ symbols.NT_Rules,1,1 }: Rules1R1,
 	Index{ symbols.NT_Rules,1,2 }: Rules1R2,
-	Index{ symbols.NT_SynOptional,0,0 }: SynOptional0R0,
-	Index{ symbols.NT_SynOptional,0,1 }: SynOptional0R1,
-	Index{ symbols.NT_SynOptional,0,2 }: SynOptional0R2,
 	Index{ symbols.NT_SyntaxAlternate,0,0 }: SyntaxAlternate0R0,
 	Index{ symbols.NT_SyntaxAlternate,0,1 }: SyntaxAlternate0R1,
 	Index{ symbols.NT_SyntaxAlternate,1,0 }: SyntaxAlternate1R0,
@@ -1491,6 +1515,12 @@ var slotIndex = map[Index]Label {
 	Index{ symbols.NT_SyntaxRule,0,2 }: SyntaxRule0R2,
 	Index{ symbols.NT_SyntaxRule,0,3 }: SyntaxRule0R3,
 	Index{ symbols.NT_SyntaxRule,0,4 }: SyntaxRule0R4,
+	Index{ symbols.NT_SyntaxSuffix,0,0 }: SyntaxSuffix0R0,
+	Index{ symbols.NT_SyntaxSuffix,0,1 }: SyntaxSuffix0R1,
+	Index{ symbols.NT_SyntaxSuffix,0,2 }: SyntaxSuffix0R2,
+	Index{ symbols.NT_SyntaxSuffix,1,0 }: SyntaxSuffix1R0,
+	Index{ symbols.NT_SyntaxSuffix,1,1 }: SyntaxSuffix1R1,
+	Index{ symbols.NT_SyntaxSuffix,1,2 }: SyntaxSuffix1R2,
 	Index{ symbols.NT_SyntaxSymbol,0,0 }: SyntaxSymbol0R0,
 	Index{ symbols.NT_SyntaxSymbol,0,1 }: SyntaxSymbol0R1,
 	Index{ symbols.NT_SyntaxSymbol,0,2 }: SyntaxSymbol0R2,
@@ -1545,7 +1575,7 @@ var alternates = map[symbols.NT][]Label{
 	symbols.NT_SyntaxSymbols:[]Label{ SyntaxSymbols0R0,SyntaxSymbols1R0 },
 	symbols.NT_SyntaxSymbol:[]Label{ SyntaxSymbol0R0,SyntaxSymbol1R0,SyntaxSymbol2R0,SyntaxSymbol3R0 },
 	symbols.NT_SyntaxAtom:[]Label{ SyntaxAtom0R0,SyntaxAtom1R0,SyntaxAtom2R0 },
-	symbols.NT_SynOptional:[]Label{ SynOptional0R0 },
+	symbols.NT_SyntaxSuffix:[]Label{ SyntaxSuffix0R0,SyntaxSuffix1R0 },
 }
 
 var nullable = []bool { 
@@ -1630,9 +1660,6 @@ var nullable = []bool {
 	false, // Rules1R0 
 	false, // Rules1R1 
 	true, // Rules1R2 
-	false, // SynOptional0R0 
-	false, // SynOptional0R1 
-	true, // SynOptional0R2 
 	false, // SyntaxAlternate0R0 
 	true, // SyntaxAlternate0R1 
 	false, // SyntaxAlternate1R0 
@@ -1658,6 +1685,12 @@ var nullable = []bool {
 	false, // SyntaxRule0R2 
 	false, // SyntaxRule0R3 
 	true, // SyntaxRule0R4 
+	false, // SyntaxSuffix0R0 
+	false, // SyntaxSuffix0R1 
+	true, // SyntaxSuffix0R2 
+	false, // SyntaxSuffix1R0 
+	false, // SyntaxSuffix1R1 
+	true, // SyntaxSuffix1R2 
 	false, // SyntaxSymbol0R0 
 	false, // SyntaxSymbol0R1 
 	true, // SyntaxSymbol0R2 
@@ -1690,142 +1723,145 @@ var nullable = []bool {
 }
 
 var firstT = []map[token.Type]bool { 
-	{  token.T_21: true,  }, // GoGLL0R0 
-	{  token.T_19: true,  token.T_23: true,  token.T_0: true,  }, // GoGLL0R1 
+	{  token.T_22: true,  }, // GoGLL0R0 
+	{  token.T_0: true,  token.T_20: true,  token.T_24: true,  }, // GoGLL0R1 
 	{  }, // GoGLL0R2 
-	{  token.T_2: true,  token.T_17: true,  token.T_4: true,  token.T_11: true,  token.T_8: true,  token.T_24: true,  token.T_16: true,  token.T_13: true,  token.T_18: true,  token.T_20: true,  token.T_14: true,  token.T_25: true,  }, // LexAlternates0R0 
+	{  token.T_9: true,  token.T_19: true,  token.T_12: true,  token.T_26: true,  token.T_15: true,  token.T_18: true,  token.T_14: true,  token.T_2: true,  token.T_21: true,  token.T_17: true,  token.T_5: true,  token.T_25: true,  }, // LexAlternates0R0 
 	{  }, // LexAlternates0R1 
-	{  token.T_8: true,  token.T_24: true,  token.T_16: true,  token.T_2: true,  token.T_11: true,  token.T_20: true,  token.T_13: true,  token.T_17: true,  token.T_4: true,  token.T_14: true,  token.T_18: true,  token.T_25: true,  }, // LexAlternates1R0 
-	{  token.T_26: true,  }, // LexAlternates1R1 
-	{  token.T_11: true,  token.T_18: true,  token.T_4: true,  token.T_13: true,  token.T_20: true,  token.T_24: true,  token.T_14: true,  token.T_17: true,  token.T_2: true,  token.T_16: true,  token.T_8: true,  token.T_25: true,  }, // LexAlternates1R2 
+	{  token.T_17: true,  token.T_5: true,  token.T_25: true,  token.T_14: true,  token.T_12: true,  token.T_26: true,  token.T_9: true,  token.T_2: true,  token.T_19: true,  token.T_15: true,  token.T_18: true,  token.T_21: true,  }, // LexAlternates1R0 
+	{  token.T_27: true,  }, // LexAlternates1R1 
+	{  token.T_25: true,  token.T_18: true,  token.T_21: true,  token.T_9: true,  token.T_12: true,  token.T_19: true,  token.T_14: true,  token.T_26: true,  token.T_17: true,  token.T_2: true,  token.T_15: true,  token.T_5: true,  }, // LexAlternates1R2 
 	{  }, // LexAlternates1R3 
 	{  token.T_2: true,  }, // LexBracket0R0 
 	{  }, // LexBracket0R1 
-	{  token.T_11: true,  }, // LexBracket1R0 
+	{  token.T_12: true,  }, // LexBracket1R0 
 	{  }, // LexBracket1R1 
-	{  token.T_25: true,  }, // LexBracket2R0 
+	{  token.T_26: true,  }, // LexBracket2R0 
 	{  }, // LexBracket2R1 
-	{  token.T_8: true,  }, // LexBracket3R0 
+	{  token.T_9: true,  }, // LexBracket3R0 
 	{  }, // LexBracket3R1 
 	{  token.T_2: true,  }, // LexGroup0R0 
-	{  token.T_25: true,  token.T_8: true,  token.T_18: true,  token.T_4: true,  token.T_2: true,  token.T_11: true,  token.T_13: true,  token.T_20: true,  token.T_24: true,  token.T_14: true,  token.T_17: true,  token.T_16: true,  }, // LexGroup0R1 
+	{  token.T_9: true,  token.T_12: true,  token.T_25: true,  token.T_15: true,  token.T_5: true,  token.T_2: true,  token.T_21: true,  token.T_17: true,  token.T_14: true,  token.T_26: true,  token.T_18: true,  token.T_19: true,  }, // LexGroup0R1 
 	{  token.T_3: true,  }, // LexGroup0R2 
 	{  }, // LexGroup0R3 
-	{  token.T_8: true,  }, // LexOneOrMore0R0 
-	{  token.T_2: true,  token.T_4: true,  token.T_11: true,  token.T_25: true,  token.T_13: true,  token.T_20: true,  token.T_8: true,  token.T_24: true,  token.T_16: true,  token.T_18: true,  token.T_14: true,  token.T_17: true,  }, // LexOneOrMore0R1 
-	{  token.T_9: true,  }, // LexOneOrMore0R2 
+	{  token.T_9: true,  }, // LexOneOrMore0R0 
+	{  token.T_25: true,  token.T_18: true,  token.T_14: true,  token.T_26: true,  token.T_21: true,  token.T_2: true,  token.T_5: true,  token.T_12: true,  token.T_19: true,  token.T_9: true,  token.T_17: true,  token.T_15: true,  }, // LexOneOrMore0R1 
+	{  token.T_10: true,  }, // LexOneOrMore0R2 
 	{  }, // LexOneOrMore0R3 
-	{  token.T_11: true,  }, // LexOptional0R0 
-	{  token.T_16: true,  token.T_2: true,  token.T_20: true,  token.T_8: true,  token.T_18: true,  token.T_4: true,  token.T_24: true,  token.T_14: true,  token.T_17: true,  token.T_11: true,  token.T_25: true,  token.T_13: true,  }, // LexOptional0R1 
-	{  token.T_12: true,  }, // LexOptional0R2 
+	{  token.T_12: true,  }, // LexOptional0R0 
+	{  token.T_12: true,  token.T_14: true,  token.T_26: true,  token.T_9: true,  token.T_15: true,  token.T_21: true,  token.T_25: true,  token.T_18: true,  token.T_19: true,  token.T_17: true,  token.T_5: true,  token.T_2: true,  }, // LexOptional0R1 
+	{  token.T_13: true,  }, // LexOptional0R2 
 	{  }, // LexOptional0R3 
-	{  token.T_23: true,  }, // LexRule0R0 
-	{  token.T_6: true,  }, // LexRule0R1 
-	{  token.T_14: true,  token.T_25: true,  token.T_16: true,  token.T_2: true,  token.T_11: true,  token.T_8: true,  token.T_4: true,  token.T_18: true,  token.T_20: true,  token.T_24: true,  token.T_17: true,  token.T_13: true,  }, // LexRule0R2 
-	{  token.T_7: true,  }, // LexRule0R3 
+	{  token.T_24: true,  }, // LexRule0R0 
+	{  token.T_7: true,  }, // LexRule0R1 
+	{  token.T_5: true,  token.T_25: true,  token.T_26: true,  token.T_17: true,  token.T_9: true,  token.T_19: true,  token.T_21: true,  token.T_15: true,  token.T_18: true,  token.T_14: true,  token.T_12: true,  token.T_2: true,  }, // LexRule0R2 
+	{  token.T_8: true,  }, // LexRule0R3 
 	{  }, // LexRule0R4 
 	{  token.T_0: true,  }, // LexRule1R0 
-	{  token.T_23: true,  }, // LexRule1R1 
-	{  token.T_6: true,  }, // LexRule1R2 
-	{  token.T_24: true,  token.T_11: true,  token.T_18: true,  token.T_20: true,  token.T_4: true,  token.T_8: true,  token.T_16: true,  token.T_2: true,  token.T_25: true,  token.T_13: true,  token.T_17: true,  token.T_14: true,  }, // LexRule1R3 
-	{  token.T_7: true,  }, // LexRule1R4 
+	{  token.T_24: true,  }, // LexRule1R1 
+	{  token.T_7: true,  }, // LexRule1R2 
+	{  token.T_21: true,  token.T_17: true,  token.T_9: true,  token.T_18: true,  token.T_14: true,  token.T_5: true,  token.T_19: true,  token.T_2: true,  token.T_12: true,  token.T_26: true,  token.T_15: true,  token.T_25: true,  }, // LexRule1R3 
+	{  token.T_8: true,  }, // LexRule1R4 
 	{  }, // LexRule1R5 
-	{  token.T_4: true,  }, // LexSymbol0R0 
+	{  token.T_5: true,  }, // LexSymbol0R0 
 	{  }, // LexSymbol0R1 
-	{  token.T_13: true,  }, // LexSymbol1R0 
-	{  token.T_22: true,  }, // LexSymbol1R1 
+	{  token.T_14: true,  }, // LexSymbol1R0 
+	{  token.T_23: true,  }, // LexSymbol1R1 
 	{  }, // LexSymbol1R2 
-	{  token.T_14: true,  }, // LexSymbol2R0 
+	{  token.T_15: true,  }, // LexSymbol2R0 
 	{  }, // LexSymbol2R1 
-	{  token.T_25: true,  token.T_8: true,  token.T_2: true,  token.T_11: true,  }, // LexSymbol3R0 
+	{  token.T_2: true,  token.T_12: true,  token.T_26: true,  token.T_9: true,  }, // LexSymbol3R0 
 	{  }, // LexSymbol3R1 
-	{  token.T_18: true,  }, // LexSymbol4R0 
-	{  token.T_22: true,  }, // LexSymbol4R1 
+	{  token.T_19: true,  }, // LexSymbol4R0 
+	{  token.T_23: true,  }, // LexSymbol4R1 
 	{  }, // LexSymbol4R2 
-	{  token.T_16: true,  token.T_24: true,  token.T_17: true,  token.T_20: true,  }, // LexSymbol5R0 
+	{  token.T_21: true,  token.T_17: true,  token.T_25: true,  token.T_18: true,  }, // LexSymbol5R0 
 	{  }, // LexSymbol5R1 
-	{  token.T_25: true,  }, // LexZeroOrMore0R0 
-	{  token.T_25: true,  token.T_13: true,  token.T_24: true,  token.T_2: true,  token.T_18: true,  token.T_4: true,  token.T_11: true,  token.T_20: true,  token.T_8: true,  token.T_14: true,  token.T_17: true,  token.T_16: true,  }, // LexZeroOrMore0R1 
-	{  token.T_27: true,  }, // LexZeroOrMore0R2 
+	{  token.T_26: true,  }, // LexZeroOrMore0R0 
+	{  token.T_15: true,  token.T_5: true,  token.T_21: true,  token.T_9: true,  token.T_25: true,  token.T_19: true,  token.T_14: true,  token.T_2: true,  token.T_26: true,  token.T_18: true,  token.T_17: true,  token.T_12: true,  }, // LexZeroOrMore0R1 
+	{  token.T_28: true,  }, // LexZeroOrMore0R2 
 	{  }, // LexZeroOrMore0R3 
-	{  token.T_1: true,  token.T_15: true,  token.T_0: true,  token.T_19: true,  token.T_23: true,  token.T_22: true,  }, // OrderedAlternates0R0 
+	{  token.T_1: true,  token.T_16: true,  token.T_0: true,  token.T_24: true,  token.T_23: true,  token.T_20: true,  }, // OrderedAlternates0R0 
 	{  }, // OrderedAlternates0R1 
-	{  token.T_15: true,  token.T_0: true,  token.T_19: true,  token.T_23: true,  token.T_22: true,  token.T_1: true,  }, // OrderedAlternates1R0 
-	{  token.T_5: true,  }, // OrderedAlternates1R1 
-	{  token.T_0: true,  token.T_19: true,  token.T_23: true,  token.T_22: true,  token.T_1: true,  token.T_15: true,  }, // OrderedAlternates1R2 
+	{  token.T_16: true,  token.T_0: true,  token.T_24: true,  token.T_23: true,  token.T_20: true,  token.T_1: true,  }, // OrderedAlternates1R0 
+	{  token.T_6: true,  }, // OrderedAlternates1R1 
+	{  token.T_0: true,  token.T_24: true,  token.T_23: true,  token.T_20: true,  token.T_1: true,  token.T_16: true,  }, // OrderedAlternates1R2 
 	{  }, // OrderedAlternates1R3 
-	{  token.T_21: true,  }, // Package0R0 
-	{  token.T_22: true,  }, // Package0R1 
+	{  token.T_22: true,  }, // Package0R0 
+	{  token.T_23: true,  }, // Package0R1 
 	{  }, // Package0R2 
-	{  token.T_16: true,  token.T_14: true,  token.T_25: true,  token.T_17: true,  token.T_13: true,  token.T_4: true,  token.T_8: true,  token.T_2: true,  token.T_11: true,  token.T_18: true,  token.T_24: true,  token.T_20: true,  }, // RegExp0R0 
+	{  token.T_2: true,  token.T_14: true,  token.T_12: true,  token.T_18: true,  token.T_21: true,  token.T_17: true,  token.T_19: true,  token.T_15: true,  token.T_9: true,  token.T_25: true,  token.T_5: true,  token.T_26: true,  }, // RegExp0R0 
 	{  }, // RegExp0R1 
-	{  token.T_16: true,  token.T_2: true,  token.T_25: true,  token.T_18: true,  token.T_24: true,  token.T_20: true,  token.T_11: true,  token.T_8: true,  token.T_17: true,  token.T_4: true,  token.T_13: true,  token.T_14: true,  }, // RegExp1R0 
-	{  token.T_11: true,  token.T_13: true,  token.T_4: true,  token.T_16: true,  token.T_2: true,  token.T_18: true,  token.T_20: true,  token.T_8: true,  token.T_17: true,  token.T_14: true,  token.T_25: true,  token.T_24: true,  }, // RegExp1R1 
+	{  token.T_14: true,  token.T_12: true,  token.T_9: true,  token.T_2: true,  token.T_5: true,  token.T_26: true,  token.T_21: true,  token.T_15: true,  token.T_19: true,  token.T_17: true,  token.T_25: true,  token.T_18: true,  }, // RegExp1R0 
+	{  token.T_17: true,  token.T_18: true,  token.T_14: true,  token.T_15: true,  token.T_19: true,  token.T_21: true,  token.T_9: true,  token.T_2: true,  token.T_12: true,  token.T_26: true,  token.T_5: true,  token.T_25: true,  }, // RegExp1R1 
 	{  }, // RegExp1R2 
-	{  token.T_23: true,  token.T_0: true,  }, // Rule0R0 
+	{  token.T_24: true,  token.T_0: true,  }, // Rule0R0 
 	{  }, // Rule0R1 
-	{  token.T_19: true,  }, // Rule1R0 
+	{  token.T_20: true,  }, // Rule1R0 
 	{  }, // Rule1R1 
-	{  token.T_23: true,  token.T_0: true,  token.T_19: true,  }, // Rules0R0 
+	{  token.T_0: true,  token.T_20: true,  token.T_24: true,  }, // Rules0R0 
 	{  }, // Rules0R1 
-	{  token.T_23: true,  token.T_0: true,  token.T_19: true,  }, // Rules1R0 
-	{  token.T_0: true,  token.T_19: true,  token.T_23: true,  }, // Rules1R1 
+	{  token.T_24: true,  token.T_0: true,  token.T_20: true,  }, // Rules1R0 
+	{  token.T_24: true,  token.T_0: true,  token.T_20: true,  }, // Rules1R1 
 	{  }, // Rules1R2 
-	{  token.T_19: true,  token.T_23: true,  token.T_22: true,  }, // SynOptional0R0 
-	{  token.T_10: true,  }, // SynOptional0R1 
-	{  }, // SynOptional0R2 
-	{  token.T_0: true,  token.T_19: true,  token.T_23: true,  token.T_22: true,  token.T_1: true,  }, // SyntaxAlternate0R0 
+	{  token.T_24: true,  token.T_23: true,  token.T_20: true,  token.T_1: true,  token.T_0: true,  }, // SyntaxAlternate0R0 
 	{  }, // SyntaxAlternate0R1 
-	{  token.T_15: true,  }, // SyntaxAlternate1R0 
+	{  token.T_16: true,  }, // SyntaxAlternate1R0 
 	{  }, // SyntaxAlternate1R1 
-	{  token.T_0: true,  token.T_19: true,  token.T_23: true,  token.T_22: true,  token.T_1: true,  token.T_15: true,  }, // SyntaxAlternates0R0 
+	{  token.T_0: true,  token.T_24: true,  token.T_23: true,  token.T_20: true,  token.T_1: true,  token.T_16: true,  }, // SyntaxAlternates0R0 
 	{  }, // SyntaxAlternates0R1 
-	{  token.T_22: true,  token.T_1: true,  token.T_15: true,  token.T_0: true,  token.T_19: true,  token.T_23: true,  }, // SyntaxAlternates1R0 
-	{  token.T_26: true,  }, // SyntaxAlternates1R1 
-	{  token.T_0: true,  token.T_19: true,  token.T_23: true,  token.T_22: true,  token.T_1: true,  token.T_15: true,  }, // SyntaxAlternates1R2 
+	{  token.T_16: true,  token.T_0: true,  token.T_24: true,  token.T_23: true,  token.T_20: true,  token.T_1: true,  }, // SyntaxAlternates1R0 
+	{  token.T_27: true,  }, // SyntaxAlternates1R1 
+	{  token.T_1: true,  token.T_16: true,  token.T_0: true,  token.T_24: true,  token.T_23: true,  token.T_20: true,  }, // SyntaxAlternates1R2 
 	{  }, // SyntaxAlternates1R3 
-	{  token.T_15: true,  token.T_0: true,  token.T_19: true,  token.T_23: true,  token.T_22: true,  token.T_1: true,  }, // SyntaxAlternates2R0 
-	{  token.T_5: true,  }, // SyntaxAlternates2R1 
-	{  token.T_15: true,  token.T_0: true,  token.T_19: true,  token.T_23: true,  token.T_22: true,  token.T_1: true,  }, // SyntaxAlternates2R2 
+	{  token.T_0: true,  token.T_24: true,  token.T_23: true,  token.T_20: true,  token.T_1: true,  token.T_16: true,  }, // SyntaxAlternates2R0 
+	{  token.T_6: true,  }, // SyntaxAlternates2R1 
+	{  token.T_1: true,  token.T_16: true,  token.T_0: true,  token.T_24: true,  token.T_23: true,  token.T_20: true,  }, // SyntaxAlternates2R2 
 	{  }, // SyntaxAlternates2R3 
-	{  token.T_19: true,  }, // SyntaxAtom0R0 
+	{  token.T_20: true,  }, // SyntaxAtom0R0 
 	{  }, // SyntaxAtom0R1 
-	{  token.T_23: true,  }, // SyntaxAtom1R0 
+	{  token.T_24: true,  }, // SyntaxAtom1R0 
 	{  }, // SyntaxAtom1R1 
-	{  token.T_22: true,  }, // SyntaxAtom2R0 
+	{  token.T_23: true,  }, // SyntaxAtom2R0 
 	{  }, // SyntaxAtom2R1 
-	{  token.T_19: true,  }, // SyntaxRule0R0 
-	{  token.T_6: true,  }, // SyntaxRule0R1 
-	{  token.T_0: true,  token.T_19: true,  token.T_23: true,  token.T_22: true,  token.T_1: true,  token.T_15: true,  }, // SyntaxRule0R2 
-	{  token.T_7: true,  }, // SyntaxRule0R3 
+	{  token.T_20: true,  }, // SyntaxRule0R0 
+	{  token.T_7: true,  }, // SyntaxRule0R1 
+	{  token.T_24: true,  token.T_23: true,  token.T_20: true,  token.T_1: true,  token.T_16: true,  token.T_0: true,  }, // SyntaxRule0R2 
+	{  token.T_8: true,  }, // SyntaxRule0R3 
 	{  }, // SyntaxRule0R4 
+	{  token.T_20: true,  token.T_24: true,  token.T_23: true,  }, // SyntaxSuffix0R0 
+	{  token.T_11: true,  }, // SyntaxSuffix0R1 
+	{  }, // SyntaxSuffix0R2 
+	{  token.T_20: true,  token.T_24: true,  token.T_23: true,  }, // SyntaxSuffix1R0 
+	{  token.T_4: true,  }, // SyntaxSuffix1R1 
+	{  }, // SyntaxSuffix1R2 
 	{  token.T_1: true,  }, // SyntaxSymbol0R0 
-	{  token.T_22: true,  token.T_19: true,  token.T_23: true,  }, // SyntaxSymbol0R1 
+	{  token.T_24: true,  token.T_23: true,  token.T_20: true,  }, // SyntaxSymbol0R1 
 	{  }, // SyntaxSymbol0R2 
 	{  token.T_0: true,  }, // SyntaxSymbol1R0 
-	{  token.T_19: true,  token.T_23: true,  token.T_22: true,  }, // SyntaxSymbol1R1 
+	{  token.T_20: true,  token.T_24: true,  token.T_23: true,  }, // SyntaxSymbol1R1 
 	{  }, // SyntaxSymbol1R2 
-	{  token.T_19: true,  token.T_23: true,  token.T_22: true,  }, // SyntaxSymbol2R0 
+	{  token.T_24: true,  token.T_23: true,  token.T_20: true,  }, // SyntaxSymbol2R0 
 	{  }, // SyntaxSymbol2R1 
-	{  token.T_19: true,  token.T_23: true,  token.T_22: true,  }, // SyntaxSymbol3R0 
+	{  token.T_20: true,  token.T_24: true,  token.T_23: true,  }, // SyntaxSymbol3R0 
 	{  }, // SyntaxSymbol3R1 
-	{  token.T_1: true,  token.T_0: true,  token.T_19: true,  token.T_23: true,  token.T_22: true,  }, // SyntaxSymbols0R0 
+	{  token.T_20: true,  token.T_1: true,  token.T_0: true,  token.T_24: true,  token.T_23: true,  }, // SyntaxSymbols0R0 
 	{  }, // SyntaxSymbols0R1 
-	{  token.T_23: true,  token.T_22: true,  token.T_1: true,  token.T_0: true,  token.T_19: true,  }, // SyntaxSymbols1R0 
-	{  token.T_0: true,  token.T_19: true,  token.T_23: true,  token.T_22: true,  token.T_1: true,  }, // SyntaxSymbols1R1 
+	{  token.T_23: true,  token.T_20: true,  token.T_1: true,  token.T_0: true,  token.T_24: true,  }, // SyntaxSymbols1R0 
+	{  token.T_20: true,  token.T_1: true,  token.T_0: true,  token.T_24: true,  token.T_23: true,  }, // SyntaxSymbols1R1 
 	{  }, // SyntaxSymbols1R2 
-	{  token.T_16: true,  }, // UnicodeClass0R0 
+	{  token.T_17: true,  }, // UnicodeClass0R0 
 	{  }, // UnicodeClass0R1 
-	{  token.T_24: true,  }, // UnicodeClass1R0 
+	{  token.T_25: true,  }, // UnicodeClass1R0 
 	{  }, // UnicodeClass1R1 
-	{  token.T_17: true,  }, // UnicodeClass2R0 
+	{  token.T_18: true,  }, // UnicodeClass2R0 
 	{  }, // UnicodeClass2R1 
-	{  token.T_20: true,  }, // UnicodeClass3R0 
+	{  token.T_21: true,  }, // UnicodeClass3R0 
 	{  }, // UnicodeClass3R1 
-	{  token.T_0: true,  token.T_19: true,  token.T_23: true,  token.T_22: true,  token.T_1: true,  token.T_15: true,  }, // UnorderedAlternates0R0 
+	{  token.T_0: true,  token.T_24: true,  token.T_23: true,  token.T_20: true,  token.T_1: true,  token.T_16: true,  }, // UnorderedAlternates0R0 
 	{  }, // UnorderedAlternates0R1 
-	{  token.T_0: true,  token.T_19: true,  token.T_23: true,  token.T_22: true,  token.T_1: true,  token.T_15: true,  }, // UnorderedAlternates1R0 
-	{  token.T_26: true,  }, // UnorderedAlternates1R1 
-	{  token.T_19: true,  token.T_23: true,  token.T_22: true,  token.T_1: true,  token.T_15: true,  token.T_0: true,  }, // UnorderedAlternates1R2 
+	{  token.T_16: true,  token.T_0: true,  token.T_24: true,  token.T_23: true,  token.T_20: true,  token.T_1: true,  }, // UnorderedAlternates1R0 
+	{  token.T_27: true,  }, // UnorderedAlternates1R1 
+	{  token.T_0: true,  token.T_24: true,  token.T_23: true,  token.T_20: true,  token.T_1: true,  token.T_16: true,  }, // UnorderedAlternates1R2 
 	{  }, // UnorderedAlternates1R3 
 }

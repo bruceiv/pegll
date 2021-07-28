@@ -28,11 +28,11 @@ const(
 	NT_RegExp 
 	NT_Rule 
 	NT_Rules 
-	NT_SynOptional 
 	NT_SyntaxAlternate 
 	NT_SyntaxAlternates 
 	NT_SyntaxAtom 
 	NT_SyntaxRule 
+	NT_SyntaxSuffix 
 	NT_SyntaxSymbol 
 	NT_SyntaxSymbols 
 	NT_UnicodeClass 
@@ -50,30 +50,31 @@ const(
 	T_1  // & 
 	T_2  // ( 
 	T_3  // ) 
-	T_4  // . 
-	T_5  // / 
-	T_6  // : 
-	T_7  // ; 
-	T_8  // < 
-	T_9  // > 
-	T_10  // ? 
-	T_11  // [ 
-	T_12  // ] 
-	T_13  // any 
-	T_14  // char_lit 
-	T_15  // empty 
-	T_16  // letter 
-	T_17  // lowcase 
-	T_18  // not 
-	T_19  // nt 
-	T_20  // number 
-	T_21  // package 
-	T_22  // string_lit 
-	T_23  // tokid 
-	T_24  // upcase 
-	T_25  // { 
-	T_26  // | 
-	T_27  // } 
+	T_4  // * 
+	T_5  // . 
+	T_6  // / 
+	T_7  // : 
+	T_8  // ; 
+	T_9  // < 
+	T_10  // > 
+	T_11  // ? 
+	T_12  // [ 
+	T_13  // ] 
+	T_14  // any 
+	T_15  // char_lit 
+	T_16  // empty 
+	T_17  // letter 
+	T_18  // lowcase 
+	T_19  // not 
+	T_20  // nt 
+	T_21  // number 
+	T_22  // package 
+	T_23  // string_lit 
+	T_24  // tokid 
+	T_25  // upcase 
+	T_26  // { 
+	T_27  // | 
+	T_28  // } 
 )
 
 type Symbols []Symbol
@@ -121,11 +122,11 @@ var ntToString = []string {
 	"RegExp", /* NT_RegExp */
 	"Rule", /* NT_Rule */
 	"Rules", /* NT_Rules */
-	"SynOptional", /* NT_SynOptional */
 	"SyntaxAlternate", /* NT_SyntaxAlternate */
 	"SyntaxAlternates", /* NT_SyntaxAlternates */
 	"SyntaxAtom", /* NT_SyntaxAtom */
 	"SyntaxRule", /* NT_SyntaxRule */
+	"SyntaxSuffix", /* NT_SyntaxSuffix */
 	"SyntaxSymbol", /* NT_SyntaxSymbol */
 	"SyntaxSymbols", /* NT_SyntaxSymbols */
 	"UnicodeClass", /* NT_UnicodeClass */
@@ -137,30 +138,31 @@ var tToString = []string {
 	"&", /* T_1 */
 	"(", /* T_2 */
 	")", /* T_3 */
-	".", /* T_4 */
-	"/", /* T_5 */
-	":", /* T_6 */
-	";", /* T_7 */
-	"<", /* T_8 */
-	">", /* T_9 */
-	"?", /* T_10 */
-	"[", /* T_11 */
-	"]", /* T_12 */
-	"any", /* T_13 */
-	"char_lit", /* T_14 */
-	"empty", /* T_15 */
-	"letter", /* T_16 */
-	"lowcase", /* T_17 */
-	"not", /* T_18 */
-	"nt", /* T_19 */
-	"number", /* T_20 */
-	"package", /* T_21 */
-	"string_lit", /* T_22 */
-	"tokid", /* T_23 */
-	"upcase", /* T_24 */
-	"{", /* T_25 */
-	"|", /* T_26 */
-	"}", /* T_27 */ 
+	"*", /* T_4 */
+	".", /* T_5 */
+	"/", /* T_6 */
+	":", /* T_7 */
+	";", /* T_8 */
+	"<", /* T_9 */
+	">", /* T_10 */
+	"?", /* T_11 */
+	"[", /* T_12 */
+	"]", /* T_13 */
+	"any", /* T_14 */
+	"char_lit", /* T_15 */
+	"empty", /* T_16 */
+	"letter", /* T_17 */
+	"lowcase", /* T_18 */
+	"not", /* T_19 */
+	"nt", /* T_20 */
+	"number", /* T_21 */
+	"package", /* T_22 */
+	"string_lit", /* T_23 */
+	"tokid", /* T_24 */
+	"upcase", /* T_25 */
+	"{", /* T_26 */
+	"|", /* T_27 */
+	"}", /* T_28 */ 
 }
 
 var stringNT = map[string]NT{ 
@@ -178,11 +180,11 @@ var stringNT = map[string]NT{
 	"RegExp":NT_RegExp,
 	"Rule":NT_Rule,
 	"Rules":NT_Rules,
-	"SynOptional":NT_SynOptional,
 	"SyntaxAlternate":NT_SyntaxAlternate,
 	"SyntaxAlternates":NT_SyntaxAlternates,
 	"SyntaxAtom":NT_SyntaxAtom,
 	"SyntaxRule":NT_SyntaxRule,
+	"SyntaxSuffix":NT_SyntaxSuffix,
 	"SyntaxSymbol":NT_SyntaxSymbol,
 	"SyntaxSymbols":NT_SyntaxSymbols,
 	"UnicodeClass":NT_UnicodeClass,
@@ -191,26 +193,26 @@ var stringNT = map[string]NT{
 
 var leftRec = map[NT]NTs { 
 	NT_GoGLL: NTs {  NT_Package,  },
-	NT_LexAlternates: NTs {  NT_LexOneOrMore,  NT_LexGroup,  NT_LexOptional,  NT_RegExp,  NT_LexZeroOrMore,  NT_LexSymbol,  NT_UnicodeClass,  NT_LexBracket,  },
-	NT_LexBracket: NTs {  NT_LexGroup,  NT_LexOptional,  NT_LexZeroOrMore,  NT_LexOneOrMore,  },
+	NT_LexAlternates: NTs {  NT_UnicodeClass,  NT_LexBracket,  NT_RegExp,  NT_LexSymbol,  NT_LexZeroOrMore,  NT_LexOneOrMore,  NT_LexGroup,  NT_LexOptional,  },
+	NT_LexBracket: NTs {  NT_LexZeroOrMore,  NT_LexOneOrMore,  NT_LexGroup,  NT_LexOptional,  },
 	NT_LexGroup: NTs {  },
 	NT_LexOneOrMore: NTs {  },
 	NT_LexOptional: NTs {  },
 	NT_LexRule: NTs {  },
-	NT_LexSymbol: NTs {  NT_LexGroup,  NT_LexOptional,  NT_LexZeroOrMore,  NT_UnicodeClass,  NT_LexBracket,  NT_LexOneOrMore,  },
+	NT_LexSymbol: NTs {  NT_LexBracket,  NT_LexZeroOrMore,  NT_LexOneOrMore,  NT_LexGroup,  NT_LexOptional,  NT_UnicodeClass,  },
 	NT_LexZeroOrMore: NTs {  },
-	NT_OrderedAlternates: NTs {  NT_SyntaxAlternate,  NT_SyntaxAtom,  NT_SyntaxSymbol,  NT_SyntaxSymbols,  NT_SynOptional,  },
+	NT_OrderedAlternates: NTs {  NT_SyntaxAlternate,  NT_SyntaxSymbol,  NT_SyntaxAtom,  NT_SyntaxSymbols,  NT_SyntaxSuffix,  },
 	NT_Package: NTs {  },
-	NT_RegExp: NTs {  NT_UnicodeClass,  NT_LexBracket,  NT_LexOneOrMore,  NT_LexGroup,  NT_LexOptional,  NT_LexZeroOrMore,  NT_LexSymbol,  },
+	NT_RegExp: NTs {  NT_LexOneOrMore,  NT_LexGroup,  NT_LexOptional,  NT_UnicodeClass,  NT_LexBracket,  NT_LexSymbol,  NT_LexZeroOrMore,  },
 	NT_Rule: NTs {  NT_LexRule,  NT_SyntaxRule,  },
 	NT_Rules: NTs {  NT_Rule,  NT_LexRule,  NT_SyntaxRule,  },
-	NT_SynOptional: NTs {  NT_SyntaxAtom,  },
-	NT_SyntaxAlternate: NTs {  NT_SyntaxSymbols,  NT_SynOptional,  NT_SyntaxAtom,  NT_SyntaxSymbol,  },
-	NT_SyntaxAlternates: NTs {  NT_SyntaxAlternate,  NT_SyntaxSymbols,  NT_SynOptional,  NT_SyntaxAtom,  NT_SyntaxSymbol,  },
+	NT_SyntaxAlternate: NTs {  NT_SyntaxSuffix,  NT_SyntaxSymbol,  NT_SyntaxAtom,  NT_SyntaxSymbols,  },
+	NT_SyntaxAlternates: NTs {  NT_SyntaxAlternate,  NT_SyntaxSuffix,  NT_SyntaxSymbol,  NT_SyntaxAtom,  NT_SyntaxSymbols,  },
 	NT_SyntaxAtom: NTs {  },
 	NT_SyntaxRule: NTs {  },
-	NT_SyntaxSymbol: NTs {  NT_SynOptional,  NT_SyntaxAtom,  },
-	NT_SyntaxSymbols: NTs {  NT_SynOptional,  NT_SyntaxAtom,  NT_SyntaxSymbol,  },
+	NT_SyntaxSuffix: NTs {  NT_SyntaxAtom,  },
+	NT_SyntaxSymbol: NTs {  NT_SyntaxSuffix,  NT_SyntaxAtom,  },
+	NT_SyntaxSymbols: NTs {  NT_SyntaxSymbol,  NT_SyntaxAtom,  NT_SyntaxSuffix,  },
 	NT_UnicodeClass: NTs {  },
-	NT_UnorderedAlternates: NTs {  NT_SynOptional,  NT_SyntaxAtom,  NT_SyntaxSymbol,  NT_SyntaxAlternate,  NT_SyntaxSymbols,  },
+	NT_UnorderedAlternates: NTs {  NT_SyntaxAlternate,  NT_SyntaxSuffix,  NT_SyntaxSymbol,  NT_SyntaxAtom,  NT_SyntaxSymbols,  },
 }

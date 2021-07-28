@@ -110,30 +110,31 @@ const(
     T_1  // & 
     T_2  // ( 
     T_3  // ) 
-    T_4  // . 
-    T_5  // / 
-    T_6  // : 
-    T_7  // ; 
-    T_8  // < 
-    T_9  // > 
-    T_10  // ? 
-    T_11  // [ 
-    T_12  // ] 
-    T_13  // any 
-    T_14  // char_lit 
-    T_15  // empty 
-    T_16  // letter 
-    T_17  // lowcase 
-    T_18  // not 
-    T_19  // nt 
-    T_20  // number 
-    T_21  // package 
-    T_22  // string_lit 
-    T_23  // tokid 
-    T_24  // upcase 
-    T_25  // { 
-    T_26  // | 
-    T_27  // } 
+    T_4  // * 
+    T_5  // . 
+    T_6  // / 
+    T_7  // : 
+    T_8  // ; 
+    T_9  // < 
+    T_10  // > 
+    T_11  // ? 
+    T_12  // [ 
+    T_13  // ] 
+    T_14  // any 
+    T_15  // char_lit 
+    T_16  // empty 
+    T_17  // letter 
+    T_18  // lowcase 
+    T_19  // not 
+    T_20  // nt 
+    T_21  // number 
+    T_22  // package 
+    T_23  // string_lit 
+    T_24  // tokid 
+    T_25  // upcase 
+    T_26  // { 
+    T_27  // | 
+    T_28  // } 
 )
 
 var TypeToString = []string{ 
@@ -167,6 +168,7 @@ var TypeToString = []string{
     "T_25",
     "T_26",
     "T_27",
+    "T_28",
 }
 
 var StringToType = map[string] Type { 
@@ -200,6 +202,7 @@ var StringToType = map[string] Type {
     "T_25" : T_25, 
     "T_26" : T_26, 
     "T_27" : T_27, 
+    "T_28" : T_28, 
 }
 
 var TypeToID = []string { 
@@ -209,6 +212,7 @@ var TypeToID = []string {
     "&", 
     "(", 
     ")", 
+    "*", 
     ".", 
     "/", 
     ":", 
@@ -236,6 +240,7 @@ var TypeToID = []string {
 }
 
 var Suppress = []bool { 
+    false, 
     false, 
     false, 
     false, 

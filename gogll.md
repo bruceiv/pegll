@@ -181,20 +181,20 @@ Lookahead operators may not be nested, but the two provided operators are suffic
 SyntaxSymbol
     : "&" SyntaxAtom
     / "!" SyntaxAtom
-    / SynOptional
+    / SyntaxSuffix
     / SyntaxAtom
     ;
 
 SyntaxAtom : nt | tokid | string_lit ;
 ```
 
-A `SynOptional` is a syntax rule that is made optional (match 0 or 1 times) by a suffixed question mark operator `?`. `SynOptional` is a `SyntaxSymbol`. 
-May eventually be adapted to include other suffix syntax operators. 
+A `SyntaxSuffix` is a syntax rule that has a suffix operator. `SyntaxSuffix` is a `SyntaxSymbol`. Currently only includes the optional operator is made optional (match 0 or 1 times) by a suffixed question mark operator `?`. 
 
 
 
 ```
 
-SynOptional : SyntaxAtom "?" ;
+SyntaxSuffix : SyntaxAtom "?" 
+             | SyntaxAtom "*" ;
 
 ```

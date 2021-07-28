@@ -17,10 +17,10 @@ func (L) isSymbol() {}
 type NT int
 const( 
 	NT_Base NT = iota
-	NT_OptBase 
 	NT_Optional 
 	NT_Required 
 	NT_S1 
+	NT_SuffBase 
 )
 
 const NumNTs = 5
@@ -127,10 +127,10 @@ func (lk L) ArgSymbol() Symbol {
 
 var ntToString = []string { 
 	"Base", /* NT_Base */
-	"OptBase", /* NT_OptBase */
 	"Optional", /* NT_Optional */
 	"Required", /* NT_Required */
-	"S1", /* NT_S1 */ 
+	"S1", /* NT_S1 */
+	"SuffBase", /* NT_SuffBase */ 
 }
 
 var tToString = []string { 
@@ -140,22 +140,22 @@ var tToString = []string {
 
 var stringNT = map[string]NT{ 
 	"Base":NT_Base,
-	"OptBase":NT_OptBase,
 	"Optional":NT_Optional,
 	"Required":NT_Required,
 	"S1":NT_S1,
+	"SuffBase":NT_SuffBase,
 }
 
 var leftRec = map[NT]NTs { 
 	NT_Base: NTs {  },
-	NT_OptBase: NTs {  NT_Base,  },
-	NT_Optional: NTs {  NT_OptBase,  NT_Base,  },
+	NT_Optional: NTs {  NT_SuffBase,  NT_Base,  },
 	NT_Required: NTs {  },
 	NT_S1: NTs {  NT_Required,  },
+	NT_SuffBase: NTs {  NT_Base,  },
 }
 
 var ordered = map[NT]bool { 
-	NT_OptBase:true,
+	NT_SuffBase:true,
 }
 
 var lkMode = []int { 

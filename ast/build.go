@@ -52,7 +52,7 @@ func Build(root bsr.BSR, l *lexer.Lexer) *GoGLL {
 		charLiterals: stringset.New(),
 	}
 	gogll := bld.gogll(root)
-	bld.replaceSynOptional(gogll)
+	bld.replaceSyntaxSuffix(gogll)
 	gogll.NonTerminals = bld.nonTerminals(gogll.SyntaxRules)
 	gogll.StringLiterals = bld.getStringLiterals(gogll.SyntaxRules)
 	gogll.Terminals = bld.terminals(gogll, gogll.GetStringLiterals())
@@ -96,8 +96,8 @@ func ntTokenFromString(s string) *token.Token {
 	// return new token type for nonterminal
 	return token.New(ntToken, 0, len(s), []rune(s))
 }
-func nameForOpt(s SyntaxSymbol) string {
-	return "Opt" + s.ID()
+func nameForSuff(s SyntaxSymbol) string {
+	return "Suff" + s.ID()
 }
 
 /* POSSIBLE ISSUES:
@@ -106,7 +106,7 @@ func nameForOpt(s SyntaxSymbol) string {
 - is a token a list of symbols?
 */
 // replace optional syntax rules with the rule and add an empty node
-func (bld *builder) replaceSynOptional(g *GoGLL) {
+func (bld *builder) replaceSyntaxSuffix(g *GoGLL) {
 	// map running list of symbol replacements to create list of generated syntax rules
 	generated := make(map[string]bool)
 	// loop through the syntax rules
@@ -117,11 +117,11 @@ func (bld *builder) replaceSynOptional(g *GoGLL) {
 			newSymbols := make([]SyntaxSymbol, 0, len(a.Symbols))
 			// loop through the range of symbols to determine if syntax optional
 			for _, s := range a.Symbols {
-				// if synOptional, generate a new name for the optional rules
-				if l, ok := s.(*SynOptional); ok {
+				// if SyntaxSuffix, generate a new name for the optional rules
+				if l, ok := s.(*SyntaxSuffix); ok {
 					// if the name is not previously generated build the node
-					name := nameForOpt(l.Expr)
-					opt := NT{
+					name := nameForSuff(l.Expr)
+					suff := NT{
 						tok: ntTokenFromString(name),
 					}
 					if !generated[name] {
@@ -132,19 +132,30 @@ func (bld *builder) replaceSynOptional(g *GoGLL) {
 						expr := &SyntaxAlternate{
 							Symbols: exprSym,
 						}
-						////// same as in syntax alternate func
-						empty := &SyntaxAlternate{}
-						tempAlts := []*SyntaxAlternate{expr, empty}
-						optRule := SyntaxRule{
-							Head:       &opt,     // NT:
+						//Add expression to list of alternates
+						tempAlts := []*SyntaxAlternate{expr}
+						if l.Type == 0 {
+
+							empty := &SyntaxAlternate{}
+							tempAlts = append(tempAlts, empty)
+
+						} else if l.Type == 1 {
+							//rep 0+ times
+						}
+
+						//Create new syntax rule
+						suffRule := SyntaxRule{
+							Head:       &suff,    // NT:
 							Alternates: tempAlts, // base / empty
 							IsOrdered:  true,
 						}
+
 						//Adds new NT rule to list of syntax rules
-						bld.addSyntaxRule(&optRule, g)
+						bld.addSyntaxRule(&suffRule, g)
 					}
-					// append the new symbols created from SynOptional
-					newSymbols = append(newSymbols, &opt)
+					// append the new symbols created from SyntaxSuffix
+					newSymbols = append(newSymbols, &suff)
+
 				} else { // otherwise, append the symbols
 					newSymbols = append(newSymbols, s)
 				}
@@ -411,11 +422,13 @@ func (bld *builder) unicodeClass(b bsr.BSR) *UnicodeClass {
 
 /*** Syntax Rules ***/
 
-// SynOptional : SyntaxAtom "?" ;
-func (bld *builder) synOptional(b bsr.BSR) SyntaxSymbol {
-	return &SynOptional{
+// SyntaxSuffix : SyntaxAtom "?"
+//  			| SyntaxAtom "*";
+func (bld *builder) SyntaxSuffix(b bsr.BSR) SyntaxSymbol {
+	return &SyntaxSuffix{
 		Expr: bld.atom(b.GetNTChildI(0)),
 		Tok:  b.GetTChildI(1),
+		Type: b.Alternate(),
 	}
 }
 
@@ -495,7 +508,7 @@ func (bld *builder) syntaxRule(b bsr.BSR) brule {
 // SyntaxSymbol
 //     : "&" SyntaxAtom
 //     / "!" SyntaxAtom
-//	   / SynOptional
+//	   / SyntaxSuffix
 //     / SyntaxAtom
 //     ;
 func (bld *builder) symbol(b bsr.BSR) SyntaxSymbol {
@@ -506,7 +519,7 @@ func (bld *builder) symbol(b bsr.BSR) SyntaxSymbol {
 			Expr: bld.atom(b.GetNTChildI(1)),
 		}
 	case 2:
-		return bld.synOptional(b.GetNTChildI(0))
+		return bld.SyntaxSuffix(b.GetNTChildI(0))
 	case 3:
 		return bld.atom(b.GetNTChildI(0))
 	}

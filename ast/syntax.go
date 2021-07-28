@@ -14,23 +14,6 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-/* build.go modifications (these are backwards sorry)
- * line 489
- 	- don't think we need to add SynOptional into the
-	syntaxSymbols function because it's being built in SyntaxSymbols
- * line 350
-	- changed the struct so it has syntax symbols so we can traverse
-	through it and see if there is a "?" - see Moss's answer in Teams
- * line 364
-	- the way that it is built in SyntaxSymbols we need to traverse
-	through the symbols, find the question mark, and then see if the
-	token exists - since we already have it built to return empty in
-	the synOptional function, we're simply checking for the existence of
-	the token and, if it's there, adding it to the Expr part of the struct
-
-
-	we need to figure out how to add NT_SynOptional
-*/
 
 package ast
 
@@ -41,15 +24,16 @@ import (
 // The syntax part of the AST
 ///////////////////////////// trying something different - I don't think
 //////////////////////////// we need the token - I think we need the NT
-/* type SynOptional struct { //Where do we get it to connect to the '?' ????  --> similar to Lext function in lex.go??
+/* type SyntaxSuffix struct { //Where do we get it to connect to the '?' ????  --> similar to Lext function in lex.go??
 	Tok  *token.Token //I think contains the ?
 	Expr SyntaxSymbol //Contains the rule that is being made optional (we think)
 } */
 
-type SynOptional struct {
+type SyntaxSuffix struct {
 	// expression made optional
 	Expr SyntaxSymbol
 	Tok  *token.Token
+	Type int //0 is optional, 1 is rep 0+ times, 2 is rep 1+ times
 }
 
 // Line 126 in build.go --> do to we need to add the symbol to a set? Do we need to do this????
@@ -87,15 +71,15 @@ type Lookahead struct {
 func (*NT) isSyntaxSymbol()        {}
 func (*Lookahead) isSyntaxSymbol() {}
 
-func (SynOptional) isSyntaxSymbol() {}
+func (SyntaxSuffix) isSyntaxSymbol() {}
 
-func (opt *SynOptional) ID() string {
+func (opt *SyntaxSuffix) ID() string {
 	return opt.Expr.ID() + opt.Tok.LiteralString()
 }
-func (opt *SynOptional) Lext() int {
+func (opt *SyntaxSuffix) Lext() int {
 	return opt.Expr.Lext()
 }
-func (opt *SynOptional) String() string {
+func (opt *SyntaxSuffix) String() string {
 	return opt.Expr.String() + opt.Tok.LiteralString()
 }
 
