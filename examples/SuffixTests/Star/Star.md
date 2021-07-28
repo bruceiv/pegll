@@ -1,9 +1,9 @@
-# **`Optional` GRAMMAR**
+# **`Star` GRAMMAR**
 
 ### **AUTHORSHIP INFORMATION**
 #### *Authors :* Brynn Harrington and Emily Hoppe Copyright (C) 2021
 #### *Designed to* test syntax operator `?`
-#### *Creation Date :* July 15, 2021 
+#### *Creation Date :* July 28, 2021 
 #### *Last Modified :* July 28, 2021
 #### *Copyright and Licensing Information :* See end of file.
 
@@ -21,11 +21,11 @@ A grammar to test the added `?` operator in `Pegll`.
 ```
 package "Optional"
 
-S1       : Required Optional Required   ;
+S1       : Required Rep         ;
 
 Required : "Required"           ;
 
-Optional : Base?                 ;
+Rep      : Base*                ;
 
 Base     : "Base"               ;
 ```

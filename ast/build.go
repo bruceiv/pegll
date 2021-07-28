@@ -126,27 +126,34 @@ func (bld *builder) replaceSyntaxSuffix(g *GoGLL) {
 					}
 					if !generated[name] {
 						generated[name] = true
-						// slice of syntax symbols only containing a syntax atom
-						exprSym := []SyntaxSymbol{l.Expr}
-						// syntax alternate takes slice of syntax symbols
-						expr := &SyntaxAlternate{
-							Symbols: exprSym,
-						}
 						//Add expression to list of alternates
-						tempAlts := []*SyntaxAlternate{expr}
-						if l.Type == 0 {
-
-							empty := &SyntaxAlternate{}
+						empty := &SyntaxAlternate{}
+						tempAlts := []*SyntaxAlternate{}
+						if l.Type == 0 { //Optional "?"
+							// slice of syntax symbols only containing a syntax atom
+							exprSym := []SyntaxSymbol{l.Expr}
+							// syntax alternate takes slice of syntax symbols
+							expr := &SyntaxAlternate{
+								Symbols: exprSym,
+							}
+							tempAlts = append(tempAlts, expr)
 							tempAlts = append(tempAlts, empty)
 
-						} else if l.Type == 1 {
-							//rep 0+ times
+						} else if l.Type == 1 { //rep 0+ times "*"
+							// slice of syntax symbols only containing a syntax atom
+							exprSym := []SyntaxSymbol{l.Expr, &suff}
+							// syntax alternate takes slice of syntax symbols
+							expr := &SyntaxAlternate{
+								Symbols: exprSym,
+							}
+							tempAlts = append(tempAlts, expr)
+							tempAlts = append(tempAlts, empty)
 						}
 
 						//Create new syntax rule
 						suffRule := SyntaxRule{
-							Head:       &suff,    // NT:
-							Alternates: tempAlts, // base / empty
+							Head:       &suff,
+							Alternates: tempAlts,
 							IsOrdered:  true,
 						}
 

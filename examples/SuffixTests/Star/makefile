@@ -1,4 +1,4 @@
 .PHONY: go
 
 peg: 
-	pegll Optional.md
+	pegll Star.md
