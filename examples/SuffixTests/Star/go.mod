@@ -1,3 +1,3 @@
-module Optional
+module Star
 
 go 1.14

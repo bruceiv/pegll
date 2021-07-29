@@ -15,10 +15,10 @@ import (
 	"strings"
 	"unicode/utf8"
 
-	"Star/lexer"
-	"Star/parser/slot"
-	"Star/parser/symbols"
-	"Star/token"
+	"Plus/lexer"
+	"Plus/parser/slot"
+	"Plus/parser/symbols"
+	"Plus/token"
 )
 
 type bsr interface {

@@ -8,7 +8,7 @@ import (
 	"strings"
 	"unicode"
 
-	"Star/token"
+	"Plus/token"
 )
 
 type state int

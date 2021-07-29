@@ -106,36 +106,8 @@ func (t Type) ID() string {
 const(
     Error  Type = iota  // Error 
     EOF  // $ 
-    T_0  // ! 
-    T_1  // & 
-    T_2  // ( 
-    T_3  // ) 
-    T_4  // * 
-    T_5  // + 
-    T_6  // . 
-    T_7  // / 
-    T_8  // : 
-    T_9  // ; 
-    T_10  // < 
-    T_11  // > 
-    T_12  // ? 
-    T_13  // [ 
-    T_14  // ] 
-    T_15  // any 
-    T_16  // char_lit 
-    T_17  // empty 
-    T_18  // letter 
-    T_19  // lowcase 
-    T_20  // not 
-    T_21  // nt 
-    T_22  // number 
-    T_23  // package 
-    T_24  // string_lit 
-    T_25  // tokid 
-    T_26  // upcase 
-    T_27  // { 
-    T_28  // | 
-    T_29  // } 
+    T_0  // Base 
+    T_1  // Required 
 )
 
 var TypeToString = []string{ 
@@ -143,34 +115,6 @@ var TypeToString = []string{
     "EOF",
     "T_0",
     "T_1",
-    "T_2",
-    "T_3",
-    "T_4",
-    "T_5",
-    "T_6",
-    "T_7",
-    "T_8",
-    "T_9",
-    "T_10",
-    "T_11",
-    "T_12",
-    "T_13",
-    "T_14",
-    "T_15",
-    "T_16",
-    "T_17",
-    "T_18",
-    "T_19",
-    "T_20",
-    "T_21",
-    "T_22",
-    "T_23",
-    "T_24",
-    "T_25",
-    "T_26",
-    "T_27",
-    "T_28",
-    "T_29",
 }
 
 var StringToType = map[string] Type { 
@@ -178,100 +122,16 @@ var StringToType = map[string] Type {
     "EOF" : EOF, 
     "T_0" : T_0, 
     "T_1" : T_1, 
-    "T_2" : T_2, 
-    "T_3" : T_3, 
-    "T_4" : T_4, 
-    "T_5" : T_5, 
-    "T_6" : T_6, 
-    "T_7" : T_7, 
-    "T_8" : T_8, 
-    "T_9" : T_9, 
-    "T_10" : T_10, 
-    "T_11" : T_11, 
-    "T_12" : T_12, 
-    "T_13" : T_13, 
-    "T_14" : T_14, 
-    "T_15" : T_15, 
-    "T_16" : T_16, 
-    "T_17" : T_17, 
-    "T_18" : T_18, 
-    "T_19" : T_19, 
-    "T_20" : T_20, 
-    "T_21" : T_21, 
-    "T_22" : T_22, 
-    "T_23" : T_23, 
-    "T_24" : T_24, 
-    "T_25" : T_25, 
-    "T_26" : T_26, 
-    "T_27" : T_27, 
-    "T_28" : T_28, 
-    "T_29" : T_29, 
 }
 
 var TypeToID = []string { 
     "Error", 
     "$", 
-    "!", 
-    "&", 
-    "(", 
-    ")", 
-    "*", 
-    "+", 
-    ".", 
-    "/", 
-    ":", 
-    ";", 
-    "<", 
-    ">", 
-    "?", 
-    "[", 
-    "]", 
-    "any", 
-    "char_lit", 
-    "empty", 
-    "letter", 
-    "lowcase", 
-    "not", 
-    "nt", 
-    "number", 
-    "package", 
-    "string_lit", 
-    "tokid", 
-    "upcase", 
-    "{", 
-    "|", 
-    "}", 
+    "Base", 
+    "Required", 
 }
 
 var Suppress = []bool { 
-    false, 
-    false, 
-    false, 
-    false, 
-    false, 
-    false, 
-    false, 
-    false, 
-    false, 
-    false, 
-    false, 
-    false, 
-    false, 
-    false, 
-    false, 
-    false, 
-    false, 
-    false, 
-    false, 
-    false, 
-    false, 
-    false, 
-    false, 
-    false, 
-    false, 
-    false, 
-    false, 
-    false, 
     false, 
     false, 
     false, 

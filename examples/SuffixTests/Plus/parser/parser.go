@@ -7,11 +7,11 @@ import (
 	"sort"
 	"strings"
 
-	"Star/lexer"
-	"Star/parser/bsr"
-	"Star/parser/slot"
-	"Star/parser/symbols"
-	"Star/token"
+	"Plus/lexer"
+	"Plus/parser/bsr"
+	"Plus/parser/slot"
+	"Plus/parser/symbols"
+	"Plus/token"
 )
 
 type parser struct {
@@ -83,15 +83,23 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 				p.rtn(symbols.NT_Base, cU, p.cI)
 			case slot.Base1F0: // Base failure case
 				p.rtn(symbols.NT_Base, cU, failInd)
-			case slot.Rep0R0: // Rep : ∙SuffBase
+			case slot.Rep0R0: // Rep : ∙Suff1Base SuffBase
 
 				if !p.testSelect(slot.Rep0R0) {
 					p.parseError(slot.Rep0R0, p.cI, first[slot.Rep0R0])
 					L, p.cI = slot.Rep1F0, cU
 					goto nextSlot
 				}
-				p.call(slot.Rep0R1, slot.Rep1F0, symbols.NT_SuffBase, cU, p.cI)
-			case slot.Rep0R1: // Rep : SuffBase ∙
+				p.call(slot.Rep0R1, slot.Rep1F0, symbols.NT_Suff1Base, cU, p.cI)
+			case slot.Rep0R1: // Rep : Suff1Base ∙SuffBase
+
+				if !p.testSelect(slot.Rep0R1) {
+					p.parseError(slot.Rep0R1, p.cI, first[slot.Rep0R1])
+					L, p.cI = slot.Rep1F0, cU
+					goto nextSlot
+				}
+				p.call(slot.Rep0R2, slot.Rep1F0, symbols.NT_SuffBase, cU, p.cI)
+			case slot.Rep0R2: // Rep : Suff1Base SuffBase ∙
 
 				p.rtn(symbols.NT_Rep, cU, p.cI)
 			case slot.Rep1F0: // Rep failure case
@@ -128,6 +136,26 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 				p.rtn(symbols.NT_S1, cU, p.cI)
 			case slot.S11F0: // S1 failure case
 				p.rtn(symbols.NT_S1, cU, failInd)
+			case slot.Suff1Base0R0: // Suff1Base : ∙Base SuffBase
+
+				if !p.testSelect(slot.Suff1Base0R0) {
+					p.parseError(slot.Suff1Base0R0, p.cI, first[slot.Suff1Base0R0])
+					L, p.cI = slot.Suff1Base1F0, cU
+					goto nextSlot
+				}
+				p.bsrSet.Add(slot.Suff1Base0R1, cU, p.cI, p.cI+1)
+				p.cI++
+				if !p.testSelect(slot.Suff1Base0R1) {
+					p.parseError(slot.Suff1Base0R1, p.cI, first[slot.Suff1Base0R1])
+					L, p.cI = slot.Suff1Base1F0, cU
+					goto nextSlot
+				}
+				p.call(slot.Suff1Base0R2, slot.Suff1Base1F0, symbols.NT_SuffBase, cU, p.cI)
+			case slot.Suff1Base0R2: // Suff1Base : Base SuffBase ∙
+
+				p.rtn(symbols.NT_Suff1Base, cU, p.cI)
+			case slot.Suff1Base1F0: // Suff1Base failure case
+				p.rtn(symbols.NT_Suff1Base, cU, failInd)
 			case slot.SuffBase0R0: // SuffBase : ∙Base SuffBase
 
 				if !p.testSelect(slot.SuffBase0R0) {
@@ -412,12 +440,16 @@ var first = []map[token.Type]string{
 		token.EOF: "$",
 		token.T_0: "Base",
 	},
-	// Rep : ∙SuffBase
+	// Rep : ∙Suff1Base SuffBase
+	{
+		token.T_0: "Base",
+	},
+	// Rep : Suff1Base ∙SuffBase
 	{
 		token.EOF: "$",
 		token.T_0: "Base",
 	},
-	// Rep : SuffBase ∙
+	// Rep : Suff1Base SuffBase ∙
 	{
 		token.EOF: "$",
 	},
@@ -431,12 +463,10 @@ var first = []map[token.Type]string{
 	},
 	// Required : Required ∙
 	{
-		token.EOF: "$",
 		token.T_0: "Base",
 	},
 	// Required : ∙
 	{
-		token.EOF: "$",
 		token.T_0: "Base",
 	},
 	// S1 : ∙Required Rep
@@ -445,7 +475,6 @@ var first = []map[token.Type]string{
 	},
 	// S1 : Required ∙Rep
 	{
-		token.EOF: "$",
 		token.T_0: "Base",
 	},
 	// S1 : Required Rep ∙
@@ -455,6 +484,25 @@ var first = []map[token.Type]string{
 	// S1 : ∙
 	{
 		token.EOF: "$",
+	},
+	// Suff1Base : ∙Base SuffBase
+	{
+		token.T_0: "Base",
+	},
+	// Suff1Base : Base ∙SuffBase
+	{
+		token.EOF: "$",
+		token.T_0: "Base",
+	},
+	// Suff1Base : Base SuffBase ∙
+	{
+		token.EOF: "$",
+		token.T_0: "Base",
+	},
+	// Suff1Base : ∙
+	{
+		token.EOF: "$",
+		token.T_0: "Base",
 	},
 	// SuffBase : ∙Base SuffBase
 	{
@@ -468,10 +516,12 @@ var first = []map[token.Type]string{
 	// SuffBase : Base SuffBase ∙
 	{
 		token.EOF: "$",
+		token.T_0: "Base",
 	},
 	// SuffBase : ∙
 	{
 		token.EOF: "$",
+		token.T_0: "Base",
 	},
 }
 
@@ -487,16 +537,21 @@ var followSets = []map[token.Type]string{
 	},
 	// Required
 	{
-		token.EOF: "$",
 		token.T_0: "Base",
 	},
 	// S1
 	{
 		token.EOF: "$",
 	},
+	// Suff1Base
+	{
+		token.EOF: "$",
+		token.T_0: "Base",
+	},
 	// SuffBase
 	{
 		token.EOF: "$",
+		token.T_0: "Base",
 	},
 }
 

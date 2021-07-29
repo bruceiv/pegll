@@ -2,13 +2,13 @@
 package main
 
 import (
-	"Star/lexer"
-	"Star/parser"
+	"Plus/lexer"
+	"Plus/parser"
 	"fmt"
 )
 
 const (
-	t0 = `Required`
+	t0 = `Required` //Should fail
 	t1 = `Required Base`
 	t2 = `Required Base Base`
 	t5 = `Required Base Base Base Base Base`

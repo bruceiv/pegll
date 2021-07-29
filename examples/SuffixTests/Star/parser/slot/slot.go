@@ -6,8 +6,8 @@ import(
 	"bytes"
 	"fmt"
 	
-	"Optional/parser/symbols"
-	"Optional/token"
+	"Star/parser/symbols"
+	"Star/token"
 )
 
 type Label int

@@ -195,6 +195,7 @@ A `SyntaxSuffix` is a syntax rule that has a suffix operator. `SyntaxSuffix` is 
 ```
 
 SyntaxSuffix : SyntaxAtom "?" 
-             | SyntaxAtom "*" ;
+             | SyntaxAtom "*" 
+             | SyntaxAtom "+" ;
 
 ```

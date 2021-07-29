@@ -20,10 +20,11 @@ const(
 	NT_Rep 
 	NT_Required 
 	NT_S1 
+	NT_Suff1Base 
 	NT_SuffBase 
 )
 
-const NumNTs = 5
+const NumNTs = 6
 
 type NTs []NT
 
@@ -130,6 +131,7 @@ var ntToString = []string {
 	"Rep", /* NT_Rep */
 	"Required", /* NT_Required */
 	"S1", /* NT_S1 */
+	"Suff1Base", /* NT_Suff1Base */
 	"SuffBase", /* NT_SuffBase */ 
 }
 
@@ -143,18 +145,21 @@ var stringNT = map[string]NT{
 	"Rep":NT_Rep,
 	"Required":NT_Required,
 	"S1":NT_S1,
+	"Suff1Base":NT_Suff1Base,
 	"SuffBase":NT_SuffBase,
 }
 
 var leftRec = map[NT]NTs { 
 	NT_Base: NTs {  },
-	NT_Rep: NTs {  NT_SuffBase,  NT_Base,  },
+	NT_Rep: NTs {  NT_Suff1Base,  NT_Base,  },
 	NT_Required: NTs {  },
 	NT_S1: NTs {  NT_Required,  },
+	NT_Suff1Base: NTs {  NT_Base,  },
 	NT_SuffBase: NTs {  NT_Base,  },
 }
 
 var ordered = map[NT]bool { 
+	NT_Suff1Base:true,
 	NT_SuffBase:true,
 }
 

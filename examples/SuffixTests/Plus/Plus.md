@@ -1,31 +1,31 @@
-# **`Star` GRAMMAR**
+# **`Plus` GRAMMAR**
 
 ### **AUTHORSHIP INFORMATION**
 #### *Authors :* Brynn Harrington and Emily Hoppe Copyright (C) 2021
-#### *Designed to* test syntax operator `+`
+#### *Designed to* test syntax operator `*`
 #### *Creation Date :* July 28, 2021 
 #### *Last Modified :* July 28, 2021
 #### *Copyright and Licensing Information :* See end of file.
 
 ### **GENERAL DESCRIPTION**
-A grammar to test the added `+` operator in `Pegll`.
+A grammar to test the added `*` operator in `Pegll`.
 
 ### **STATUS ON GRAMMAR**
 #### *Markdown File Creation:* Complete
 #### *Parser Generated :* Complete
 #### *Test File Creation:* Complete
-#### *Testing Results:* Success
+#### *Testing Results:* Successful1
 
-### **`Star` GRAMMAR GUIDE**
+### **`Plus` GRAMMAR GUIDE**
 
 ```
-package "Star"
+package "Plus"
 
 S1       : Required Rep         ;
 
 Required : "Required"           ;
 
-Rep      : Base*                ;
+Rep      : Base+                ;
 
 Base     : "Base"               ;
 ```

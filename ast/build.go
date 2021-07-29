@@ -99,6 +99,9 @@ func ntTokenFromString(s string) *token.Token {
 func nameForSuff(s SyntaxSymbol) string {
 	return "Suff" + s.ID()
 }
+func nameForRep1Suf(s SyntaxSymbol) string {
+	return "Suff1" + s.ID()
+}
 
 /* POSSIBLE ISSUES:
 - recreating each symbol is probably going to greatly increase runtime (mention)
@@ -129,7 +132,8 @@ func (bld *builder) replaceSyntaxSuffix(g *GoGLL) {
 						//Add expression to list of alternates
 						empty := &SyntaxAlternate{}
 						tempAlts := []*SyntaxAlternate{}
-						if l.Type == 0 { //Optional "?"
+						switch l.Type {
+						case 0: //Optional "?"
 							// slice of syntax symbols only containing a syntax atom
 							exprSym := []SyntaxSymbol{l.Expr}
 							// syntax alternate takes slice of syntax symbols
@@ -139,17 +143,60 @@ func (bld *builder) replaceSyntaxSuffix(g *GoGLL) {
 							tempAlts = append(tempAlts, expr)  //expr
 							tempAlts = append(tempAlts, empty) //empty
 
-						} else if l.Type == 1 { //rep 0+ times "*"
+						case 1: //rep 0+ times "*"
+							/* Structure:
+							 rep0x: base rep0x
+									/ empty ;
+							*/
+
 							// slice of syntax symbols containing the expression and the NT to repeat
 							exprSym := []SyntaxSymbol{l.Expr, &suff}
 							// syntax alternate takes slice of syntax symbols
 							expr := &SyntaxAlternate{
 								Symbols: exprSym,
 							}
-							tempAlts = append(tempAlts, expr)  // expr suff
+							tempAlts = append(tempAlts, expr)  // expr rep0x
 							tempAlts = append(tempAlts, empty) // empty
+						case 2: //rep 1+ times "+"
+							// slice of syntax symbols containing the expression and the NT to repeat
+							exprSym := []SyntaxSymbol{l.Expr, &suff}
+
+							// syntax alternate takes slice of syntax symbols
+							expr := &SyntaxAlternate{
+								Symbols: exprSym,
+							}
+
+							tempAlts = append(tempAlts, expr)  // expr rep0x
+							tempAlts = append(tempAlts, empty) // empty
+
+							/* Second Layer */
+
+							name1 := nameForRep1Suf(l.Expr)
+							//NT to hold the rep1x part of rule
+							rep1NT := NT{
+								tok: ntTokenFromString(name1),
+							}
+							//Rep1 Sym
+							repSym := []SyntaxSymbol{l.Expr, &suff}
+							//Rep1 Alt
+							repAlt := &SyntaxAlternate{
+								Symbols: repSym,
+							} //Rep1 : expr rep0x
+
+							tempRepAlts := []*SyntaxAlternate{repAlt}
+							repRule := SyntaxRule{
+								Head:       &rep1NT, //Nt for rep1x
+								Alternates: tempRepAlts,
+								IsOrdered:  true, //Unimportant bc only 1 alt
+							}
+							//Add the extra syntax rule
+							bld.addSyntaxRule(&repRule, g)
+							//add the extra symbol
+							newSymbols = append(newSymbols, &rep1NT)
 						}
 
+						// rep0x : base rep0x
+						//       / base empty;
 						//Create new syntax rule
 						suffRule := SyntaxRule{
 							Head:       &suff, //Nt
@@ -430,7 +477,8 @@ func (bld *builder) unicodeClass(b bsr.BSR) *UnicodeClass {
 /*** Syntax Rules ***/
 
 // SyntaxSuffix : SyntaxAtom "?"
-//  			| SyntaxAtom "*";
+//  			| SyntaxAtom "*"
+//              | SyntaxAtom "+" ;
 func (bld *builder) SyntaxSuffix(b bsr.BSR) SyntaxSymbol {
 	return &SyntaxSuffix{
 		Expr: bld.atom(b.GetNTChildI(0)),
