@@ -3,7 +3,7 @@
 #### *Authors :* Brynn Harrington and Emily Hoppe Copyright (C) 2021
 #### *Adapted from :* Aaron Moss's [`XML` Egg Grammar](https://github.com/bruceiv/egg/blob/deriv/grammars/XML-u.egg)
 #### *Creation Date :* June 11, 2021 
-#### *Last Modified :* July 29, 2021
+#### *Last Modified :* June 24, 2021
 #### *Copyright and Licensing Information :* See end of file.
 
 ### **GENERAL DESCRIPTION**
@@ -22,11 +22,13 @@ package "XML"
 ```
 #### ***Higher-Level Language Structures***
 ```
-Document                : Prolog Element Misc*                  ;
+Document                : Prolog Element RepMisc0x              ;
 
-Prolog 	                : XMLDecl? Misc*                        ;
-XMLDecl                 : "<?xml" VersionInfo EncodingDecl? 
-                         optSpaceEsc "?>"                       ;
+Prolog 	                : OptXMLDecl RepMisc0x                  ;
+XMLDecl                 : "<?xml" VersionInfo OptEncDecl 
+                         optSpaceEsc "?>"                       ;     
+        OptXMLDecl      : XMLDecl 
+                        / empty                                 ;
 
         VersionInfo     : spaceEsc "version" Eq QuoVerNum       ;
         QuoVerNum       : "'" VersionNum "'"  
@@ -37,6 +39,8 @@ VersionNum              : NAME_CHAR RepNameChar0x               ;
 EncodingDecl            : spaceEsc "encoding" Eq QuoEncNam      ;
         QuoEncNam       : "'" EncName "'"  
                         | dubQu EncName dubQu                   ;
+        OptEncDecl      : EncodingDecl 
+                        / empty                                 ;
         
 ```
 #### ***Values and References***
@@ -88,6 +92,8 @@ Content                 : ContentAlts Content
                         | charData                              ;
 Misc                    : comment 
                         | spaceEsc                              ; 
+        RepMisc0x       : Misc RepMisc0x 
+                        / empty                                 ;
 
 !comment                : '<''!''-''-'
                         { not "-->"
