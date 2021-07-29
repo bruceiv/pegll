@@ -321,9 +321,9 @@ var nextState = []func(r rune) state{
 			return 25 
 		case r == '}':
 			return 26 
-		case unicode.IsLower(r):
-			return 27 
 		case unicode.IsUpper(r):
+			return 27 
+		case unicode.IsLower(r):
 			return 28 
 		}
 		return nullState
@@ -550,11 +550,11 @@ var nextState = []func(r rune) state{
 	func(r rune) state {
 		switch { 
 		case r == '_':
-			return 33 
+			return 42 
 		case unicode.IsLetter(r):
-			return 33 
+			return 42 
 		case unicode.IsNumber(r):
-			return 33 
+			return 42 
 		}
 		return nullState
 	}, 
@@ -562,11 +562,11 @@ var nextState = []func(r rune) state{
 	func(r rune) state {
 		switch { 
 		case r == '_':
-			return 42 
+			return 33 
 		case unicode.IsLetter(r):
-			return 42 
+			return 33 
 		case unicode.IsNumber(r):
-			return 42 
+			return 33 
 		}
 		return nullState
 	}, 

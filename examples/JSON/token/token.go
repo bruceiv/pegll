@@ -114,19 +114,23 @@ const(
     T_5  // : 
     T_6  // [ 
     T_7  // ] 
-    T_8  // block_comment 
-    T_9  // eE 
-    T_10  // escCharSpace 
-    T_11  // false 
-    T_12  // hex 
-    T_13  // line_comment 
-    T_14  // nonZero 
-    T_15  // null 
-    T_16  // repNum1x 
-    T_17  // string_ns 
-    T_18  // true 
-    T_19  // { 
-    T_20  // } 
+    T_8  // bSlash 
+    T_9  // block_comment 
+    T_10  // char 
+    T_11  // dQuote 
+    T_12  // eE 
+    T_13  // esc 
+    T_14  // escCharSpace 
+    T_15  // false 
+    T_16  // hex 
+    T_17  // line_comment 
+    T_18  // nonZero 
+    T_19  // null 
+    T_20  // num 
+    T_21  // true 
+    T_22  // u 
+    T_23  // { 
+    T_24  // } 
 )
 
 var TypeToString = []string{ 
@@ -153,6 +157,10 @@ var TypeToString = []string{
     "T_18",
     "T_19",
     "T_20",
+    "T_21",
+    "T_22",
+    "T_23",
+    "T_24",
 }
 
 var StringToType = map[string] Type { 
@@ -179,6 +187,10 @@ var StringToType = map[string] Type {
     "T_18" : T_18, 
     "T_19" : T_19, 
     "T_20" : T_20, 
+    "T_21" : T_21, 
+    "T_22" : T_22, 
+    "T_23" : T_23, 
+    "T_24" : T_24, 
 }
 
 var TypeToID = []string { 
@@ -192,17 +204,21 @@ var TypeToID = []string {
     ":", 
     "[", 
     "]", 
+    "bSlash", 
     "block_comment", 
+    "char", 
+    "dQuote", 
     "eE", 
+    "esc", 
     "escCharSpace", 
     "false", 
     "hex", 
     "line_comment", 
     "nonZero", 
     "null", 
-    "repNum1x", 
-    "string_ns", 
+    "num", 
     "true", 
+    "u", 
     "{", 
     "}", 
 }
@@ -218,16 +234,20 @@ var Suppress = []bool {
     false, 
     false, 
     false, 
-    true, 
-    false, 
-    false, 
-    false, 
     false, 
     true, 
     false, 
     false, 
     false, 
+    false, 
+    false, 
+    false, 
+    false, 
     true, 
+    false, 
+    false, 
+    false, 
+    false, 
     false, 
     false, 
     false, 
