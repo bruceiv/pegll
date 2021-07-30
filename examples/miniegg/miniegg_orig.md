@@ -2,8 +2,8 @@
 ### **AUTHORSHIP INFORMATION**
 #### *Author :* Brynn Harrington and Emily Hoppe Copyright (C) 2021
 #### *Adapted from :* Aaron Moss's [`eggr` Egg Grammar](https://github.com/bruceiv/egg/blob/deriv/grammars/miniegg.egg)
-#### *Creation Date :* July 30, 2021 
-#### *Last Modified :* July 30, 2021
+#### *Creation Date :* June 11, 2021 
+#### *Last Modified :* June 24, 2021
 #### *Copyright and Licensing Information :* See end of file.
 
 ###  **GENERAL DESCRIPTION**
@@ -12,23 +12,26 @@ A modification of `miniegg` [Egg](https://github.com/bruceiv/egg/blob/deriv/gram
 #### *Markdown File Creation:* Working
 #### *Parser Generated :* Complete
 #### *Test File Creation:* Incomplete
-#### *Testing Results:* Failed - None match
-
+#### *Testing Results:* Unknown
 ### **`miniegg` GRAMMAR GUIDE**
 The following grammar tests example structures to validate the `miniegg` grammar rules. 
 ```
 package "miniegg"
 ```
-`Grammar` is the semantic starting rule for the `miniegg` grammar. It calls for a space and then one or more repetitions of rules through `Rule+` which repeats a rule one or more times.
+`Grammar` is the semantic starting rule for the `miniegg` grammar. It calls for a space and then one or more repetitions of rules through `RepRule0x`.
 ```
-Grammar         : " " Rule+                     ;
+Grammar         : " " Rule RepRule0x            ;
 ```
-`Rule` is the semantic rule for a rule which is defined by an identifer followed by the character '='. See the [grammar for details.](../../gogll.md)
+`Rule` is the semantic rule for a rule which is defined by an identifer followed by the character '=' while `RepRule0x` is the semantic rule for an expression repeating zero or more times until empty. This is accomplished by the ability for recursive calls in semantic rules and the ordered-choice `/` operator. See the [grammar for details.](../../gogll.md)
 ```
-Rule            : id eq " " Expr+               ;
+RepRule0x       : Rule RepRule0x
+                / empty                         ;
+Rule            : id eq " " Expr RepExpr0x      ;
 ```
-`Expr` is the semantic rule for an expression which is defined by an identifer then any character other than '='. See the [grammar for details.](../../gogll.md)
+`Expr` is the semantic rule for an expression which is defined by an identifer then any character other than '=' while `ExprRep` is the semantic rule for an expression repeating one or more times until empty. This is accomplished by the ability for recursive calls in semantic rules and the ordered-choice `/` operator. See the [grammar for details.](../../gogll.md)
 ```
+RepExpr0x       : Expr RepExpr0x
+                / empty                         ;
 Expr            : id neq                        ; 
 ```
 `id`, `eq`, and `neq` are lexical rules representing an identifier beginning with an uppercase letter followed by a space, the '=' character literal, and any character that is not '=' respectively. 
