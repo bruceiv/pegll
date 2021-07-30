@@ -1015,7 +1015,7 @@ var firstT = []map[token.Type]bool {
 	{  }, // ELEMENT1M1 
 	{  }, // ELEMENT1R1 
 	{  }, // ELEMENT2F0 
-	{  token.T_0: true,  token.T_6: true,  token.T_7: true,  }, // EXPR0R0 
+	{  token.T_7: true,  token.T_0: true,  token.T_6: true,  }, // EXPR0R0 
 	{  token.T_0: true,  token.T_6: true,  }, // EXPR0R1 
 	{  }, // EXPR0R2 
 	{  }, // EXPR1F0 
@@ -1041,20 +1041,20 @@ var firstT = []map[token.Type]bool {
 	{  token.T_4: true,  }, // PLUSorMINUS1M0 
 	{  token.T_4: true,  }, // PLUSorMINUS1R0 
 	{  token.T_0: true,  token.T_6: true,  }, // PLUSorMINUS1M1 
-	{  token.T_6: true,  token.T_0: true,  }, // PLUSorMINUS1R1 
+	{  token.T_0: true,  token.T_6: true,  }, // PLUSorMINUS1R1 
 	{  }, // PLUSorMINUS1M2 
 	{  }, // PLUSorMINUS1R2 
 	{  }, // PLUSorMINUS2F0 
-	{  token.T_0: true,  token.T_6: true,  }, // PRODUCT0R0 
+	{  token.T_6: true,  token.T_0: true,  }, // PRODUCT0R0 
 	{  token.T_2: true,  token.T_5: true,  }, // PRODUCT0R1 
 	{  }, // PRODUCT0R2 
 	{  }, // PRODUCT1F0 
 	{  token.T_6: true,  token.T_0: true,  }, // SUM0R0 
-	{  token.T_3: true,  token.T_4: true,  }, // SUM0R1 
+	{  token.T_4: true,  token.T_3: true,  }, // SUM0R1 
 	{  }, // SUM0R2 
 	{  }, // SUM1F0 
 	{  token.T_3: true,  token.T_4: true,  }, // SuffPLUSorMINUS0R0 
-	{  token.T_3: true,  token.T_4: true,  }, // SuffPLUSorMINUS0R1 
+	{  token.T_4: true,  token.T_3: true,  }, // SuffPLUSorMINUS0R1 
 	{  }, // SuffPLUSorMINUS0R2 
 	{  }, // SuffPLUSorMINUS1R0 
 	{  token.T_2: true,  token.T_5: true,  }, // SuffTIMESorDIVIDE0R0 
@@ -1066,12 +1066,12 @@ var firstT = []map[token.Type]bool {
 	{  }, // TIMES0R2 
 	{  }, // TIMES1F0 
 	{  token.T_2: true,  }, // TIMESorDIVIDE0R0 
-	{  token.T_0: true,  token.T_6: true,  }, // TIMESorDIVIDE0R1 
+	{  token.T_6: true,  token.T_0: true,  }, // TIMESorDIVIDE0R1 
 	{  }, // TIMESorDIVIDE0R2 
 	{  token.T_5: true,  }, // TIMESorDIVIDE1M0 
 	{  token.T_5: true,  }, // TIMESorDIVIDE1R0 
 	{  token.T_0: true,  token.T_6: true,  }, // TIMESorDIVIDE1M1 
-	{  token.T_6: true,  token.T_0: true,  }, // TIMESorDIVIDE1R1 
+	{  token.T_0: true,  token.T_6: true,  }, // TIMESorDIVIDE1R1 
 	{  }, // TIMESorDIVIDE1M2 
 	{  }, // TIMESorDIVIDE1R2 
 	{  }, // TIMESorDIVIDE2F0 

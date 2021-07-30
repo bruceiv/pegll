@@ -1,5 +1,5 @@
 /* calc TEST */
-// tests functionality of simple calculator
+// tests functionality of simple calculator 
 package main
 
 import (
@@ -16,8 +16,8 @@ import (
  * that it is functioning properly
  */
 // should match
-const single_num = `1` // passed
-/* const plus_test = `8+6`           // passed
+const single_num = `1`            // passed
+const plus_test = `8+6`           // passed
 const minus_test = `8 -6 `        // passed
 const mult_test = `8 * 6`         // passed
 const div_test = `8 / 2`          // passed
@@ -28,7 +28,7 @@ const parens_test = "(8 + 1)*2"   // passed
 // should fail to match
 const incomp_expr = "12 +"       // did not pass
 const incomp_parens = `((1+3)-1` // did not pass
-const space = " " */
+const space = " "
 
 /* CALCULATOR FUNCTIONS */
 // Calculates the value of the input
@@ -72,6 +72,7 @@ func repPLUSorMINUS(val int, pORmrep bsr.BSR) int {
 
 	//self-assignment aspect of RepPLUSorMINUS0x NT
 	repChild := pORmrep.GetNTChildI(1)
+
 
 	if pORm.Alternate() == 0 { //alt0 -> addition
 		return repPLUSorMINUS((val + product(prod)), repChild)
@@ -118,6 +119,7 @@ func repTIMESorDIV(val int, tORdrep bsr.BSR) int {
 
 	//self-assignment aspect of RepTIMESorDIVIDE0x NT
 	repChild := tORdrep.GetNTChildI(1)
+
 
 	if tORd.Alternate() == 0 { //alt0 -> multiplication
 		return repTIMESorDIV((val * element(elem)), repChild)
@@ -207,8 +209,8 @@ func parseAndPrint(s string) {
 func main() {
 	// should match and print result
 	fmt.Println("should match")
-	parseAndPrint(single_num)
-	/* parseAndPrint(plus_test)
+	parseAndPrint(single_num) 
+	parseAndPrint(plus_test)
 	parseAndPrint(minus_test)
 	parseAndPrint(mult_test)
 	parseAndPrint(div_test)
@@ -220,6 +222,6 @@ func main() {
 	fmt.Println("\nshould fail to match")
 	parseAndPrint(incomp_expr)
 	parseAndPrint(incomp_parens)
-	parseAndPrint(space) */
+	parseAndPrint(space)
 
 }
