@@ -57,13 +57,6 @@ func Parse(l *lexer.Lexer) (*bsr.Set, []*Error) {
 	return newParser(l).parse()
 }
 
-const (
-	_ slot.Label = iota + 11
-
-	fail_AxBC
-	fail_AorB
-)
-
 func (p *parser) parse() (*bsr.Set, []*Error) {
 	var L slot.Label
 	m, cU := len(p.lex.Tokens)-1, 0
@@ -93,40 +86,40 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 
 				if !p.testSelect(slot.AorB1R0) {
 					p.parseError(slot.AorB1R0, p.cI, first[slot.AorB1R0])
-					L, p.cI = fail_AorB, cU
+					L, p.cI = slot.AorB2F0, cU
 					goto nextSlot
 				}
 				p.bsrSet.Add(slot.AorB1R1, cU, p.cI, p.cI+1)
 				p.cI++
 				if !p.testSelect(slot.AorB1R1) {
 					p.parseError(slot.AorB1R1, p.cI, first[slot.AorB1R1])
-					L, p.cI = fail_AorB, cU
+					L, p.cI = slot.AorB2F0, cU
 					goto nextSlot
 				}
 				p.bsrSet.Add(slot.AorB1R2, cU, p.cI, p.cI+1)
 				p.cI++
 				p.rtn(symbols.NT_AorB, cU, p.cI)
-			case fail_AorB: // AorB failure case
+			case slot.AorB2F0: // AorB failure case
 				p.rtn(symbols.NT_AorB, cU, failInd)
 			case slot.AxBC0R0: // AxBC : ∙AorB c
 
 				if !p.testSelect(slot.AxBC0R0) {
 					p.parseError(slot.AxBC0R0, p.cI, first[slot.AxBC0R0])
-					L, p.cI = fail_AxBC, cU
+					L, p.cI = slot.AxBC1F0, cU
 					goto nextSlot
 				}
-				p.call(slot.AxBC0R1, fail_AxBC, symbols.NT_AorB, cU, p.cI)
+				p.call(slot.AxBC0R1, slot.AxBC1F0, symbols.NT_AorB, cU, p.cI)
 			case slot.AxBC0R1: // AxBC : AorB ∙c
 
 				if !p.testSelect(slot.AxBC0R1) {
 					p.parseError(slot.AxBC0R1, p.cI, first[slot.AxBC0R1])
-					L, p.cI = fail_AxBC, cU
+					L, p.cI = slot.AxBC1F0, cU
 					goto nextSlot
 				}
 				p.bsrSet.Add(slot.AxBC0R2, cU, p.cI, p.cI+1)
 				p.cI++
 				p.rtn(symbols.NT_AxBC, cU, p.cI)
-			case fail_AxBC: // AxBC failure case
+			case slot.AxBC1F0: // AxBC failure case
 				p.rtn(symbols.NT_AxBC, cU, failInd)
 			case slot.Repa0x0R0: // Repa0x : ∙a Repa0x
 
@@ -219,8 +212,7 @@ func (p *parser) call(Lm, Lf slot.Label, X symbols.NT, i, j int) {
 			// fmt.Printf("|popped|=%d\n", len(popped))
 			for pnd := range p.popped {
 				if pnd.X == X && pnd.k == j && pnd.j != failInd {
-					p.dscAdd(Lm, i, pnd.j)
-					p.bsrSet.Add(Lm, i, j, pnd.j)
+					p.addMatch(Lm, i, j, pnd.j)
 				}
 			}
 		}
@@ -228,7 +220,7 @@ func (p *parser) call(Lm, Lf slot.Label, X symbols.NT, i, j int) {
 			p.crf_f[ndV] = append(vf, uf)
 			for pnd := range p.popped {
 				if pnd.X == X && pnd.k == j && pnd.j == failInd {
-					p.dscAdd(Lf, i, i)
+					p.addFail(Lf, i, j)
 				}
 			}
 		}
@@ -251,14 +243,30 @@ func (p *parser) rtn(X symbols.NT, k, j int) {
 		p.popped[pn] = true
 		if j != failInd {
 			for _, nd := range p.crf_m[clusterNode{X, k}] {
-				p.dscAdd(nd.L, nd.i, j)
-				p.bsrSet.Add(nd.L, nd.i, k, j)
+				p.addMatch(nd.L, nd.i, k, j)
 			}
 		} else {
 			for _, nd := range p.crf_f[clusterNode{X, k}] {
-				p.dscAdd(nd.L, nd.i, nd.i)
+				p.addFail(nd.L, nd.i, k)
 			}
 		}
+	}
+}
+
+func (p *parser) addMatch(L slot.Label, i, k, j int) {
+	p.bsrSet.Add(L, i, k, j)
+	if L.IsLookahead() {
+		p.dscAdd(L, i, k)
+	} else {
+		p.dscAdd(L, i, j)
+	}
+}
+
+func (p *parser) addFail(L slot.Label, i, k int) {
+	if L.IsLookahead() {
+		p.dscAdd(L, i, k)
+	} else {
+		p.dscAdd(L, i, i)
 	}
 }
 
@@ -404,6 +412,10 @@ var first = []map[token.Type]string{
 	{
 		token.T_2: "c",
 	},
+	// AorB : ∙
+	{
+		token.T_2: "c",
+	},
 	// AxBC : ∙AorB c
 	{
 		token.T_0: "a",
@@ -414,6 +426,10 @@ var first = []map[token.Type]string{
 		token.T_2: "c",
 	},
 	// AxBC : AorB c ∙
+	{
+		token.EOF: "$",
+	},
+	// AxBC : ∙
 	{
 		token.EOF: "$",
 	},

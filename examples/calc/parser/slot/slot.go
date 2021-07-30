@@ -16,59 +16,80 @@ const(
 	CLOSE0R0 Label = iota
 	CLOSE0R1
 	CLOSE0R2
+	CLOSE1F0
 	DIVIDE0R0
 	DIVIDE0R1
 	DIVIDE0R2
+	DIVIDE1F0
 	ELEMENT0R0
 	ELEMENT0R1
 	ELEMENT0R2
 	ELEMENT0R3
+	ELEMENT1M0
 	ELEMENT1R0
+	ELEMENT1M1
 	ELEMENT1R1
+	ELEMENT2F0
 	EXPR0R0
 	EXPR0R1
 	EXPR0R2
+	EXPR1F0
 	MINUS0R0
 	MINUS0R1
 	MINUS0R2
+	MINUS1F0
 	Number0R0
 	Number0R1
 	Number0R2
+	Number1F0
 	OPEN0R0
 	OPEN0R1
 	OPEN0R2
+	OPEN1F0
 	PLUS0R0
 	PLUS0R1
 	PLUS0R2
+	PLUS1F0
 	PLUSorMINUS0R0
 	PLUSorMINUS0R1
 	PLUSorMINUS0R2
+	PLUSorMINUS1M0
 	PLUSorMINUS1R0
+	PLUSorMINUS1M1
 	PLUSorMINUS1R1
+	PLUSorMINUS1M2
 	PLUSorMINUS1R2
+	PLUSorMINUS2F0
 	PRODUCT0R0
 	PRODUCT0R1
 	PRODUCT0R2
-	RepPLUSorMINUS0x0R0
-	RepPLUSorMINUS0x0R1
-	RepPLUSorMINUS0x0R2
-	RepPLUSorMINUS0x1R0
-	RepTIMESorDIV0x0R0
-	RepTIMESorDIV0x0R1
-	RepTIMESorDIV0x0R2
-	RepTIMESorDIV0x1R0
+	PRODUCT1F0
 	SUM0R0
 	SUM0R1
 	SUM0R2
+	SUM1F0
+	SuffPLUSorMINUS0R0
+	SuffPLUSorMINUS0R1
+	SuffPLUSorMINUS0R2
+	SuffPLUSorMINUS1R0
+	SuffTIMESorDIVIDE0R0
+	SuffTIMESorDIVIDE0R1
+	SuffTIMESorDIVIDE0R2
+	SuffTIMESorDIVIDE1R0
 	TIMES0R0
 	TIMES0R1
 	TIMES0R2
+	TIMES1F0
 	TIMESorDIVIDE0R0
 	TIMESorDIVIDE0R1
 	TIMESorDIVIDE0R2
+	TIMESorDIVIDE1M0
 	TIMESorDIVIDE1R0
+	TIMESorDIVIDE1M1
 	TIMESorDIVIDE1R1
+	TIMESorDIVIDE1M2
 	TIMESorDIVIDE1R2
+	TIMESorDIVIDE2F0
 	WS0R0
 	WS0R1
 	WS1R0
@@ -149,6 +170,11 @@ func (l Label) FirstContains(typ token.Type) bool {
 	return firstT[l][typ]
 }
 
+func (l Label) IsLookahead() bool {
+	s := l.Slot()
+	return s.Pos > 0 && s.Symbols[s.Pos-1].IsLookahead()
+}
+
 func (s *Slot) EoR() bool {
 	return s.Pos >= len(s.Symbols)
 }
@@ -202,6 +228,12 @@ var slots = map[Label]*Slot{
 		}, 
 		CLOSE0R2, 
 	},
+	CLOSE1F0: {
+		symbols.NT_CLOSE, 1, 0, 
+		symbols.Symbols{ 
+		}, 
+		CLOSE1F0, 
+	},
 	DIVIDE0R0: {
 		symbols.NT_DIVIDE, 0, 0, 
 		symbols.Symbols{  
@@ -225,6 +257,12 @@ var slots = map[Label]*Slot{
 			symbols.NT_WS,
 		}, 
 		DIVIDE0R2, 
+	},
+	DIVIDE1F0: {
+		symbols.NT_DIVIDE, 1, 0, 
+		symbols.Symbols{ 
+		}, 
+		DIVIDE1F0, 
 	},
 	ELEMENT0R0: {
 		symbols.NT_ELEMENT, 0, 0, 
@@ -262,6 +300,13 @@ var slots = map[Label]*Slot{
 		}, 
 		ELEMENT0R3, 
 	},
+	ELEMENT1M0: {
+		symbols.NT_ELEMENT, 1, 0, 
+		symbols.Symbols{  
+			symbols.NT_Number,
+		}, 
+		ELEMENT1M0, 
+	},
 	ELEMENT1R0: {
 		symbols.NT_ELEMENT, 1, 0, 
 		symbols.Symbols{  
@@ -269,12 +314,25 @@ var slots = map[Label]*Slot{
 		}, 
 		ELEMENT1R0, 
 	},
+	ELEMENT1M1: {
+		symbols.NT_ELEMENT, 1, 1, 
+		symbols.Symbols{  
+			symbols.NT_Number,
+		}, 
+		ELEMENT1M1, 
+	},
 	ELEMENT1R1: {
 		symbols.NT_ELEMENT, 1, 1, 
 		symbols.Symbols{  
 			symbols.NT_Number,
 		}, 
 		ELEMENT1R1, 
+	},
+	ELEMENT2F0: {
+		symbols.NT_ELEMENT, 2, 0, 
+		symbols.Symbols{ 
+		}, 
+		ELEMENT2F0, 
 	},
 	EXPR0R0: {
 		symbols.NT_EXPR, 0, 0, 
@@ -300,6 +358,12 @@ var slots = map[Label]*Slot{
 		}, 
 		EXPR0R2, 
 	},
+	EXPR1F0: {
+		symbols.NT_EXPR, 1, 0, 
+		symbols.Symbols{ 
+		}, 
+		EXPR1F0, 
+	},
 	MINUS0R0: {
 		symbols.NT_MINUS, 0, 0, 
 		symbols.Symbols{  
@@ -323,6 +387,12 @@ var slots = map[Label]*Slot{
 			symbols.NT_WS,
 		}, 
 		MINUS0R2, 
+	},
+	MINUS1F0: {
+		symbols.NT_MINUS, 1, 0, 
+		symbols.Symbols{ 
+		}, 
+		MINUS1F0, 
 	},
 	Number0R0: {
 		symbols.NT_Number, 0, 0, 
@@ -348,6 +418,12 @@ var slots = map[Label]*Slot{
 		}, 
 		Number0R2, 
 	},
+	Number1F0: {
+		symbols.NT_Number, 1, 0, 
+		symbols.Symbols{ 
+		}, 
+		Number1F0, 
+	},
 	OPEN0R0: {
 		symbols.NT_OPEN, 0, 0, 
 		symbols.Symbols{  
@@ -371,6 +447,12 @@ var slots = map[Label]*Slot{
 			symbols.NT_WS,
 		}, 
 		OPEN0R2, 
+	},
+	OPEN1F0: {
+		symbols.NT_OPEN, 1, 0, 
+		symbols.Symbols{ 
+		}, 
+		OPEN1F0, 
 	},
 	PLUS0R0: {
 		symbols.NT_PLUS, 0, 0, 
@@ -396,6 +478,12 @@ var slots = map[Label]*Slot{
 		}, 
 		PLUS0R2, 
 	},
+	PLUS1F0: {
+		symbols.NT_PLUS, 1, 0, 
+		symbols.Symbols{ 
+		}, 
+		PLUS1F0, 
+	},
 	PLUSorMINUS0R0: {
 		symbols.NT_PLUSorMINUS, 0, 0, 
 		symbols.Symbols{  
@@ -420,6 +508,14 @@ var slots = map[Label]*Slot{
 		}, 
 		PLUSorMINUS0R2, 
 	},
+	PLUSorMINUS1M0: {
+		symbols.NT_PLUSorMINUS, 1, 0, 
+		symbols.Symbols{  
+			symbols.NT_MINUS, 
+			symbols.NT_PRODUCT,
+		}, 
+		PLUSorMINUS1M0, 
+	},
 	PLUSorMINUS1R0: {
 		symbols.NT_PLUSorMINUS, 1, 0, 
 		symbols.Symbols{  
@@ -427,6 +523,14 @@ var slots = map[Label]*Slot{
 			symbols.NT_PRODUCT,
 		}, 
 		PLUSorMINUS1R0, 
+	},
+	PLUSorMINUS1M1: {
+		symbols.NT_PLUSorMINUS, 1, 1, 
+		symbols.Symbols{  
+			symbols.NT_MINUS, 
+			symbols.NT_PRODUCT,
+		}, 
+		PLUSorMINUS1M1, 
 	},
 	PLUSorMINUS1R1: {
 		symbols.NT_PLUSorMINUS, 1, 1, 
@@ -436,6 +540,14 @@ var slots = map[Label]*Slot{
 		}, 
 		PLUSorMINUS1R1, 
 	},
+	PLUSorMINUS1M2: {
+		symbols.NT_PLUSorMINUS, 1, 2, 
+		symbols.Symbols{  
+			symbols.NT_MINUS, 
+			symbols.NT_PRODUCT,
+		}, 
+		PLUSorMINUS1M2, 
+	},
 	PLUSorMINUS1R2: {
 		symbols.NT_PLUSorMINUS, 1, 2, 
 		symbols.Symbols{  
@@ -444,11 +556,17 @@ var slots = map[Label]*Slot{
 		}, 
 		PLUSorMINUS1R2, 
 	},
+	PLUSorMINUS2F0: {
+		symbols.NT_PLUSorMINUS, 2, 0, 
+		symbols.Symbols{ 
+		}, 
+		PLUSorMINUS2F0, 
+	},
 	PRODUCT0R0: {
 		symbols.NT_PRODUCT, 0, 0, 
 		symbols.Symbols{  
 			symbols.NT_ELEMENT, 
-			symbols.NT_RepTIMESorDIV0x,
+			symbols.NT_SuffTIMESorDIVIDE,
 		}, 
 		PRODUCT0R0, 
 	},
@@ -456,7 +574,7 @@ var slots = map[Label]*Slot{
 		symbols.NT_PRODUCT, 0, 1, 
 		symbols.Symbols{  
 			symbols.NT_ELEMENT, 
-			symbols.NT_RepTIMESorDIV0x,
+			symbols.NT_SuffTIMESorDIVIDE,
 		}, 
 		PRODUCT0R1, 
 	},
@@ -464,75 +582,21 @@ var slots = map[Label]*Slot{
 		symbols.NT_PRODUCT, 0, 2, 
 		symbols.Symbols{  
 			symbols.NT_ELEMENT, 
-			symbols.NT_RepTIMESorDIV0x,
+			symbols.NT_SuffTIMESorDIVIDE,
 		}, 
 		PRODUCT0R2, 
 	},
-	RepPLUSorMINUS0x0R0: {
-		symbols.NT_RepPLUSorMINUS0x, 0, 0, 
-		symbols.Symbols{  
-			symbols.NT_PLUSorMINUS, 
-			symbols.NT_RepPLUSorMINUS0x,
-		}, 
-		RepPLUSorMINUS0x0R0, 
-	},
-	RepPLUSorMINUS0x0R1: {
-		symbols.NT_RepPLUSorMINUS0x, 0, 1, 
-		symbols.Symbols{  
-			symbols.NT_PLUSorMINUS, 
-			symbols.NT_RepPLUSorMINUS0x,
-		}, 
-		RepPLUSorMINUS0x0R1, 
-	},
-	RepPLUSorMINUS0x0R2: {
-		symbols.NT_RepPLUSorMINUS0x, 0, 2, 
-		symbols.Symbols{  
-			symbols.NT_PLUSorMINUS, 
-			symbols.NT_RepPLUSorMINUS0x,
-		}, 
-		RepPLUSorMINUS0x0R2, 
-	},
-	RepPLUSorMINUS0x1R0: {
-		symbols.NT_RepPLUSorMINUS0x, 1, 0, 
+	PRODUCT1F0: {
+		symbols.NT_PRODUCT, 1, 0, 
 		symbols.Symbols{ 
 		}, 
-		RepPLUSorMINUS0x1R0, 
-	},
-	RepTIMESorDIV0x0R0: {
-		symbols.NT_RepTIMESorDIV0x, 0, 0, 
-		symbols.Symbols{  
-			symbols.NT_TIMESorDIVIDE, 
-			symbols.NT_RepTIMESorDIV0x,
-		}, 
-		RepTIMESorDIV0x0R0, 
-	},
-	RepTIMESorDIV0x0R1: {
-		symbols.NT_RepTIMESorDIV0x, 0, 1, 
-		symbols.Symbols{  
-			symbols.NT_TIMESorDIVIDE, 
-			symbols.NT_RepTIMESorDIV0x,
-		}, 
-		RepTIMESorDIV0x0R1, 
-	},
-	RepTIMESorDIV0x0R2: {
-		symbols.NT_RepTIMESorDIV0x, 0, 2, 
-		symbols.Symbols{  
-			symbols.NT_TIMESorDIVIDE, 
-			symbols.NT_RepTIMESorDIV0x,
-		}, 
-		RepTIMESorDIV0x0R2, 
-	},
-	RepTIMESorDIV0x1R0: {
-		symbols.NT_RepTIMESorDIV0x, 1, 0, 
-		symbols.Symbols{ 
-		}, 
-		RepTIMESorDIV0x1R0, 
+		PRODUCT1F0, 
 	},
 	SUM0R0: {
 		symbols.NT_SUM, 0, 0, 
 		symbols.Symbols{  
 			symbols.NT_PRODUCT, 
-			symbols.NT_RepPLUSorMINUS0x,
+			symbols.NT_SuffPLUSorMINUS,
 		}, 
 		SUM0R0, 
 	},
@@ -540,7 +604,7 @@ var slots = map[Label]*Slot{
 		symbols.NT_SUM, 0, 1, 
 		symbols.Symbols{  
 			symbols.NT_PRODUCT, 
-			symbols.NT_RepPLUSorMINUS0x,
+			symbols.NT_SuffPLUSorMINUS,
 		}, 
 		SUM0R1, 
 	},
@@ -548,9 +612,75 @@ var slots = map[Label]*Slot{
 		symbols.NT_SUM, 0, 2, 
 		symbols.Symbols{  
 			symbols.NT_PRODUCT, 
-			symbols.NT_RepPLUSorMINUS0x,
+			symbols.NT_SuffPLUSorMINUS,
 		}, 
 		SUM0R2, 
+	},
+	SUM1F0: {
+		symbols.NT_SUM, 1, 0, 
+		symbols.Symbols{ 
+		}, 
+		SUM1F0, 
+	},
+	SuffPLUSorMINUS0R0: {
+		symbols.NT_SuffPLUSorMINUS, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_PLUSorMINUS, 
+			symbols.NT_SuffPLUSorMINUS,
+		}, 
+		SuffPLUSorMINUS0R0, 
+	},
+	SuffPLUSorMINUS0R1: {
+		symbols.NT_SuffPLUSorMINUS, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_PLUSorMINUS, 
+			symbols.NT_SuffPLUSorMINUS,
+		}, 
+		SuffPLUSorMINUS0R1, 
+	},
+	SuffPLUSorMINUS0R2: {
+		symbols.NT_SuffPLUSorMINUS, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_PLUSorMINUS, 
+			symbols.NT_SuffPLUSorMINUS,
+		}, 
+		SuffPLUSorMINUS0R2, 
+	},
+	SuffPLUSorMINUS1R0: {
+		symbols.NT_SuffPLUSorMINUS, 1, 0, 
+		symbols.Symbols{ 
+		}, 
+		SuffPLUSorMINUS1R0, 
+	},
+	SuffTIMESorDIVIDE0R0: {
+		symbols.NT_SuffTIMESorDIVIDE, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_TIMESorDIVIDE, 
+			symbols.NT_SuffTIMESorDIVIDE,
+		}, 
+		SuffTIMESorDIVIDE0R0, 
+	},
+	SuffTIMESorDIVIDE0R1: {
+		symbols.NT_SuffTIMESorDIVIDE, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_TIMESorDIVIDE, 
+			symbols.NT_SuffTIMESorDIVIDE,
+		}, 
+		SuffTIMESorDIVIDE0R1, 
+	},
+	SuffTIMESorDIVIDE0R2: {
+		symbols.NT_SuffTIMESorDIVIDE, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_TIMESorDIVIDE, 
+			symbols.NT_SuffTIMESorDIVIDE,
+		}, 
+		SuffTIMESorDIVIDE0R2, 
+	},
+	SuffTIMESorDIVIDE1R0: {
+		symbols.NT_SuffTIMESorDIVIDE, 1, 0, 
+		symbols.Symbols{ 
+		}, 
+		SuffTIMESorDIVIDE1R0, 
 	},
 	TIMES0R0: {
 		symbols.NT_TIMES, 0, 0, 
@@ -576,6 +706,12 @@ var slots = map[Label]*Slot{
 		}, 
 		TIMES0R2, 
 	},
+	TIMES1F0: {
+		symbols.NT_TIMES, 1, 0, 
+		symbols.Symbols{ 
+		}, 
+		TIMES1F0, 
+	},
 	TIMESorDIVIDE0R0: {
 		symbols.NT_TIMESorDIVIDE, 0, 0, 
 		symbols.Symbols{  
@@ -600,6 +736,14 @@ var slots = map[Label]*Slot{
 		}, 
 		TIMESorDIVIDE0R2, 
 	},
+	TIMESorDIVIDE1M0: {
+		symbols.NT_TIMESorDIVIDE, 1, 0, 
+		symbols.Symbols{  
+			symbols.NT_DIVIDE, 
+			symbols.NT_ELEMENT,
+		}, 
+		TIMESorDIVIDE1M0, 
+	},
 	TIMESorDIVIDE1R0: {
 		symbols.NT_TIMESorDIVIDE, 1, 0, 
 		symbols.Symbols{  
@@ -607,6 +751,14 @@ var slots = map[Label]*Slot{
 			symbols.NT_ELEMENT,
 		}, 
 		TIMESorDIVIDE1R0, 
+	},
+	TIMESorDIVIDE1M1: {
+		symbols.NT_TIMESorDIVIDE, 1, 1, 
+		symbols.Symbols{  
+			symbols.NT_DIVIDE, 
+			symbols.NT_ELEMENT,
+		}, 
+		TIMESorDIVIDE1M1, 
 	},
 	TIMESorDIVIDE1R1: {
 		symbols.NT_TIMESorDIVIDE, 1, 1, 
@@ -616,6 +768,14 @@ var slots = map[Label]*Slot{
 		}, 
 		TIMESorDIVIDE1R1, 
 	},
+	TIMESorDIVIDE1M2: {
+		symbols.NT_TIMESorDIVIDE, 1, 2, 
+		symbols.Symbols{  
+			symbols.NT_DIVIDE, 
+			symbols.NT_ELEMENT,
+		}, 
+		TIMESorDIVIDE1M2, 
+	},
 	TIMESorDIVIDE1R2: {
 		symbols.NT_TIMESorDIVIDE, 1, 2, 
 		symbols.Symbols{  
@@ -623,6 +783,12 @@ var slots = map[Label]*Slot{
 			symbols.NT_ELEMENT,
 		}, 
 		TIMESorDIVIDE1R2, 
+	},
+	TIMESorDIVIDE2F0: {
+		symbols.NT_TIMESorDIVIDE, 2, 0, 
+		symbols.Symbols{ 
+		}, 
+		TIMESorDIVIDE2F0, 
 	},
 	WS0R0: {
 		symbols.NT_WS, 0, 0, 
@@ -650,59 +816,80 @@ var slotIndex = map[Index]Label {
 	Index{ symbols.NT_CLOSE,0,0 }: CLOSE0R0,
 	Index{ symbols.NT_CLOSE,0,1 }: CLOSE0R1,
 	Index{ symbols.NT_CLOSE,0,2 }: CLOSE0R2,
+	Index{ symbols.NT_CLOSE,1,0 }: CLOSE1F0,
 	Index{ symbols.NT_DIVIDE,0,0 }: DIVIDE0R0,
 	Index{ symbols.NT_DIVIDE,0,1 }: DIVIDE0R1,
 	Index{ symbols.NT_DIVIDE,0,2 }: DIVIDE0R2,
+	Index{ symbols.NT_DIVIDE,1,0 }: DIVIDE1F0,
 	Index{ symbols.NT_ELEMENT,0,0 }: ELEMENT0R0,
 	Index{ symbols.NT_ELEMENT,0,1 }: ELEMENT0R1,
 	Index{ symbols.NT_ELEMENT,0,2 }: ELEMENT0R2,
 	Index{ symbols.NT_ELEMENT,0,3 }: ELEMENT0R3,
+	Index{ symbols.NT_ELEMENT,1,0 }: ELEMENT1M0,
 	Index{ symbols.NT_ELEMENT,1,0 }: ELEMENT1R0,
+	Index{ symbols.NT_ELEMENT,1,1 }: ELEMENT1M1,
 	Index{ symbols.NT_ELEMENT,1,1 }: ELEMENT1R1,
+	Index{ symbols.NT_ELEMENT,2,0 }: ELEMENT2F0,
 	Index{ symbols.NT_EXPR,0,0 }: EXPR0R0,
 	Index{ symbols.NT_EXPR,0,1 }: EXPR0R1,
 	Index{ symbols.NT_EXPR,0,2 }: EXPR0R2,
+	Index{ symbols.NT_EXPR,1,0 }: EXPR1F0,
 	Index{ symbols.NT_MINUS,0,0 }: MINUS0R0,
 	Index{ symbols.NT_MINUS,0,1 }: MINUS0R1,
 	Index{ symbols.NT_MINUS,0,2 }: MINUS0R2,
+	Index{ symbols.NT_MINUS,1,0 }: MINUS1F0,
 	Index{ symbols.NT_Number,0,0 }: Number0R0,
 	Index{ symbols.NT_Number,0,1 }: Number0R1,
 	Index{ symbols.NT_Number,0,2 }: Number0R2,
+	Index{ symbols.NT_Number,1,0 }: Number1F0,
 	Index{ symbols.NT_OPEN,0,0 }: OPEN0R0,
 	Index{ symbols.NT_OPEN,0,1 }: OPEN0R1,
 	Index{ symbols.NT_OPEN,0,2 }: OPEN0R2,
+	Index{ symbols.NT_OPEN,1,0 }: OPEN1F0,
 	Index{ symbols.NT_PLUS,0,0 }: PLUS0R0,
 	Index{ symbols.NT_PLUS,0,1 }: PLUS0R1,
 	Index{ symbols.NT_PLUS,0,2 }: PLUS0R2,
+	Index{ symbols.NT_PLUS,1,0 }: PLUS1F0,
 	Index{ symbols.NT_PLUSorMINUS,0,0 }: PLUSorMINUS0R0,
 	Index{ symbols.NT_PLUSorMINUS,0,1 }: PLUSorMINUS0R1,
 	Index{ symbols.NT_PLUSorMINUS,0,2 }: PLUSorMINUS0R2,
+	Index{ symbols.NT_PLUSorMINUS,1,0 }: PLUSorMINUS1M0,
 	Index{ symbols.NT_PLUSorMINUS,1,0 }: PLUSorMINUS1R0,
+	Index{ symbols.NT_PLUSorMINUS,1,1 }: PLUSorMINUS1M1,
 	Index{ symbols.NT_PLUSorMINUS,1,1 }: PLUSorMINUS1R1,
+	Index{ symbols.NT_PLUSorMINUS,1,2 }: PLUSorMINUS1M2,
 	Index{ symbols.NT_PLUSorMINUS,1,2 }: PLUSorMINUS1R2,
+	Index{ symbols.NT_PLUSorMINUS,2,0 }: PLUSorMINUS2F0,
 	Index{ symbols.NT_PRODUCT,0,0 }: PRODUCT0R0,
 	Index{ symbols.NT_PRODUCT,0,1 }: PRODUCT0R1,
 	Index{ symbols.NT_PRODUCT,0,2 }: PRODUCT0R2,
-	Index{ symbols.NT_RepPLUSorMINUS0x,0,0 }: RepPLUSorMINUS0x0R0,
-	Index{ symbols.NT_RepPLUSorMINUS0x,0,1 }: RepPLUSorMINUS0x0R1,
-	Index{ symbols.NT_RepPLUSorMINUS0x,0,2 }: RepPLUSorMINUS0x0R2,
-	Index{ symbols.NT_RepPLUSorMINUS0x,1,0 }: RepPLUSorMINUS0x1R0,
-	Index{ symbols.NT_RepTIMESorDIV0x,0,0 }: RepTIMESorDIV0x0R0,
-	Index{ symbols.NT_RepTIMESorDIV0x,0,1 }: RepTIMESorDIV0x0R1,
-	Index{ symbols.NT_RepTIMESorDIV0x,0,2 }: RepTIMESorDIV0x0R2,
-	Index{ symbols.NT_RepTIMESorDIV0x,1,0 }: RepTIMESorDIV0x1R0,
+	Index{ symbols.NT_PRODUCT,1,0 }: PRODUCT1F0,
 	Index{ symbols.NT_SUM,0,0 }: SUM0R0,
 	Index{ symbols.NT_SUM,0,1 }: SUM0R1,
 	Index{ symbols.NT_SUM,0,2 }: SUM0R2,
+	Index{ symbols.NT_SUM,1,0 }: SUM1F0,
+	Index{ symbols.NT_SuffPLUSorMINUS,0,0 }: SuffPLUSorMINUS0R0,
+	Index{ symbols.NT_SuffPLUSorMINUS,0,1 }: SuffPLUSorMINUS0R1,
+	Index{ symbols.NT_SuffPLUSorMINUS,0,2 }: SuffPLUSorMINUS0R2,
+	Index{ symbols.NT_SuffPLUSorMINUS,1,0 }: SuffPLUSorMINUS1R0,
+	Index{ symbols.NT_SuffTIMESorDIVIDE,0,0 }: SuffTIMESorDIVIDE0R0,
+	Index{ symbols.NT_SuffTIMESorDIVIDE,0,1 }: SuffTIMESorDIVIDE0R1,
+	Index{ symbols.NT_SuffTIMESorDIVIDE,0,2 }: SuffTIMESorDIVIDE0R2,
+	Index{ symbols.NT_SuffTIMESorDIVIDE,1,0 }: SuffTIMESorDIVIDE1R0,
 	Index{ symbols.NT_TIMES,0,0 }: TIMES0R0,
 	Index{ symbols.NT_TIMES,0,1 }: TIMES0R1,
 	Index{ symbols.NT_TIMES,0,2 }: TIMES0R2,
+	Index{ symbols.NT_TIMES,1,0 }: TIMES1F0,
 	Index{ symbols.NT_TIMESorDIVIDE,0,0 }: TIMESorDIVIDE0R0,
 	Index{ symbols.NT_TIMESorDIVIDE,0,1 }: TIMESorDIVIDE0R1,
 	Index{ symbols.NT_TIMESorDIVIDE,0,2 }: TIMESorDIVIDE0R2,
+	Index{ symbols.NT_TIMESorDIVIDE,1,0 }: TIMESorDIVIDE1M0,
 	Index{ symbols.NT_TIMESorDIVIDE,1,0 }: TIMESorDIVIDE1R0,
+	Index{ symbols.NT_TIMESorDIVIDE,1,1 }: TIMESorDIVIDE1M1,
 	Index{ symbols.NT_TIMESorDIVIDE,1,1 }: TIMESorDIVIDE1R1,
+	Index{ symbols.NT_TIMESorDIVIDE,1,2 }: TIMESorDIVIDE1M2,
 	Index{ symbols.NT_TIMESorDIVIDE,1,2 }: TIMESorDIVIDE1R2,
+	Index{ symbols.NT_TIMESorDIVIDE,2,0 }: TIMESorDIVIDE2F0,
 	Index{ symbols.NT_WS,0,0 }: WS0R0,
 	Index{ symbols.NT_WS,0,1 }: WS0R1,
 	Index{ symbols.NT_WS,1,0 }: WS1R0,
@@ -711,10 +898,8 @@ var slotIndex = map[Index]Label {
 var alternates = map[symbols.NT][]Label{ 
 	symbols.NT_EXPR:[]Label{ EXPR0R0 },
 	symbols.NT_SUM:[]Label{ SUM0R0 },
-	symbols.NT_RepPLUSorMINUS0x:[]Label{ RepPLUSorMINUS0x0R0,RepPLUSorMINUS0x1R0 },
 	symbols.NT_PLUSorMINUS:[]Label{ PLUSorMINUS0R0,PLUSorMINUS1R0 },
 	symbols.NT_PRODUCT:[]Label{ PRODUCT0R0 },
-	symbols.NT_RepTIMESorDIV0x:[]Label{ RepTIMESorDIV0x0R0,RepTIMESorDIV0x1R0 },
 	symbols.NT_TIMESorDIVIDE:[]Label{ TIMESorDIVIDE0R0,TIMESorDIVIDE1R0 },
 	symbols.NT_ELEMENT:[]Label{ ELEMENT0R0,ELEMENT1R0 },
 	symbols.NT_Number:[]Label{ Number0R0 },
@@ -725,65 +910,88 @@ var alternates = map[symbols.NT][]Label{
 	symbols.NT_OPEN:[]Label{ OPEN0R0 },
 	symbols.NT_CLOSE:[]Label{ CLOSE0R0 },
 	symbols.NT_WS:[]Label{ WS0R0,WS1R0 },
+	symbols.NT_SuffPLUSorMINUS:[]Label{ SuffPLUSorMINUS0R0,SuffPLUSorMINUS1R0 },
+	symbols.NT_SuffTIMESorDIVIDE:[]Label{ SuffTIMESorDIVIDE0R0,SuffTIMESorDIVIDE1R0 },
 }
 
 var nullable = []bool { 
 	false, // CLOSE0R0 
 	true, // CLOSE0R1 
 	true, // CLOSE0R2 
+	false, // CLOSE1F0 
 	false, // DIVIDE0R0 
 	true, // DIVIDE0R1 
 	true, // DIVIDE0R2 
+	false, // DIVIDE1F0 
 	false, // ELEMENT0R0 
 	false, // ELEMENT0R1 
 	false, // ELEMENT0R2 
 	true, // ELEMENT0R3 
+	false, // ELEMENT1M0 
 	false, // ELEMENT1R0 
+	true, // ELEMENT1M1 
 	true, // ELEMENT1R1 
+	false, // ELEMENT2F0 
 	false, // EXPR0R0 
 	false, // EXPR0R1 
 	true, // EXPR0R2 
+	false, // EXPR1F0 
 	false, // MINUS0R0 
 	true, // MINUS0R1 
 	true, // MINUS0R2 
+	false, // MINUS1F0 
 	false, // Number0R0 
 	true, // Number0R1 
 	true, // Number0R2 
+	false, // Number1F0 
 	false, // OPEN0R0 
 	true, // OPEN0R1 
 	true, // OPEN0R2 
+	false, // OPEN1F0 
 	false, // PLUS0R0 
 	true, // PLUS0R1 
 	true, // PLUS0R2 
+	false, // PLUS1F0 
 	false, // PLUSorMINUS0R0 
 	false, // PLUSorMINUS0R1 
 	true, // PLUSorMINUS0R2 
+	false, // PLUSorMINUS1M0 
 	false, // PLUSorMINUS1R0 
+	false, // PLUSorMINUS1M1 
 	false, // PLUSorMINUS1R1 
+	true, // PLUSorMINUS1M2 
 	true, // PLUSorMINUS1R2 
+	false, // PLUSorMINUS2F0 
 	false, // PRODUCT0R0 
 	true, // PRODUCT0R1 
 	true, // PRODUCT0R2 
-	false, // RepPLUSorMINUS0x0R0 
-	true, // RepPLUSorMINUS0x0R1 
-	true, // RepPLUSorMINUS0x0R2 
-	true, // RepPLUSorMINUS0x1R0 
-	false, // RepTIMESorDIV0x0R0 
-	true, // RepTIMESorDIV0x0R1 
-	true, // RepTIMESorDIV0x0R2 
-	true, // RepTIMESorDIV0x1R0 
+	false, // PRODUCT1F0 
 	false, // SUM0R0 
 	true, // SUM0R1 
 	true, // SUM0R2 
+	false, // SUM1F0 
+	false, // SuffPLUSorMINUS0R0 
+	true, // SuffPLUSorMINUS0R1 
+	true, // SuffPLUSorMINUS0R2 
+	true, // SuffPLUSorMINUS1R0 
+	false, // SuffTIMESorDIVIDE0R0 
+	true, // SuffTIMESorDIVIDE0R1 
+	true, // SuffTIMESorDIVIDE0R2 
+	true, // SuffTIMESorDIVIDE1R0 
 	false, // TIMES0R0 
 	true, // TIMES0R1 
 	true, // TIMES0R2 
+	false, // TIMES1F0 
 	false, // TIMESorDIVIDE0R0 
 	false, // TIMESorDIVIDE0R1 
 	true, // TIMESorDIVIDE0R2 
+	false, // TIMESorDIVIDE1M0 
 	false, // TIMESorDIVIDE1R0 
+	false, // TIMESorDIVIDE1M1 
 	false, // TIMESorDIVIDE1R1 
+	true, // TIMESorDIVIDE1M2 
 	true, // TIMESorDIVIDE1R2 
+	false, // TIMESorDIVIDE2F0 
 	false, // WS0R0 
 	true, // WS0R1 
 	true, // WS1R0 
@@ -793,59 +1001,80 @@ var firstT = []map[token.Type]bool {
 	{  token.T_1: true,  }, // CLOSE0R0 
 	{  token.T_7: true,  }, // CLOSE0R1 
 	{  }, // CLOSE0R2 
+	{  }, // CLOSE1F0 
 	{  token.T_5: true,  }, // DIVIDE0R0 
 	{  token.T_7: true,  }, // DIVIDE0R1 
 	{  }, // DIVIDE0R2 
+	{  }, // DIVIDE1F0 
 	{  token.T_0: true,  }, // ELEMENT0R0 
 	{  token.T_0: true,  token.T_6: true,  }, // ELEMENT0R1 
 	{  token.T_1: true,  }, // ELEMENT0R2 
 	{  }, // ELEMENT0R3 
+	{  token.T_6: true,  }, // ELEMENT1M0 
 	{  token.T_6: true,  }, // ELEMENT1R0 
+	{  }, // ELEMENT1M1 
 	{  }, // ELEMENT1R1 
-	{  token.T_6: true,  token.T_0: true,  token.T_7: true,  }, // EXPR0R0 
-	{  token.T_6: true,  token.T_0: true,  }, // EXPR0R1 
+	{  }, // ELEMENT2F0 
+	{  token.T_0: true,  token.T_6: true,  token.T_7: true,  }, // EXPR0R0 
+	{  token.T_0: true,  token.T_6: true,  }, // EXPR0R1 
 	{  }, // EXPR0R2 
+	{  }, // EXPR1F0 
 	{  token.T_4: true,  }, // MINUS0R0 
 	{  token.T_7: true,  }, // MINUS0R1 
 	{  }, // MINUS0R2 
+	{  }, // MINUS1F0 
 	{  token.T_6: true,  }, // Number0R0 
 	{  token.T_7: true,  }, // Number0R1 
 	{  }, // Number0R2 
+	{  }, // Number1F0 
 	{  token.T_0: true,  }, // OPEN0R0 
 	{  token.T_7: true,  }, // OPEN0R1 
 	{  }, // OPEN0R2 
+	{  }, // OPEN1F0 
 	{  token.T_3: true,  }, // PLUS0R0 
 	{  token.T_7: true,  }, // PLUS0R1 
 	{  }, // PLUS0R2 
+	{  }, // PLUS1F0 
 	{  token.T_3: true,  }, // PLUSorMINUS0R0 
-	{  token.T_6: true,  token.T_0: true,  }, // PLUSorMINUS0R1 
+	{  token.T_0: true,  token.T_6: true,  }, // PLUSorMINUS0R1 
 	{  }, // PLUSorMINUS0R2 
+	{  token.T_4: true,  }, // PLUSorMINUS1M0 
 	{  token.T_4: true,  }, // PLUSorMINUS1R0 
-	{  token.T_0: true,  token.T_6: true,  }, // PLUSorMINUS1R1 
+	{  token.T_0: true,  token.T_6: true,  }, // PLUSorMINUS1M1 
+	{  token.T_6: true,  token.T_0: true,  }, // PLUSorMINUS1R1 
+	{  }, // PLUSorMINUS1M2 
 	{  }, // PLUSorMINUS1R2 
+	{  }, // PLUSorMINUS2F0 
 	{  token.T_0: true,  token.T_6: true,  }, // PRODUCT0R0 
-	{  token.T_5: true,  token.T_2: true,  }, // PRODUCT0R1 
+	{  token.T_2: true,  token.T_5: true,  }, // PRODUCT0R1 
 	{  }, // PRODUCT0R2 
-	{  token.T_3: true,  token.T_4: true,  }, // RepPLUSorMINUS0x0R0 
-	{  token.T_4: true,  token.T_3: true,  }, // RepPLUSorMINUS0x0R1 
-	{  }, // RepPLUSorMINUS0x0R2 
-	{  }, // RepPLUSorMINUS0x1R0 
-	{  token.T_5: true,  token.T_2: true,  }, // RepTIMESorDIV0x0R0 
-	{  token.T_5: true,  token.T_2: true,  }, // RepTIMESorDIV0x0R1 
-	{  }, // RepTIMESorDIV0x0R2 
-	{  }, // RepTIMESorDIV0x1R0 
-	{  token.T_0: true,  token.T_6: true,  }, // SUM0R0 
-	{  token.T_4: true,  token.T_3: true,  }, // SUM0R1 
+	{  }, // PRODUCT1F0 
+	{  token.T_6: true,  token.T_0: true,  }, // SUM0R0 
+	{  token.T_3: true,  token.T_4: true,  }, // SUM0R1 
 	{  }, // SUM0R2 
+	{  }, // SUM1F0 
+	{  token.T_3: true,  token.T_4: true,  }, // SuffPLUSorMINUS0R0 
+	{  token.T_3: true,  token.T_4: true,  }, // SuffPLUSorMINUS0R1 
+	{  }, // SuffPLUSorMINUS0R2 
+	{  }, // SuffPLUSorMINUS1R0 
+	{  token.T_2: true,  token.T_5: true,  }, // SuffTIMESorDIVIDE0R0 
+	{  token.T_2: true,  token.T_5: true,  }, // SuffTIMESorDIVIDE0R1 
+	{  }, // SuffTIMESorDIVIDE0R2 
+	{  }, // SuffTIMESorDIVIDE1R0 
 	{  token.T_2: true,  }, // TIMES0R0 
 	{  token.T_7: true,  }, // TIMES0R1 
 	{  }, // TIMES0R2 
+	{  }, // TIMES1F0 
 	{  token.T_2: true,  }, // TIMESorDIVIDE0R0 
-	{  token.T_6: true,  token.T_0: true,  }, // TIMESorDIVIDE0R1 
+	{  token.T_0: true,  token.T_6: true,  }, // TIMESorDIVIDE0R1 
 	{  }, // TIMESorDIVIDE0R2 
+	{  token.T_5: true,  }, // TIMESorDIVIDE1M0 
 	{  token.T_5: true,  }, // TIMESorDIVIDE1R0 
-	{  token.T_0: true,  token.T_6: true,  }, // TIMESorDIVIDE1R1 
+	{  token.T_0: true,  token.T_6: true,  }, // TIMESorDIVIDE1M1 
+	{  token.T_6: true,  token.T_0: true,  }, // TIMESorDIVIDE1R1 
+	{  }, // TIMESorDIVIDE1M2 
 	{  }, // TIMESorDIVIDE1R2 
+	{  }, // TIMESorDIVIDE2F0 
 	{  token.T_7: true,  }, // WS0R0 
 	{  }, // WS0R1 
 	{  }, // WS1R0 

@@ -21,7 +21,7 @@ const aaa = "aaa"
 
 //Fails to match
 const space = " "
-const nothing = ""
+const apa = "apa"
 
 // use the GetRoot(s) function from bsr.go
 func parse(s []rune) bool {
@@ -57,5 +57,5 @@ func main() {
 	//parseAndPrint(ab)
 	//parseAndPrint(aba)
 	parseAndPrint(space)
-	parseAndPrint(nothing)
+	parseAndPrint(apa)
 }
