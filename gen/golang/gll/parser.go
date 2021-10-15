@@ -159,11 +159,15 @@ func Parse(l *lexer.Lexer) (*bsr.Set, []*Error) {
 
 func (p *parser) parse() (*bsr.Set, []*Error) {
 	var L slot.Label
-	m, cU := len(p.lex.Tokens)-1, 0
+	m, cU := len(p.lex.I), 0
 	p.ntAdd(symbols.NT_{{.StartSymbol}}, 0)
 	// p.DumpDescriptors()
 	for !p.R.empty() {
 		L, cU, p.cI = p.R.remove()
+		tokens := p.lex.Tokens(p.cI)
+		origTokens := tokens
+		var rext int
+		var ok bool
 
 		// fmt.Println()
 		// fmt.Printf("L:%s, cI:%d, I[p.cI]:%s, cU:%d\n", L, p.cI, p.lex.Tokens[p.cI], cU)
@@ -409,15 +413,25 @@ func (p *parser) DumpU() {
 
 /*** TestSelect ***/
 
-func (p *parser) follow(nt symbols.NT) bool {
-	_, exist := followSets[nt][p.lex.Tokens[p.cI].Type()]
-	return exist
-}
-
-func (p *parser) testSelect(l slot.Label) bool {
-	return l.IsNullable() || l.FirstContains(p.lex.Tokens[p.cI].Type())
-	// _, exist := first[l][p.lex.Tokens[p.cI].Type()]
-	// return exist
+func (p *parser) testSelect(l slot.Label, tokens *lexer.TokenSet) (int, bool) {
+	// longest munch found so far; -1 for none such
+	best := -1
+	// check for nullable rule
+	if l.IsNullable() {
+		best = p.cI
+	}
+	// cycle through rules checking for valid tokens
+	for tok, rext := range *tokens {
+		// will exclude shorter than best matches as well as -1 for no match
+		if rext <= best {
+			continue
+		}
+		// keep matches for contained tokens
+		if l.FirstContains(token.Type(tok)) {
+			best = rext
+		}
+	}
+	return best, best != -1
 }
 
 {{.TestSelect}}
@@ -437,46 +451,66 @@ Normally the error of interest is the one that has parsed the largest number of
 tokens.
 */
 type Error struct {
-	// Index of token that caused the error.
-	cI           int 
+	// Input index of error.
+	cI int
 	
 	// Grammar slot at which the error occured.
-	Slot         slot.Label 
+	Slot slot.Label 
 	
-	// The token at which the error occurred.
-	Token        *token.Token 
+	// Lexer to recover values
+	lex *lexer.Lexer
+
+	// The tokens at which the error occurred.
+	Tokens *lexer.TokenSet
 	
 	// The line and column in the input text at which the error occurred
 	Line, Column int 
 
 	// The tokens expected at the point where the error occurred
-	Expected     map[token.Type]string 
+	Expected map[token.Type]string 
 }
 
 func (pe *Error) String() string {
 	w := new(bytes.Buffer)
-	fmt.Fprintf(w, "Parse Error: %s I[%d]=%s at line %d col %d\n", 
-		pe.Slot, pe.cI, pe.Token, pe.Line, pe.Column)
+	fmt.Fprintf(w, "Parse Error: %s at line %d col %d\n",
+		pe.Slot, pe.Line, pe.Column)
+
+	fmt.Fprintf(w, "Got: [")
+	isFirst := true
+	for tok, rext := range *pe.Tokens {
+		if rext == -1 {
+			continue
+		}
+		if isFirst {
+			isFirst = false
+		} else {
+			fmt.Fprintf(w, ", ")
+		}
+		fmt.Fprintf(w, "%s %q", (token.Type(tok)).ID(), pe.lex.I[pe.cI:rext])
+	}
+	fmt.Fprintf(w, "]\n")
+
 	exp := []string{}
 	for _, e := range pe.Expected {
 		exp = append(exp, e)
 	}
-	fmt.Fprintf(w, "Expected one of: [%s]", strings.Join(exp, ","))
+	fmt.Fprintf(w, "Expected one of: [%s]", strings.Join(exp, ", "))
+
 	return w.String()
 }
 
-func (p *parser) parseError(slot slot.Label, i int, expected map[token.Type]string) {
-	pe := &Error{cI: i, Slot: slot, Token: p.lex.Tokens[i], Expected: expected}
+func (p *parser) parseError(slot slot.Label, i int, got *lexer.TokenSet, expected map[token.Type]string) {
+	pe := &Error{cI: i, Slot: slot, lex: p.lex, Tokens: got, Expected: expected}
 	p.parseErrors = append(p.parseErrors, pe)
 }
 
 func (p *parser) sortParseErrors() {
 	sort.Slice(p.parseErrors,
 		func(i, j int) bool {
-			return p.parseErrors[j].Token.Lext() < p.parseErrors[i].Token.Lext()
+			return p.parseErrors[j].cI < p.parseErrors[i].cI
 		})
 	for _, pe := range p.parseErrors {
-		pe.Line, pe.Column = p.lex.GetLineColumn(pe.Token.Lext())
+		pe.Line, pe.Column = p.lex.GetLineColumn(pe.cI)
 	}
 }
 `

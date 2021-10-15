@@ -1,4 +1,5 @@
 /*
+Copyright 2021 Aaron Moss
 Copyright 2020 Marius Ackerman
 
 Licensed under the Apache License, Version 2.0 (the "License");
@@ -27,7 +28,6 @@ package items
 import (
 	"bytes"
 	"fmt"
-	"os"
 	"sort"
 
 	"github.com/bruceiv/pegll/ast"
@@ -81,23 +81,17 @@ func New(g *ast.GoGLL) *Sets {
 	return sets
 }
 
-// Accept returns the token type accepted by the first reduce item in set
+// Accept returns the token types accepted by the first reduce item in set
 // slits is the set of string literals from the AST
-func (set *Set) Accept(slits *stringset.StringSet) string {
+func (set *Set) Accept(slits *stringset.StringSet) []string {
 	// acceptItems is sorted with string literals first
 	acceptItems := set.acceptItems(slits)
 
-	// Check for accepting multiple string literals
-	if len(acceptItems) > 1 && slits.Contain(acceptItems[1].Rule.ID()) {
-		fmt.Printf("Error in lex item sets: S%d accepts multiple string literals\n", set.No)
-		os.Exit(1)
+	retVals := make([]string, 0, len(acceptItems))
+	for _, item := range acceptItems {
+		retVals = append(retVals, item.Rule.ID())
 	}
-
-	if len(acceptItems) > 0 {
-		return acceptItems[0].Rule.ID()
-	}
-
-	return "Error"
+	return retVals
 }
 
 // slits is the set of string literals from the AST

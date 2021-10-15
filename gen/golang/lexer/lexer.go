@@ -1,4 +1,5 @@
 /*
+Copyright 2021 Aaron Moss
 Copyright 2020 Marius Ackerman
 
 Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,7 +34,7 @@ import (
 
 type Data struct {
 	Package string
-	Accept  []string
+	Accept  [][]string
 	// A slice of transitions for each set
 	Transitions [][]*Transition
 	Tick        string
@@ -60,10 +61,14 @@ func Gen(g *ast.GoGLL, ls *items.Sets) {
 }
 
 // slits is the set of StringLiterals from the AST
-func getAccept(ls *items.Sets, slits *stringset.StringSet) (tokTypes []string) {
+func getAccept(ls *items.Sets, slits *stringset.StringSet) (tokTypes [][]string) {
 	for _, s := range ls.Sets() {
-		tok := s.Accept(slits)
-		tokTypes = append(tokTypes, symbols.TerminalLiteralToType(tok).TypeString())
+		toks := s.Accept(slits)
+		sTypes := make([]string, 0, len(toks))
+		for _, tok := range toks {
+			sTypes = append(sTypes, symbols.TerminalLiteralToType(tok).TypeString())
+		}
+		tokTypes = append(tokTypes, sTypes)
 	}
 	return
 }
@@ -144,20 +149,32 @@ import (
 type state int
 
 const nullState state = -1
+const noMatch int = -1
 
+// TokenSet represents a set of tokens which may match at an implied input
+// index. The slice can be considered a map from the token ID to the length
+// of the possible match at that ID, or -1 for no such match.
+//
+// Unlike a traditional CFG lexer, the PEGLL lexer returns a slice of
+// *all* possibly-matching tokens, rather than picking the single maximal
+// munch. If a single token matches at multiple lengths, the longest such
+// is taken.
+type TokenSet []int
 
-// Lexer contains both the input slice of runes and the slice of tokens
-// parsed from the input
+// Lexer contains both the input slice of runes and the slice of possible
+// tokens parsed from the input
 type Lexer struct {
 	// I is the input slice of runes
-	I      []rune
+	I []rune
 
-	// Tokens is the slice of tokens constructed by the lexer from I
-	Tokens []*token.Token
+	// Tokens is the slice of possible tokens constructed by the lexer from I
+	// A nil TokenSet means that the lexer has not been run at that position 
+	// yet
+	tokens []*TokenSet
 }
 
 /*
-NewFile constructs a Lexer created from the input file, fname. 
+NewFile constructs a Lexer created from the input file, fname.
 
 If the input file is a markdown file NewFile process treats all text outside
 code blocks as whitespace. All text inside code blocks are treated as input text.
@@ -202,49 +219,73 @@ func loadMd(input []rune) {
 }
 
 /*
-New constructs a Lexer from a slice of runes. 
+New constructs a Lexer from a slice of runes.
 
 All contents of the input slice are treated as input text.
 */
 func New(input []rune) *Lexer {
+	// initialize data structure with nil tokens
+	tLen := len(input) + 1
 	lex := &Lexer{
 		I:      input,
-		Tokens: make([]*token.Token, 0, 2048),
+		tokens: make([]*TokenSet, tLen, tLen),
 	}
-	lext := 0
-	for lext < len(lex.I) {
-		for lext < len(lex.I) && unicode.IsSpace(lex.I[lext]) {
-			lext++
-		}
-		if lext < len(lex.I) {
-			tok := lex.scan(lext)
-			lext = tok.Rext()
-			if !tok.Suppress() {
-				lex.addToken(tok)
-			}
-		}
-	}
-	lex.add(token.EOF, len(input), len(input))
+	// set up non-nil EOF token
+	lex.tokens[tLen-1] = initEmptyTokenSet()
+	(*lex.tokens[tLen-1])[token.EOF] = 0
 	return lex
 }
 
-func (l *Lexer) scan(i int) *token.Token {
-	// fmt.Printf("lexer.scan\n")
-	s, typ, rext := state(0), token.Error, i
-	for s != nullState {
-		// fmt.Printf("S%d '%c' @ %d\n", s, l.I[rext], rext)
-		if rext >= len(l.I) {
-			typ = accept[s]
-			s = nullState
-		} else {
-			typ = accept[s]
-			s = nextState[s](l.I[rext])
-			if s != nullState || typ == token.Error {
-				rext++
-			}
-		}
+// returns token set at location i
+func (l *Lexer) Tokens(i int) *TokenSet {
+	i = l.skipWhitespace(i)
+	// lex if needed
+	if l.tokens[i] == nil {
+		l.scan(i)
+		// TODO also consider suppression
 	}
-	return token.New(typ, i, rext, l.I)
+	// return tokens
+	return l.tokens[i]
+}
+
+// returns i updated to skip whitespace
+func (l *Lexer) skipWhitespace(i int) int {
+	for i < len(l.I) && unicode.IsSpace(l.I[i]) {
+		i++
+	}
+	return i
+}
+
+// Returns empty token set
+func initEmptyTokenSet() *TokenSet {
+	nTokens := len(token.TypeToID)
+	tokens := make([]int, nTokens, nTokens)
+	for j, _ := range tokens {
+		tokens[j] = noMatch
+	}
+	return (*TokenSet)(&tokens)
+}
+
+func (l *Lexer) scan(i int) {
+	// set up empty token array
+	l.tokens[i] = initEmptyTokenSet()
+
+	// loop until no further tokens
+	s := state(0) // current state
+	rext := i     // current character
+	for s != nullState {
+		// check for found tokens
+		for _, typ := range accept[s] {
+			(*l.tokens[i])[typ] = rext
+		}
+		// check for end-of-string
+		if rext >= len(l.I) {
+			return
+		}
+		// advance to next state
+		s = nextState[s](l.I[rext])
+		rext++
+	}
 }
 
 func escape(r rune) string {
@@ -261,6 +302,15 @@ func escape(r rune) string {
 		return "\\t"
 	}
 	return string(r)
+}
+
+// RightExtent gets the right extent of the token tok at index i, -1 for none such
+func (l *Lexer) RightExtent(tok token.Type, i int) int {
+	i = l.skipWhitespace(i)
+	if l.tokens[i] == nil {
+		return -1
+	}
+	return (*l.tokens[i])[tok]
 }
 
 // GetLineColumn returns the line and column of rune[i] in the input
@@ -280,26 +330,13 @@ func (l *Lexer) GetLineColumn(i int) (line, col int) {
 	return
 }
 
-// GetLineColumnOfToken returns the line and column of token[i] in the imput
-func (l *Lexer) GetLineColumnOfToken(i int) (line, col int) {
-	return l.GetLineColumn(l.Tokens[i].Lext())
-}
-
-// GetString returns the input string from the left extent of Token[lext] to
-// the right extent of Token[rext], or empty string if range empty
+// GetString returns the input string between the given two indices,
+// inclusive, or empty string if range empty
 func (l *Lexer) GetString(lext, rext int) string {
 	if rext < lext {
 		return ""
 	}
-	return string(l.I[l.Tokens[lext].Lext():l.Tokens[rext].Rext()])
-}
-
-func (l *Lexer) add(t token.Type, lext, rext int) {
-	l.addToken(token.New(t, lext, rext, l.I))
-}
-
-func (l *Lexer) addToken(tok *token.Token) {
-	l.Tokens = append(l.Tokens, tok)
+	return string(l.I[lext:rext])
 }
 
 func any(r rune, set []rune) bool {
@@ -320,8 +357,8 @@ func not(r rune, set []rune) bool {
 	return true
 }
 
-var accept = []token.Type{ {{range $tok := .Accept}}
-	token.{{$tok}}, {{end}}
+var accept = []token.Type{ {{range $toks := .Accept}}
+	{ {{range $tok := $toks}} token.{{$tok}}, {{end}} }, {{end}}
 }
 
 var nextState = []func(r rune) state{ {{range $i, $set := .Transitions}}

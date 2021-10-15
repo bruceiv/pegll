@@ -1,3 +1,4 @@
+//  Copyright 2021 Aaron Moss
 //  Copyright 2019 Marius Ackerman
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
@@ -106,14 +107,15 @@ func (g *gen) getAltData(nt string, alt *ast.SyntaxAlternate, altI, altN int, is
 }
 
 func (g *gen) getSlotsData(nt string, alt *ast.SyntaxAlternate, altI, altN int, isOrdered bool) (data []*SlotData) {
+	resetTokens := false
 	for i, sym := range alt.Symbols {
 		// fmt.Printf("getSlotsData(%s) %s\n", nt, getSlotData(nt, altI, sym, i))
-		data = append(data, g.getSlotData(nt, altI, altN, sym.String(), i, isOrdered))
+		data = append(data, g.getSlotData(nt, altI, altN, sym.String(), i, len(alt.Symbols), &resetTokens, isOrdered))
 	}
 	return
 }
 
-func (g *gen) getSlotData(nt string, altI, altN int, symbol string, pos int, isOrdered bool) *SlotData {
+func (g *gen) getSlotData(nt string, altI, altN int, symbol string, pos, maxPos int, resetTokens *bool, isOrdered bool) *SlotData {
 	preLabel := gslot.NewLabel(nt, altI, pos, gslot.Unknown, g.gs, g.ff)
 	postLabel := gslot.NewLabel(nt, altI, pos+1, gslot.Unknown, g.gs, g.ff)
 	var failLabel string
@@ -138,9 +140,12 @@ func (g *gen) getSlotData(nt string, altI, altN int, symbol string, pos int, isO
 		IsPLook:       false,
 		IsNLook:       false,
 		Head:          nt,
+		ResetTokens:   *resetTokens,
+		NotLastSlot:   pos+1 < maxPos,
 	}
 	if g.g.Terminals.Contain(symbol) {
 		sd.CallNT = "<error: not NT>"
+		*resetTokens = true // set up for subsequent iterations
 	} else if g.g.Lookaheads.Contain(symbol) {
 		switch symbol[0] {
 		case '&':
@@ -180,6 +185,8 @@ type SlotData struct {
 	CallNT        string
 	NotLastAlt    bool
 	Head          string
+	ResetTokens   bool
+	NotLastSlot   bool
 }
 
 const eAltCodeTmpl = `case slot.{{.AltLabel}}: // {{.AltComment}}
@@ -189,9 +196,11 @@ const eAltCodeTmpl = `case slot.{{.AltLabel}}: // {{.AltComment}}
 
 const oAltCodeTmpl = `		case slot.{{.AltLabel}}: // {{.AltComment}}
 		{{range $i, $slot := .Slots}}
-			if !p.testSelect(slot.{{$slot.PreLabel}}){ 
-				p.parseError(slot.{{$slot.PreLabel}}, p.cI, first[slot.{{$slot.PreLabel}}])
+			rext, ok = p.testSelect(slot.{{$slot.PreLabel}}, tokens)
+			if !ok { 
+				p.parseError(slot.{{$slot.PreLabel}}, p.cI, tokens, first[slot.{{$slot.PreLabel}}])
 				L, p.cI = {{$slot.FailLabel}}, cU
+				{{if .ResetTokens}}tokens = origTokens{{end}}
 				goto nextSlot
 			}
 			{{if $slot.IsNT}}p.call(slot.{{$slot.PostLabel}}, {{$slot.FailLabel}}, symbols.NT_{{$slot.CallNT}}, cU, p.cI)
@@ -200,16 +209,19 @@ const oAltCodeTmpl = `		case slot.{{.AltLabel}}: // {{.AltComment}}
 		case slot.{{$slot.PostLabel}}: // {{$slot.Comment}}
 			{{else if $slot.IsNLook}}p.call({{$slot.FailLabel}}, slot.{{$slot.PostLabel}}, symbols.NT_{{$slot.CallNT}}, cU, p.cI)
 		case slot.{{$slot.PostLabel}}: // {{$slot.Comment}}
-			{{else}}p.bsrSet.Add(slot.{{$slot.PostLabel}}, cU, p.cI, p.cI+1)
-			p.cI++ {{end}}{{end}}
+			{{else}}p.bsrSet.Add(slot.{{$slot.PostLabel}}, cU, p.cI, rext)
+			p.cI = rext{{end}}{{end}}
+			{{if .NotLastSlot}}tokens = p.lex.Tokens(p.cI){{end}}
 			p.rtn(symbols.NT_{{.NT}}, cU, p.cI)
 	`
 
 const uAltCodeTmpl = `		case slot.{{.AltLabel}}: // {{.AltComment}}
 		{{range $i, $slot := .Slots}}
-			if !p.testSelect(slot.{{$slot.PreLabel}}){ 
-				p.parseError(slot.{{$slot.PreLabel}}, p.cI, first[slot.{{$slot.PreLabel}}])
+			rext, ok = p.testSelect(slot.{{$slot.PreLabel}}, tokens)
+			if !ok { 
+				p.parseError(slot.{{$slot.PreLabel}}, p.cI, tokens, first[slot.{{$slot.PreLabel}}])
 				L, p.cI = {{$slot.FailLabel}}, cU
+				{{if .ResetTokens}}tokens = origTokens{{end}}
 				goto nextSlot
 			}
 			{{if $slot.IsNT}}p.call(slot.{{$slot.PostLabel}}, {{$slot.FailLabel}}, symbols.NT_{{$slot.CallNT}}, cU, p.cI)
@@ -218,16 +230,20 @@ const uAltCodeTmpl = `		case slot.{{.AltLabel}}: // {{.AltComment}}
 		case slot.{{$slot.PostLabel}}: // {{$slot.Comment}}
 			{{else if $slot.IsNLook}}p.call({{$slot.FailLabel}}, slot.{{$slot.PostLabel}}, symbols.NT_{{$slot.CallNT}}, cU, p.cI)
 		case slot.{{$slot.PostLabel}}: // {{$slot.Comment}}
-			{{else}}p.bsrSet.Add(slot.{{$slot.PostLabel}}, cU, p.cI, p.cI+1)
-			p.cI++ {{end}}
+			{{else}}p.bsrSet.Add(slot.{{$slot.PostLabel}}, cU, p.cI, rext)
+			p.cI = rext 
+			{{if .NotLastSlot}}tokens = p.lex.Tokens(p.cI){{end}}{{end}}
 			p.rtn(symbols.NT_{{$slot.Head}}, cU, p.cI)
 			{{if .NotLastAlt}}L, p.cI = {{$slot.PassLabel}}, cU
+			{{if .ResetTokens}}tokens = origTokens{{end}}
 			goto nextSlot{{end}}{{end}}
 		{{if .HasPass}}case slot.{{.PassAltLabel}}: // {{.AltComment}} [with previous match]
 		{{range $i, $slot := .Slots}}
-		if !p.testSelect(slot.{{$slot.PreLabel}}){ 
-			p.parseError(slot.{{$slot.PreLabel}}, p.cI, first[slot.{{$slot.PreLabel}}])
+		rext, ok = p.testSelect(slot.{{$slot.PreLabel}}, tokens)
+		if !ok { 
+			p.parseError(slot.{{$slot.PreLabel}}, p.cI, tokens, first[slot.{{$slot.PreLabel}}])
 			{{if .NotLastAlt}}L, p.cI = {{$slot.PassLabel}}, cU
+			{{if .ResetTokens}}tokens = origTokens{{end}}
 			goto nextSlot{{end}}
 		}
 		{{if $slot.IsNT}}p.call(slot.{{$slot.PassPostLabel}}, {{$slot.PassLabel}}, symbols.NT_{{$slot.CallNT}}, cU, p.cI)
@@ -236,10 +252,12 @@ const uAltCodeTmpl = `		case slot.{{.AltLabel}}: // {{.AltComment}}
 	case slot.{{$slot.PostLabel}}: // {{$slot.Comment}}
 		{{else if $slot.IsNLook}}p.call({{$slot.PassLabel}}, slot.{{$slot.PostLabel}}, symbols.NT_{{$slot.CallNT}}, cU, p.cI)
 	case slot.{{$slot.PostLabel}}: // {{$slot.Comment}}
-		{{else}}p.bsrSet.Add(slot.{{$slot.PostLabel}}, cU, p.cI, p.cI+1)
-		p.cI++ {{end}}
+		{{else}}p.bsrSet.Add(slot.{{$slot.PostLabel}}, cU, p.cI, rext)
+		p.cI = rext 
+		{{if .NotLastSlot}}tokens = p.lex.Tokens(p.cI){{end}}{{end}}
 		p.rtn(symbols.NT_{{$slot.Head}}, cU, p.cI)
 		{{if .NotLastAlt}}L, p.cI = {{$slot.PassLabel}}, cU
+		{{if .ResetTokens}}tokens = origTokens{{end}}
 		goto nextSlot{{end}}
 		{{end}}{{end}}
 	`

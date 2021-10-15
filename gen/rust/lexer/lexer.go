@@ -61,8 +61,12 @@ func Gen(fname string, g *ast.GoGLL, ls *items.Sets) {
 // slits is the set of StringLiterals from the AST
 func getAccept(ls *items.Sets, slits *stringset.StringSet) (tokTypes []string) {
 	for _, s := range ls.Sets() {
-		tok := s.Accept(slits)
-		tokTypes = append(tokTypes, symbols.TerminalLiteralToType(tok).TypeString())
+		toks := s.Accept(slits)
+		if len(toks) == 0 {
+			tokTypes = append(tokTypes, "Error")
+		} else {
+			tokTypes = append(tokTypes, symbols.TerminalLiteralToType(toks[0]).TypeString())
+		}
 	}
 	return
 }
