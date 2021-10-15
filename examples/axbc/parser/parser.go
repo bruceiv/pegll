@@ -66,11 +66,15 @@ const (
 
 func (p *parser) parse() (*bsr.Set, []*Error) {
 	var L slot.Label
-	m, cU := len(p.lex.Tokens)-1, 0
+	m, cU := len(p.lex.I), 0
 	p.ntAdd(symbols.NT_AxBC, 0)
 	// p.DumpDescriptors()
 	for !p.R.empty() {
 		L, cU, p.cI = p.R.remove()
+		tokens := p.lex.Tokens(p.cI)
+		origTokens := tokens
+		var rext int
+		var ok bool
 
 		// fmt.Println()
 		// fmt.Printf("L:%s, cI:%d, I[p.cI]:%s, cU:%d\n", L, p.cI, p.lex.Tokens[p.cI], cU)
@@ -79,9 +83,9 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 		for {
 			switch L {
 			case slot.AorB0R0: // AorB : ∙Repa0x
-
-				if !p.testSelect(slot.AorB0R0) {
-					p.parseError(slot.AorB0R0, p.cI, first[slot.AorB0R0])
+				rext, ok = p.testSelect(slot.AorB0R0, tokens)
+				if !ok {
+					p.parseError(slot.AorB0R0, p.cI, tokens, first[slot.AorB0R0])
 					L, p.cI = slot.AorB1R0, cU
 					goto nextSlot
 				}
@@ -90,56 +94,62 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 
 				p.rtn(symbols.NT_AorB, cU, p.cI)
 			case slot.AorB1R0: // AorB : ∙a b
-
-				if !p.testSelect(slot.AorB1R0) {
-					p.parseError(slot.AorB1R0, p.cI, first[slot.AorB1R0])
+				rext, ok := p.testSelect(slot.AorB1R0, tokens)
+				if !ok {
+					p.parseError(slot.AorB1R0, p.cI, tokens, first[slot.AorB1R0])
 					L, p.cI = fail_AorB, cU
 					goto nextSlot
 				}
-				p.bsrSet.Add(slot.AorB1R1, cU, p.cI, p.cI+1)
-				p.cI++
-				if !p.testSelect(slot.AorB1R1) {
-					p.parseError(slot.AorB1R1, p.cI, first[slot.AorB1R1])
+				p.bsrSet.Add(slot.AorB1R1, cU, p.cI, rext)
+				p.cI = rext
+				tokens = p.lex.Tokens(p.cI)
+				rext, ok = p.testSelect(slot.AorB1R1, tokens)
+				if !ok {
+					p.parseError(slot.AorB1R1, p.cI, tokens, first[slot.AorB1R1])
 					L, p.cI = fail_AorB, cU
+					tokens = origTokens
 					goto nextSlot
 				}
-				p.bsrSet.Add(slot.AorB1R2, cU, p.cI, p.cI+1)
-				p.cI++
+				p.bsrSet.Add(slot.AorB1R2, cU, p.cI, rext)
+				p.cI = rext
 				p.rtn(symbols.NT_AorB, cU, p.cI)
 			case fail_AorB: // AorB failure case
 				p.rtn(symbols.NT_AorB, cU, failInd)
 			case slot.AxBC0R0: // AxBC : ∙AorB c
-
-				if !p.testSelect(slot.AxBC0R0) {
-					p.parseError(slot.AxBC0R0, p.cI, first[slot.AxBC0R0])
+				rext, ok = p.testSelect(slot.AxBC0R0, tokens)
+				if !ok {
+					p.parseError(slot.AxBC0R0, p.cI, tokens, first[slot.AxBC0R0])
 					L, p.cI = fail_AxBC, cU
 					goto nextSlot
 				}
 				p.call(slot.AxBC0R1, fail_AxBC, symbols.NT_AorB, cU, p.cI)
 			case slot.AxBC0R1: // AxBC : AorB ∙c
-
-				if !p.testSelect(slot.AxBC0R1) {
-					p.parseError(slot.AxBC0R1, p.cI, first[slot.AxBC0R1])
+				rext, ok = p.testSelect(slot.AxBC0R1, tokens)
+				if !ok {
+					p.parseError(slot.AxBC0R1, p.cI, tokens, first[slot.AxBC0R1])
 					L, p.cI = fail_AxBC, cU
 					goto nextSlot
 				}
-				p.bsrSet.Add(slot.AxBC0R2, cU, p.cI, p.cI+1)
-				p.cI++
+				p.bsrSet.Add(slot.AxBC0R2, cU, p.cI, rext)
+				p.cI = rext
 				p.rtn(symbols.NT_AxBC, cU, p.cI)
 			case fail_AxBC: // AxBC failure case
 				p.rtn(symbols.NT_AxBC, cU, failInd)
 			case slot.Repa0x0R0: // Repa0x : ∙a Repa0x
-
-				if !p.testSelect(slot.Repa0x0R0) {
-					p.parseError(slot.Repa0x0R0, p.cI, first[slot.Repa0x0R0])
+				rext, ok = p.testSelect(slot.Repa0x0R0, tokens)
+				if !ok {
+					p.parseError(slot.Repa0x0R0, p.cI, tokens, first[slot.Repa0x0R0])
 					L, p.cI = slot.Repa0x1R0, cU
 					goto nextSlot
 				}
-				p.bsrSet.Add(slot.Repa0x0R1, cU, p.cI, p.cI+1)
-				p.cI++
-				if !p.testSelect(slot.Repa0x0R1) {
-					p.parseError(slot.Repa0x0R1, p.cI, first[slot.Repa0x0R1])
+				p.bsrSet.Add(slot.Repa0x0R1, cU, p.cI, rext)
+				p.cI = rext
+				tokens = p.lex.Tokens(p.cI)
+				rext, ok = p.testSelect(slot.Repa0x0R1, tokens)
+				if !ok {
+					p.parseError(slot.Repa0x0R1, p.cI, tokens, first[slot.Repa0x0R1])
 					L, p.cI = slot.Repa0x1R0, cU
+					tokens = origTokens
 					goto nextSlot
 				}
 				p.call(slot.Repa0x0R2, slot.Repa0x1R0, symbols.NT_Repa0x, cU, p.cI)
@@ -371,13 +381,32 @@ func (p *parser) DumpU() {
 
 /*** TestSelect ***/
 
-func (p *parser) follow(nt symbols.NT) bool {
-	_, exist := followSets[nt][p.lex.Tokens[p.cI].Type()]
-	return exist
-}
+// func (p *parser) follow(nt symbols.NT) bool {
+// 	// TODO update for new lexer
+// 	_, exist := followSets[nt][p.lex.Tokens[p.cI].Type()]
+// 	return exist
+// }
 
-func (p *parser) testSelect(l slot.Label) bool {
-	return l.IsNullable() || l.FirstContains(p.lex.Tokens[p.cI].Type())
+func (p *parser) testSelect(l slot.Label, tokens *lexer.TokenSet) (int, bool) {
+	// longest munch found so far; -1 for none such
+	best := -1
+	// check for nullable rule
+	if l.IsNullable() {
+		best = p.cI
+	}
+	// cycle through rules checking for valid tokens
+	for tok, rext := range *tokens {
+		// will exclude shorter than best matches as well as -1 for no match
+		if rext <= best {
+			continue
+		}
+		// keep matches for contained tokens
+		if l.FirstContains(token.Type(tok)) {
+			best = rext
+		}
+	}
+	return best, best != -1
+	// return l.IsNullable() || l.FirstContains(p.lex.Tokens[p.cI].Type())
 	// _, exist := first[l][p.lex.Tokens[p.cI].Type()]
 	// return exist
 }
@@ -465,14 +494,17 @@ Normally the error of interest is the one that has parsed the largest number of
 tokens.
 */
 type Error struct {
-	// Index of token that caused the error.
+	// Input index of error.
 	cI int
 
 	// Grammar slot at which the error occured.
 	Slot slot.Label
 
-	// The token at which the error occurred.
-	Token *token.Token
+	// Lexer to recover values
+	lex *lexer.Lexer
+
+	// The tokens at which the error occurred.
+	Tokens *lexer.TokenSet
 
 	// The line and column in the input text at which the error occurred
 	Line, Column int
@@ -483,27 +515,44 @@ type Error struct {
 
 func (pe *Error) String() string {
 	w := new(bytes.Buffer)
-	fmt.Fprintf(w, "Parse Error: %s I[%d]=%s at line %d col %d\n",
-		pe.Slot, pe.cI, pe.Token, pe.Line, pe.Column)
+	fmt.Fprintf(w, "Parse Error: %s at line %d col %d\n",
+		pe.Slot, pe.Line, pe.Column)
+
+	fmt.Fprintf(w, "Got: [")
+	isFirst := true
+	for tok, rext := range *pe.Tokens {
+		if rext == -1 {
+			continue
+		}
+		if isFirst {
+			isFirst = false
+		} else {
+			fmt.Fprintf(w, ", ")
+		}
+		fmt.Fprintf(w, "%s %q", (token.Type(tok)).ID(), pe.lex.I[pe.cI:rext])
+	}
+	fmt.Fprintf(w, "]\n")
+
 	exp := []string{}
 	for _, e := range pe.Expected {
 		exp = append(exp, e)
 	}
-	fmt.Fprintf(w, "Expected one of: [%s]", strings.Join(exp, ","))
+	fmt.Fprintf(w, "Expected one of: [%s]", strings.Join(exp, ", "))
+
 	return w.String()
 }
 
-func (p *parser) parseError(slot slot.Label, i int, expected map[token.Type]string) {
-	pe := &Error{cI: i, Slot: slot, Token: p.lex.Tokens[i], Expected: expected}
+func (p *parser) parseError(slot slot.Label, i int, got *lexer.TokenSet, expected map[token.Type]string) {
+	pe := &Error{cI: i, Slot: slot, lex: p.lex, Tokens: got, Expected: expected}
 	p.parseErrors = append(p.parseErrors, pe)
 }
 
 func (p *parser) sortParseErrors() {
 	sort.Slice(p.parseErrors,
 		func(i, j int) bool {
-			return p.parseErrors[j].Token.Lext() < p.parseErrors[i].Token.Lext()
+			return p.parseErrors[j].cI < p.parseErrors[i].cI
 		})
 	for _, pe := range p.parseErrors {
-		pe.Line, pe.Column = p.lex.GetLineColumn(pe.Token.Lext())
+		pe.Line, pe.Column = p.lex.GetLineColumn(pe.cI)
 	}
 }

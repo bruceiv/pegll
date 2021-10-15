@@ -49,6 +49,5 @@ func parseAndPrint(s string) {
 func main() {
 	parseAndPrint(aac)
 	parseAndPrint(abc)
-	// TODO investigate lexer (?) infinite-loop
-	// parseAndPrint(aabc)
+	parseAndPrint(aabc)
 }
