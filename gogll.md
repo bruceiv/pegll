@@ -180,19 +180,27 @@ Lookahead operators may not be nested, but the two provided operators are suffic
 ```
 SyntaxSymbol
     : "&" SyntaxAtom
-    | "!" SyntaxAtom
-    | SynOptional
-    | SyntaxAtom
+    / "!" SyntaxAtom
+    / SyntaxSuffix
+    / SyntaxAtom
     ;
 
 SyntaxAtom : nt | tokid | string_lit ;
 ```
 
-A `SynOptional` is a syntax rule that is made optional (match 0 or 1 times) by a suffixed question mark operator `?`. `SynOptional` is a `SyntaxSymbol`. 
-May eventually be adapted to include other suffix syntax operators. 
+A `SyntaxSuffix` is a syntax rule that has a suffix operator. `SyntaxSuffix` is a `SyntaxSymbol`. Any of these options may be followed by one of the three _syntax suffixes_, `?`, `*`, or `+` to create syntactic sugar for making rules _optional_, _repeatable zero or more times_, or _repeatable one or more times_, respectably. 
 
+`?` is _optional suffix_, which matches if its argument matches at the end of a `SyntaxAtom`, without consuming any input itself. The expression is appended to an ordered empty node to the rule making it _optional_, and has the following form:
+`Optional : Expr / empty ;`
 
+`*` is _repeat zero or more times suffix_, which matches if its argument matches at the end of a `SyntaxAtom`, without consuming any input itself. The expression is appended recursively piping to an ordered empty node to the rule making it _repeatable zero or more times_, and has the following form:
+`Rep0x : Expr Rep0x / empty ;`
+
+`+` is _repeat one or more times suffix_, which matches if its argument matches at the end of a `SyntaxAtom`, without consuming any input itself. The expression is appended recursively to itself _and_ to an ordered empty node to the rule making it _repeatable one or more times_, and has the following form:
+`Rep1x : Expr Rep0x / empty ;`
 ```
-SynOptional : SyntaxAtom "?" ;
+SyntaxSuffix : SyntaxAtom "?" 
+             | SyntaxAtom "*" 
+             | SyntaxAtom "+" ;
 
 ```

@@ -18,9 +18,11 @@ const(
 	AorB1R0
 	AorB1R1
 	AorB1R2
+	AorB2F0
 	AxBC0R0
 	AxBC0R1
 	AxBC0R2
+	AxBC1F0
 	Repa0x0R0
 	Repa0x0R1
 	Repa0x0R2
@@ -102,6 +104,11 @@ func (l Label) FirstContains(typ token.Type) bool {
 	return firstT[l][typ]
 }
 
+func (l Label) IsLookahead() bool {
+	s := l.Slot()
+	return s.Pos > 0 && s.Symbols[s.Pos-1].IsLookahead()
+}
+
 func (s *Slot) EoR() bool {
 	return s.Pos >= len(s.Symbols)
 }
@@ -169,6 +176,12 @@ var slots = map[Label]*Slot{
 		}, 
 		AorB1R2, 
 	},
+	AorB2F0: {
+		symbols.NT_AorB, 2, 0, 
+		symbols.Symbols{ 
+		}, 
+		AorB2F0, 
+	},
 	AxBC0R0: {
 		symbols.NT_AxBC, 0, 0, 
 		symbols.Symbols{  
@@ -192,6 +205,12 @@ var slots = map[Label]*Slot{
 			symbols.T_2,
 		}, 
 		AxBC0R2, 
+	},
+	AxBC1F0: {
+		symbols.NT_AxBC, 1, 0, 
+		symbols.Symbols{ 
+		}, 
+		AxBC1F0, 
 	},
 	Repa0x0R0: {
 		symbols.NT_Repa0x, 0, 0, 
@@ -231,9 +250,11 @@ var slotIndex = map[Index]Label {
 	Index{ symbols.NT_AorB,1,0 }: AorB1R0,
 	Index{ symbols.NT_AorB,1,1 }: AorB1R1,
 	Index{ symbols.NT_AorB,1,2 }: AorB1R2,
+	Index{ symbols.NT_AorB,2,0 }: AorB2F0,
 	Index{ symbols.NT_AxBC,0,0 }: AxBC0R0,
 	Index{ symbols.NT_AxBC,0,1 }: AxBC0R1,
 	Index{ symbols.NT_AxBC,0,2 }: AxBC0R2,
+	Index{ symbols.NT_AxBC,1,0 }: AxBC1F0,
 	Index{ symbols.NT_Repa0x,0,0 }: Repa0x0R0,
 	Index{ symbols.NT_Repa0x,0,1 }: Repa0x0R1,
 	Index{ symbols.NT_Repa0x,0,2 }: Repa0x0R2,
@@ -252,9 +273,11 @@ var nullable = []bool {
 	false, // AorB1R0 
 	false, // AorB1R1 
 	true, // AorB1R2 
+	false, // AorB2F0 
 	false, // AxBC0R0 
 	false, // AxBC0R1 
 	true, // AxBC0R2 
+	false, // AxBC1F0 
 	false, // Repa0x0R0 
 	true, // Repa0x0R1 
 	true, // Repa0x0R2 
@@ -267,9 +290,11 @@ var firstT = []map[token.Type]bool {
 	{  token.T_0: true,  }, // AorB1R0 
 	{  token.T_1: true,  }, // AorB1R1 
 	{  }, // AorB1R2 
+	{  }, // AorB2F0 
 	{  token.T_0: true,  token.T_2: true,  }, // AxBC0R0 
 	{  token.T_2: true,  }, // AxBC0R1 
 	{  }, // AxBC0R2 
+	{  }, // AxBC1F0 
 	{  token.T_0: true,  }, // Repa0x0R0 
 	{  token.T_0: true,  }, // Repa0x0R1 
 	{  }, // Repa0x0R2 

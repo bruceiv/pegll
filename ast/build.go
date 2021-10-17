@@ -45,13 +45,13 @@ func (*LexRule) isBrule()    {}
 func (*SyntaxRule) isBrule() {}
 
 // Build builds an AST from the BSR root. `root` is the root of a disambiguated BSR forest
-//
 func Build(root bsr.BSR, l *lexer.Lexer) *GoGLL {
 	bld := &builder{
 		lex:          l,
 		charLiterals: stringset.New(),
 	}
 	gogll := bld.gogll(root)
+	bld.replaceSyntaxSuffix(gogll)
 	gogll.NonTerminals = bld.nonTerminals(gogll.SyntaxRules)
 	gogll.StringLiterals = bld.getStringLiterals(gogll.SyntaxRules)
 	gogll.Terminals = bld.terminals(gogll, gogll.GetStringLiterals())
@@ -105,11 +105,12 @@ func (bld *builder) rules(b bsr.BSR) []brule {
 	return rules
 }
 
+// build the nonterminals
 func (bld *builder) nonTerminals(rules []*SyntaxRule) *stringset.StringSet {
 	nts := stringset.New()
 	for _, r := range rules {
 		if nts.Contain(r.Head.ID()) {
-			bld.fail(fmt.Errorf("Duplicate rule %s", r.Head.ID()), r.Head.Lext())
+			bld.fail(fmt.Errorf("duplicate rule %s", r.Head.ID()), r.Head.Lext())
 		} else {
 			nts.Add(r.Head.ID())
 		}
@@ -117,12 +118,14 @@ func (bld *builder) nonTerminals(rules []*SyntaxRule) *stringset.StringSet {
 	return nts
 }
 
+// build the terminals
 func (bld *builder) terminals(g *GoGLL, stringLiterals []string) *stringset.StringSet {
 	terminals := bld.getLexRuleIDs(g.LexRules)
 	terminals.Add(stringLiterals...)
 	return terminals
 }
 
+// build the lookaheads
 func (bld *builder) lookaheads(g *GoGLL) *stringset.StringSet {
 	ls := stringset.New()
 	for _, r := range g.SyntaxRules {
@@ -137,6 +140,7 @@ func (bld *builder) lookaheads(g *GoGLL) *stringset.StringSet {
 	return ls
 }
 
+// return lexical rule identifiers
 func (bld *builder) getLexRuleIDs(rules []*LexRule) *stringset.StringSet {
 	terminals := stringset.New()
 	for _, rule := range rules {
@@ -148,6 +152,7 @@ func (bld *builder) getLexRuleIDs(rules []*LexRule) *stringset.StringSet {
 	return terminals
 }
 
+// return string literals
 func (bld *builder) getStringLiterals(rules []*SyntaxRule) map[string]*StringLit {
 	slits := make(map[string]*StringLit)
 	for _, r := range rules {
@@ -160,6 +165,160 @@ func (bld *builder) getStringLiterals(rules []*SyntaxRule) map[string]*StringLit
 		}
 	}
 	return slits
+}
+
+// build nodes for syntax suffixes
+// replace optional syntax rules with the rule and add an empty node
+func (bld *builder) replaceSyntaxSuffix(g *GoGLL) {
+	// map running list of symbol replacements to create list of generated syntax rules
+	generated := make(map[string]bool)
+	for _, r := range g.SyntaxRules {
+		for _, a := range r.Alternates {
+			// initialize new symbols for each alternate from its length
+			newSymbols := make([]SyntaxSymbol, 0, len(a.Symbols))
+			// loop through the range of symbols to determine if syntax optional
+			for _, s := range a.Symbols {
+				// if SyntaxSuffix, build the corresponding nodes
+				if l, ok := s.(*SyntaxSuffix); ok {
+					// if the name is not previously used build the node
+					name := nameForSuff(l.Expr)
+					suff := NT{
+						tok: ntTokenFromString(name),
+					}
+					if !generated[name] {
+						generated[name] = true
+						// add expression to list of alternates
+						empty := &SyntaxAlternate{}
+						tempAlts := []*SyntaxAlternate{}
+
+						// SyntaxSuffix : SyntaxAtom "?"
+						//				| SyntaxAtom "*"
+						//				| SyntaxAtom "+" ;
+						switch l.Type {
+						// optional rules (?)
+						case 0:
+							// optional : expr
+							//			/ empty ;
+
+							// slice of syntax symbols only containing a syntax atom
+							exprSym := []SyntaxSymbol{l.Expr}
+							// syntax alternate takes slice of syntax symbols
+							expr := &SyntaxAlternate{
+								Symbols: exprSym,
+							}
+							// append the expression and the empty node
+							tempAlts = append(tempAlts, expr)  // expr
+							tempAlts = append(tempAlts, empty) // empty
+
+						// repeat rule zero or more times (*)
+						case 1:
+							// rep0x: expr rep0x
+							//		/ empty ;
+
+							// slice of syntax symbols containing the expression and the NT to repeat
+							exprSym := []SyntaxSymbol{l.Expr, &suff}
+							// syntax alternate takes slice of syntax symbols
+							expr0x := &SyntaxAlternate{
+								Symbols: exprSym,
+							}
+							// append the expression and the empty node
+							tempAlts = append(tempAlts, expr0x) // expr rep0x
+							tempAlts = append(tempAlts, empty)  // empty
+
+						// repeat rule one or more times (+)
+						case 2:
+							// rep1x: expr rep0x ;
+							// rep0x: expr rep0x
+							//		/ empty ;
+
+							/* Bottom Layer (rep0x) */
+							// slice of syntax symbols containing the expression and the NT to repeat
+							exprSym := []SyntaxSymbol{l.Expr, &suff}
+							// syntax alternate takes slice of syntax symbols
+							expr := &SyntaxAlternate{
+								Symbols: exprSym,
+							}
+							// append the expression and the empty node
+							tempAlts = append(tempAlts, expr)  // expr rep0x
+							tempAlts = append(tempAlts, empty) // empty
+
+							/* Top Layer (rep1x) */
+							// new name for the rep1x token
+							name1x := nameForRep1xSuff(l.Expr)
+							//NT to hold the rep1x part of rule
+							rep1xNT := NT{
+								tok: ntTokenFromString(name1x),
+							}
+							// rep1x symbol
+							rep1xSym := []SyntaxSymbol{l.Expr, &suff}
+							// rep1x alternate
+							// rep1x: expr rep0x ;
+							rep1xAlt := &SyntaxAlternate{
+								Symbols: rep1xSym,
+							}
+							temprep1xAlts := []*SyntaxAlternate{rep1xAlt}
+
+							rep1xRule := SyntaxRule{
+								Head:       &rep1xNT,
+								Alternates: temprep1xAlts,
+								IsOrdered:  true,
+							}
+							// add the extra syntax rule
+							bld.addSyntaxRule(&rep1xRule, g)
+							// add the extra symbol
+							newSymbols = append(newSymbols, &rep1xNT)
+
+						// panic if incorrect suffix
+						default:
+							panic(fmt.Sprintf("invalid suffix %s", suff.String()))
+						}
+
+						// create new syntax rule
+						suffRule := SyntaxRule{
+							Head:       &suff, //Nt
+							Alternates: tempAlts,
+							IsOrdered:  true,
+						}
+
+						//Adds new NT rule to list of syntax rules
+						bld.addSyntaxRule(&suffRule, g)
+					}
+					// append the new symbols created from SyntaxSuffix
+					newSymbols = append(newSymbols, &suff)
+
+				} else { // otherwise, append the symbols
+					newSymbols = append(newSymbols, s)
+				}
+			}
+			a.Symbols = newSymbols
+		}
+	}
+}
+
+// variable for the nonterminal token
+var ntToken = getNtToken()
+
+// get token type for nonterminal ID
+func getNtToken() token.Type {
+	var ntTok = token.Type(-1)
+	for i, s := range token.TypeToID {
+		if s == "nt" {
+			ntTok = token.Type(i)
+			break
+		}
+	}
+	return ntTok
+}
+
+// return new token type for nonterminal
+func ntTokenFromString(s string) *token.Token {
+	return token.New(ntToken, 0, len(s), []rune(s))
+}
+func nameForSuff(s SyntaxSymbol) string {
+	return "Suff" + s.ID()
+}
+func nameForRep1xSuff(s SyntaxSymbol) string {
+	return "Suff1x" + s.ID()
 }
 
 /*** Lex Rules ***/
@@ -268,7 +427,6 @@ func (bld *builder) lexGroup(b bsr.BSR) *LexBracket {
 	}
 }
 
-////////////////////////////////////////////////////////////////////////////////////////////////
 // LexOptional : "[" LexAlternates "]" ;
 func (bld *builder) lexOptional(b bsr.BSR) *LexBracket {
 	return &LexBracket{
@@ -277,8 +435,6 @@ func (bld *builder) lexOptional(b bsr.BSR) *LexBracket {
 		Alternates:  bld.lexAlternates(b.GetNTChildI(1)),
 	}
 }
-
-////////////////////////////////////////////////////////////////////////////////////////////////
 
 // LexZeroOrMore : "{" LexAlternates "}" ;
 func (bld *builder) lexZeroOrMore(b bsr.BSR) *LexBracket {
@@ -336,28 +492,6 @@ func (bld *builder) unicodeClass(b bsr.BSR) *UnicodeClass {
 }
 
 /*** Syntax Rules ***/
-
-// SynOptional : SyntaxAtom "?" ;
-// "?" : SyntaxAtom
-//		/ "empty"
-// function essentially determines whether empty or not
-func (bld *builder) synOptional(b bsr.BSR) *SynOptional {
-	/* return SynOptional{
-		Tok:  b.GetTChildI(1),
-		Expr: bld.atom(b.GetNTChildI(0)),
-	} */
-	return &SynOptional{
-		Expr:  bld.atom(b.GetNTChildI(0)),
-		Empty: &SyntaxAlternate{},
-	}
-	/* // create an empty struct
-	opt := &SynOptional{}
-	// if empty, SynOptional with be returned with empty atom
-	if b.Alternate() == 0 {
-		opt.Expr = bld.atom(b.GetNTChildI(0))
-	}
-	return opt*/
-}
 
 // SyntaxAlternate
 //     :   SyntaxSymbols
@@ -428,12 +562,13 @@ func (bld *builder) syntaxRule(b bsr.BSR) brule {
 		Alternates: alts,
 		IsOrdered:  ord,
 	}
+
 }
 
 // SyntaxSymbol
 //     : "&" SyntaxAtom
 //     / "!" SyntaxAtom
-//	   / SynOptional
+//	   / SyntaxSuffix
 //     / SyntaxAtom
 //     ;
 func (bld *builder) symbol(b bsr.BSR) SyntaxSymbol {
@@ -444,14 +579,24 @@ func (bld *builder) symbol(b bsr.BSR) SyntaxSymbol {
 			Expr: bld.atom(b.GetNTChildI(1)),
 		}
 	case 2:
-		return bld.synOptional(b.GetNTChildI(0))
+		return bld.SyntaxSuffix(b.GetNTChildI(0))
 	case 3:
 		return bld.atom(b.GetNTChildI(0))
 	}
 	panic(fmt.Sprintf("invalid alternate %d", b.Alternate()))
 }
 
-////////////////////////////////////////////////////////////////////////////////////////////////
+// SyntaxSuffix : SyntaxAtom "?"
+//  			| SyntaxAtom "*"
+//              | SyntaxAtom "+" ;
+func (bld *builder) SyntaxSuffix(b bsr.BSR) SyntaxSymbol {
+	return &SyntaxSuffix{
+		Expr: bld.atom(b.GetNTChildI(0)),
+		Tok:  b.GetTChildI(1),
+		Type: b.Alternate(),
+	}
+}
+
 // SyntaxAtom : nt | tokid | string_lit ;
 func (bld *builder) atom(b bsr.BSR) SyntaxSymbol {
 	switch b.Alternate() {
@@ -465,29 +610,16 @@ func (bld *builder) atom(b bsr.BSR) SyntaxSymbol {
 	panic(fmt.Sprintf("invalid alternate %d", b.Alternate()))
 }
 
-////////////////////////////////////////////////////////////////////////////////////////////////
-
 // SyntaxSymbols
 //     :   SyntaxSymbol
 //     |   SyntaxSymbol SyntaxSymbols
 //     ;
 func (bld *builder) syntaxSymbols(b bsr.BSR) []SyntaxSymbol {
 	symbols := []SyntaxSymbol{bld.symbol(b.GetNTChildI(0))}
-	//if recent symbol is a syntaxOptional, then add an empty node
-	if symbols[(len(symbols)-1)].ID() == "?" { //Add SynOptional Empty Node
-		symbols = bld.addOptNode(symbols)
-	}
 	if b.Alternate() == 1 {
 		symbols = append(symbols, bld.syntaxSymbols(b.GetNTChildI(1))...)
 	}
 	return symbols
-}
-
-func (bld *builder) addOptNode(symbols []SyntaxSymbol) []SyntaxSymbol {
-	//Add empty node to slice
-	symbols = append(symbols, &SynOptional{})
-	return symbols
-	//panic("invalid SynOptional")
 }
 
 /*** Shared ***/

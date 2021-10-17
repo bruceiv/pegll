@@ -14,23 +14,6 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-/* build.go modifications (these are backwards sorry)
- * line 489
- 	- don't think we need to add SynOptional into the
-	syntaxSymbols function because it's being built in SyntaxSymbols
- * line 350
-	- changed the struct so it has syntax symbols so we can traverse
-	through it and see if there is a "?" - see Moss's answer in Teams
- * line 364
-	- the way that it is built in SyntaxSymbols we need to traverse
-	through the symbols, find the question mark, and then see if the
-	token exists - since we already have it built to return empty in
-	the synOptional function, we're simply checking for the existence of
-	the token and, if it's there, adding it to the Expr part of the struct
-
-
-	we need to figure out how to add NT_SynOptional
-*/
 
 package ast
 
@@ -38,42 +21,40 @@ import (
 	"github.com/bruceiv/pegll/token"
 )
 
-// The syntax part of the AST
-///////////////////////////// trying something different - I don't think
-//////////////////////////// we need the token - I think we need the NT
-/* type SynOptional struct { //Where do we get it to connect to the '?' ????  --> similar to Lext function in lex.go??
-	Tok  *token.Token //I think contains the ?
-	Expr SyntaxSymbol //Contains the rule that is being made optional (we think)
-} */
-
-type SynOptional struct {
-	// expression made optional
-	Expr SyntaxSymbol
-	// alternate for empty
-	Empty *SyntaxAlternate
-}
-
-// Line 126 in build.go --> do to we need to add the symbol to a set? Do we need to do this????
-
-type SyntaxAlternate struct {
-	Symbols []SyntaxSymbol
-}
-
+// A syntax rule
 type SyntaxRule struct {
 	Head       *NT
 	Alternates []*SyntaxAlternate
 	IsOrdered  bool
 }
 
+// An alternate expression
+type SyntaxAlternate struct {
+	Symbols []SyntaxSymbol
+}
+
+// A syntax suffix operator
+type SyntaxSuffix struct {
+	// expression made optional
+	Expr SyntaxSymbol
+	// token for operator
+	Tok *token.Token
+	// signifies the type of suffix
+	// 0: optional (?)
+	// 1: repeat zero or more times (*)
+	// 2: repeat one or more times (+)
+	Type int
+}
+
+// A syntax symbol
 type SyntaxSymbol interface {
 	isSyntaxSymbol()
 	// Lext returns the left extent of SyntaxSymbol in the input string
 	Lext() int
-
-	// The ID of the symbol, which is the literal string of a LexRule, SyntaxRule
-	// or StringLit.
+	// The ID of the symbol
+	// which is the literal string of a LexRule, SyntaxRule or StringLit.
 	ID() string
-
+	// The string of the symbol
 	String() string
 }
 
@@ -85,49 +66,31 @@ type Lookahead struct {
 	Expr SyntaxSymbol
 }
 
-func (*NT) isSyntaxSymbol()        {}
-func (*Lookahead) isSyntaxSymbol() {}
+// non-terminals
+func (*NT) isSyntaxSymbol()          {}
+func (*Lookahead) isSyntaxSymbol()   {}
+func (SyntaxSuffix) isSyntaxSymbol() {}
 
-////////////////////////////////////////////////////////////////////////////////////////////////
-func (SynOptional) isSyntaxSymbol() {}
-
-func (opt *SynOptional) ID() string {
-	// return opt.Tok.LiteralString() + opt.Expr.ID()
-	// i think we only need the ID and not the literal string
-	return opt.Expr.ID()
-}
-func (opt *SynOptional) Lext() int {
-	// return opt.Tok.Lext()
-	return opt.Expr.Lext()
-}
-func (opt *SynOptional) String() string {
-	//return opt.Tok.LiteralString() + opt.Expr.String()
-	return opt.Expr.ID()
-}
-
-//// had to remove the pointers in order to compile
-////////////////////////////////////////////////////////////////////////////////////////////////
-// Terminals
+// terminals
 func (*TokID) isSyntaxSymbol()     {}
 func (*StringLit) isSyntaxSymbol() {}
 
-func (e *Lookahead) Lext() int {
-	return e.Op.Lext()
+/* Syntax Rules */
+// ID returns the head of rule r
+func (r *SyntaxRule) ID() string {
+	return r.Head.ID()
+}
+func (r *SyntaxRule) Lext() int {
+	return r.Head.Lext()
 }
 
-func (e *Lookahead) ID() string {
-	return e.Op.LiteralString() + e.Expr.ID()
+// true if always matches; false if unable to guarantee always matches
+func (r *SyntaxRule) AlwaysMatches() bool {
+	return r.Alternates[len(r.Alternates)-1].Empty()
 }
-
-func (e *Lookahead) String() string {
-	return e.Op.LiteralString() + e.Expr.String()
+func (a *SyntaxAlternate) Empty() bool {
+	return len(a.Symbols) == 0
 }
-
-// true for positive (&) lookahead, false for negative (!) lookahead
-func (e *Lookahead) Positive() bool {
-	return e.Op.LiteralString() == "&"
-}
-
 func (a *SyntaxAlternate) GetSymbols() []string {
 	symbols := make([]string, len(a.Symbols))
 	for i, s := range a.Symbols {
@@ -136,20 +99,29 @@ func (a *SyntaxAlternate) GetSymbols() []string {
 	return symbols
 }
 
-func (a *SyntaxAlternate) Empty() bool {
-	return len(a.Symbols) == 0
+/* Syntax Suffix */
+func (opt *SyntaxSuffix) ID() string {
+	return opt.Expr.ID() + opt.Tok.LiteralString()
+}
+func (opt *SyntaxSuffix) Lext() int {
+	return opt.Expr.Lext()
+}
+func (opt *SyntaxSuffix) String() string {
+	return opt.Expr.String() + opt.Tok.LiteralString()
 }
 
-// ID returns the head of rule r
-func (r *SyntaxRule) ID() string {
-	return r.Head.ID()
+/* Lookahead */
+func (e *Lookahead) Lext() int {
+	return e.Op.Lext()
+}
+func (e *Lookahead) ID() string {
+	return e.Op.LiteralString() + e.Expr.ID()
+}
+func (e *Lookahead) String() string {
+	return e.Op.LiteralString() + e.Expr.String()
 }
 
-func (r *SyntaxRule) Lext() int {
-	return r.Head.Lext()
-}
-
-// true if always matches; false if unable to guarantee always matches
-func (r *SyntaxRule) AlwaysMatches() bool {
-	return r.Alternates[len(r.Alternates)-1].Empty()
+// true for positive (&) lookahead, false for negative (!) lookahead
+func (e *Lookahead) Positive() bool {
+	return e.Op.LiteralString() == "&"
 }

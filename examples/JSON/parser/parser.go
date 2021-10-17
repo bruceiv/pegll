@@ -21,7 +21,8 @@ type parser struct {
 	U *descriptors
 
 	popped   map[poppedNode]bool
-	crf      map[clusterNode][]*crfNode
+	crf_m    map[clusterNode][]*crfNode
+	crf_f    map[clusterNode][]*crfNode
 	crfNodes map[crfNode]*crfNode
 
 	lex         *lexer.Lexer
@@ -30,6 +31,9 @@ type parser struct {
 	bsrSet *bsr.Set
 }
 
+// index used for non-matches
+const failInd = -1
+
 func newParser(l *lexer.Lexer) *parser {
 	return &parser{
 		cI:     0,
@@ -37,9 +41,10 @@ func newParser(l *lexer.Lexer) *parser {
 		R:      &descriptors{},
 		U:      &descriptors{},
 		popped: make(map[poppedNode]bool),
-		crf: map[clusterNode][]*crfNode{
+		crf_m: map[clusterNode][]*crfNode{
 			{symbols.NT_JSON, 0}: {},
 		},
+		crf_f:       map[clusterNode][]*crfNode{},
 		crfNodes:    map[crfNode]*crfNode{},
 		bsrSet:      bsr.New(symbols.NT_JSON, l),
 		parseErrors: nil,
@@ -64,546 +69,1055 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 		// fmt.Printf("L:%s, cI:%d, I[p.cI]:%s, cU:%d\n", L, p.cI, p.lex.Tokens[p.cI], cU)
 		// p.DumpDescriptors()
 
-		switch L {
-		case slot.Array0R0: // Array : ∙LBRACKET OptElem RBRACKET
+		for {
+			switch L {
+			case slot.Array0R0: // Array : ∙LBRACKET SuffElements RBRACKET
 
-			p.call(slot.Array0R1, cU, p.cI)
-		case slot.Array0R1: // Array : LBRACKET ∙OptElem RBRACKET
+				if !p.testSelect(slot.Array0R0) {
+					p.parseError(slot.Array0R0, p.cI, first[slot.Array0R0])
+					L, p.cI = slot.Array1F0, cU
+					goto nextSlot
+				}
+				p.call(slot.Array0R1, slot.Array1F0, symbols.NT_LBRACKET, cU, p.cI)
+			case slot.Array0R1: // Array : LBRACKET ∙SuffElements RBRACKET
 
-			if !p.testSelect(slot.Array0R1) {
-				p.parseError(slot.Array0R1, p.cI, first[slot.Array0R1])
-				break
+				if !p.testSelect(slot.Array0R1) {
+					p.parseError(slot.Array0R1, p.cI, first[slot.Array0R1])
+					L, p.cI = slot.Array1F0, cU
+					goto nextSlot
+				}
+				p.call(slot.Array0R2, slot.Array1F0, symbols.NT_SuffElements, cU, p.cI)
+			case slot.Array0R2: // Array : LBRACKET SuffElements ∙RBRACKET
+
+				if !p.testSelect(slot.Array0R2) {
+					p.parseError(slot.Array0R2, p.cI, first[slot.Array0R2])
+					L, p.cI = slot.Array1F0, cU
+					goto nextSlot
+				}
+				p.call(slot.Array0R3, slot.Array1F0, symbols.NT_RBRACKET, cU, p.cI)
+			case slot.Array0R3: // Array : LBRACKET SuffElements RBRACKET ∙
+
+				p.rtn(symbols.NT_Array, cU, p.cI)
+			case slot.Array1F0: // Array failure case
+				p.rtn(symbols.NT_Array, cU, failInd)
+			case slot.CHAR0R0: // CHAR : ∙Suff1xchar Suffchar
+
+				if !p.testSelect(slot.CHAR0R0) {
+					p.parseError(slot.CHAR0R0, p.cI, first[slot.CHAR0R0])
+					L, p.cI = slot.CHAR1R0, cU
+					goto nextSlot
+				}
+				p.call(slot.CHAR0R1, slot.CHAR1R0, symbols.NT_Suff1xchar, cU, p.cI)
+			case slot.CHAR0R1: // CHAR : Suff1xchar ∙Suffchar
+
+				if !p.testSelect(slot.CHAR0R1) {
+					p.parseError(slot.CHAR0R1, p.cI, first[slot.CHAR0R1])
+					L, p.cI = slot.CHAR1R0, cU
+					goto nextSlot
+				}
+				p.call(slot.CHAR0R2, slot.CHAR1R0, symbols.NT_Suffchar, cU, p.cI)
+			case slot.CHAR0R2: // CHAR : Suff1xchar Suffchar ∙
+
+				p.rtn(symbols.NT_CHAR, cU, p.cI)
+			case slot.CHAR1R0: // CHAR : ∙bSlash CharCode
+
+				if !p.testSelect(slot.CHAR1R0) {
+					p.parseError(slot.CHAR1R0, p.cI, first[slot.CHAR1R0])
+					L, p.cI = slot.CHAR2F0, cU
+					goto nextSlot
+				}
+				p.bsrSet.Add(slot.CHAR1R1, cU, p.cI, p.cI+1)
+				p.cI++
+				if !p.testSelect(slot.CHAR1R1) {
+					p.parseError(slot.CHAR1R1, p.cI, first[slot.CHAR1R1])
+					L, p.cI = slot.CHAR2F0, cU
+					goto nextSlot
+				}
+				p.call(slot.CHAR1R2, slot.CHAR2F0, symbols.NT_CharCode, cU, p.cI)
+			case slot.CHAR1R2: // CHAR : bSlash CharCode ∙
+
+				p.rtn(symbols.NT_CHAR, cU, p.cI)
+			case slot.CHAR2F0: // CHAR failure case
+				p.rtn(symbols.NT_CHAR, cU, failInd)
+			case slot.COLON0R0: // COLON : ∙: WS
+
+				if !p.testSelect(slot.COLON0R0) {
+					p.parseError(slot.COLON0R0, p.cI, first[slot.COLON0R0])
+					L, p.cI = slot.COLON1F0, cU
+					goto nextSlot
+				}
+				p.bsrSet.Add(slot.COLON0R1, cU, p.cI, p.cI+1)
+				p.cI++
+				if !p.testSelect(slot.COLON0R1) {
+					p.parseError(slot.COLON0R1, p.cI, first[slot.COLON0R1])
+					L, p.cI = slot.COLON1F0, cU
+					goto nextSlot
+				}
+				p.call(slot.COLON0R2, slot.COLON1F0, symbols.NT_WS, cU, p.cI)
+			case slot.COLON0R2: // COLON : : WS ∙
+
+				p.rtn(symbols.NT_COLON, cU, p.cI)
+			case slot.COLON1F0: // COLON failure case
+				p.rtn(symbols.NT_COLON, cU, failInd)
+			case slot.COMMA0R0: // COMMA : ∙, WS
+
+				if !p.testSelect(slot.COMMA0R0) {
+					p.parseError(slot.COMMA0R0, p.cI, first[slot.COMMA0R0])
+					L, p.cI = slot.COMMA1F0, cU
+					goto nextSlot
+				}
+				p.bsrSet.Add(slot.COMMA0R1, cU, p.cI, p.cI+1)
+				p.cI++
+				if !p.testSelect(slot.COMMA0R1) {
+					p.parseError(slot.COMMA0R1, p.cI, first[slot.COMMA0R1])
+					L, p.cI = slot.COMMA1F0, cU
+					goto nextSlot
+				}
+				p.call(slot.COMMA0R2, slot.COMMA1F0, symbols.NT_WS, cU, p.cI)
+			case slot.COMMA0R2: // COMMA : , WS ∙
+
+				p.rtn(symbols.NT_COMMA, cU, p.cI)
+			case slot.COMMA1F0: // COMMA failure case
+				p.rtn(symbols.NT_COMMA, cU, failInd)
+			case slot.CharCode0R0: // CharCode : ∙esc
+
+				if !p.testSelect(slot.CharCode0R0) {
+					p.parseError(slot.CharCode0R0, p.cI, first[slot.CharCode0R0])
+					L, p.cI = slot.CharCode1R0, cU
+					goto nextSlot
+				}
+				p.bsrSet.Add(slot.CharCode0R1, cU, p.cI, p.cI+1)
+				p.cI++
+				p.rtn(symbols.NT_CharCode, cU, p.cI)
+			case slot.CharCode1R0: // CharCode : ∙u hex hex hex hex
+
+				if !p.testSelect(slot.CharCode1R0) {
+					p.parseError(slot.CharCode1R0, p.cI, first[slot.CharCode1R0])
+					L, p.cI = slot.CharCode2F0, cU
+					goto nextSlot
+				}
+				p.bsrSet.Add(slot.CharCode1R1, cU, p.cI, p.cI+1)
+				p.cI++
+				if !p.testSelect(slot.CharCode1R1) {
+					p.parseError(slot.CharCode1R1, p.cI, first[slot.CharCode1R1])
+					L, p.cI = slot.CharCode2F0, cU
+					goto nextSlot
+				}
+				p.bsrSet.Add(slot.CharCode1R2, cU, p.cI, p.cI+1)
+				p.cI++
+				if !p.testSelect(slot.CharCode1R2) {
+					p.parseError(slot.CharCode1R2, p.cI, first[slot.CharCode1R2])
+					L, p.cI = slot.CharCode2F0, cU
+					goto nextSlot
+				}
+				p.bsrSet.Add(slot.CharCode1R3, cU, p.cI, p.cI+1)
+				p.cI++
+				if !p.testSelect(slot.CharCode1R3) {
+					p.parseError(slot.CharCode1R3, p.cI, first[slot.CharCode1R3])
+					L, p.cI = slot.CharCode2F0, cU
+					goto nextSlot
+				}
+				p.bsrSet.Add(slot.CharCode1R4, cU, p.cI, p.cI+1)
+				p.cI++
+				if !p.testSelect(slot.CharCode1R4) {
+					p.parseError(slot.CharCode1R4, p.cI, first[slot.CharCode1R4])
+					L, p.cI = slot.CharCode2F0, cU
+					goto nextSlot
+				}
+				p.bsrSet.Add(slot.CharCode1R5, cU, p.cI, p.cI+1)
+				p.cI++
+				p.rtn(symbols.NT_CharCode, cU, p.cI)
+			case slot.CharCode2F0: // CharCode failure case
+				p.rtn(symbols.NT_CharCode, cU, failInd)
+			case slot.ComPair0R0: // ComPair : ∙COMMA Pair
+
+				if !p.testSelect(slot.ComPair0R0) {
+					p.parseError(slot.ComPair0R0, p.cI, first[slot.ComPair0R0])
+					L, p.cI = slot.ComPair1F0, cU
+					goto nextSlot
+				}
+				p.call(slot.ComPair0R1, slot.ComPair1F0, symbols.NT_COMMA, cU, p.cI)
+			case slot.ComPair0R1: // ComPair : COMMA ∙Pair
+
+				if !p.testSelect(slot.ComPair0R1) {
+					p.parseError(slot.ComPair0R1, p.cI, first[slot.ComPair0R1])
+					L, p.cI = slot.ComPair1F0, cU
+					goto nextSlot
+				}
+				p.call(slot.ComPair0R2, slot.ComPair1F0, symbols.NT_Pair, cU, p.cI)
+			case slot.ComPair0R2: // ComPair : COMMA Pair ∙
+
+				p.rtn(symbols.NT_ComPair, cU, p.cI)
+			case slot.ComPair1F0: // ComPair failure case
+				p.rtn(symbols.NT_ComPair, cU, failInd)
+			case slot.ComVal0R0: // ComVal : ∙COMMA Value
+
+				if !p.testSelect(slot.ComVal0R0) {
+					p.parseError(slot.ComVal0R0, p.cI, first[slot.ComVal0R0])
+					L, p.cI = slot.ComVal1F0, cU
+					goto nextSlot
+				}
+				p.call(slot.ComVal0R1, slot.ComVal1F0, symbols.NT_COMMA, cU, p.cI)
+			case slot.ComVal0R1: // ComVal : COMMA ∙Value
+
+				if !p.testSelect(slot.ComVal0R1) {
+					p.parseError(slot.ComVal0R1, p.cI, first[slot.ComVal0R1])
+					L, p.cI = slot.ComVal1F0, cU
+					goto nextSlot
+				}
+				p.call(slot.ComVal0R2, slot.ComVal1F0, symbols.NT_Value, cU, p.cI)
+			case slot.ComVal0R2: // ComVal : COMMA Value ∙
+
+				p.rtn(symbols.NT_ComVal, cU, p.cI)
+			case slot.ComVal1F0: // ComVal failure case
+				p.rtn(symbols.NT_ComVal, cU, failInd)
+			case slot.EXP0R0: // EXP : ∙eE SuffPlusORMinus num
+
+				if !p.testSelect(slot.EXP0R0) {
+					p.parseError(slot.EXP0R0, p.cI, first[slot.EXP0R0])
+					L, p.cI = slot.EXP1F0, cU
+					goto nextSlot
+				}
+				p.bsrSet.Add(slot.EXP0R1, cU, p.cI, p.cI+1)
+				p.cI++
+				if !p.testSelect(slot.EXP0R1) {
+					p.parseError(slot.EXP0R1, p.cI, first[slot.EXP0R1])
+					L, p.cI = slot.EXP1F0, cU
+					goto nextSlot
+				}
+				p.call(slot.EXP0R2, slot.EXP1F0, symbols.NT_SuffPlusORMinus, cU, p.cI)
+			case slot.EXP0R2: // EXP : eE SuffPlusORMinus ∙num
+
+				if !p.testSelect(slot.EXP0R2) {
+					p.parseError(slot.EXP0R2, p.cI, first[slot.EXP0R2])
+					L, p.cI = slot.EXP1F0, cU
+					goto nextSlot
+				}
+				p.bsrSet.Add(slot.EXP0R3, cU, p.cI, p.cI+1)
+				p.cI++
+				p.rtn(symbols.NT_EXP, cU, p.cI)
+			case slot.EXP1F0: // EXP failure case
+				p.rtn(symbols.NT_EXP, cU, failInd)
+			case slot.Elements0R0: // Elements : ∙Value SuffComVal
+
+				if !p.testSelect(slot.Elements0R0) {
+					p.parseError(slot.Elements0R0, p.cI, first[slot.Elements0R0])
+					L, p.cI = slot.Elements1F0, cU
+					goto nextSlot
+				}
+				p.call(slot.Elements0R1, slot.Elements1F0, symbols.NT_Value, cU, p.cI)
+			case slot.Elements0R1: // Elements : Value ∙SuffComVal
+
+				if !p.testSelect(slot.Elements0R1) {
+					p.parseError(slot.Elements0R1, p.cI, first[slot.Elements0R1])
+					L, p.cI = slot.Elements1F0, cU
+					goto nextSlot
+				}
+				p.call(slot.Elements0R2, slot.Elements1F0, symbols.NT_SuffComVal, cU, p.cI)
+			case slot.Elements0R2: // Elements : Value SuffComVal ∙
+
+				p.rtn(symbols.NT_Elements, cU, p.cI)
+			case slot.Elements1F0: // Elements failure case
+				p.rtn(symbols.NT_Elements, cU, failInd)
+			case slot.EscOrComment0R0: // EscOrComment : ∙escCharSpace
+
+				if !p.testSelect(slot.EscOrComment0R0) {
+					p.parseError(slot.EscOrComment0R0, p.cI, first[slot.EscOrComment0R0])
+					L, p.cI = slot.EscOrComment1R0, cU
+					goto nextSlot
+				}
+				p.bsrSet.Add(slot.EscOrComment0R1, cU, p.cI, p.cI+1)
+				p.cI++
+				p.rtn(symbols.NT_EscOrComment, cU, p.cI)
+			case slot.EscOrComment1R0: // EscOrComment : ∙line_comment
+
+				if !p.testSelect(slot.EscOrComment1R0) {
+					p.parseError(slot.EscOrComment1R0, p.cI, first[slot.EscOrComment1R0])
+					L, p.cI = slot.EscOrComment2R0, cU
+					goto nextSlot
+				}
+				p.bsrSet.Add(slot.EscOrComment1R1, cU, p.cI, p.cI+1)
+				p.cI++
+				p.rtn(symbols.NT_EscOrComment, cU, p.cI)
+			case slot.EscOrComment2R0: // EscOrComment : ∙block_comment
+
+				if !p.testSelect(slot.EscOrComment2R0) {
+					p.parseError(slot.EscOrComment2R0, p.cI, first[slot.EscOrComment2R0])
+					L, p.cI = slot.EscOrComment3R0, cU
+					goto nextSlot
+				}
+				p.bsrSet.Add(slot.EscOrComment2R1, cU, p.cI, p.cI+1)
+				p.cI++
+				p.rtn(symbols.NT_EscOrComment, cU, p.cI)
+			case slot.EscOrComment3R0: // EscOrComment : ∙
+				p.bsrSet.AddEmpty(slot.EscOrComment3R0, p.cI)
+				p.rtn(symbols.NT_EscOrComment, cU, p.cI)
+			case slot.FALSE0R0: // FALSE : ∙false WS
+
+				if !p.testSelect(slot.FALSE0R0) {
+					p.parseError(slot.FALSE0R0, p.cI, first[slot.FALSE0R0])
+					L, p.cI = slot.FALSE1F0, cU
+					goto nextSlot
+				}
+				p.bsrSet.Add(slot.FALSE0R1, cU, p.cI, p.cI+1)
+				p.cI++
+				if !p.testSelect(slot.FALSE0R1) {
+					p.parseError(slot.FALSE0R1, p.cI, first[slot.FALSE0R1])
+					L, p.cI = slot.FALSE1F0, cU
+					goto nextSlot
+				}
+				p.call(slot.FALSE0R2, slot.FALSE1F0, symbols.NT_WS, cU, p.cI)
+			case slot.FALSE0R2: // FALSE : false WS ∙
+
+				p.rtn(symbols.NT_FALSE, cU, p.cI)
+			case slot.FALSE1F0: // FALSE failure case
+				p.rtn(symbols.NT_FALSE, cU, failInd)
+			case slot.FRAC0R0: // FRAC : ∙. Suffnum
+
+				if !p.testSelect(slot.FRAC0R0) {
+					p.parseError(slot.FRAC0R0, p.cI, first[slot.FRAC0R0])
+					L, p.cI = slot.FRAC1F0, cU
+					goto nextSlot
+				}
+				p.bsrSet.Add(slot.FRAC0R1, cU, p.cI, p.cI+1)
+				p.cI++
+				if !p.testSelect(slot.FRAC0R1) {
+					p.parseError(slot.FRAC0R1, p.cI, first[slot.FRAC0R1])
+					L, p.cI = slot.FRAC1F0, cU
+					goto nextSlot
+				}
+				p.call(slot.FRAC0R2, slot.FRAC1F0, symbols.NT_Suffnum, cU, p.cI)
+			case slot.FRAC0R2: // FRAC : . Suffnum ∙
+
+				p.rtn(symbols.NT_FRAC, cU, p.cI)
+			case slot.FRAC1F0: // FRAC failure case
+				p.rtn(symbols.NT_FRAC, cU, failInd)
+			case slot.INT0R0: // INT : ∙SuffNeg Integers
+
+				if !p.testSelect(slot.INT0R0) {
+					p.parseError(slot.INT0R0, p.cI, first[slot.INT0R0])
+					L, p.cI = slot.INT1F0, cU
+					goto nextSlot
+				}
+				p.call(slot.INT0R1, slot.INT1F0, symbols.NT_SuffNeg, cU, p.cI)
+			case slot.INT0R1: // INT : SuffNeg ∙Integers
+
+				if !p.testSelect(slot.INT0R1) {
+					p.parseError(slot.INT0R1, p.cI, first[slot.INT0R1])
+					L, p.cI = slot.INT1F0, cU
+					goto nextSlot
+				}
+				p.call(slot.INT0R2, slot.INT1F0, symbols.NT_Integers, cU, p.cI)
+			case slot.INT0R2: // INT : SuffNeg Integers ∙
+
+				p.rtn(symbols.NT_INT, cU, p.cI)
+			case slot.INT1F0: // INT failure case
+				p.rtn(symbols.NT_INT, cU, failInd)
+			case slot.Integers0R0: // Integers : ∙NumSeq
+
+				if !p.testSelect(slot.Integers0R0) {
+					p.parseError(slot.Integers0R0, p.cI, first[slot.Integers0R0])
+					L, p.cI = slot.Integers1R0, cU
+					goto nextSlot
+				}
+				p.call(slot.Integers0R1, slot.Integers1R0, symbols.NT_NumSeq, cU, p.cI)
+			case slot.Integers0R1: // Integers : NumSeq ∙
+
+				p.rtn(symbols.NT_Integers, cU, p.cI)
+			case slot.Integers1R0: // Integers : ∙0
+
+				if !p.testSelect(slot.Integers1R0) {
+					p.parseError(slot.Integers1R0, p.cI, first[slot.Integers1R0])
+					L, p.cI = slot.Integers2F0, cU
+					goto nextSlot
+				}
+				p.bsrSet.Add(slot.Integers1R1, cU, p.cI, p.cI+1)
+				p.cI++
+				p.rtn(symbols.NT_Integers, cU, p.cI)
+			case slot.Integers2F0: // Integers failure case
+				p.rtn(symbols.NT_Integers, cU, failInd)
+			case slot.JSON0R0: // JSON : ∙WS Object
+
+				if !p.testSelect(slot.JSON0R0) {
+					p.parseError(slot.JSON0R0, p.cI, first[slot.JSON0R0])
+					L, p.cI = slot.JSON1F0, cU
+					goto nextSlot
+				}
+				p.call(slot.JSON0R1, slot.JSON1F0, symbols.NT_WS, cU, p.cI)
+			case slot.JSON0R1: // JSON : WS ∙Object
+
+				if !p.testSelect(slot.JSON0R1) {
+					p.parseError(slot.JSON0R1, p.cI, first[slot.JSON0R1])
+					L, p.cI = slot.JSON1F0, cU
+					goto nextSlot
+				}
+				p.call(slot.JSON0R2, slot.JSON1F0, symbols.NT_Object, cU, p.cI)
+			case slot.JSON0R2: // JSON : WS Object ∙
+
+				p.rtn(symbols.NT_JSON, cU, p.cI)
+			case slot.JSON1F0: // JSON failure case
+				p.rtn(symbols.NT_JSON, cU, failInd)
+			case slot.LBRACE0R0: // LBRACE : ∙{ WS
+
+				if !p.testSelect(slot.LBRACE0R0) {
+					p.parseError(slot.LBRACE0R0, p.cI, first[slot.LBRACE0R0])
+					L, p.cI = slot.LBRACE1F0, cU
+					goto nextSlot
+				}
+				p.bsrSet.Add(slot.LBRACE0R1, cU, p.cI, p.cI+1)
+				p.cI++
+				if !p.testSelect(slot.LBRACE0R1) {
+					p.parseError(slot.LBRACE0R1, p.cI, first[slot.LBRACE0R1])
+					L, p.cI = slot.LBRACE1F0, cU
+					goto nextSlot
+				}
+				p.call(slot.LBRACE0R2, slot.LBRACE1F0, symbols.NT_WS, cU, p.cI)
+			case slot.LBRACE0R2: // LBRACE : { WS ∙
+
+				p.rtn(symbols.NT_LBRACE, cU, p.cI)
+			case slot.LBRACE1F0: // LBRACE failure case
+				p.rtn(symbols.NT_LBRACE, cU, failInd)
+			case slot.LBRACKET0R0: // LBRACKET : ∙[ WS
+
+				if !p.testSelect(slot.LBRACKET0R0) {
+					p.parseError(slot.LBRACKET0R0, p.cI, first[slot.LBRACKET0R0])
+					L, p.cI = slot.LBRACKET1F0, cU
+					goto nextSlot
+				}
+				p.bsrSet.Add(slot.LBRACKET0R1, cU, p.cI, p.cI+1)
+				p.cI++
+				if !p.testSelect(slot.LBRACKET0R1) {
+					p.parseError(slot.LBRACKET0R1, p.cI, first[slot.LBRACKET0R1])
+					L, p.cI = slot.LBRACKET1F0, cU
+					goto nextSlot
+				}
+				p.call(slot.LBRACKET0R2, slot.LBRACKET1F0, symbols.NT_WS, cU, p.cI)
+			case slot.LBRACKET0R2: // LBRACKET : [ WS ∙
+
+				p.rtn(symbols.NT_LBRACKET, cU, p.cI)
+			case slot.LBRACKET1F0: // LBRACKET failure case
+				p.rtn(symbols.NT_LBRACKET, cU, failInd)
+			case slot.Members0R0: // Members : ∙Pair SuffComPair
+
+				if !p.testSelect(slot.Members0R0) {
+					p.parseError(slot.Members0R0, p.cI, first[slot.Members0R0])
+					L, p.cI = slot.Members1F0, cU
+					goto nextSlot
+				}
+				p.call(slot.Members0R1, slot.Members1F0, symbols.NT_Pair, cU, p.cI)
+			case slot.Members0R1: // Members : Pair ∙SuffComPair
+
+				if !p.testSelect(slot.Members0R1) {
+					p.parseError(slot.Members0R1, p.cI, first[slot.Members0R1])
+					L, p.cI = slot.Members1F0, cU
+					goto nextSlot
+				}
+				p.call(slot.Members0R2, slot.Members1F0, symbols.NT_SuffComPair, cU, p.cI)
+			case slot.Members0R2: // Members : Pair SuffComPair ∙
+
+				p.rtn(symbols.NT_Members, cU, p.cI)
+			case slot.Members1F0: // Members failure case
+				p.rtn(symbols.NT_Members, cU, failInd)
+			case slot.NUL0R0: // NUL : ∙null WS
+
+				if !p.testSelect(slot.NUL0R0) {
+					p.parseError(slot.NUL0R0, p.cI, first[slot.NUL0R0])
+					L, p.cI = slot.NUL1F0, cU
+					goto nextSlot
+				}
+				p.bsrSet.Add(slot.NUL0R1, cU, p.cI, p.cI+1)
+				p.cI++
+				if !p.testSelect(slot.NUL0R1) {
+					p.parseError(slot.NUL0R1, p.cI, first[slot.NUL0R1])
+					L, p.cI = slot.NUL1F0, cU
+					goto nextSlot
+				}
+				p.call(slot.NUL0R2, slot.NUL1F0, symbols.NT_WS, cU, p.cI)
+			case slot.NUL0R2: // NUL : null WS ∙
+
+				p.rtn(symbols.NT_NUL, cU, p.cI)
+			case slot.NUL1F0: // NUL failure case
+				p.rtn(symbols.NT_NUL, cU, failInd)
+			case slot.Neg0R0: // Neg : ∙-
+
+				if !p.testSelect(slot.Neg0R0) {
+					p.parseError(slot.Neg0R0, p.cI, first[slot.Neg0R0])
+					L, p.cI = slot.Neg1F0, cU
+					goto nextSlot
+				}
+				p.bsrSet.Add(slot.Neg0R1, cU, p.cI, p.cI+1)
+				p.cI++
+				p.rtn(symbols.NT_Neg, cU, p.cI)
+			case slot.Neg1F0: // Neg failure case
+				p.rtn(symbols.NT_Neg, cU, failInd)
+			case slot.NumSeq0R0: // NumSeq : ∙nonZero Suffnum
+
+				if !p.testSelect(slot.NumSeq0R0) {
+					p.parseError(slot.NumSeq0R0, p.cI, first[slot.NumSeq0R0])
+					L, p.cI = slot.NumSeq1F0, cU
+					goto nextSlot
+				}
+				p.bsrSet.Add(slot.NumSeq0R1, cU, p.cI, p.cI+1)
+				p.cI++
+				if !p.testSelect(slot.NumSeq0R1) {
+					p.parseError(slot.NumSeq0R1, p.cI, first[slot.NumSeq0R1])
+					L, p.cI = slot.NumSeq1F0, cU
+					goto nextSlot
+				}
+				p.call(slot.NumSeq0R2, slot.NumSeq1F0, symbols.NT_Suffnum, cU, p.cI)
+			case slot.NumSeq0R2: // NumSeq : nonZero Suffnum ∙
+
+				p.rtn(symbols.NT_NumSeq, cU, p.cI)
+			case slot.NumSeq1F0: // NumSeq failure case
+				p.rtn(symbols.NT_NumSeq, cU, failInd)
+			case slot.Number0R0: // Number : ∙INT SuffFRAC SuffEXP WS
+
+				if !p.testSelect(slot.Number0R0) {
+					p.parseError(slot.Number0R0, p.cI, first[slot.Number0R0])
+					L, p.cI = slot.Number1F0, cU
+					goto nextSlot
+				}
+				p.call(slot.Number0R1, slot.Number1F0, symbols.NT_INT, cU, p.cI)
+			case slot.Number0R1: // Number : INT ∙SuffFRAC SuffEXP WS
+
+				if !p.testSelect(slot.Number0R1) {
+					p.parseError(slot.Number0R1, p.cI, first[slot.Number0R1])
+					L, p.cI = slot.Number1F0, cU
+					goto nextSlot
+				}
+				p.call(slot.Number0R2, slot.Number1F0, symbols.NT_SuffFRAC, cU, p.cI)
+			case slot.Number0R2: // Number : INT SuffFRAC ∙SuffEXP WS
+
+				if !p.testSelect(slot.Number0R2) {
+					p.parseError(slot.Number0R2, p.cI, first[slot.Number0R2])
+					L, p.cI = slot.Number1F0, cU
+					goto nextSlot
+				}
+				p.call(slot.Number0R3, slot.Number1F0, symbols.NT_SuffEXP, cU, p.cI)
+			case slot.Number0R3: // Number : INT SuffFRAC SuffEXP ∙WS
+
+				if !p.testSelect(slot.Number0R3) {
+					p.parseError(slot.Number0R3, p.cI, first[slot.Number0R3])
+					L, p.cI = slot.Number1F0, cU
+					goto nextSlot
+				}
+				p.call(slot.Number0R4, slot.Number1F0, symbols.NT_WS, cU, p.cI)
+			case slot.Number0R4: // Number : INT SuffFRAC SuffEXP WS ∙
+
+				p.rtn(symbols.NT_Number, cU, p.cI)
+			case slot.Number1F0: // Number failure case
+				p.rtn(symbols.NT_Number, cU, failInd)
+			case slot.Object0R0: // Object : ∙LBRACE SuffMembers RBRACE
+
+				if !p.testSelect(slot.Object0R0) {
+					p.parseError(slot.Object0R0, p.cI, first[slot.Object0R0])
+					L, p.cI = slot.Object1F0, cU
+					goto nextSlot
+				}
+				p.call(slot.Object0R1, slot.Object1F0, symbols.NT_LBRACE, cU, p.cI)
+			case slot.Object0R1: // Object : LBRACE ∙SuffMembers RBRACE
+
+				if !p.testSelect(slot.Object0R1) {
+					p.parseError(slot.Object0R1, p.cI, first[slot.Object0R1])
+					L, p.cI = slot.Object1F0, cU
+					goto nextSlot
+				}
+				p.call(slot.Object0R2, slot.Object1F0, symbols.NT_SuffMembers, cU, p.cI)
+			case slot.Object0R2: // Object : LBRACE SuffMembers ∙RBRACE
+
+				if !p.testSelect(slot.Object0R2) {
+					p.parseError(slot.Object0R2, p.cI, first[slot.Object0R2])
+					L, p.cI = slot.Object1F0, cU
+					goto nextSlot
+				}
+				p.call(slot.Object0R3, slot.Object1F0, symbols.NT_RBRACE, cU, p.cI)
+			case slot.Object0R3: // Object : LBRACE SuffMembers RBRACE ∙
+
+				p.rtn(symbols.NT_Object, cU, p.cI)
+			case slot.Object1F0: // Object failure case
+				p.rtn(symbols.NT_Object, cU, failInd)
+			case slot.Pair0R0: // Pair : ∙String COLON Value
+
+				if !p.testSelect(slot.Pair0R0) {
+					p.parseError(slot.Pair0R0, p.cI, first[slot.Pair0R0])
+					L, p.cI = slot.Pair1F0, cU
+					goto nextSlot
+				}
+				p.call(slot.Pair0R1, slot.Pair1F0, symbols.NT_String, cU, p.cI)
+			case slot.Pair0R1: // Pair : String ∙COLON Value
+
+				if !p.testSelect(slot.Pair0R1) {
+					p.parseError(slot.Pair0R1, p.cI, first[slot.Pair0R1])
+					L, p.cI = slot.Pair1F0, cU
+					goto nextSlot
+				}
+				p.call(slot.Pair0R2, slot.Pair1F0, symbols.NT_COLON, cU, p.cI)
+			case slot.Pair0R2: // Pair : String COLON ∙Value
+
+				if !p.testSelect(slot.Pair0R2) {
+					p.parseError(slot.Pair0R2, p.cI, first[slot.Pair0R2])
+					L, p.cI = slot.Pair1F0, cU
+					goto nextSlot
+				}
+				p.call(slot.Pair0R3, slot.Pair1F0, symbols.NT_Value, cU, p.cI)
+			case slot.Pair0R3: // Pair : String COLON Value ∙
+
+				p.rtn(symbols.NT_Pair, cU, p.cI)
+			case slot.Pair1F0: // Pair failure case
+				p.rtn(symbols.NT_Pair, cU, failInd)
+			case slot.PlusORMinus0R0: // PlusORMinus : ∙+
+
+				if !p.testSelect(slot.PlusORMinus0R0) {
+					p.parseError(slot.PlusORMinus0R0, p.cI, first[slot.PlusORMinus0R0])
+					L, p.cI = slot.PlusORMinus1R0, cU
+					goto nextSlot
+				}
+				p.bsrSet.Add(slot.PlusORMinus0R1, cU, p.cI, p.cI+1)
+				p.cI++
+				p.rtn(symbols.NT_PlusORMinus, cU, p.cI)
+				L, p.cI = slot.PlusORMinus1M0, cU
+				goto nextSlot
+
+			case slot.PlusORMinus1R0: // PlusORMinus : ∙-
+
+				if !p.testSelect(slot.PlusORMinus1R0) {
+					p.parseError(slot.PlusORMinus1R0, p.cI, first[slot.PlusORMinus1R0])
+					L, p.cI = slot.PlusORMinus2F0, cU
+					goto nextSlot
+				}
+				p.bsrSet.Add(slot.PlusORMinus1R1, cU, p.cI, p.cI+1)
+				p.cI++
+				p.rtn(symbols.NT_PlusORMinus, cU, p.cI)
+
+			case slot.PlusORMinus1M0: // PlusORMinus : ∙-  [with previous match]
+
+				if !p.testSelect(slot.PlusORMinus1R0) {
+					p.parseError(slot.PlusORMinus1R0, p.cI, first[slot.PlusORMinus1R0])
+
+				}
+				p.bsrSet.Add(slot.PlusORMinus1R1, cU, p.cI, p.cI+1)
+				p.cI++
+				p.rtn(symbols.NT_PlusORMinus, cU, p.cI)
+
+			case slot.PlusORMinus2F0: // PlusORMinus failure case
+				p.rtn(symbols.NT_PlusORMinus, cU, failInd)
+			case slot.RBRACE0R0: // RBRACE : ∙} WS
+
+				if !p.testSelect(slot.RBRACE0R0) {
+					p.parseError(slot.RBRACE0R0, p.cI, first[slot.RBRACE0R0])
+					L, p.cI = slot.RBRACE1F0, cU
+					goto nextSlot
+				}
+				p.bsrSet.Add(slot.RBRACE0R1, cU, p.cI, p.cI+1)
+				p.cI++
+				if !p.testSelect(slot.RBRACE0R1) {
+					p.parseError(slot.RBRACE0R1, p.cI, first[slot.RBRACE0R1])
+					L, p.cI = slot.RBRACE1F0, cU
+					goto nextSlot
+				}
+				p.call(slot.RBRACE0R2, slot.RBRACE1F0, symbols.NT_WS, cU, p.cI)
+			case slot.RBRACE0R2: // RBRACE : } WS ∙
+
+				p.rtn(symbols.NT_RBRACE, cU, p.cI)
+			case slot.RBRACE1F0: // RBRACE failure case
+				p.rtn(symbols.NT_RBRACE, cU, failInd)
+			case slot.RBRACKET0R0: // RBRACKET : ∙] WS
+
+				if !p.testSelect(slot.RBRACKET0R0) {
+					p.parseError(slot.RBRACKET0R0, p.cI, first[slot.RBRACKET0R0])
+					L, p.cI = slot.RBRACKET1F0, cU
+					goto nextSlot
+				}
+				p.bsrSet.Add(slot.RBRACKET0R1, cU, p.cI, p.cI+1)
+				p.cI++
+				if !p.testSelect(slot.RBRACKET0R1) {
+					p.parseError(slot.RBRACKET0R1, p.cI, first[slot.RBRACKET0R1])
+					L, p.cI = slot.RBRACKET1F0, cU
+					goto nextSlot
+				}
+				p.call(slot.RBRACKET0R2, slot.RBRACKET1F0, symbols.NT_WS, cU, p.cI)
+			case slot.RBRACKET0R2: // RBRACKET : ] WS ∙
+
+				p.rtn(symbols.NT_RBRACKET, cU, p.cI)
+			case slot.RBRACKET1F0: // RBRACKET failure case
+				p.rtn(symbols.NT_RBRACKET, cU, failInd)
+			case slot.String0R0: // String : ∙dQuote SuffCHAR dQuote WS
+
+				if !p.testSelect(slot.String0R0) {
+					p.parseError(slot.String0R0, p.cI, first[slot.String0R0])
+					L, p.cI = slot.String1F0, cU
+					goto nextSlot
+				}
+				p.bsrSet.Add(slot.String0R1, cU, p.cI, p.cI+1)
+				p.cI++
+				if !p.testSelect(slot.String0R1) {
+					p.parseError(slot.String0R1, p.cI, first[slot.String0R1])
+					L, p.cI = slot.String1F0, cU
+					goto nextSlot
+				}
+				p.call(slot.String0R2, slot.String1F0, symbols.NT_SuffCHAR, cU, p.cI)
+			case slot.String0R2: // String : dQuote SuffCHAR ∙dQuote WS
+
+				if !p.testSelect(slot.String0R2) {
+					p.parseError(slot.String0R2, p.cI, first[slot.String0R2])
+					L, p.cI = slot.String1F0, cU
+					goto nextSlot
+				}
+				p.bsrSet.Add(slot.String0R3, cU, p.cI, p.cI+1)
+				p.cI++
+				if !p.testSelect(slot.String0R3) {
+					p.parseError(slot.String0R3, p.cI, first[slot.String0R3])
+					L, p.cI = slot.String1F0, cU
+					goto nextSlot
+				}
+				p.call(slot.String0R4, slot.String1F0, symbols.NT_WS, cU, p.cI)
+			case slot.String0R4: // String : dQuote SuffCHAR dQuote WS ∙
+
+				p.rtn(symbols.NT_String, cU, p.cI)
+			case slot.String1F0: // String failure case
+				p.rtn(symbols.NT_String, cU, failInd)
+			case slot.Suff1xchar0R0: // Suff1xchar : ∙char Suffchar
+
+				if !p.testSelect(slot.Suff1xchar0R0) {
+					p.parseError(slot.Suff1xchar0R0, p.cI, first[slot.Suff1xchar0R0])
+					L, p.cI = slot.Suff1xchar1F0, cU
+					goto nextSlot
+				}
+				p.bsrSet.Add(slot.Suff1xchar0R1, cU, p.cI, p.cI+1)
+				p.cI++
+				if !p.testSelect(slot.Suff1xchar0R1) {
+					p.parseError(slot.Suff1xchar0R1, p.cI, first[slot.Suff1xchar0R1])
+					L, p.cI = slot.Suff1xchar1F0, cU
+					goto nextSlot
+				}
+				p.call(slot.Suff1xchar0R2, slot.Suff1xchar1F0, symbols.NT_Suffchar, cU, p.cI)
+			case slot.Suff1xchar0R2: // Suff1xchar : char Suffchar ∙
+
+				p.rtn(symbols.NT_Suff1xchar, cU, p.cI)
+			case slot.Suff1xchar1F0: // Suff1xchar failure case
+				p.rtn(symbols.NT_Suff1xchar, cU, failInd)
+			case slot.SuffCHAR0R0: // SuffCHAR : ∙CHAR SuffCHAR
+
+				if !p.testSelect(slot.SuffCHAR0R0) {
+					p.parseError(slot.SuffCHAR0R0, p.cI, first[slot.SuffCHAR0R0])
+					L, p.cI = slot.SuffCHAR1R0, cU
+					goto nextSlot
+				}
+				p.call(slot.SuffCHAR0R1, slot.SuffCHAR1R0, symbols.NT_CHAR, cU, p.cI)
+			case slot.SuffCHAR0R1: // SuffCHAR : CHAR ∙SuffCHAR
+
+				if !p.testSelect(slot.SuffCHAR0R1) {
+					p.parseError(slot.SuffCHAR0R1, p.cI, first[slot.SuffCHAR0R1])
+					L, p.cI = slot.SuffCHAR1R0, cU
+					goto nextSlot
+				}
+				p.call(slot.SuffCHAR0R2, slot.SuffCHAR1R0, symbols.NT_SuffCHAR, cU, p.cI)
+			case slot.SuffCHAR0R2: // SuffCHAR : CHAR SuffCHAR ∙
+
+				p.rtn(symbols.NT_SuffCHAR, cU, p.cI)
+			case slot.SuffCHAR1R0: // SuffCHAR : ∙
+				p.bsrSet.AddEmpty(slot.SuffCHAR1R0, p.cI)
+				p.rtn(symbols.NT_SuffCHAR, cU, p.cI)
+			case slot.SuffComPair0R0: // SuffComPair : ∙ComPair SuffComPair
+
+				if !p.testSelect(slot.SuffComPair0R0) {
+					p.parseError(slot.SuffComPair0R0, p.cI, first[slot.SuffComPair0R0])
+					L, p.cI = slot.SuffComPair1R0, cU
+					goto nextSlot
+				}
+				p.call(slot.SuffComPair0R1, slot.SuffComPair1R0, symbols.NT_ComPair, cU, p.cI)
+			case slot.SuffComPair0R1: // SuffComPair : ComPair ∙SuffComPair
+
+				if !p.testSelect(slot.SuffComPair0R1) {
+					p.parseError(slot.SuffComPair0R1, p.cI, first[slot.SuffComPair0R1])
+					L, p.cI = slot.SuffComPair1R0, cU
+					goto nextSlot
+				}
+				p.call(slot.SuffComPair0R2, slot.SuffComPair1R0, symbols.NT_SuffComPair, cU, p.cI)
+			case slot.SuffComPair0R2: // SuffComPair : ComPair SuffComPair ∙
+
+				p.rtn(symbols.NT_SuffComPair, cU, p.cI)
+			case slot.SuffComPair1R0: // SuffComPair : ∙
+				p.bsrSet.AddEmpty(slot.SuffComPair1R0, p.cI)
+				p.rtn(symbols.NT_SuffComPair, cU, p.cI)
+			case slot.SuffComVal0R0: // SuffComVal : ∙ComVal SuffComVal
+
+				if !p.testSelect(slot.SuffComVal0R0) {
+					p.parseError(slot.SuffComVal0R0, p.cI, first[slot.SuffComVal0R0])
+					L, p.cI = slot.SuffComVal1R0, cU
+					goto nextSlot
+				}
+				p.call(slot.SuffComVal0R1, slot.SuffComVal1R0, symbols.NT_ComVal, cU, p.cI)
+			case slot.SuffComVal0R1: // SuffComVal : ComVal ∙SuffComVal
+
+				if !p.testSelect(slot.SuffComVal0R1) {
+					p.parseError(slot.SuffComVal0R1, p.cI, first[slot.SuffComVal0R1])
+					L, p.cI = slot.SuffComVal1R0, cU
+					goto nextSlot
+				}
+				p.call(slot.SuffComVal0R2, slot.SuffComVal1R0, symbols.NT_SuffComVal, cU, p.cI)
+			case slot.SuffComVal0R2: // SuffComVal : ComVal SuffComVal ∙
+
+				p.rtn(symbols.NT_SuffComVal, cU, p.cI)
+			case slot.SuffComVal1R0: // SuffComVal : ∙
+				p.bsrSet.AddEmpty(slot.SuffComVal1R0, p.cI)
+				p.rtn(symbols.NT_SuffComVal, cU, p.cI)
+			case slot.SuffEXP0R0: // SuffEXP : ∙EXP
+
+				if !p.testSelect(slot.SuffEXP0R0) {
+					p.parseError(slot.SuffEXP0R0, p.cI, first[slot.SuffEXP0R0])
+					L, p.cI = slot.SuffEXP1R0, cU
+					goto nextSlot
+				}
+				p.call(slot.SuffEXP0R1, slot.SuffEXP1R0, symbols.NT_EXP, cU, p.cI)
+			case slot.SuffEXP0R1: // SuffEXP : EXP ∙
+
+				p.rtn(symbols.NT_SuffEXP, cU, p.cI)
+			case slot.SuffEXP1R0: // SuffEXP : ∙
+				p.bsrSet.AddEmpty(slot.SuffEXP1R0, p.cI)
+				p.rtn(symbols.NT_SuffEXP, cU, p.cI)
+			case slot.SuffElements0R0: // SuffElements : ∙Elements
+
+				if !p.testSelect(slot.SuffElements0R0) {
+					p.parseError(slot.SuffElements0R0, p.cI, first[slot.SuffElements0R0])
+					L, p.cI = slot.SuffElements1R0, cU
+					goto nextSlot
+				}
+				p.call(slot.SuffElements0R1, slot.SuffElements1R0, symbols.NT_Elements, cU, p.cI)
+			case slot.SuffElements0R1: // SuffElements : Elements ∙
+
+				p.rtn(symbols.NT_SuffElements, cU, p.cI)
+			case slot.SuffElements1R0: // SuffElements : ∙
+				p.bsrSet.AddEmpty(slot.SuffElements1R0, p.cI)
+				p.rtn(symbols.NT_SuffElements, cU, p.cI)
+			case slot.SuffFRAC0R0: // SuffFRAC : ∙FRAC
+
+				if !p.testSelect(slot.SuffFRAC0R0) {
+					p.parseError(slot.SuffFRAC0R0, p.cI, first[slot.SuffFRAC0R0])
+					L, p.cI = slot.SuffFRAC1R0, cU
+					goto nextSlot
+				}
+				p.call(slot.SuffFRAC0R1, slot.SuffFRAC1R0, symbols.NT_FRAC, cU, p.cI)
+			case slot.SuffFRAC0R1: // SuffFRAC : FRAC ∙
+
+				p.rtn(symbols.NT_SuffFRAC, cU, p.cI)
+			case slot.SuffFRAC1R0: // SuffFRAC : ∙
+				p.bsrSet.AddEmpty(slot.SuffFRAC1R0, p.cI)
+				p.rtn(symbols.NT_SuffFRAC, cU, p.cI)
+			case slot.SuffMembers0R0: // SuffMembers : ∙Members
+
+				if !p.testSelect(slot.SuffMembers0R0) {
+					p.parseError(slot.SuffMembers0R0, p.cI, first[slot.SuffMembers0R0])
+					L, p.cI = slot.SuffMembers1R0, cU
+					goto nextSlot
+				}
+				p.call(slot.SuffMembers0R1, slot.SuffMembers1R0, symbols.NT_Members, cU, p.cI)
+			case slot.SuffMembers0R1: // SuffMembers : Members ∙
+
+				p.rtn(symbols.NT_SuffMembers, cU, p.cI)
+			case slot.SuffMembers1R0: // SuffMembers : ∙
+				p.bsrSet.AddEmpty(slot.SuffMembers1R0, p.cI)
+				p.rtn(symbols.NT_SuffMembers, cU, p.cI)
+			case slot.SuffNeg0R0: // SuffNeg : ∙Neg
+
+				if !p.testSelect(slot.SuffNeg0R0) {
+					p.parseError(slot.SuffNeg0R0, p.cI, first[slot.SuffNeg0R0])
+					L, p.cI = slot.SuffNeg1R0, cU
+					goto nextSlot
+				}
+				p.call(slot.SuffNeg0R1, slot.SuffNeg1R0, symbols.NT_Neg, cU, p.cI)
+			case slot.SuffNeg0R1: // SuffNeg : Neg ∙
+
+				p.rtn(symbols.NT_SuffNeg, cU, p.cI)
+			case slot.SuffNeg1R0: // SuffNeg : ∙
+				p.bsrSet.AddEmpty(slot.SuffNeg1R0, p.cI)
+				p.rtn(symbols.NT_SuffNeg, cU, p.cI)
+			case slot.SuffPlusORMinus0R0: // SuffPlusORMinus : ∙PlusORMinus
+
+				if !p.testSelect(slot.SuffPlusORMinus0R0) {
+					p.parseError(slot.SuffPlusORMinus0R0, p.cI, first[slot.SuffPlusORMinus0R0])
+					L, p.cI = slot.SuffPlusORMinus1R0, cU
+					goto nextSlot
+				}
+				p.call(slot.SuffPlusORMinus0R1, slot.SuffPlusORMinus1R0, symbols.NT_PlusORMinus, cU, p.cI)
+			case slot.SuffPlusORMinus0R1: // SuffPlusORMinus : PlusORMinus ∙
+
+				p.rtn(symbols.NT_SuffPlusORMinus, cU, p.cI)
+			case slot.SuffPlusORMinus1R0: // SuffPlusORMinus : ∙
+				p.bsrSet.AddEmpty(slot.SuffPlusORMinus1R0, p.cI)
+				p.rtn(symbols.NT_SuffPlusORMinus, cU, p.cI)
+			case slot.Suffchar0R0: // Suffchar : ∙char Suffchar
+
+				if !p.testSelect(slot.Suffchar0R0) {
+					p.parseError(slot.Suffchar0R0, p.cI, first[slot.Suffchar0R0])
+					L, p.cI = slot.Suffchar1R0, cU
+					goto nextSlot
+				}
+				p.bsrSet.Add(slot.Suffchar0R1, cU, p.cI, p.cI+1)
+				p.cI++
+				if !p.testSelect(slot.Suffchar0R1) {
+					p.parseError(slot.Suffchar0R1, p.cI, first[slot.Suffchar0R1])
+					L, p.cI = slot.Suffchar1R0, cU
+					goto nextSlot
+				}
+				p.call(slot.Suffchar0R2, slot.Suffchar1R0, symbols.NT_Suffchar, cU, p.cI)
+			case slot.Suffchar0R2: // Suffchar : char Suffchar ∙
+
+				p.rtn(symbols.NT_Suffchar, cU, p.cI)
+			case slot.Suffchar1R0: // Suffchar : ∙
+				p.bsrSet.AddEmpty(slot.Suffchar1R0, p.cI)
+				p.rtn(symbols.NT_Suffchar, cU, p.cI)
+			case slot.Suffnum0R0: // Suffnum : ∙num Suffnum
+
+				if !p.testSelect(slot.Suffnum0R0) {
+					p.parseError(slot.Suffnum0R0, p.cI, first[slot.Suffnum0R0])
+					L, p.cI = slot.Suffnum1R0, cU
+					goto nextSlot
+				}
+				p.bsrSet.Add(slot.Suffnum0R1, cU, p.cI, p.cI+1)
+				p.cI++
+				if !p.testSelect(slot.Suffnum0R1) {
+					p.parseError(slot.Suffnum0R1, p.cI, first[slot.Suffnum0R1])
+					L, p.cI = slot.Suffnum1R0, cU
+					goto nextSlot
+				}
+				p.call(slot.Suffnum0R2, slot.Suffnum1R0, symbols.NT_Suffnum, cU, p.cI)
+			case slot.Suffnum0R2: // Suffnum : num Suffnum ∙
+
+				p.rtn(symbols.NT_Suffnum, cU, p.cI)
+			case slot.Suffnum1R0: // Suffnum : ∙
+				p.bsrSet.AddEmpty(slot.Suffnum1R0, p.cI)
+				p.rtn(symbols.NT_Suffnum, cU, p.cI)
+			case slot.TRUE0R0: // TRUE : ∙true WS
+
+				if !p.testSelect(slot.TRUE0R0) {
+					p.parseError(slot.TRUE0R0, p.cI, first[slot.TRUE0R0])
+					L, p.cI = slot.TRUE1F0, cU
+					goto nextSlot
+				}
+				p.bsrSet.Add(slot.TRUE0R1, cU, p.cI, p.cI+1)
+				p.cI++
+				if !p.testSelect(slot.TRUE0R1) {
+					p.parseError(slot.TRUE0R1, p.cI, first[slot.TRUE0R1])
+					L, p.cI = slot.TRUE1F0, cU
+					goto nextSlot
+				}
+				p.call(slot.TRUE0R2, slot.TRUE1F0, symbols.NT_WS, cU, p.cI)
+			case slot.TRUE0R2: // TRUE : true WS ∙
+
+				p.rtn(symbols.NT_TRUE, cU, p.cI)
+			case slot.TRUE1F0: // TRUE failure case
+				p.rtn(symbols.NT_TRUE, cU, failInd)
+			case slot.Value0R0: // Value : ∙String
+
+				if !p.testSelect(slot.Value0R0) {
+					p.parseError(slot.Value0R0, p.cI, first[slot.Value0R0])
+					L, p.cI = slot.Value1R0, cU
+					goto nextSlot
+				}
+				p.call(slot.Value0R1, slot.Value1R0, symbols.NT_String, cU, p.cI)
+			case slot.Value0R1: // Value : String ∙
+
+				p.rtn(symbols.NT_Value, cU, p.cI)
+			case slot.Value1R0: // Value : ∙Number
+
+				if !p.testSelect(slot.Value1R0) {
+					p.parseError(slot.Value1R0, p.cI, first[slot.Value1R0])
+					L, p.cI = slot.Value2R0, cU
+					goto nextSlot
+				}
+				p.call(slot.Value1R1, slot.Value2R0, symbols.NT_Number, cU, p.cI)
+			case slot.Value1R1: // Value : Number ∙
+
+				p.rtn(symbols.NT_Value, cU, p.cI)
+			case slot.Value2R0: // Value : ∙Object
+
+				if !p.testSelect(slot.Value2R0) {
+					p.parseError(slot.Value2R0, p.cI, first[slot.Value2R0])
+					L, p.cI = slot.Value3R0, cU
+					goto nextSlot
+				}
+				p.call(slot.Value2R1, slot.Value3R0, symbols.NT_Object, cU, p.cI)
+			case slot.Value2R1: // Value : Object ∙
+
+				p.rtn(symbols.NT_Value, cU, p.cI)
+			case slot.Value3R0: // Value : ∙Array
+
+				if !p.testSelect(slot.Value3R0) {
+					p.parseError(slot.Value3R0, p.cI, first[slot.Value3R0])
+					L, p.cI = slot.Value4R0, cU
+					goto nextSlot
+				}
+				p.call(slot.Value3R1, slot.Value4R0, symbols.NT_Array, cU, p.cI)
+			case slot.Value3R1: // Value : Array ∙
+
+				p.rtn(symbols.NT_Value, cU, p.cI)
+			case slot.Value4R0: // Value : ∙TRUE
+
+				if !p.testSelect(slot.Value4R0) {
+					p.parseError(slot.Value4R0, p.cI, first[slot.Value4R0])
+					L, p.cI = slot.Value5R0, cU
+					goto nextSlot
+				}
+				p.call(slot.Value4R1, slot.Value5R0, symbols.NT_TRUE, cU, p.cI)
+			case slot.Value4R1: // Value : TRUE ∙
+
+				p.rtn(symbols.NT_Value, cU, p.cI)
+			case slot.Value5R0: // Value : ∙FALSE
+
+				if !p.testSelect(slot.Value5R0) {
+					p.parseError(slot.Value5R0, p.cI, first[slot.Value5R0])
+					L, p.cI = slot.Value6R0, cU
+					goto nextSlot
+				}
+				p.call(slot.Value5R1, slot.Value6R0, symbols.NT_FALSE, cU, p.cI)
+			case slot.Value5R1: // Value : FALSE ∙
+
+				p.rtn(symbols.NT_Value, cU, p.cI)
+			case slot.Value6R0: // Value : ∙NUL
+
+				if !p.testSelect(slot.Value6R0) {
+					p.parseError(slot.Value6R0, p.cI, first[slot.Value6R0])
+					L, p.cI = slot.Value7F0, cU
+					goto nextSlot
+				}
+				p.call(slot.Value6R1, slot.Value7F0, symbols.NT_NUL, cU, p.cI)
+			case slot.Value6R1: // Value : NUL ∙
+
+				p.rtn(symbols.NT_Value, cU, p.cI)
+			case slot.Value7F0: // Value failure case
+				p.rtn(symbols.NT_Value, cU, failInd)
+			case slot.WS0R0: // WS : ∙EscOrComment WS
+
+				if !p.testSelect(slot.WS0R0) {
+					p.parseError(slot.WS0R0, p.cI, first[slot.WS0R0])
+					L, p.cI = slot.WS1R0, cU
+					goto nextSlot
+				}
+				p.call(slot.WS0R1, slot.WS1R0, symbols.NT_EscOrComment, cU, p.cI)
+			case slot.WS0R1: // WS : EscOrComment ∙WS
+
+				if !p.testSelect(slot.WS0R1) {
+					p.parseError(slot.WS0R1, p.cI, first[slot.WS0R1])
+					L, p.cI = slot.WS1R0, cU
+					goto nextSlot
+				}
+				p.call(slot.WS0R2, slot.WS1R0, symbols.NT_WS, cU, p.cI)
+			case slot.WS0R2: // WS : EscOrComment WS ∙
+
+				p.rtn(symbols.NT_WS, cU, p.cI)
+			case slot.WS1R0: // WS : ∙
+				p.bsrSet.AddEmpty(slot.WS1R0, p.cI)
+				p.rtn(symbols.NT_WS, cU, p.cI)
+
+			default:
+				panic("This must not happen")
 			}
-
-			p.call(slot.Array0R2, cU, p.cI)
-		case slot.Array0R2: // Array : LBRACKET OptElem ∙RBRACKET
-
-			if !p.testSelect(slot.Array0R2) {
-				p.parseError(slot.Array0R2, p.cI, first[slot.Array0R2])
-				break
-			}
-
-			p.call(slot.Array0R3, cU, p.cI)
-		case slot.Array0R3: // Array : LBRACKET OptElem RBRACKET ∙
-
-			p.rtn(symbols.NT_Array, cU, p.cI)
-		case slot.COLON0R0: // COLON : ∙: WS
-
-			p.bsrSet.Add(slot.COLON0R1, cU, p.cI, p.cI+1)
-			p.cI++
-			if !p.testSelect(slot.COLON0R1) {
-				p.parseError(slot.COLON0R1, p.cI, first[slot.COLON0R1])
-				break
-			}
-
-			p.call(slot.COLON0R2, cU, p.cI)
-		case slot.COLON0R2: // COLON : : WS ∙
-
-			p.rtn(symbols.NT_COLON, cU, p.cI)
-		case slot.COMMA0R0: // COMMA : ∙, WS
-
-			p.bsrSet.Add(slot.COMMA0R1, cU, p.cI, p.cI+1)
-			p.cI++
-			if !p.testSelect(slot.COMMA0R1) {
-				p.parseError(slot.COMMA0R1, p.cI, first[slot.COMMA0R1])
-				break
-			}
-
-			p.call(slot.COMMA0R2, cU, p.cI)
-		case slot.COMMA0R2: // COMMA : , WS ∙
-
-			p.rtn(symbols.NT_COMMA, cU, p.cI)
-		case slot.ComPair0R0: // ComPair : ∙COMMA Pair
-
-			p.call(slot.ComPair0R1, cU, p.cI)
-		case slot.ComPair0R1: // ComPair : COMMA ∙Pair
-
-			if !p.testSelect(slot.ComPair0R1) {
-				p.parseError(slot.ComPair0R1, p.cI, first[slot.ComPair0R1])
-				break
-			}
-
-			p.call(slot.ComPair0R2, cU, p.cI)
-		case slot.ComPair0R2: // ComPair : COMMA Pair ∙
-
-			p.rtn(symbols.NT_ComPair, cU, p.cI)
-		case slot.ComVal0R0: // ComVal : ∙COMMA Value
-
-			p.call(slot.ComVal0R1, cU, p.cI)
-		case slot.ComVal0R1: // ComVal : COMMA ∙Value
-
-			if !p.testSelect(slot.ComVal0R1) {
-				p.parseError(slot.ComVal0R1, p.cI, first[slot.ComVal0R1])
-				break
-			}
-
-			p.call(slot.ComVal0R2, cU, p.cI)
-		case slot.ComVal0R2: // ComVal : COMMA Value ∙
-
-			p.rtn(symbols.NT_ComVal, cU, p.cI)
-		case slot.EXP0R0: // EXP : ∙eE OptPM repNum1x
-
-			p.bsrSet.Add(slot.EXP0R1, cU, p.cI, p.cI+1)
-			p.cI++
-			if !p.testSelect(slot.EXP0R1) {
-				p.parseError(slot.EXP0R1, p.cI, first[slot.EXP0R1])
-				break
-			}
-
-			p.call(slot.EXP0R2, cU, p.cI)
-		case slot.EXP0R2: // EXP : eE OptPM ∙repNum1x
-
-			if !p.testSelect(slot.EXP0R2) {
-				p.parseError(slot.EXP0R2, p.cI, first[slot.EXP0R2])
-				break
-			}
-
-			p.bsrSet.Add(slot.EXP0R3, cU, p.cI, p.cI+1)
-			p.cI++
-			p.rtn(symbols.NT_EXP, cU, p.cI)
-		case slot.Elements0R0: // Elements : ∙Value RepComVal0x
-
-			p.call(slot.Elements0R1, cU, p.cI)
-		case slot.Elements0R1: // Elements : Value ∙RepComVal0x
-
-			if !p.testSelect(slot.Elements0R1) {
-				p.parseError(slot.Elements0R1, p.cI, first[slot.Elements0R1])
-				break
-			}
-
-			p.call(slot.Elements0R2, cU, p.cI)
-		case slot.Elements0R2: // Elements : Value RepComVal0x ∙
-
-			p.rtn(symbols.NT_Elements, cU, p.cI)
-		case slot.EscOrComment0R0: // EscOrComment : ∙escCharSpace
-
-			p.bsrSet.Add(slot.EscOrComment0R1, cU, p.cI, p.cI+1)
-			p.cI++
-			p.rtn(symbols.NT_EscOrComment, cU, p.cI)
-		case slot.EscOrComment1R0: // EscOrComment : ∙line_comment
-
-			p.bsrSet.Add(slot.EscOrComment1R1, cU, p.cI, p.cI+1)
-			p.cI++
-			p.rtn(symbols.NT_EscOrComment, cU, p.cI)
-		case slot.EscOrComment2R0: // EscOrComment : ∙block_comment
-
-			p.bsrSet.Add(slot.EscOrComment2R1, cU, p.cI, p.cI+1)
-			p.cI++
-			p.rtn(symbols.NT_EscOrComment, cU, p.cI)
-		case slot.EscOrComment3R0: // EscOrComment : ∙
-			p.bsrSet.AddEmpty(slot.EscOrComment3R0, p.cI)
-
-			p.rtn(symbols.NT_EscOrComment, cU, p.cI)
-		case slot.FALSE0R0: // FALSE : ∙false WS
-
-			p.bsrSet.Add(slot.FALSE0R1, cU, p.cI, p.cI+1)
-			p.cI++
-			if !p.testSelect(slot.FALSE0R1) {
-				p.parseError(slot.FALSE0R1, p.cI, first[slot.FALSE0R1])
-				break
-			}
-
-			p.call(slot.FALSE0R2, cU, p.cI)
-		case slot.FALSE0R2: // FALSE : false WS ∙
-
-			p.rtn(symbols.NT_FALSE, cU, p.cI)
-		case slot.FRAC0R0: // FRAC : ∙. repNum1x
-
-			p.bsrSet.Add(slot.FRAC0R1, cU, p.cI, p.cI+1)
-			p.cI++
-			if !p.testSelect(slot.FRAC0R1) {
-				p.parseError(slot.FRAC0R1, p.cI, first[slot.FRAC0R1])
-				break
-			}
-
-			p.bsrSet.Add(slot.FRAC0R2, cU, p.cI, p.cI+1)
-			p.cI++
-			p.rtn(symbols.NT_FRAC, cU, p.cI)
-		case slot.INT0R0: // INT : ∙OptNeg Integers
-
-			p.call(slot.INT0R1, cU, p.cI)
-		case slot.INT0R1: // INT : OptNeg ∙Integers
-
-			if !p.testSelect(slot.INT0R1) {
-				p.parseError(slot.INT0R1, p.cI, first[slot.INT0R1])
-				break
-			}
-
-			p.call(slot.INT0R2, cU, p.cI)
-		case slot.INT0R2: // INT : OptNeg Integers ∙
-
-			p.rtn(symbols.NT_INT, cU, p.cI)
-		case slot.Integers0R0: // Integers : ∙nonZero
-
-			p.bsrSet.Add(slot.Integers0R1, cU, p.cI, p.cI+1)
-			p.cI++
-			p.rtn(symbols.NT_Integers, cU, p.cI)
-		case slot.Integers1R0: // Integers : ∙0
-
-			p.bsrSet.Add(slot.Integers1R1, cU, p.cI, p.cI+1)
-			p.cI++
-			p.rtn(symbols.NT_Integers, cU, p.cI)
-		case slot.JSON0R0: // JSON : ∙WS Object
-
-			p.call(slot.JSON0R1, cU, p.cI)
-		case slot.JSON0R1: // JSON : WS ∙Object
-
-			if !p.testSelect(slot.JSON0R1) {
-				p.parseError(slot.JSON0R1, p.cI, first[slot.JSON0R1])
-				break
-			}
-
-			p.call(slot.JSON0R2, cU, p.cI)
-		case slot.JSON0R2: // JSON : WS Object ∙
-
-			p.rtn(symbols.NT_JSON, cU, p.cI)
-		case slot.LBRACE0R0: // LBRACE : ∙{ WS
-
-			p.bsrSet.Add(slot.LBRACE0R1, cU, p.cI, p.cI+1)
-			p.cI++
-			if !p.testSelect(slot.LBRACE0R1) {
-				p.parseError(slot.LBRACE0R1, p.cI, first[slot.LBRACE0R1])
-				break
-			}
-
-			p.call(slot.LBRACE0R2, cU, p.cI)
-		case slot.LBRACE0R2: // LBRACE : { WS ∙
-
-			p.rtn(symbols.NT_LBRACE, cU, p.cI)
-		case slot.LBRACKET0R0: // LBRACKET : ∙[ WS
-
-			p.bsrSet.Add(slot.LBRACKET0R1, cU, p.cI, p.cI+1)
-			p.cI++
-			if !p.testSelect(slot.LBRACKET0R1) {
-				p.parseError(slot.LBRACKET0R1, p.cI, first[slot.LBRACKET0R1])
-				break
-			}
-
-			p.call(slot.LBRACKET0R2, cU, p.cI)
-		case slot.LBRACKET0R2: // LBRACKET : [ WS ∙
-
-			p.rtn(symbols.NT_LBRACKET, cU, p.cI)
-		case slot.Members0R0: // Members : ∙Pair RepComPair0x
-
-			p.call(slot.Members0R1, cU, p.cI)
-		case slot.Members0R1: // Members : Pair ∙RepComPair0x
-
-			if !p.testSelect(slot.Members0R1) {
-				p.parseError(slot.Members0R1, p.cI, first[slot.Members0R1])
-				break
-			}
-
-			p.call(slot.Members0R2, cU, p.cI)
-		case slot.Members0R2: // Members : Pair RepComPair0x ∙
-
-			p.rtn(symbols.NT_Members, cU, p.cI)
-		case slot.NUL0R0: // NUL : ∙null WS
-
-			p.bsrSet.Add(slot.NUL0R1, cU, p.cI, p.cI+1)
-			p.cI++
-			if !p.testSelect(slot.NUL0R1) {
-				p.parseError(slot.NUL0R1, p.cI, first[slot.NUL0R1])
-				break
-			}
-
-			p.call(slot.NUL0R2, cU, p.cI)
-		case slot.NUL0R2: // NUL : null WS ∙
-
-			p.rtn(symbols.NT_NUL, cU, p.cI)
-		case slot.Number0R0: // Number : ∙INT OptFrac OptExp WS
-
-			p.call(slot.Number0R1, cU, p.cI)
-		case slot.Number0R1: // Number : INT ∙OptFrac OptExp WS
-
-			if !p.testSelect(slot.Number0R1) {
-				p.parseError(slot.Number0R1, p.cI, first[slot.Number0R1])
-				break
-			}
-
-			p.call(slot.Number0R2, cU, p.cI)
-		case slot.Number0R2: // Number : INT OptFrac ∙OptExp WS
-
-			if !p.testSelect(slot.Number0R2) {
-				p.parseError(slot.Number0R2, p.cI, first[slot.Number0R2])
-				break
-			}
-
-			p.call(slot.Number0R3, cU, p.cI)
-		case slot.Number0R3: // Number : INT OptFrac OptExp ∙WS
-
-			if !p.testSelect(slot.Number0R3) {
-				p.parseError(slot.Number0R3, p.cI, first[slot.Number0R3])
-				break
-			}
-
-			p.call(slot.Number0R4, cU, p.cI)
-		case slot.Number0R4: // Number : INT OptFrac OptExp WS ∙
-
-			p.rtn(symbols.NT_Number, cU, p.cI)
-		case slot.Object0R0: // Object : ∙LBRACE OptMems RBRACE
-
-			p.call(slot.Object0R1, cU, p.cI)
-		case slot.Object0R1: // Object : LBRACE ∙OptMems RBRACE
-
-			if !p.testSelect(slot.Object0R1) {
-				p.parseError(slot.Object0R1, p.cI, first[slot.Object0R1])
-				break
-			}
-
-			p.call(slot.Object0R2, cU, p.cI)
-		case slot.Object0R2: // Object : LBRACE OptMems ∙RBRACE
-
-			if !p.testSelect(slot.Object0R2) {
-				p.parseError(slot.Object0R2, p.cI, first[slot.Object0R2])
-				break
-			}
-
-			p.call(slot.Object0R3, cU, p.cI)
-		case slot.Object0R3: // Object : LBRACE OptMems RBRACE ∙
-
-			p.rtn(symbols.NT_Object, cU, p.cI)
-		case slot.OptElem0R0: // OptElem : ∙Elements
-
-			p.call(slot.OptElem0R1, cU, p.cI)
-		case slot.OptElem0R1: // OptElem : Elements ∙
-
-			p.rtn(symbols.NT_OptElem, cU, p.cI)
-		case slot.OptElem1R0: // OptElem : ∙
-			p.bsrSet.AddEmpty(slot.OptElem1R0, p.cI)
-
-			p.rtn(symbols.NT_OptElem, cU, p.cI)
-		case slot.OptExp0R0: // OptExp : ∙EXP
-
-			p.call(slot.OptExp0R1, cU, p.cI)
-		case slot.OptExp0R1: // OptExp : EXP ∙
-
-			p.rtn(symbols.NT_OptExp, cU, p.cI)
-		case slot.OptExp1R0: // OptExp : ∙
-			p.bsrSet.AddEmpty(slot.OptExp1R0, p.cI)
-
-			p.rtn(symbols.NT_OptExp, cU, p.cI)
-		case slot.OptFrac0R0: // OptFrac : ∙FRAC
-
-			p.call(slot.OptFrac0R1, cU, p.cI)
-		case slot.OptFrac0R1: // OptFrac : FRAC ∙
-
-			p.rtn(symbols.NT_OptFrac, cU, p.cI)
-		case slot.OptFrac1R0: // OptFrac : ∙
-			p.bsrSet.AddEmpty(slot.OptFrac1R0, p.cI)
-
-			p.rtn(symbols.NT_OptFrac, cU, p.cI)
-		case slot.OptMems0R0: // OptMems : ∙Members
-
-			p.call(slot.OptMems0R1, cU, p.cI)
-		case slot.OptMems0R1: // OptMems : Members ∙
-
-			p.rtn(symbols.NT_OptMems, cU, p.cI)
-		case slot.OptMems1R0: // OptMems : ∙
-			p.bsrSet.AddEmpty(slot.OptMems1R0, p.cI)
-
-			p.rtn(symbols.NT_OptMems, cU, p.cI)
-		case slot.OptNeg0R0: // OptNeg : ∙-
-
-			p.bsrSet.Add(slot.OptNeg0R1, cU, p.cI, p.cI+1)
-			p.cI++
-			p.rtn(symbols.NT_OptNeg, cU, p.cI)
-		case slot.OptNeg1R0: // OptNeg : ∙
-			p.bsrSet.AddEmpty(slot.OptNeg1R0, p.cI)
-
-			p.rtn(symbols.NT_OptNeg, cU, p.cI)
-		case slot.OptPM0R0: // OptPM : ∙PlusORMinus
-
-			p.call(slot.OptPM0R1, cU, p.cI)
-		case slot.OptPM0R1: // OptPM : PlusORMinus ∙
-
-			p.rtn(symbols.NT_OptPM, cU, p.cI)
-		case slot.OptPM1R0: // OptPM : ∙
-			p.bsrSet.AddEmpty(slot.OptPM1R0, p.cI)
-
-			p.rtn(symbols.NT_OptPM, cU, p.cI)
-		case slot.Pair0R0: // Pair : ∙String COLON Value
-
-			p.call(slot.Pair0R1, cU, p.cI)
-		case slot.Pair0R1: // Pair : String ∙COLON Value
-
-			if !p.testSelect(slot.Pair0R1) {
-				p.parseError(slot.Pair0R1, p.cI, first[slot.Pair0R1])
-				break
-			}
-
-			p.call(slot.Pair0R2, cU, p.cI)
-		case slot.Pair0R2: // Pair : String COLON ∙Value
-
-			if !p.testSelect(slot.Pair0R2) {
-				p.parseError(slot.Pair0R2, p.cI, first[slot.Pair0R2])
-				break
-			}
-
-			p.call(slot.Pair0R3, cU, p.cI)
-		case slot.Pair0R3: // Pair : String COLON Value ∙
-
-			p.rtn(symbols.NT_Pair, cU, p.cI)
-		case slot.PlusORMinus0R0: // PlusORMinus : ∙+
-
-			p.bsrSet.Add(slot.PlusORMinus0R1, cU, p.cI, p.cI+1)
-			p.cI++
-			p.rtn(symbols.NT_PlusORMinus, cU, p.cI)
-		case slot.PlusORMinus1R0: // PlusORMinus : ∙-
-
-			p.bsrSet.Add(slot.PlusORMinus1R1, cU, p.cI, p.cI+1)
-			p.cI++
-			p.rtn(symbols.NT_PlusORMinus, cU, p.cI)
-		case slot.RBRACE0R0: // RBRACE : ∙} WS
-
-			p.bsrSet.Add(slot.RBRACE0R1, cU, p.cI, p.cI+1)
-			p.cI++
-			if !p.testSelect(slot.RBRACE0R1) {
-				p.parseError(slot.RBRACE0R1, p.cI, first[slot.RBRACE0R1])
-				break
-			}
-
-			p.call(slot.RBRACE0R2, cU, p.cI)
-		case slot.RBRACE0R2: // RBRACE : } WS ∙
-
-			p.rtn(symbols.NT_RBRACE, cU, p.cI)
-		case slot.RBRACKET0R0: // RBRACKET : ∙] WS
-
-			p.bsrSet.Add(slot.RBRACKET0R1, cU, p.cI, p.cI+1)
-			p.cI++
-			if !p.testSelect(slot.RBRACKET0R1) {
-				p.parseError(slot.RBRACKET0R1, p.cI, first[slot.RBRACKET0R1])
-				break
-			}
-
-			p.call(slot.RBRACKET0R2, cU, p.cI)
-		case slot.RBRACKET0R2: // RBRACKET : ] WS ∙
-
-			p.rtn(symbols.NT_RBRACKET, cU, p.cI)
-		case slot.RepComPair0x0R0: // RepComPair0x : ∙ComPair RepComPair0x
-
-			p.call(slot.RepComPair0x0R1, cU, p.cI)
-		case slot.RepComPair0x0R1: // RepComPair0x : ComPair ∙RepComPair0x
-
-			if !p.testSelect(slot.RepComPair0x0R1) {
-				p.parseError(slot.RepComPair0x0R1, p.cI, first[slot.RepComPair0x0R1])
-				break
-			}
-
-			p.call(slot.RepComPair0x0R2, cU, p.cI)
-		case slot.RepComPair0x0R2: // RepComPair0x : ComPair RepComPair0x ∙
-
-			p.rtn(symbols.NT_RepComPair0x, cU, p.cI)
-		case slot.RepComPair0x1R0: // RepComPair0x : ∙
-			p.bsrSet.AddEmpty(slot.RepComPair0x1R0, p.cI)
-
-			p.rtn(symbols.NT_RepComPair0x, cU, p.cI)
-		case slot.RepComVal0x0R0: // RepComVal0x : ∙ComVal RepComVal0x
-
-			p.call(slot.RepComVal0x0R1, cU, p.cI)
-		case slot.RepComVal0x0R1: // RepComVal0x : ComVal ∙RepComVal0x
-
-			if !p.testSelect(slot.RepComVal0x0R1) {
-				p.parseError(slot.RepComVal0x0R1, p.cI, first[slot.RepComVal0x0R1])
-				break
-			}
-
-			p.call(slot.RepComVal0x0R2, cU, p.cI)
-		case slot.RepComVal0x0R2: // RepComVal0x : ComVal RepComVal0x ∙
-
-			p.rtn(symbols.NT_RepComVal0x, cU, p.cI)
-		case slot.RepComVal0x1R0: // RepComVal0x : ∙
-			p.bsrSet.AddEmpty(slot.RepComVal0x1R0, p.cI)
-
-			p.rtn(symbols.NT_RepComVal0x, cU, p.cI)
-		case slot.String0R0: // String : ∙string_ns WS
-
-			p.bsrSet.Add(slot.String0R1, cU, p.cI, p.cI+1)
-			p.cI++
-			if !p.testSelect(slot.String0R1) {
-				p.parseError(slot.String0R1, p.cI, first[slot.String0R1])
-				break
-			}
-
-			p.call(slot.String0R2, cU, p.cI)
-		case slot.String0R2: // String : string_ns WS ∙
-
-			p.rtn(symbols.NT_String, cU, p.cI)
-		case slot.TRUE0R0: // TRUE : ∙true WS
-
-			p.bsrSet.Add(slot.TRUE0R1, cU, p.cI, p.cI+1)
-			p.cI++
-			if !p.testSelect(slot.TRUE0R1) {
-				p.parseError(slot.TRUE0R1, p.cI, first[slot.TRUE0R1])
-				break
-			}
-
-			p.call(slot.TRUE0R2, cU, p.cI)
-		case slot.TRUE0R2: // TRUE : true WS ∙
-
-			p.rtn(symbols.NT_TRUE, cU, p.cI)
-		case slot.Value0R0: // Value : ∙String
-
-			p.call(slot.Value0R1, cU, p.cI)
-		case slot.Value0R1: // Value : String ∙
-
-			p.rtn(symbols.NT_Value, cU, p.cI)
-		case slot.Value1R0: // Value : ∙Number
-
-			p.call(slot.Value1R1, cU, p.cI)
-		case slot.Value1R1: // Value : Number ∙
-
-			p.rtn(symbols.NT_Value, cU, p.cI)
-		case slot.Value2R0: // Value : ∙Object
-
-			p.call(slot.Value2R1, cU, p.cI)
-		case slot.Value2R1: // Value : Object ∙
-
-			p.rtn(symbols.NT_Value, cU, p.cI)
-		case slot.Value3R0: // Value : ∙Array
-
-			p.call(slot.Value3R1, cU, p.cI)
-		case slot.Value3R1: // Value : Array ∙
-
-			p.rtn(symbols.NT_Value, cU, p.cI)
-		case slot.Value4R0: // Value : ∙TRUE
-
-			p.call(slot.Value4R1, cU, p.cI)
-		case slot.Value4R1: // Value : TRUE ∙
-
-			p.rtn(symbols.NT_Value, cU, p.cI)
-		case slot.Value5R0: // Value : ∙FALSE
-
-			p.call(slot.Value5R1, cU, p.cI)
-		case slot.Value5R1: // Value : FALSE ∙
-
-			p.rtn(symbols.NT_Value, cU, p.cI)
-		case slot.Value6R0: // Value : ∙NUL
-
-			p.call(slot.Value6R1, cU, p.cI)
-		case slot.Value6R1: // Value : NUL ∙
-
-			p.rtn(symbols.NT_Value, cU, p.cI)
-		case slot.WS0R0: // WS : ∙EscOrComment WS
-
-			p.call(slot.WS0R1, cU, p.cI)
-		case slot.WS0R1: // WS : EscOrComment ∙WS
-
-			if !p.testSelect(slot.WS0R1) {
-				p.parseError(slot.WS0R1, p.cI, first[slot.WS0R1])
-				break
-			}
-
-			p.call(slot.WS0R2, cU, p.cI)
-		case slot.WS0R2: // WS : EscOrComment WS ∙
-
-			p.rtn(symbols.NT_WS, cU, p.cI)
-		case slot.WS1R0: // WS : ∙
-			p.bsrSet.AddEmpty(slot.WS1R0, p.cI)
-
-			p.rtn(symbols.NT_WS, cU, p.cI)
-
-		default:
-			panic("This must not happen")
+			// if exit switch normally, also exit loop and proceed to next
+			// descriptor; if exit with goto nextSlot, repeat switch at next
+			// slot
+			break
+		nextSlot:
 		}
 	}
 	if !p.bsrSet.Contain(symbols.NT_JSON, 0, m) {
@@ -614,24 +1128,8 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 }
 
 func (p *parser) ntAdd(nt symbols.NT, j int) {
-	// fmt.Printf("p.ntAdd(%s, %d)\n", nt, j)
-	failed := true
-	expected := map[token.Type]string{}
-	for _, l := range slot.GetAlternates(nt) {
-		if p.testSelect(l) {
-			p.dscAdd(l, j, j)
-			failed = false
-		} else {
-			for k, v := range first[l] {
-				expected[k] = v
-			}
-		}
-	}
-	if failed {
-		for _, l := range slot.GetAlternates(nt) {
-			p.parseError(l, j, expected)
-		}
-	}
+	l := slot.GetAlternates(nt)[0]
+	p.dscAdd(l, j, j)
 }
 
 /*** Call Return Forest ***/
@@ -651,50 +1149,45 @@ type crfNode struct {
 	i int
 }
 
-/*
-suppose that L is Y ::=αX ·β
-if there is no CRF node labelled (L,i)
-	create one let u be the CRF node labelled (L,i)
-if there is no CRF node labelled (X, j) {
-	create a CRF node v labelled (X, j)
-	create an edge from v to u
-	ntAdd(X, j)
-} else {
-	let v be the CRF node labelled (X, j)
-	if there is not an edge from v to u {
-		create an edge from v to u
-		for all ((X, j,h)∈P) {
-			dscAdd(L, i, h);
-			bsrAdd(L, i, j, h)
-		}
-	}
-}
-*/
-func (p *parser) call(L slot.Label, i, j int) {
+func (p *parser) call(Lm, Lf slot.Label, X symbols.NT, i, j int) {
 	// fmt.Printf("p.call(%s,%d,%d)\n", L,i,j)
-	u, exist := p.crfNodes[crfNode{L, i}]
+	um, exist := p.crfNodes[crfNode{Lm, i}]
 	// fmt.Printf("  u exist=%t\n", exist)
 	if !exist {
-		u = &crfNode{L, i}
-		p.crfNodes[*u] = u
+		um = &crfNode{Lm, i}
+		p.crfNodes[*um] = um
 	}
-	X := L.Symbols()[L.Pos()-1].(symbols.NT)
-	ndV := clusterNode{X, j}
-	v, exist := p.crf[ndV]
+	uf, exist := p.crfNodes[crfNode{Lf, i}]
 	if !exist {
+		uf = &crfNode{Lf, i}
+		p.crfNodes[*uf] = uf
+	}
+
+	ndV := clusterNode{X, j}
+	vm, existm := p.crf_m[ndV]
+	vf, existf := p.crf_f[ndV]
+	if !existm && !existf {
 		// fmt.Println("  v !exist")
-		p.crf[ndV] = []*crfNode{u}
+		p.crf_m[ndV] = []*crfNode{um}
+		p.crf_f[ndV] = []*crfNode{uf}
 		p.ntAdd(X, j)
 	} else {
 		// fmt.Println("  v exist")
-		if !existEdge(v, u) {
+		if !existEdge(vm, um) {
 			// fmt.Printf("  !existEdge(%v)\n", u)
-			p.crf[ndV] = append(v, u)
+			p.crf_m[ndV] = append(vm, um)
 			// fmt.Printf("|popped|=%d\n", len(popped))
 			for pnd := range p.popped {
-				if pnd.X == X && pnd.k == j {
-					p.dscAdd(L, i, pnd.j)
-					p.bsrSet.Add(L, i, j, pnd.j)
+				if pnd.X == X && pnd.k == j && pnd.j != failInd {
+					p.addMatch(Lm, i, j, pnd.j)
+				}
+			}
+		}
+		if !existEdge(vf, uf) {
+			p.crf_f[ndV] = append(vf, uf)
+			for pnd := range p.popped {
+				if pnd.X == X && pnd.k == j && pnd.j == failInd {
+					p.addFail(Lf, i, j)
 				}
 			}
 		}
@@ -715,10 +1208,32 @@ func (p *parser) rtn(X symbols.NT, k, j int) {
 	pn := poppedNode{X, k, j}
 	if _, exist := p.popped[pn]; !exist {
 		p.popped[pn] = true
-		for _, nd := range p.crf[clusterNode{X, k}] {
-			p.dscAdd(nd.L, nd.i, j)
-			p.bsrSet.Add(nd.L, nd.i, k, j)
+		if j != failInd {
+			for _, nd := range p.crf_m[clusterNode{X, k}] {
+				p.addMatch(nd.L, nd.i, k, j)
+			}
+		} else {
+			for _, nd := range p.crf_f[clusterNode{X, k}] {
+				p.addFail(nd.L, nd.i, k)
+			}
 		}
+	}
+}
+
+func (p *parser) addMatch(L slot.Label, i, k, j int) {
+	p.bsrSet.Add(L, i, k, j)
+	if L.IsLookahead() {
+		p.dscAdd(L, i, k)
+	} else {
+		p.dscAdd(L, i, j)
+	}
+}
+
+func (p *parser) addFail(L slot.Label, i, k int) {
+	if L.IsLookahead() {
+		p.dscAdd(L, i, k)
+	} else {
+		p.dscAdd(L, i, i)
 	}
 }
 
@@ -843,32 +1358,75 @@ func (p *parser) testSelect(l slot.Label) bool {
 }
 
 var first = []map[token.Type]string{
-	// Array : ∙LBRACKET OptElem RBRACKET
+	// Array : ∙LBRACKET SuffElements RBRACKET
 	{
 		token.T_6: "[",
 	},
-	// Array : LBRACKET ∙OptElem RBRACKET
+	// Array : LBRACKET ∙SuffElements RBRACKET
 	{
 		token.T_2:  "-",
 		token.T_4:  "0",
 		token.T_6:  "[",
 		token.T_7:  "]",
-		token.T_11: "false",
-		token.T_14: "nonZero",
-		token.T_15: "null",
-		token.T_17: "string_ns",
-		token.T_18: "true",
-		token.T_19: "{",
+		token.T_11: "dQuote",
+		token.T_15: "false",
+		token.T_18: "nonZero",
+		token.T_19: "null",
+		token.T_21: "true",
+		token.T_23: "{",
 	},
-	// Array : LBRACKET OptElem ∙RBRACKET
+	// Array : LBRACKET SuffElements ∙RBRACKET
 	{
 		token.T_7: "]",
 	},
-	// Array : LBRACKET OptElem RBRACKET ∙
+	// Array : LBRACKET SuffElements RBRACKET ∙
 	{
 		token.T_1:  ",",
 		token.T_7:  "]",
-		token.T_20: "}",
+		token.T_24: "}",
+	},
+	// Array : ∙
+	{
+		token.T_1:  ",",
+		token.T_7:  "]",
+		token.T_24: "}",
+	},
+	// CHAR : ∙Suff1xchar Suffchar
+	{
+		token.T_10: "char",
+	},
+	// CHAR : Suff1xchar ∙Suffchar
+	{
+		token.T_8:  "bSlash",
+		token.T_10: "char",
+		token.T_11: "dQuote",
+	},
+	// CHAR : Suff1xchar Suffchar ∙
+	{
+		token.T_8:  "bSlash",
+		token.T_10: "char",
+		token.T_11: "dQuote",
+	},
+	// CHAR : ∙bSlash CharCode
+	{
+		token.T_8: "bSlash",
+	},
+	// CHAR : bSlash ∙CharCode
+	{
+		token.T_13: "esc",
+		token.T_22: "u",
+	},
+	// CHAR : bSlash CharCode ∙
+	{
+		token.T_8:  "bSlash",
+		token.T_10: "char",
+		token.T_11: "dQuote",
+	},
+	// CHAR : ∙
+	{
+		token.T_8:  "bSlash",
+		token.T_10: "char",
+		token.T_11: "dQuote",
 	},
 	// COLON : ∙: WS
 	{
@@ -879,27 +1437,39 @@ var first = []map[token.Type]string{
 		token.T_2:  "-",
 		token.T_4:  "0",
 		token.T_6:  "[",
-		token.T_8:  "block_comment",
-		token.T_10: "escCharSpace",
-		token.T_11: "false",
-		token.T_13: "line_comment",
-		token.T_14: "nonZero",
-		token.T_15: "null",
-		token.T_17: "string_ns",
-		token.T_18: "true",
-		token.T_19: "{",
+		token.T_9:  "block_comment",
+		token.T_11: "dQuote",
+		token.T_14: "escCharSpace",
+		token.T_15: "false",
+		token.T_17: "line_comment",
+		token.T_18: "nonZero",
+		token.T_19: "null",
+		token.T_21: "true",
+		token.T_23: "{",
 	},
 	// COLON : : WS ∙
 	{
 		token.T_2:  "-",
 		token.T_4:  "0",
 		token.T_6:  "[",
-		token.T_11: "false",
-		token.T_14: "nonZero",
-		token.T_15: "null",
-		token.T_17: "string_ns",
-		token.T_18: "true",
-		token.T_19: "{",
+		token.T_11: "dQuote",
+		token.T_15: "false",
+		token.T_18: "nonZero",
+		token.T_19: "null",
+		token.T_21: "true",
+		token.T_23: "{",
+	},
+	// COLON : ∙
+	{
+		token.T_2:  "-",
+		token.T_4:  "0",
+		token.T_6:  "[",
+		token.T_11: "dQuote",
+		token.T_15: "false",
+		token.T_18: "nonZero",
+		token.T_19: "null",
+		token.T_21: "true",
+		token.T_23: "{",
 	},
 	// COMMA : ∙, WS
 	{
@@ -910,27 +1480,81 @@ var first = []map[token.Type]string{
 		token.T_2:  "-",
 		token.T_4:  "0",
 		token.T_6:  "[",
-		token.T_8:  "block_comment",
-		token.T_10: "escCharSpace",
-		token.T_11: "false",
-		token.T_13: "line_comment",
-		token.T_14: "nonZero",
-		token.T_15: "null",
-		token.T_17: "string_ns",
-		token.T_18: "true",
-		token.T_19: "{",
+		token.T_9:  "block_comment",
+		token.T_11: "dQuote",
+		token.T_14: "escCharSpace",
+		token.T_15: "false",
+		token.T_17: "line_comment",
+		token.T_18: "nonZero",
+		token.T_19: "null",
+		token.T_21: "true",
+		token.T_23: "{",
 	},
 	// COMMA : , WS ∙
 	{
 		token.T_2:  "-",
 		token.T_4:  "0",
 		token.T_6:  "[",
-		token.T_11: "false",
-		token.T_14: "nonZero",
-		token.T_15: "null",
-		token.T_17: "string_ns",
-		token.T_18: "true",
-		token.T_19: "{",
+		token.T_11: "dQuote",
+		token.T_15: "false",
+		token.T_18: "nonZero",
+		token.T_19: "null",
+		token.T_21: "true",
+		token.T_23: "{",
+	},
+	// COMMA : ∙
+	{
+		token.T_2:  "-",
+		token.T_4:  "0",
+		token.T_6:  "[",
+		token.T_11: "dQuote",
+		token.T_15: "false",
+		token.T_18: "nonZero",
+		token.T_19: "null",
+		token.T_21: "true",
+		token.T_23: "{",
+	},
+	// CharCode : ∙esc
+	{
+		token.T_13: "esc",
+	},
+	// CharCode : esc ∙
+	{
+		token.T_8:  "bSlash",
+		token.T_10: "char",
+		token.T_11: "dQuote",
+	},
+	// CharCode : ∙u hex hex hex hex
+	{
+		token.T_22: "u",
+	},
+	// CharCode : u ∙hex hex hex hex
+	{
+		token.T_16: "hex",
+	},
+	// CharCode : u hex ∙hex hex hex
+	{
+		token.T_16: "hex",
+	},
+	// CharCode : u hex hex ∙hex hex
+	{
+		token.T_16: "hex",
+	},
+	// CharCode : u hex hex hex ∙hex
+	{
+		token.T_16: "hex",
+	},
+	// CharCode : u hex hex hex hex ∙
+	{
+		token.T_8:  "bSlash",
+		token.T_10: "char",
+		token.T_11: "dQuote",
+	},
+	// CharCode : ∙
+	{
+		token.T_8:  "bSlash",
+		token.T_10: "char",
+		token.T_11: "dQuote",
 	},
 	// ComPair : ∙COMMA Pair
 	{
@@ -938,12 +1562,17 @@ var first = []map[token.Type]string{
 	},
 	// ComPair : COMMA ∙Pair
 	{
-		token.T_17: "string_ns",
+		token.T_11: "dQuote",
 	},
 	// ComPair : COMMA Pair ∙
 	{
 		token.T_1:  ",",
-		token.T_20: "}",
+		token.T_24: "}",
+	},
+	// ComPair : ∙
+	{
+		token.T_1:  ",",
+		token.T_24: "}",
 	},
 	// ComVal : ∙COMMA Value
 	{
@@ -954,65 +1583,83 @@ var first = []map[token.Type]string{
 		token.T_2:  "-",
 		token.T_4:  "0",
 		token.T_6:  "[",
-		token.T_11: "false",
-		token.T_14: "nonZero",
-		token.T_15: "null",
-		token.T_17: "string_ns",
-		token.T_18: "true",
-		token.T_19: "{",
+		token.T_11: "dQuote",
+		token.T_15: "false",
+		token.T_18: "nonZero",
+		token.T_19: "null",
+		token.T_21: "true",
+		token.T_23: "{",
 	},
 	// ComVal : COMMA Value ∙
 	{
 		token.T_1: ",",
 		token.T_7: "]",
 	},
-	// EXP : ∙eE OptPM repNum1x
-	{
-		token.T_9: "eE",
-	},
-	// EXP : eE ∙OptPM repNum1x
-	{
-		token.T_0:  "+",
-		token.T_2:  "-",
-		token.T_16: "repNum1x",
-	},
-	// EXP : eE OptPM ∙repNum1x
-	{
-		token.T_16: "repNum1x",
-	},
-	// EXP : eE OptPM repNum1x ∙
-	{
-		token.T_1:  ",",
-		token.T_7:  "]",
-		token.T_8:  "block_comment",
-		token.T_10: "escCharSpace",
-		token.T_13: "line_comment",
-		token.T_20: "}",
-	},
-	// Elements : ∙Value RepComVal0x
-	{
-		token.T_2:  "-",
-		token.T_4:  "0",
-		token.T_6:  "[",
-		token.T_11: "false",
-		token.T_14: "nonZero",
-		token.T_15: "null",
-		token.T_17: "string_ns",
-		token.T_18: "true",
-		token.T_19: "{",
-	},
-	// Elements : Value ∙RepComVal0x
+	// ComVal : ∙
 	{
 		token.T_1: ",",
 		token.T_7: "]",
 	},
-	// Elements : Value RepComVal0x ∙
+	// EXP : ∙eE SuffPlusORMinus num
+	{
+		token.T_12: "eE",
+	},
+	// EXP : eE ∙SuffPlusORMinus num
+	{
+		token.T_0:  "+",
+		token.T_2:  "-",
+		token.T_20: "num",
+	},
+	// EXP : eE SuffPlusORMinus ∙num
+	{
+		token.T_20: "num",
+	},
+	// EXP : eE SuffPlusORMinus num ∙
+	{
+		token.T_1:  ",",
+		token.T_7:  "]",
+		token.T_9:  "block_comment",
+		token.T_14: "escCharSpace",
+		token.T_17: "line_comment",
+		token.T_24: "}",
+	},
+	// EXP : ∙
+	{
+		token.T_1:  ",",
+		token.T_7:  "]",
+		token.T_9:  "block_comment",
+		token.T_14: "escCharSpace",
+		token.T_17: "line_comment",
+		token.T_24: "}",
+	},
+	// Elements : ∙Value SuffComVal
+	{
+		token.T_2:  "-",
+		token.T_4:  "0",
+		token.T_6:  "[",
+		token.T_11: "dQuote",
+		token.T_15: "false",
+		token.T_18: "nonZero",
+		token.T_19: "null",
+		token.T_21: "true",
+		token.T_23: "{",
+	},
+	// Elements : Value ∙SuffComVal
+	{
+		token.T_1: ",",
+		token.T_7: "]",
+	},
+	// Elements : Value SuffComVal ∙
+	{
+		token.T_7: "]",
+	},
+	// Elements : ∙
 	{
 		token.T_7: "]",
 	},
 	// EscOrComment : ∙escCharSpace
 	{
-		token.T_10: "escCharSpace",
+		token.T_14: "escCharSpace",
 	},
 	// EscOrComment : escCharSpace ∙
 	{
@@ -1023,20 +1670,20 @@ var first = []map[token.Type]string{
 		token.T_5:  ":",
 		token.T_6:  "[",
 		token.T_7:  "]",
-		token.T_8:  "block_comment",
-		token.T_10: "escCharSpace",
-		token.T_11: "false",
-		token.T_13: "line_comment",
-		token.T_14: "nonZero",
-		token.T_15: "null",
-		token.T_17: "string_ns",
-		token.T_18: "true",
-		token.T_19: "{",
-		token.T_20: "}",
+		token.T_9:  "block_comment",
+		token.T_11: "dQuote",
+		token.T_14: "escCharSpace",
+		token.T_15: "false",
+		token.T_17: "line_comment",
+		token.T_18: "nonZero",
+		token.T_19: "null",
+		token.T_21: "true",
+		token.T_23: "{",
+		token.T_24: "}",
 	},
 	// EscOrComment : ∙line_comment
 	{
-		token.T_13: "line_comment",
+		token.T_17: "line_comment",
 	},
 	// EscOrComment : line_comment ∙
 	{
@@ -1047,20 +1694,20 @@ var first = []map[token.Type]string{
 		token.T_5:  ":",
 		token.T_6:  "[",
 		token.T_7:  "]",
-		token.T_8:  "block_comment",
-		token.T_10: "escCharSpace",
-		token.T_11: "false",
-		token.T_13: "line_comment",
-		token.T_14: "nonZero",
-		token.T_15: "null",
-		token.T_17: "string_ns",
-		token.T_18: "true",
-		token.T_19: "{",
-		token.T_20: "}",
+		token.T_9:  "block_comment",
+		token.T_11: "dQuote",
+		token.T_14: "escCharSpace",
+		token.T_15: "false",
+		token.T_17: "line_comment",
+		token.T_18: "nonZero",
+		token.T_19: "null",
+		token.T_21: "true",
+		token.T_23: "{",
+		token.T_24: "}",
 	},
 	// EscOrComment : ∙block_comment
 	{
-		token.T_8: "block_comment",
+		token.T_9: "block_comment",
 	},
 	// EscOrComment : block_comment ∙
 	{
@@ -1071,16 +1718,16 @@ var first = []map[token.Type]string{
 		token.T_5:  ":",
 		token.T_6:  "[",
 		token.T_7:  "]",
-		token.T_8:  "block_comment",
-		token.T_10: "escCharSpace",
-		token.T_11: "false",
-		token.T_13: "line_comment",
-		token.T_14: "nonZero",
-		token.T_15: "null",
-		token.T_17: "string_ns",
-		token.T_18: "true",
-		token.T_19: "{",
-		token.T_20: "}",
+		token.T_9:  "block_comment",
+		token.T_11: "dQuote",
+		token.T_14: "escCharSpace",
+		token.T_15: "false",
+		token.T_17: "line_comment",
+		token.T_18: "nonZero",
+		token.T_19: "null",
+		token.T_21: "true",
+		token.T_23: "{",
+		token.T_24: "}",
 	},
 	// EscOrComment : ∙
 	{
@@ -1091,90 +1738,124 @@ var first = []map[token.Type]string{
 		token.T_5:  ":",
 		token.T_6:  "[",
 		token.T_7:  "]",
-		token.T_8:  "block_comment",
-		token.T_10: "escCharSpace",
-		token.T_11: "false",
-		token.T_13: "line_comment",
-		token.T_14: "nonZero",
-		token.T_15: "null",
-		token.T_17: "string_ns",
-		token.T_18: "true",
-		token.T_19: "{",
-		token.T_20: "}",
+		token.T_9:  "block_comment",
+		token.T_11: "dQuote",
+		token.T_14: "escCharSpace",
+		token.T_15: "false",
+		token.T_17: "line_comment",
+		token.T_18: "nonZero",
+		token.T_19: "null",
+		token.T_21: "true",
+		token.T_23: "{",
+		token.T_24: "}",
 	},
 	// FALSE : ∙false WS
 	{
-		token.T_11: "false",
+		token.T_15: "false",
 	},
 	// FALSE : false ∙WS
 	{
 		token.T_1:  ",",
 		token.T_7:  "]",
-		token.T_8:  "block_comment",
-		token.T_10: "escCharSpace",
-		token.T_13: "line_comment",
-		token.T_20: "}",
+		token.T_9:  "block_comment",
+		token.T_14: "escCharSpace",
+		token.T_17: "line_comment",
+		token.T_24: "}",
 	},
 	// FALSE : false WS ∙
 	{
 		token.T_1:  ",",
 		token.T_7:  "]",
-		token.T_20: "}",
+		token.T_24: "}",
 	},
-	// FRAC : ∙. repNum1x
+	// FALSE : ∙
+	{
+		token.T_1:  ",",
+		token.T_7:  "]",
+		token.T_24: "}",
+	},
+	// FRAC : ∙. Suffnum
 	{
 		token.T_3: ".",
 	},
-	// FRAC : . ∙repNum1x
-	{
-		token.T_16: "repNum1x",
-	},
-	// FRAC : . repNum1x ∙
+	// FRAC : . ∙Suffnum
 	{
 		token.T_1:  ",",
 		token.T_7:  "]",
-		token.T_8:  "block_comment",
-		token.T_9:  "eE",
-		token.T_10: "escCharSpace",
-		token.T_13: "line_comment",
-		token.T_20: "}",
+		token.T_9:  "block_comment",
+		token.T_12: "eE",
+		token.T_14: "escCharSpace",
+		token.T_17: "line_comment",
+		token.T_20: "num",
+		token.T_24: "}",
 	},
-	// INT : ∙OptNeg Integers
+	// FRAC : . Suffnum ∙
+	{
+		token.T_1:  ",",
+		token.T_7:  "]",
+		token.T_9:  "block_comment",
+		token.T_12: "eE",
+		token.T_14: "escCharSpace",
+		token.T_17: "line_comment",
+		token.T_24: "}",
+	},
+	// FRAC : ∙
+	{
+		token.T_1:  ",",
+		token.T_7:  "]",
+		token.T_9:  "block_comment",
+		token.T_12: "eE",
+		token.T_14: "escCharSpace",
+		token.T_17: "line_comment",
+		token.T_24: "}",
+	},
+	// INT : ∙SuffNeg Integers
 	{
 		token.T_2:  "-",
 		token.T_4:  "0",
-		token.T_14: "nonZero",
+		token.T_18: "nonZero",
 	},
-	// INT : OptNeg ∙Integers
+	// INT : SuffNeg ∙Integers
 	{
 		token.T_4:  "0",
-		token.T_14: "nonZero",
+		token.T_18: "nonZero",
 	},
-	// INT : OptNeg Integers ∙
+	// INT : SuffNeg Integers ∙
 	{
 		token.T_1:  ",",
 		token.T_3:  ".",
 		token.T_7:  "]",
-		token.T_8:  "block_comment",
-		token.T_9:  "eE",
-		token.T_10: "escCharSpace",
-		token.T_13: "line_comment",
-		token.T_20: "}",
+		token.T_9:  "block_comment",
+		token.T_12: "eE",
+		token.T_14: "escCharSpace",
+		token.T_17: "line_comment",
+		token.T_24: "}",
 	},
-	// Integers : ∙nonZero
-	{
-		token.T_14: "nonZero",
-	},
-	// Integers : nonZero ∙
+	// INT : ∙
 	{
 		token.T_1:  ",",
 		token.T_3:  ".",
 		token.T_7:  "]",
-		token.T_8:  "block_comment",
-		token.T_9:  "eE",
-		token.T_10: "escCharSpace",
-		token.T_13: "line_comment",
-		token.T_20: "}",
+		token.T_9:  "block_comment",
+		token.T_12: "eE",
+		token.T_14: "escCharSpace",
+		token.T_17: "line_comment",
+		token.T_24: "}",
+	},
+	// Integers : ∙NumSeq
+	{
+		token.T_18: "nonZero",
+	},
+	// Integers : NumSeq ∙
+	{
+		token.T_1:  ",",
+		token.T_3:  ".",
+		token.T_7:  "]",
+		token.T_9:  "block_comment",
+		token.T_12: "eE",
+		token.T_14: "escCharSpace",
+		token.T_17: "line_comment",
+		token.T_24: "}",
 	},
 	// Integers : ∙0
 	{
@@ -1185,43 +1866,63 @@ var first = []map[token.Type]string{
 		token.T_1:  ",",
 		token.T_3:  ".",
 		token.T_7:  "]",
-		token.T_8:  "block_comment",
-		token.T_9:  "eE",
-		token.T_10: "escCharSpace",
-		token.T_13: "line_comment",
-		token.T_20: "}",
+		token.T_9:  "block_comment",
+		token.T_12: "eE",
+		token.T_14: "escCharSpace",
+		token.T_17: "line_comment",
+		token.T_24: "}",
+	},
+	// Integers : ∙
+	{
+		token.T_1:  ",",
+		token.T_3:  ".",
+		token.T_7:  "]",
+		token.T_9:  "block_comment",
+		token.T_12: "eE",
+		token.T_14: "escCharSpace",
+		token.T_17: "line_comment",
+		token.T_24: "}",
 	},
 	// JSON : ∙WS Object
 	{
-		token.T_8:  "block_comment",
-		token.T_10: "escCharSpace",
-		token.T_13: "line_comment",
-		token.T_19: "{",
+		token.T_9:  "block_comment",
+		token.T_14: "escCharSpace",
+		token.T_17: "line_comment",
+		token.T_23: "{",
 	},
 	// JSON : WS ∙Object
 	{
-		token.T_19: "{",
+		token.T_23: "{",
 	},
 	// JSON : WS Object ∙
 	{
 		token.EOF: "$",
 	},
+	// JSON : ∙
+	{
+		token.EOF: "$",
+	},
 	// LBRACE : ∙{ WS
 	{
-		token.T_19: "{",
+		token.T_23: "{",
 	},
 	// LBRACE : { ∙WS
 	{
-		token.T_8:  "block_comment",
-		token.T_10: "escCharSpace",
-		token.T_13: "line_comment",
-		token.T_17: "string_ns",
-		token.T_20: "}",
+		token.T_9:  "block_comment",
+		token.T_11: "dQuote",
+		token.T_14: "escCharSpace",
+		token.T_17: "line_comment",
+		token.T_24: "}",
 	},
 	// LBRACE : { WS ∙
 	{
-		token.T_17: "string_ns",
-		token.T_20: "}",
+		token.T_11: "dQuote",
+		token.T_24: "}",
+	},
+	// LBRACE : ∙
+	{
+		token.T_11: "dQuote",
+		token.T_24: "}",
 	},
 	// LBRACKET : ∙[ WS
 	{
@@ -1233,15 +1934,15 @@ var first = []map[token.Type]string{
 		token.T_4:  "0",
 		token.T_6:  "[",
 		token.T_7:  "]",
-		token.T_8:  "block_comment",
-		token.T_10: "escCharSpace",
-		token.T_11: "false",
-		token.T_13: "line_comment",
-		token.T_14: "nonZero",
-		token.T_15: "null",
-		token.T_17: "string_ns",
-		token.T_18: "true",
-		token.T_19: "{",
+		token.T_9:  "block_comment",
+		token.T_11: "dQuote",
+		token.T_14: "escCharSpace",
+		token.T_15: "false",
+		token.T_17: "line_comment",
+		token.T_18: "nonZero",
+		token.T_19: "null",
+		token.T_21: "true",
+		token.T_23: "{",
 	},
 	// LBRACKET : [ WS ∙
 	{
@@ -1249,215 +1950,198 @@ var first = []map[token.Type]string{
 		token.T_4:  "0",
 		token.T_6:  "[",
 		token.T_7:  "]",
-		token.T_11: "false",
-		token.T_14: "nonZero",
-		token.T_15: "null",
-		token.T_17: "string_ns",
-		token.T_18: "true",
-		token.T_19: "{",
+		token.T_11: "dQuote",
+		token.T_15: "false",
+		token.T_18: "nonZero",
+		token.T_19: "null",
+		token.T_21: "true",
+		token.T_23: "{",
 	},
-	// Members : ∙Pair RepComPair0x
+	// LBRACKET : ∙
 	{
-		token.T_17: "string_ns",
+		token.T_2:  "-",
+		token.T_4:  "0",
+		token.T_6:  "[",
+		token.T_7:  "]",
+		token.T_11: "dQuote",
+		token.T_15: "false",
+		token.T_18: "nonZero",
+		token.T_19: "null",
+		token.T_21: "true",
+		token.T_23: "{",
 	},
-	// Members : Pair ∙RepComPair0x
+	// Members : ∙Pair SuffComPair
+	{
+		token.T_11: "dQuote",
+	},
+	// Members : Pair ∙SuffComPair
 	{
 		token.T_1:  ",",
-		token.T_20: "}",
+		token.T_24: "}",
 	},
-	// Members : Pair RepComPair0x ∙
+	// Members : Pair SuffComPair ∙
 	{
-		token.T_20: "}",
+		token.T_24: "}",
+	},
+	// Members : ∙
+	{
+		token.T_24: "}",
 	},
 	// NUL : ∙null WS
 	{
-		token.T_15: "null",
+		token.T_19: "null",
 	},
 	// NUL : null ∙WS
 	{
 		token.T_1:  ",",
 		token.T_7:  "]",
-		token.T_8:  "block_comment",
-		token.T_10: "escCharSpace",
-		token.T_13: "line_comment",
-		token.T_20: "}",
+		token.T_9:  "block_comment",
+		token.T_14: "escCharSpace",
+		token.T_17: "line_comment",
+		token.T_24: "}",
 	},
 	// NUL : null WS ∙
 	{
 		token.T_1:  ",",
 		token.T_7:  "]",
-		token.T_20: "}",
+		token.T_24: "}",
 	},
-	// Number : ∙INT OptFrac OptExp WS
+	// NUL : ∙
 	{
-		token.T_2:  "-",
-		token.T_4:  "0",
-		token.T_14: "nonZero",
+		token.T_1:  ",",
+		token.T_7:  "]",
+		token.T_24: "}",
 	},
-	// Number : INT ∙OptFrac OptExp WS
+	// Neg : ∙-
+	{
+		token.T_2: "-",
+	},
+	// Neg : - ∙
+	{
+		token.T_4:  "0",
+		token.T_18: "nonZero",
+	},
+	// Neg : ∙
+	{
+		token.T_4:  "0",
+		token.T_18: "nonZero",
+	},
+	// NumSeq : ∙nonZero Suffnum
+	{
+		token.T_18: "nonZero",
+	},
+	// NumSeq : nonZero ∙Suffnum
 	{
 		token.T_1:  ",",
 		token.T_3:  ".",
 		token.T_7:  "]",
-		token.T_8:  "block_comment",
-		token.T_9:  "eE",
-		token.T_10: "escCharSpace",
-		token.T_13: "line_comment",
-		token.T_20: "}",
+		token.T_9:  "block_comment",
+		token.T_12: "eE",
+		token.T_14: "escCharSpace",
+		token.T_17: "line_comment",
+		token.T_20: "num",
+		token.T_24: "}",
 	},
-	// Number : INT OptFrac ∙OptExp WS
+	// NumSeq : nonZero Suffnum ∙
+	{
+		token.T_1:  ",",
+		token.T_3:  ".",
+		token.T_7:  "]",
+		token.T_9:  "block_comment",
+		token.T_12: "eE",
+		token.T_14: "escCharSpace",
+		token.T_17: "line_comment",
+		token.T_24: "}",
+	},
+	// NumSeq : ∙
+	{
+		token.T_1:  ",",
+		token.T_3:  ".",
+		token.T_7:  "]",
+		token.T_9:  "block_comment",
+		token.T_12: "eE",
+		token.T_14: "escCharSpace",
+		token.T_17: "line_comment",
+		token.T_24: "}",
+	},
+	// Number : ∙INT SuffFRAC SuffEXP WS
+	{
+		token.T_2:  "-",
+		token.T_4:  "0",
+		token.T_18: "nonZero",
+	},
+	// Number : INT ∙SuffFRAC SuffEXP WS
+	{
+		token.T_1:  ",",
+		token.T_3:  ".",
+		token.T_7:  "]",
+		token.T_9:  "block_comment",
+		token.T_12: "eE",
+		token.T_14: "escCharSpace",
+		token.T_17: "line_comment",
+		token.T_24: "}",
+	},
+	// Number : INT SuffFRAC ∙SuffEXP WS
 	{
 		token.T_1:  ",",
 		token.T_7:  "]",
-		token.T_8:  "block_comment",
-		token.T_9:  "eE",
-		token.T_10: "escCharSpace",
-		token.T_13: "line_comment",
-		token.T_20: "}",
+		token.T_9:  "block_comment",
+		token.T_12: "eE",
+		token.T_14: "escCharSpace",
+		token.T_17: "line_comment",
+		token.T_24: "}",
 	},
-	// Number : INT OptFrac OptExp ∙WS
+	// Number : INT SuffFRAC SuffEXP ∙WS
 	{
 		token.T_1:  ",",
 		token.T_7:  "]",
-		token.T_8:  "block_comment",
-		token.T_10: "escCharSpace",
-		token.T_13: "line_comment",
-		token.T_20: "}",
+		token.T_9:  "block_comment",
+		token.T_14: "escCharSpace",
+		token.T_17: "line_comment",
+		token.T_24: "}",
 	},
-	// Number : INT OptFrac OptExp WS ∙
+	// Number : INT SuffFRAC SuffEXP WS ∙
 	{
 		token.T_1:  ",",
 		token.T_7:  "]",
-		token.T_20: "}",
+		token.T_24: "}",
 	},
-	// Object : ∙LBRACE OptMems RBRACE
+	// Number : ∙
 	{
-		token.T_19: "{",
+		token.T_1:  ",",
+		token.T_7:  "]",
+		token.T_24: "}",
 	},
-	// Object : LBRACE ∙OptMems RBRACE
+	// Object : ∙LBRACE SuffMembers RBRACE
 	{
-		token.T_17: "string_ns",
-		token.T_20: "}",
+		token.T_23: "{",
 	},
-	// Object : LBRACE OptMems ∙RBRACE
+	// Object : LBRACE ∙SuffMembers RBRACE
 	{
-		token.T_20: "}",
+		token.T_11: "dQuote",
+		token.T_24: "}",
 	},
-	// Object : LBRACE OptMems RBRACE ∙
+	// Object : LBRACE SuffMembers ∙RBRACE
+	{
+		token.T_24: "}",
+	},
+	// Object : LBRACE SuffMembers RBRACE ∙
 	{
 		token.EOF:  "$",
 		token.T_1:  ",",
 		token.T_7:  "]",
-		token.T_20: "}",
+		token.T_24: "}",
 	},
-	// OptElem : ∙Elements
+	// Object : ∙
 	{
-		token.T_2:  "-",
-		token.T_4:  "0",
-		token.T_6:  "[",
-		token.T_11: "false",
-		token.T_14: "nonZero",
-		token.T_15: "null",
-		token.T_17: "string_ns",
-		token.T_18: "true",
-		token.T_19: "{",
-	},
-	// OptElem : Elements ∙
-	{
-		token.T_7: "]",
-	},
-	// OptElem : ∙
-	{
-		token.T_7: "]",
-	},
-	// OptExp : ∙EXP
-	{
-		token.T_9: "eE",
-	},
-	// OptExp : EXP ∙
-	{
+		token.EOF:  "$",
 		token.T_1:  ",",
 		token.T_7:  "]",
-		token.T_8:  "block_comment",
-		token.T_10: "escCharSpace",
-		token.T_13: "line_comment",
-		token.T_20: "}",
-	},
-	// OptExp : ∙
-	{
-		token.T_1:  ",",
-		token.T_7:  "]",
-		token.T_8:  "block_comment",
-		token.T_10: "escCharSpace",
-		token.T_13: "line_comment",
-		token.T_20: "}",
-	},
-	// OptFrac : ∙FRAC
-	{
-		token.T_3: ".",
-	},
-	// OptFrac : FRAC ∙
-	{
-		token.T_1:  ",",
-		token.T_7:  "]",
-		token.T_8:  "block_comment",
-		token.T_9:  "eE",
-		token.T_10: "escCharSpace",
-		token.T_13: "line_comment",
-		token.T_20: "}",
-	},
-	// OptFrac : ∙
-	{
-		token.T_1:  ",",
-		token.T_7:  "]",
-		token.T_8:  "block_comment",
-		token.T_9:  "eE",
-		token.T_10: "escCharSpace",
-		token.T_13: "line_comment",
-		token.T_20: "}",
-	},
-	// OptMems : ∙Members
-	{
-		token.T_17: "string_ns",
-	},
-	// OptMems : Members ∙
-	{
-		token.T_20: "}",
-	},
-	// OptMems : ∙
-	{
-		token.T_20: "}",
-	},
-	// OptNeg : ∙-
-	{
-		token.T_2: "-",
-	},
-	// OptNeg : - ∙
-	{
-		token.T_4:  "0",
-		token.T_14: "nonZero",
-	},
-	// OptNeg : ∙
-	{
-		token.T_4:  "0",
-		token.T_14: "nonZero",
-	},
-	// OptPM : ∙PlusORMinus
-	{
-		token.T_0: "+",
-		token.T_2: "-",
-	},
-	// OptPM : PlusORMinus ∙
-	{
-		token.T_16: "repNum1x",
-	},
-	// OptPM : ∙
-	{
-		token.T_16: "repNum1x",
+		token.T_24: "}",
 	},
 	// Pair : ∙String COLON Value
 	{
-		token.T_17: "string_ns",
+		token.T_11: "dQuote",
 	},
 	// Pair : String ∙COLON Value
 	{
@@ -1468,17 +2152,22 @@ var first = []map[token.Type]string{
 		token.T_2:  "-",
 		token.T_4:  "0",
 		token.T_6:  "[",
-		token.T_11: "false",
-		token.T_14: "nonZero",
-		token.T_15: "null",
-		token.T_17: "string_ns",
-		token.T_18: "true",
-		token.T_19: "{",
+		token.T_11: "dQuote",
+		token.T_15: "false",
+		token.T_18: "nonZero",
+		token.T_19: "null",
+		token.T_21: "true",
+		token.T_23: "{",
 	},
 	// Pair : String COLON Value ∙
 	{
 		token.T_1:  ",",
-		token.T_20: "}",
+		token.T_24: "}",
+	},
+	// Pair : ∙
+	{
+		token.T_1:  ",",
+		token.T_24: "}",
 	},
 	// PlusORMinus : ∙+
 	{
@@ -1486,7 +2175,11 @@ var first = []map[token.Type]string{
 	},
 	// PlusORMinus : + ∙
 	{
-		token.T_16: "repNum1x",
+		token.T_20: "num",
+	},
+	// PlusORMinus : ∙-
+	{
+		token.T_2: "-",
 	},
 	// PlusORMinus : ∙-
 	{
@@ -1494,28 +2187,39 @@ var first = []map[token.Type]string{
 	},
 	// PlusORMinus : - ∙
 	{
-		token.T_16: "repNum1x",
+		token.T_20: "num",
+	},
+	// PlusORMinus : ∙
+	{
+		token.T_20: "num",
 	},
 	// RBRACE : ∙} WS
 	{
-		token.T_20: "}",
+		token.T_24: "}",
 	},
 	// RBRACE : } ∙WS
 	{
 		token.EOF:  "$",
 		token.T_1:  ",",
 		token.T_7:  "]",
-		token.T_8:  "block_comment",
-		token.T_10: "escCharSpace",
-		token.T_13: "line_comment",
-		token.T_20: "}",
+		token.T_9:  "block_comment",
+		token.T_14: "escCharSpace",
+		token.T_17: "line_comment",
+		token.T_24: "}",
 	},
 	// RBRACE : } WS ∙
 	{
 		token.EOF:  "$",
 		token.T_1:  ",",
 		token.T_7:  "]",
-		token.T_20: "}",
+		token.T_24: "}",
+	},
+	// RBRACE : ∙
+	{
+		token.EOF:  "$",
+		token.T_1:  ",",
+		token.T_7:  "]",
+		token.T_24: "}",
 	},
 	// RBRACKET : ∙] WS
 	{
@@ -1525,122 +2229,357 @@ var first = []map[token.Type]string{
 	{
 		token.T_1:  ",",
 		token.T_7:  "]",
-		token.T_8:  "block_comment",
-		token.T_10: "escCharSpace",
-		token.T_13: "line_comment",
-		token.T_20: "}",
+		token.T_9:  "block_comment",
+		token.T_14: "escCharSpace",
+		token.T_17: "line_comment",
+		token.T_24: "}",
 	},
 	// RBRACKET : ] WS ∙
 	{
 		token.T_1:  ",",
 		token.T_7:  "]",
-		token.T_20: "}",
+		token.T_24: "}",
 	},
-	// RepComPair0x : ∙ComPair RepComPair0x
-	{
-		token.T_1: ",",
-	},
-	// RepComPair0x : ComPair ∙RepComPair0x
+	// RBRACKET : ∙
 	{
 		token.T_1:  ",",
-		token.T_20: "}",
+		token.T_7:  "]",
+		token.T_24: "}",
 	},
-	// RepComPair0x : ComPair RepComPair0x ∙
+	// String : ∙dQuote SuffCHAR dQuote WS
 	{
-		token.T_20: "}",
+		token.T_11: "dQuote",
 	},
-	// RepComPair0x : ∙
+	// String : dQuote ∙SuffCHAR dQuote WS
 	{
-		token.T_20: "}",
+		token.T_8:  "bSlash",
+		token.T_10: "char",
+		token.T_11: "dQuote",
 	},
-	// RepComVal0x : ∙ComVal RepComVal0x
+	// String : dQuote SuffCHAR ∙dQuote WS
 	{
-		token.T_1: ",",
+		token.T_11: "dQuote",
 	},
-	// RepComVal0x : ComVal ∙RepComVal0x
-	{
-		token.T_1: ",",
-		token.T_7: "]",
-	},
-	// RepComVal0x : ComVal RepComVal0x ∙
-	{
-		token.T_7: "]",
-	},
-	// RepComVal0x : ∙
-	{
-		token.T_7: "]",
-	},
-	// String : ∙string_ns WS
-	{
-		token.T_17: "string_ns",
-	},
-	// String : string_ns ∙WS
+	// String : dQuote SuffCHAR dQuote ∙WS
 	{
 		token.T_1:  ",",
 		token.T_5:  ":",
 		token.T_7:  "]",
-		token.T_8:  "block_comment",
-		token.T_10: "escCharSpace",
-		token.T_13: "line_comment",
-		token.T_20: "}",
+		token.T_9:  "block_comment",
+		token.T_14: "escCharSpace",
+		token.T_17: "line_comment",
+		token.T_24: "}",
 	},
-	// String : string_ns WS ∙
+	// String : dQuote SuffCHAR dQuote WS ∙
 	{
 		token.T_1:  ",",
 		token.T_5:  ":",
 		token.T_7:  "]",
-		token.T_20: "}",
+		token.T_24: "}",
+	},
+	// String : ∙
+	{
+		token.T_1:  ",",
+		token.T_5:  ":",
+		token.T_7:  "]",
+		token.T_24: "}",
+	},
+	// Suff1xchar : ∙char Suffchar
+	{
+		token.T_10: "char",
+	},
+	// Suff1xchar : char ∙Suffchar
+	{
+		token.T_8:  "bSlash",
+		token.T_10: "char",
+		token.T_11: "dQuote",
+	},
+	// Suff1xchar : char Suffchar ∙
+	{
+		token.T_8:  "bSlash",
+		token.T_10: "char",
+		token.T_11: "dQuote",
+	},
+	// Suff1xchar : ∙
+	{
+		token.T_8:  "bSlash",
+		token.T_10: "char",
+		token.T_11: "dQuote",
+	},
+	// SuffCHAR : ∙CHAR SuffCHAR
+	{
+		token.T_8:  "bSlash",
+		token.T_10: "char",
+	},
+	// SuffCHAR : CHAR ∙SuffCHAR
+	{
+		token.T_8:  "bSlash",
+		token.T_10: "char",
+		token.T_11: "dQuote",
+	},
+	// SuffCHAR : CHAR SuffCHAR ∙
+	{
+		token.T_11: "dQuote",
+	},
+	// SuffCHAR : ∙
+	{
+		token.T_11: "dQuote",
+	},
+	// SuffComPair : ∙ComPair SuffComPair
+	{
+		token.T_1: ",",
+	},
+	// SuffComPair : ComPair ∙SuffComPair
+	{
+		token.T_1:  ",",
+		token.T_24: "}",
+	},
+	// SuffComPair : ComPair SuffComPair ∙
+	{
+		token.T_24: "}",
+	},
+	// SuffComPair : ∙
+	{
+		token.T_24: "}",
+	},
+	// SuffComVal : ∙ComVal SuffComVal
+	{
+		token.T_1: ",",
+	},
+	// SuffComVal : ComVal ∙SuffComVal
+	{
+		token.T_1: ",",
+		token.T_7: "]",
+	},
+	// SuffComVal : ComVal SuffComVal ∙
+	{
+		token.T_7: "]",
+	},
+	// SuffComVal : ∙
+	{
+		token.T_7: "]",
+	},
+	// SuffEXP : ∙EXP
+	{
+		token.T_12: "eE",
+	},
+	// SuffEXP : EXP ∙
+	{
+		token.T_1:  ",",
+		token.T_7:  "]",
+		token.T_9:  "block_comment",
+		token.T_14: "escCharSpace",
+		token.T_17: "line_comment",
+		token.T_24: "}",
+	},
+	// SuffEXP : ∙
+	{
+		token.T_1:  ",",
+		token.T_7:  "]",
+		token.T_9:  "block_comment",
+		token.T_14: "escCharSpace",
+		token.T_17: "line_comment",
+		token.T_24: "}",
+	},
+	// SuffElements : ∙Elements
+	{
+		token.T_2:  "-",
+		token.T_4:  "0",
+		token.T_6:  "[",
+		token.T_11: "dQuote",
+		token.T_15: "false",
+		token.T_18: "nonZero",
+		token.T_19: "null",
+		token.T_21: "true",
+		token.T_23: "{",
+	},
+	// SuffElements : Elements ∙
+	{
+		token.T_7: "]",
+	},
+	// SuffElements : ∙
+	{
+		token.T_7: "]",
+	},
+	// SuffFRAC : ∙FRAC
+	{
+		token.T_3: ".",
+	},
+	// SuffFRAC : FRAC ∙
+	{
+		token.T_1:  ",",
+		token.T_7:  "]",
+		token.T_9:  "block_comment",
+		token.T_12: "eE",
+		token.T_14: "escCharSpace",
+		token.T_17: "line_comment",
+		token.T_24: "}",
+	},
+	// SuffFRAC : ∙
+	{
+		token.T_1:  ",",
+		token.T_7:  "]",
+		token.T_9:  "block_comment",
+		token.T_12: "eE",
+		token.T_14: "escCharSpace",
+		token.T_17: "line_comment",
+		token.T_24: "}",
+	},
+	// SuffMembers : ∙Members
+	{
+		token.T_11: "dQuote",
+	},
+	// SuffMembers : Members ∙
+	{
+		token.T_24: "}",
+	},
+	// SuffMembers : ∙
+	{
+		token.T_24: "}",
+	},
+	// SuffNeg : ∙Neg
+	{
+		token.T_2: "-",
+	},
+	// SuffNeg : Neg ∙
+	{
+		token.T_4:  "0",
+		token.T_18: "nonZero",
+	},
+	// SuffNeg : ∙
+	{
+		token.T_4:  "0",
+		token.T_18: "nonZero",
+	},
+	// SuffPlusORMinus : ∙PlusORMinus
+	{
+		token.T_0: "+",
+		token.T_2: "-",
+	},
+	// SuffPlusORMinus : PlusORMinus ∙
+	{
+		token.T_20: "num",
+	},
+	// SuffPlusORMinus : ∙
+	{
+		token.T_20: "num",
+	},
+	// Suffchar : ∙char Suffchar
+	{
+		token.T_10: "char",
+	},
+	// Suffchar : char ∙Suffchar
+	{
+		token.T_8:  "bSlash",
+		token.T_10: "char",
+		token.T_11: "dQuote",
+	},
+	// Suffchar : char Suffchar ∙
+	{
+		token.T_8:  "bSlash",
+		token.T_10: "char",
+		token.T_11: "dQuote",
+	},
+	// Suffchar : ∙
+	{
+		token.T_8:  "bSlash",
+		token.T_10: "char",
+		token.T_11: "dQuote",
+	},
+	// Suffnum : ∙num Suffnum
+	{
+		token.T_20: "num",
+	},
+	// Suffnum : num ∙Suffnum
+	{
+		token.T_1:  ",",
+		token.T_3:  ".",
+		token.T_7:  "]",
+		token.T_9:  "block_comment",
+		token.T_12: "eE",
+		token.T_14: "escCharSpace",
+		token.T_17: "line_comment",
+		token.T_20: "num",
+		token.T_24: "}",
+	},
+	// Suffnum : num Suffnum ∙
+	{
+		token.T_1:  ",",
+		token.T_3:  ".",
+		token.T_7:  "]",
+		token.T_9:  "block_comment",
+		token.T_12: "eE",
+		token.T_14: "escCharSpace",
+		token.T_17: "line_comment",
+		token.T_24: "}",
+	},
+	// Suffnum : ∙
+	{
+		token.T_1:  ",",
+		token.T_3:  ".",
+		token.T_7:  "]",
+		token.T_9:  "block_comment",
+		token.T_12: "eE",
+		token.T_14: "escCharSpace",
+		token.T_17: "line_comment",
+		token.T_24: "}",
 	},
 	// TRUE : ∙true WS
 	{
-		token.T_18: "true",
+		token.T_21: "true",
 	},
 	// TRUE : true ∙WS
 	{
 		token.T_1:  ",",
 		token.T_7:  "]",
-		token.T_8:  "block_comment",
-		token.T_10: "escCharSpace",
-		token.T_13: "line_comment",
-		token.T_20: "}",
+		token.T_9:  "block_comment",
+		token.T_14: "escCharSpace",
+		token.T_17: "line_comment",
+		token.T_24: "}",
 	},
 	// TRUE : true WS ∙
 	{
 		token.T_1:  ",",
 		token.T_7:  "]",
-		token.T_20: "}",
+		token.T_24: "}",
+	},
+	// TRUE : ∙
+	{
+		token.T_1:  ",",
+		token.T_7:  "]",
+		token.T_24: "}",
 	},
 	// Value : ∙String
 	{
-		token.T_17: "string_ns",
+		token.T_11: "dQuote",
 	},
 	// Value : String ∙
 	{
 		token.T_1:  ",",
 		token.T_7:  "]",
-		token.T_20: "}",
+		token.T_24: "}",
 	},
 	// Value : ∙Number
 	{
 		token.T_2:  "-",
 		token.T_4:  "0",
-		token.T_14: "nonZero",
+		token.T_18: "nonZero",
 	},
 	// Value : Number ∙
 	{
 		token.T_1:  ",",
 		token.T_7:  "]",
-		token.T_20: "}",
+		token.T_24: "}",
 	},
 	// Value : ∙Object
 	{
-		token.T_19: "{",
+		token.T_23: "{",
 	},
 	// Value : Object ∙
 	{
 		token.T_1:  ",",
 		token.T_7:  "]",
-		token.T_20: "}",
+		token.T_24: "}",
 	},
 	// Value : ∙Array
 	{
@@ -1650,37 +2589,43 @@ var first = []map[token.Type]string{
 	{
 		token.T_1:  ",",
 		token.T_7:  "]",
-		token.T_20: "}",
+		token.T_24: "}",
 	},
 	// Value : ∙TRUE
 	{
-		token.T_18: "true",
+		token.T_21: "true",
 	},
 	// Value : TRUE ∙
 	{
 		token.T_1:  ",",
 		token.T_7:  "]",
-		token.T_20: "}",
+		token.T_24: "}",
 	},
 	// Value : ∙FALSE
 	{
-		token.T_11: "false",
+		token.T_15: "false",
 	},
 	// Value : FALSE ∙
 	{
 		token.T_1:  ",",
 		token.T_7:  "]",
-		token.T_20: "}",
+		token.T_24: "}",
 	},
 	// Value : ∙NUL
 	{
-		token.T_15: "null",
+		token.T_19: "null",
 	},
 	// Value : NUL ∙
 	{
 		token.T_1:  ",",
 		token.T_7:  "]",
-		token.T_20: "}",
+		token.T_24: "}",
+	},
+	// Value : ∙
+	{
+		token.T_1:  ",",
+		token.T_7:  "]",
+		token.T_24: "}",
 	},
 	// WS : ∙EscOrComment WS
 	{
@@ -1691,16 +2636,16 @@ var first = []map[token.Type]string{
 		token.T_5:  ":",
 		token.T_6:  "[",
 		token.T_7:  "]",
-		token.T_8:  "block_comment",
-		token.T_10: "escCharSpace",
-		token.T_11: "false",
-		token.T_13: "line_comment",
-		token.T_14: "nonZero",
-		token.T_15: "null",
-		token.T_17: "string_ns",
-		token.T_18: "true",
-		token.T_19: "{",
-		token.T_20: "}",
+		token.T_9:  "block_comment",
+		token.T_11: "dQuote",
+		token.T_14: "escCharSpace",
+		token.T_15: "false",
+		token.T_17: "line_comment",
+		token.T_18: "nonZero",
+		token.T_19: "null",
+		token.T_21: "true",
+		token.T_23: "{",
+		token.T_24: "}",
 	},
 	// WS : EscOrComment ∙WS
 	{
@@ -1711,16 +2656,16 @@ var first = []map[token.Type]string{
 		token.T_5:  ":",
 		token.T_6:  "[",
 		token.T_7:  "]",
-		token.T_8:  "block_comment",
-		token.T_10: "escCharSpace",
-		token.T_11: "false",
-		token.T_13: "line_comment",
-		token.T_14: "nonZero",
-		token.T_15: "null",
-		token.T_17: "string_ns",
-		token.T_18: "true",
-		token.T_19: "{",
-		token.T_20: "}",
+		token.T_9:  "block_comment",
+		token.T_11: "dQuote",
+		token.T_14: "escCharSpace",
+		token.T_15: "false",
+		token.T_17: "line_comment",
+		token.T_18: "nonZero",
+		token.T_19: "null",
+		token.T_21: "true",
+		token.T_23: "{",
+		token.T_24: "}",
 	},
 	// WS : EscOrComment WS ∙
 	{
@@ -1731,13 +2676,13 @@ var first = []map[token.Type]string{
 		token.T_5:  ":",
 		token.T_6:  "[",
 		token.T_7:  "]",
-		token.T_11: "false",
-		token.T_14: "nonZero",
-		token.T_15: "null",
-		token.T_17: "string_ns",
-		token.T_18: "true",
-		token.T_19: "{",
-		token.T_20: "}",
+		token.T_11: "dQuote",
+		token.T_15: "false",
+		token.T_18: "nonZero",
+		token.T_19: "null",
+		token.T_21: "true",
+		token.T_23: "{",
+		token.T_24: "}",
 	},
 	// WS : ∙
 	{
@@ -1748,13 +2693,13 @@ var first = []map[token.Type]string{
 		token.T_5:  ":",
 		token.T_6:  "[",
 		token.T_7:  "]",
-		token.T_11: "false",
-		token.T_14: "nonZero",
-		token.T_15: "null",
-		token.T_17: "string_ns",
-		token.T_18: "true",
-		token.T_19: "{",
-		token.T_20: "}",
+		token.T_11: "dQuote",
+		token.T_15: "false",
+		token.T_18: "nonZero",
+		token.T_19: "null",
+		token.T_21: "true",
+		token.T_23: "{",
+		token.T_24: "}",
 	},
 }
 
@@ -1763,36 +2708,48 @@ var followSets = []map[token.Type]string{
 	{
 		token.T_1:  ",",
 		token.T_7:  "]",
-		token.T_20: "}",
+		token.T_24: "}",
+	},
+	// CHAR
+	{
+		token.T_8:  "bSlash",
+		token.T_10: "char",
+		token.T_11: "dQuote",
 	},
 	// COLON
 	{
 		token.T_2:  "-",
 		token.T_4:  "0",
 		token.T_6:  "[",
-		token.T_11: "false",
-		token.T_14: "nonZero",
-		token.T_15: "null",
-		token.T_17: "string_ns",
-		token.T_18: "true",
-		token.T_19: "{",
+		token.T_11: "dQuote",
+		token.T_15: "false",
+		token.T_18: "nonZero",
+		token.T_19: "null",
+		token.T_21: "true",
+		token.T_23: "{",
 	},
 	// COMMA
 	{
 		token.T_2:  "-",
 		token.T_4:  "0",
 		token.T_6:  "[",
-		token.T_11: "false",
-		token.T_14: "nonZero",
-		token.T_15: "null",
-		token.T_17: "string_ns",
-		token.T_18: "true",
-		token.T_19: "{",
+		token.T_11: "dQuote",
+		token.T_15: "false",
+		token.T_18: "nonZero",
+		token.T_19: "null",
+		token.T_21: "true",
+		token.T_23: "{",
+	},
+	// CharCode
+	{
+		token.T_8:  "bSlash",
+		token.T_10: "char",
+		token.T_11: "dQuote",
 	},
 	// ComPair
 	{
 		token.T_1:  ",",
-		token.T_20: "}",
+		token.T_24: "}",
 	},
 	// ComVal
 	{
@@ -1803,10 +2760,10 @@ var followSets = []map[token.Type]string{
 	{
 		token.T_1:  ",",
 		token.T_7:  "]",
-		token.T_8:  "block_comment",
-		token.T_10: "escCharSpace",
-		token.T_13: "line_comment",
-		token.T_20: "}",
+		token.T_9:  "block_comment",
+		token.T_14: "escCharSpace",
+		token.T_17: "line_comment",
+		token.T_24: "}",
 	},
 	// Elements
 	{
@@ -1821,54 +2778,54 @@ var followSets = []map[token.Type]string{
 		token.T_5:  ":",
 		token.T_6:  "[",
 		token.T_7:  "]",
-		token.T_8:  "block_comment",
-		token.T_10: "escCharSpace",
-		token.T_11: "false",
-		token.T_13: "line_comment",
-		token.T_14: "nonZero",
-		token.T_15: "null",
-		token.T_17: "string_ns",
-		token.T_18: "true",
-		token.T_19: "{",
-		token.T_20: "}",
+		token.T_9:  "block_comment",
+		token.T_11: "dQuote",
+		token.T_14: "escCharSpace",
+		token.T_15: "false",
+		token.T_17: "line_comment",
+		token.T_18: "nonZero",
+		token.T_19: "null",
+		token.T_21: "true",
+		token.T_23: "{",
+		token.T_24: "}",
 	},
 	// FALSE
 	{
 		token.T_1:  ",",
 		token.T_7:  "]",
-		token.T_20: "}",
+		token.T_24: "}",
 	},
 	// FRAC
 	{
 		token.T_1:  ",",
 		token.T_7:  "]",
-		token.T_8:  "block_comment",
-		token.T_9:  "eE",
-		token.T_10: "escCharSpace",
-		token.T_13: "line_comment",
-		token.T_20: "}",
+		token.T_9:  "block_comment",
+		token.T_12: "eE",
+		token.T_14: "escCharSpace",
+		token.T_17: "line_comment",
+		token.T_24: "}",
 	},
 	// INT
 	{
 		token.T_1:  ",",
 		token.T_3:  ".",
 		token.T_7:  "]",
-		token.T_8:  "block_comment",
-		token.T_9:  "eE",
-		token.T_10: "escCharSpace",
-		token.T_13: "line_comment",
-		token.T_20: "}",
+		token.T_9:  "block_comment",
+		token.T_12: "eE",
+		token.T_14: "escCharSpace",
+		token.T_17: "line_comment",
+		token.T_24: "}",
 	},
 	// Integers
 	{
 		token.T_1:  ",",
 		token.T_3:  ".",
 		token.T_7:  "]",
-		token.T_8:  "block_comment",
-		token.T_9:  "eE",
-		token.T_10: "escCharSpace",
-		token.T_13: "line_comment",
-		token.T_20: "}",
+		token.T_9:  "block_comment",
+		token.T_12: "eE",
+		token.T_14: "escCharSpace",
+		token.T_17: "line_comment",
+		token.T_24: "}",
 	},
 	// JSON
 	{
@@ -1876,8 +2833,8 @@ var followSets = []map[token.Type]string{
 	},
 	// LBRACE
 	{
-		token.T_17: "string_ns",
-		token.T_20: "}",
+		token.T_11: "dQuote",
+		token.T_24: "}",
 	},
 	// LBRACKET
 	{
@@ -1885,120 +2842,163 @@ var followSets = []map[token.Type]string{
 		token.T_4:  "0",
 		token.T_6:  "[",
 		token.T_7:  "]",
-		token.T_11: "false",
-		token.T_14: "nonZero",
-		token.T_15: "null",
-		token.T_17: "string_ns",
-		token.T_18: "true",
-		token.T_19: "{",
+		token.T_11: "dQuote",
+		token.T_15: "false",
+		token.T_18: "nonZero",
+		token.T_19: "null",
+		token.T_21: "true",
+		token.T_23: "{",
 	},
 	// Members
 	{
-		token.T_20: "}",
+		token.T_24: "}",
 	},
 	// NUL
 	{
 		token.T_1:  ",",
 		token.T_7:  "]",
-		token.T_20: "}",
+		token.T_24: "}",
+	},
+	// Neg
+	{
+		token.T_4:  "0",
+		token.T_18: "nonZero",
+	},
+	// NumSeq
+	{
+		token.T_1:  ",",
+		token.T_3:  ".",
+		token.T_7:  "]",
+		token.T_9:  "block_comment",
+		token.T_12: "eE",
+		token.T_14: "escCharSpace",
+		token.T_17: "line_comment",
+		token.T_24: "}",
 	},
 	// Number
 	{
 		token.T_1:  ",",
 		token.T_7:  "]",
-		token.T_20: "}",
+		token.T_24: "}",
 	},
 	// Object
 	{
 		token.EOF:  "$",
 		token.T_1:  ",",
 		token.T_7:  "]",
-		token.T_20: "}",
-	},
-	// OptElem
-	{
-		token.T_7: "]",
-	},
-	// OptExp
-	{
-		token.T_1:  ",",
-		token.T_7:  "]",
-		token.T_8:  "block_comment",
-		token.T_10: "escCharSpace",
-		token.T_13: "line_comment",
-		token.T_20: "}",
-	},
-	// OptFrac
-	{
-		token.T_1:  ",",
-		token.T_7:  "]",
-		token.T_8:  "block_comment",
-		token.T_9:  "eE",
-		token.T_10: "escCharSpace",
-		token.T_13: "line_comment",
-		token.T_20: "}",
-	},
-	// OptMems
-	{
-		token.T_20: "}",
-	},
-	// OptNeg
-	{
-		token.T_4:  "0",
-		token.T_14: "nonZero",
-	},
-	// OptPM
-	{
-		token.T_16: "repNum1x",
+		token.T_24: "}",
 	},
 	// Pair
 	{
 		token.T_1:  ",",
-		token.T_20: "}",
+		token.T_24: "}",
 	},
 	// PlusORMinus
 	{
-		token.T_16: "repNum1x",
+		token.T_20: "num",
 	},
 	// RBRACE
 	{
 		token.EOF:  "$",
 		token.T_1:  ",",
 		token.T_7:  "]",
-		token.T_20: "}",
+		token.T_24: "}",
 	},
 	// RBRACKET
 	{
 		token.T_1:  ",",
 		token.T_7:  "]",
-		token.T_20: "}",
-	},
-	// RepComPair0x
-	{
-		token.T_20: "}",
-	},
-	// RepComVal0x
-	{
-		token.T_7: "]",
+		token.T_24: "}",
 	},
 	// String
 	{
 		token.T_1:  ",",
 		token.T_5:  ":",
 		token.T_7:  "]",
-		token.T_20: "}",
+		token.T_24: "}",
+	},
+	// Suff1xchar
+	{
+		token.T_8:  "bSlash",
+		token.T_10: "char",
+		token.T_11: "dQuote",
+	},
+	// SuffCHAR
+	{
+		token.T_11: "dQuote",
+	},
+	// SuffComPair
+	{
+		token.T_24: "}",
+	},
+	// SuffComVal
+	{
+		token.T_7: "]",
+	},
+	// SuffEXP
+	{
+		token.T_1:  ",",
+		token.T_7:  "]",
+		token.T_9:  "block_comment",
+		token.T_14: "escCharSpace",
+		token.T_17: "line_comment",
+		token.T_24: "}",
+	},
+	// SuffElements
+	{
+		token.T_7: "]",
+	},
+	// SuffFRAC
+	{
+		token.T_1:  ",",
+		token.T_7:  "]",
+		token.T_9:  "block_comment",
+		token.T_12: "eE",
+		token.T_14: "escCharSpace",
+		token.T_17: "line_comment",
+		token.T_24: "}",
+	},
+	// SuffMembers
+	{
+		token.T_24: "}",
+	},
+	// SuffNeg
+	{
+		token.T_4:  "0",
+		token.T_18: "nonZero",
+	},
+	// SuffPlusORMinus
+	{
+		token.T_20: "num",
+	},
+	// Suffchar
+	{
+		token.T_8:  "bSlash",
+		token.T_10: "char",
+		token.T_11: "dQuote",
+	},
+	// Suffnum
+	{
+		token.T_1:  ",",
+		token.T_3:  ".",
+		token.T_7:  "]",
+		token.T_9:  "block_comment",
+		token.T_12: "eE",
+		token.T_14: "escCharSpace",
+		token.T_17: "line_comment",
+		token.T_24: "}",
 	},
 	// TRUE
 	{
 		token.T_1:  ",",
 		token.T_7:  "]",
-		token.T_20: "}",
+		token.T_24: "}",
 	},
 	// Value
 	{
 		token.T_1:  ",",
 		token.T_7:  "]",
-		token.T_20: "}",
+		token.T_24: "}",
 	},
 	// WS
 	{
@@ -2009,13 +3009,13 @@ var followSets = []map[token.Type]string{
 		token.T_5:  ":",
 		token.T_6:  "[",
 		token.T_7:  "]",
-		token.T_11: "false",
-		token.T_14: "nonZero",
-		token.T_15: "null",
-		token.T_17: "string_ns",
-		token.T_18: "true",
-		token.T_19: "{",
-		token.T_20: "}",
+		token.T_11: "dQuote",
+		token.T_15: "false",
+		token.T_18: "nonZero",
+		token.T_19: "null",
+		token.T_21: "true",
+		token.T_23: "{",
+		token.T_24: "}",
 	},
 }
 

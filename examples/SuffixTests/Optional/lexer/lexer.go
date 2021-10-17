@@ -198,60 +198,58 @@ var accept = []token.Type{
 	token.Error, 
 	token.Error, 
 	token.Error, 
-	token.Error, 
 	token.T_0, 
+	token.Error, 
+	token.Error, 
+	token.Error, 
+	token.Error, 
+	token.T_1, 
 }
 
 var nextState = []func(r rune) state{ 
 	// Set0
 	func(r rune) state {
 		switch { 
-		case r == 'R':
+		case r == 'B':
 			return 1 
+		case r == 'R':
+			return 2 
 		}
 		return nullState
 	}, 
 	// Set1
 	func(r rune) state {
 		switch { 
-		case r == 'e':
-			return 2 
+		case r == 'a':
+			return 3 
 		}
 		return nullState
 	}, 
 	// Set2
 	func(r rune) state {
 		switch { 
-		case r == 'q':
-			return 3 
+		case r == 'e':
+			return 4 
 		}
 		return nullState
 	}, 
 	// Set3
 	func(r rune) state {
 		switch { 
-		case r == 'u':
-			return 4 
+		case r == 's':
+			return 5 
 		}
 		return nullState
 	}, 
 	// Set4
 	func(r rune) state {
 		switch { 
-		case r == 'i':
-			return 5 
-		}
-		return nullState
-	}, 
-	// Set5
-	func(r rune) state {
-		switch { 
-		case r == 'r':
+		case r == 'q':
 			return 6 
 		}
 		return nullState
 	}, 
-	// Set6
+	// Set5
 	func(r rune) state {
 		switch { 
 		case r == 'e':
@@ -259,15 +257,53 @@ var nextState = []func(r rune) state{
 		}
 		return nullState
 	}, 
-	// Set7
+	// Set6
 	func(r rune) state {
 		switch { 
-		case r == 'd':
+		case r == 'u':
 			return 8 
 		}
 		return nullState
 	}, 
+	// Set7
+	func(r rune) state {
+		switch { 
+		}
+		return nullState
+	}, 
 	// Set8
+	func(r rune) state {
+		switch { 
+		case r == 'i':
+			return 9 
+		}
+		return nullState
+	}, 
+	// Set9
+	func(r rune) state {
+		switch { 
+		case r == 'r':
+			return 10 
+		}
+		return nullState
+	}, 
+	// Set10
+	func(r rune) state {
+		switch { 
+		case r == 'e':
+			return 11 
+		}
+		return nullState
+	}, 
+	// Set11
+	func(r rune) state {
+		switch { 
+		case r == 'd':
+			return 12 
+		}
+		return nullState
+	}, 
+	// Set12
 	func(r rune) state {
 		switch { 
 		}
