@@ -13,7 +13,10 @@ import(
 type Label int
 
 const(
-	AorB0R0 Label = iota
+	AStar0R0 Label = iota
+	AStar0R1
+	AStar1F0
+	AorB0R0
 	AorB0R1
 	AorB1R0
 	AorB1R1
@@ -23,10 +26,10 @@ const(
 	AxBC0R1
 	AxBC0R2
 	AxBC1F0
-	Repa0x0R0
-	Repa0x0R1
-	Repa0x0R2
-	Repa0x1R0
+	Suffa0R0
+	Suffa0R1
+	Suffa0R2
+	Suffa1R0
 )
 
 type Slot struct {
@@ -138,17 +141,37 @@ func (s *Slot) String() string {
 }
 
 var slots = map[Label]*Slot{ 
+	AStar0R0: {
+		symbols.NT_AStar, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_Suffa,
+		}, 
+		AStar0R0, 
+	},
+	AStar0R1: {
+		symbols.NT_AStar, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_Suffa,
+		}, 
+		AStar0R1, 
+	},
+	AStar1F0: {
+		symbols.NT_AStar, 1, 0, 
+		symbols.Symbols{ 
+		}, 
+		AStar1F0, 
+	},
 	AorB0R0: {
 		symbols.NT_AorB, 0, 0, 
 		symbols.Symbols{  
-			symbols.NT_Repa0x,
+			symbols.NT_AStar,
 		}, 
 		AorB0R0, 
 	},
 	AorB0R1: {
 		symbols.NT_AorB, 0, 1, 
 		symbols.Symbols{  
-			symbols.NT_Repa0x,
+			symbols.NT_AStar,
 		}, 
 		AorB0R1, 
 	},
@@ -212,39 +235,42 @@ var slots = map[Label]*Slot{
 		}, 
 		AxBC1F0, 
 	},
-	Repa0x0R0: {
-		symbols.NT_Repa0x, 0, 0, 
+	Suffa0R0: {
+		symbols.NT_Suffa, 0, 0, 
 		symbols.Symbols{  
 			symbols.T_0, 
-			symbols.NT_Repa0x,
+			symbols.NT_Suffa,
 		}, 
-		Repa0x0R0, 
+		Suffa0R0, 
 	},
-	Repa0x0R1: {
-		symbols.NT_Repa0x, 0, 1, 
+	Suffa0R1: {
+		symbols.NT_Suffa, 0, 1, 
 		symbols.Symbols{  
 			symbols.T_0, 
-			symbols.NT_Repa0x,
+			symbols.NT_Suffa,
 		}, 
-		Repa0x0R1, 
+		Suffa0R1, 
 	},
-	Repa0x0R2: {
-		symbols.NT_Repa0x, 0, 2, 
+	Suffa0R2: {
+		symbols.NT_Suffa, 0, 2, 
 		symbols.Symbols{  
 			symbols.T_0, 
-			symbols.NT_Repa0x,
+			symbols.NT_Suffa,
 		}, 
-		Repa0x0R2, 
+		Suffa0R2, 
 	},
-	Repa0x1R0: {
-		symbols.NT_Repa0x, 1, 0, 
+	Suffa1R0: {
+		symbols.NT_Suffa, 1, 0, 
 		symbols.Symbols{ 
 		}, 
-		Repa0x1R0, 
+		Suffa1R0, 
 	},
 }
 
 var slotIndex = map[Index]Label { 
+	Index{ symbols.NT_AStar,0,0 }: AStar0R0,
+	Index{ symbols.NT_AStar,0,1 }: AStar0R1,
+	Index{ symbols.NT_AStar,1,0 }: AStar1F0,
 	Index{ symbols.NT_AorB,0,0 }: AorB0R0,
 	Index{ symbols.NT_AorB,0,1 }: AorB0R1,
 	Index{ symbols.NT_AorB,1,0 }: AorB1R0,
@@ -255,19 +281,23 @@ var slotIndex = map[Index]Label {
 	Index{ symbols.NT_AxBC,0,1 }: AxBC0R1,
 	Index{ symbols.NT_AxBC,0,2 }: AxBC0R2,
 	Index{ symbols.NT_AxBC,1,0 }: AxBC1F0,
-	Index{ symbols.NT_Repa0x,0,0 }: Repa0x0R0,
-	Index{ symbols.NT_Repa0x,0,1 }: Repa0x0R1,
-	Index{ symbols.NT_Repa0x,0,2 }: Repa0x0R2,
-	Index{ symbols.NT_Repa0x,1,0 }: Repa0x1R0,
+	Index{ symbols.NT_Suffa,0,0 }: Suffa0R0,
+	Index{ symbols.NT_Suffa,0,1 }: Suffa0R1,
+	Index{ symbols.NT_Suffa,0,2 }: Suffa0R2,
+	Index{ symbols.NT_Suffa,1,0 }: Suffa1R0,
 }
 
 var alternates = map[symbols.NT][]Label{ 
 	symbols.NT_AxBC:[]Label{ AxBC0R0 },
 	symbols.NT_AorB:[]Label{ AorB0R0,AorB1R0 },
-	symbols.NT_Repa0x:[]Label{ Repa0x0R0,Repa0x1R0 },
+	symbols.NT_AStar:[]Label{ AStar0R0 },
+	symbols.NT_Suffa:[]Label{ Suffa0R0,Suffa1R0 },
 }
 
 var nullable = []bool { 
+	true, // AStar0R0 
+	true, // AStar0R1 
+	false, // AStar1F0 
 	true, // AorB0R0 
 	true, // AorB0R1 
 	false, // AorB1R0 
@@ -278,13 +308,16 @@ var nullable = []bool {
 	false, // AxBC0R1 
 	true, // AxBC0R2 
 	false, // AxBC1F0 
-	false, // Repa0x0R0 
-	true, // Repa0x0R1 
-	true, // Repa0x0R2 
-	true, // Repa0x1R0 
+	false, // Suffa0R0 
+	true, // Suffa0R1 
+	true, // Suffa0R2 
+	true, // Suffa1R0 
 }
 
 var firstT = []map[token.Type]bool { 
+	{  token.T_0: true,  }, // AStar0R0 
+	{  }, // AStar0R1 
+	{  }, // AStar1F0 
 	{  token.T_0: true,  }, // AorB0R0 
 	{  }, // AorB0R1 
 	{  token.T_0: true,  }, // AorB1R0 
@@ -295,8 +328,8 @@ var firstT = []map[token.Type]bool {
 	{  token.T_2: true,  }, // AxBC0R1 
 	{  }, // AxBC0R2 
 	{  }, // AxBC1F0 
-	{  token.T_0: true,  }, // Repa0x0R0 
-	{  token.T_0: true,  }, // Repa0x0R1 
-	{  }, // Repa0x0R2 
-	{  }, // Repa0x1R0 
+	{  token.T_0: true,  }, // Suffa0R0 
+	{  token.T_0: true,  }, // Suffa0R1 
+	{  }, // Suffa0R2 
+	{  }, // Suffa1R0 
 }
