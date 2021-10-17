@@ -1,4 +1,4 @@
 .PHONY: go
 
-go:
-	gogll XML.md
+peg:
+	pegll XML.md

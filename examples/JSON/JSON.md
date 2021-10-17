@@ -23,24 +23,16 @@ The following are the GoGLL representations of the higher level JSON components.
 ```
 JSON            : WS Object                             ;
 
-Object          : LBRACE OptMems RBRACE                 ;
-        OptMems : Members 
-                / empty                                 ;
+Object          : LBRACE Members? RBRACE                ;
 
-Members         : Pair RepComPair0x                     ;
-   RepComPair0x : ComPair RepComPair0x  
-                / empty                                 ; 
+Members         : Pair ComPair*                         ;
         ComPair : COMMA Pair                            ;      
 
 Pair            : String COLON Value                    ;
 
-Array           : LBRACKET OptElem RBRACKET             ;
-        OptElem : Elements 
-                / empty                                 ;
+Array           : LBRACKET Elements? RBRACKET           ;
 
-Elements        : Value RepComVal0x                     ;
-    RepComVal0x : ComVal RepComVal0x
-                / empty                                 ; 
+Elements        : Value ComVal*                         ;
          ComVal : COMMA Value                           ;
 
 Value           : String 
@@ -58,42 +50,38 @@ The following are the GoGLL representations of the JSON String and character lit
         - won't accept escaped `"` in char or `\` in String
         
 ```
-String          : string_ns WS                          ;
-!string_ns      : '"'  { not "\"" any "^\\" 
-                | not "\"" '\\' [ any "\\\"/bfnrt" ] 
-                | not "\"" '\\' 'u' any "abcdefABCDEF0123456789" 
-                any "abcdefABCDEF0123456789"
-                any "abcdefABCDEF0123456789"
-                any "abcdefABCDEF0123456789"
-                } '"'                                   ;             
-  
+String          : dQuote CHAR* dQuote WS                ;
+    dQuote      : any "\""                              ;
+
+CHAR            : char+
+                / bSlash CharCode                       ;  
+        bSlash  : '\\'                                  ;
+       CharCode : esc
+                / "u" hex hex hex hex                   ;
+        esc     : any "\\\"/bfnrt"                      ;
+        char    : not "\"\\" any "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";   
 ```
 #### ***Numeric Literals***
 The following are the GoGLL representations of the JSON numeric literals.
 ```
 hex             : any "abcdefABCDEF0123456789"          ;        
-Number          : INT OptFrac OptExp WS                 ;
-        OptFrac : FRAC
-                / empty                                 ;
-        OptExp  : EXP
-                / empty                                 ;
+Number          : INT FRAC? EXP? WS                     ;
 
-INT             : OptNeg Integers                       ;
-       Integers : nonZero
+INT             : Neg? Integers                         ;
+            Neg : "-"                                   ;
+       Integers : NumSeq
                 / "0"                                   ;
-       nonZero : < any "123456789" >                    ;
-        OptNeg  : "-"
-                | empty                                 ;
-                       
-FRAC            : "." repNum1x                          ;
+        NumSeq : nonZero num*                           ;
+       nonZero : any "123456789"                        ;
 
-EXP             : eE OptPM repNum1x                     ;
+                       
+FRAC            : "." num+                              ;
+
+EXP             : eE PlusORMinus? num                   ;
              eE : any "eE"                              ;
-        OptPM   : PlusORMinus
-                / empty                                 ;
     PlusORMinus : "+"
                 | "-"                                   ;
-       repNum1x : < number >                            ;
+       num      : number                                ;
 
 ```
 #### ***Operators and Special Characters***

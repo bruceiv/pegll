@@ -3,7 +3,7 @@
 #### *Authors :* Brynn Harrington and Emily Hoppe Copyright (C) 2021
 #### *Adapted from :* Aaron Moss's [`XML` Egg Grammar](https://github.com/bruceiv/egg/blob/deriv/grammars/XML-u.egg)
 #### *Creation Date :* June 11, 2021 
-#### *Last Modified :* June 24, 2021
+#### *Last Modified :* July 29, 2021
 #### *Copyright and Licensing Information :* See end of file.
 
 ### **GENERAL DESCRIPTION**
@@ -22,30 +22,27 @@ package "XML"
 ```
 #### ***Higher-Level Language Structures***
 ```
-Document                : Prolog Element RepMisc0x              ;
+Document                : Prolog Element Misc*                  ;
 
-Prolog 	                : OptXMLDecl RepMisc0x                  ;
-XMLDecl                 : "<?xml" VersionInfo OptEncDecl 
-                         optSpaceEsc "?>"                       ;     
-        OptXMLDecl      : XMLDecl 
-                        / empty                                 ;
+Prolog 	                : XMLDecl? Misc*                        ;
+XMLDecl                 : "<?xml" VersionInfo EncodingDecl? 
+                         optSpaceEsc "?>"                       ;
 
-        VersionInfo     : spaceEsc "version" Eq QuoVerNum       ;
+VersionInfo             : sp "version" Eq QuoVerNum       ;
         QuoVerNum       : "'" VersionNum "'"  
                         | dubQu VersionNum dubQu                ;
 
-VersionNum              : NAME_CHAR RepNameChar0x               ;
+VersionNum              : NAME_CHAR+                            ;
 
-EncodingDecl            : spaceEsc "encoding" Eq QuoEncNam      ;
+EncodingDecl            : sp "encoding" Eq QuoEncNam      ;
         QuoEncNam       : "'" EncName "'"  
-                        | dubQu EncName dubQu                   ;
-        OptEncDecl      : EncodingDecl 
-                        / empty                                 ;
+                        / dubQu EncName dubQu                   ;
         
 ```
 #### ***Values and References***
 sinQu isn't necessary but there is an error in the lexer if it is not there
 ```
+
 ATT_VALUE               : dubQu DubConClose 
                         | "'" SinConClose                       ;
         SinConClose     : "'"
@@ -64,69 +61,49 @@ REFERENCE               : ENTITY_REF
 ENTITY_REF              : "&" NAME ";"                          ;        
 
 CHAR_REF                : "&#x" Hex ";"  
-                        | "&#" repNum1x ";"                     ;
-        Hex             : HexAlts RepHexAlts0x                  ;
-        RepHexAlts0x    : HexAlts Hex   
-                        / empty                                 ;       
+                        | "&#" num+ ";"                     ;
+        Hex             : HexAlts+                              ;     
         HexAlts         : num
                         | aA_fF                                 ;  
-        repNum1x        : < number >                            ;
         aA_fF           : any "abcdefABCDEF"                    ;
 ```
 #### ***Commenting, Elements, and Attributes***
-- issue with element - says accepts multiple strings if put in "<" instead of left angle token
-- infinite loop if exclamation is removed even though it is never called? 
-- tried making optional space or escape using ordered choice to empty got duplicate token error 
-modified from this version of comment - not sure if broken by earlier issues or this grammar (NOTE: neither version works)
-COMMENT                 : ComStart ComEnd ">"               ;
-        ComStart        : "<!--"                                ;
-        DubDash         : "--"                                  ;
-        ComEnd          : DubDash 
-                        / let ComEnd                            ; 
 ```
-Content                 : ContentAlts Content
-                        / empty                                 ;
+Content                 : ContentAlts*                          ;
         ContentAlts     : comment 
                         | Element 
                         | REFERENCE 
                         | charData                              ;
+
 Misc                    : comment 
-                        | spaceEsc                              ; 
-        RepMisc0x       : Misc RepMisc0x 
-                        / empty                                 ;
+                        | sp                                    ; 
 
 !comment                : '<''!''-''-'
                         { not "-->"
                         | '-' not "->"
                         | '-''-' not ">"
-                        } '-''-''>'                           ;  
+                        } '-''-''>'                             ;  
 
 
-Element                 : angLBrk NAME RepSAttx0x optSpaceEsc 
-                         ElemCloseAlts                           ;
-        SAtt            : spaceEsc Attribute                    ;      
-        RepSAttx0x      : SAtt RepSAttx0x  
-                        / empty                                 ;
-        ElemCloseAlts   : ">" Content "</" NAME optSpaceEsc ">" 
+Element                 : angLBrk NAME SAtt* sp? ElemCloseAlts  ;
+        SAtt            : sp Attribute                          ;      
+        ElemCloseAlts   : ">" Content "</" NAME sp? ">" 
                         | "</"                                  ;
         angLBrk         : '<'                                   ;
-        exclamation     : '!'                                   ;
 
-Attribute               : NAME optSpaceEsc "=" optSpaceEsc 
-                         ATT_VALUE                               ;
-        Eq              : optSpaceEsc "=" optSpaceEsc           ;
-        optSpaceEsc     : [ any " \t\r\n" ]                     ;
-        spaceEsc        : < any " \t\r\n" >                     ;
-        charData        : < any "^<&" >                         ;
+Attribute               : NAME Eq ATT_VALUE                     ;
+        Eq              : sp? "=" sp?                           ;
+        sp              : < any " \t\r\n" >                     ;
+
+charData                : < any "^<&" >                         ;
 ```
 #### ***Names, Encoding, and (Whitespace/Escape) Characters***
 ```
-NAME                    : LetColonAlts RepNameChar0x            ;
+NAME                    : LetColonAlts NAME_CHAR*               ;
         LetColonAlts    : let 
                         | ":"
                         | "_"                                   ;
-        RepNameChar0x   : NAME_CHAR RepNameChar0x 
-                        / empty                                 ; 
+
 
 NAME_CHAR               : let 
                         | num
@@ -134,9 +111,7 @@ NAME_CHAR               : let
                         | "_"
                         | dot_BSlashDash                        ;
 
-EncName                 : let RepLDSAlts0x                      ;
-        RepLDSAlts0x    : LetDigSymAlts RepLDSAlts0x
-                        / empty                                 ;
+EncName                 : let LetDigSymAlts*                    ;
         LetDigSymAlts   : let   
                         | num
                         | "_"

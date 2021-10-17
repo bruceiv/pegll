@@ -13,10 +13,23 @@ import(
 type Label int
 
 const(
-	Required0R0 Label = iota
+	Base0R0 Label = iota
+	Base0R1
+	Base1F0
+	Optional0R0
+	Optional0R1
+	Optional1F0
+	Required0R0
 	Required0R1
+	Required1F0
 	S10R0
 	S10R1
+	S10R2
+	S10R3
+	S11F0
+	SuffBase0R0
+	SuffBase0R1
+	SuffBase1R0
 )
 
 type Slot struct {
@@ -94,6 +107,11 @@ func (l Label) FirstContains(typ token.Type) bool {
 	return firstT[l][typ]
 }
 
+func (l Label) IsLookahead() bool {
+	s := l.Slot()
+	return s.Pos > 0 && s.Symbols[s.Pos-1].IsLookahead()
+}
+
 func (s *Slot) EoR() bool {
 	return s.Pos >= len(s.Symbols)
 }
@@ -123,6 +141,46 @@ func (s *Slot) String() string {
 }
 
 var slots = map[Label]*Slot{ 
+	Base0R0: {
+		symbols.NT_Base, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_Base,
+		}, 
+		Base0R0, 
+	},
+	Base0R1: {
+		symbols.NT_Base, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_Base,
+		}, 
+		Base0R1, 
+	},
+	Base1F0: {
+		symbols.NT_Base, 1, 0, 
+		symbols.Symbols{ 
+		}, 
+		Base1F0, 
+	},
+	Optional0R0: {
+		symbols.NT_Optional, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_SuffBase,
+		}, 
+		Optional0R0, 
+	},
+	Optional0R1: {
+		symbols.NT_Optional, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_SuffBase,
+		}, 
+		Optional0R1, 
+	},
+	Optional1F0: {
+		symbols.NT_Optional, 1, 0, 
+		symbols.Symbols{ 
+		}, 
+		Optional1F0, 
+	},
 	Required0R0: {
 		symbols.NT_Required, 0, 0, 
 		symbols.Symbols{  
@@ -137,9 +195,17 @@ var slots = map[Label]*Slot{
 		}, 
 		Required0R1, 
 	},
+	Required1F0: {
+		symbols.NT_Required, 1, 0, 
+		symbols.Symbols{ 
+		}, 
+		Required1F0, 
+	},
 	S10R0: {
 		symbols.NT_S1, 0, 0, 
 		symbols.Symbols{  
+			symbols.NT_Required, 
+			symbols.NT_Optional, 
 			symbols.NT_Required,
 		}, 
 		S10R0, 
@@ -147,34 +213,122 @@ var slots = map[Label]*Slot{
 	S10R1: {
 		symbols.NT_S1, 0, 1, 
 		symbols.Symbols{  
+			symbols.NT_Required, 
+			symbols.NT_Optional, 
 			symbols.NT_Required,
 		}, 
 		S10R1, 
 	},
+	S10R2: {
+		symbols.NT_S1, 0, 2, 
+		symbols.Symbols{  
+			symbols.NT_Required, 
+			symbols.NT_Optional, 
+			symbols.NT_Required,
+		}, 
+		S10R2, 
+	},
+	S10R3: {
+		symbols.NT_S1, 0, 3, 
+		symbols.Symbols{  
+			symbols.NT_Required, 
+			symbols.NT_Optional, 
+			symbols.NT_Required,
+		}, 
+		S10R3, 
+	},
+	S11F0: {
+		symbols.NT_S1, 1, 0, 
+		symbols.Symbols{ 
+		}, 
+		S11F0, 
+	},
+	SuffBase0R0: {
+		symbols.NT_SuffBase, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_Base,
+		}, 
+		SuffBase0R0, 
+	},
+	SuffBase0R1: {
+		symbols.NT_SuffBase, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_Base,
+		}, 
+		SuffBase0R1, 
+	},
+	SuffBase1R0: {
+		symbols.NT_SuffBase, 1, 0, 
+		symbols.Symbols{ 
+		}, 
+		SuffBase1R0, 
+	},
 }
 
 var slotIndex = map[Index]Label { 
+	Index{ symbols.NT_Base,0,0 }: Base0R0,
+	Index{ symbols.NT_Base,0,1 }: Base0R1,
+	Index{ symbols.NT_Base,1,0 }: Base1F0,
+	Index{ symbols.NT_Optional,0,0 }: Optional0R0,
+	Index{ symbols.NT_Optional,0,1 }: Optional0R1,
+	Index{ symbols.NT_Optional,1,0 }: Optional1F0,
 	Index{ symbols.NT_Required,0,0 }: Required0R0,
 	Index{ symbols.NT_Required,0,1 }: Required0R1,
+	Index{ symbols.NT_Required,1,0 }: Required1F0,
 	Index{ symbols.NT_S1,0,0 }: S10R0,
 	Index{ symbols.NT_S1,0,1 }: S10R1,
+	Index{ symbols.NT_S1,0,2 }: S10R2,
+	Index{ symbols.NT_S1,0,3 }: S10R3,
+	Index{ symbols.NT_S1,1,0 }: S11F0,
+	Index{ symbols.NT_SuffBase,0,0 }: SuffBase0R0,
+	Index{ symbols.NT_SuffBase,0,1 }: SuffBase0R1,
+	Index{ symbols.NT_SuffBase,1,0 }: SuffBase1R0,
 }
 
 var alternates = map[symbols.NT][]Label{ 
 	symbols.NT_S1:[]Label{ S10R0 },
 	symbols.NT_Required:[]Label{ Required0R0 },
+	symbols.NT_Optional:[]Label{ Optional0R0 },
+	symbols.NT_Base:[]Label{ Base0R0 },
+	symbols.NT_SuffBase:[]Label{ SuffBase0R0,SuffBase1R0 },
 }
 
 var nullable = []bool { 
+	false, // Base0R0 
+	true, // Base0R1 
+	false, // Base1F0 
+	true, // Optional0R0 
+	true, // Optional0R1 
+	false, // Optional1F0 
 	false, // Required0R0 
 	true, // Required0R1 
+	false, // Required1F0 
 	false, // S10R0 
-	true, // S10R1 
+	false, // S10R1 
+	false, // S10R2 
+	true, // S10R3 
+	false, // S11F0 
+	false, // SuffBase0R0 
+	true, // SuffBase0R1 
+	true, // SuffBase1R0 
 }
 
 var firstT = []map[token.Type]bool { 
-	{  token.T_0: true,  }, // Required0R0 
+	{  token.T_0: true,  }, // Base0R0 
+	{  }, // Base0R1 
+	{  }, // Base1F0 
+	{  token.T_0: true,  }, // Optional0R0 
+	{  }, // Optional0R1 
+	{  }, // Optional1F0 
+	{  token.T_1: true,  }, // Required0R0 
 	{  }, // Required0R1 
-	{  token.T_0: true,  }, // S10R0 
-	{  }, // S10R1 
+	{  }, // Required1F0 
+	{  token.T_1: true,  }, // S10R0 
+	{  token.T_0: true,  token.T_1: true,  }, // S10R1 
+	{  token.T_1: true,  }, // S10R2 
+	{  }, // S10R3 
+	{  }, // S11F0 
+	{  token.T_0: true,  }, // SuffBase0R0 
+	{  }, // SuffBase0R1 
+	{  }, // SuffBase1R0 
 }

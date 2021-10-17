@@ -1,11 +1,9 @@
 # **`eggr` GRAMMAR**
-TODO: SINGLE QUOTES ISSUES
-
 ### **AUTHORSHIP INFORMATION**
 #### *Author :* Brynn Harrington and Emily Hoppe Copyright (C) 2021
 #### *Adapted from :* Aaron Moss's [`eggr` Egg Grammar](https://github.com/bruceiv/egg/blob/deriv/grammars/eggr.egg)
-#### *Creation Date :* June 11, 2021 
-#### *Last Modified :* June 24, 2021
+#### *Creation Date :* July 30, 2021 
+#### *Last Modified :* July 30, 2021
 #### *Copyright and Licensing Information :* See end of file.
 
 ###  **GENERAL DESCRIPTION**
@@ -15,7 +13,8 @@ A modification of `eggr`[Egg](https://github.com/bruceiv/egg/blob/deriv/grammars
 #### *Markdown File Creation:* Working
 #### *Parser Generated :* Complete
 #### *Test File Creation:* Incomplete
-#### *Testing Results:* Unknown
+#### *Testing Results:* Unknown / "No Symbol" error on parsing
+
 ### **`eggr` GRAMMAR GUIDE**
 The following grammar takes a given structure and tests the grammars capability to match the structure of `Egg` parsing grammar.
 ```
@@ -26,22 +25,17 @@ The following sections handles the grammar, rules, and choices:
 - `Rule` is an identifier equal to a choice;
 - `Choice` is zero or more piped sequences. 
 ```
-Grammar                 : WS  Rule RepRule0x            ;
-        RepRule0x       : Rule RepRule0x
-                        / empty                         ; 
+Grammar                 : WS  Rule+                     ;
 Rule                    : Identifier EQUAL Choice       ;
 
-Choice                  : Sequence RepPipedSeq0x        ;
-     RepPipedSeq0x      : PIPE Sequence RepPipedSeq0x
-                        / empty                         ; 
+Choice                  : Sequence PipeSequence*        ;
+        PipeSequence    : PIPE Sequence                 ;
 ```
 The following sections handles sequences and expressions, where:
 - `Sequence` is one or more expressions;
 - `Expression` uses operators of the grammar to determine rules. 
 ```
-Sequence                : Expression RepExpr0x          ;
-        RepExpr0x       : Expression RepExpr0x
-                        / empty                         ;
+Sequence                : Expression+                   ;
 
 Expression              : AND Primary 
                         | NOT Primary 
@@ -63,11 +57,9 @@ Primary                 : Identifier NEQUAL
                         | ANY
                         | EMPTY                         ;
 
-Identifier              : LetWS LetOrNum0x WS           ;
+Identifier              : LetWS LetOrNum* WS            ;
         LetWS           : let
                         / WS                            ;
-     LetOrNum0x         : LetOrNum LetOrNum0x
-                        / EMPTY                         ;     
        LetOrNum         : let
                         / num
                         / WS                            ;
@@ -134,7 +126,7 @@ The following section handles `WS`, `SpaceOrComment`, `space` and `endOfLine` wh
 - `endOfLine` is a lexical rule for the escape characters that signify the end of the line. Any of these characters will indicate the end of line has been reached in `eggr`. 
 ```
 WS                      : SpaceOrComment WS
-                        / EMPTY                         ;
+                        / empty                         ;
 SpaceOrComment          : space
                         | LineOrBlock                   ;
 space                   : any " \t\r\n"                 ;

@@ -191,6 +191,7 @@ func not(r rune, set []rune) bool {
 }
 
 var accept = []token.Type{ 
+	token.Error, 
 	token.T_0, 
 }
 
@@ -199,7 +200,13 @@ var nextState = []func(r rune) state{
 	func(r rune) state {
 		switch { 
 		case r == 'a':
-			return 0 
+			return 1 
+		}
+		return nullState
+	}, 
+	// Set1
+	func(r rune) state {
+		switch { 
 		}
 		return nullState
 	}, 

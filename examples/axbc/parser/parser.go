@@ -57,24 +57,13 @@ func Parse(l *lexer.Lexer) (*bsr.Set, []*Error) {
 	return newParser(l).parse()
 }
 
-const (
-	_ slot.Label = iota + 11
-
-	fail_AxBC
-	fail_AorB
-)
-
 func (p *parser) parse() (*bsr.Set, []*Error) {
 	var L slot.Label
-	m, cU := len(p.lex.I), 0
+	m, cU := len(p.lex.Tokens)-1, 0
 	p.ntAdd(symbols.NT_AxBC, 0)
 	// p.DumpDescriptors()
 	for !p.R.empty() {
 		L, cU, p.cI = p.R.remove()
-		tokens := p.lex.Tokens(p.cI)
-		origTokens := tokens
-		var rext int
-		var ok bool
 
 		// fmt.Println()
 		// fmt.Printf("L:%s, cI:%d, I[p.cI]:%s, cU:%d\n", L, p.cI, p.lex.Tokens[p.cI], cU)
@@ -82,83 +71,90 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 
 		for {
 			switch L {
-			case slot.AorB0R0: // AorB : ∙Repa0x
-				rext, ok = p.testSelect(slot.AorB0R0, tokens)
-				if !ok {
-					p.parseError(slot.AorB0R0, p.cI, tokens, first[slot.AorB0R0])
+			case slot.AStar0R0: // AStar : ∙Suffa
+
+				if !p.testSelect(slot.AStar0R0) {
+					p.parseError(slot.AStar0R0, p.cI, first[slot.AStar0R0])
+					L, p.cI = slot.AStar1F0, cU
+					goto nextSlot
+				}
+				p.call(slot.AStar0R1, slot.AStar1F0, symbols.NT_Suffa, cU, p.cI)
+			case slot.AStar0R1: // AStar : Suffa ∙
+
+				p.rtn(symbols.NT_AStar, cU, p.cI)
+			case slot.AStar1F0: // AStar failure case
+				p.rtn(symbols.NT_AStar, cU, failInd)
+			case slot.AorB0R0: // AorB : ∙AStar
+
+				if !p.testSelect(slot.AorB0R0) {
+					p.parseError(slot.AorB0R0, p.cI, first[slot.AorB0R0])
 					L, p.cI = slot.AorB1R0, cU
 					goto nextSlot
 				}
-				p.call(slot.AorB0R1, slot.AorB1R0, symbols.NT_Repa0x, cU, p.cI)
-			case slot.AorB0R1: // AorB : Repa0x ∙
+				p.call(slot.AorB0R1, slot.AorB1R0, symbols.NT_AStar, cU, p.cI)
+			case slot.AorB0R1: // AorB : AStar ∙
 
 				p.rtn(symbols.NT_AorB, cU, p.cI)
 			case slot.AorB1R0: // AorB : ∙a b
-				rext, ok := p.testSelect(slot.AorB1R0, tokens)
-				if !ok {
-					p.parseError(slot.AorB1R0, p.cI, tokens, first[slot.AorB1R0])
-					L, p.cI = fail_AorB, cU
+
+				if !p.testSelect(slot.AorB1R0) {
+					p.parseError(slot.AorB1R0, p.cI, first[slot.AorB1R0])
+					L, p.cI = slot.AorB2F0, cU
 					goto nextSlot
 				}
-				p.bsrSet.Add(slot.AorB1R1, cU, p.cI, rext)
-				p.cI = rext
-				tokens = p.lex.Tokens(p.cI)
-				rext, ok = p.testSelect(slot.AorB1R1, tokens)
-				if !ok {
-					p.parseError(slot.AorB1R1, p.cI, tokens, first[slot.AorB1R1])
-					L, p.cI = fail_AorB, cU
-					tokens = origTokens
+				p.bsrSet.Add(slot.AorB1R1, cU, p.cI, p.cI+1)
+				p.cI++
+				if !p.testSelect(slot.AorB1R1) {
+					p.parseError(slot.AorB1R1, p.cI, first[slot.AorB1R1])
+					L, p.cI = slot.AorB2F0, cU
 					goto nextSlot
 				}
-				p.bsrSet.Add(slot.AorB1R2, cU, p.cI, rext)
-				p.cI = rext
+				p.bsrSet.Add(slot.AorB1R2, cU, p.cI, p.cI+1)
+				p.cI++
 				p.rtn(symbols.NT_AorB, cU, p.cI)
-			case fail_AorB: // AorB failure case
+			case slot.AorB2F0: // AorB failure case
 				p.rtn(symbols.NT_AorB, cU, failInd)
 			case slot.AxBC0R0: // AxBC : ∙AorB c
-				rext, ok = p.testSelect(slot.AxBC0R0, tokens)
-				if !ok {
-					p.parseError(slot.AxBC0R0, p.cI, tokens, first[slot.AxBC0R0])
-					L, p.cI = fail_AxBC, cU
-					goto nextSlot
-				}
-				p.call(slot.AxBC0R1, fail_AxBC, symbols.NT_AorB, cU, p.cI)
-			case slot.AxBC0R1: // AxBC : AorB ∙c
-				rext, ok = p.testSelect(slot.AxBC0R1, tokens)
-				if !ok {
-					p.parseError(slot.AxBC0R1, p.cI, tokens, first[slot.AxBC0R1])
-					L, p.cI = fail_AxBC, cU
-					goto nextSlot
-				}
-				p.bsrSet.Add(slot.AxBC0R2, cU, p.cI, rext)
-				p.cI = rext
-				p.rtn(symbols.NT_AxBC, cU, p.cI)
-			case fail_AxBC: // AxBC failure case
-				p.rtn(symbols.NT_AxBC, cU, failInd)
-			case slot.Repa0x0R0: // Repa0x : ∙a Repa0x
-				rext, ok = p.testSelect(slot.Repa0x0R0, tokens)
-				if !ok {
-					p.parseError(slot.Repa0x0R0, p.cI, tokens, first[slot.Repa0x0R0])
-					L, p.cI = slot.Repa0x1R0, cU
-					goto nextSlot
-				}
-				p.bsrSet.Add(slot.Repa0x0R1, cU, p.cI, rext)
-				p.cI = rext
-				tokens = p.lex.Tokens(p.cI)
-				rext, ok = p.testSelect(slot.Repa0x0R1, tokens)
-				if !ok {
-					p.parseError(slot.Repa0x0R1, p.cI, tokens, first[slot.Repa0x0R1])
-					L, p.cI = slot.Repa0x1R0, cU
-					tokens = origTokens
-					goto nextSlot
-				}
-				p.call(slot.Repa0x0R2, slot.Repa0x1R0, symbols.NT_Repa0x, cU, p.cI)
-			case slot.Repa0x0R2: // Repa0x : a Repa0x ∙
 
-				p.rtn(symbols.NT_Repa0x, cU, p.cI)
-			case slot.Repa0x1R0: // Repa0x : ∙
-				p.bsrSet.AddEmpty(slot.Repa0x1R0, p.cI)
-				p.rtn(symbols.NT_Repa0x, cU, p.cI)
+				if !p.testSelect(slot.AxBC0R0) {
+					p.parseError(slot.AxBC0R0, p.cI, first[slot.AxBC0R0])
+					L, p.cI = slot.AxBC1F0, cU
+					goto nextSlot
+				}
+				p.call(slot.AxBC0R1, slot.AxBC1F0, symbols.NT_AorB, cU, p.cI)
+			case slot.AxBC0R1: // AxBC : AorB ∙c
+
+				if !p.testSelect(slot.AxBC0R1) {
+					p.parseError(slot.AxBC0R1, p.cI, first[slot.AxBC0R1])
+					L, p.cI = slot.AxBC1F0, cU
+					goto nextSlot
+				}
+				p.bsrSet.Add(slot.AxBC0R2, cU, p.cI, p.cI+1)
+				p.cI++
+				p.rtn(symbols.NT_AxBC, cU, p.cI)
+			case slot.AxBC1F0: // AxBC failure case
+				p.rtn(symbols.NT_AxBC, cU, failInd)
+			case slot.Suffa0R0: // Suffa : ∙a Suffa
+
+				if !p.testSelect(slot.Suffa0R0) {
+					p.parseError(slot.Suffa0R0, p.cI, first[slot.Suffa0R0])
+					L, p.cI = slot.Suffa1R0, cU
+					goto nextSlot
+				}
+				p.bsrSet.Add(slot.Suffa0R1, cU, p.cI, p.cI+1)
+				p.cI++
+				if !p.testSelect(slot.Suffa0R1) {
+					p.parseError(slot.Suffa0R1, p.cI, first[slot.Suffa0R1])
+					L, p.cI = slot.Suffa1R0, cU
+					goto nextSlot
+				}
+				p.call(slot.Suffa0R2, slot.Suffa1R0, symbols.NT_Suffa, cU, p.cI)
+			case slot.Suffa0R2: // Suffa : a Suffa ∙
+
+				p.rtn(symbols.NT_Suffa, cU, p.cI)
+			case slot.Suffa1R0: // Suffa : ∙
+				p.bsrSet.AddEmpty(slot.Suffa1R0, p.cI)
+				p.rtn(symbols.NT_Suffa, cU, p.cI)
 
 			default:
 				panic("This must not happen")
@@ -229,8 +225,7 @@ func (p *parser) call(Lm, Lf slot.Label, X symbols.NT, i, j int) {
 			// fmt.Printf("|popped|=%d\n", len(popped))
 			for pnd := range p.popped {
 				if pnd.X == X && pnd.k == j && pnd.j != failInd {
-					p.dscAdd(Lm, i, pnd.j)
-					p.bsrSet.Add(Lm, i, j, pnd.j)
+					p.addMatch(Lm, i, j, pnd.j)
 				}
 			}
 		}
@@ -238,7 +233,7 @@ func (p *parser) call(Lm, Lf slot.Label, X symbols.NT, i, j int) {
 			p.crf_f[ndV] = append(vf, uf)
 			for pnd := range p.popped {
 				if pnd.X == X && pnd.k == j && pnd.j == failInd {
-					p.dscAdd(Lf, i, i)
+					p.addFail(Lf, i, j)
 				}
 			}
 		}
@@ -261,14 +256,30 @@ func (p *parser) rtn(X symbols.NT, k, j int) {
 		p.popped[pn] = true
 		if j != failInd {
 			for _, nd := range p.crf_m[clusterNode{X, k}] {
-				p.dscAdd(nd.L, nd.i, j)
-				p.bsrSet.Add(nd.L, nd.i, k, j)
+				p.addMatch(nd.L, nd.i, k, j)
 			}
 		} else {
 			for _, nd := range p.crf_f[clusterNode{X, k}] {
-				p.dscAdd(nd.L, nd.i, nd.i)
+				p.addFail(nd.L, nd.i, k)
 			}
 		}
+	}
+}
+
+func (p *parser) addMatch(L slot.Label, i, k, j int) {
+	p.bsrSet.Add(L, i, k, j)
+	if L.IsLookahead() {
+		p.dscAdd(L, i, k)
+	} else {
+		p.dscAdd(L, i, j)
+	}
+}
+
+func (p *parser) addFail(L slot.Label, i, k int) {
+	if L.IsLookahead() {
+		p.dscAdd(L, i, k)
+	} else {
+		p.dscAdd(L, i, i)
 	}
 }
 
@@ -381,43 +392,37 @@ func (p *parser) DumpU() {
 
 /*** TestSelect ***/
 
-// func (p *parser) follow(nt symbols.NT) bool {
-// 	// TODO update for new lexer
-// 	_, exist := followSets[nt][p.lex.Tokens[p.cI].Type()]
-// 	return exist
-// }
+func (p *parser) follow(nt symbols.NT) bool {
+	_, exist := followSets[nt][p.lex.Tokens[p.cI].Type()]
+	return exist
+}
 
-func (p *parser) testSelect(l slot.Label, tokens *lexer.TokenSet) (int, bool) {
-	// longest munch found so far; -1 for none such
-	best := -1
-	// check for nullable rule
-	if l.IsNullable() {
-		best = p.cI
-	}
-	// cycle through rules checking for valid tokens
-	for tok, rext := range *tokens {
-		// will exclude shorter than best matches as well as -1 for no match
-		if rext <= best {
-			continue
-		}
-		// keep matches for contained tokens
-		if l.FirstContains(token.Type(tok)) {
-			best = rext
-		}
-	}
-	return best, best != -1
-	// return l.IsNullable() || l.FirstContains(p.lex.Tokens[p.cI].Type())
+func (p *parser) testSelect(l slot.Label) bool {
+	return l.IsNullable() || l.FirstContains(p.lex.Tokens[p.cI].Type())
 	// _, exist := first[l][p.lex.Tokens[p.cI].Type()]
 	// return exist
 }
 
 var first = []map[token.Type]string{
-	// AorB : ∙Repa0x
+	// AStar : ∙Suffa
 	{
 		token.T_0: "a",
 		token.T_2: "c",
 	},
-	// AorB : Repa0x ∙
+	// AStar : Suffa ∙
+	{
+		token.T_2: "c",
+	},
+	// AStar : ∙
+	{
+		token.T_2: "c",
+	},
+	// AorB : ∙AStar
+	{
+		token.T_0: "a",
+		token.T_2: "c",
+	},
+	// AorB : AStar ∙
 	{
 		token.T_2: "c",
 	},
@@ -430,6 +435,10 @@ var first = []map[token.Type]string{
 		token.T_1: "b",
 	},
 	// AorB : a b ∙
+	{
+		token.T_2: "c",
+	},
+	// AorB : ∙
 	{
 		token.T_2: "c",
 	},
@@ -446,26 +455,34 @@ var first = []map[token.Type]string{
 	{
 		token.EOF: "$",
 	},
-	// Repa0x : ∙a Repa0x
+	// AxBC : ∙
+	{
+		token.EOF: "$",
+	},
+	// Suffa : ∙a Suffa
 	{
 		token.T_0: "a",
 	},
-	// Repa0x : a ∙Repa0x
+	// Suffa : a ∙Suffa
 	{
 		token.T_0: "a",
 		token.T_2: "c",
 	},
-	// Repa0x : a Repa0x ∙
+	// Suffa : a Suffa ∙
 	{
 		token.T_2: "c",
 	},
-	// Repa0x : ∙
+	// Suffa : ∙
 	{
 		token.T_2: "c",
 	},
 }
 
 var followSets = []map[token.Type]string{
+	// AStar
+	{
+		token.T_2: "c",
+	},
 	// AorB
 	{
 		token.T_2: "c",
@@ -474,7 +491,7 @@ var followSets = []map[token.Type]string{
 	{
 		token.EOF: "$",
 	},
-	// Repa0x
+	// Suffa
 	{
 		token.T_2: "c",
 	},
@@ -494,17 +511,14 @@ Normally the error of interest is the one that has parsed the largest number of
 tokens.
 */
 type Error struct {
-	// Input index of error.
+	// Index of token that caused the error.
 	cI int
 
 	// Grammar slot at which the error occured.
 	Slot slot.Label
 
-	// Lexer to recover values
-	lex *lexer.Lexer
-
-	// The tokens at which the error occurred.
-	Tokens *lexer.TokenSet
+	// The token at which the error occurred.
+	Token *token.Token
 
 	// The line and column in the input text at which the error occurred
 	Line, Column int
@@ -515,44 +529,27 @@ type Error struct {
 
 func (pe *Error) String() string {
 	w := new(bytes.Buffer)
-	fmt.Fprintf(w, "Parse Error: %s at line %d col %d\n",
-		pe.Slot, pe.Line, pe.Column)
-
-	fmt.Fprintf(w, "Got: [")
-	isFirst := true
-	for tok, rext := range *pe.Tokens {
-		if rext == -1 {
-			continue
-		}
-		if isFirst {
-			isFirst = false
-		} else {
-			fmt.Fprintf(w, ", ")
-		}
-		fmt.Fprintf(w, "%s %q", (token.Type(tok)).ID(), pe.lex.I[pe.cI:rext])
-	}
-	fmt.Fprintf(w, "]\n")
-
+	fmt.Fprintf(w, "Parse Error: %s I[%d]=%s at line %d col %d\n",
+		pe.Slot, pe.cI, pe.Token, pe.Line, pe.Column)
 	exp := []string{}
 	for _, e := range pe.Expected {
 		exp = append(exp, e)
 	}
-	fmt.Fprintf(w, "Expected one of: [%s]", strings.Join(exp, ", "))
-
+	fmt.Fprintf(w, "Expected one of: [%s]", strings.Join(exp, ","))
 	return w.String()
 }
 
-func (p *parser) parseError(slot slot.Label, i int, got *lexer.TokenSet, expected map[token.Type]string) {
-	pe := &Error{cI: i, Slot: slot, lex: p.lex, Tokens: got, Expected: expected}
+func (p *parser) parseError(slot slot.Label, i int, expected map[token.Type]string) {
+	pe := &Error{cI: i, Slot: slot, Token: p.lex.Tokens[i], Expected: expected}
 	p.parseErrors = append(p.parseErrors, pe)
 }
 
 func (p *parser) sortParseErrors() {
 	sort.Slice(p.parseErrors,
 		func(i, j int) bool {
-			return p.parseErrors[j].cI < p.parseErrors[i].cI
+			return p.parseErrors[j].Token.Lext() < p.parseErrors[i].Token.Lext()
 		})
 	for _, pe := range p.parseErrors {
-		pe.Line, pe.Column = p.lex.GetLineColumn(pe.cI)
+		pe.Line, pe.Column = p.lex.GetLineColumn(pe.Token.Lext())
 	}
 }

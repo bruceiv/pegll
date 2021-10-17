@@ -9,7 +9,6 @@ import (
 	"calc/lexer"
 	"calc/parser"
 	"calc/parser/bsr"
-	//"testing"
 )
 
 /* MATCHING TESTS

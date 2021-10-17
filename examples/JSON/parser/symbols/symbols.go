@@ -5,18 +5,22 @@ package symbols
 type Symbol interface{
 	isSymbol()
 	IsNonTerminal() bool
+	IsLookahead() bool
 	String() string
 }
 
 func (NT) isSymbol() {}
 func (T) isSymbol() {}
+func (L) isSymbol() {}
 
 // NT is the type of non-terminals symbols
 type NT int
 const( 
 	NT_Array NT = iota
+	NT_CHAR 
 	NT_COLON 
 	NT_COMMA 
+	NT_CharCode 
 	NT_ComPair 
 	NT_ComVal 
 	NT_EXP 
@@ -31,27 +35,33 @@ const(
 	NT_LBRACKET 
 	NT_Members 
 	NT_NUL 
+	NT_Neg 
+	NT_NumSeq 
 	NT_Number 
 	NT_Object 
-	NT_OptElem 
-	NT_OptExp 
-	NT_OptFrac 
-	NT_OptMems 
-	NT_OptNeg 
-	NT_OptPM 
 	NT_Pair 
 	NT_PlusORMinus 
 	NT_RBRACE 
 	NT_RBRACKET 
-	NT_RepComPair0x 
-	NT_RepComVal0x 
 	NT_String 
+	NT_Suff1xchar 
+	NT_SuffCHAR 
+	NT_SuffComPair 
+	NT_SuffComVal 
+	NT_SuffEXP 
+	NT_SuffElements 
+	NT_SuffFRAC 
+	NT_SuffMembers 
+	NT_SuffNeg 
+	NT_SuffPlusORMinus 
+	NT_Suffchar 
+	NT_Suffnum 
 	NT_TRUE 
 	NT_Value 
 	NT_WS 
 )
 
-const NumNTs = 35
+const NumNTs = 43
 
 type NTs []NT
 
@@ -66,19 +76,28 @@ const(
 	T_5  // : 
 	T_6  // [ 
 	T_7  // ] 
-	T_8  // block_comment 
-	T_9  // eE 
-	T_10  // escCharSpace 
-	T_11  // false 
-	T_12  // hex 
-	T_13  // line_comment 
-	T_14  // nonZero 
-	T_15  // null 
-	T_16  // repNum1x 
-	T_17  // string_ns 
-	T_18  // true 
-	T_19  // { 
-	T_20  // } 
+	T_8  // bSlash 
+	T_9  // block_comment 
+	T_10  // char 
+	T_11  // dQuote 
+	T_12  // eE 
+	T_13  // esc 
+	T_14  // escCharSpace 
+	T_15  // false 
+	T_16  // hex 
+	T_17  // line_comment 
+	T_18  // nonZero 
+	T_19  // null 
+	T_20  // num 
+	T_21  // true 
+	T_22  // u 
+	T_23  // { 
+	T_24  // } 
+)
+
+// L is the type of lookahead symbols
+type L int
+const( 
 )
 
 type Symbols []Symbol
@@ -99,6 +118,22 @@ func (T) IsNonTerminal() bool {
 	return false
 }
 
+func (L) IsNonTerminal() bool {
+	return false
+}
+
+func (NT) IsLookahead() bool {
+	return false
+}
+
+func (T) IsLookahead() bool {
+	return false
+}
+
+func (L) IsLookahead() bool {
+	return true
+}
+
 func (nt NT) String() string {
 	return ntToString[nt]
 }
@@ -107,14 +142,56 @@ func (t T) String() string {
 	return tToString[t]
 }
 
+func (lk L) String() string {
+	if lk.IsNegative() {
+		return "!" + lk.ArgSymbol().String()
+	} else {
+		return "&" + lk.ArgSymbol().String()
+	}
+}
+
 func (nt NT) LeftRec() NTs {
 	return leftRec[nt]
 }
 
+func (nt NT) IsOrdered() bool {
+	return ordered[nt]
+}
+
+const(
+	negTerm    = 0
+	negNonterm = 1
+	posTerm    = 2
+	posNonterm = 3
+	isNonterm  = 1
+	isPos      = 2
+)
+
+func (lk L) IsNegative() bool {
+	return lkMode[lk] & isPos == 0
+}
+
+func (lk L) IsPositive() bool {
+	return lkMode[lk] & isPos != 0
+}
+
+func (lk L) ArgSymbol() Symbol {
+	switch lkMode[lk] & isNonterm {
+	case 0: // terminal
+		return T(lkSym[lk])
+	case 1: // nonterminal
+		return NT(lkSym[lk])
+	default:
+		panic("Invalid lookahead")
+	}
+}
+
 var ntToString = []string { 
 	"Array", /* NT_Array */
+	"CHAR", /* NT_CHAR */
 	"COLON", /* NT_COLON */
 	"COMMA", /* NT_COMMA */
+	"CharCode", /* NT_CharCode */
 	"ComPair", /* NT_ComPair */
 	"ComVal", /* NT_ComVal */
 	"EXP", /* NT_EXP */
@@ -129,21 +206,27 @@ var ntToString = []string {
 	"LBRACKET", /* NT_LBRACKET */
 	"Members", /* NT_Members */
 	"NUL", /* NT_NUL */
+	"Neg", /* NT_Neg */
+	"NumSeq", /* NT_NumSeq */
 	"Number", /* NT_Number */
 	"Object", /* NT_Object */
-	"OptElem", /* NT_OptElem */
-	"OptExp", /* NT_OptExp */
-	"OptFrac", /* NT_OptFrac */
-	"OptMems", /* NT_OptMems */
-	"OptNeg", /* NT_OptNeg */
-	"OptPM", /* NT_OptPM */
 	"Pair", /* NT_Pair */
 	"PlusORMinus", /* NT_PlusORMinus */
 	"RBRACE", /* NT_RBRACE */
 	"RBRACKET", /* NT_RBRACKET */
-	"RepComPair0x", /* NT_RepComPair0x */
-	"RepComVal0x", /* NT_RepComVal0x */
 	"String", /* NT_String */
+	"Suff1xchar", /* NT_Suff1xchar */
+	"SuffCHAR", /* NT_SuffCHAR */
+	"SuffComPair", /* NT_SuffComPair */
+	"SuffComVal", /* NT_SuffComVal */
+	"SuffEXP", /* NT_SuffEXP */
+	"SuffElements", /* NT_SuffElements */
+	"SuffFRAC", /* NT_SuffFRAC */
+	"SuffMembers", /* NT_SuffMembers */
+	"SuffNeg", /* NT_SuffNeg */
+	"SuffPlusORMinus", /* NT_SuffPlusORMinus */
+	"Suffchar", /* NT_Suffchar */
+	"Suffnum", /* NT_Suffnum */
 	"TRUE", /* NT_TRUE */
 	"Value", /* NT_Value */
 	"WS", /* NT_WS */ 
@@ -158,25 +241,31 @@ var tToString = []string {
 	":", /* T_5 */
 	"[", /* T_6 */
 	"]", /* T_7 */
-	"block_comment", /* T_8 */
-	"eE", /* T_9 */
-	"escCharSpace", /* T_10 */
-	"false", /* T_11 */
-	"hex", /* T_12 */
-	"line_comment", /* T_13 */
-	"nonZero", /* T_14 */
-	"null", /* T_15 */
-	"repNum1x", /* T_16 */
-	"string_ns", /* T_17 */
-	"true", /* T_18 */
-	"{", /* T_19 */
-	"}", /* T_20 */ 
+	"bSlash", /* T_8 */
+	"block_comment", /* T_9 */
+	"char", /* T_10 */
+	"dQuote", /* T_11 */
+	"eE", /* T_12 */
+	"esc", /* T_13 */
+	"escCharSpace", /* T_14 */
+	"false", /* T_15 */
+	"hex", /* T_16 */
+	"line_comment", /* T_17 */
+	"nonZero", /* T_18 */
+	"null", /* T_19 */
+	"num", /* T_20 */
+	"true", /* T_21 */
+	"u", /* T_22 */
+	"{", /* T_23 */
+	"}", /* T_24 */ 
 }
 
 var stringNT = map[string]NT{ 
 	"Array":NT_Array,
+	"CHAR":NT_CHAR,
 	"COLON":NT_COLON,
 	"COMMA":NT_COMMA,
+	"CharCode":NT_CharCode,
 	"ComPair":NT_ComPair,
 	"ComVal":NT_ComVal,
 	"EXP":NT_EXP,
@@ -191,21 +280,27 @@ var stringNT = map[string]NT{
 	"LBRACKET":NT_LBRACKET,
 	"Members":NT_Members,
 	"NUL":NT_NUL,
+	"Neg":NT_Neg,
+	"NumSeq":NT_NumSeq,
 	"Number":NT_Number,
 	"Object":NT_Object,
-	"OptElem":NT_OptElem,
-	"OptExp":NT_OptExp,
-	"OptFrac":NT_OptFrac,
-	"OptMems":NT_OptMems,
-	"OptNeg":NT_OptNeg,
-	"OptPM":NT_OptPM,
 	"Pair":NT_Pair,
 	"PlusORMinus":NT_PlusORMinus,
 	"RBRACE":NT_RBRACE,
 	"RBRACKET":NT_RBRACKET,
-	"RepComPair0x":NT_RepComPair0x,
-	"RepComVal0x":NT_RepComVal0x,
 	"String":NT_String,
+	"Suff1xchar":NT_Suff1xchar,
+	"SuffCHAR":NT_SuffCHAR,
+	"SuffComPair":NT_SuffComPair,
+	"SuffComVal":NT_SuffComVal,
+	"SuffEXP":NT_SuffEXP,
+	"SuffElements":NT_SuffElements,
+	"SuffFRAC":NT_SuffFRAC,
+	"SuffMembers":NT_SuffMembers,
+	"SuffNeg":NT_SuffNeg,
+	"SuffPlusORMinus":NT_SuffPlusORMinus,
+	"Suffchar":NT_Suffchar,
+	"Suffnum":NT_Suffnum,
 	"TRUE":NT_TRUE,
 	"Value":NT_Value,
 	"WS":NT_WS,
@@ -213,38 +308,73 @@ var stringNT = map[string]NT{
 
 var leftRec = map[NT]NTs { 
 	NT_Array: NTs {  NT_LBRACKET,  },
+	NT_CHAR: NTs {  NT_Suff1xchar,  },
 	NT_COLON: NTs {  },
 	NT_COMMA: NTs {  },
+	NT_CharCode: NTs {  },
 	NT_ComPair: NTs {  NT_COMMA,  },
 	NT_ComVal: NTs {  NT_COMMA,  },
 	NT_EXP: NTs {  },
-	NT_Elements: NTs {  NT_NUL,  NT_Value,  NT_OptNeg,  NT_Object,  NT_LBRACE,  NT_Array,  NT_LBRACKET,  NT_TRUE,  NT_INT,  NT_Integers,  NT_String,  NT_Number,  NT_FALSE,  },
+	NT_Elements: NTs {  NT_NUL,  NT_INT,  NT_LBRACE,  NT_Integers,  NT_TRUE,  NT_FALSE,  NT_SuffNeg,  NT_Array,  NT_String,  NT_NumSeq,  NT_Object,  NT_LBRACKET,  NT_Value,  NT_Neg,  NT_Number,  },
 	NT_EscOrComment: NTs {  },
 	NT_FALSE: NTs {  },
 	NT_FRAC: NTs {  },
-	NT_INT: NTs {  NT_OptNeg,  NT_Integers,  },
-	NT_Integers: NTs {  },
+	NT_INT: NTs {  NT_SuffNeg,  NT_Neg,  NT_Integers,  NT_NumSeq,  },
+	NT_Integers: NTs {  NT_NumSeq,  },
 	NT_JSON: NTs {  NT_WS,  NT_EscOrComment,  NT_Object,  NT_LBRACE,  },
 	NT_LBRACE: NTs {  },
 	NT_LBRACKET: NTs {  },
-	NT_Members: NTs {  NT_Pair,  NT_String,  },
+	NT_Members: NTs {  NT_String,  NT_Pair,  },
 	NT_NUL: NTs {  },
-	NT_Number: NTs {  NT_INT,  NT_OptNeg,  NT_Integers,  },
+	NT_Neg: NTs {  },
+	NT_NumSeq: NTs {  },
+	NT_Number: NTs {  NT_INT,  NT_Integers,  NT_NumSeq,  NT_SuffNeg,  NT_Neg,  },
 	NT_Object: NTs {  NT_LBRACE,  },
-	NT_OptElem: NTs {  NT_Number,  NT_Value,  NT_OptNeg,  NT_Elements,  NT_FALSE,  NT_LBRACKET,  NT_TRUE,  NT_Array,  NT_Object,  NT_INT,  NT_String,  NT_NUL,  NT_Integers,  NT_LBRACE,  },
-	NT_OptExp: NTs {  NT_EXP,  },
-	NT_OptFrac: NTs {  NT_FRAC,  },
-	NT_OptMems: NTs {  NT_Members,  NT_Pair,  NT_String,  },
-	NT_OptNeg: NTs {  },
-	NT_OptPM: NTs {  NT_PlusORMinus,  },
 	NT_Pair: NTs {  NT_String,  },
 	NT_PlusORMinus: NTs {  },
 	NT_RBRACE: NTs {  },
 	NT_RBRACKET: NTs {  },
-	NT_RepComPair0x: NTs {  NT_ComPair,  NT_COMMA,  },
-	NT_RepComVal0x: NTs {  NT_ComVal,  NT_COMMA,  },
 	NT_String: NTs {  },
+	NT_Suff1xchar: NTs {  },
+	NT_SuffCHAR: NTs {  NT_CHAR,  NT_Suff1xchar,  },
+	NT_SuffComPair: NTs {  NT_ComPair,  NT_COMMA,  },
+	NT_SuffComVal: NTs {  NT_ComVal,  NT_COMMA,  },
+	NT_SuffEXP: NTs {  NT_EXP,  },
+	NT_SuffElements: NTs {  NT_String,  NT_NUL,  NT_INT,  NT_TRUE,  NT_SuffNeg,  NT_Value,  NT_Neg,  NT_Number,  NT_Elements,  NT_FALSE,  NT_LBRACKET,  NT_Integers,  NT_Array,  NT_NumSeq,  NT_Object,  NT_LBRACE,  },
+	NT_SuffFRAC: NTs {  NT_FRAC,  },
+	NT_SuffMembers: NTs {  NT_Members,  NT_Pair,  NT_String,  },
+	NT_SuffNeg: NTs {  NT_Neg,  },
+	NT_SuffPlusORMinus: NTs {  NT_PlusORMinus,  },
+	NT_Suffchar: NTs {  },
+	NT_Suffnum: NTs {  },
 	NT_TRUE: NTs {  },
-	NT_Value: NTs {  NT_Object,  NT_LBRACE,  NT_Array,  NT_String,  NT_Number,  NT_INT,  NT_OptNeg,  NT_Integers,  NT_LBRACKET,  NT_TRUE,  NT_FALSE,  NT_NUL,  },
-	NT_WS: NTs {  NT_EscOrComment,  NT_WS,  },
+	NT_Value: NTs {  NT_Neg,  NT_String,  NT_NumSeq,  NT_Object,  NT_LBRACKET,  NT_Number,  NT_Integers,  NT_TRUE,  NT_FALSE,  NT_NUL,  NT_SuffNeg,  NT_INT,  NT_LBRACE,  NT_Array,  },
+	NT_WS: NTs {  NT_WS,  NT_EscOrComment,  },
+}
+
+var ordered = map[NT]bool { 
+	NT_CHAR:true,
+	NT_CharCode:true,
+	NT_EscOrComment:true,
+	NT_Integers:true,
+	NT_Suff1xchar:true,
+	NT_SuffCHAR:true,
+	NT_SuffComPair:true,
+	NT_SuffComVal:true,
+	NT_SuffEXP:true,
+	NT_SuffElements:true,
+	NT_SuffFRAC:true,
+	NT_SuffMembers:true,
+	NT_SuffNeg:true,
+	NT_SuffPlusORMinus:true,
+	NT_Suffchar:true,
+	NT_Suffnum:true,
+	NT_Value:true,
+	NT_WS:true,
+}
+
+var lkMode = []int { 
+}
+
+var lkSym = []int { 
 }

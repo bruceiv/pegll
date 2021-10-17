@@ -21,7 +21,8 @@ type parser struct {
 	U *descriptors
 
 	popped   map[poppedNode]bool
-	crf      map[clusterNode][]*crfNode
+	crf_m    map[clusterNode][]*crfNode
+	crf_f    map[clusterNode][]*crfNode
 	crfNodes map[crfNode]*crfNode
 
 	lex         *lexer.Lexer
@@ -30,6 +31,9 @@ type parser struct {
 	bsrSet *bsr.Set
 }
 
+// index used for non-matches
+const failInd = -1
+
 func newParser(l *lexer.Lexer) *parser {
 	return &parser{
 		cI:     0,
@@ -37,9 +41,10 @@ func newParser(l *lexer.Lexer) *parser {
 		R:      &descriptors{},
 		U:      &descriptors{},
 		popped: make(map[poppedNode]bool),
-		crf: map[clusterNode][]*crfNode{
+		crf_m: map[clusterNode][]*crfNode{
 			{symbols.NT_EXPR, 0}: {},
 		},
+		crf_f:       map[clusterNode][]*crfNode{},
 		crfNodes:    map[crfNode]*crfNode{},
 		bsrSet:      bsr.New(symbols.NT_EXPR, l),
 		parseErrors: nil,
@@ -64,328 +69,476 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 		// fmt.Printf("L:%s, cI:%d, I[p.cI]:%s, cU:%d\n", L, p.cI, p.lex.Tokens[p.cI], cU)
 		// p.DumpDescriptors()
 
-		switch L {
-		case slot.CLOSE0R0: // CLOSE : ∙) WS
+		for {
+			switch L {
+			case slot.CLOSE0R0: // CLOSE : ∙) WS
 
-			p.bsrSet.Add(slot.CLOSE0R1, cU, p.cI, p.cI+1)
-			p.cI++
-			if !p.testSelect(slot.CLOSE0R1) {
-				p.parseError(slot.CLOSE0R1, p.cI, first[slot.CLOSE0R1])
-				break
-			}
+				if !p.testSelect(slot.CLOSE0R0) {
+					p.parseError(slot.CLOSE0R0, p.cI, first[slot.CLOSE0R0])
+					L, p.cI = slot.CLOSE1F0, cU
+					goto nextSlot
+				}
+				p.bsrSet.Add(slot.CLOSE0R1, cU, p.cI, p.cI+1)
+				p.cI++
+				if !p.testSelect(slot.CLOSE0R1) {
+					p.parseError(slot.CLOSE0R1, p.cI, first[slot.CLOSE0R1])
+					L, p.cI = slot.CLOSE1F0, cU
+					goto nextSlot
+				}
+				p.call(slot.CLOSE0R2, slot.CLOSE1F0, symbols.NT_WS, cU, p.cI)
+			case slot.CLOSE0R2: // CLOSE : ) WS ∙
 
-			p.call(slot.CLOSE0R2, cU, p.cI)
-		case slot.CLOSE0R2: // CLOSE : ) WS ∙
-
-			if p.follow(symbols.NT_CLOSE) {
 				p.rtn(symbols.NT_CLOSE, cU, p.cI)
-			} else {
-				p.parseError(slot.CLOSE0R0, p.cI, followSets[symbols.NT_CLOSE])
-			}
-		case slot.DIVIDE0R0: // DIVIDE : ∙/ WS
+			case slot.CLOSE1F0: // CLOSE failure case
+				p.rtn(symbols.NT_CLOSE, cU, failInd)
+			case slot.DIVIDE0R0: // DIVIDE : ∙/ WS
 
-			p.bsrSet.Add(slot.DIVIDE0R1, cU, p.cI, p.cI+1)
-			p.cI++
-			if !p.testSelect(slot.DIVIDE0R1) {
-				p.parseError(slot.DIVIDE0R1, p.cI, first[slot.DIVIDE0R1])
-				break
-			}
+				if !p.testSelect(slot.DIVIDE0R0) {
+					p.parseError(slot.DIVIDE0R0, p.cI, first[slot.DIVIDE0R0])
+					L, p.cI = slot.DIVIDE1F0, cU
+					goto nextSlot
+				}
+				p.bsrSet.Add(slot.DIVIDE0R1, cU, p.cI, p.cI+1)
+				p.cI++
+				if !p.testSelect(slot.DIVIDE0R1) {
+					p.parseError(slot.DIVIDE0R1, p.cI, first[slot.DIVIDE0R1])
+					L, p.cI = slot.DIVIDE1F0, cU
+					goto nextSlot
+				}
+				p.call(slot.DIVIDE0R2, slot.DIVIDE1F0, symbols.NT_WS, cU, p.cI)
+			case slot.DIVIDE0R2: // DIVIDE : / WS ∙
 
-			p.call(slot.DIVIDE0R2, cU, p.cI)
-		case slot.DIVIDE0R2: // DIVIDE : / WS ∙
-
-			if p.follow(symbols.NT_DIVIDE) {
 				p.rtn(symbols.NT_DIVIDE, cU, p.cI)
-			} else {
-				p.parseError(slot.DIVIDE0R0, p.cI, followSets[symbols.NT_DIVIDE])
-			}
+			case slot.DIVIDE1F0: // DIVIDE failure case
+				p.rtn(symbols.NT_DIVIDE, cU, failInd)
+			case slot.ELEMENT0R0: // ELEMENT : ∙OPEN SUM CLOSE
 
-		case slot.ELEMENT0R0: // ELEMENT : ∙OPEN SUM CLOSE
+				if !p.testSelect(slot.ELEMENT0R0) {
+					p.parseError(slot.ELEMENT0R0, p.cI, first[slot.ELEMENT0R0])
+					L, p.cI = slot.ELEMENT1R0, cU
+					goto nextSlot
+				}
+				p.call(slot.ELEMENT0R1, slot.ELEMENT1R0, symbols.NT_OPEN, cU, p.cI)
+			case slot.ELEMENT0R1: // ELEMENT : OPEN ∙SUM CLOSE
 
-			p.call(slot.ELEMENT0R1, cU, p.cI)
-		case slot.ELEMENT0R1: // ELEMENT : OPEN ∙SUM CLOSE
-
-			if !p.testSelect(slot.ELEMENT0R1) {
-				p.parseError(slot.ELEMENT0R1, p.cI, first[slot.ELEMENT0R1])
-				break
-			}
-
-			p.call(slot.ELEMENT0R2, cU, p.cI)
-		case slot.ELEMENT0R2: // ELEMENT : OPEN SUM ∙CLOSE
-
-			if !p.testSelect(slot.ELEMENT0R2) {
-				p.parseError(slot.ELEMENT0R2, p.cI, first[slot.ELEMENT0R2])
-				break
-			}
-
-			p.call(slot.ELEMENT0R3, cU, p.cI)
-		case slot.ELEMENT0R3: // ELEMENT : OPEN SUM CLOSE ∙
-
-			p.rtn(symbols.NT_ELEMENT, cU, p.cI)
-		case slot.ELEMENT1R0: // ELEMENT : ∙Number
-
-			p.call(slot.ELEMENT1R1, cU, p.cI)
-		case slot.ELEMENT1R1: // ELEMENT : Number ∙
-
-			if p.follow(symbols.NT_ELEMENT) {
 				p.rtn(symbols.NT_ELEMENT, cU, p.cI)
-			} else {
-				p.parseError(slot.ELEMENT1R0, p.cI, followSets[symbols.NT_ELEMENT])
-			}
-		case slot.EXPR0R0: // EXPR : ∙WS SUM
+				L, p.cI = slot.ELEMENT1M0, cU
+				goto nextSlot
+				if !p.testSelect(slot.ELEMENT0R1) {
+					p.parseError(slot.ELEMENT0R1, p.cI, first[slot.ELEMENT0R1])
+					L, p.cI = slot.ELEMENT1R0, cU
+					goto nextSlot
+				}
+				p.call(slot.ELEMENT0R2, slot.ELEMENT1R0, symbols.NT_SUM, cU, p.cI)
+			case slot.ELEMENT0R2: // ELEMENT : OPEN SUM ∙CLOSE
 
-			p.call(slot.EXPR0R1, cU, p.cI)
-		case slot.EXPR0R1: // EXPR : WS ∙SUM
+				p.rtn(symbols.NT_ELEMENT, cU, p.cI)
+				L, p.cI = slot.ELEMENT1M0, cU
+				goto nextSlot
+				if !p.testSelect(slot.ELEMENT0R2) {
+					p.parseError(slot.ELEMENT0R2, p.cI, first[slot.ELEMENT0R2])
+					L, p.cI = slot.ELEMENT1R0, cU
+					goto nextSlot
+				}
+				p.call(slot.ELEMENT0R3, slot.ELEMENT1R0, symbols.NT_CLOSE, cU, p.cI)
+			case slot.ELEMENT0R3: // ELEMENT : OPEN SUM CLOSE ∙
 
-			if !p.testSelect(slot.EXPR0R1) {
-				p.parseError(slot.EXPR0R1, p.cI, first[slot.EXPR0R1])
-				break
-			}
+				p.rtn(symbols.NT_ELEMENT, cU, p.cI)
+				L, p.cI = slot.ELEMENT1M0, cU
+				goto nextSlot
 
-			p.call(slot.EXPR0R2, cU, p.cI)
-		case slot.EXPR0R2: // EXPR : WS SUM ∙
+			case slot.ELEMENT1R0: // ELEMENT : ∙Number
 
-			if p.follow(symbols.NT_EXPR) {
+				if !p.testSelect(slot.ELEMENT1R0) {
+					p.parseError(slot.ELEMENT1R0, p.cI, first[slot.ELEMENT1R0])
+					L, p.cI = slot.ELEMENT2F0, cU
+					goto nextSlot
+				}
+				p.call(slot.ELEMENT1R1, slot.ELEMENT2F0, symbols.NT_Number, cU, p.cI)
+			case slot.ELEMENT1R1: // ELEMENT : Number ∙
+
+				p.rtn(symbols.NT_ELEMENT, cU, p.cI)
+
+			case slot.ELEMENT1M0: // ELEMENT : ∙Number  [with previous match]
+
+				if !p.testSelect(slot.ELEMENT1R0) {
+					p.parseError(slot.ELEMENT1R0, p.cI, first[slot.ELEMENT1R0])
+
+				}
+				p.call(slot.ELEMENT1M0, failInd, symbols.NT_Number, cU, p.cI)
+			case slot.ELEMENT1M0: // ELEMENT : Number ∙
+
+				p.rtn(symbols.NT_ELEMENT, cU, p.cI)
+
+			case slot.ELEMENT2F0: // ELEMENT failure case
+				p.rtn(symbols.NT_ELEMENT, cU, failInd)
+			case slot.EXPR0R0: // EXPR : ∙WS SUM
+
+				if !p.testSelect(slot.EXPR0R0) {
+					p.parseError(slot.EXPR0R0, p.cI, first[slot.EXPR0R0])
+					L, p.cI = slot.EXPR1F0, cU
+					goto nextSlot
+				}
+				p.call(slot.EXPR0R1, slot.EXPR1F0, symbols.NT_WS, cU, p.cI)
+			case slot.EXPR0R1: // EXPR : WS ∙SUM
+
+				if !p.testSelect(slot.EXPR0R1) {
+					p.parseError(slot.EXPR0R1, p.cI, first[slot.EXPR0R1])
+					L, p.cI = slot.EXPR1F0, cU
+					goto nextSlot
+				}
+				p.call(slot.EXPR0R2, slot.EXPR1F0, symbols.NT_SUM, cU, p.cI)
+			case slot.EXPR0R2: // EXPR : WS SUM ∙
+
 				p.rtn(symbols.NT_EXPR, cU, p.cI)
-			} else {
-				p.parseError(slot.EXPR0R0, p.cI, followSets[symbols.NT_EXPR])
-			}
+			case slot.EXPR1F0: // EXPR failure case
+				p.rtn(symbols.NT_EXPR, cU, failInd)
+			case slot.MINUS0R0: // MINUS : ∙- WS
 
-		case slot.MINUS0R0: // MINUS : ∙- WS
+				if !p.testSelect(slot.MINUS0R0) {
+					p.parseError(slot.MINUS0R0, p.cI, first[slot.MINUS0R0])
+					L, p.cI = slot.MINUS1F0, cU
+					goto nextSlot
+				}
+				p.bsrSet.Add(slot.MINUS0R1, cU, p.cI, p.cI+1)
+				p.cI++
+				if !p.testSelect(slot.MINUS0R1) {
+					p.parseError(slot.MINUS0R1, p.cI, first[slot.MINUS0R1])
+					L, p.cI = slot.MINUS1F0, cU
+					goto nextSlot
+				}
+				p.call(slot.MINUS0R2, slot.MINUS1F0, symbols.NT_WS, cU, p.cI)
+			case slot.MINUS0R2: // MINUS : - WS ∙
 
-			p.bsrSet.Add(slot.MINUS0R1, cU, p.cI, p.cI+1)
-			p.cI++
-			if !p.testSelect(slot.MINUS0R1) {
-				p.parseError(slot.MINUS0R1, p.cI, first[slot.MINUS0R1])
-				break
-			}
-
-			p.call(slot.MINUS0R2, cU, p.cI)
-		case slot.MINUS0R2: // MINUS : - WS ∙
-
-			if p.follow(symbols.NT_MINUS) {
 				p.rtn(symbols.NT_MINUS, cU, p.cI)
-			} else {
-				p.parseError(slot.MINUS0R0, p.cI, followSets[symbols.NT_MINUS])
-			}
-		case slot.Number0R0: // Number : ∙repNumber1x WS
+			case slot.MINUS1F0: // MINUS failure case
+				p.rtn(symbols.NT_MINUS, cU, failInd)
+			case slot.Number0R0: // Number : ∙repNumber1x WS
 
-			p.bsrSet.Add(slot.Number0R1, cU, p.cI, p.cI+1)
-			p.cI++
-			if !p.testSelect(slot.Number0R1) {
-				p.parseError(slot.Number0R1, p.cI, first[slot.Number0R1])
-				break
-			}
+				if !p.testSelect(slot.Number0R0) {
+					p.parseError(slot.Number0R0, p.cI, first[slot.Number0R0])
+					L, p.cI = slot.Number1F0, cU
+					goto nextSlot
+				}
+				p.bsrSet.Add(slot.Number0R1, cU, p.cI, p.cI+1)
+				p.cI++
+				if !p.testSelect(slot.Number0R1) {
+					p.parseError(slot.Number0R1, p.cI, first[slot.Number0R1])
+					L, p.cI = slot.Number1F0, cU
+					goto nextSlot
+				}
+				p.call(slot.Number0R2, slot.Number1F0, symbols.NT_WS, cU, p.cI)
+			case slot.Number0R2: // Number : repNumber1x WS ∙
 
-			p.call(slot.Number0R2, cU, p.cI)
-		case slot.Number0R2: // Number : repNumber1x WS ∙
-
-			if p.follow(symbols.NT_Number) {
 				p.rtn(symbols.NT_Number, cU, p.cI)
-			} else {
-				p.parseError(slot.Number0R0, p.cI, followSets[symbols.NT_Number])
-			}
-		case slot.OPEN0R0: // OPEN : ∙( WS
+			case slot.Number1F0: // Number failure case
+				p.rtn(symbols.NT_Number, cU, failInd)
+			case slot.OPEN0R0: // OPEN : ∙( WS
 
-			p.bsrSet.Add(slot.OPEN0R1, cU, p.cI, p.cI+1)
-			p.cI++
-			if !p.testSelect(slot.OPEN0R1) {
-				p.parseError(slot.OPEN0R1, p.cI, first[slot.OPEN0R1])
-				break
-			}
+				if !p.testSelect(slot.OPEN0R0) {
+					p.parseError(slot.OPEN0R0, p.cI, first[slot.OPEN0R0])
+					L, p.cI = slot.OPEN1F0, cU
+					goto nextSlot
+				}
+				p.bsrSet.Add(slot.OPEN0R1, cU, p.cI, p.cI+1)
+				p.cI++
+				if !p.testSelect(slot.OPEN0R1) {
+					p.parseError(slot.OPEN0R1, p.cI, first[slot.OPEN0R1])
+					L, p.cI = slot.OPEN1F0, cU
+					goto nextSlot
+				}
+				p.call(slot.OPEN0R2, slot.OPEN1F0, symbols.NT_WS, cU, p.cI)
+			case slot.OPEN0R2: // OPEN : ( WS ∙
 
-			p.call(slot.OPEN0R2, cU, p.cI)
-		case slot.OPEN0R2: // OPEN : ( WS ∙
-
-			if p.follow(symbols.NT_OPEN) {
 				p.rtn(symbols.NT_OPEN, cU, p.cI)
-			} else {
-				p.parseError(slot.OPEN0R0, p.cI, followSets[symbols.NT_OPEN])
-			}
+			case slot.OPEN1F0: // OPEN failure case
+				p.rtn(symbols.NT_OPEN, cU, failInd)
+			case slot.PLUS0R0: // PLUS : ∙+ WS
 
-		case slot.PLUS0R0: // PLUS : ∙+ WS
+				if !p.testSelect(slot.PLUS0R0) {
+					p.parseError(slot.PLUS0R0, p.cI, first[slot.PLUS0R0])
+					L, p.cI = slot.PLUS1F0, cU
+					goto nextSlot
+				}
+				p.bsrSet.Add(slot.PLUS0R1, cU, p.cI, p.cI+1)
+				p.cI++
+				if !p.testSelect(slot.PLUS0R1) {
+					p.parseError(slot.PLUS0R1, p.cI, first[slot.PLUS0R1])
+					L, p.cI = slot.PLUS1F0, cU
+					goto nextSlot
+				}
+				p.call(slot.PLUS0R2, slot.PLUS1F0, symbols.NT_WS, cU, p.cI)
+			case slot.PLUS0R2: // PLUS : + WS ∙
 
-			p.bsrSet.Add(slot.PLUS0R1, cU, p.cI, p.cI+1)
-			p.cI++
-			if !p.testSelect(slot.PLUS0R1) {
-				p.parseError(slot.PLUS0R1, p.cI, first[slot.PLUS0R1])
-				break
-			}
-
-			p.call(slot.PLUS0R2, cU, p.cI)
-		case slot.PLUS0R2: // PLUS : + WS ∙
-
-			if p.follow(symbols.NT_PLUS) {
 				p.rtn(symbols.NT_PLUS, cU, p.cI)
-			} else {
-				p.parseError(slot.PLUS0R0, p.cI, followSets[symbols.NT_PLUS])
-			}
+			case slot.PLUS1F0: // PLUS failure case
+				p.rtn(symbols.NT_PLUS, cU, failInd)
+			case slot.PLUSorMINUS0R0: // PLUSorMINUS : ∙PLUS PRODUCT
 
-		case slot.PLUSorMINUS0R0: // PLUSorMINUS : ∙PLUS PRODUCT
+				if !p.testSelect(slot.PLUSorMINUS0R0) {
+					p.parseError(slot.PLUSorMINUS0R0, p.cI, first[slot.PLUSorMINUS0R0])
+					L, p.cI = slot.PLUSorMINUS1R0, cU
+					goto nextSlot
+				}
+				p.call(slot.PLUSorMINUS0R1, slot.PLUSorMINUS1R0, symbols.NT_PLUS, cU, p.cI)
+			case slot.PLUSorMINUS0R1: // PLUSorMINUS : PLUS ∙PRODUCT
 
-			p.call(slot.PLUSorMINUS0R1, cU, p.cI)
-		case slot.PLUSorMINUS0R1: // PLUSorMINUS : PLUS ∙PRODUCT
+				p.rtn(symbols.NT_PLUSorMINUS, cU, p.cI)
+				L, p.cI = slot.PLUSorMINUS1M0, cU
+				goto nextSlot
+				if !p.testSelect(slot.PLUSorMINUS0R1) {
+					p.parseError(slot.PLUSorMINUS0R1, p.cI, first[slot.PLUSorMINUS0R1])
+					L, p.cI = slot.PLUSorMINUS1R0, cU
+					goto nextSlot
+				}
+				p.call(slot.PLUSorMINUS0R2, slot.PLUSorMINUS1R0, symbols.NT_PRODUCT, cU, p.cI)
+			case slot.PLUSorMINUS0R2: // PLUSorMINUS : PLUS PRODUCT ∙
 
-			if !p.testSelect(slot.PLUSorMINUS0R1) {
-				p.parseError(slot.PLUSorMINUS0R1, p.cI, first[slot.PLUSorMINUS0R1])
-				break
-			}
+				p.rtn(symbols.NT_PLUSorMINUS, cU, p.cI)
+				L, p.cI = slot.PLUSorMINUS1M0, cU
+				goto nextSlot
 
-			p.call(slot.PLUSorMINUS0R2, cU, p.cI)
-		case slot.PLUSorMINUS0R2: // PLUSorMINUS : PLUS PRODUCT ∙
+			case slot.PLUSorMINUS1R0: // PLUSorMINUS : ∙MINUS PRODUCT
 
-			p.rtn(symbols.NT_PLUSorMINUS, cU, p.cI)
-		case slot.PLUSorMINUS1R0: // PLUSorMINUS : ∙MINUS PRODUCT
+				if !p.testSelect(slot.PLUSorMINUS1R0) {
+					p.parseError(slot.PLUSorMINUS1R0, p.cI, first[slot.PLUSorMINUS1R0])
+					L, p.cI = slot.PLUSorMINUS2F0, cU
+					goto nextSlot
+				}
+				p.call(slot.PLUSorMINUS1R1, slot.PLUSorMINUS2F0, symbols.NT_MINUS, cU, p.cI)
+			case slot.PLUSorMINUS1R1: // PLUSorMINUS : MINUS ∙PRODUCT
 
-			p.call(slot.PLUSorMINUS1R1, cU, p.cI)
-		case slot.PLUSorMINUS1R1: // PLUSorMINUS : MINUS ∙PRODUCT
+				p.rtn(symbols.NT_PLUSorMINUS, cU, p.cI)
 
-			if !p.testSelect(slot.PLUSorMINUS1R1) {
-				p.parseError(slot.PLUSorMINUS1R1, p.cI, first[slot.PLUSorMINUS1R1])
-				break
-			}
+				if !p.testSelect(slot.PLUSorMINUS1R1) {
+					p.parseError(slot.PLUSorMINUS1R1, p.cI, first[slot.PLUSorMINUS1R1])
+					L, p.cI = slot.PLUSorMINUS2F0, cU
+					goto nextSlot
+				}
+				p.call(slot.PLUSorMINUS1R2, slot.PLUSorMINUS2F0, symbols.NT_PRODUCT, cU, p.cI)
+			case slot.PLUSorMINUS1R2: // PLUSorMINUS : MINUS PRODUCT ∙
 
-			p.call(slot.PLUSorMINUS1R2, cU, p.cI)
-		case slot.PLUSorMINUS1R2: // PLUSorMINUS : MINUS PRODUCT ∙
+				p.rtn(symbols.NT_PLUSorMINUS, cU, p.cI)
 
-			p.rtn(symbols.NT_PLUSorMINUS, cU, p.cI)
-		case slot.PRODUCT0R0: // PRODUCT : ∙ELEMENT RepTIMESorDIV0x
+			case slot.PLUSorMINUS1M0: // PLUSorMINUS : ∙MINUS PRODUCT  [with previous match]
 
-			p.call(slot.PRODUCT0R1, cU, p.cI)
-		case slot.PRODUCT0R1: // PRODUCT : ELEMENT ∙RepTIMESorDIV0x
+				if !p.testSelect(slot.PLUSorMINUS1R0) {
+					p.parseError(slot.PLUSorMINUS1R0, p.cI, first[slot.PLUSorMINUS1R0])
 
-			if !p.testSelect(slot.PRODUCT0R1) {
-				p.parseError(slot.PRODUCT0R1, p.cI, first[slot.PRODUCT0R1])
-				break
-			}
+				}
+				p.call(slot.PLUSorMINUS1M0, failInd, symbols.NT_MINUS, cU, p.cI)
+			case slot.PLUSorMINUS1M0: // PLUSorMINUS : MINUS ∙PRODUCT
 
-			p.call(slot.PRODUCT0R2, cU, p.cI)
-		case slot.PRODUCT0R2: // PRODUCT : ELEMENT RepTIMESorDIV0x ∙
+				p.rtn(symbols.NT_PLUSorMINUS, cU, p.cI)
 
-			p.rtn(symbols.NT_PRODUCT, cU, p.cI)
-		case slot.RepPLUSorMINUS0x0R0: // RepPLUSorMINUS0x : ∙PLUSorMINUS RepPLUSorMINUS0x
+				if !p.testSelect(slot.PLUSorMINUS1R1) {
+					p.parseError(slot.PLUSorMINUS1R1, p.cI, first[slot.PLUSorMINUS1R1])
 
-			p.call(slot.RepPLUSorMINUS0x0R1, cU, p.cI)
-		case slot.RepPLUSorMINUS0x0R1: // RepPLUSorMINUS0x : PLUSorMINUS ∙RepPLUSorMINUS0x
+				}
+				p.call(slot.PLUSorMINUS1M1, failInd, symbols.NT_PRODUCT, cU, p.cI)
+			case slot.PLUSorMINUS1M1: // PLUSorMINUS : MINUS PRODUCT ∙
 
-			if !p.testSelect(slot.RepPLUSorMINUS0x0R1) {
-				p.parseError(slot.RepPLUSorMINUS0x0R1, p.cI, first[slot.RepPLUSorMINUS0x0R1])
-				break
-			}
+				p.rtn(symbols.NT_PLUSorMINUS, cU, p.cI)
 
-			p.call(slot.RepPLUSorMINUS0x0R2, cU, p.cI)
-		case slot.RepPLUSorMINUS0x0R2: // RepPLUSorMINUS0x : PLUSorMINUS RepPLUSorMINUS0x ∙
+			case slot.PLUSorMINUS2F0: // PLUSorMINUS failure case
+				p.rtn(symbols.NT_PLUSorMINUS, cU, failInd)
+			case slot.PRODUCT0R0: // PRODUCT : ∙ELEMENT SuffTIMESorDIVIDE
 
-			p.rtn(symbols.NT_RepPLUSorMINUS0x, cU, p.cI)
-		case slot.RepPLUSorMINUS0x1R0: // RepPLUSorMINUS0x : ∙
-			p.bsrSet.AddEmpty(slot.RepPLUSorMINUS0x1R0, p.cI)
+				if !p.testSelect(slot.PRODUCT0R0) {
+					p.parseError(slot.PRODUCT0R0, p.cI, first[slot.PRODUCT0R0])
+					L, p.cI = slot.PRODUCT1F0, cU
+					goto nextSlot
+				}
+				p.call(slot.PRODUCT0R1, slot.PRODUCT1F0, symbols.NT_ELEMENT, cU, p.cI)
+			case slot.PRODUCT0R1: // PRODUCT : ELEMENT ∙SuffTIMESorDIVIDE
 
-			p.rtn(symbols.NT_RepPLUSorMINUS0x, cU, p.cI)
-		case slot.RepTIMESorDIV0x0R0: // RepTIMESorDIV0x : ∙TIMESorDIVIDE RepTIMESorDIV0x
+				if !p.testSelect(slot.PRODUCT0R1) {
+					p.parseError(slot.PRODUCT0R1, p.cI, first[slot.PRODUCT0R1])
+					L, p.cI = slot.PRODUCT1F0, cU
+					goto nextSlot
+				}
+				p.call(slot.PRODUCT0R2, slot.PRODUCT1F0, symbols.NT_SuffTIMESorDIVIDE, cU, p.cI)
+			case slot.PRODUCT0R2: // PRODUCT : ELEMENT SuffTIMESorDIVIDE ∙
 
-			p.call(slot.RepTIMESorDIV0x0R1, cU, p.cI)
-		case slot.RepTIMESorDIV0x0R1: // RepTIMESorDIV0x : TIMESorDIVIDE ∙RepTIMESorDIV0x
+				p.rtn(symbols.NT_PRODUCT, cU, p.cI)
+			case slot.PRODUCT1F0: // PRODUCT failure case
+				p.rtn(symbols.NT_PRODUCT, cU, failInd)
+			case slot.SUM0R0: // SUM : ∙PRODUCT SuffPLUSorMINUS
 
-			if !p.testSelect(slot.RepTIMESorDIV0x0R1) {
-				p.parseError(slot.RepTIMESorDIV0x0R1, p.cI, first[slot.RepTIMESorDIV0x0R1])
-				break
-			}
+				if !p.testSelect(slot.SUM0R0) {
+					p.parseError(slot.SUM0R0, p.cI, first[slot.SUM0R0])
+					L, p.cI = slot.SUM1F0, cU
+					goto nextSlot
+				}
+				p.call(slot.SUM0R1, slot.SUM1F0, symbols.NT_PRODUCT, cU, p.cI)
+			case slot.SUM0R1: // SUM : PRODUCT ∙SuffPLUSorMINUS
 
-			p.call(slot.RepTIMESorDIV0x0R2, cU, p.cI)
-		case slot.RepTIMESorDIV0x0R2: // RepTIMESorDIV0x : TIMESorDIVIDE RepTIMESorDIV0x ∙
+				if !p.testSelect(slot.SUM0R1) {
+					p.parseError(slot.SUM0R1, p.cI, first[slot.SUM0R1])
+					L, p.cI = slot.SUM1F0, cU
+					goto nextSlot
+				}
+				p.call(slot.SUM0R2, slot.SUM1F0, symbols.NT_SuffPLUSorMINUS, cU, p.cI)
+			case slot.SUM0R2: // SUM : PRODUCT SuffPLUSorMINUS ∙
 
-			p.rtn(symbols.NT_RepTIMESorDIV0x, cU, p.cI)
-		case slot.RepTIMESorDIV0x1R0: // RepTIMESorDIV0x : ∙
-			p.bsrSet.AddEmpty(slot.RepTIMESorDIV0x1R0, p.cI)
-
-			p.rtn(symbols.NT_RepTIMESorDIV0x, cU, p.cI)
-		case slot.SUM0R0: // SUM : ∙PRODUCT RepPLUSorMINUS0x
-
-			p.call(slot.SUM0R1, cU, p.cI)
-		case slot.SUM0R1: // SUM : PRODUCT ∙RepPLUSorMINUS0x
-
-			if !p.testSelect(slot.SUM0R1) {
-				p.parseError(slot.SUM0R1, p.cI, first[slot.SUM0R1])
-				break
-			}
-
-			p.call(slot.SUM0R2, cU, p.cI)
-		case slot.SUM0R2: // SUM : PRODUCT RepPLUSorMINUS0x ∙
-
-			if p.follow(symbols.NT_SUM) {
 				p.rtn(symbols.NT_SUM, cU, p.cI)
-			} else {
-				p.parseError(slot.SUM0R0, p.cI, followSets[symbols.NT_SUM])
-			}
-		case slot.TIMES0R0: // TIMES : ∙* WS
+			case slot.SUM1F0: // SUM failure case
+				p.rtn(symbols.NT_SUM, cU, failInd)
+			case slot.SuffPLUSorMINUS0R0: // SuffPLUSorMINUS : ∙PLUSorMINUS SuffPLUSorMINUS
 
-			p.bsrSet.Add(slot.TIMES0R1, cU, p.cI, p.cI+1)
-			p.cI++
-			if !p.testSelect(slot.TIMES0R1) {
-				p.parseError(slot.TIMES0R1, p.cI, first[slot.TIMES0R1])
-				break
-			}
+				if !p.testSelect(slot.SuffPLUSorMINUS0R0) {
+					p.parseError(slot.SuffPLUSorMINUS0R0, p.cI, first[slot.SuffPLUSorMINUS0R0])
+					L, p.cI = slot.SuffPLUSorMINUS1R0, cU
+					goto nextSlot
+				}
+				p.call(slot.SuffPLUSorMINUS0R1, slot.SuffPLUSorMINUS1R0, symbols.NT_PLUSorMINUS, cU, p.cI)
+			case slot.SuffPLUSorMINUS0R1: // SuffPLUSorMINUS : PLUSorMINUS ∙SuffPLUSorMINUS
 
-			p.call(slot.TIMES0R2, cU, p.cI)
-		case slot.TIMES0R2: // TIMES : * WS ∙
+				if !p.testSelect(slot.SuffPLUSorMINUS0R1) {
+					p.parseError(slot.SuffPLUSorMINUS0R1, p.cI, first[slot.SuffPLUSorMINUS0R1])
+					L, p.cI = slot.SuffPLUSorMINUS1R0, cU
+					goto nextSlot
+				}
+				p.call(slot.SuffPLUSorMINUS0R2, slot.SuffPLUSorMINUS1R0, symbols.NT_SuffPLUSorMINUS, cU, p.cI)
+			case slot.SuffPLUSorMINUS0R2: // SuffPLUSorMINUS : PLUSorMINUS SuffPLUSorMINUS ∙
 
-			if p.follow(symbols.NT_TIMES) {
+				p.rtn(symbols.NT_SuffPLUSorMINUS, cU, p.cI)
+			case slot.SuffPLUSorMINUS1R0: // SuffPLUSorMINUS : ∙
+				p.bsrSet.AddEmpty(slot.SuffPLUSorMINUS1R0, p.cI)
+				p.rtn(symbols.NT_SuffPLUSorMINUS, cU, p.cI)
+			case slot.SuffTIMESorDIVIDE0R0: // SuffTIMESorDIVIDE : ∙TIMESorDIVIDE SuffTIMESorDIVIDE
+
+				if !p.testSelect(slot.SuffTIMESorDIVIDE0R0) {
+					p.parseError(slot.SuffTIMESorDIVIDE0R0, p.cI, first[slot.SuffTIMESorDIVIDE0R0])
+					L, p.cI = slot.SuffTIMESorDIVIDE1R0, cU
+					goto nextSlot
+				}
+				p.call(slot.SuffTIMESorDIVIDE0R1, slot.SuffTIMESorDIVIDE1R0, symbols.NT_TIMESorDIVIDE, cU, p.cI)
+			case slot.SuffTIMESorDIVIDE0R1: // SuffTIMESorDIVIDE : TIMESorDIVIDE ∙SuffTIMESorDIVIDE
+
+				if !p.testSelect(slot.SuffTIMESorDIVIDE0R1) {
+					p.parseError(slot.SuffTIMESorDIVIDE0R1, p.cI, first[slot.SuffTIMESorDIVIDE0R1])
+					L, p.cI = slot.SuffTIMESorDIVIDE1R0, cU
+					goto nextSlot
+				}
+				p.call(slot.SuffTIMESorDIVIDE0R2, slot.SuffTIMESorDIVIDE1R0, symbols.NT_SuffTIMESorDIVIDE, cU, p.cI)
+			case slot.SuffTIMESorDIVIDE0R2: // SuffTIMESorDIVIDE : TIMESorDIVIDE SuffTIMESorDIVIDE ∙
+
+				p.rtn(symbols.NT_SuffTIMESorDIVIDE, cU, p.cI)
+			case slot.SuffTIMESorDIVIDE1R0: // SuffTIMESorDIVIDE : ∙
+				p.bsrSet.AddEmpty(slot.SuffTIMESorDIVIDE1R0, p.cI)
+				p.rtn(symbols.NT_SuffTIMESorDIVIDE, cU, p.cI)
+			case slot.TIMES0R0: // TIMES : ∙* WS
+
+				if !p.testSelect(slot.TIMES0R0) {
+					p.parseError(slot.TIMES0R0, p.cI, first[slot.TIMES0R0])
+					L, p.cI = slot.TIMES1F0, cU
+					goto nextSlot
+				}
+				p.bsrSet.Add(slot.TIMES0R1, cU, p.cI, p.cI+1)
+				p.cI++
+				if !p.testSelect(slot.TIMES0R1) {
+					p.parseError(slot.TIMES0R1, p.cI, first[slot.TIMES0R1])
+					L, p.cI = slot.TIMES1F0, cU
+					goto nextSlot
+				}
+				p.call(slot.TIMES0R2, slot.TIMES1F0, symbols.NT_WS, cU, p.cI)
+			case slot.TIMES0R2: // TIMES : * WS ∙
+
 				p.rtn(symbols.NT_TIMES, cU, p.cI)
-			} else {
-				p.parseError(slot.TIMES0R0, p.cI, followSets[symbols.NT_TIMES])
-			}
+			case slot.TIMES1F0: // TIMES failure case
+				p.rtn(symbols.NT_TIMES, cU, failInd)
+			case slot.TIMESorDIVIDE0R0: // TIMESorDIVIDE : ∙TIMES ELEMENT
 
-		case slot.TIMESorDIVIDE0R0: // TIMESorDIVIDE : ∙TIMES ELEMENT
+				if !p.testSelect(slot.TIMESorDIVIDE0R0) {
+					p.parseError(slot.TIMESorDIVIDE0R0, p.cI, first[slot.TIMESorDIVIDE0R0])
+					L, p.cI = slot.TIMESorDIVIDE1R0, cU
+					goto nextSlot
+				}
+				p.call(slot.TIMESorDIVIDE0R1, slot.TIMESorDIVIDE1R0, symbols.NT_TIMES, cU, p.cI)
+			case slot.TIMESorDIVIDE0R1: // TIMESorDIVIDE : TIMES ∙ELEMENT
 
-			p.call(slot.TIMESorDIVIDE0R1, cU, p.cI)
-		case slot.TIMESorDIVIDE0R1: // TIMESorDIVIDE : TIMES ∙ELEMENT
-
-			if !p.testSelect(slot.TIMESorDIVIDE0R1) {
-				p.parseError(slot.TIMESorDIVIDE0R1, p.cI, first[slot.TIMESorDIVIDE0R1])
-				break
-			}
-
-			p.call(slot.TIMESorDIVIDE0R2, cU, p.cI)
-		case slot.TIMESorDIVIDE0R2: // TIMESorDIVIDE : TIMES ELEMENT ∙
-
-			p.rtn(symbols.NT_TIMESorDIVIDE, cU, p.cI)
-		case slot.TIMESorDIVIDE1R0: // TIMESorDIVIDE : ∙DIVIDE ELEMENT
-
-			p.call(slot.TIMESorDIVIDE1R1, cU, p.cI)
-		case slot.TIMESorDIVIDE1R1: // TIMESorDIVIDE : DIVIDE ∙ELEMENT
-
-			if !p.testSelect(slot.TIMESorDIVIDE1R1) {
-				p.parseError(slot.TIMESorDIVIDE1R1, p.cI, first[slot.TIMESorDIVIDE1R1])
-				break
-			}
-
-			p.call(slot.TIMESorDIVIDE1R2, cU, p.cI)
-		case slot.TIMESorDIVIDE1R2: // TIMESorDIVIDE : DIVIDE ELEMENT ∙
-
-			if p.follow(symbols.NT_TIMESorDIVIDE) {
 				p.rtn(symbols.NT_TIMESorDIVIDE, cU, p.cI)
-			} else {
-				p.parseError(slot.TIMESorDIVIDE1R0, p.cI, followSets[symbols.NT_TIMESorDIVIDE])
-			}
-		case slot.WS0R0: // WS : ∙sp
+				L, p.cI = slot.TIMESorDIVIDE1M0, cU
+				goto nextSlot
+				if !p.testSelect(slot.TIMESorDIVIDE0R1) {
+					p.parseError(slot.TIMESorDIVIDE0R1, p.cI, first[slot.TIMESorDIVIDE0R1])
+					L, p.cI = slot.TIMESorDIVIDE1R0, cU
+					goto nextSlot
+				}
+				p.call(slot.TIMESorDIVIDE0R2, slot.TIMESorDIVIDE1R0, symbols.NT_ELEMENT, cU, p.cI)
+			case slot.TIMESorDIVIDE0R2: // TIMESorDIVIDE : TIMES ELEMENT ∙
 
-			p.bsrSet.Add(slot.WS0R1, cU, p.cI, p.cI+1)
-			p.cI++
-			if p.follow(symbols.NT_WS) {
-				p.rtn(symbols.NT_WS, cU, p.cI)
-			} else {
-				p.parseError(slot.WS0R0, p.cI, followSets[symbols.NT_WS])
-			}
-		case slot.WS1R0: // WS : ∙
-			p.bsrSet.AddEmpty(slot.WS1R0, p.cI)
+				p.rtn(symbols.NT_TIMESorDIVIDE, cU, p.cI)
+				L, p.cI = slot.TIMESorDIVIDE1M0, cU
+				goto nextSlot
 
-			if p.follow(symbols.NT_WS) {
+			case slot.TIMESorDIVIDE1R0: // TIMESorDIVIDE : ∙DIVIDE ELEMENT
+
+				if !p.testSelect(slot.TIMESorDIVIDE1R0) {
+					p.parseError(slot.TIMESorDIVIDE1R0, p.cI, first[slot.TIMESorDIVIDE1R0])
+					L, p.cI = slot.TIMESorDIVIDE2F0, cU
+					goto nextSlot
+				}
+				p.call(slot.TIMESorDIVIDE1R1, slot.TIMESorDIVIDE2F0, symbols.NT_DIVIDE, cU, p.cI)
+			case slot.TIMESorDIVIDE1R1: // TIMESorDIVIDE : DIVIDE ∙ELEMENT
+
+				p.rtn(symbols.NT_TIMESorDIVIDE, cU, p.cI)
+
+				if !p.testSelect(slot.TIMESorDIVIDE1R1) {
+					p.parseError(slot.TIMESorDIVIDE1R1, p.cI, first[slot.TIMESorDIVIDE1R1])
+					L, p.cI = slot.TIMESorDIVIDE2F0, cU
+					goto nextSlot
+				}
+				p.call(slot.TIMESorDIVIDE1R2, slot.TIMESorDIVIDE2F0, symbols.NT_ELEMENT, cU, p.cI)
+			case slot.TIMESorDIVIDE1R2: // TIMESorDIVIDE : DIVIDE ELEMENT ∙
+
+				p.rtn(symbols.NT_TIMESorDIVIDE, cU, p.cI)
+
+			case slot.TIMESorDIVIDE1M0: // TIMESorDIVIDE : ∙DIVIDE ELEMENT  [with previous match]
+
+				if !p.testSelect(slot.TIMESorDIVIDE1R0) {
+					p.parseError(slot.TIMESorDIVIDE1R0, p.cI, first[slot.TIMESorDIVIDE1R0])
+
+				}
+				p.call(slot.TIMESorDIVIDE1M0, failInd, symbols.NT_DIVIDE, cU, p.cI)
+			case slot.TIMESorDIVIDE1M0: // TIMESorDIVIDE : DIVIDE ∙ELEMENT
+
+				p.rtn(symbols.NT_TIMESorDIVIDE, cU, p.cI)
+
+				if !p.testSelect(slot.TIMESorDIVIDE1R1) {
+					p.parseError(slot.TIMESorDIVIDE1R1, p.cI, first[slot.TIMESorDIVIDE1R1])
+
+				}
+				p.call(slot.TIMESorDIVIDE1M1, failInd, symbols.NT_ELEMENT, cU, p.cI)
+			case slot.TIMESorDIVIDE1M1: // TIMESorDIVIDE : DIVIDE ELEMENT ∙
+
+				p.rtn(symbols.NT_TIMESorDIVIDE, cU, p.cI)
+
+			case slot.TIMESorDIVIDE2F0: // TIMESorDIVIDE failure case
+				p.rtn(symbols.NT_TIMESorDIVIDE, cU, failInd)
+			case slot.WS0R0: // WS : ∙sp
+
+				if !p.testSelect(slot.WS0R0) {
+					p.parseError(slot.WS0R0, p.cI, first[slot.WS0R0])
+					L, p.cI = slot.WS1R0, cU
+					goto nextSlot
+				}
+				p.bsrSet.Add(slot.WS0R1, cU, p.cI, p.cI+1)
+				p.cI++
 				p.rtn(symbols.NT_WS, cU, p.cI)
-			} else {
-				p.parseError(slot.WS1R0, p.cI, followSets[symbols.NT_WS])
+			case slot.WS1R0: // WS : ∙
+				p.bsrSet.AddEmpty(slot.WS1R0, p.cI)
+				p.rtn(symbols.NT_WS, cU, p.cI)
+
+			default:
+				panic("This must not happen")
 			}
-		default:
-			panic("This must not happen")
+			// if exit switch normally, also exit loop and proceed to next
+			// descriptor; if exit with goto nextSlot, repeat switch at next
+			// slot
+			break
+		nextSlot:
 		}
 	}
 	if !p.bsrSet.Contain(symbols.NT_EXPR, 0, m) {
@@ -396,24 +549,8 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 }
 
 func (p *parser) ntAdd(nt symbols.NT, j int) {
-	// fmt.Printf("p.ntAdd(%s, %d)\n", nt, j)
-	failed := true
-	expected := map[token.Type]string{}
-	for _, l := range slot.GetAlternates(nt) {
-		if p.testSelect(l) {
-			p.dscAdd(l, j, j)
-			failed = false
-		} else {
-			for k, v := range first[l] {
-				expected[k] = v
-			}
-		}
-	}
-	if failed {
-		for _, l := range slot.GetAlternates(nt) {
-			p.parseError(l, j, expected)
-		}
-	}
+	l := slot.GetAlternates(nt)[0]
+	p.dscAdd(l, j, j)
 }
 
 /*** Call Return Forest ***/
@@ -433,50 +570,45 @@ type crfNode struct {
 	i int
 }
 
-/*
-suppose that L is Y ::=αX ·β
-if there is no CRF node labelled (L,i)
-	create one let u be the CRF node labelled (L,i)
-if there is no CRF node labelled (X, j) {
-	create a CRF node v labelled (X, j)
-	create an edge from v to u
-	ntAdd(X, j)
-} else {
-	let v be the CRF node labelled (X, j)
-	if there is not an edge from v to u {
-		create an edge from v to u
-		for all ((X, j,h)∈P) {
-			dscAdd(L, i, h);
-			bsrAdd(L, i, j, h)
-		}
-	}
-}
-*/
-func (p *parser) call(L slot.Label, i, j int) {
+func (p *parser) call(Lm, Lf slot.Label, X symbols.NT, i, j int) {
 	// fmt.Printf("p.call(%s,%d,%d)\n", L,i,j)
-	u, exist := p.crfNodes[crfNode{L, i}]
+	um, exist := p.crfNodes[crfNode{Lm, i}]
 	// fmt.Printf("  u exist=%t\n", exist)
 	if !exist {
-		u = &crfNode{L, i}
-		p.crfNodes[*u] = u
+		um = &crfNode{Lm, i}
+		p.crfNodes[*um] = um
 	}
-	X := L.Symbols()[L.Pos()-1].(symbols.NT)
-	ndV := clusterNode{X, j}
-	v, exist := p.crf[ndV]
+	uf, exist := p.crfNodes[crfNode{Lf, i}]
 	if !exist {
+		uf = &crfNode{Lf, i}
+		p.crfNodes[*uf] = uf
+	}
+
+	ndV := clusterNode{X, j}
+	vm, existm := p.crf_m[ndV]
+	vf, existf := p.crf_f[ndV]
+	if !existm && !existf {
 		// fmt.Println("  v !exist")
-		p.crf[ndV] = []*crfNode{u}
+		p.crf_m[ndV] = []*crfNode{um}
+		p.crf_f[ndV] = []*crfNode{uf}
 		p.ntAdd(X, j)
 	} else {
 		// fmt.Println("  v exist")
-		if !existEdge(v, u) {
+		if !existEdge(vm, um) {
 			// fmt.Printf("  !existEdge(%v)\n", u)
-			p.crf[ndV] = append(v, u)
+			p.crf_m[ndV] = append(vm, um)
 			// fmt.Printf("|popped|=%d\n", len(popped))
 			for pnd := range p.popped {
-				if pnd.X == X && pnd.k == j {
-					p.dscAdd(L, i, pnd.j)
-					p.bsrSet.Add(L, i, j, pnd.j)
+				if pnd.X == X && pnd.k == j && pnd.j != failInd {
+					p.addMatch(Lm, i, j, pnd.j)
+				}
+			}
+		}
+		if !existEdge(vf, uf) {
+			p.crf_f[ndV] = append(vf, uf)
+			for pnd := range p.popped {
+				if pnd.X == X && pnd.k == j && pnd.j == failInd {
+					p.addFail(Lf, i, j)
 				}
 			}
 		}
@@ -497,10 +629,32 @@ func (p *parser) rtn(X symbols.NT, k, j int) {
 	pn := poppedNode{X, k, j}
 	if _, exist := p.popped[pn]; !exist {
 		p.popped[pn] = true
-		for _, nd := range p.crf[clusterNode{X, k}] {
-			p.dscAdd(nd.L, nd.i, j)
-			p.bsrSet.Add(nd.L, nd.i, k, j)
+		if j != failInd {
+			for _, nd := range p.crf_m[clusterNode{X, k}] {
+				p.addMatch(nd.L, nd.i, k, j)
+			}
+		} else {
+			for _, nd := range p.crf_f[clusterNode{X, k}] {
+				p.addFail(nd.L, nd.i, k)
+			}
 		}
+	}
+}
+
+func (p *parser) addMatch(L slot.Label, i, k, j int) {
+	p.bsrSet.Add(L, i, k, j)
+	if L.IsLookahead() {
+		p.dscAdd(L, i, k)
+	} else {
+		p.dscAdd(L, i, j)
+	}
+}
+
+func (p *parser) addFail(L slot.Label, i, k int) {
+	if L.IsLookahead() {
+		p.dscAdd(L, i, k)
+	} else {
+		p.dscAdd(L, i, i)
 	}
 }
 
@@ -631,7 +785,16 @@ var first = []map[token.Type]string{
 	},
 	// CLOSE : ) ∙WS
 	{
+		token.EOF: "$",
+		token.T_1: ")",
+		token.T_2: "*",
+		token.T_3: "+",
+		token.T_4: "-",
+		token.T_5: "/",
 		token.T_7: "sp",
+	},
+	// CLOSE : ) WS ∙
+	{
 		token.EOF: "$",
 		token.T_1: ")",
 		token.T_2: "*",
@@ -639,7 +802,7 @@ var first = []map[token.Type]string{
 		token.T_4: "-",
 		token.T_5: "/",
 	},
-	// CLOSE : ) WS ∙
+	// CLOSE : ∙
 	{
 		token.EOF: "$",
 		token.T_1: ")",
@@ -654,11 +817,16 @@ var first = []map[token.Type]string{
 	},
 	// DIVIDE : / ∙WS
 	{
+		token.T_0: "(",
+		token.T_6: "repNumber1x",
 		token.T_7: "sp",
+	},
+	// DIVIDE : / WS ∙
+	{
 		token.T_0: "(",
 		token.T_6: "repNumber1x",
 	},
-	// DIVIDE : / WS ∙
+	// DIVIDE : ∙
 	{
 		token.T_0: "(",
 		token.T_6: "repNumber1x",
@@ -689,7 +857,29 @@ var first = []map[token.Type]string{
 	{
 		token.T_6: "repNumber1x",
 	},
+	// ELEMENT : ∙Number
+	{
+		token.T_6: "repNumber1x",
+	},
 	// ELEMENT : Number ∙
+	{
+		token.EOF: "$",
+		token.T_1: ")",
+		token.T_2: "*",
+		token.T_3: "+",
+		token.T_4: "-",
+		token.T_5: "/",
+	},
+	// ELEMENT : Number ∙
+	{
+		token.EOF: "$",
+		token.T_1: ")",
+		token.T_2: "*",
+		token.T_3: "+",
+		token.T_4: "-",
+		token.T_5: "/",
+	},
+	// ELEMENT : ∙
 	{
 		token.EOF: "$",
 		token.T_1: ")",
@@ -713,17 +903,26 @@ var first = []map[token.Type]string{
 	{
 		token.EOF: "$",
 	},
+	// EXPR : ∙
+	{
+		token.EOF: "$",
+	},
 	// MINUS : ∙- WS
 	{
 		token.T_4: "-",
 	},
 	// MINUS : - ∙WS
 	{
+		token.T_0: "(",
+		token.T_6: "repNumber1x",
 		token.T_7: "sp",
+	},
+	// MINUS : - WS ∙
+	{
 		token.T_0: "(",
 		token.T_6: "repNumber1x",
 	},
-	// MINUS : - WS ∙
+	// MINUS : ∙
 	{
 		token.T_0: "(",
 		token.T_6: "repNumber1x",
@@ -734,7 +933,16 @@ var first = []map[token.Type]string{
 	},
 	// Number : repNumber1x ∙WS
 	{
+		token.EOF: "$",
+		token.T_1: ")",
+		token.T_2: "*",
+		token.T_3: "+",
+		token.T_4: "-",
+		token.T_5: "/",
 		token.T_7: "sp",
+	},
+	// Number : repNumber1x WS ∙
+	{
 		token.EOF: "$",
 		token.T_1: ")",
 		token.T_2: "*",
@@ -742,7 +950,7 @@ var first = []map[token.Type]string{
 		token.T_4: "-",
 		token.T_5: "/",
 	},
-	// Number : repNumber1x WS ∙
+	// Number : ∙
 	{
 		token.EOF: "$",
 		token.T_1: ")",
@@ -757,11 +965,16 @@ var first = []map[token.Type]string{
 	},
 	// OPEN : ( ∙WS
 	{
+		token.T_0: "(",
+		token.T_6: "repNumber1x",
 		token.T_7: "sp",
+	},
+	// OPEN : ( WS ∙
+	{
 		token.T_0: "(",
 		token.T_6: "repNumber1x",
 	},
-	// OPEN : ( WS ∙
+	// OPEN : ∙
 	{
 		token.T_0: "(",
 		token.T_6: "repNumber1x",
@@ -772,11 +985,16 @@ var first = []map[token.Type]string{
 	},
 	// PLUS : + ∙WS
 	{
+		token.T_0: "(",
+		token.T_6: "repNumber1x",
 		token.T_7: "sp",
+	},
+	// PLUS : + WS ∙
+	{
 		token.T_0: "(",
 		token.T_6: "repNumber1x",
 	},
-	// PLUS : + WS ∙
+	// PLUS : ∙
 	{
 		token.T_0: "(",
 		token.T_6: "repNumber1x",
@@ -801,6 +1019,15 @@ var first = []map[token.Type]string{
 	{
 		token.T_4: "-",
 	},
+	// PLUSorMINUS : ∙MINUS PRODUCT
+	{
+		token.T_4: "-",
+	},
+	// PLUSorMINUS : MINUS ∙PRODUCT
+	{
+		token.T_0: "(",
+		token.T_6: "repNumber1x",
+	},
 	// PLUSorMINUS : MINUS ∙PRODUCT
 	{
 		token.T_0: "(",
@@ -813,12 +1040,26 @@ var first = []map[token.Type]string{
 		token.T_3: "+",
 		token.T_4: "-",
 	},
-	// PRODUCT : ∙ELEMENT RepTIMESorDIV0x
+	// PLUSorMINUS : MINUS PRODUCT ∙
+	{
+		token.EOF: "$",
+		token.T_1: ")",
+		token.T_3: "+",
+		token.T_4: "-",
+	},
+	// PLUSorMINUS : ∙
+	{
+		token.EOF: "$",
+		token.T_1: ")",
+		token.T_3: "+",
+		token.T_4: "-",
+	},
+	// PRODUCT : ∙ELEMENT SuffTIMESorDIVIDE
 	{
 		token.T_0: "(",
 		token.T_6: "repNumber1x",
 	},
-	// PRODUCT : ELEMENT ∙RepTIMESorDIV0x
+	// PRODUCT : ELEMENT ∙SuffTIMESorDIVIDE
 	{
 		token.EOF: "$",
 		token.T_1: ")",
@@ -827,79 +1068,91 @@ var first = []map[token.Type]string{
 		token.T_4: "-",
 		token.T_5: "/",
 	},
-	// PRODUCT : ELEMENT RepTIMESorDIV0x ∙
+	// PRODUCT : ELEMENT SuffTIMESorDIVIDE ∙
 	{
 		token.EOF: "$",
 		token.T_1: ")",
 		token.T_3: "+",
 		token.T_4: "-",
 	},
-	// RepPLUSorMINUS0x : ∙PLUSorMINUS RepPLUSorMINUS0x
-	{
-		token.T_3: "+",
-		token.T_4: "-",
-	},
-	// RepPLUSorMINUS0x : PLUSorMINUS ∙RepPLUSorMINUS0x
+	// PRODUCT : ∙
 	{
 		token.EOF: "$",
 		token.T_1: ")",
 		token.T_3: "+",
 		token.T_4: "-",
 	},
-	// RepPLUSorMINUS0x : PLUSorMINUS RepPLUSorMINUS0x ∙
-	{
-		token.EOF: "$",
-		token.T_1: ")",
-	},
-	// RepPLUSorMINUS0x : ∙
-	{
-		token.EOF: "$",
-		token.T_1: ")",
-	},
-	// RepTIMESorDIV0x : ∙TIMESorDIVIDE RepTIMESorDIV0x
-	{
-		token.T_2: "*",
-		token.T_5: "/",
-	},
-	// RepTIMESorDIV0x : TIMESorDIVIDE ∙RepTIMESorDIV0x
-	{
-		token.EOF: "$",
-		token.T_1: ")",
-		token.T_2: "*",
-		token.T_3: "+",
-		token.T_4: "-",
-		token.T_5: "/",
-	},
-	// RepTIMESorDIV0x : TIMESorDIVIDE RepTIMESorDIV0x ∙
-	{
-		token.EOF: "$",
-		token.T_1: ")",
-		token.T_3: "+",
-		token.T_4: "-",
-	},
-	// RepTIMESorDIV0x : ∙
-	{
-		token.EOF: "$",
-		token.T_1: ")",
-		token.T_3: "+",
-		token.T_4: "-",
-	},
-	// SUM : ∙PRODUCT RepPLUSorMINUS0x
+	// SUM : ∙PRODUCT SuffPLUSorMINUS
 	{
 		token.T_0: "(",
 		token.T_6: "repNumber1x",
 	},
-	// SUM : PRODUCT ∙RepPLUSorMINUS0x
+	// SUM : PRODUCT ∙SuffPLUSorMINUS
 	{
 		token.EOF: "$",
 		token.T_1: ")",
 		token.T_3: "+",
 		token.T_4: "-",
 	},
-	// SUM : PRODUCT RepPLUSorMINUS0x ∙
+	// SUM : PRODUCT SuffPLUSorMINUS ∙
 	{
 		token.EOF: "$",
 		token.T_1: ")",
+	},
+	// SUM : ∙
+	{
+		token.EOF: "$",
+		token.T_1: ")",
+	},
+	// SuffPLUSorMINUS : ∙PLUSorMINUS SuffPLUSorMINUS
+	{
+		token.T_3: "+",
+		token.T_4: "-",
+	},
+	// SuffPLUSorMINUS : PLUSorMINUS ∙SuffPLUSorMINUS
+	{
+		token.EOF: "$",
+		token.T_1: ")",
+		token.T_3: "+",
+		token.T_4: "-",
+	},
+	// SuffPLUSorMINUS : PLUSorMINUS SuffPLUSorMINUS ∙
+	{
+		token.EOF: "$",
+		token.T_1: ")",
+	},
+	// SuffPLUSorMINUS : ∙
+	{
+		token.EOF: "$",
+		token.T_1: ")",
+	},
+	// SuffTIMESorDIVIDE : ∙TIMESorDIVIDE SuffTIMESorDIVIDE
+	{
+		token.T_2: "*",
+		token.T_5: "/",
+	},
+	// SuffTIMESorDIVIDE : TIMESorDIVIDE ∙SuffTIMESorDIVIDE
+	{
+		token.EOF: "$",
+		token.T_1: ")",
+		token.T_2: "*",
+		token.T_3: "+",
+		token.T_4: "-",
+		token.T_5: "/",
+	},
+	// SuffTIMESorDIVIDE : TIMESorDIVIDE SuffTIMESorDIVIDE ∙
+	{
+		token.EOF: "$",
+		token.T_1: ")",
+		token.T_3: "+",
+		token.T_4: "-",
+	},
+	// SuffTIMESorDIVIDE : ∙
+	{
+		token.EOF: "$",
+		token.T_1: ")",
+		token.T_3: "+",
+		token.T_4: "-",
 	},
 	// TIMES : ∙* WS
 	{
@@ -907,11 +1160,16 @@ var first = []map[token.Type]string{
 	},
 	// TIMES : * ∙WS
 	{
+		token.T_0: "(",
+		token.T_6: "repNumber1x",
 		token.T_7: "sp",
+	},
+	// TIMES : * WS ∙
+	{
 		token.T_0: "(",
 		token.T_6: "repNumber1x",
 	},
-	// TIMES : * WS ∙
+	// TIMES : ∙
 	{
 		token.T_0: "(",
 		token.T_6: "repNumber1x",
@@ -938,12 +1196,39 @@ var first = []map[token.Type]string{
 	{
 		token.T_5: "/",
 	},
+	// TIMESorDIVIDE : ∙DIVIDE ELEMENT
+	{
+		token.T_5: "/",
+	},
+	// TIMESorDIVIDE : DIVIDE ∙ELEMENT
+	{
+		token.T_0: "(",
+		token.T_6: "repNumber1x",
+	},
 	// TIMESorDIVIDE : DIVIDE ∙ELEMENT
 	{
 		token.T_0: "(",
 		token.T_6: "repNumber1x",
 	},
 	// TIMESorDIVIDE : DIVIDE ELEMENT ∙
+	{
+		token.EOF: "$",
+		token.T_1: ")",
+		token.T_2: "*",
+		token.T_3: "+",
+		token.T_4: "-",
+		token.T_5: "/",
+	},
+	// TIMESorDIVIDE : DIVIDE ELEMENT ∙
+	{
+		token.EOF: "$",
+		token.T_1: ")",
+		token.T_2: "*",
+		token.T_3: "+",
+		token.T_4: "-",
+		token.T_5: "/",
+	},
+	// TIMESorDIVIDE : ∙
 	{
 		token.EOF: "$",
 		token.T_1: ")",
@@ -1046,22 +1331,22 @@ var followSets = []map[token.Type]string{
 		token.T_3: "+",
 		token.T_4: "-",
 	},
-	// RepPLUSorMINUS0x
+	// SUM
 	{
 		token.EOF: "$",
 		token.T_1: ")",
 	},
-	// RepTIMESorDIV0x
+	// SuffPLUSorMINUS
+	{
+		token.EOF: "$",
+		token.T_1: ")",
+	},
+	// SuffTIMESorDIVIDE
 	{
 		token.EOF: "$",
 		token.T_1: ")",
 		token.T_3: "+",
 		token.T_4: "-",
-	},
-	// SUM
-	{
-		token.EOF: "$",
-		token.T_1: ")",
 	},
 	// TIMES
 	{

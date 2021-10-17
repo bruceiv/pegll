@@ -7,8 +7,9 @@ import (
 )
 
 const (
-	with    = `Required Base`
-	without = `Required`
+	//Both of these should match because base is optional
+	with    = `Required Base Required` //Matches
+	without = `Required Required`      //Matches!
 )
 
 func parse(s []rune) bool {

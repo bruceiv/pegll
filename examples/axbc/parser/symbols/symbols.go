@@ -5,21 +5,24 @@ package symbols
 type Symbol interface{
 	isSymbol()
 	IsNonTerminal() bool
+	IsLookahead() bool
 	String() string
 }
 
 func (NT) isSymbol() {}
 func (T) isSymbol() {}
+func (L) isSymbol() {}
 
 // NT is the type of non-terminals symbols
 type NT int
 const( 
-	NT_AorB NT = iota
+	NT_AStar NT = iota
+	NT_AorB 
 	NT_AxBC 
-	NT_Repa0x 
+	NT_Suffa 
 )
 
-const NumNTs = 3
+const NumNTs = 4
 
 type NTs []NT
 
@@ -29,6 +32,11 @@ const(
 	T_0 T = iota // a 
 	T_1  // b 
 	T_2  // c 
+)
+
+// L is the type of lookahead symbols
+type L int
+const( 
 )
 
 type Symbols []Symbol
@@ -49,12 +57,36 @@ func (T) IsNonTerminal() bool {
 	return false
 }
 
+func (L) IsNonTerminal() bool {
+	return false
+}
+
+func (NT) IsLookahead() bool {
+	return false
+}
+
+func (T) IsLookahead() bool {
+	return false
+}
+
+func (L) IsLookahead() bool {
+	return true
+}
+
 func (nt NT) String() string {
 	return ntToString[nt]
 }
 
 func (t T) String() string {
 	return tToString[t]
+}
+
+func (lk L) String() string {
+	if lk.IsNegative() {
+		return "!" + lk.ArgSymbol().String()
+	} else {
+		return "&" + lk.ArgSymbol().String()
+	}
 }
 
 func (nt NT) LeftRec() NTs {
@@ -65,10 +97,39 @@ func (nt NT) IsOrdered() bool {
 	return ordered[nt]
 }
 
+const(
+	negTerm    = 0
+	negNonterm = 1
+	posTerm    = 2
+	posNonterm = 3
+	isNonterm  = 1
+	isPos      = 2
+)
+
+func (lk L) IsNegative() bool {
+	return lkMode[lk] & isPos == 0
+}
+
+func (lk L) IsPositive() bool {
+	return lkMode[lk] & isPos != 0
+}
+
+func (lk L) ArgSymbol() Symbol {
+	switch lkMode[lk] & isNonterm {
+	case 0: // terminal
+		return T(lkSym[lk])
+	case 1: // nonterminal
+		return NT(lkSym[lk])
+	default:
+		panic("Invalid lookahead")
+	}
+}
+
 var ntToString = []string { 
+	"AStar", /* NT_AStar */
 	"AorB", /* NT_AorB */
 	"AxBC", /* NT_AxBC */
-	"Repa0x", /* NT_Repa0x */ 
+	"Suffa", /* NT_Suffa */ 
 }
 
 var tToString = []string { 
@@ -78,18 +139,26 @@ var tToString = []string {
 }
 
 var stringNT = map[string]NT{ 
+	"AStar":NT_AStar,
 	"AorB":NT_AorB,
 	"AxBC":NT_AxBC,
-	"Repa0x":NT_Repa0x,
+	"Suffa":NT_Suffa,
 }
 
 var leftRec = map[NT]NTs { 
-	NT_AorB: NTs {  NT_Repa0x,  },
-	NT_AxBC: NTs {  NT_Repa0x,  NT_AorB,  },
-	NT_Repa0x: NTs {  },
+	NT_AStar: NTs {  NT_Suffa,  },
+	NT_AorB: NTs {  NT_AStar,  NT_Suffa,  },
+	NT_AxBC: NTs {  NT_AorB,  NT_Suffa,  NT_AStar,  },
+	NT_Suffa: NTs {  },
 }
 
 var ordered = map[NT]bool { 
 	NT_AorB:true,
-	NT_Repa0x:true,
+	NT_Suffa:true,
+}
+
+var lkMode = []int { 
+}
+
+var lkSym = []int { 
 }

@@ -14,7 +14,8 @@ A modification of `calc` grammar from [Egg](https://github.com/bruceiv/egg/blob/
 #### *Markdown File Creation:* Working 
 #### *Parser Generated :* Complete
 #### *Test File Creation:* Complete
-#### *Testing Results:* Passed
+#### *Testing Results:* Failed
+#### *Errors:* Duplicate error in the parser for element, plus or minus, and times or divide
 
 ### **`calc` GRAMMAR GUIDE**
 The following grammar tests simple calculations, with order of operations under consideration, based on a given input.
@@ -25,25 +26,19 @@ package "calc"
 ```
 EXPR             : WS SUM                       ;
 ```
-The following section is composed of `SUM`, `RepPLUSorMINUS0x`, and `PLUSorMINUS`, where:
-- `SUM` is a semantic rule matched with `PRODUCT` followed by `RepPLUSorMINUS0x`;
-- `RepPLUSorMINUS0x` is a semantic rule matched by zero or more repetitions of `PLUSorMINUS`;
+The following section is composed of `SUM` and `PLUSorMINUS`, where:
+- `SUM` is a semantic rule matched with `PRODUCT` followed by `PLUSorMINUS` matched by zero or more repetitions of `PLUSorMINUS`;
 - `PLUSorMINUS` is a semantic rule matched by `PLUS`, addition, or `MINUS`, subtraction, of a `PRODUCT`.
 ```
-SUM              : PRODUCT RepPLUSorMINUS0x      ;
-RepPLUSorMINUS0x : PLUSorMINUS RepPLUSorMINUS0x 
-                 / empty                         ;
+SUM              : PRODUCT PLUSorMINUS*          ;
 PLUSorMINUS      : PLUS PRODUCT 
                  | MINUS PRODUCT                 ; 
 ```
-The following section is composed of `PRODUCT`, `RepTIMESorDIV0x`, and `TIMESorDIV`, where:
-- `PRODUCT` is a semantic rule matched with `ELEMENT` followed by `RepTIMESorDIV0x`;
-- `RepTIMESorDIV0x` is a semantic rule matched by zero or more repetitions of `TIMESorDIV`;
+The following section is composed of `PRODUCT` and `TIMESorDIV`, where:
+- `PRODUCT` is a semantic rule matched with `ELEMENT` followed by `TIMESorDIVIDE` matched by zero or more repetitions of `TIMESorDIVIDE`;
 - `TIMESorDIV` is a semantic rule matched by `TIMES`, multiplication, or `DIVIDE`, division, of an `ELEMENT`.
 ```
-PRODUCT          : ELEMENT RepTIMESorDIV0x       ;
-RepTIMESorDIV0x  : TIMESorDIVIDE RepTIMESorDIV0x 
-                 / empty                         ;
+PRODUCT          : ELEMENT TIMESorDIVIDE*        ;
 TIMESorDIVIDE    : TIMES ELEMENT  
                  | DIVIDE ELEMENT                ;
 ```
