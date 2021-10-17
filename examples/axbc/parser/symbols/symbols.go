@@ -16,21 +16,19 @@ func (L) isSymbol() {}
 // NT is the type of non-terminals symbols
 type NT int
 const( 
-	NT_AStar NT = iota
-	NT_AorB 
+	NT_AorB NT = iota
 	NT_AxBC 
-	NT_Suffa 
 )
 
-const NumNTs = 4
+const NumNTs = 2
 
 type NTs []NT
 
 // T is the type of terminals symbols
 type T int
 const( 
-	T_0 T = iota // a 
-	T_1  // b 
+	T_0 T = iota // aStar 
+	T_1  // ab 
 	T_2  // c 
 )
 
@@ -126,35 +124,28 @@ func (lk L) ArgSymbol() Symbol {
 }
 
 var ntToString = []string { 
-	"AStar", /* NT_AStar */
 	"AorB", /* NT_AorB */
-	"AxBC", /* NT_AxBC */
-	"Suffa", /* NT_Suffa */ 
+	"AxBC", /* NT_AxBC */ 
 }
 
 var tToString = []string { 
-	"a", /* T_0 */
-	"b", /* T_1 */
+	"aStar", /* T_0 */
+	"ab", /* T_1 */
 	"c", /* T_2 */ 
 }
 
 var stringNT = map[string]NT{ 
-	"AStar":NT_AStar,
 	"AorB":NT_AorB,
 	"AxBC":NT_AxBC,
-	"Suffa":NT_Suffa,
 }
 
 var leftRec = map[NT]NTs { 
-	NT_AStar: NTs {  NT_Suffa,  },
-	NT_AorB: NTs {  NT_AStar,  NT_Suffa,  },
-	NT_AxBC: NTs {  NT_AorB,  NT_AStar,  NT_Suffa,  },
-	NT_Suffa: NTs {  },
+	NT_AorB: NTs {  },
+	NT_AxBC: NTs {  NT_AorB,  },
 }
 
 var ordered = map[NT]bool { 
 	NT_AorB:true,
-	NT_Suffa:true,
 }
 
 var lkMode = []int { 

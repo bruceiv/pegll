@@ -66,6 +66,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 		L, cU, p.cI = p.R.remove()
 		tokens := p.lex.Tokens(p.cI)
 		origTokens := tokens
+		_ = origTokens // suppress "declared but not used"
 		var rext int
 		var ok bool
 
@@ -75,22 +76,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 
 		for {
 			switch L {
-			case slot.AStar0R0: // AStar : ∙Suffa
-
-				rext, ok = p.testSelect(slot.AStar0R0, tokens)
-				if !ok {
-					p.parseError(slot.AStar0R0, p.cI, tokens, first[slot.AStar0R0])
-					L, p.cI = slot.AStar1F0, cU
-
-					goto nextSlot
-				}
-				p.call(slot.AStar0R1, slot.AStar1F0, symbols.NT_Suffa, cU, p.cI)
-			case slot.AStar0R1: // AStar : Suffa ∙
-
-				p.rtn(symbols.NT_AStar, cU, p.cI)
-			case slot.AStar1F0: // AStar failure case
-				p.rtn(symbols.NT_AStar, cU, failInd)
-			case slot.AorB0R0: // AorB : ∙AStar
+			case slot.AorB0R0: // AorB : ∙aStar
 
 				rext, ok = p.testSelect(slot.AorB0R0, tokens)
 				if !ok {
@@ -99,11 +85,10 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 
 					goto nextSlot
 				}
-				p.call(slot.AorB0R1, slot.AorB1R0, symbols.NT_AStar, cU, p.cI)
-			case slot.AorB0R1: // AorB : AStar ∙
-
+				p.bsrSet.Add(slot.AorB0R1, cU, p.cI, rext)
+				p.cI = rext
 				p.rtn(symbols.NT_AorB, cU, p.cI)
-			case slot.AorB1R0: // AorB : ∙a b
+			case slot.AorB1R0: // AorB : ∙ab
 
 				rext, ok = p.testSelect(slot.AorB1R0, tokens)
 				if !ok {
@@ -113,15 +98,6 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 					goto nextSlot
 				}
 				p.bsrSet.Add(slot.AorB1R1, cU, p.cI, rext)
-				p.cI = rext
-				rext, ok = p.testSelect(slot.AorB1R1, tokens)
-				if !ok {
-					p.parseError(slot.AorB1R1, p.cI, tokens, first[slot.AorB1R1])
-					L, p.cI = slot.AorB2F0, cU
-					tokens = origTokens
-					goto nextSlot
-				}
-				p.bsrSet.Add(slot.AorB1R2, cU, p.cI, rext)
 				p.cI = rext
 				p.rtn(symbols.NT_AorB, cU, p.cI)
 			case slot.AorB2F0: // AorB failure case
@@ -150,31 +126,6 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 				p.rtn(symbols.NT_AxBC, cU, p.cI)
 			case slot.AxBC1F0: // AxBC failure case
 				p.rtn(symbols.NT_AxBC, cU, failInd)
-			case slot.Suffa0R0: // Suffa : ∙a Suffa
-
-				rext, ok = p.testSelect(slot.Suffa0R0, tokens)
-				if !ok {
-					p.parseError(slot.Suffa0R0, p.cI, tokens, first[slot.Suffa0R0])
-					L, p.cI = slot.Suffa1R0, cU
-
-					goto nextSlot
-				}
-				p.bsrSet.Add(slot.Suffa0R1, cU, p.cI, rext)
-				p.cI = rext
-				rext, ok = p.testSelect(slot.Suffa0R1, tokens)
-				if !ok {
-					p.parseError(slot.Suffa0R1, p.cI, tokens, first[slot.Suffa0R1])
-					L, p.cI = slot.Suffa1R0, cU
-					tokens = origTokens
-					goto nextSlot
-				}
-				p.call(slot.Suffa0R2, slot.Suffa1R0, symbols.NT_Suffa, cU, p.cI)
-			case slot.Suffa0R2: // Suffa : a Suffa ∙
-
-				p.rtn(symbols.NT_Suffa, cU, p.cI)
-			case slot.Suffa1R0: // Suffa : ∙
-				p.bsrSet.AddEmpty(slot.Suffa1R0, p.cI)
-				p.rtn(symbols.NT_Suffa, cU, p.cI)
 
 			default:
 				panic("This must not happen")
@@ -434,37 +385,19 @@ func (p *parser) testSelect(l slot.Label, tokens *lexer.TokenSet) (int, bool) {
 }
 
 var first = []map[token.Type]string{
-	// AStar : ∙Suffa
+	// AorB : ∙aStar
 	{
-		token.T_0: "a",
-		token.T_2: "c",
+		token.T_0: "aStar",
 	},
-	// AStar : Suffa ∙
-	{
-		token.T_2: "c",
-	},
-	// AStar : ∙
+	// AorB : aStar ∙
 	{
 		token.T_2: "c",
 	},
-	// AorB : ∙AStar
+	// AorB : ∙ab
 	{
-		token.T_0: "a",
-		token.T_2: "c",
+		token.T_1: "ab",
 	},
-	// AorB : AStar ∙
-	{
-		token.T_2: "c",
-	},
-	// AorB : ∙a b
-	{
-		token.T_0: "a",
-	},
-	// AorB : a ∙b
-	{
-		token.T_1: "b",
-	},
-	// AorB : a b ∙
+	// AorB : ab ∙
 	{
 		token.T_2: "c",
 	},
@@ -474,8 +407,8 @@ var first = []map[token.Type]string{
 	},
 	// AxBC : ∙AorB c
 	{
-		token.T_0: "a",
-		token.T_2: "c",
+		token.T_0: "aStar",
+		token.T_1: "ab",
 	},
 	// AxBC : AorB ∙c
 	{
@@ -489,30 +422,9 @@ var first = []map[token.Type]string{
 	{
 		token.EOF: "$",
 	},
-	// Suffa : ∙a Suffa
-	{
-		token.T_0: "a",
-	},
-	// Suffa : a ∙Suffa
-	{
-		token.T_0: "a",
-		token.T_2: "c",
-	},
-	// Suffa : a Suffa ∙
-	{
-		token.T_2: "c",
-	},
-	// Suffa : ∙
-	{
-		token.T_2: "c",
-	},
 }
 
 var followSets = []map[token.Type]string{
-	// AStar
-	{
-		token.T_2: "c",
-	},
 	// AorB
 	{
 		token.T_2: "c",
@@ -520,10 +432,6 @@ var followSets = []map[token.Type]string{
 	// AxBC
 	{
 		token.EOF: "$",
-	},
-	// Suffa
-	{
-		token.T_2: "c",
 	},
 }
 

@@ -13,23 +13,15 @@ import(
 type Label int
 
 const(
-	AStar0R0 Label = iota
-	AStar0R1
-	AStar1F0
-	AorB0R0
+	AorB0R0 Label = iota
 	AorB0R1
 	AorB1R0
 	AorB1R1
-	AorB1R2
 	AorB2F0
 	AxBC0R0
 	AxBC0R1
 	AxBC0R2
 	AxBC1F0
-	Suffa0R0
-	Suffa0R1
-	Suffa0R2
-	Suffa1R0
 )
 
 type Slot struct {
@@ -141,44 +133,23 @@ func (s *Slot) String() string {
 }
 
 var slots = map[Label]*Slot{ 
-	AStar0R0: {
-		symbols.NT_AStar, 0, 0, 
-		symbols.Symbols{  
-			symbols.NT_Suffa,
-		}, 
-		AStar0R0, 
-	},
-	AStar0R1: {
-		symbols.NT_AStar, 0, 1, 
-		symbols.Symbols{  
-			symbols.NT_Suffa,
-		}, 
-		AStar0R1, 
-	},
-	AStar1F0: {
-		symbols.NT_AStar, 1, 0, 
-		symbols.Symbols{ 
-		}, 
-		AStar1F0, 
-	},
 	AorB0R0: {
 		symbols.NT_AorB, 0, 0, 
 		symbols.Symbols{  
-			symbols.NT_AStar,
+			symbols.T_0,
 		}, 
 		AorB0R0, 
 	},
 	AorB0R1: {
 		symbols.NT_AorB, 0, 1, 
 		symbols.Symbols{  
-			symbols.NT_AStar,
+			symbols.T_0,
 		}, 
 		AorB0R1, 
 	},
 	AorB1R0: {
 		symbols.NT_AorB, 1, 0, 
 		symbols.Symbols{  
-			symbols.T_0, 
 			symbols.T_1,
 		}, 
 		AorB1R0, 
@@ -186,18 +157,9 @@ var slots = map[Label]*Slot{
 	AorB1R1: {
 		symbols.NT_AorB, 1, 1, 
 		symbols.Symbols{  
-			symbols.T_0, 
 			symbols.T_1,
 		}, 
 		AorB1R1, 
-	},
-	AorB1R2: {
-		symbols.NT_AorB, 1, 2, 
-		symbols.Symbols{  
-			symbols.T_0, 
-			symbols.T_1,
-		}, 
-		AorB1R2, 
 	},
 	AorB2F0: {
 		symbols.NT_AorB, 2, 0, 
@@ -235,101 +197,45 @@ var slots = map[Label]*Slot{
 		}, 
 		AxBC1F0, 
 	},
-	Suffa0R0: {
-		symbols.NT_Suffa, 0, 0, 
-		symbols.Symbols{  
-			symbols.T_0, 
-			symbols.NT_Suffa,
-		}, 
-		Suffa0R0, 
-	},
-	Suffa0R1: {
-		symbols.NT_Suffa, 0, 1, 
-		symbols.Symbols{  
-			symbols.T_0, 
-			symbols.NT_Suffa,
-		}, 
-		Suffa0R1, 
-	},
-	Suffa0R2: {
-		symbols.NT_Suffa, 0, 2, 
-		symbols.Symbols{  
-			symbols.T_0, 
-			symbols.NT_Suffa,
-		}, 
-		Suffa0R2, 
-	},
-	Suffa1R0: {
-		symbols.NT_Suffa, 1, 0, 
-		symbols.Symbols{ 
-		}, 
-		Suffa1R0, 
-	},
 }
 
 var slotIndex = map[Index]Label { 
-	Index{ symbols.NT_AStar,0,0 }: AStar0R0,
-	Index{ symbols.NT_AStar,0,1 }: AStar0R1,
-	Index{ symbols.NT_AStar,1,0 }: AStar1F0,
 	Index{ symbols.NT_AorB,0,0 }: AorB0R0,
 	Index{ symbols.NT_AorB,0,1 }: AorB0R1,
 	Index{ symbols.NT_AorB,1,0 }: AorB1R0,
 	Index{ symbols.NT_AorB,1,1 }: AorB1R1,
-	Index{ symbols.NT_AorB,1,2 }: AorB1R2,
 	Index{ symbols.NT_AorB,2,0 }: AorB2F0,
 	Index{ symbols.NT_AxBC,0,0 }: AxBC0R0,
 	Index{ symbols.NT_AxBC,0,1 }: AxBC0R1,
 	Index{ symbols.NT_AxBC,0,2 }: AxBC0R2,
 	Index{ symbols.NT_AxBC,1,0 }: AxBC1F0,
-	Index{ symbols.NT_Suffa,0,0 }: Suffa0R0,
-	Index{ symbols.NT_Suffa,0,1 }: Suffa0R1,
-	Index{ symbols.NT_Suffa,0,2 }: Suffa0R2,
-	Index{ symbols.NT_Suffa,1,0 }: Suffa1R0,
 }
 
 var alternates = map[symbols.NT][]Label{ 
 	symbols.NT_AxBC:[]Label{ AxBC0R0 },
 	symbols.NT_AorB:[]Label{ AorB0R0,AorB1R0 },
-	symbols.NT_AStar:[]Label{ AStar0R0 },
-	symbols.NT_Suffa:[]Label{ Suffa0R0,Suffa1R0 },
 }
 
 var nullable = []bool { 
-	true, // AStar0R0 
-	true, // AStar0R1 
-	false, // AStar1F0 
-	true, // AorB0R0 
+	false, // AorB0R0 
 	true, // AorB0R1 
 	false, // AorB1R0 
-	false, // AorB1R1 
-	true, // AorB1R2 
+	true, // AorB1R1 
 	false, // AorB2F0 
 	false, // AxBC0R0 
 	false, // AxBC0R1 
 	true, // AxBC0R2 
 	false, // AxBC1F0 
-	false, // Suffa0R0 
-	true, // Suffa0R1 
-	true, // Suffa0R2 
-	true, // Suffa1R0 
 }
 
 var firstT = []map[token.Type]bool { 
-	{  token.T_0: true,  }, // AStar0R0 
-	{  }, // AStar0R1 
-	{  }, // AStar1F0 
 	{  token.T_0: true,  }, // AorB0R0 
 	{  }, // AorB0R1 
-	{  token.T_0: true,  }, // AorB1R0 
-	{  token.T_1: true,  }, // AorB1R1 
-	{  }, // AorB1R2 
+	{  token.T_1: true,  }, // AorB1R0 
+	{  }, // AorB1R1 
 	{  }, // AorB2F0 
-	{  token.T_2: true,  token.T_0: true,  }, // AxBC0R0 
+	{  token.T_0: true,  token.T_1: true,  }, // AxBC0R0 
 	{  token.T_2: true,  }, // AxBC0R1 
 	{  }, // AxBC0R2 
 	{  }, // AxBC1F0 
-	{  token.T_0: true,  }, // Suffa0R0 
-	{  token.T_0: true,  }, // Suffa0R1 
-	{  }, // Suffa0R2 
-	{  }, // Suffa1R0 
 }

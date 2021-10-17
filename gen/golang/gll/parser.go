@@ -166,6 +166,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 		L, cU, p.cI = p.R.remove()
 		tokens := p.lex.Tokens(p.cI)
 		origTokens := tokens
+		_ = origTokens // suppress "declared but not used"
 		var rext int
 		var ok bool
 
