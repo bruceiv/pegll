@@ -324,7 +324,7 @@ var firstT = []map[token.Type]bool {
 	{  token.T_1: true,  }, // AorB1R1 
 	{  }, // AorB1R2 
 	{  }, // AorB2F0 
-	{  token.T_0: true,  token.T_2: true,  }, // AxBC0R0 
+	{  token.T_2: true,  token.T_0: true,  }, // AxBC0R0 
 	{  token.T_2: true,  }, // AxBC0R1 
 	{  }, // AxBC0R2 
 	{  }, // AxBC1F0 

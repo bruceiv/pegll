@@ -357,7 +357,7 @@ func not(r rune, set []rune) bool {
 	return true
 }
 
-var accept = []token.Type{ {{range $toks := .Accept}}
+var accept = [][]token.Type{ {{range $toks := .Accept}}
 	{ {{range $tok := $toks}} token.{{$tok}}, {{end}} }, {{end}}
 }
 

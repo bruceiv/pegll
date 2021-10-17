@@ -295,25 +295,37 @@ func (b BSR) GetNTChildrenI(i int) []BSR {
 // GetTChildI returns the terminal symbol at position i in b.
 // GetTChildI panics if symbol i is not a valid terminal
 func (b BSR) GetTChildI(i int) *token.Token {
-	symbols := b.Label.Symbols()
+	syms := b.Label.Symbols()
 
-	if i >= len(symbols) {
+	if i >= len(syms) {
 		panic(fmt.Sprintf("%s has no T child %d", b, i))
 	}
-	if symbols[i].IsNonTerminal() {
+	if syms[i].IsNonTerminal() {
 		panic(fmt.Sprintf("symbol %d in %s is an NT", i, b))
 	}
 
 	lext := b.leftExtent
 	for j := 0; j < i; j++ {
-		if symbols[j].IsNonTerminal() {
+		if syms[j].IsNonTerminal() {
 			nt := b.GetNTChildI(j)
 			lext += nt.rightExtent - nt.leftExtent
 		} else {
-			lext++
+			t := token.Type(syms[j].(symbols.T))
+			lext = b.getRightExtent(t, lext)
 		}
 	}
-	return b.set.lex.Tokens[lext]
+
+	t := token.Type(syms[i].(symbols.T))
+	rext := b.getRightExtent(t, lext)
+	return token.New(t, lext, rext, b.set.lex.I)
+}
+
+func (b BSR) getRightExtent(t token.Type, i int) int {
+	rext := b.set.lex.RightExtent(t, i)
+	if rext == -1 {
+		panic(fmt.Sprintf("no token %s at %d", t.ID(), i))
+	}
+	return rext
 }
 
 func deleteNTSlotEntry(b BSR) {
@@ -415,7 +427,7 @@ func decodeRune(str []byte) (string, rune, int) {
 }
 
 func (s *Set) getLineColumn(cI int) (line, col int) {
-	return s.lex.GetLineColumnOfToken(cI)
+	return s.lex.GetLineColumn(cI)
 }
 
 // ReportAmbiguous lists the ambiguous subtrees of the parse forest

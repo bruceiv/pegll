@@ -200,7 +200,7 @@ const oAltCodeTmpl = `		case slot.{{.AltLabel}}: // {{.AltComment}}
 			if !ok { 
 				p.parseError(slot.{{$slot.PreLabel}}, p.cI, tokens, first[slot.{{$slot.PreLabel}}])
 				L, p.cI = {{$slot.FailLabel}}, cU
-				{{if .ResetTokens}}tokens = origTokens{{end}}
+				{{if $slot.ResetTokens}}tokens = origTokens{{end}}
 				goto nextSlot
 			}
 			{{if $slot.IsNT}}p.call(slot.{{$slot.PostLabel}}, {{$slot.FailLabel}}, symbols.NT_{{$slot.CallNT}}, cU, p.cI)
@@ -211,7 +211,6 @@ const oAltCodeTmpl = `		case slot.{{.AltLabel}}: // {{.AltComment}}
 		case slot.{{$slot.PostLabel}}: // {{$slot.Comment}}
 			{{else}}p.bsrSet.Add(slot.{{$slot.PostLabel}}, cU, p.cI, rext)
 			p.cI = rext{{end}}{{end}}
-			{{if .NotLastSlot}}tokens = p.lex.Tokens(p.cI){{end}}
 			p.rtn(symbols.NT_{{.NT}}, cU, p.cI)
 	`
 
@@ -221,7 +220,7 @@ const uAltCodeTmpl = `		case slot.{{.AltLabel}}: // {{.AltComment}}
 			if !ok { 
 				p.parseError(slot.{{$slot.PreLabel}}, p.cI, tokens, first[slot.{{$slot.PreLabel}}])
 				L, p.cI = {{$slot.FailLabel}}, cU
-				{{if .ResetTokens}}tokens = origTokens{{end}}
+				{{if $slot.ResetTokens}}tokens = origTokens{{end}}
 				goto nextSlot
 			}
 			{{if $slot.IsNT}}p.call(slot.{{$slot.PostLabel}}, {{$slot.FailLabel}}, symbols.NT_{{$slot.CallNT}}, cU, p.cI)
@@ -232,10 +231,10 @@ const uAltCodeTmpl = `		case slot.{{.AltLabel}}: // {{.AltComment}}
 		case slot.{{$slot.PostLabel}}: // {{$slot.Comment}}
 			{{else}}p.bsrSet.Add(slot.{{$slot.PostLabel}}, cU, p.cI, rext)
 			p.cI = rext 
-			{{if .NotLastSlot}}tokens = p.lex.Tokens(p.cI){{end}}{{end}}
+			{{if $slot.NotLastSlot}}tokens = p.lex.Tokens(p.cI){{end}}{{end}}
 			p.rtn(symbols.NT_{{$slot.Head}}, cU, p.cI)
 			{{if .NotLastAlt}}L, p.cI = {{$slot.PassLabel}}, cU
-			{{if .ResetTokens}}tokens = origTokens{{end}}
+			{{if $slot.ResetTokens}}tokens = origTokens{{end}}
 			goto nextSlot{{end}}{{end}}
 		{{if .HasPass}}case slot.{{.PassAltLabel}}: // {{.AltComment}} [with previous match]
 		{{range $i, $slot := .Slots}}
@@ -243,7 +242,7 @@ const uAltCodeTmpl = `		case slot.{{.AltLabel}}: // {{.AltComment}}
 		if !ok { 
 			p.parseError(slot.{{$slot.PreLabel}}, p.cI, tokens, first[slot.{{$slot.PreLabel}}])
 			{{if .NotLastAlt}}L, p.cI = {{$slot.PassLabel}}, cU
-			{{if .ResetTokens}}tokens = origTokens{{end}}
+			{{if $slot.ResetTokens}}tokens = origTokens{{end}}
 			goto nextSlot{{end}}
 		}
 		{{if $slot.IsNT}}p.call(slot.{{$slot.PassPostLabel}}, {{$slot.PassLabel}}, symbols.NT_{{$slot.CallNT}}, cU, p.cI)
@@ -254,10 +253,10 @@ const uAltCodeTmpl = `		case slot.{{.AltLabel}}: // {{.AltComment}}
 	case slot.{{$slot.PostLabel}}: // {{$slot.Comment}}
 		{{else}}p.bsrSet.Add(slot.{{$slot.PostLabel}}, cU, p.cI, rext)
 		p.cI = rext 
-		{{if .NotLastSlot}}tokens = p.lex.Tokens(p.cI){{end}}{{end}}
+		{{if $slot.NotLastSlot}}tokens = p.lex.Tokens(p.cI){{end}}{{end}}
 		p.rtn(symbols.NT_{{$slot.Head}}, cU, p.cI)
 		{{if .NotLastAlt}}L, p.cI = {{$slot.PassLabel}}, cU
-		{{if .ResetTokens}}tokens = origTokens{{end}}
+		{{if $slot.ResetTokens}}tokens = origTokens{{end}}
 		goto nextSlot{{end}}
 		{{end}}{{end}}
 	`
