@@ -5,3 +5,10 @@ cpu.prof*
 cpuprof.*
 profile*.png
 **/.DS_Store
+doc/paper/mhh22.tex
+doc/paper/mhh22.aux
+doc/paper/mhh22.bbl
+doc/paper/mhh22.blg
+doc/paper/mhh22.dvi
+doc/paper/mhh22.log
+doc/paper/mhh22.ps

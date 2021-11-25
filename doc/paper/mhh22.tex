@@ -1,0 +1,42 @@
+\documentclass{article}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphics}
+\usepackage{url}
+
+\title{Parsing Expression GLL}
+\author{
+    Moss, Aaron\\
+    \texttt{mossa@up.edu}
+    \and
+    Harrington, Brynn\\
+    \texttt{harringt23@up.edu}
+    \and
+    Hoppe, Emily\\
+    \texttt{hoppe23@up.edu}
+}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+This paper presents an extension of the GLL parsing algorithm for context-free grammars which also supports parsing expression grammars with ordered choice and lookahead. 
+The new PEGLL algorithm retains support for unordered choice, and thus parses a common superset of context-free grammars and parsing expression grammars. 
+As part of this work, the authors have modified an existing GLL parser-generator to support parsing expression grammars, adding operators for common parsing expressions and modifying the lexer algorithm to better support ordered choice. 
+Performance results of the generated parsers are compared to competing parser-generators.
+\end{abstract}
+
+\section{Introduction}
+The inherently unambiguous nature of parsing expression grammars (PEGs) makes them an attractive choice for modelling structured text such as programming languages and computing data formats, but in practice the superior performance of parsers based on context-free grammars (CFGs) has led to CFGs being more-widely used, despite the difficulty of disambiguating them. 
+This work is an initial effort toward a unified framework that provides the advantages of both grammar formalisms: it is an algorithm adopted from an efficient, general-purpose CFG parser that supports PEG semantics without discarding support for the unordered choice operator of CFGs in cases where that ambiguity may be desirable. 
+
+More specifically, this paper presents a modification of the GLL parser-generator of Scott \& Johnstone\cite{SJ10,SJ16}. 
+The key contribution is the \emph{FailCRF} data structure, which adds a failure path to Scott \& Johnstone's call-return forest; the addition of a failure path allows the lookahead and ordered choice operations of the PEG formalism to be supported.
+The authors have extended Ackerman's GoGLL\cite{Ack19} parser-generator to implement this new algorithm, adding syntactic sugar for common PEG operators and modifying the lexer algorithm to allow the PEG parser to override the usual maximal-munch rule. 
+This paper also presents benchmarking results from comparing our new \emph{PEGLL} parser-generator against existing algorithms.
+
+\bibliographystyle{ieeetr}
+\bibliography{deriv_parsing}
+
+\end{document}
