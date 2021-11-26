@@ -5,6 +5,11 @@
 \usepackage{graphics}
 \usepackage{url}
 
+% Notational macros
+\newcommand{\Rule}{\mathcal{R}}
+\newcommand{\fail}{\mathsf{fail}}
+\newcommand{\nl}{\mathord{!}}
+
 \title{Parsing Expression GLL}
 \author{
     Moss, Aaron\\
@@ -35,6 +40,40 @@ More specifically, this paper presents a modification of the GLL parser-generato
 The key contribution is the \emph{FailCRF} data structure, which adds a failure path to Scott \& Johnstone's call-return forest; the addition of a failure path allows the lookahead and ordered choice operations of the PEG formalism to be supported.
 The authors have extended Ackerman's GoGLL\cite{Ack19} parser-generator to implement this new algorithm, adding syntactic sugar for common PEG operators and modifying the lexer algorithm to allow the PEG parser to override the usual maximal-munch rule. 
 This paper also presents benchmarking results from comparing our new \emph{PEGLL} parser-generator against existing algorithms.
+
+\section{Parsing Expression Grammars}
+The primary difference between parsing expression grammars and the more familiar context-free grammars is \emph{ordered choice}: PEGs, as a formalism of recursive-descent parsing, do not try subsequent alternatives of an alternation if an earlier alternative matches. 
+The other significant difference between the PEG and CFG formalisms are the PEG \emph{lookahead} expressions, $\nl\alpha$ and $\&\alpha$, which match only if the subexpression $\alpha$ does not (resp. does) match, but consume no input regardless. 
+These lookahead operators provide the infinite lookahead of the PEG formalism.
+The other fundamental PEG operators act much like their CFG equivalents, and are described in Fig.~\ref{expr-fig} as functions over an input string $s$ drawn from some alphabet $\Sigma$ producing either a (matching) suffix of $s$ or the special value $\fail \not\in \Sigma^*$.
+In summary, the \emph{string literal} $u$ matches and consumes the string $u$, the \emph{empty expression} $\varepsilon$ always matches without consuming anything, while the \emph{failure expression} $\varnothing$ never matches. 
+The \emph{sequence} expression $\alpha\beta$ matches $\alpha$ followed by $\beta$, while the \emph{ordered choice} expression $\alpha/\beta$ only tries $\beta$ if $\alpha$ does not match. 
+To differentiate CFG \emph{unordered choice}, it is represented in this paper as $\alpha|\beta$.
+
+\begin{figure}
+	\centering
+	\begin{equation*}
+	\begin{aligned}[c]
+	u(s)            & = \begin{cases} v & s = uv \\
+	                                  \fail & \text{otherwise} \end{cases} \\
+	\varepsilon(s)  & = s \\
+	\varnothing(s)  & = \fail \\
+	\nl\alpha(s)    & = \begin{cases} s  & \alpha(s) = \fail \\
+	                                  \fail & \text{otherwise} \end{cases} \\
+    \&\alpha(s)     & = \begin{cases} s  & \alpha(s) \neq \fail \\
+                                      \fail & \text{otherwise} \end{cases}
+	\end{aligned}
+	~~~~
+	\begin{aligned}[c]
+	A(s)            & = (\Rule(A))(s) \\
+	\alpha\beta(s)  & = \begin{cases} \beta(\alpha(s)) & \alpha(s) \neq \fail \\
+	                                  \fail               & \text{otherwise} \end{cases} \\
+	\alpha/\beta(s) & = \begin{cases} \alpha(s)  & \alpha(s) \neq \fail \\
+	                                  \beta(s)   & \text{otherwise} \end{cases}
+	\end{aligned}
+	\end{equation*}
+	\caption[Expression definitions]{Formal definitions of parsing expressions} \label{expr-fig}
+\end{figure}
 
 \bibliographystyle{ieeetr}
 \bibliography{deriv_parsing}
