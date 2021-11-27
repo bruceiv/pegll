@@ -10,6 +10,12 @@
 \newcommand{\fail}{\mathsf{fail}}
 \newcommand{\nl}{\mathord{!}}
 
+% Consistent handling for Latin abbrevs.
+\newcommand{\ie}{\textit{i.e.}\@}
+\newcommand{\eg}{\textit{e.g.}\@}
+\newcommand{\etc}{\textit{etc.}\@}
+\newcommand{\etal}{\textit{et~al.}\@}
+
 \title{Parsing Expression GLL}
 \author{
     Moss, Aaron\\
@@ -47,6 +53,7 @@ The other significant difference between the PEG and CFG formalisms are the PEG 
 These lookahead operators provide the infinite lookahead of the PEG formalism.
 The other fundamental PEG operators act much like their CFG equivalents, and are described in Fig.~\ref{expr-fig} as functions over an input string $s$ drawn from some alphabet $\Sigma$ producing either a (matching) suffix of $s$ or the special value $\fail \not\in \Sigma^*$.
 In summary, the \emph{string literal} $u$ matches and consumes the string $u$, the \emph{empty expression} $\varepsilon$ always matches without consuming anything, while the \emph{failure expression} $\varnothing$ never matches. 
+A \emph{nonterminal} $A$ is replaced by the parsing expression $\Rule(A)$ it corresponds to.
 The \emph{sequence} expression $\alpha\beta$ matches $\alpha$ followed by $\beta$, while the \emph{ordered choice} expression $\alpha/\beta$ only tries $\beta$ if $\alpha$ does not match. 
 To differentiate CFG \emph{unordered choice}, it is represented in this paper as $\alpha|\beta$.
 
@@ -54,26 +61,41 @@ To differentiate CFG \emph{unordered choice}, it is represented in this paper as
 	\centering
 	\begin{equation*}
 	\begin{aligned}[c]
-	u(s)            & = \begin{cases} v & s = uv \\
+	u(s)            & = \begin{cases} v     & s = uv \\
 	                                  \fail & \text{otherwise} \end{cases} \\
 	\varepsilon(s)  & = s \\
 	\varnothing(s)  & = \fail \\
-	\nl\alpha(s)    & = \begin{cases} s  & \alpha(s) = \fail \\
+	\nl\alpha(s)    & = \begin{cases} s     & \alpha(s) = \fail \\
 	                                  \fail & \text{otherwise} \end{cases} \\
-    \&\alpha(s)     & = \begin{cases} s  & \alpha(s) \neq \fail \\
+    \&\alpha(s)     & = \begin{cases} s     & \alpha(s) \neq \fail \\
                                       \fail & \text{otherwise} \end{cases}
 	\end{aligned}
 	~~~~
 	\begin{aligned}[c]
 	A(s)            & = (\Rule(A))(s) \\
 	\alpha\beta(s)  & = \begin{cases} \beta(\alpha(s)) & \alpha(s) \neq \fail \\
-	                                  \fail               & \text{otherwise} \end{cases} \\
+	                                  \fail            & \text{otherwise} \end{cases} \\
 	\alpha/\beta(s) & = \begin{cases} \alpha(s)  & \alpha(s) \neq \fail \\
 	                                  \beta(s)   & \text{otherwise} \end{cases}
 	\end{aligned}
 	\end{equation*}
 	\caption[Expression definitions]{Formal definitions of parsing expressions} \label{expr-fig}
 \end{figure}
+
+\section{GLL Parsing}
+\emph{Generalized LL} (GLL) parsing, introduced by Scott \& Johnstone\cite{SJ10,SJvB19}, extends the power of LL parsing to all CFGs through use of a \emph{call-return forest} (CRF) to represent the recursive-descent call stack of the LL parsing algorithm. 
+For efficiency, the CRF is implemented using the \emph{graph-structured stack} (GSS) data structure introduced by Tomita\cite{Tom85} for the GLR parsing algorithm. 
+The gist of the GLL approach is that each CRF node represents a function call (equivalently, nonterminal invocation) in a recursive-descent parse, and includes an input position, a nonterminal to match, and a grammar slot to return to on completion. 
+The graph structure of this stack comes from a dynamic de-duplication of CRF nodes which share a nonterminal and input position, changing a stack data structure into a directed acyclic graph (DAG). 
+The GLL algorithm keeps a queue of CRF nodes which are pending parsing, and handles the nondeterminism of unordered choice by enqueuing a CRF node for each choice.
+
+Scott \etal\cite{SJvB19} introduced \emph{binary subtree representation} (BSR) sets as an output format to represent nonterminal matches in GLL. 
+The essential insight is that, while the traditional \emph{shared packed parse forest} (SPPF)\cite{Tom85} data structure representing possible parse trees requires significant complication in the parser algorithm to properly store and update edges between parse tree nodes, those edges can be efficiently reconstructed from an indexed set of edgeless parse-tree nodes (the BSR set) with minimal added information. 
+
+A BSR element is a 4-tuple containing a \emph{grammar slot} $X ::= \alpha\theta\cdot\beta$, and three input indices $i$, $j$, and $k$, $i \leq j \leq k$. 
+The BSR element represents a successful match of the nonterminal $X$ up to the end of $\theta$, the single terminal or nonterminal immediately before the dot of the grammar slot; $i$ is the input index where $X$ began to match, $j$ is the index where $\theta$ began to match, and $k$ is the index where $\theta$ finished matching. 
+Note that if $\beta = \varepsilon$, the BSR node represents a complete match of $X$.
+Parse trees can be straightforwardly reconstructed from BSR sets: a predecessor of a BSR element $(X ::= \alpha\theta\cdot\beta, i, j, k)$ is any element $(X ::= \alpha\cdot\theta\beta, i, \ell, j)$, while its child where $\theta$ is some nonterminal $A$ is any element $(A ::= \delta\cdot, j, m, k)$. Successor and parent nodes can be defined analogously.
 
 \bibliographystyle{ieeetr}
 \bibliography{deriv_parsing}
