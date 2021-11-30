@@ -3,6 +3,7 @@
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{graphics}
+\usepackage{listings}
 \usepackage{url}
 
 % Notational macros
@@ -95,7 +96,34 @@ The essential insight is that, while the traditional \emph{shared packed parse f
 A BSR element is a 4-tuple containing a \emph{grammar slot} $X ::= \alpha\theta\cdot\beta$, and three input indices $i$, $j$, and $k$, $i \leq j \leq k$. 
 The BSR element represents a successful match of the nonterminal $X$ up to the end of $\theta$, the single terminal or nonterminal immediately before the dot of the grammar slot; $i$ is the input index where $X$ began to match, $j$ is the index where $\theta$ began to match, and $k$ is the index where $\theta$ finished matching. 
 Note that if $\beta = \varepsilon$, the BSR node represents a complete match of $X$.
-Parse trees can be straightforwardly reconstructed from BSR sets: a predecessor of a BSR element $(X ::= \alpha\theta\cdot\beta, i, j, k)$ is any element $(X ::= \alpha\cdot\theta\beta, i, \ell, j)$, while its child where $\theta$ is some nonterminal $A$ is any element $(A ::= \delta\cdot, j, m, k)$. Successor and parent nodes can be defined analogously.
+Parse trees can be straightforwardly reconstructed from BSR sets: a predecessor of a BSR element $(X ::= \alpha\theta\cdot\beta, i, j, k)$ is any element $(X ::= \alpha\cdot\theta\beta, i, \ell, j)$, while its child where $\theta$ is some nonterminal $A$ is any element $(A ::= \delta\cdot, j, m, k)$. Successor and parent elements can be defined analogously.
+
+\section{Parsing Expression GLL}
+The \emph{Parsing Expression GLL} (PEGLL) algorithm introduced in this paper uses similar data structures and abstractions as GLL for CFGs. 
+The main loop is outlined in Figure~\ref{main-loop-algo}; it first initializes an empty queue $R$ of slot descriptors to parse and an empty set $T$ of BSR elements to report, queues the start rule of the grammar at input position 0 for parsing, parses each descriptor, and completes by returning whether or not the start rule matched at position 0. 
+Note that (unlike CFGs), PEGs match prefixes of their input, so the start rule may only consume the input up to some index $k$; if this behavior is not desired, a match can be returned only if $k$ is the length of the input string.
+
+\begin{figure}
+\caption{PEGLL main loop} \label{main-loop-algo}
+\begin{lstlisting}[language=C++,mathescape=true,escapeinside={@}{@}]
+$R = \emptyset$; $T = \emptyset$;
+ntAdd($S$, 0);
+while $R \neq \emptyset$ {
+    $(L, c_U, c_I) = R$.remove();
+    $t = $tokens($c_I$); $t' = t$;
+    while true {
+        switch $L$ {
+            $\langle$ @generate slot code for each rule $R$@ $\rangle$
+        }
+    nextSlot: }
+}
+if $\exists \alpha, j, k, (S ::= \alpha \cdot, 0, j, k) \in T$ {
+    return match at maximal such $k$;
+} else {
+    return $\fail$;
+}
+\end{lstlisting}
+\end{figure}
 
 \bibliographystyle{ieeetr}
 \bibliography{deriv_parsing}
