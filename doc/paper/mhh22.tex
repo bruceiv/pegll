@@ -107,13 +107,13 @@ Note that (unlike CFGs), PEGs match prefixes of their input, so the start rule m
 \caption{PEGLL main loop} \label{main-loop-algo}
 \begin{lstlisting}[language=C++,mathescape=true,escapeinside={@}{@}]
 $R = \emptyset$; $T = \emptyset$;
-ntAdd($S$, 0);
+ntAdd$(S, 0)$;
 while $R \neq \emptyset$ {
     $(L, c_U, c_I) = R$.remove();
-    $t = $tokens($c_I$); $t' = t$;
+    $t = $tokens$(c_I)$; $t' = t$;
     while true {
         switch $L$ {
-            $\langle$ @generate slot code for each rule $R$@ $\rangle$
+            $\langle$ @generate code for each rule $R$@ $\rangle$
         }
     nextSlot: }
 }
@@ -124,6 +124,81 @@ if $\exists \alpha, j, k, (S ::= \alpha \cdot, 0, j, k) \in T$ {
 }
 \end{lstlisting}
 \end{figure}
+
+The primary thing the loop in Figure~\ref{main-loop-algo} does is dispatch the current descriptor to the code which executes its parse. 
+The code for each non-terminal may be generated according to the patterns in Figures~\ref{nt-pattern} and~\ref{empty-nt-pattern}. 
+This parser-generator assumes any ordered choice expressions are at the very top level of a non-terminal (parenthesized subexpressions are added as syntactic sugar, see Section~\ref{syntax-sec}). 
+A label is then generated for each alternate, failing over to the next alternate if it does not match, with a synthesized failure alternate at the end of each alternation.
+
+\begin{figure}
+\caption[Non-terminal code pattern]{Pattern for a non-terminal $X ::= \tau_1 / \ldots / \tau_p, p \geq 1$} \label{nt-pattern}
+\begin{lstlisting}[language=C++,mathescape=true,escapeinside={@}{@}]
+$X ::= \cdot \tau_1$:
+	$\langle$ @generate code for $X ::= \cdot \tau_1$ with failure path $X ::= \cdot \tau_2$@ $\rangle$
+	rtn$(X, c_U, c_I)$; goto nextSlot;
+$\vdots$
+$X ::= \cdot \tau_p$:
+	$\langle$ @generate code for $X ::= \cdot \tau_p$ with failure path $X ::= \cdot \varnothing$@ $\rangle$
+	rtn$(X, c_U, c_I)$; goto nextSlot;
+$X ::= \cdot \varnothing$:
+	rtn$(X, c_U, \fail)$; goto nextSlot;
+\end{lstlisting}
+\end{figure}
+
+\begin{figure}
+\caption[Empty non-terminal code pattern]{Pattern for a non-terminal $X ::= \varepsilon$} \label{empty-nt-pattern}
+\begin{lstlisting}[language=C++,mathescape=true,escapeinside={@}{@}]
+$X ::= \cdot \varepsilon$:
+	$T = T \cup {(X ::= \varepsilon \cdot, c_I, c_I, c_I)}$; goto nextSlot;
+\end{lstlisting}
+\end{figure}
+
+The rtn$(X, c_U, c_I)$ function in PEGLL code is detailed below in Figure~\ref{helper-functions}, but its essential purpose is to modify the ``call stack'' in the CRF graph consistently with a recursive call to the non-terminal $X$ at position $c_U$ returning at position $c_I$.
+
+To parse each of the sequence expressions $\tau_i$ inside a nonterminal alternative, PEGLL repeatedly executes the appropriate code for each expression in the sequence, moving to the failure path if that expression does not work. 
+The code patterns for the sequence expression are in Figure~\ref{seq-expr-pattern}, while the code patterns for each atomic expression are in Figure~\ref{atom-expr-pattern}. 
+Note that nonterminal calls preserve the failure path from their caller, and in particular that negative-lookahead expressions swap the success and failure results of the call.
+
+\begin{figure}
+\caption[Sequence expression code pattern]{Pattern for a sequence $X ::= \cdot x_1 \ldots x_d$ with failure path $L_f$} \label{seq-expr-pattern}
+\begin{lstlisting}[language=C++,mathescape=true,escapeinside={@}{@}]
+if not testSelect$(I[c_I], X, x_1 \ldots x_d)$ {
+	$c_I = c_U$; goto $L_f$;
+}
+$\langle$ @generate code for $X ::= x_1 \cdot x_2 \ldots x_d$ with failure path $L_f$@ $\rangle$
+$\vdots$
+if not testSelect$(I[c_I], X, x_d)$ {
+	$c_I = c_U$; goto $L_f$;
+}
+$\langle$ @generate code for $X ::= x_1 \ldots x_d \cdot$ with failure path $L_f$@ $\rangle$
+\end{lstlisting}
+\end{figure}
+
+\begin{figure}
+\caption[Atomic expression code patterns]{Pattern for an atomic expression $X ::= \alpha \varphi \cdot \beta$ with failure path $L_f$} \label{atom-expr-pattern}
+\begin{lstlisting}[language=C++,mathescape=true,escapeinside={@}{@}]
+$\varphi = a \implies$
+	bsrAdd$(X ::= \alpha a \cdot \beta, c_U, c_I, c_I+1)$; $c_I += 1$;
+
+$\varphi = Y \implies$
+	call$(X ::= \alpha Y \cdot \beta, L_f, c_U, Y, c_I)$; goto nextSlot;
+$X ::= \alpha Y \cdot \beta$:
+
+$\varphi = \& Y \implies$
+	call$(X ::= \alpha \& Y \cdot \beta, L_f, c_U, Y, c_I)$; goto nextSlot;
+$X ::= \alpha \& Y \cdot \beta$:
+
+$\varphi = \nl Y \implies$
+	call$(L_f, X ::= \alpha Y \cdot \beta, c_U, Y, c_I)$; goto nextSlot;
+$X ::= \alpha \nl Y \cdot \beta$:
+\end{lstlisting}
+\end{figure}
+
+\textbf{TODO} check code patterns against actual code, write helper functions
+
+\subsection{Syntactic Sugar} \label{syntax-sec}
+
+\textbf{TODO} write me.
 
 \bibliographystyle{ieeetr}
 \bibliography{deriv_parsing}
