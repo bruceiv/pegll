@@ -107,16 +107,16 @@ Note that (unlike CFGs), PEGs match prefixes of their input, so the start rule m
 \caption{PEGLL main loop} \label{main-loop-algo}
 \begin{lstlisting}[language=C++,mathescape=true,escapeinside={@}{@}]
 $R = \emptyset$; $T = \emptyset$;
-ntAdd$(S, 0)$;
+@ntAdd@$(S, 0)$;
 while $R \neq \emptyset$ {
     $(L, c_U, c_I) = R$.remove();
-    $t = $tokens$(c_I)$; $t' = t$;
+    $t =\;$@tokens@$(c_I)$; $t' = t$;
     while true {
         switch $L$ {
             $\langle$ @generate code for each rule $R$@ $\rangle$
         }
-    nextSlot: }
-}
+    @nextSlot@: }
+@nextDesc@: }
 if $\exists \alpha, j, k, (S ::= \alpha \cdot, 0, j, k) \in T$ {
     return match at maximal such $k$;
 } else {
@@ -135,13 +135,13 @@ A label is then generated for each alternate, failing over to the next alternate
 \begin{lstlisting}[language=C++,mathescape=true,escapeinside={@}{@}]
 $X ::= \cdot \tau_1$:
 	$\langle$ @generate code for $X ::= \cdot \tau_1$ with failure path $X ::= \cdot \tau_2$@ $\rangle$
-	rtn$(X, c_U, c_I)$; goto nextSlot;
+	@rtn@$(X, c_U, c_I)$; goto @nextDesc@;
 $\vdots$
 $X ::= \cdot \tau_p$:
 	$\langle$ @generate code for $X ::= \cdot \tau_p$ with failure path $X ::= \cdot \varnothing$@ $\rangle$
-	rtn$(X, c_U, c_I)$; goto nextSlot;
+	@rtn@$(X, c_U, c_I)$; goto @nextDesc@;
 $X ::= \cdot \varnothing$:
-	rtn$(X, c_U, \fail)$; goto nextSlot;
+	@rtn@$(X, c_U, \fail)$; goto @nextDesc@;
 \end{lstlisting}
 \end{figure}
 
@@ -149,7 +149,8 @@ $X ::= \cdot \varnothing$:
 \caption[Empty non-terminal code pattern]{Pattern for a non-terminal $X ::= \varepsilon$} \label{empty-nt-pattern}
 \begin{lstlisting}[language=C++,mathescape=true,escapeinside={@}{@}]
 $X ::= \cdot \varepsilon$:
-	$T = T \cup {(X ::= \varepsilon \cdot, c_I, c_I, c_I)}$; goto nextSlot;
+	$T = T \cup {(X ::= \varepsilon \cdot, c_I, c_I, c_I)}$;
+	@rtn@$(X, c_U, c_I)$; goto @nextDesc@;
 \end{lstlisting}
 \end{figure}
 
@@ -157,20 +158,20 @@ The rtn$(X, c_U, c_I)$ function in PEGLL code is detailed below in Figure~\ref{h
 
 To parse each of the sequence expressions $\tau_i$ inside a nonterminal alternative, PEGLL repeatedly executes the appropriate code for each expression in the sequence, moving to the failure path if that expression does not work. 
 The code patterns for the sequence expression are in Figure~\ref{seq-expr-pattern}, while the code patterns for each atomic expression are in Figure~\ref{atom-expr-pattern}. 
-Note that nonterminal calls preserve the failure path from their caller, and in particular that negative-lookahead expressions swap the success and failure results of the call.
+Terminal matches advance the input index $c_I$ to the right extent $r$ of the token and find the new tokens $t$ at that position, while mid-sequence errors reset $c_I$ and $t$ to their initial values in the descriptor, $c_U$ and $t'$.
+Note also that nonterminal calls preserve the failure path from their caller, and in particular that negative-lookahead expressions swap the success and failure results of the call.
 
 \begin{figure}
 \caption[Sequence expression code pattern]{Pattern for a sequence $X ::= \cdot x_1 \ldots x_d$ with failure path $L_f$} \label{seq-expr-pattern}
 \begin{lstlisting}[language=C++,mathescape=true,escapeinside={@}{@}]
-if not testSelect$(I[c_I], X, x_1 \ldots x_d)$ {
-	$c_I = c_U$; goto $L_f$;
+$r =\;$@testSelect@$(X ::= \cdot x_1 \ldots x_d, t)$
+if @testSelect failed@ {
+	@report error@;
+	$(L, c_I, t) = (L_f, c_U, t')$ goto @nextSlot@;
 }
 $\langle$ @generate code for $X ::= x_1 \cdot x_2 \ldots x_d$ with failure path $L_f$@ $\rangle$
 $\vdots$
-if not testSelect$(I[c_I], X, x_d)$ {
-	$c_I = c_U$; goto $L_f$;
-}
-$\langle$ @generate code for $X ::= x_1 \ldots x_d \cdot$ with failure path $L_f$@ $\rangle$
+$\langle$ @repeat for remaining atoms $x_2 \ldots x_d$ in sequence@ $\rangle$
 \end{lstlisting}
 \end{figure}
 
@@ -178,23 +179,47 @@ $\langle$ @generate code for $X ::= x_1 \ldots x_d \cdot$ with failure path $L_f
 \caption[Atomic expression code patterns]{Pattern for an atomic expression $X ::= \alpha \varphi \cdot \beta$ with failure path $L_f$} \label{atom-expr-pattern}
 \begin{lstlisting}[language=C++,mathescape=true,escapeinside={@}{@}]
 $\varphi = a \implies$
-	bsrAdd$(X ::= \alpha a \cdot \beta, c_U, c_I, c_I+1)$; $c_I += 1$;
+	@bsrAdd@$(X ::= \alpha a \cdot \beta, c_U, c_I, r)$;
+	$c_I = r$;
+	$t =\;$@tokens@$(c_I)$;
 
 $\varphi = Y \implies$
-	call$(X ::= \alpha Y \cdot \beta, L_f, c_U, Y, c_I)$; goto nextSlot;
-$X ::= \alpha Y \cdot \beta$:
+	@call@$(X ::= \alpha ~Y \cdot \beta, L_f, Y, c_U, c_I)$; goto @nextDesc@;
+$X ::= \alpha ~Y \cdot \beta$:
 
 $\varphi = \& Y \implies$
-	call$(X ::= \alpha \& Y \cdot \beta, L_f, c_U, Y, c_I)$; goto nextSlot;
-$X ::= \alpha \& Y \cdot \beta$:
+	@call@$(X ::= \alpha ~\& Y \cdot \beta, L_f, Y, c_U, c_I)$; goto @nextDesc@;
+$X ::= \alpha ~\& Y \cdot \beta$:
 
 $\varphi = \nl Y \implies$
-	call$(L_f, X ::= \alpha Y \cdot \beta, c_U, Y, c_I)$; goto nextSlot;
-$X ::= \alpha \nl Y \cdot \beta$:
+	@call@$(L_f, X ::= \alpha ~\nl Y \cdot \beta, Y, c_U, c_I)$; goto @nextDesc@;
+$X ::= \alpha ~\nl Y \cdot \beta$:
 \end{lstlisting}
 \end{figure}
 
-\textbf{TODO} check code patterns against actual code, write helper functions
+The code patterns for a PEGLL parser-generator depend on a number of helper functions to manipulate the call graph, token stream, and BSR set representing the parse tree. 
+\textbf{TODO} finish this section
+
+\subsection{Lexing}
+Traditional maximal-munch lexers interact poorly with PEG parsers; in particular, the recursive-descent structure of a parsing expression grammar may impose context-sensitive priorities between tokens, and the usual scannerless design of a PEG may result in difficult-to-decompose token sets. 
+Nonetheless, experience \cite{Ack19,Lau19} has shown that a separate lexing pass is a useful performance optimization.
+As such, the PEGLL parser-generator uses a modified regular-expression lexer. 
+Rather than returning a single maximal-munch token at a given input position, the PEGLL lexer returns a map of all matching tokens to their greatest right extent, defering the choice of which token to actually match to the PEG rules in the parser. 
+The testSelect function, described in Figure~\ref{test-select} in the parser is used to check if any tokens in the FIRST set of the expression \cite{Red09} are also present in the token set returned from the lexer.
+
+\begin{figure}
+\caption[testSelect]{Code for testSelect function} \label{test-select}
+\begin{lstlisting}[language=C++,mathescape=true,escapeinside={@}{@}]
+@int@ @testSelect@(@slot@ $L$, @token set@ $T$, @index@ $c_I$) {
+	$b = -1$;
+	if $L$ @is nullable@ { $b = c_I$; }
+	for $(t,r)$ in $T$ {
+		if $r > b$ and $t \in FIRST(L)$ { $b = r$; }
+	}
+	return $b$;
+}
+\end{lstlisting}
+\end{figure}
 
 \subsection{Syntactic Sugar} \label{syntax-sec}
 
