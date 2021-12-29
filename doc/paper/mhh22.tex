@@ -3,13 +3,26 @@
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{graphics}
-\usepackage{listings}
 \usepackage{url}
+\usepackage{algpseudocode}
 
 % Notational macros
 \newcommand{\Rule}{\mathcal{R}}
 \newcommand{\fail}{\mathsf{fail}}
 \newcommand{\nl}{\mathord{!}}
+
+% pseudocode enhancements
+\newcommand{\Goto}[1]{\textbf{goto}~#1}
+\algblockdefx[SWITCH]{Switch}{EndSwitch}
+	[1]{\textbf{switch}~#1}
+	[0]{\textbf{end switch}}
+
+\algblockdefx[CASE]{Case}{EndCase}
+	[1]{\textbf{case}~#1:}
+
+\algblockdefx[STATICCASE]{StaticCase}{EndStaticCase}
+	[1]{#1 $\implies$}
+	[1]{#1}
 
 % Consistent handling for Latin abbrevs.
 \newcommand{\ie}{\textit{i.e.}\@}
@@ -105,24 +118,24 @@ Note that (unlike CFGs), PEGs match prefixes of their input, so the start rule m
 
 \begin{figure}
 \caption{PEGLL main loop} \label{main-loop-algo}
-\begin{lstlisting}[language=C++,mathescape=true,escapeinside={@}{@}]
-$R = \emptyset$; $T = \emptyset$;
-@ntAdd@$(S, 0)$;
-while $R \neq \emptyset$ {
-    $(L, c_U, c_I) = R$.remove();
-    $t =\;$@tokens@$(c_I)$; $t' = t$;
-    while true {
-        switch $L$ {
-            $\langle$ @generate code for each rule $R$@ $\rangle$
-        }
-    @nextSlot@: }
-@nextDesc@: }
-if $\exists \alpha, j, k, (S ::= \alpha \cdot, 0, j, k) \in T$ {
-    return match at maximal such $k$;
-} else {
-    return $\fail$;
-}
-\end{lstlisting}
+\begin{algorithmic}
+\State $R \gets \emptyset$ $T \gets \emptyset$
+\State \Call{ntAdd}{$S$, 0}
+\While{$R \neq \emptyset$} 
+    \State $(L, c_U, c_I) \gets R$.\Call{remove}{}
+    \State $t \gets$ \Call{tokens}{$c_I$} $t' \gets t$
+    \Loop
+        \Switch{$L$}
+            \State $\langle$ generate code for each rule $R$ $\rangle$
+        \EndSwitch
+    \State nextSlot: \EndLoop
+\State nextDesc: \EndWhile
+\If{$\exists \alpha, j, k, (S ::= \alpha \cdot, 0, j, k) \in T$}
+    \State \Return match at maximal such $k$
+\Else
+    \State \Return $\fail$;
+\EndIf
+\end{algorithmic}
 \end{figure}
 
 The primary thing the loop in Figure~\ref{main-loop-algo} does is dispatch the current descriptor to the code which executes its parse. 
@@ -132,29 +145,34 @@ A label is then generated for each alternate, failing over to the next alternate
 
 \begin{figure}
 \caption[Non-terminal code pattern]{Pattern for a non-terminal $X ::= \tau_1 / \ldots / \tau_p, p \geq 1$} \label{nt-pattern}
-\begin{lstlisting}[language=C++,mathescape=true,escapeinside={@}{@}]
-$X ::= \cdot \tau_1$:
-	$\langle$ @generate code for $X ::= \cdot \tau_1$ with failure path $X ::= \cdot \tau_2$@ $\rangle$
-	@rtn@$(X, c_U, c_I)$; goto @nextDesc@;
-$\vdots$
-$X ::= \cdot \tau_p$:
-	$\langle$ @generate code for $X ::= \cdot \tau_p$ with failure path $X ::= \cdot \varnothing$@ $\rangle$
-	@rtn@$(X, c_U, c_I)$; goto @nextDesc@;
-$X ::= \cdot \varnothing$:
-	@rtn@$(X, c_U, \fail)$; goto @nextDesc@;
-\end{lstlisting}
+\begin{algorithmic}
+\Case{$X ::= \cdot \tau_1$}
+	\State $\langle$ generate code for $X ::= \cdot \tau_1$ with failure path $X ::= \cdot \tau_2$ $\rangle$
+	\State \Call{rtn}{$X$, $c_U$, $c_I$}; \Goto{nextDesc}
+\EndCase
+\State $\vdots$
+\State ~
+\Case{$X ::= \cdot \tau_p$}
+	\State $\langle$ generate code for $X ::= \cdot \tau_p$ with failure path $X ::= \cdot \varnothing$ $\rangle$
+	\State \Call{rtn}{$X$, $c_U$, $c_I$} \Goto{nextDesc}
+\EndCase
+\Case{$X ::= \cdot \varnothing$}
+	\State \Call{rtn}{$X$, $c_U$, $\fail$} \Goto{nextDesc}
+\EndCase
+\end{algorithmic}
 \end{figure}
 
 \begin{figure}
 \caption[Empty non-terminal code pattern]{Pattern for a non-terminal $X ::= \varepsilon$} \label{empty-nt-pattern}
-\begin{lstlisting}[language=C++,mathescape=true,escapeinside={@}{@}]
-$X ::= \cdot \varepsilon$:
-	$T = T \cup {(X ::= \varepsilon \cdot, c_I, c_I, c_I)}$;
-	@rtn@$(X, c_U, c_I)$; goto @nextDesc@;
-\end{lstlisting}
+\begin{algorithmic}
+\Case{$X ::= \cdot \varepsilon$}
+	\State $T \gets T \cup {(X ::= \varepsilon \cdot, c_I, c_I, c_I)}$
+	\State \Call{rtn}{$X$, $c_U$, $c_I$} \Goto{nextDesc}
+\EndCase
+\end{algorithmic}
 \end{figure}
 
-The rtn$(X, c_U, c_I)$ function in PEGLL code is detailed below in Figure~\ref{call-rtn-code}, but its essential purpose is to modify the ``call stack'' in the CRF graph consistently with a recursive call to the non-terminal $X$ at position $c_U$ returning at position $c_I$.
+The \textsc{rtn}$(X, c_U, c_I)$ function in PEGLL code is detailed below in Figure~\ref{call-rtn-code}, but its essential purpose is to modify the ``call stack'' in the CRF graph consistently with a recursive call to the non-terminal $X$ at position $c_U$ returning at position $c_I$.
 
 To parse each of the sequence expressions $\tau_i$ inside a nonterminal alternative, PEGLL repeatedly executes the appropriate code for each expression in the sequence, moving to the failure path if that expression does not work. 
 The code patterns for the sequence expression are in Figure~\ref{seq-expr-pattern}, while the code patterns for each atomic expression are in Figure~\ref{atom-expr-pattern}. 
@@ -163,97 +181,111 @@ Note also that nonterminal calls preserve the failure path from their caller, an
 
 \begin{figure}
 \caption[Sequence expression code pattern]{Pattern for a sequence $X ::= \cdot x_1 \ldots x_d$ with failure path $L_f$} \label{seq-expr-pattern}
-\begin{lstlisting}[language=C++,mathescape=true,escapeinside={@}{@}]
-$r =\;$@testSelect@$(X ::= \cdot x_1 \ldots x_d, t)$
-if @testSelect failed@ {
-	@report error@;
-	$(L, c_I, t) = (L_f, c_U, t')$ goto @nextSlot@;
-}
-$\langle$ @generate code for $X ::= x_1 \cdot x_2 \ldots x_d$ with failure path $L_f$@ $\rangle$
-$\vdots$
-$\langle$ @repeat for remaining atoms $x_2 \ldots x_d$ in sequence@ $\rangle$
-\end{lstlisting}
+\begin{algorithmic}
+\State $r \gets$ \Call{testSelect}{$X ::= \cdot x_1 \ldots x_d$, $t$}
+\If{\Call{testSelect}{} failed}
+	\State report error
+	\State $(L, c_I, t) \gets (L_f, c_U, t')$ \Goto{nextSlot}
+\EndIf
+\State $\langle$ generate code for $X ::= x_1 \cdot x_2 \ldots x_d$ with failure path $L_f$ $\rangle$
+\State $\vdots$
+\State $\langle$ repeat for remaining atoms $x_2 \ldots x_d$ in sequence $\rangle$
+\end{algorithmic}
 \end{figure}
 
 \begin{figure}
 \caption[Atomic expression code patterns]{Pattern for an atomic expression $X ::= \alpha \varphi \cdot \beta$ with failure path $L_f$} \label{atom-expr-pattern}
-\begin{lstlisting}[language=C++,mathescape=true,escapeinside={@}{@}]
-$\varphi = a \implies$
-	@bsrAdd@$(X ::= \alpha a \cdot \beta, c_U, c_I, r)$;
-	$c_I = r$;
-	$t =\;$@tokens@$(c_I)$;
-
-$\varphi = Y \implies$
-	@call@$(X ::= \alpha ~Y \cdot \beta, L_f, Y, c_U, c_I)$; goto @nextDesc@;
-$X ::= \alpha ~Y \cdot \beta$:
-
-$\varphi = \& Y \implies$
-	@call@$(X ::= \alpha ~\& Y \cdot \beta, L_f, Y, c_U, c_I)$; goto @nextDesc@;
-$X ::= \alpha ~\& Y \cdot \beta$:
-
-$\varphi = \nl Y \implies$
-	@call@$(L_f, X ::= \alpha ~\nl Y \cdot \beta, Y, c_U, c_I)$; goto @nextDesc@;
-$X ::= \alpha ~\nl Y \cdot \beta$:
-\end{lstlisting}
+\begin{algorithmic}
+\StaticCase{$\varphi = a$}
+	\State \Call{bsrAdd}{$X ::= \alpha a \cdot \beta$, $c_U$, $c_I$, $r$}
+	\State $c_I \gets r$
+	\State $t \gets$ \Call{tokens}{$c_I$}
+\EndStaticCase{}
+\StaticCase{$\varphi = Y$}
+	\State \Call{call}{$X ::= \alpha ~Y \cdot \beta$, $L_f$, $Y$, $c_U$, $c_I$} \Goto{nextDesc}
+\EndStaticCase{\textbf{case} $X ::= \alpha ~Y \cdot \beta$:}
+\State ~
+\StaticCase{$\varphi = \& Y$}
+	\State \Call{call}{$X ::= \alpha ~\& Y \cdot \beta$, $L_f$, $Y$, $c_U$, $c_I$} \Goto{nextDesc}
+\EndStaticCase{\textbf{case} $X ::= \alpha ~\& Y \cdot \beta$:}
+\State ~
+\StaticCase{$\varphi = \nl Y$}
+	\State \Call{call}{$L_f, X ::= \alpha ~\nl Y \cdot \beta$, $Y$, $c_U$, $c_I$} \Goto{nextDesc}
+\EndStaticCase{\textbf{case} $X ::= \alpha ~\nl Y \cdot \beta$:}
+\end{algorithmic}
 \end{figure}
 
 The code patterns for a PEGLL parser-generator depend on a number of helper functions to manipulate the call graph and BSR set representing the parse tree. 
-The call$(L_m, L_f, X, i, j)$ function enqueues parsing of nonterminal $X$ at position $j$, returning to slot $L_m$ on match or $L_f$ on failure, where $L_m$ or $L_f$ began parsing at position $i$. 
-The rtn$(X, k, j)$ function reports the result of parsing nonterminal $X$ begining at position $k$, where $j$ is either the last consumed position or the special value $\fail$ indicating that the parse did not succeed. 
-Together, call() and return() simulate the call stack of a recursive-descent PEG parser; full code is in Figure~\ref{call-rtn-code}. 
+The \textsc{call}$(L_m, L_f, X, i, j)$ function enqueues parsing of nonterminal $X$ at position $j$, returning to slot $L_m$ on match or $L_f$ on failure, where $L_m$ or $L_f$ began parsing at position $i$. 
+The \textsc{rtn}$(X, k, j)$ function reports the result of parsing nonterminal $X$ begining at position $k$, where $j$ is either the last consumed position or the special value $\fail$ indicating that the parse did not succeed. 
+Together, \textsc{call} and \textsc{return} simulate the call stack of a recursive-descent PEG parser; full code is in Figure~\ref{call-rtn-code}. 
 The significant difference between the \emph{FailCRF} of PEGLL and the \emph{CRF} of Scott~\etal \cite{SJvB19} is that edges in the \emph{FailCRF} are labelled as either ``match'' edges or ``fail'' edges, representing successful and unsuccessful return paths, respectively. 
 For convenience, this presentation assumes the call-return forest (CRF) is stored in a global cache. 
 The ``popped cache'' of previously-parsed results is included to allow updating of previous parse results when they are used in a new context and also assumed to be global.
 
 \begin{figure}
-\caption{Code for call and rtn functions} \label{call-rtn-code}
-\begin{lstlisting}[language=C++,mathescape=true,escapeinside={@}{@}]
-void @call@(@slot@ $L_m$, @slot@ $L_f$, @nonterminal@ $X$, @int@ $i$, @int@ $j$) {
-	$u_m$ = @CRF node $(L_m, i)$, created if not in cache@;
-	$u_f$ = @CRF node $(L_f, i)$, created if not in cache@;
-	$v$ = @CRF node $(X, j)$, created if not in cache@;
-	if @$v$ was not previously in cache@ {
-		@add a match edge from $v$ to $u_m$ and a fail edge from $v$ to $u_f$@;
-		@ntAdd@$(X, j)$;
-	} else {
-		if @there is not a match edge from $v$ to $u_m$@ {
-			@add a match edge from $v$ to $u_m$;
-			for @all $(X, j, h), h \neq \fail$ in popped cache@ {
-				@addMatch@$(L_m, i, j, h)$;
-			}
-		}
+\caption{Code for \textsc{call} and \textsc{rtn} functions} \label{call-rtn-code}
+\begin{algorithmic}
+\Function{call}{slot $L_m$, slot $L_f$, nonterminal $X$, int $i$, int $j$}
+	\State $u_m \gets$ CRF node $(L_m, i)$, created if not in cache
+	\State $u_f \gets$ CRF node $(L_f, i)$, created if not in cache
+	\State $v \gets$ CRF node $(X, j)$, created if not in cache
+	\If{$v$ was not previously in cache}
+		\State add a match edge from $v$ to $u_m$ and a fail edge from $v$ to $u_f$
+		\State \Call{ntAdd}{$X$, $j$}
+	\Else
+		\If{there is not a match edge from $v$ to $u_m$}
+			\State add a match edge from $v$ to $u_m$
+			\ForAll{$(X, j, h), h \neq \fail$ in popped cache}
+				\State \Call{addMatch}{$L_m$, $i$, $j$, $h$}
+			\EndFor
+		\EndIf
 
-		if @there is not a fail edge from $v$ to $u_f$@ {
-			@add a fail edge from $v$ to $u_f$;
-			for @all $(X, j, \fail)$ in popped cache@ {
-				@addFail@$(L_f, i, j)$;
-			}
-		}
-	}
-}
-\end{lstlisting}
+		\If{there is not a fail edge from $v$ to $u_f$}
+			\State add a fail edge from $v$ to $u_f$
+			\ForAll{$(X, j, \fail)$ in popped cache}
+				\State \Call{addFail}{$L_f$, $i$, $j$}
+			\EndFor
+		\EndIf
+	\EndIf
+\EndFunction
+\State ~
+\Function{rtn}{nonterminal $X$, int $j$, int $h$}
+	\If{$(X, j, h)$ not in popped cache}
+		\State add $(X, j, h)$ to popped cache
+		\ForAll{children $(L, i)$ of $(X, j)$ in the CRF}
+			\If{$h \neq \fail$}
+				\State \Call{addMatch}{$L$, $i$, $j$, $h$}
+			\Else
+				\State \Call{addFail}{$L$, $i$, $j$}
+			\EndIf
+		\EndFor
+	\EndIf
+\EndFunction
+\end{algorithmic}
 \end{figure}
 
+% TODO: addMatch, addFail, ntAdd, dscAdd, bsrAdd
 
 \subsection{Lexing}
 Traditional maximal-munch lexers interact poorly with PEG parsers; in particular, the recursive-descent structure of a parsing expression grammar may impose context-sensitive priorities between tokens, and the usual scannerless design of a PEG may result in difficult-to-decompose token sets. 
 Nonetheless, experience \cite{Ack19,Lau19} has shown that a separate lexing pass is a useful performance optimization.
 As such, the PEGLL parser-generator uses a regular-expression lexer modified from the traditional maximal-munch approach \cite{Aetc07}. 
-Rather than returning a single maximal-munch token at a given input position, as in the classical algorithm , the PEGLL lexer returns (from the tokens($i$) function) a map of all the tokens which match starting at position $i$ to their greatest right extent, defering the choice of which token to actually match to the PEG rules in the parser. 
-The testSelect function, described in Figure~\ref{test-select} in the parser is used to check if any tokens in the FIRST set of the expression \cite{Red09} are also present in the token set returned from the lexer.
+Rather than returning a single maximal-munch token at a given input position, as in the classical algorithm , the PEGLL lexer returns (from the \textsc{tokens}$(i)$ function) a map of all the tokens which match starting at position $i$ to their greatest right extent, defering the choice of which token to actually match to the PEG rules in the parser. 
+The \textsc{testSelect} function, described in Figure~\ref{test-select} in the parser is used to check if any tokens in the FIRST set of the expression \cite{Red09} are also present in the token set returned from the lexer.
 
 \begin{figure}
-\caption[testSelect]{Code for testSelect function} \label{test-select}
-\begin{lstlisting}[language=C++,mathescape=true,escapeinside={@}{@}]
-@int@ @testSelect@(@slot@ $L$, @token set@ $T$, @index@ $c_I$) {
-	$b = -1$;
-	if $L$ @is nullable@ { $b = c_I$; }
-	for $(t,r)$ in $T$ {
-		if $r > b$ and $t \in FIRST(L)$ { $b = r$; }
-	}
-	return $b$;
-}
-\end{lstlisting}
+\caption[testSelect]{Code for \textsc{testSelect} function} \label{test-select}
+\begin{algorithmic}
+\Function{testSelect}{slot $L$, token set $T$, int $c_I$}
+	\State $b \gets -1$
+	\If{$L$ is nullable} $b \gets c_I$ \EndIf
+	\ForAll{$(t,r)$ in $T$}
+		\If{$r > b$ \textbf{and} $t \in FIRST(L)$} $b \gets r$ \EndIf
+	\EndFor
+	\State \Return{$b$}
+\EndFunction
+\end{algorithmic}
 \end{figure}
 
 \subsection{Syntactic Sugar} \label{syntax-sec}
