@@ -154,7 +154,7 @@ $X ::= \cdot \varepsilon$:
 \end{lstlisting}
 \end{figure}
 
-The rtn$(X, c_U, c_I)$ function in PEGLL code is detailed below in Figure~\ref{helper-functions}, but its essential purpose is to modify the ``call stack'' in the CRF graph consistently with a recursive call to the non-terminal $X$ at position $c_U$ returning at position $c_I$.
+The rtn$(X, c_U, c_I)$ function in PEGLL code is detailed below in Figure~\ref{call-rtn-code}, but its essential purpose is to modify the ``call stack'' in the CRF graph consistently with a recursive call to the non-terminal $X$ at position $c_U$ returning at position $c_I$.
 
 To parse each of the sequence expressions $\tau_i$ inside a nonterminal alternative, PEGLL repeatedly executes the appropriate code for each expression in the sequence, moving to the failure path if that expression does not work. 
 The code patterns for the sequence expression are in Figure~\ref{seq-expr-pattern}, while the code patterns for each atomic expression are in Figure~\ref{atom-expr-pattern}. 
@@ -197,14 +197,49 @@ $X ::= \alpha ~\nl Y \cdot \beta$:
 \end{lstlisting}
 \end{figure}
 
-The code patterns for a PEGLL parser-generator depend on a number of helper functions to manipulate the call graph, token stream, and BSR set representing the parse tree. 
-\textbf{TODO} finish this section
+The code patterns for a PEGLL parser-generator depend on a number of helper functions to manipulate the call graph and BSR set representing the parse tree. 
+The call$(L_m, L_f, X, i, j)$ function enqueues parsing of nonterminal $X$ at position $j$, returning to slot $L_m$ on match or $L_f$ on failure, where $L_m$ or $L_f$ began parsing at position $i$. 
+The rtn$(X, k, j)$ function reports the result of parsing nonterminal $X$ begining at position $k$, where $j$ is either the last consumed position or the special value $\fail$ indicating that the parse did not succeed. 
+Together, call() and return() simulate the call stack of a recursive-descent PEG parser; full code is in Figure~\ref{call-rtn-code}. 
+The significant difference between the \emph{FailCRF} of PEGLL and the \emph{CRF} of Scott~\etal \cite{SJvB19} is that edges in the \emph{FailCRF} are labelled as either ``match'' edges or ``fail'' edges, representing successful and unsuccessful return paths, respectively. 
+For convenience, this presentation assumes the call-return forest (CRF) is stored in a global cache. 
+The ``popped cache'' of previously-parsed results is included to allow updating of previous parse results when they are used in a new context and also assumed to be global.
+
+\begin{figure}
+\caption{Code for call and rtn functions} \label{call-rtn-code}
+\begin{lstlisting}[language=C++,mathescape=true,escapeinside={@}{@}]
+void @call@(@slot@ $L_m$, @slot@ $L_f$, @nonterminal@ $X$, @int@ $i$, @int@ $j$) {
+	$u_m$ = @CRF node $(L_m, i)$, created if not in cache@;
+	$u_f$ = @CRF node $(L_f, i)$, created if not in cache@;
+	$v$ = @CRF node $(X, j)$, created if not in cache@;
+	if @$v$ was not previously in cache@ {
+		@add a match edge from $v$ to $u_m$ and a fail edge from $v$ to $u_f$@;
+		@ntAdd@$(X, j)$;
+	} else {
+		if @there is not a match edge from $v$ to $u_m$@ {
+			@add a match edge from $v$ to $u_m$;
+			for @all $(X, j, h), h \neq \fail$ in popped cache@ {
+				@addMatch@$(L_m, i, j, h)$;
+			}
+		}
+
+		if @there is not a fail edge from $v$ to $u_f$@ {
+			@add a fail edge from $v$ to $u_f$;
+			for @all $(X, j, \fail)$ in popped cache@ {
+				@addFail@$(L_f, i, j)$;
+			}
+		}
+	}
+}
+\end{lstlisting}
+\end{figure}
+
 
 \subsection{Lexing}
 Traditional maximal-munch lexers interact poorly with PEG parsers; in particular, the recursive-descent structure of a parsing expression grammar may impose context-sensitive priorities between tokens, and the usual scannerless design of a PEG may result in difficult-to-decompose token sets. 
 Nonetheless, experience \cite{Ack19,Lau19} has shown that a separate lexing pass is a useful performance optimization.
-As such, the PEGLL parser-generator uses a modified regular-expression lexer. 
-Rather than returning a single maximal-munch token at a given input position, the PEGLL lexer returns a map of all matching tokens to their greatest right extent, defering the choice of which token to actually match to the PEG rules in the parser. 
+As such, the PEGLL parser-generator uses a regular-expression lexer modified from the traditional maximal-munch approach \cite{Aetc07}. 
+Rather than returning a single maximal-munch token at a given input position, as in the classical algorithm , the PEGLL lexer returns (from the tokens($i$) function) a map of all the tokens which match starting at position $i$ to their greatest right extent, defering the choice of which token to actually match to the PEG rules in the parser. 
 The testSelect function, described in Figure~\ref{test-select} in the parser is used to check if any tokens in the FIRST set of the expression \cite{Red09} are also present in the token set returned from the lexer.
 
 \begin{figure}
