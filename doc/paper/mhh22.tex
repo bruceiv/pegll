@@ -113,14 +113,15 @@ Parse trees can be straightforwardly reconstructed from BSR sets: a predecessor 
 
 \section{Parsing Expression GLL}
 The \emph{Parsing Expression GLL} (PEGLL) algorithm introduced in this paper uses similar data structures and abstractions as GLL for CFGs. 
-The main loop is outlined in Figure~\ref{main-loop-algo}; it first initializes an empty queue $R$ of slot descriptors to parse and an empty set $T$ of BSR elements to report, queues the start rule of the grammar at input position 0 for parsing, parses each descriptor, and completes by returning whether or not the start rule matched at position 0. 
+The main loop is outlined in Figure~\ref{main-loop-algo}; it first initializes an empty queue $R$ of slot descriptors to parse, an empty cache $U$ of previously seen slot descriptors, and an empty set $T$ of BSR elements to report.
+It then queues the start rule of the grammar at input position 0 for parsing, parses each descriptor, and completes by returning whether or not the start rule matched at position 0. 
 Note that (unlike CFGs), PEGs match prefixes of their input, so the start rule may only consume the input up to some index $k$; if this behavior is not desired, a match can be returned only if $k$ is the length of the input string.
 
 \begin{figure}
 \caption{PEGLL main loop} \label{main-loop-algo}
 \begin{algorithmic}
-\State $R \gets \emptyset$ $T \gets \emptyset$
-\State \Call{ntAdd}{$S$, 0}
+\State $R \gets \emptyset$, $U \gets \emptyset$, $T \gets \emptyset$
+\State \Call{addNt}{$S$, 0}
 \While{$R \neq \emptyset$} 
     \State $(L, c_U, c_I) \gets R$.\Call{remove}{}
     \State $t \gets$ \Call{tokens}{$c_I$} $t' \gets t$
@@ -197,7 +198,7 @@ Note also that nonterminal calls preserve the failure path from their caller, an
 \caption[Atomic expression code patterns]{Pattern for an atomic expression $X ::= \alpha \varphi \cdot \beta$ with failure path $L_f$} \label{atom-expr-pattern}
 \begin{algorithmic}
 \StaticCase{$\varphi = a$}
-	\State \Call{bsrAdd}{$X ::= \alpha a \cdot \beta$, $c_U$, $c_I$, $r$}
+	\State $R \gets R \cup (X ::= \alpha a \cdot \beta, c_U, c_I, r)$
 	\State $c_I \gets r$
 	\State $t \gets$ \Call{tokens}{$c_I$}
 \EndStaticCase{}
@@ -215,11 +216,13 @@ Note also that nonterminal calls preserve the failure path from their caller, an
 \end{algorithmic}
 \end{figure}
 
-The code patterns for a PEGLL parser-generator depend on a number of helper functions to manipulate the call graph and BSR set representing the parse tree. 
-The \textsc{call}$(L_m, L_f, X, i, j)$ function enqueues parsing of nonterminal $X$ at position $j$, returning to slot $L_m$ on match or $L_f$ on failure, where $L_m$ or $L_f$ began parsing at position $i$. 
-The \textsc{rtn}$(X, k, j)$ function reports the result of parsing nonterminal $X$ begining at position $k$, where $j$ is either the last consumed position or the special value $\fail$ indicating that the parse did not succeed. 
-Together, \textsc{call} and \textsc{return} simulate the call stack of a recursive-descent PEG parser; full code is in Figure~\ref{call-rtn-code}. 
+Together, the helper functions \textsc{call} and \textsc{rtn} simulate the call stack of a recursive-descent PEG parser; full code is in Figure~\ref{call-rtn-code}. 
 The significant difference between the \emph{FailCRF} of PEGLL and the \emph{CRF} of Scott~\etal \cite{SJvB19} is that edges in the \emph{FailCRF} are labelled as either ``match'' edges or ``fail'' edges, representing successful and unsuccessful return paths, respectively. 
+The motivation for this modification is handling negative lookahead expressions --- $\nl X$ matches only if $X$ does not, and thus the CRF needs to encode the failure of $X$ as the trigger of a move from slot $Y ::= \alpha \cdot \nl X \beta$ to slot $Y ::= \alpha \nl X \cdot \beta$. 
+Fail edges are also used to encode the ordered choice rule; while the GLL algorithm attempts to parse all alternates of a nonterminal concurrently, PEGLL attempts one at a time, following its fail edge to the next alternate if that one fails. 
+
+In more detail, the \textsc{call}$(L_m, L_f, X, i, j)$ function enqueues parsing of nonterminal $X$ at position $j$, returning to slot $L_m$ on match or $L_f$ on failure, where $L_m$ or $L_f$ began parsing at position $i$. 
+The \textsc{rtn}$(X, j, h)$ function reports the result of parsing nonterminal $X$ begining at position $j$, where $h$ is either the last consumed position or the special value $\fail$ indicating that the parse did not succeed.
 For convenience, this presentation assumes the call-return forest (CRF) is stored in a global cache. 
 The ``popped cache'' of previously-parsed results is included to allow updating of previous parse results when they are used in a new context and also assumed to be global.
 
@@ -232,7 +235,7 @@ The ``popped cache'' of previously-parsed results is included to allow updating 
 	\State $v \gets$ CRF node $(X, j)$, created if not in cache
 	\If{$v$ was not previously in cache}
 		\State add a match edge from $v$ to $u_m$ and a fail edge from $v$ to $u_f$
-		\State \Call{ntAdd}{$X$, $j$}
+		\State \Call{addNt}{$X$, $j$}
 	\Else
 		\If{there is not a match edge from $v$ to $u_m$}
 			\State add a match edge from $v$ to $u_m$
@@ -265,7 +268,45 @@ The ``popped cache'' of previously-parsed results is included to allow updating 
 \end{algorithmic}
 \end{figure}
 
-% TODO: addMatch, addFail, ntAdd, dscAdd, bsrAdd
+In addition to call-stack management, a PEGLL parser-generator depends on helper functions to fill the descriptor queue $R$, descriptor cache $U$, and the BSR set $T$ representing the parse forest. 
+The descriptor queue management functions are all in Figure~\ref{add-match-fail}.
+\textsc{addMatch} and \textsc{addFail} enqueue the next descriptor after a nonterminal match or failure, accounting for the fact that lookahead expressions consume no input and adding a BSR element for matches. 
+\textsc{addNt} is a convenience function which enqueues the first alternate of a nonterminal in the descriptor queue. 
+\textsc{addDesc} checks if a given descriptor has already been processed, adding it to the descriptor queue and the cache of processed descriptors if not.
+
+\begin{figure}
+\caption{Code for descriptor queue management functions} \label{add-match-fail}
+\begin{algorithmic}
+\Function{addMatch}{slot $L$, int $i$, int $j$, int $h$}
+	\State $T \gets T \cup {(L, i, j, h)}$
+	\If{there is a lookahead expression before the dot in $L$}
+		\State \Call{addDesc}{$L$, $i$, $j$}
+	\Else
+		\State \Call{addDesc}{$L$, $i$, $h$}
+	\EndIf
+\EndFunction
+\State ~
+\Function{addFail}{slot $L$, int $i$, int $j$}
+	\If{there is a lookahead expression before the dot in $L$}
+		\State \Call{addDesc}{$L$, $i$, $j$}
+	\Else
+		\State \Call{addDesc}{$L$, $i$, $i$}
+	\EndIf
+\EndFunction
+\State ~
+\Function{addNt}{nonterminal $X$, int $i$}
+	\State $L \gets$ initial slot of first alternate of $X$
+	\State \Call{addDesc}{$L$, $i$, $i$}
+\EndFunction
+\State ~
+\Function{addDesc}{slot $L$, int $i$, int $h$}
+	\If{$(L,i,h) \not\in U$}
+		\State $R \gets R \cup {(L,i,h)}$
+		\State $U \gets U \cup {(L,i,h)}$
+	\EndIf
+\EndFunction
+\end{algorithmic}
+\end{figure}
 
 \subsection{Lexing}
 Traditional maximal-munch lexers interact poorly with PEG parsers; in particular, the recursive-descent structure of a parsing expression grammar may impose context-sensitive priorities between tokens, and the usual scannerless design of a PEG may result in difficult-to-decompose token sets. 
