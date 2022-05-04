@@ -49,7 +49,7 @@
 This paper presents an extension of the GLL parsing algorithm for context-free grammars which also supports parsing expression grammars with ordered choice and lookahead. 
 The new PEGLL algorithm retains support for unordered choice, and thus parses a common superset of context-free grammars and parsing expression grammars. 
 As part of this work, the authors have modified an existing GLL parser-generator to support parsing expression grammars, adding operators for common parsing expressions and modifying the lexer algorithm to better support ordered choice. 
-Performance results of the generated parsers are compared to competing parser-generators.
+% Performance results of the generated parsers are compared to competing parser-generators.
 \end{abstract}
 
 \section{Introduction}
@@ -59,10 +59,10 @@ This work is an initial effort toward a unified framework that provides the adva
 More specifically, this paper presents a modification of the GLL parser-generator of Scott \& Johnstone\cite{SJ10,SJ16}. 
 The key contribution is the \emph{FailCRF} data structure, which adds a failure path to Scott \& Johnstone's call-return forest; the addition of a failure path allows the lookahead and ordered choice operations of the PEG formalism to be supported.
 The authors have extended Ackerman's GoGLL\cite{Ack19} parser-generator to implement this new algorithm, adding syntactic sugar for common PEG operators and modifying the lexer algorithm to allow the PEG parser to override the usual maximal-munch rule. 
-This paper also presents benchmarking results from comparing our new \emph{PEGLL} parser-generator against existing algorithms.
+% This paper also presents benchmarking results from comparing our new \emph{PEGLL} parser-generator against existing algorithms.
 
 \section{Parsing Expression Grammars}
-The primary difference between parsing expression grammars and the more familiar context-free grammars is \emph{ordered choice}: PEGs, as a formalism of recursive-descent parsing, do not try subsequent alternatives of an alternation if an earlier alternative matches. 
+The primary difference between parsing expression grammars and the more familiar context-free grammars is \emph{ordered choice}: PEGs, as a formalism of recursive-descent parsing introduced by Ford \cite{For02}, do not try subsequent alternatives of an alternation if an earlier alternative matches. 
 The other significant difference between the PEG and CFG formalisms are the PEG \emph{lookahead} expressions, $\nl\alpha$ and $\&\alpha$, which match only if the subexpression $\alpha$ does not (resp. does) match, but consume no input regardless. 
 These lookahead operators provide the infinite lookahead of the PEG formalism.
 The other fundamental PEG operators act much like their CFG equivalents, and are described in Fig.~\ref{expr-fig} as functions over an input string $s$ drawn from some alphabet $\Sigma$ producing either a (matching) suffix of $s$ or the special value $\fail \not\in \Sigma^*$.
@@ -140,12 +140,12 @@ Note that (unlike CFGs), PEGs match prefixes of their input, so the start rule m
 \end{figure}
 
 The primary thing the loop in Figure~\ref{main-loop-algo} does is dispatch the current descriptor to the code which executes its parse. 
-The code for each non-terminal may be generated according to the patterns in Figures~\ref{nt-pattern} and~\ref{empty-nt-pattern}. 
-This parser-generator assumes any ordered choice expressions are at the very top level of a non-terminal (parenthesized subexpressions are added as syntactic sugar, see Section~\ref{syntax-sec}). 
+The code for each nonterminal may be generated according to the patterns in Figures~\ref{nt-pattern} and~\ref{empty-nt-pattern}. 
+This parser-generator assumes any ordered choice expressions are at the very top level of a nonterminal (parenthesized subexpressions are added as syntactic sugar, see Section~\ref{syntax-sec}). 
 A label is then generated for each alternate, failing over to the next alternate if it does not match, with a synthesized failure alternate at the end of each alternation.
 
 \begin{figure}
-\caption[Non-terminal code pattern]{Pattern for a non-terminal $X ::= \tau_1 / \ldots / \tau_p, p \geq 1$} \label{nt-pattern}
+\caption[Non-terminal code pattern]{Pattern for a nonterminal $X ::= \tau_1 / \ldots / \tau_p, p \geq 1$} \label{nt-pattern}
 \begin{algorithmic}
 \Case{$X ::= \cdot \tau_1$}
 	\State $\langle$ generate code for $X ::= \cdot \tau_1$ with failure path $X ::= \cdot \tau_2$ $\rangle$
@@ -164,7 +164,7 @@ A label is then generated for each alternate, failing over to the next alternate
 \end{figure}
 
 \begin{figure}
-\caption[Empty non-terminal code pattern]{Pattern for a non-terminal $X ::= \varepsilon$} \label{empty-nt-pattern}
+\caption[Empty nonterminal code pattern]{Pattern for a nonterminal $X ::= \varepsilon$} \label{empty-nt-pattern}
 \begin{algorithmic}
 \Case{$X ::= \cdot \varepsilon$}
 	\State $T \gets T \cup {(X ::= \varepsilon \cdot, c_I, c_I, c_I)}$
@@ -173,7 +173,7 @@ A label is then generated for each alternate, failing over to the next alternate
 \end{algorithmic}
 \end{figure}
 
-The \textsc{rtn}$(X, c_U, c_I)$ function in PEGLL code is detailed below in Figure~\ref{call-rtn-code}, but its essential purpose is to modify the ``call stack'' in the CRF graph consistently with a recursive call to the non-terminal $X$ at position $c_U$ returning at position $c_I$.
+The \textsc{rtn}$(X, c_U, c_I)$ function in PEGLL code is detailed below in Figure~\ref{call-rtn-code}, but its essential purpose is to modify the ``call stack'' in the CRF graph consistently with a recursive call to the nonterminal $X$ at position $c_U$ returning at position $c_I$.
 
 To parse each of the sequence expressions $\tau_i$ inside a nonterminal alternative, PEGLL repeatedly executes the appropriate code for each expression in the sequence, moving to the failure path if that expression does not work. 
 The code patterns for the sequence expression are in Figure~\ref{seq-expr-pattern}, while the code patterns for each atomic expression are in Figure~\ref{atom-expr-pattern}. 
@@ -331,7 +331,82 @@ The \textsc{testSelect} function, described in Figure~\ref{test-select} in the p
 
 \subsection{Syntactic Sugar} \label{syntax-sec}
 
-\textbf{TODO} write me.
+The preceding discussion has outlined how PEG semantics are supported within the framework of the GLR algorithm; however, support for the fundamental PEG operators does not cover how several common PEG idioms are supported. 
+Much like the EBNF notation for CFGs, PEGs typically support the ``syntactic sugar'' operators defined in Figure~\ref{sugar-fig} for optional and repeated matches. 
+The $\alpha?$, $\alpha^*$, and $\alpha^+$ operators have their usual semantics of match $\alpha$ zero-or-one, zero-or-more, and one-or-more times, respectively, though note that the ordered-choice semantics of PEGs imply greedy match.
+The PEGLL parser supports expressions using these operators by replacing such expressions during AST generation with a fresh nonterminal defined as in Figure~\ref{sugar-fig}.
+
+\begin{figure}
+	\centering
+	\begin{equation*}
+	\begin{aligned}[c]
+	\Rule_{\alpha?} & = \alpha / \varepsilon \\
+	\Rule_{\alpha^*} & = \alpha \Rule_{\alpha^*} / \varepsilon \\
+    \Rule_{\alpha^+} & = \alpha \Rule_{\alpha^*} \\
+	\end{aligned}
+	\end{equation*}
+	\caption[Syntactic sugar definitions]{Each syntactic sugar expression $\varphi$ is replaced by a fresh nonterminal $\Rule_\varphi$ defined as in this table.} \label{sugar-fig}
+\end{figure}
+
+\subsection{Unordered Choice}
+
+PEGLL also supports an unordered-choice operator; the main challenge in implementing unordered choice in PEGLL is determining when to trigger the failure path for a nonterminal.
+PEGLL introduces the failure paths in the FailCRF data structure to support the sequential nature of ordered choice -- when one alternate fails, it enqueues the next, and when the final alternate fails the algorithm marks the failure of the entire nonterminal. 
+Unordered choice, by contrast, has concurrent semantics; all alternates can conceptually be executed in parallel (as in Scott \& Johnstone's GLL \cite{SJ10,SJ16}), and the nonterminal only fails if \emph{all} alternates fail. 
+
+The approach taken by PEGLL is formalized in Figure~\ref{unordered-choice-algo}, but the essential idea is to duplicate all alternates of an unordered choice into a \emph{pass} alternate and a \emph{fail} alternate. 
+Matching of an unordered choice begins with the first fail alternate, and proceeds sequentially through the alternates in source order, as in PEGLL's handling of ordered choice. 
+Fail alternates all enqueue the next fail alternate on failure, or the next pass alternate on success, while pass alternates enqueue the next pass alternate on either success or failure; the final fail alternate marks the failure of the nonterminal on failure, while any alternate that succeeds marks the success of the nonterminal.
+The effect of this duplication of alternates is to encode the failure or success of previous unordered alternates in the control-flow of the algorithm, rather than modifying the FailCRF to store this information in the data structure. 
+This choice was made to avoid a memory-usage penalty in all FailCRF nodes to support unordered choice, but empirical investigation of the relative trade-offs of both approaches would be a fruitful direction for future work.
+
+\begin{figure}
+	\caption[Unordered choice code pattern]{Pattern for an unordered-choice nonterminal $X ::= \tau_1 | \ldots | \tau_p, p \geq 1$} \label{unordered-choice-algo}
+	\begin{algorithmic}
+	\Case{$X_{fail} ::= \cdot \tau_1$}
+		\State $\langle$ generate code for $X ::= \cdot \tau_1$ with failure path $X_{fail} ::= \cdot \tau_2$ $\rangle$
+		\State \Call{rtn}{$X$, $c_U$, $c_I$}; 
+		\State $(L, c_I, t) \gets (X_{pass} ::= \cdot \tau_2, c_U, t')$ \Goto{nextSlot}
+	\EndCase
+	\Case{$X_{pass} ::= \cdot \tau_2$}
+		\State $\langle$ generate code for $X ::= \cdot \tau_2$ with failure path $X_{pass} ::= \cdot \tau_3$ $\rangle$
+		\State \Call{rtn}{$X$, $c_U$, $c_I$}; 
+		\State $(L, c_I, t) \gets (X_{pass} ::= \cdot \tau_3, c_U, t')$ \Goto{nextSlot}
+	\EndCase
+	\State $\vdots$
+	\State ~
+	\Case{$X_{fail} ::= \cdot \tau_p$}
+		\State $\langle$ generate code for $X ::= \cdot \tau_p$ with failure path $X_{fail} ::= \cdot \varnothing$ $\rangle$
+		\State \Call{rtn}{$X$, $c_U$, $c_I$} \Goto{nextDesc}
+	\EndCase
+	\Case{$X_{fail} ::= \cdot \varnothing$}
+		\State \Call{rtn}{$X$, $c_U$, $\fail$} \Goto{nextDesc}
+	\EndCase
+	\end{algorithmic}
+	\end{figure}
+
+\section{Related Work}
+There are a number of pre-existing approaches to PEG parsing; Ford~\cite{For02} introduced the PEG formalism and two algorithms, a backtracking \emph{recursive descent} algorithm and a memoized \emph{packrat} algorithm. 
+In practice, recursive decent is more efficient, but has exponential worst-case runtime, while packrat trades increased space and time in the common case for linear worst-case runtime\cite{Mos17}; most subsequent work has attempted to mitigate one or both of these shortcomings. 
+Mizushima~\etal~\cite{MMY10} use \emph{cut operators} to reduce the memory usage of packrat parsing, while Kuramitsu~\cite{Kur15} and Redziejowski~\cite{Red07} use heuristic table-trimming mechanisms to similar effect. 
+Medeiros \& Ierusalimschy~\cite{MI08} and Henglein \& Rasmussen~\cite{HR17} have developed a parsing machine approach and a tabular parsing algorithm, respectively, both of which have some evidence of efficient performance. 
+Moss~\cite{Mos20} and Garnock-Jones~\etal~\cite{GJWE18} have independently developed derivative parsing algorithms for PEGs, neither of which claim improved performance, but which allow use of PEGs with algorithmic tools based on derivative parsing.
+
+Scott \& Johnstone's GLL algorithm \cite{SJ10,SJ16} is based on the GLR algorithm of Tomita\cite{Tom85}. 
+The PEGLL implementation (based on Ackerman's GoGLL \cite{Ack19}) also uses a modified call-return forest (CRF) for control flow and a binary subtree representation (BSR) for parse results, both as in Scott~\etal \cite{SJvB19}. \textbf{TODO cite ALL(*) paper, any likely threads from there}
+
+\section{Conclusion \& Future Work}
+
+This paper has described PEGLL, a new algorithm for parsing parsing expression grammars, based on Scott \& Johnstone's GLL \cite{SJ10,SJ16}. 
+The primary contribution is the FailCRF data structure, which adds failure paths to GLL's call-return forest, and code-generation algorithms to implement PEG semantics on top of this data structure. 
+In addition to supporting the fundamental ordered-choice and lookahead operators of PEG, PEGLL also includes support for repetition operators as syntactic sugar, and also for CFG-style unordered choice using a duplication approach to track whether any of the unordered alternates have matched. 
+
+An Apache-licenced implementation of PEGLL is available on GitHub\footnote{\url{https://github.com/bruceiv/pegll}}; this implementation passes the research team's internal correctness tests, but performance testing is left to future work. 
+In addition to measuring and optimizing the performance of the PEGLL algorithm, a straightforward piece of future work would be to expand the expressivity of PEGLL's operator set; parenthesized subexpressions would be a natural expansion, as would more variants on the repetition operators -- in particular, non-greedy variants could be implemented by using unordered choice instead of ordered choice in the generated nonterminals. 
+
+A more ambitious advance would be to support left-recursive rules in PEGLL. 
+Combined with PEGLL's existing support for unordered choice, allowing left-recursive rules would make the set of languages parsed by PEGLL a superset of both parsing-expression languages and context-free languages, allowing language designers to apply the idioms and capabilities of both formalisms as desired. 
+Given that GLL already supports left-recursive rules \textbf{TODO cite} and a number of approaches have been suggested for PEG-parsing as well \textbf{TODO cite}, this goal should be achievable.
 
 \bibliographystyle{ieeetr}
 \bibliography{deriv_parsing}
