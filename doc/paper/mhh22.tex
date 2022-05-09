@@ -34,12 +34,13 @@
 \author{
     Moss, Aaron\\
     \texttt{mossa@up.edu}
-    \and
-    Harrington, Brynn\\
-    \texttt{harringt23@up.edu}
-    \and
-    Hoppe, Emily\\
-    \texttt{hoppe23@up.edu}
+    % \and
+    % Harrington, Brynn\\
+    % \texttt{harringt23@up.edu}
+    % \and
+    % Hoppe, Emily\\
+    % \texttt{hoppe23@up.edu}
+	\thanks{The author's summer students, Brynn Harrington and Emily Hoppe, implemented parts of the work described here. This work was funded by a Shiley grant at the University of Portland.}
 }
 
 \begin{document}
@@ -390,10 +391,14 @@ There are a number of pre-existing approaches to PEG parsing; Ford~\cite{For02} 
 In practice, recursive decent is more efficient, but has exponential worst-case runtime, while packrat trades increased space and time in the common case for linear worst-case runtime\cite{Mos17}; most subsequent work has attempted to mitigate one or both of these shortcomings. 
 Mizushima~\etal~\cite{MMY10} use \emph{cut operators} to reduce the memory usage of packrat parsing, while Kuramitsu~\cite{Kur15} and Redziejowski~\cite{Red07} use heuristic table-trimming mechanisms to similar effect. 
 Medeiros \& Ierusalimschy~\cite{MI08} and Henglein \& Rasmussen~\cite{HR17} have developed a parsing machine approach and a tabular parsing algorithm, respectively, both of which have some evidence of efficient performance. 
-Moss~\cite{Mos20} and Garnock-Jones~\etal~\cite{GJWE18} have independently developed derivative parsing algorithms for PEGs, neither of which claim improved performance, but which allow use of PEGs with algorithmic tools based on derivative parsing.
+Moss~\cite{Mos20} and Garnock-Jones~\etal~\cite{GJWE18} have independently developed derivative parsing algorithms for PEGs, neither of which claim improved performance, but which allow use of PEGs with algorithmic tools based on derivative parsing. 
+Similarly to this work, Chida \& Kuramitsu \cite{CK17} have extended the PEG formalism to include unordered choice.
+Medeiros~\etal \cite{MMI14left} and Hutchinson \cite{Hut20} have developed PEG parsers that accept left-recursive grammars, while Redziejowski \cite{Red21} has developed a grammar re-writing scheme that accomplishes the same end.
 
 Scott \& Johnstone's GLL algorithm \cite{SJ10,SJ16} is based on the GLR algorithm of Tomita\cite{Tom85}. 
-The PEGLL implementation (based on Ackerman's GoGLL \cite{Ack19}) also uses a modified call-return forest (CRF) for control flow and a binary subtree representation (BSR) for parse results, both as in Scott~\etal \cite{SJvB19}. \textbf{TODO cite ALL(*) paper, any likely threads from there}
+The PEGLL implementation (based on Ackerman's GoGLL \cite{Ack19}) also uses a modified call-return forest (CRF) for control flow and a binary subtree representation (BSR) for parse results, both as in Scott~\etal \cite{SJvB19}. 
+Afroozeh \& Izmaylova \cite{AI15} have contributed performance improvements and extensions to the original GLL algorithm.
+Parr~\etal \cite{PHF14} have developed the \emph{ALL(*)} parsing algorithm, with similar power to GLL but better reported runtime performance.
 
 \section{Conclusion \& Future Work}
 
@@ -406,7 +411,7 @@ In addition to measuring and optimizing the performance of the PEGLL algorithm, 
 
 A more ambitious advance would be to support left-recursive rules in PEGLL. 
 Combined with PEGLL's existing support for unordered choice, allowing left-recursive rules would make the set of languages parsed by PEGLL a superset of both parsing-expression languages and context-free languages, allowing language designers to apply the idioms and capabilities of both formalisms as desired. 
-Given that GLL already supports left-recursive rules \textbf{TODO cite} and a number of approaches have been suggested for PEG-parsing as well \textbf{TODO cite}, this goal should be achievable.
+Given that GLL already supports left-recursive rules \cite{SJ10} and a number of approaches have been suggested for PEG-parsing as well \cite{MMI14left,Hut20,Red21}, this goal should be achievable.
 
 \bibliographystyle{ieeetr}
 \bibliography{deriv_parsing}
